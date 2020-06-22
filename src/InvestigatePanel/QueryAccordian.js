@@ -70,7 +70,7 @@ const QueryAccordian = () => {
 const QueryList = ({ items }) => {
   const [css, theme] = useStyletron();
   const dispatch = useDispatch();
-  const score = useSelector(state => state.riskProfile.current.score);
+  const score = useSelector(state => state.graphInit.score);
   const subList = items.map((item, index) => {
     const riskScore = multiplyArr(
       Object.values(item.data.score_vector),

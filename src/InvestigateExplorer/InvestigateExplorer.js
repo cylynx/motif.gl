@@ -13,6 +13,7 @@ import {
 import { resetState } from './graphSlice';
 import SideLayer from './SideLayer';
 import BottomLayer from './BottomLayer';
+import { uploadData } from '../API';
 
 import InvestigateChart from '../InvestigateChart';
 import { InvestigatePanel } from '../InvestigatePanel';
@@ -20,7 +21,7 @@ import InvestigateTimeBar from '../InvestigateTimeBar';
 import ImportWizard from '../ImportWizard';
 import InvestigateToolbar from '../InvestigateToolbar';
 
-const InvestigateExplorer = ({ tabs }) => {
+const InvestigateExplorer = ({ tabs, data }) => {
   const [css] = useStyletron();
 
   const dispatch = useDispatch();
@@ -30,7 +31,11 @@ const InvestigateExplorer = ({ tabs }) => {
   const modalImportOpen = useSelector(state => state.graphInit.modalImportOpen);
   const loading = useSelector(state => state.graphInit.loading);
 
-  useEffect(() => {     
+  useEffect(() => {    
+    if (data) {
+      uploadData(data);
+      dispatch(closeImportModal());
+    }     
     // Reset state on dismount
     return () => dispatch(resetState());
     // eslint-disable-next-line react-hooks/exhaustive-deps

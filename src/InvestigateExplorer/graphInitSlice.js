@@ -11,6 +11,7 @@ const initialState = {
   modalImportOpen: true,
   clickedId: null,
   bottomOpen: false,
+  score: null,
 };
 
 const graphInit = createSlice({
@@ -50,6 +51,9 @@ const graphInit = createSlice({
       const id = action.payload;
       state.clickedId = id;
     },
+    setScore(state, action) {
+      state.score = action.payload;
+    },
   },
 });
 
@@ -63,6 +67,7 @@ export const {
   postMessage,
   setBottomOpen,
   setClickedId,
+  setScore,
 } = graphInit.actions;
 
 export default graphInit.reducer;

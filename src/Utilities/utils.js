@@ -1,4 +1,23 @@
-export const processData = data => {
+import { CATEGORIES_COLOR } from './categories';
+import cloneDeep from 'lodash/cloneDeep';
+
+const mapEdgeKeys = edge => {
+  // Identifies the graph source and target field in edge object
+  const edgeKeys = Object.keys(edge);
+  if (edgeKeys.includes('source') && edgeKeys.includes('target')) {
+    return ['source', 'target'];
+  }
+  if (edgeKeys.includes('from') && edgeKeys.includes('to')) {
+    return ['from', 'to'];
+  }
+  if (edgeKeys.includes('src') && edgeKeys.includes('dst')) {
+    return ['src', 'dst'];
+  }
+  return false;
+};
+
+export const processData = passedData => {
+  const data = cloneDeep(passedData);
   for (const node of data.nodes) {
     // Give the display label of the node
     node.label = `${node.data.address.substring(2, 7)}...`;

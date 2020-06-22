@@ -21,7 +21,7 @@ const InvestigateDetailed = () => {
   const detailedSelection = useSelector(
     state => state.graph.present.detailedSelection
   );
-  const score = useSelector(state => state.riskProfile.current.score);
+  const score = useSelector(state => state.graphInit.score);
   const { data } = detailedSelection.data;
   const riskScore = multiplyArr(
     Object.values(data.score_vector),

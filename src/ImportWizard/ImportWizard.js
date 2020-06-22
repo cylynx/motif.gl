@@ -20,10 +20,11 @@ const ImportWizard = ({ tabs }) => {
         <Tab title="File">
           <QueryFile info="Loads data in JSON file format" tooltip={fileTip} />
         </Tab>
-        {tabs.map(tab => 
+        {tabs.map((tab, idx) =>           
           <Tab title={tab.type.name}>
-            {tab}
-          </Tab>)}        
+          {tab}
+          </Tab>
+        )}        
       </StyledTabs>
     </Block>
   );
