@@ -54,7 +54,8 @@ const processResponse = newData => {
 };
 
 export const uploadData = data => {
-  processResponse(processData(data));
+  store.dispatch(fetchBegin());  
+  processResponse(processData(data));  
 };
 
 // Asynchronous forEach to ensure graph renders in a nice circle
@@ -74,7 +75,7 @@ export const uploadJSON = json => {
     asyncForEach(json, async graph => {
       await waitFor(0);
       uploadData(graph);
-    });
+    });  
   } catch (error) {
     store.dispatch(fetchError(error));
   }
