@@ -1,0 +1,97 @@
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { useStyletron } from 'baseui';
+import { Block } from 'baseui/block';
+import { Modal, ModalBody, SIZE } from 'baseui/modal';
+import { withRouter } from 'react-router-dom';
+import { Loader } from '@blocklynx/ui';
+import {  
+  closeModal,
+  openImportModal,
+  closeImportModal,
+} from './graphInitSlice';
+import { resetState } from './graphSlice';
+import SideLayer from './SideLayer';
+import BottomLayer from './BottomLayer';
+
+import InvestigateChart from '../InvestigateChart';
+import { InvestigatePanel } from '../InvestigatePanel';
+import InvestigateTimeBar from '../InvestigateTimeBar';
+import ImportWizard from '../ImportWizard';
+import InvestigateToolbar from '../InvestigateToolbar';
+
+const InvestigateExplorer = ({ firebase, location }) => {
+  const [css] = useStyletron();
+
+  const dispatch = useDispatch();
+
+  const modalMsg = useSelector(state => state.graphInit.modalMsg);
+  const modalOpen = useSelector(state => state.graphInit.modalOpen);
+  const modalImportOpen = useSelector(state => state.graphInit.modalImportOpen);
+  const loading = useSelector(state => state.graphInit.loading);
+  const score = useSelector(state => state.riskProfile.current.score);
+
+  useEffect(() => { 
+    dispatch(openImportModal());    
+    // Reset state on dismount
+    return () => dispatch(resetState());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  });
+
+  // UI Functions
+  const onCloseModal = () => {
+    dispatch(closeModal());
+  };
+
+  const onCloseModalImport = () => {
+    dispatch(closeImportModal());
+  };
+
+  return (
+    <>
+      <Modal isOpen={modalOpen} onClose={onCloseModal} closeable>
+        <ModalBody>{modalMsg}</ModalBody>
+      </Modal>
+      <Modal
+        isOpen={modalImportOpen}
+        onClose={onCloseModalImport}
+        closeable
+        size={SIZE.auto}
+      >
+        <ModalBody>
+          <ImportWizard />
+        </ModalBody>
+      </Modal>
+      <>
+        {loading && (
+          <div
+            className={css({
+              position: 'absolute',
+              top: '70px',
+              height: '30px',
+              width: '100%',
+              zIndex: 1,
+            })}
+          >
+            <Loader />
+          </div>
+        )}
+        {score && (
+          <Block position="absolute" width="100%" height="calc(100% - 70px)">
+            <InvestigateChart />
+            <InvestigateToolbar />
+          </Block>
+        )}
+        <BottomLayer>
+          <InvestigateTimeBar />
+        </BottomLayer>
+        <SideLayer>
+          <InvestigatePanel />
+        </SideLayer>
+      </>
+    </>
+  );
+};
+
+export default withRouter(InvestigateExplorer);
