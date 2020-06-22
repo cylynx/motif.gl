@@ -8,7 +8,7 @@ const initialState = {
   loading: false,
   modalMsg: '',
   modalOpen: false,
-  modalImportOpen: false,
+  modalImportOpen: true,
   clickedId: null,
   bottomOpen: false,
 };
@@ -36,8 +36,8 @@ const graphInit = createSlice({
     openImportModal(state) {
       state.modalImportOpen = true;
     },
-    closeImportModal(state) {
-      state.modalImportOpen = false;
+    closeImportModal(state) {      
+      state.modalImportOpen = false;      
     },
     postMessage(state, action) {
       state.modalOpen = true;

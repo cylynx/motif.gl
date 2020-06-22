@@ -21,7 +21,7 @@ import InvestigateTimeBar from '../InvestigateTimeBar';
 import ImportWizard from '../ImportWizard';
 import InvestigateToolbar from '../InvestigateToolbar';
 
-const InvestigateExplorer = ({ firebase, location }) => {
+const InvestigateExplorer = () => {
   const [css] = useStyletron();
 
   const dispatch = useDispatch();
@@ -30,10 +30,8 @@ const InvestigateExplorer = ({ firebase, location }) => {
   const modalOpen = useSelector(state => state.graphInit.modalOpen);
   const modalImportOpen = useSelector(state => state.graphInit.modalImportOpen);
   const loading = useSelector(state => state.graphInit.loading);
-  const score = useSelector(state => state.riskProfile.current.score);
 
-  useEffect(() => { 
-    dispatch(openImportModal());    
+  useEffect(() => {     
     // Reset state on dismount
     return () => dispatch(resetState());
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -77,7 +75,7 @@ const InvestigateExplorer = ({ firebase, location }) => {
             <Loader />
           </div>
         )}
-        {score && (
+        {(
           <Block position="absolute" width="100%" height="calc(100% - 70px)">
             <InvestigateChart />
             <InvestigateToolbar />
