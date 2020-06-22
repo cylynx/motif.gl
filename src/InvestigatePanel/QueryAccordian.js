@@ -8,7 +8,7 @@ import { Accordion, Panel } from 'baseui/accordion';
 import { ListItem } from 'baseui/list';
 import { GoInfo } from 'react-icons/go';
 import { TagValue, TagRisk, SimpleTooltip } from '@blocklynx/ui';
-import { getDetails } from '../InvestigateExplorer/graphSlice';
+import { getDetails } from '../redux/graphSlice';
 
 import { multiplyArr, roundToTwo } from '../Utilities/utils';
 

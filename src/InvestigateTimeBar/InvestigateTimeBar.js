@@ -13,7 +13,7 @@ import {
 
 import { useStyletron } from 'baseui';
 
-import { setRange, timeRangeChange } from '../InvestigateExplorer/graphSlice';
+import { setRange, timeRangeChange } from '../redux/graphSlice';
 import EventChart from './EventChart';
 
 const windowOptions = ['30d', '7d', '1d', '1h', '1m'];

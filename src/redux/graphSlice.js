@@ -14,7 +14,7 @@ import {
   datatoTS,
   chartRange,
   filterDataByTime,
-} from './graphUtils';
+} from '../InvestigateExplorer/graphUtils';
 import { removeDuplicates } from '../Utilities/utils';
 
 const combineProcessedData = (newData, oldData) => {

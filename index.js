@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { setScore } from './src/InvestigateExplorer/graphInitSlice';
+import { setScore } from './src/redux/graphInitSlice';
 import InvestigateExplorer from './src/InvestigateExplorer';
 import { Provider } from 'react-redux';
 import store from './src/redux/store';

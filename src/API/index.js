@@ -7,11 +7,11 @@ import {
   fetchDone,
   postMessage,
   setBottomOpen,
-} from '../InvestigateExplorer/graphInitSlice';
+} from '../redux/graphInitSlice';
 import {
   addQuery,
   processGraphResponse,
-} from '../InvestigateExplorer/graphSlice';
+} from '../redux/graphSlice';
 import { processData } from '../Utilities/utils';
 
 const state = store.getState();

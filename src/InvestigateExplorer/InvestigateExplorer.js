@@ -10,8 +10,8 @@ import {
   fetchBegin,  
   closeModal,  
   closeImportModal,
-} from './graphInitSlice';
-import { resetState } from './graphSlice';
+} from '../redux/graphInitSlice';
+import { resetState } from '../redux/graphSlice';
 import SideLayer from './SideLayer';
 import BottomLayer from './BottomLayer';
 import { uploadData } from '../API';

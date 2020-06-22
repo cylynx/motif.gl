@@ -5,7 +5,7 @@ import { Select } from 'baseui/select';
 import { Checkbox } from 'baseui/checkbox';
 import { Block } from 'baseui/block';
 import { TriGrid } from '@blocklynx/ui';
-import { changeOptions, changeLayout } from '../InvestigateExplorer/graphSlice';
+import { changeOptions, changeLayout } from '../redux/graphSlice';
 
 const nodeSizeOptions = [
   { label: 'Default', id: 'default' },

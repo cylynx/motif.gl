@@ -9,8 +9,8 @@ import { FlushedGrid, Statistic, FullButton } from '@blocklynx/ui';
 import {
   openImportModal,
   fetchDone,
-} from '../InvestigateExplorer/graphInitSlice';
-import { resetState } from '../InvestigateExplorer/graphSlice';
+} from '../redux/graphInitSlice';
+import { resetState } from '../redux/graphSlice';
 import ExportDataButton from './ExportDataButton';
 import QueryAccordian from './QueryAccordian';
 

@@ -5,10 +5,10 @@ import {
   } from '@reduxjs/toolkit';
   import undoable, { excludeAction } from 'redux-undo';
   
-  import graphInitReducer from '../InvestigateExplorer/graphInitSlice';
+  import graphInitReducer from './graphInitSlice';
   import graphReducer, {
     setRange,
-  } from '../InvestigateExplorer/graphSlice';
+  } from './graphSlice';
   
   // History group to collapse both actions into 1 undo/redo
   const group = (action, currentState, previousHistory) => {

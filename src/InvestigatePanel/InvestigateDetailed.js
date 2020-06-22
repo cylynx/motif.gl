@@ -6,7 +6,7 @@ import { Button } from 'baseui/button';
 
 import { Cell } from 'baseui/layout-grid';
 import { FlushedGrid, Statistic, Hash } from '@blocklynx/ui';
-import { clearDetails } from '../InvestigateExplorer/graphSlice';
+import { clearDetails } from '../redux/graphSlice';
 import { RiskBarChart } from '../Charts';
 
 import { CATEGORIES } from '../Utilities/categories';

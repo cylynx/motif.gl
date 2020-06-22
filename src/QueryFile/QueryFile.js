@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { FileUploader } from 'baseui/file-uploader';
 import { InfoNotification } from '@blocklynx/ui';
-import { closeImportModal } from '../InvestigateExplorer/graphInitSlice';
+import { closeImportModal } from '../redux/graphInitSlice';
 import { uploadJSON } from '../API';
 
 const QueryFile = ({ info, tooltip }) => {
