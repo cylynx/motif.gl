@@ -7,7 +7,7 @@ import { Tabs, Tab } from 'baseui/tabs';
 import QueryFile from '../QueryFile';
 import { fileTip } from './Tips';
 
-const ImportWizard = () => {
+const ImportWizard = ({ tabs }) => {
   const [activeKey, setActiveKey] = React.useState('0');
   // eslint-disable-next-line no-shadow
   const onChangeTab = ({ activeKey }) => {
@@ -19,7 +19,11 @@ const ImportWizard = () => {
       <StyledTabs onChange={onChangeTab} activeKey={activeKey}>                
         <Tab title="File">
           <QueryFile info="Loads data in JSON file format" tooltip={fileTip} />
-        </Tab>        
+        </Tab>
+        {tabs.map(tab => 
+          <Tab title={tab.type.name}>
+            {tab}
+          </Tab>)}        
       </StyledTabs>
     </Block>
   );

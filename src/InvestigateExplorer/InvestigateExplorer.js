@@ -7,8 +7,7 @@ import { Modal, ModalBody, SIZE } from 'baseui/modal';
 import { withRouter } from 'react-router-dom';
 import { Loader } from '@blocklynx/ui';
 import {  
-  closeModal,
-  openImportModal,
+  closeModal,  
   closeImportModal,
 } from './graphInitSlice';
 import { resetState } from './graphSlice';
@@ -21,7 +20,7 @@ import InvestigateTimeBar from '../InvestigateTimeBar';
 import ImportWizard from '../ImportWizard';
 import InvestigateToolbar from '../InvestigateToolbar';
 
-const InvestigateExplorer = () => {
+const InvestigateExplorer = ({ tabs }) => {
   const [css] = useStyletron();
 
   const dispatch = useDispatch();
@@ -58,7 +57,7 @@ const InvestigateExplorer = () => {
         size={SIZE.auto}
       >
         <ModalBody>
-          <ImportWizard />
+          <ImportWizard tabs={tabs}/>
         </ModalBody>
       </Modal>
       <>

@@ -4,10 +4,11 @@ import InvestigateExplorer from './src/InvestigateExplorer';
 import { Provider } from 'react-redux';
 import store from './src/redux/store';
 
-const Investigate = () => {
+const Investigate = props => {
+  const { tabs } = props;
   return (
     <Provider store={store}>
-      <InvestigateExplorer />
+      <InvestigateExplorer tabs={tabs}/>
     </Provider>  
   );
 };
