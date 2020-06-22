@@ -54,7 +54,6 @@ const processResponse = newData => {
 };
 
 export const uploadData = data => {
-  store.dispatch(fetchBegin());  
   processResponse(processData(data));  
 };
 

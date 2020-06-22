@@ -6,7 +6,8 @@ import { Block } from 'baseui/block';
 import { Modal, ModalBody, SIZE } from 'baseui/modal';
 import { withRouter } from 'react-router-dom';
 import { Loader } from '@blocklynx/ui';
-import {  
+import {
+  fetchBegin,  
   closeModal,  
   closeImportModal,
 } from './graphInitSlice';
@@ -33,8 +34,9 @@ const InvestigateExplorer = ({ tabs, data }) => {
 
   useEffect(() => {    
     if (data) {
-      uploadData(data);
       dispatch(closeImportModal());
+      dispatch(fetchBegin());
+      uploadData(data);      
     }     
     // Reset state on dismount
     return () => dispatch(resetState());
