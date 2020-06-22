@@ -43,6 +43,7 @@ const processResponse = newData => {
   }
   // Need to check edges for new data as it might just return nodes and repetition
   if (checkNewData(newData)) {
+    console.log("run here");
     store.dispatch(addQuery(newData));
     store.dispatch(processGraphResponse(newData));
     store.dispatch(fetchDone());

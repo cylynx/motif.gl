@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import store from './src/redux/store';
 
 const Investigate = props => {
-  const { tabs, data, score } = props;
+  const { tabs, data, score, getRecentTrans } = props;
 
   useEffect(() => {
     store.dispatch(setScore(score));
@@ -14,7 +14,7 @@ const Investigate = props => {
 
   return (
     <Provider store={store}>
-      <InvestigateExplorer tabs={tabs} data={data} />
+      <InvestigateExplorer tabs={tabs} data={data} getRecentTrans={getRecentTrans} />
     </Provider>  
   );
 };

@@ -22,7 +22,7 @@ import InvestigateTimeBar from '../InvestigateTimeBar';
 import ImportWizard from '../ImportWizard';
 import InvestigateToolbar from '../InvestigateToolbar';
 
-const InvestigateExplorer = ({ tabs, data }) => {
+const InvestigateExplorer = ({ tabs, data, getRecentTrans }) => {
   const [css] = useStyletron();
 
   const dispatch = useDispatch();
@@ -41,7 +41,7 @@ const InvestigateExplorer = ({ tabs, data }) => {
     // Reset state on dismount
     return () => dispatch(resetState());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  });
+  }, [data]);
 
   // UI Functions
   const onCloseModal = () => {
@@ -83,7 +83,7 @@ const InvestigateExplorer = ({ tabs, data }) => {
         )}
         {(
           <Block position="absolute" width="100%" height="calc(100% - 70px)">
-            <InvestigateChart />
+            <InvestigateChart getRecentTrans={getRecentTrans} />
             <InvestigateToolbar />
           </Block>
         )}

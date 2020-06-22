@@ -44,7 +44,7 @@ const NodeMenu = props => {
           <br />
           <Label3>Created timestamp</Label3>
           <Paragraph3>{timeConverter(data.created_ts_unix)}</Paragraph3>
-          <FullButton size="mini" onClick={onClick} disabled>
+          <FullButton size="mini" onClick={onClick}>
             Import Recent Transactions
           </FullButton>
         </StyledPadding>

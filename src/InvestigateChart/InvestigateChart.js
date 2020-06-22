@@ -6,10 +6,15 @@ import 'vis-network/styles/vis-network.css';
 import InvestigateChartLegend from './InvestigateChartLegend';
 import InvestigateGraph from './InvestigateGraph';
 
-const InvestigateChart = () => {
+const InvestigateChart = ({ getRecentTrans }) => {
   const graphFlatten = useSelector(state => state.graph.present.graphFlatten);
-
   const [menu, setMenu] = useState(null);
+  // Use in NodeMenu
+  const onClickImport = (e, nodeId) => {
+    e.preventDefault();
+    getRecentTrans(nodeId);
+    setMenu(false);
+  };
 
   return (
     <>
@@ -32,7 +37,7 @@ const InvestigateChart = () => {
             width: '250px',
           }}
         >
-          <NodeMenu node={menu.node} />
+          <NodeMenu node={menu.node} onClickImport={onClickImport} />
         </div>
       )}
     </>
