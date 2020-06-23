@@ -23,10 +23,8 @@ const checkMetaData = (newData) => {
   return false;
 };
 
-const checkNewData = newData => {
-  const graphListKeys = store
-    .getState()
-    .graph.present.graphList.map(graph => graph.metadata.key);
+const checkNewData = (graphList, newData) => {
+  const graphListKeys = graphList.map(graph => graph.metadata.key);
   return (
     newData &&
     !some(graphListKeys, key => key === newData.metadata.key) &&
@@ -34,7 +32,7 @@ const checkNewData = newData => {
   );
 };
 
-const processResponse = (dispatch, newData) => {
+const processResponse = (dispatch, graphList, newData) => {
   dispatch(fetchBegin());
   if (checkMetaData(newData)) {
     const message = `${metadata.retrieved_size} / ${metadata.search_size} of the most recent transactions retrieved.
@@ -43,7 +41,7 @@ const processResponse = (dispatch, newData) => {
     dispatch(postMessage(message));
   }
   // Need to check edges for new data as it might just return nodes and repetition
-  if (true) {    
+  if (checkNewData(graphList, newData)) {    
     dispatch(addQuery(newData));
     dispatch(processGraphResponse(newData));
     dispatch(fetchDone());
@@ -65,13 +63,16 @@ async function asyncForEach(array, callback) {
 }
 
 // One function to rule them all
-export const addData = (dispatch, data) => {
+// Thunk to dispatch our calls
+export const addData = data => (dispatch, getState) => {  
+  const graphList = getState().graph.present.graphList;
   if (Array.isArray(data)) {
     asyncForEach(data, async graph => {
       await waitFor(0);
-      processResponse(dispatch, processData(graph));
+      processResponse(dispatch, graphList, processData(graph));
     });  
   } else {
-    processResponse(dispatch, processData(data));
+    processResponse(dispatch, graphList, processData(data));
   }
-};
+  
+}

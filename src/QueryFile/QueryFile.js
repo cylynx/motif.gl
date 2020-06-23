@@ -24,7 +24,7 @@ const QueryFile = ({ info, tooltip }) => {
     const fileReader = new FileReader();
     fileReader.onload = e => {
       const json = JSON.parse(e.target.result);
-      addData(dispatch, json);
+      dispatch(addData(json));
     };
     fileReader.readAsText(acceptedFiles[0]);
     setIsUploading(false);    
