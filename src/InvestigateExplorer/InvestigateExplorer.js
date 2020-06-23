@@ -11,7 +11,7 @@ import {
   closeModal,  
   closeImportModal,
 } from '../redux/graphInitSlice';
-import { resetState } from '../redux/graphSlice';
+import { setScore } from '../redux/graphInitSlice';
 import SideLayer from './SideLayer';
 import BottomLayer from './BottomLayer';
 import { uploadData } from '../API';
@@ -22,7 +22,7 @@ import InvestigateTimeBar from '../InvestigateTimeBar';
 import ImportWizard from '../ImportWizard';
 import InvestigateToolbar from '../InvestigateToolbar';
 
-const InvestigateExplorer = ({ tabs, data, getRecentTrans }) => {
+const InvestigateExplorer = ({ tabs, data, getRecentTrans, score }) => {
   const [css] = useStyletron();
 
   const dispatch = useDispatch();
@@ -32,16 +32,14 @@ const InvestigateExplorer = ({ tabs, data, getRecentTrans }) => {
   const modalImportOpen = useSelector(state => state.graphInit.modalImportOpen);
   const loading = useSelector(state => state.graphInit.loading);
 
-  useEffect(() => {    
+  useEffect(() => {
+    dispatch(setScore(score));
     if (data) {
       dispatch(closeImportModal());
       dispatch(fetchBegin());
       uploadData(data);      
-    }     
-    // Reset state on dismount
-    return () => dispatch(resetState());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+    }                 
+  }, [data, score]);
 
   // UI Functions
   const onCloseModal = () => {

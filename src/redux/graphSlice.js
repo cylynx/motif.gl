@@ -83,8 +83,8 @@ const graph = createSlice({
       return initialState;
     },
     addQuery(state, action) {
-      const queryResults = action.payload;          
-      state.graphList[state.graphList.length] = queryResults;          
+      const queryResults = action.payload;
+      state.graphList.push(queryResults);                      
     },
     changeOptions(state, action) {
       const { key, value } = action.payload;
