@@ -1,17 +1,17 @@
 import React from 'react';
 
+import { addData } from './src/API';
 import InvestigateExplorer from './src/InvestigateExplorer';
-import { Provider } from 'react-redux';
-import store from './src/redux/store';
 
 const Investigate = props => {
-  const { tabs, data, score, getRecentTrans } = props;
+  const { tabs, score } = props;
 
-  return (
-    <Provider store={store}>
-      <InvestigateExplorer tabs={tabs} data={data} getRecentTrans={getRecentTrans} score={score} />
-    </Provider>  
+  return (    
+    <InvestigateExplorer tabs={tabs} score={score} />    
   );
 };
+
+export * from './src/redux';
+export { addData };
 
 export default Investigate;

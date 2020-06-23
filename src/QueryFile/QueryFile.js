@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { FileUploader } from 'baseui/file-uploader';
 import { InfoNotification } from '@blocklynx/ui';
 import { closeImportModal } from '../redux/graphInitSlice';
-import { uploadJSON } from '../API';
+import { addData } from '../API';
 
 const QueryFile = ({ info, tooltip }) => {
   const dispatch = useDispatch();
@@ -24,11 +24,10 @@ const QueryFile = ({ info, tooltip }) => {
     const fileReader = new FileReader();
     fileReader.onload = e => {
       const json = JSON.parse(e.target.result);
-      uploadJSON(json);
+      addData(dispatch, json);
     };
     fileReader.readAsText(acceptedFiles[0]);
-    setIsUploading(false);
-    dispatch(closeImportModal());
+    setIsUploading(false);    
   };
 
   const onDropRejected = () => {

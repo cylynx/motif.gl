@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import some from 'lodash/some';
 
 import { useStyletron } from 'baseui';
 import { Block } from 'baseui/block';
@@ -7,14 +8,13 @@ import { Modal, ModalBody, SIZE } from 'baseui/modal';
 import { withRouter } from 'react-router-dom';
 import { Loader } from '@blocklynx/ui';
 import {
-  fetchBegin,  
   closeModal,  
   closeImportModal,
+  setScore,
 } from '../redux/graphInitSlice';
-import { setScore } from '../redux/graphInitSlice';
+
 import SideLayer from './SideLayer';
 import BottomLayer from './BottomLayer';
-import { uploadData } from '../API';
 
 import InvestigateChart from '../InvestigateChart';
 import { InvestigatePanel } from '../InvestigatePanel';
@@ -22,7 +22,7 @@ import InvestigateTimeBar from '../InvestigateTimeBar';
 import ImportWizard from '../ImportWizard';
 import InvestigateToolbar from '../InvestigateToolbar';
 
-const InvestigateExplorer = ({ tabs, data, getRecentTrans, score }) => {
+const InvestigateExplorer = ({ tabs, score }) => {
   const [css] = useStyletron();
 
   const dispatch = useDispatch();
@@ -33,13 +33,8 @@ const InvestigateExplorer = ({ tabs, data, getRecentTrans, score }) => {
   const loading = useSelector(state => state.graphInit.loading);
 
   useEffect(() => {
-    dispatch(setScore(score));
-    if (data) {
-      dispatch(closeImportModal());
-      dispatch(fetchBegin());
-      uploadData(data);      
-    }                 
-  }, [data, score]);
+    dispatch(setScore(score));            
+  }, [score]);
 
   // UI Functions
   const onCloseModal = () => {
@@ -81,7 +76,7 @@ const InvestigateExplorer = ({ tabs, data, getRecentTrans, score }) => {
         )}
         {(
           <Block position="absolute" width="100%" height="calc(100% - 70px)">
-            <InvestigateChart getRecentTrans={getRecentTrans} />
+            <InvestigateChart />
             <InvestigateToolbar />
           </Block>
         )}
