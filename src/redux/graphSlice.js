@@ -4,52 +4,14 @@
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
 import { createSlice } from '@reduxjs/toolkit';
 
-import {
-  adjustNodeSize,
-  styleEdge,
-  styleGroupedEdge,
-  combineEdges,
-  replaceEdges,
-  replaceData,
+import {  
+  combineProcessedData,
+  applyStyle,
+  groupEdges,
   datatoTS,
   chartRange,
   filterDataByTime,
-} from '../InvestigateExplorer/graphUtils';
-import { removeDuplicates } from '../Utilities/utils';
-
-const combineProcessedData = (newData, oldData) => {
-  if (oldData) {
-    const modData = { ...oldData };
-    modData.nodes = removeDuplicates(
-      [...newData.nodes, ...oldData.nodes],
-      'id'
-    );
-    modData.edges = removeDuplicates(
-      [...newData.edges, ...oldData.edges],
-      'id'
-    );
-    return modData;
-  }
-  return newData;
-};
-
-const applyStyle = (data, defaultOptions) => {
-  const { groupEdges, edgeWidth, nodeSize } = defaultOptions;
-  if (groupEdges) {
-    const styledEdges = styleGroupedEdge(data, edgeWidth);
-    const styledNodes = adjustNodeSize(data, nodeSize);
-    return { ...replaceData(data, styledNodes, styledEdges) };
-  }
-  const styledEdges = styleEdge(data, edgeWidth);
-  const styledNodes = adjustNodeSize(data, nodeSize);
-  return { ...replaceData(data, styledNodes, styledEdges) };
-};
-
-const groupEdges = data => {
-  // combineEdges removed source and target properties of my edge initially
-  const newEdges = combineEdges(data.edges);
-  return { ...replaceEdges(data, newEdges) };
-};
+} from '../Utilities/graphUtils';
 
 const initialState = {
   defaultOptions: {

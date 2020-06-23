@@ -1,5 +1,5 @@
 import inRange from 'lodash/inRange';
-import { CATEGORIES_COLOR } from '../Utilities/categories';
+import { CATEGORIES_COLOR } from './categories';
 
 export const findConnectedEdges = (data, id) => {
   return data.edges.filter(e => e.source === id || e.target === id);
@@ -244,4 +244,45 @@ export const datatoTS = data => {
 export const chartRange = timeRange => {
   const range = Math.max((timeRange[1] - timeRange[0]) / 8, 1000 * 60 * 60 * 1);
   return [timeRange[0] - range, timeRange[1] + range];
+};
+
+export const removeDuplicates = (myArr, prop) => {
+  // Remove duplicates from array by checking on prop
+  return myArr.filter((obj, pos, arr) => {
+    return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
+  });
+};
+
+export const combineProcessedData = (newData, oldData) => {
+  if (oldData) {
+    const modData = { ...oldData };
+    modData.nodes = removeDuplicates(
+      [...newData.nodes, ...oldData.nodes],
+      'id'
+    );
+    modData.edges = removeDuplicates(
+      [...newData.edges, ...oldData.edges],
+      'id'
+    );
+    return modData;
+  }
+  return newData;
+};
+
+export const applyStyle = (data, defaultOptions) => {
+  const { groupEdges, edgeWidth, nodeSize } = defaultOptions;
+  if (groupEdges) {
+    const styledEdges = styleGroupedEdge(data, edgeWidth);
+    const styledNodes = adjustNodeSize(data, nodeSize);
+    return { ...replaceData(data, styledNodes, styledEdges) };
+  }
+  const styledEdges = styleEdge(data, edgeWidth);
+  const styledNodes = adjustNodeSize(data, nodeSize);
+  return { ...replaceData(data, styledNodes, styledEdges) };
+};
+
+export const groupEdges = data => {
+  // combineEdges removed source and target properties of my edge initially
+  const newEdges = combineEdges(data.edges);
+  return { ...replaceEdges(data, newEdges) };
 };

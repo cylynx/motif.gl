@@ -106,10 +106,3 @@ export const json2Blob = json =>
   new Blob([JSON.stringify(json)], {
     type: 'application/json',
   });
-
-export const removeDuplicates = (myArr, prop) => {
-  // Remove duplicates from array by checking on prop
-  return myArr.filter((obj, pos, arr) => {
-    return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
-  });
-};
