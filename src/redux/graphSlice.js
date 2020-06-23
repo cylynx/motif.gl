@@ -83,9 +83,8 @@ const graph = createSlice({
       return initialState;
     },
     addQuery(state, action) {
-      const queryResults = action.payload;
-      console.log(queryResults);
-      state.graphList.push(queryResults);      
+      const queryResults = action.payload;          
+      state.graphList[state.graphList.length] = queryResults;          
     },
     changeOptions(state, action) {
       const { key, value } = action.payload;
@@ -175,16 +174,6 @@ const graph = createSlice({
         : applyStyle(newFilteredData, defaultOptions);
       state.selectTimeRange = selectedTimeRange;
     },
-    updateGraph(state, action) {
-      // Update graph specified by graphName with given newNodes and newEdges
-      const { graphName, newNodes, newEdges } = action.payload;
-      if (newNodes && newNodes.length !== 0) {
-        state[graphName].nodes = newNodes;
-      }
-      if (newEdges && newEdges.length !== 0) {
-        state[graphName].edges = newEdges;
-      }
-    },
     getDetails(state, action) {
       // TODO: There might be multiple matching hash! Need to match on trace
       const { type, hash } = action.payload;
@@ -210,8 +199,7 @@ export const {
   changeLayout,
   processGraphResponse,
   setRange,
-  timeRangeChange,
-  updateGraph,
+  timeRangeChange,  
   getDetails,
   clearDetails,
 } = graph.actions;
