@@ -60,7 +60,7 @@ async function asyncForEach(array, callback) {
   for (const item of array) {
     await callback(item);
   }
-}
+};
 
 // One function to rule them all
 // Thunk to dispatch our calls
@@ -68,11 +68,19 @@ export const addData = data => (dispatch, getState) => {
   const graphList = getState().graph.present.graphList;
   if (Array.isArray(data)) {
     asyncForEach(data, async graph => {
-      await waitFor(0);
-      processResponse(dispatch, graphList, processData(graph));
+      try {
+        await waitFor(0);
+        processResponse(dispatch, graphList, processData(graph));
+      } catch(err) {
+        dispatch(fetchError(err));
+      }        
     });  
   } else {
-    processResponse(dispatch, graphList, processData(data));
+    try {
+      processResponse(dispatch, graphList, processData(data));      
+    } catch {
+      dispatch(fetchError(err));
+    }   
   }
   
 }

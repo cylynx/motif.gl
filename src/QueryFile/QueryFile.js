@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+
+import { Button } from 'baseui/button';
+import { Block } from 'baseui/block';
 import { FileUploader } from 'baseui/file-uploader';
 import { InfoNotification } from '@blocklynx/ui';
-import { closeImportModal } from '../redux/graphInitSlice';
+
 import { addData } from '../API';
+import { sampleJSONData } from '../Utilities/graphUtils';
 
 const QueryFile = ({ info, tooltip }) => {
   const dispatch = useDispatch();
@@ -34,6 +38,11 @@ const QueryFile = ({ info, tooltip }) => {
     setErrorMessage('Please upload JSON file');
   };
 
+  const trySampleData = e => {
+    e.preventDefault();
+    dispatch(addData(sampleJSONData));
+  }
+
   return (
     <>
       {info && <InfoNotification info={info} tooltip={tooltip} />}
@@ -46,6 +55,8 @@ const QueryFile = ({ info, tooltip }) => {
         progressMessage={isUploading && 'Uploading... Hang tight'}
         errorMessage={errorMessage}
       />
+      <Block padding='5px' />
+      <Button onClick={trySampleData}>Try Sample Data</Button>
     </>
   );
 };
