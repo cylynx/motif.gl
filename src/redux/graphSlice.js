@@ -4,7 +4,7 @@
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
 import { createSlice } from '@reduxjs/toolkit';
 
-import {  
+import {
   combineProcessedData,
   applyStyle,
   groupEdges,
@@ -46,7 +46,7 @@ const graph = createSlice({
     },
     addQuery(state, action) {
       const queryResults = action.payload;
-      state.graphList.push(queryResults);                      
+      state.graphList.push(queryResults);
     },
     changeOptions(state, action) {
       const { key, value } = action.payload;
@@ -161,7 +161,7 @@ export const {
   changeLayout,
   processGraphResponse,
   setRange,
-  timeRangeChange,  
+  timeRangeChange,
   getDetails,
   clearDetails,
 } = graph.actions;

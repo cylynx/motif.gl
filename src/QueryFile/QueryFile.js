@@ -31,7 +31,7 @@ const QueryFile = ({ info, tooltip }) => {
       dispatch(addData(json));
     };
     fileReader.readAsText(acceptedFiles[0]);
-    setIsUploading(false);    
+    setIsUploading(false);
   };
 
   const onDropRejected = () => {
@@ -41,7 +41,7 @@ const QueryFile = ({ info, tooltip }) => {
   const trySampleData = e => {
     e.preventDefault();
     dispatch(addData(sampleJSONData));
-  }
+  };
 
   return (
     <>
@@ -55,7 +55,7 @@ const QueryFile = ({ info, tooltip }) => {
         progressMessage={isUploading && 'Uploading... Hang tight'}
         errorMessage={errorMessage}
       />
-      <Block padding='5px' />
+      <Block padding="5px" />
       <Button onClick={trySampleData}>Try Sample Data</Button>
     </>
   );

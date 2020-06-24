@@ -37,8 +37,8 @@ const graphInit = createSlice({
     openImportModal(state) {
       state.modalImportOpen = true;
     },
-    closeImportModal(state) {      
-      state.modalImportOpen = false;      
+    closeImportModal(state) {
+      state.modalImportOpen = false;
     },
     postMessage(state, action) {
       state.modalOpen = true;
