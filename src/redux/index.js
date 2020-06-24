@@ -1,5 +1,6 @@
+import undoable, { excludeAction } from 'redux-undo';
 import graphInitReducer from './graphInitSlice';
-import graphReducer from './graphSlice';
+import graphReducer, { setRange } from './graphSlice';
 
 // Export 2 reducers
 export { graphInitReducer, graphReducer };
@@ -19,6 +20,11 @@ export const undoGroup = (action, currentState, previousHistory) => {
       return null;
   }
 };
+
+export const graphReducerHistory = undoable(graphReducer, {
+  filter: excludeAction(setRange.type),
+  group: undoGroup,
+});
 
 // Export all actions
 export * from './graphInitSlice';
