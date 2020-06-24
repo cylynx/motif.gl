@@ -15,6 +15,6 @@ export const getTabsOverride = (overrides, Component) => {
       return <Component ref={ref} tabs={tabs} {...props} />
     });
   } else {
-    return importWizard;
+    return Component;
   }  
 };
