@@ -32,7 +32,7 @@
     "react-scripts": "^3.4.1",
     "react-virtualized-auto-sizer": "^1.0.2",
     "recompose": "^0.30.0",
-    "redux": "^4.0.5",    
+    "redux": "^4.0.5",
     "redux-undo": "^1.0.1",
     "sass": "^1.26.5",
     "semantic-ui-react": "^0.87.3",
@@ -41,7 +41,5 @@
     "styletron-engine-atomic": "^1.4.5",
     "styletron-react": "^5.2.7",
     "vis-network": "^7.3.4"
-  },
-  "scripts": {},
-  "devDependencies": {}
+  }
 }

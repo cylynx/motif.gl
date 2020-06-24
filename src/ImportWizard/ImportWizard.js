@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { HeadingSmall } from 'baseui/typography';
 import { Block } from 'baseui/block';
@@ -8,7 +8,7 @@ import QueryFile from '../QueryFile';
 import { fileTip } from './Tips';
 
 const ImportWizard = ({ tabs }) => {
-  const [activeKey, setActiveKey] = React.useState('0');
+  const [activeKey, setActiveKey] = useState('0');
   // eslint-disable-next-line no-shadow
   const onChangeTab = ({ activeKey }) => {
     setActiveKey(activeKey);
@@ -16,15 +16,16 @@ const ImportWizard = ({ tabs }) => {
   return (
     <Block width="600px">
       <HeadingSmall> Add Data To Graph </HeadingSmall>
-      <StyledTabs onChange={onChangeTab} activeKey={activeKey}>                
+      <StyledTabs onChange={onChangeTab} activeKey={activeKey}>
         <Tab title="File">
           <QueryFile info="Loads data in JSON file format" tooltip={fileTip} />
         </Tab>
-        {tabs && tabs.map(tab =>           
-          <Tab title={tab.title} key={tab.idx} >            
-            {tab.component}
-          </Tab>
-        )}        
+        {tabs &&
+          tabs.map(tab => (
+            <Tab title={tab.title} key={tab.idx}>
+              {tab.component}
+            </Tab>
+          ))}
       </StyledTabs>
     </Block>
   );
