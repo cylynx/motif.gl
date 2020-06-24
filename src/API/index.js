@@ -46,7 +46,6 @@ const processResponse = (dispatch, graphList, newData) => {
     dispatch(processGraphResponse(newData));
     dispatch(fetchDone());
     dispatch(setBottomOpen(true));
-    dispatch(closeImportModal());
   } else {
     dispatch(fetchDone());
     throw new Error('Data has already been imported');
