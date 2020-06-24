@@ -11,7 +11,7 @@ const initialState = {
   modalImportOpen: true,
   clickedId: null,
   bottomOpen: false,
-  score: null,
+  score: 100,
 };
 
 const graphInit = createSlice({

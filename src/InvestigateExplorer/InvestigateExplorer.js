@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import some from 'lodash/some';
 
 import { useStyletron } from 'baseui';
 import { Block } from 'baseui/block';
@@ -12,6 +11,7 @@ import {
   closeImportModal,
   setScore,
 } from '../redux/graphInitSlice';
+import { getTabsOverride } from '../Utilities/overrides';
 
 import SideLayer from './SideLayer';
 import BottomLayer from './BottomLayer';
@@ -22,7 +22,7 @@ import InvestigateTimeBar from '../InvestigateTimeBar';
 import ImportWizard from '../ImportWizard';
 import InvestigateToolbar from '../InvestigateToolbar';
 
-const InvestigateExplorer = ({ tabs, score }) => {
+const InvestigateExplorer = ({ overrides }) => {
   const [css] = useStyletron();
 
   const dispatch = useDispatch();
@@ -32,9 +32,10 @@ const InvestigateExplorer = ({ tabs, score }) => {
   const modalImportOpen = useSelector(state => state.graphInit.modalImportOpen);
   const loading = useSelector(state => state.graphInit.loading);
 
-  useEffect(() => {
-    dispatch(setScore(score));            
-  }, [score]);
+  const UserImportWizard = getTabsOverride(overrides, ImportWizard);
+  if (overrides.score) {
+    dispatch(setScore(overrides.score));
+  }
 
   // UI Functions
   const onCloseModal = () => {
@@ -57,7 +58,7 @@ const InvestigateExplorer = ({ tabs, score }) => {
         size={SIZE.auto}
       >
         <ModalBody>
-          <ImportWizard tabs={tabs}/>
+          <UserImportWizard />
         </ModalBody>
       </Modal>
       <>

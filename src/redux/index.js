@@ -1,13 +1,10 @@
 import graphInitReducer from './graphInitSlice';
-import graphReducer, {
-  setRange,
-} from './graphSlice';
+import graphReducer from './graphSlice';
   
-// Export 2 reducers and action
+// Export 2 reducers
 export {
   graphInitReducer,
-  graphReducer,
-  setRange,
+  graphReducer,  
 };
 
 // Export history group that collapses both actions into 1 undo/redo
@@ -25,3 +22,7 @@ export const undoGroup = (action, currentState, previousHistory) => {
       return null;
   }
 };
+
+// Export all actions
+export * from './graphInitSlice';
+export * from './graphSlice';
