@@ -5,12 +5,10 @@ import { StatefulMenu } from 'baseui/menu';
 import { StatefulPopover, PLACEMENT } from 'baseui/popover';
 import * as html2canvas from 'html2canvas';
 import { FullButton, Notification } from '@blocklynx/ui';
+import { getGraph } from '../Utilities/accessors';
 
 const ExportDataButton = () => {
-  const exportGraph = useSelector(state => {
-    const { graphList } = state.graph.present;
-    return graphList;
-  });
+  const exportGraph = useSelector(state => getGraph(state).graphList);
   const [showNotification, setShowNotification] = useState(false);
 
   const exportPNG = close => {

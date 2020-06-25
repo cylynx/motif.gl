@@ -6,10 +6,11 @@ import { RRLink } from '@blocklynx/ui';
 import InvestigateMain from './InvestigateMain';
 import InvestigateDetailed from './InvestigateDetailed';
 import * as ROUTES from '../Utilities/routes';
+import { getGraph } from '../Utilities/accessors';
 
 const InvestigatePanel = () => {
   const detailedSelection = useSelector(
-    state => state.graph.present.detailedSelection
+    state => getGraph(state).detailedSelection
   );
 
   return (

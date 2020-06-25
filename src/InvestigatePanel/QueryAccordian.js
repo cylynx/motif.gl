@@ -11,10 +11,11 @@ import { TagValue, TagRisk, SimpleTooltip } from '@blocklynx/ui';
 import { getDetails } from '../redux/graphSlice';
 
 import { multiplyArr, roundToTwo } from '../Utilities/utils';
+import { getGraph } from '../Utilities/accessors';
 
 const QueryAccordian = () => {
   const [css, theme] = useStyletron();
-  const graphList = useSelector(state => state.graph.present.graphList);
+  const graphList = useSelector(state => getGraph(state).graphList);
   const listItems = graphList.map((query, index) => {
     let title = `import ${index}`;
     if (query.metadata && query.metadata.title) {

@@ -6,17 +6,15 @@ import { Plus } from 'baseui/icon';
 import { Cell } from 'baseui/layout-grid';
 import { Block } from 'baseui/block';
 import { FlushedGrid, Statistic, FullButton } from '@blocklynx/ui';
-import {
-  openImportModal,
-  fetchDone,
-} from '../redux/graphInitSlice';
+import { openImportModal, fetchDone } from '../redux/graphInitSlice';
 import { resetState } from '../redux/graphSlice';
 import ExportDataButton from './ExportDataButton';
 import QueryAccordian from './QueryAccordian';
+import { getGraph } from '../Utilities/accessors';
 
 const InvestigateMain = () => {
   const dispatch = useDispatch();
-  const graphFlatten = useSelector(state => state.graph.present.graphFlatten);
+  const graphFlatten = useSelector(state => getGraph(state).graphFlatten);
 
   const onClickImport = e => {
     e.preventDefault();
@@ -50,7 +48,7 @@ const InvestigateMain = () => {
       </FlushedGrid>
       <br />
       <hr />
-      <Block width="100%" display="flex" justifyContent="space-between">        
+      <Block width="100%" display="flex" justifyContent="space-between">
         <ImportDataButton onClick={onClickImport} />
       </Block>
       <br />

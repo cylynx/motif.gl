@@ -4,15 +4,14 @@ import '@antv/graphin/dist/index.css';
 
 import Graphin from '@antv/graphin';
 import { setClickedId } from '../redux/graphInitSlice';
+import { getGraphInit, getGraph } from '../Utilities/accessors';
 
 const InvestigateGraph = props => {
   const { setMenu } = props;
   const dispatch = useDispatch();
-  const clickedId = useSelector(state => state.graphInit.clickedId);
-  const graphVisible = useSelector(state => state.graph.present.graphVisible);
-  const layout = useSelector(
-    state => state.graph.present.defaultOptions.layout
-  );
+  const clickedId = useSelector(state => getGraphInit(state).clickedId);
+  const graphVisible = useSelector(state => getGraph(state).graphVisible);
+  const layout = useSelector(state => getGraph(state).defaultOptions.layout);
 
   const graphRef = useRef(null);
 

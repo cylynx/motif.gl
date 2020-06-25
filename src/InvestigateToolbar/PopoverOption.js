@@ -6,6 +6,7 @@ import { Checkbox } from 'baseui/checkbox';
 import { Block } from 'baseui/block';
 import { TriGrid } from '@blocklynx/ui';
 import { changeOptions, changeLayout } from '../redux/graphSlice';
+import { getGraph } from '../Utilities/accessors';
 
 const nodeSizeOptions = [
   { label: 'Default', id: 'default' },
@@ -29,10 +30,10 @@ const layoutNames = [
 const PopoverOption = () => {
   const dispatch = useDispatch();
   const { nodeSize, edgeWidth, resetView, groupEdges } = useSelector(
-    state => state.graph.present.defaultOptions
+    state => getGraph(state).defaultOptions
   );
   const layoutName = useSelector(
-    state => state.graph.present.defaultOptions.layout.name
+    state => getGraph(state).defaultOptions.layout.name
   );
   const findID = (options, id) => options.find(x => x.id === id);
   const onChangeOptions = (key, newValue) => {

@@ -15,6 +15,7 @@ import { useStyletron } from 'baseui';
 
 import { setRange, timeRangeChange } from '../redux/graphSlice';
 import EventChart from './EventChart';
+import { getGraph } from '../Utilities/accessors';
 
 const windowOptions = ['30d', '7d', '1d', '1h', '1m'];
 
@@ -54,9 +55,9 @@ const groupByTime = (ts, windowOption) => {
 
 const InvestigateTimeBar = () => {
   const dispatch = useDispatch();
-  const timeRange = useSelector(state => state.graph.present.timeRange);
-  const sliderRange = useSelector(state => state.graph.present.selectTimeRange);
-  const tsData = useSelector(state => state.graph.present.tsData);
+  const timeRange = useSelector(state => getGraph(state).timeRange);
+  const sliderRange = useSelector(state => getGraph(state).selectTimeRange);
+  const tsData = useSelector(state => getGraph(state).tsData);
   const [css] = useStyletron();
 
   // Group transactions with similar time together

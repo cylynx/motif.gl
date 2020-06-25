@@ -5,9 +5,10 @@ import NodeMenu from './NodeMenu';
 import 'vis-network/styles/vis-network.css';
 import InvestigateChartLegend from './InvestigateChartLegend';
 import InvestigateGraph from './InvestigateGraph';
+import { getGraph } from '../Utilities/accessors';
 
 const InvestigateChart = () => {
-  const graphFlatten = useSelector(state => state.graph.present.graphFlatten);
+  const graphFlatten = useSelector(state => getGraph(state).graphFlatten);
   const [menu, setMenu] = useState(null);
 
   return (

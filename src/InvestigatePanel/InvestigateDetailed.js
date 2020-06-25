@@ -16,12 +16,13 @@ import {
   timeConverter,
   processScoreVector,
 } from '../Utilities/utils';
+import { getGraphInit, getGraph } from '../Utilities/accessors';
 
 const InvestigateDetailed = () => {
   const detailedSelection = useSelector(
-    state => state.graph.present.detailedSelection
+    state => getGraph(state).detailedSelection
   );
-  const score = useSelector(state => state.graphInit.score);
+  const score = useSelector(state => getGraphInit(state).score);
   const { data } = detailedSelection.data;
   const riskScore = multiplyArr(
     Object.values(data.score_vector),

@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { DarkTheme, ThemeProvider } from 'baseui';
 import { Label3, Paragraph3 } from 'baseui/typography';
 import { StyledInner, StyledPadding } from 'baseui/popover';
 import { TriGrid, Hash, FullButton } from '@blocklynx/ui';
 import { timeConverter } from '../Utilities/utils';
+import { getGraphInit, getGraph } from '../Utilities/accessors';
 
 const NodeMenu = ({ menu, setMenu }) => {
-  const graphFlatten = useSelector(state => state.graph.present.graphFlatten);
+  const graphFlatten = useSelector(state => getGraph(state).graphFlatten);
   const { data } = graphFlatten.nodes.find(x => x.data.address === menu.node);
-  const getRecentTrans = useSelector(state => state.graphInit.recentTrans);
+  const getRecentTrans = useSelector(state => getGraphInit(state).recentTrans);
 
   const onClick = e => {
     e.preventDefault();

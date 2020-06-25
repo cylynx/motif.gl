@@ -13,6 +13,7 @@ import {
   setRecentTransFunc,
 } from '../redux/graphInitSlice';
 import { getTabsOverride } from '../Utilities/overrides';
+import { getGraphInit } from '../Utilities/accessors';
 
 import SideLayer from './SideLayer';
 import BottomLayer from './BottomLayer';
@@ -28,10 +29,12 @@ const InvestigateExplorer = ({ overrides }) => {
 
   const dispatch = useDispatch();
 
-  const modalMsg = useSelector(state => state.graphInit.modalMsg);
-  const modalOpen = useSelector(state => state.graphInit.modalOpen);
-  const modalImportOpen = useSelector(state => state.graphInit.modalImportOpen);
-  const loading = useSelector(state => state.graphInit.loading);
+  const modalMsg = useSelector(state => getGraphInit(state).modalMsg);
+  const modalOpen = useSelector(state => getGraphInit(state).modalOpen);
+  const modalImportOpen = useSelector(
+    state => getGraphInit(state).modalImportOpen
+  );
+  const loading = useSelector(state => getGraphInit(state).loading);
 
   const UserImportWizard = getTabsOverride(overrides, ImportWizard);
 

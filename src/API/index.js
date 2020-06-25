@@ -1,4 +1,5 @@
 import some from 'lodash/some';
+import { getGraph } from '../Utilities/accessors';
 
 import {
   fetchBegin,
@@ -6,17 +7,12 @@ import {
   fetchDone,
   postMessage,
   setBottomOpen,
-  closeImportModal,
 } from '../redux/graphInitSlice';
-import {
-  addQuery,
-  processGraphResponse,
-} from '../redux/graphSlice';
+import { addQuery, processGraphResponse } from '../redux/graphSlice';
 import { processData } from '../Utilities/utils';
 
 // API Methods
-const checkMetaData = (newData) => {
-  const metadata = newData.metadata;
+const checkMetaData = metadata => {
   if (metadata) {
     return metadata.search_size > metadata.retrieved_size;
   }
@@ -34,14 +30,15 @@ const checkNewData = (graphList, newData) => {
 
 const processResponse = (dispatch, graphList, newData) => {
   dispatch(fetchBegin());
-  if (checkMetaData(newData)) {
+  const { metadata } = newData;
+  if (checkMetaData(metadata)) {
     const message = `${metadata.retrieved_size} / ${metadata.search_size} of the most recent transactions retrieved.
         We plan to allow large imports and visualization in the full version.
         Feel free to reach out to timothy at timothy.lin@cylynx.io if you are interesting in retrieving the full results.`;
     dispatch(postMessage(message));
   }
   // Need to check edges for new data as it might just return nodes and repetition
-  if (checkNewData(graphList, newData)) {    
+  if (checkNewData(graphList, newData)) {
     dispatch(addQuery(newData));
     dispatch(processGraphResponse(newData));
     dispatch(fetchDone());
@@ -59,27 +56,26 @@ async function asyncForEach(array, callback) {
   for (const item of array) {
     await callback(item);
   }
-};
+}
 
 // One function to rule them all
 // Thunk to dispatch our calls
-export const addData = data => (dispatch, getState) => {  
-  const graphList = getState().graph.present.graphList;
+export default data => (dispatch, getState) => {
+  const { graphList } = getGraph(getState());
   if (Array.isArray(data)) {
     asyncForEach(data, async graph => {
       try {
         await waitFor(0);
         processResponse(dispatch, graphList, processData(graph));
-      } catch(err) {
+      } catch (err) {
         dispatch(fetchError(err));
-      }        
-    });  
+      }
+    });
   } else {
     try {
-      processResponse(dispatch, graphList, processData(data));      
-    } catch {
+      processResponse(dispatch, graphList, processData(data));
+    } catch (err) {
       dispatch(fetchError(err));
-    }   
+    }
   }
-  
-}
+};
