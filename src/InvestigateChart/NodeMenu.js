@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { DarkTheme, ThemeProvider } from 'baseui';
 import { Label3, Paragraph3 } from 'baseui/typography';
@@ -6,13 +6,15 @@ import { StyledInner, StyledPadding } from 'baseui/popover';
 import { TriGrid, Hash, FullButton } from '@blocklynx/ui';
 import { timeConverter } from '../Utilities/utils';
 
-const NodeMenu = props => {
+const NodeMenu = ({ menu, setMenu }) => {
   const graphFlatten = useSelector(state => state.graph.present.graphFlatten);
-  const nodeId = props.node;
-  const { data } = graphFlatten.nodes.find(x => x.data.address === nodeId);
+  const { data } = graphFlatten.nodes.find(x => x.data.address === menu.node);
+  const getRecentTrans = useSelector(state => state.graphInit.recentTrans);
 
   const onClick = e => {
-    props.onClickImport(e, nodeId);
+    e.preventDefault();
+    getRecentTrans(menu.node);
+    setMenu(false);
   };
 
   return (
@@ -44,9 +46,11 @@ const NodeMenu = props => {
           <br />
           <Label3>Created timestamp</Label3>
           <Paragraph3>{timeConverter(data.created_ts_unix)}</Paragraph3>
-          <FullButton size="mini" onClick={onClick}>
-            Import Recent Transactions
-          </FullButton>
+          {getRecentTrans && (
+            <FullButton size="mini" onClick={onClick}>
+              Import Recent Transactions
+            </FullButton>
+          )}
         </StyledPadding>
       </StyledInner>
     </ThemeProvider>

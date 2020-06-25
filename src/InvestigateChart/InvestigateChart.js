@@ -9,11 +9,6 @@ import InvestigateGraph from './InvestigateGraph';
 const InvestigateChart = () => {
   const graphFlatten = useSelector(state => state.graph.present.graphFlatten);
   const [menu, setMenu] = useState(null);
-  // Use in NodeMenu
-  const onClickImport = (e, nodeId) => {
-    e.preventDefault();
-    setMenu(false);
-  };
 
   return (
     <>
@@ -36,7 +31,7 @@ const InvestigateChart = () => {
             width: '250px',
           }}
         >
-          <NodeMenu node={menu.node} onClickImport={onClickImport} />
+          <NodeMenu menu={menu} setMenu={setMenu} />
         </div>
       )}
     </>

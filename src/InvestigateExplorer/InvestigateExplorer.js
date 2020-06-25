@@ -7,9 +7,10 @@ import { Modal, ModalBody, SIZE } from 'baseui/modal';
 import { withRouter } from 'react-router-dom';
 import { Loader } from '@blocklynx/ui';
 import {
-  closeModal,  
+  closeModal,
   closeImportModal,
   setScore,
+  setRecentTransFunc,
 } from '../redux/graphInitSlice';
 import { getTabsOverride } from '../Utilities/overrides';
 
@@ -33,9 +34,15 @@ const InvestigateExplorer = ({ overrides }) => {
   const loading = useSelector(state => state.graphInit.loading);
 
   const UserImportWizard = getTabsOverride(overrides, ImportWizard);
-  if (overrides.score) {
-    dispatch(setScore(overrides.score));
-  }
+
+  useEffect(() => {
+    if (overrides.score) {
+      dispatch(setScore(overrides.score));
+    }
+    if (overrides.getRecentTrans) {
+      dispatch(setRecentTransFunc(overrides.getRecentTrans));
+    }
+  }, [overrides.score, overrides.getRecentTrans]);
 
   // UI Functions
   const onCloseModal = () => {
@@ -75,12 +82,12 @@ const InvestigateExplorer = ({ overrides }) => {
             <Loader />
           </div>
         )}
-        {(
+        {
           <Block position="absolute" width="100%" height="calc(100% - 70px)">
             <InvestigateChart />
             <InvestigateToolbar />
           </Block>
-        )}
+        }
         <BottomLayer>
           <InvestigateTimeBar />
         </BottomLayer>
