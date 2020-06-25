@@ -1,5 +1,6 @@
 import Investigate from './src/InvestigateExplorer';
+import addData from './src/API';
 
 export * from './src/redux';
-export * from './src/API';
+export { addData };
 export default Investigate;

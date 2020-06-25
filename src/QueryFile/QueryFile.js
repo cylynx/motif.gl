@@ -6,8 +6,9 @@ import { Block } from 'baseui/block';
 import { FileUploader } from 'baseui/file-uploader';
 import { InfoNotification } from '@blocklynx/ui';
 
-import { addData } from '../API';
+import addData from '../API';
 import { sampleJSONData } from '../Utilities/graphUtils';
+import { closeImportModal } from '../redux';
 
 const QueryFile = ({ info, tooltip }) => {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ const QueryFile = ({ info, tooltip }) => {
     const fileReader = new FileReader();
     fileReader.onload = e => {
       const json = JSON.parse(e.target.result);
+      dispatch(closeImportModal());
       dispatch(addData(json));
     };
     fileReader.readAsText(acceptedFiles[0]);
@@ -40,6 +42,7 @@ const QueryFile = ({ info, tooltip }) => {
 
   const trySampleData = e => {
     e.preventDefault();
+    dispatch(closeImportModal());
     dispatch(addData(sampleJSONData));
   };
 
