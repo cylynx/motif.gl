@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import NodeMenu from './NodeMenu';
-import 'vis-network/styles/vis-network.css';
 import InvestigateChartLegend from './InvestigateChartLegend';
 import InvestigateGraph from './InvestigateGraph';
 import { getGraph } from '../Utilities/accessors';
 
-const InvestigateChart = () => {
+const InvestigateChart = ({ NodeMenu }) => {
   const graphFlatten = useSelector(state => getGraph(state).graphFlatten);
   const [menu, setMenu] = useState(null);
 

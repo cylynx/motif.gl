@@ -55,9 +55,6 @@ const graphInit = createSlice({
     setScore(state, action) {
       state.score = action.payload;
     },
-    setRecentTransFunc(state, action) {
-      state.recentTrans = action.payload;
-    },
   },
 });
 
@@ -72,7 +69,6 @@ export const {
   setBottomOpen,
   setClickedId,
   setScore,
-  setRecentTransFunc,
 } = graphInit.actions;
 
 export default graphInit.reducer;

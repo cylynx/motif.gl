@@ -3,20 +3,13 @@ import { useSelector } from 'react-redux';
 import { DarkTheme, ThemeProvider } from 'baseui';
 import { Label3, Paragraph3 } from 'baseui/typography';
 import { StyledInner, StyledPadding } from 'baseui/popover';
-import { TriGrid, Hash, FullButton } from '@blocklynx/ui';
+import { TriGrid, Hash } from '@blocklynx/ui';
 import { timeConverter } from '../Utilities/utils';
-import { getGraphInit, getGraph } from '../Utilities/accessors';
+import { getGraph } from '../Utilities/accessors';
 
-const NodeMenu = ({ menu, setMenu }) => {
+const NodeMenu = ({ menu }) => {
   const graphFlatten = useSelector(state => getGraph(state).graphFlatten);
   const { data } = graphFlatten.nodes.find(x => x.data.address === menu.node);
-  const getRecentTrans = useSelector(state => getGraphInit(state).recentTrans);
-
-  const onClick = e => {
-    e.preventDefault();
-    getRecentTrans(menu.node);
-    setMenu(false);
-  };
 
   return (
     <ThemeProvider theme={DarkTheme}>
@@ -47,11 +40,6 @@ const NodeMenu = ({ menu, setMenu }) => {
           <br />
           <Label3>Created timestamp</Label3>
           <Paragraph3>{timeConverter(data.created_ts_unix)}</Paragraph3>
-          {getRecentTrans && (
-            <FullButton size="mini" onClick={onClick}>
-              Import Recent Transactions
-            </FullButton>
-          )}
         </StyledPadding>
       </StyledInner>
     </ThemeProvider>

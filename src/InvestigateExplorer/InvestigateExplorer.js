@@ -10,9 +10,8 @@ import {
   closeModal,
   closeImportModal,
   setScore,
-  setRecentTransFunc,
 } from '../redux/graphInitSlice';
-import { getTabsOverride } from '../Utilities/overrides';
+import { getTabsOverride, getNodeMenuOverride } from '../Utilities/overrides';
 import { getGraphInit } from '../Utilities/accessors';
 
 import SideLayer from './SideLayer';
@@ -23,6 +22,7 @@ import { InvestigatePanel } from '../InvestigatePanel';
 import InvestigateTimeBar from '../InvestigateTimeBar';
 import ImportWizard from '../ImportWizard';
 import InvestigateToolbar from '../InvestigateToolbar';
+import NodeMenu from '../InvestigateChart/NodeMenu';
 
 const InvestigateExplorer = ({ overrides }) => {
   const [css] = useStyletron();
@@ -37,15 +37,13 @@ const InvestigateExplorer = ({ overrides }) => {
   const loading = useSelector(state => getGraphInit(state).loading);
 
   const UserImportWizard = getTabsOverride(overrides, ImportWizard);
+  const UserNodeMenu = getNodeMenuOverride(overrides, NodeMenu);
 
   useEffect(() => {
     if (overrides.score) {
       dispatch(setScore(overrides.score));
     }
-    if (overrides.getRecentTrans) {
-      dispatch(setRecentTransFunc(overrides.getRecentTrans));
-    }
-  }, [overrides.score, overrides.getRecentTrans]);
+  }, [overrides.score]);
 
   // UI Functions
   const onCloseModal = () => {
@@ -87,7 +85,7 @@ const InvestigateExplorer = ({ overrides }) => {
         )}
         {
           <Block position="absolute" width="100%" height="calc(100% - 70px)">
-            <InvestigateChart />
+            <InvestigateChart NodeMenu={UserNodeMenu} />
             <InvestigateToolbar />
           </Block>
         }
