@@ -5,6 +5,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  name: '',
   loading: false,
   modalMsg: '',
   modalOpen: false,
@@ -55,6 +56,9 @@ const graphInit = createSlice({
     setScore(state, action) {
       state.score = action.payload;
     },
+    setName(state, action) {
+      state.name = action.payload;
+    },
   },
 });
 
@@ -69,6 +73,7 @@ export const {
   setBottomOpen,
   setClickedId,
   setScore,
+  setName,
 } = graphInit.actions;
 
 export default graphInit.reducer;

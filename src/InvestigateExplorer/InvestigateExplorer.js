@@ -10,6 +10,7 @@ import {
   closeModal,
   closeImportModal,
   setScore,
+  setName,
 } from '../redux/graphInitSlice';
 import { getTabsOverride, getNodeMenuOverride } from '../Utilities/overrides';
 import { getGraphInit } from '../Utilities/accessors';
@@ -24,7 +25,7 @@ import ImportWizard from '../ImportWizard';
 import InvestigateToolbar from '../InvestigateToolbar';
 import NodeMenu from '../InvestigateChart/NodeMenu';
 
-const InvestigateExplorer = ({ overrides }) => {
+const InvestigateExplorer = ({ name, overrides }) => {
   const [css] = useStyletron();
 
   const dispatch = useDispatch();
@@ -42,6 +43,9 @@ const InvestigateExplorer = ({ overrides }) => {
   useEffect(() => {
     if (overrides.score) {
       dispatch(setScore(overrides.score));
+    }
+    if (name) {
+      dispatch(setName(name));
     }
   }, [overrides.score]);
 

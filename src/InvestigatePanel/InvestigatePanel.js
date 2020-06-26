@@ -4,16 +4,17 @@ import { Label1 } from 'baseui/typography';
 import { useSelector } from 'react-redux';
 import InvestigateMain from './InvestigateMain';
 import InvestigateDetailed from './InvestigateDetailed';
-import { getGraph } from '../Utilities/accessors';
+import { getGraph, getGraphInit } from '../Utilities/accessors';
 
 const InvestigatePanel = () => {
   const detailedSelection = useSelector(
     state => getGraph(state).detailedSelection
   );
+  const name = useSelector(state => getGraphInit(state).name);
 
   return (
     <>
-      <Label1>Blocklynx</Label1>
+      <Label1>{name}</Label1>
       <br />
       {detailedSelection.data ? <InvestigateDetailed /> : <InvestigateMain />}
     </>
