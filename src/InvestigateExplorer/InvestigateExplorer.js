@@ -13,7 +13,7 @@ import {
   setName,
 } from '../redux/graphInitSlice';
 import { getTabsOverride, getNodeMenuOverride } from '../Utilities/overrides';
-import { getGraphInit } from '../Utilities/accessors';
+import { getGraphInit } from '../redux/accessors';
 
 import SideLayer from './SideLayer';
 import BottomLayer from './BottomLayer';

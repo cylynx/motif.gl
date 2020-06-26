@@ -1,5 +1,5 @@
 import some from 'lodash/some';
-import { getGraph } from '../Utilities/accessors';
+import { getGraph } from '../redux/accessors';
 
 import {
   fetchBegin,

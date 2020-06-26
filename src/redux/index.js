@@ -31,6 +31,7 @@ export const investigateReducer = combineReducers({
   graph: graphReducerHistory,
 });
 
-// Export all actions
+// Export all actions and accessors
 export * from './graphInitSlice';
 export * from './graphSlice';
+export * from './accessors';

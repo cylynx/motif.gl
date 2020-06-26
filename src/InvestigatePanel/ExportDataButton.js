@@ -5,7 +5,7 @@ import { StatefulMenu } from 'baseui/menu';
 import { StatefulPopover, PLACEMENT } from 'baseui/popover';
 import * as html2canvas from 'html2canvas';
 import { FullButton, Notification } from '@blocklynx/ui';
-import { getGraph } from '../Utilities/accessors';
+import { getGraph } from '../redux/accessors';
 
 const ExportDataButton = () => {
   const exportGraph = useSelector(state => getGraph(state).graphList);

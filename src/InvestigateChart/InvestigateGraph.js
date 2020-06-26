@@ -4,7 +4,7 @@ import '@antv/graphin/dist/index.css';
 
 import Graphin from '@antv/graphin';
 import { setClickedId } from '../redux/graphInitSlice';
-import { getGraphInit, getGraph } from '../Utilities/accessors';
+import { getGraphInit, getGraph } from '../redux/accessors';
 
 const InvestigateGraph = props => {
   const { setMenu } = props;

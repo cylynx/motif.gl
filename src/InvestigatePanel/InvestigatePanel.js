@@ -4,7 +4,7 @@ import { Label1 } from 'baseui/typography';
 import { useSelector } from 'react-redux';
 import InvestigateMain from './InvestigateMain';
 import InvestigateDetailed from './InvestigateDetailed';
-import { getGraph, getGraphInit } from '../Utilities/accessors';
+import { getGraph, getGraphInit } from '../redux/accessors';
 
 const InvestigatePanel = () => {
   const detailedSelection = useSelector(

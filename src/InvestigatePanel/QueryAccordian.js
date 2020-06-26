@@ -11,7 +11,7 @@ import { TagValue, TagRisk, SimpleTooltip } from '@blocklynx/ui';
 import { getDetails } from '../redux/graphSlice';
 
 import { multiplyArr, roundToTwo } from '../Utilities/utils';
-import { getGraph } from '../Utilities/accessors';
+import { getGraph } from '../redux/accessors';
 
 const QueryAccordian = () => {
   const [css, theme] = useStyletron();

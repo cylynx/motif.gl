@@ -16,7 +16,7 @@ import {
   timeConverter,
   processScoreVector,
 } from '../Utilities/utils';
-import { getGraphInit, getGraph } from '../Utilities/accessors';
+import { getGraphInit, getGraph } from '../redux/accessors';
 
 const InvestigateDetailed = () => {
   const detailedSelection = useSelector(

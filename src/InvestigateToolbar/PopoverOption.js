@@ -6,7 +6,7 @@ import { Checkbox } from 'baseui/checkbox';
 import { Block } from 'baseui/block';
 import { TriGrid } from '@blocklynx/ui';
 import { changeOptions, changeLayout } from '../redux/graphSlice';
-import { getGraph } from '../Utilities/accessors';
+import { getGraph } from '../redux/accessors';
 
 const nodeSizeOptions = [
   { label: 'Default', id: 'default' },

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import InvestigateChartLegend from './InvestigateChartLegend';
 import InvestigateGraph from './InvestigateGraph';
-import { getGraph } from '../Utilities/accessors';
+import { getGraph } from '../redux/accessors';
 
 const InvestigateChart = ({ NodeMenu }) => {
   const graphFlatten = useSelector(state => getGraph(state).graphFlatten);
