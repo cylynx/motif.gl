@@ -9,7 +9,7 @@ import {
   setBottomOpen,
 } from '../redux/graphInitSlice';
 import { addQuery, processGraphResponse } from '../redux/graphSlice';
-import { processData } from '../Utilities/utils';
+import { processData } from '../Utilities/graphUtils';
 
 // API Methods
 const checkMetaData = metadata => {
