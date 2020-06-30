@@ -1,4 +1,5 @@
 import inRange from 'lodash/inRange';
+import isUndefined from 'lodash/isUndefined';
 import { CATEGORIES_COLOR } from './categories';
 
 export const findConnectedEdges = (data, id) => {
@@ -187,10 +188,21 @@ const mapEdgeKeys = edge => {
   return false;
 };
 
-export const processData = data => {
+export const processData = (data, getFns) => {
+  const {
+    getEdgeSource,
+    getEdgeTarget,
+    getEdgeID,
+    getEdgeLabel,
+    getEdgeTime,
+    getNodeID,
+    getNodeLabel,
+  } = getFns;
   for (const node of data.nodes) {
+    // Give id to node
+    node.id = isUndefined(getNodeID) ? node.id : getNodeID(node);
     // Give the display label of the node
-    node.label = `${node.data.address.substring(2, 7)}...`;
+    node.label = isUndefined(getNodeLabel) ? node.label : getNodeLabel(node);
     // Label nodes which have no defined category as 'Other'
     node.data = {
       category: node.data.category ? node.data.category : 'Other',
@@ -202,16 +214,20 @@ export const processData = data => {
       primaryColor: CATEGORIES_COLOR[node.data.category],
     };
   }
-  // Check keys used to represent graph source and target based on first data edge
-  const [sourceField, targetField] = mapEdgeKeys(data.edges[0]);
+  // Add attrs if they are named smth else
   for (const edge of data.edges) {
-    if (sourceField !== 'source' && targetField !== 'target') {
-      // Map edge's source and target over to graphin's format
-      delete Object.assign(edge, { source: edge[sourceField] })[sourceField];
-      delete Object.assign(edge, { target: edge[targetField] })[targetField];
-    }
-    edge.label = edge.data.value.toPrecision(3);
-    edge.title = `${edge.data.value.toPrecision(3)} ETH`;
+    edge.id = isUndefined(getEdgeID) ? edge.id : getEdgeID(edge);
+    edge.source = isUndefined(getEdgeSource)
+      ? edge.source
+      : getEdgeSource(edge);
+    edge.target = isUndefined(getEdgeTarget)
+      ? edge.target
+      : getEdgeTarget(edge);
+    edge.label = isUndefined(getEdgeLabel) ? edge.label : getEdgeLabel(edge);
+    edge.title = `${edge.label} ETH`;
+    edge.data.blk_ts_unix = isUndefined(getEdgeTime)
+      ? edge.data.blk_ts_unix
+      : getEdgeTime(edge);
     edge.style = {
       endArrow: true,
     };

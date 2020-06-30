@@ -12,6 +12,7 @@ import {
   setScore,
   setName,
 } from '../redux/graphInitSlice';
+import { setGetFns } from '../redux/graphSlice';
 import { getTabsOverride, getNodeMenuOverride } from '../Utilities/overrides';
 import { getGraphInit } from '../redux/accessors';
 
@@ -43,13 +44,16 @@ const InvestigateExplorer = props => {
   const UserNodeMenu = getNodeMenuOverride(overrides, NodeMenu);
 
   useEffect(() => {
+    if (getFns) {
+      dispatch(setGetFns(getFns));
+    }
     if (overrides.score) {
       dispatch(setScore(overrides.score));
     }
     if (name) {
       dispatch(setName(name));
     }
-  }, [overrides.score, name]);
+  }, [getFns, overrides.score, name]);
 
   // UI Functions
   const onCloseModal = () => {

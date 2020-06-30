@@ -14,6 +14,7 @@ import {
 } from '../Utilities/graphUtils';
 
 const initialState = {
+  getFns: null,
   defaultOptions: {
     layout: {
       name: 'concentric',
@@ -149,6 +150,9 @@ const graph = createSlice({
       state.detailedSelection.type = null;
       state.detailedSelection.data = null;
     },
+    setGetFns(state, action) {
+      state.getFns = action.payload;
+    },
   },
 });
 
@@ -164,6 +168,7 @@ export const {
   timeRangeChange,
   getDetails,
   clearDetails,
+  setGetFns,
 } = graph.actions;
 
 export default graph.reducer;

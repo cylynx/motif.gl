@@ -61,19 +61,19 @@ async function asyncForEach(array, callback) {
 // One function to rule them all
 // Thunk to dispatch our calls
 export default data => (dispatch, getState) => {
-  const { graphList } = getGraph(getState());
+  const { graphList, getFns } = getGraph(getState());
   if (Array.isArray(data)) {
     asyncForEach(data, async graph => {
       try {
         await waitFor(0);
-        processResponse(dispatch, graphList, processData(graph));
+        processResponse(dispatch, graphList, processData(graph, getFns));
       } catch (err) {
         dispatch(fetchError(err));
       }
     });
   } else {
     try {
-      processResponse(dispatch, graphList, processData(data));
+      processResponse(dispatch, graphList, processData(data, getFns));
     } catch (err) {
       dispatch(fetchError(err));
     }
