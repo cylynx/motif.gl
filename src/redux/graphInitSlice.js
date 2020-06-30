@@ -11,6 +11,7 @@ const initialState = {
   modalOpen: false,
   modalImportOpen: true,
   clickedId: null,
+  bottomLock: false,
   bottomOpen: false,
   score: 100,
   recentTrans: null,
@@ -46,6 +47,9 @@ const graphInit = createSlice({
       state.modalOpen = true;
       state.modalMsg = action.payload;
     },
+    setBottomLock(state) {
+      state.bottomLock = true;
+    },
     setBottomOpen(state, action) {
       state.bottomOpen = action.payload;
     },
@@ -70,6 +74,7 @@ export const {
   openImportModal,
   closeImportModal,
   postMessage,
+  setBottomLock,
   setBottomOpen,
   setClickedId,
   setScore,

@@ -1,4 +1,5 @@
 import some from 'lodash/some';
+import isUndefined from 'lodash/isUndefined';
 import { getGraph } from '../redux/accessors';
 
 import {
@@ -6,6 +7,7 @@ import {
   fetchError,
   fetchDone,
   postMessage,
+  setBottomLock,
   setBottomOpen,
 } from '../redux/graphInitSlice';
 import { addQuery, processGraphResponse } from '../redux/graphSlice';
@@ -28,6 +30,10 @@ const checkNewData = (graphList, newData) => {
   );
 };
 
+const checkEdgeTime = newData => {
+  return isUndefined(newData.edges[0].data.blk_ts_unix);
+};
+
 const processResponse = (dispatch, graphList, newData) => {
   dispatch(fetchBegin());
   const { metadata } = newData;
@@ -42,7 +48,12 @@ const processResponse = (dispatch, graphList, newData) => {
     dispatch(addQuery(newData));
     dispatch(processGraphResponse(newData));
     dispatch(fetchDone());
-    dispatch(setBottomOpen(true));
+    // Need to check if TimeBar should be opened
+    if (checkEdgeTime) {
+      dispatch(setBottomOpen(true));
+    } else {
+      dispatch(setBottomLock());
+    }
   } else {
     dispatch(fetchDone());
     throw new Error('Data has already been imported');

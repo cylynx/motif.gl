@@ -39,7 +39,7 @@ const InvestigateExplorer = props => {
     state => getGraphInit(state).modalImportOpen
   );
   const loading = useSelector(state => getGraphInit(state).loading);
-
+  const bottomLock = useSelector(state => getGraphInit(state).bottomLock);
   const UserImportWizard = getTabsOverride(overrides, ImportWizard);
   const UserNodeMenu = getNodeMenuOverride(overrides, NodeMenu);
 
@@ -99,9 +99,7 @@ const InvestigateExplorer = props => {
             <InvestigateToolbar />
           </Block>
         }
-        <BottomLayer>
-          <InvestigateTimeBar />
-        </BottomLayer>
+        <BottomLayer>{!bottomLock && <InvestigateTimeBar />}</BottomLayer>
         <SideLayer>
           <InvestigatePanel />
         </SideLayer>
