@@ -22,14 +22,18 @@ const InvestigateDetailed = () => {
   const detailedSelection = useSelector(
     state => getGraph(state).detailedSelection
   );
+  const scoreLock = useSelector(state => getGraphInit(state).scoreLock);
   const score = useSelector(state => getGraphInit(state).score);
-  const { data } = detailedSelection.data;
-  const riskScore = multiplyArr(
-    Object.values(data.score_vector),
-    Object.values(score)
-  );
-  const headingTitle = `Transaction ${data.txn_hash.substring(2, 7)}...`;
-  const value = roundToTwo(data.value);
+  const item = detailedSelection.data;
+  let riskScore = 0;
+  if (!scoreLock) {
+    riskScore = multiplyArr(
+      Object.values(item.data.score_vector),
+      Object.values(score)
+    );
+  }
+  const headingTitle = item.data.displayText;
+  const value = item.label;
 
   return (
     <>
@@ -37,33 +41,39 @@ const InvestigateDetailed = () => {
       <HeadingSmall marginTop="0">{headingTitle}</HeadingSmall>
 
       <div style={{ overflowWrap: 'break-word', width: '310px' }}>
-        <Hash text={data.txn_hash} />
+        <Hash text={item.data.displayText} />
       </div>
       <br />
       <FlushedGrid>
         <Cell span={6}>
-          <Statistic value={Math.round(riskScore)} label="Risk Score" />
+          <Statistic value={`${value} ETH`} label="Value" />
         </Cell>
         <Cell span={6}>
-          <Statistic value={`${value} ETH`} label="Value" />
+          {!scoreLock && (
+            <Statistic value={Math.round(riskScore)} label="Risk Score" />
+          )}
         </Cell>
       </FlushedGrid>
       <hr />
       <br />
       <LabelMedium>Sending Address</LabelMedium>
-      <Hash text={data.from_address} />
+      <Hash text={item.data.from_address} />
       <LabelMedium>Receiving Address</LabelMedium>
-      <Hash text={data.to_address} />
+      <Hash text={item.data.to_address} />
       <LabelMedium>Block</LabelMedium>
       <ParagraphSmall>
-        {`${data.blk_num}, ${timeConverter(data.blk_ts_unix)}`}
+        {`${item.data.blk_num}, ${timeConverter(item.data.blk_ts_unix)}`}
       </ParagraphSmall>
-      <LabelMedium>Source of Funds</LabelMedium>
-      <div style={{ height: '180px' }}>
-        <RiskBarChart
-          data={processScoreVector(CATEGORIES, data.score_vector)}
-        />
-      </div>
+      {!scoreLock && (
+        <>
+          <LabelMedium>Source of Funds</LabelMedium>
+          <div style={{ height: '180px' }}>
+            <RiskBarChart
+              data={processScoreVector(CATEGORIES, item.data.score_vector)}
+            />
+          </div>
+        </>
+      )}
     </>
   );
 };

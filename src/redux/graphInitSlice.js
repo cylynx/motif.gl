@@ -13,7 +13,8 @@ const initialState = {
   clickedId: null,
   bottomLock: false,
   bottomOpen: false,
-  score: 100,
+  scoreLock: false,
+  score: null,
   recentTrans: null,
 };
 
@@ -57,6 +58,9 @@ const graphInit = createSlice({
       const id = action.payload;
       state.clickedId = id;
     },
+    setScoreLock(state) {
+      state.scoreLock = true;
+    },
     setScore(state, action) {
       state.score = action.payload;
     },
@@ -77,6 +81,7 @@ export const {
   setBottomLock,
   setBottomOpen,
   setClickedId,
+  setScoreLock,
   setScore,
   setName,
 } = graphInit.actions;

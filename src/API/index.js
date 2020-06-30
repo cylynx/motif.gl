@@ -9,6 +9,7 @@ import {
   postMessage,
   setBottomLock,
   setBottomOpen,
+  setScoreLock,
 } from '../redux/graphInitSlice';
 import { addQuery, processGraphResponse } from '../redux/graphSlice';
 import { processData } from '../Utilities/graphUtils';
@@ -30,9 +31,9 @@ const checkNewData = (graphList, newData) => {
   );
 };
 
-const checkEdgeTime = newData => {
-  return isUndefined(newData.edges[0].data.blk_ts_unix);
-};
+const checkEdgeTime = newData => isUndefined(newData.edges[0].data.blk_ts_unix);
+const checkEdgeScore = newData =>
+  isUndefined(newData.edges[0].data.score_vector);
 
 const processResponse = (dispatch, graphList, newData) => {
   dispatch(fetchBegin());
@@ -43,16 +44,20 @@ const processResponse = (dispatch, graphList, newData) => {
         Feel free to reach out to timothy at timothy.lin@cylynx.io if you are interesting in retrieving the full results.`;
     dispatch(postMessage(message));
   }
-  // Need to check edges for new data as it might just return nodes and repetition
+  // Check edges for new data as it might just return nodes and repetition
   if (checkNewData(graphList, newData)) {
     dispatch(addQuery(newData));
     dispatch(processGraphResponse(newData));
     dispatch(fetchDone());
-    // Need to check if TimeBar should be opened
-    if (checkEdgeTime) {
+    // Check if TimeBar should be opened
+    if (checkEdgeTime(newData)) {
       dispatch(setBottomOpen(true));
     } else {
       dispatch(setBottomLock());
+    }
+    // Check if score-related UI should be displayed
+    if (checkEdgeScore(newData)) {
+      dispatch(setScoreLock());
     }
   } else {
     dispatch(fetchDone());

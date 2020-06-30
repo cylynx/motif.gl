@@ -173,27 +173,13 @@ export const filterDataByTime = (data, timerange) => {
   return newFilteredData;
 };
 
-const mapEdgeKeys = edge => {
-  // Identifies the graph source and target field in edge object
-  const edgeKeys = Object.keys(edge);
-  if (edgeKeys.includes('source') && edgeKeys.includes('target')) {
-    return ['source', 'target'];
-  }
-  if (edgeKeys.includes('from') && edgeKeys.includes('to')) {
-    return ['from', 'to'];
-  }
-  if (edgeKeys.includes('src') && edgeKeys.includes('dst')) {
-    return ['src', 'dst'];
-  }
-  return false;
-};
-
 export const processData = (data, getFns) => {
   const {
     getEdgeSource,
     getEdgeTarget,
     getEdgeID,
     getEdgeLabel,
+    getEdgeDisplayText,
     getEdgeTime,
     getNodeID,
     getNodeLabel,
@@ -225,6 +211,9 @@ export const processData = (data, getFns) => {
       : getEdgeTarget(edge);
     edge.label = isUndefined(getEdgeLabel) ? edge.label : getEdgeLabel(edge);
     edge.title = `${edge.label} ETH`;
+    edge.data.displayText = isUndefined(getEdgeDisplayText)
+      ? edge.data.displayText
+      : getEdgeDisplayText(edge);
     edge.data.blk_ts_unix = isUndefined(getEdgeTime)
       ? edge.data.blk_ts_unix
       : getEdgeTime(edge);

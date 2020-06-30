@@ -11,7 +11,7 @@ import { TagValue, TagRisk, SimpleTooltip } from '@blocklynx/ui';
 import { getDetails } from '../redux/graphSlice';
 
 import { multiplyArr, roundToTwo } from '../Utilities/utils';
-import { getGraph } from '../redux/accessors';
+import { getGraph, getGraphInit } from '../redux/accessors';
 
 const QueryAccordian = () => {
   const [css, theme] = useStyletron();
@@ -71,13 +71,17 @@ const QueryAccordian = () => {
 const QueryList = ({ items }) => {
   const [css, theme] = useStyletron();
   const dispatch = useDispatch();
-  const score = useSelector(state => state.graphInit.score);
+  const scoreLock = useSelector(state => getGraphInit(state).scoreLock);
+  const score = useSelector(state => getGraphInit(state).score);
   const subList = items.map((item, index) => {
-    const riskScore = multiplyArr(
-      Object.values(item.data.score_vector),
-      Object.values(score)
-    );
-    const displayText = `Txn: ${item.data.txn_hash.substring(2, 7)}...`;
+    let riskScore = 0;
+    if (!scoreLock) {
+      riskScore = multiplyArr(
+        Object.values(item.data.score_vector),
+        Object.values(score)
+      );
+    }
+    const { displayText } = item.data;
     return (
       // TODO: add unique key (unique import id + txn hash + trace)
       // eslint-disable-next-line react/no-array-index-key
@@ -90,18 +94,15 @@ const QueryList = ({ items }) => {
           >
             <SimpleTooltip title={displayText} tooltip={item.data.txn_hash} />
           </div>
-          <TagValue
-            value={Math.round(item.data.value)}
-            title={`${roundToTwo(item.data.value)} ETH`}
-          />
-          <TagRisk
-            score={Math.round(riskScore)}
-            title={roundToTwo(riskScore)}
-          />
+          <TagValue value={Math.round(item.data.value)} title={item.title} />
+          {!scoreLock && (
+            <TagRisk
+              score={Math.round(riskScore)}
+              title={roundToTwo(riskScore)}
+            />
+          )}
           <InfoButton
-            onClick={() =>
-              dispatch(getDetails({ type: 'txn', hash: item.data.txn_hash }))
-            }
+            onClick={() => dispatch(getDetails({ type: 'txn', hash: item.id }))}
           />
         </Block>
       </QueryListItem>

@@ -140,9 +140,7 @@ const graph = createSlice({
     getDetails(state, action) {
       // TODO: There might be multiple matching hash! Need to match on trace
       const { type, hash } = action.payload;
-      const data = state.graphFlatten.edges.filter(
-        e => e.data.txn_hash === hash
-      )[0];
+      const data = state.graphFlatten.edges.filter(e => e.id === hash)[0];
       state.detailedSelection.type = type;
       state.detailedSelection.data = data;
     },
