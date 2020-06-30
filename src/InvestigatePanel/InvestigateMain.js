@@ -10,11 +10,12 @@ import { openImportModal, fetchDone } from '../redux/graphInitSlice';
 import { resetState } from '../redux/graphSlice';
 import ExportDataButton from './ExportDataButton';
 import QueryAccordian from './QueryAccordian';
-import { getGraph } from '../redux/accessors';
+import { getGraph, getGraphInit } from '../redux/accessors';
 
 const InvestigateMain = () => {
   const dispatch = useDispatch();
   const graphFlatten = useSelector(state => getGraph(state).graphFlatten);
+  const currency = useSelector(state => getGraphInit(state).currency);
 
   const onClickImport = e => {
     e.preventDefault();
@@ -43,7 +44,7 @@ const InvestigateMain = () => {
           />
         </Cell>
         <Cell span={4}>
-          <Statistic value="ETH" label="Currency" />
+          <Statistic value={currency} label="Currency" />
         </Cell>
       </FlushedGrid>
       <br />

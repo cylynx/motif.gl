@@ -6,6 +6,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   name: '',
+  currency: '',
   loading: false,
   modalMsg: '',
   modalOpen: false,
@@ -67,6 +68,9 @@ const graphInit = createSlice({
     setName(state, action) {
       state.name = action.payload;
     },
+    setCurrency(state, action) {
+      state.currency = action.payload;
+    },
   },
 });
 
@@ -84,6 +88,7 @@ export const {
   setScoreLock,
   setScore,
   setName,
+  setCurrency,
 } = graphInit.actions;
 
 export default graphInit.reducer;

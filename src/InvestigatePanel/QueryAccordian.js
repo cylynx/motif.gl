@@ -71,6 +71,7 @@ const QueryAccordian = () => {
 const QueryList = ({ items }) => {
   const [css, theme] = useStyletron();
   const dispatch = useDispatch();
+  const currency = useSelector(state => getGraphInit(state).currency);
   const scoreLock = useSelector(state => getGraphInit(state).scoreLock);
   const score = useSelector(state => getGraphInit(state).score);
   const subList = items.map((item, index) => {
@@ -81,7 +82,14 @@ const QueryList = ({ items }) => {
         Object.values(score)
       );
     }
-    const { displayText } = item.data;
+    const { label, value } = item.data;
+    let shortenedLabel = '';
+    if (label.length <= 5) {
+      shortenedLabel = label;
+    } else {
+      shortenedLabel = `${label.substring(0, 5)}...`;
+    }
+
     return (
       // TODO: add unique key (unique import id + txn hash + trace)
       // eslint-disable-next-line react/no-array-index-key
@@ -92,9 +100,9 @@ const QueryList = ({ items }) => {
               paddingTop: '7px',
             })}
           >
-            <SimpleTooltip title={displayText} tooltip={item.data.txn_hash} />
+            <SimpleTooltip title={shortenedLabel} tooltip={label} />
           </div>
-          <TagValue value={Math.round(item.data.value)} title={item.title} />
+          <TagValue value={Math.round(value)} title={currency} />
           {!scoreLock && (
             <TagRisk
               score={Math.round(riskScore)}

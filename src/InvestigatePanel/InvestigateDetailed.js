@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { HeadingSmall, LabelMedium, ParagraphSmall } from 'baseui/typography';
@@ -12,19 +13,16 @@ import { RiskBarChart } from '../Charts';
 import { CATEGORIES } from '../Utilities/categories';
 import {
   multiplyArr,
-  roundToTwo,
   timeConverter,
   processScoreVector,
 } from '../Utilities/utils';
 import { getGraphInit, getGraph } from '../redux/accessors';
 
 const InvestigateDetailed = () => {
-  const detailedSelection = useSelector(
-    state => getGraph(state).detailedSelection
-  );
+  const item = useSelector(state => getGraph(state).detailedSelection).data;
+  const currency = useSelector(state => getGraphInit(state).currency);
   const scoreLock = useSelector(state => getGraphInit(state).scoreLock);
   const score = useSelector(state => getGraphInit(state).score);
-  const item = detailedSelection.data;
   let riskScore = 0;
   if (!scoreLock) {
     riskScore = multiplyArr(
@@ -32,21 +30,35 @@ const InvestigateDetailed = () => {
       Object.values(score)
     );
   }
-  const headingTitle = item.data.displayText;
-  const value = item.label;
 
+  const {
+    value,
+    label,
+    from_address,
+    to_address,
+    blk_num,
+    blk_ts_unix,
+  } = item.data;
+  const headingTitle = `Transaction ${label.substring(0, 6)}...`;
+  const valueTitle = `${value} ${currency}`;
+  let blockTitle = '';
+  if (blk_num) {
+    blockTitle = `${blk_num}, ${timeConverter(blk_ts_unix)}`;
+  } else {
+    blockTitle = timeConverter(blk_ts_unix);
+  }
   return (
     <>
       <BackButton />
       <HeadingSmall marginTop="0">{headingTitle}</HeadingSmall>
 
       <div style={{ overflowWrap: 'break-word', width: '310px' }}>
-        <Hash text={item.data.displayText} />
+        <Hash text={label} />
       </div>
       <br />
       <FlushedGrid>
         <Cell span={6}>
-          <Statistic value={`${value} ETH`} label="Value" />
+          <Statistic value={valueTitle} label="Value" />
         </Cell>
         <Cell span={6}>
           {!scoreLock && (
@@ -57,13 +69,11 @@ const InvestigateDetailed = () => {
       <hr />
       <br />
       <LabelMedium>Sending Address</LabelMedium>
-      <Hash text={item.data.from_address} />
+      <Hash text={from_address} />
       <LabelMedium>Receiving Address</LabelMedium>
-      <Hash text={item.data.to_address} />
+      <Hash text={to_address} />
       <LabelMedium>Block</LabelMedium>
-      <ParagraphSmall>
-        {`${item.data.blk_num}, ${timeConverter(item.data.blk_ts_unix)}`}
-      </ParagraphSmall>
+      <ParagraphSmall>{blockTitle}</ParagraphSmall>
       {!scoreLock && (
         <>
           <LabelMedium>Source of Funds</LabelMedium>

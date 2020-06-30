@@ -11,6 +11,7 @@ import {
   closeImportModal,
   setScore,
   setName,
+  setCurrency,
 } from '../redux/graphInitSlice';
 import { setGetFns } from '../redux/graphSlice';
 import { getTabsOverride, getNodeMenuOverride } from '../Utilities/overrides';
@@ -27,7 +28,7 @@ import InvestigateToolbar from '../InvestigateToolbar';
 import NodeMenu from '../InvestigateChart/NodeMenu';
 
 const InvestigateExplorer = props => {
-  const { getFns, name, overrides } = props;
+  const { name, currency, getFns, overrides } = props;
 
   const [css] = useStyletron();
 
@@ -53,7 +54,10 @@ const InvestigateExplorer = props => {
     if (name) {
       dispatch(setName(name));
     }
-  }, [getFns, overrides.score, name]);
+    if (currency) {
+      dispatch(setCurrency(currency));
+    }
+  }, [getFns, overrides.score, name, currency]);
 
   // UI Functions
   const onCloseModal = () => {

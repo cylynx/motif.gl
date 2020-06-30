@@ -177,9 +177,11 @@ export const processData = (data, getFns) => {
   const {
     getEdgeSource,
     getEdgeTarget,
+    getEdgeSourceAdd,
+    getEdgeTargetAdd,
     getEdgeID,
     getEdgeLabel,
-    getEdgeDisplayText,
+    getEdgeValue,
     getEdgeTime,
     getNodeID,
     getNodeLabel,
@@ -209,11 +211,18 @@ export const processData = (data, getFns) => {
     edge.target = isUndefined(getEdgeTarget)
       ? edge.target
       : getEdgeTarget(edge);
-    edge.label = isUndefined(getEdgeLabel) ? edge.label : getEdgeLabel(edge);
-    edge.title = `${edge.label} ETH`;
-    edge.data.displayText = isUndefined(getEdgeDisplayText)
-      ? edge.data.displayText
-      : getEdgeDisplayText(edge);
+    edge.data.from_address = isUndefined(getEdgeSourceAdd)
+      ? edge.source
+      : getEdgeSourceAdd(edge);
+    edge.data.to_address = isUndefined(getEdgeTargetAdd)
+      ? edge.target
+      : getEdgeTargetAdd(edge);
+    edge.data.label = isUndefined(getEdgeLabel)
+      ? edge.data.label
+      : getEdgeLabel(edge);
+    edge.data.value = isUndefined(getEdgeValue)
+      ? edge.data.value
+      : getEdgeValue(edge);
     edge.data.blk_ts_unix = isUndefined(getEdgeTime)
       ? edge.data.blk_ts_unix
       : getEdgeTime(edge);
