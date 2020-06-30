@@ -25,7 +25,9 @@ import ImportWizard from '../ImportWizard';
 import InvestigateToolbar from '../InvestigateToolbar';
 import NodeMenu from '../InvestigateChart/NodeMenu';
 
-const InvestigateExplorer = ({ name, overrides }) => {
+const InvestigateExplorer = props => {
+  const { getFns, name, overrides } = props;
+
   const [css] = useStyletron();
 
   const dispatch = useDispatch();
@@ -47,7 +49,7 @@ const InvestigateExplorer = ({ name, overrides }) => {
     if (name) {
       dispatch(setName(name));
     }
-  }, [overrides.score]);
+  }, [overrides.score, name]);
 
   // UI Functions
   const onCloseModal = () => {
