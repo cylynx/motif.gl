@@ -3,7 +3,7 @@
 /* eslint-disable no-param-reassign */
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
 import { createSlice } from '@reduxjs/toolkit';
-
+import isEmpty from 'lodash/isEmpty';
 import {
   combineProcessedData,
   applyStyle,
@@ -104,17 +104,15 @@ const graph = createSlice({
       state.graphFlatten = modData;
       const tsData = datatoTS(state.graphFlatten);
       state.tsData = tsData;
-      state.timeRange = chartRange([
-        tsData[0][0],
-        tsData[tsData.length - 1][0],
-      ]);
+      state.timeRange = isEmpty(tsData)
+        ? []
+        : chartRange([tsData[0][0], tsData[tsData.length - 1][0]]);
       // Update selectTimeRange to be timeRange always
       state.selectTimeRange = state.timeRange;
       // Filter graphFlatten based on selectTimeRange
-      const newFilteredData = filterDataByTime(
-        state.graphFlatten,
-        state.timeRange
-      );
+      const newFilteredData = isEmpty(tsData)
+        ? state.graphFlatten
+        : filterDataByTime(state.graphFlatten, state.timeRange);
       const defaultOptions = state.defaultOptions;
       state.graphVisible = defaultOptions.groupEdges
         ? applyStyle(groupEdges(newFilteredData), defaultOptions)

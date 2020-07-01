@@ -15,6 +15,7 @@ import { addQuery, processGraphResponse } from '../redux/graphSlice';
 import { processData } from '../Utilities/graphUtils';
 
 // API Methods
+const hasEdges = newData => newData.edges.length > 0;
 const checkMetaData = metadata => {
   if (metadata) {
     return metadata.search_size > metadata.retrieved_size;
@@ -23,13 +24,20 @@ const checkMetaData = metadata => {
 };
 
 const checkNewData = (graphList, newData) => {
+  if (isUndefined(newData.metadata)) {
+    // eslint-disable-next-line no-param-reassign
+    newData.metadata = {
+      key: graphList.length,
+    };
+  }
   const graphListKeys = graphList.map(graph => graph.metadata.key);
   return newData && !some(graphListKeys, key => key === newData.metadata.key);
 };
 
-const checkEdgeTime = newData => isUndefined(newData.edges[0].data.blk_ts_unix);
+const checkEdgeTime = newData =>
+  hasEdges(newData) && isUndefined(newData.edges[0].data.blk_ts_unix);
 const checkEdgeScore = newData =>
-  isUndefined(newData.edges[0].data.score_vector);
+  hasEdges(newData) && isUndefined(newData.edges[0].data.score_vector);
 
 const processResponse = (dispatch, graphList, newData) => {
   dispatch(fetchBegin());
