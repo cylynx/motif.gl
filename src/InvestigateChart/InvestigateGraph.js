@@ -62,7 +62,7 @@ const InvestigateGraph = props => {
       setMenu(false);
     };
     const onNodeClick = e => {
-      const id = e.item.get('model').data.address;
+      const { id } = e.item.get('model');
       if (clickedId === id) {
         dispatch(setClickedId(null));
         setMenu(false);

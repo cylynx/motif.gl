@@ -190,7 +190,15 @@ export const processData = (data, getFns) => {
     // Give id to node
     node.id = isUndefined(getNodeID) ? node.id : getNodeID(node);
     // Give the display label of the node
-    node.label = isUndefined(getNodeLabel) ? node.label : getNodeLabel(node);
+    node.data.label = isUndefined(getNodeLabel)
+      ? node.label
+      : getNodeLabel(node);
+    // Assign shortened label to node.label for graph display
+    if (node.data.label.length >= 8) {
+      node.label = `${node.data.label.substring(0, 5)}...`;
+    } else {
+      node.label = node.data.label;
+    }
     // Label nodes which have no defined category as 'Other'
     node.data = {
       category: node.data.category ? node.data.category : 'Other',

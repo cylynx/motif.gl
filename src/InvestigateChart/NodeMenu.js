@@ -9,7 +9,7 @@ import { getGraph } from '../redux/accessors';
 
 const NodeMenu = ({ menu }) => {
   const graphFlatten = useSelector(state => getGraph(state).graphFlatten);
-  const { data } = graphFlatten.nodes.find(x => x.data.address === menu.node);
+  const { data } = graphFlatten.nodes.find(x => x.id === menu.node);
 
   return (
     <ThemeProvider theme={DarkTheme}>
@@ -18,7 +18,7 @@ const NodeMenu = ({ menu }) => {
           <Label3>Address:</Label3>
           <Hash
             style={{ overflowWrap: 'break-word', width: '220px' }}
-            text={data.address}
+            text={data.label}
           />
           <TriGrid
             startComponent={
@@ -37,9 +37,13 @@ const NodeMenu = ({ menu }) => {
             }
             span={[6, 6]}
           />
-          <br />
-          <Label3>Created timestamp</Label3>
-          <Paragraph3>{timeConverter(data.created_ts_unix)}</Paragraph3>
+          {data.created_ts_unix && (
+            <>
+              <br />
+              <Label3>Created timestamp</Label3>
+              <Paragraph3>{timeConverter(data.created_ts_unix)}</Paragraph3>
+            </>
+          )}
         </StyledPadding>
       </StyledInner>
     </ThemeProvider>
