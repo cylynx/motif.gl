@@ -103,7 +103,11 @@ const InvestigateExplorer = props => {
             <InvestigateToolbar />
           </Block>
         }
-        <BottomLayer>{!bottomLock && <InvestigateTimeBar />}</BottomLayer>
+        {!bottomLock && (
+          <BottomLayer>
+            <InvestigateTimeBar />
+          </BottomLayer>
+        )}
         <SideLayer>
           <InvestigatePanel />
         </SideLayer>
