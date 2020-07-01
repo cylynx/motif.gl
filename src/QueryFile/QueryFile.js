@@ -8,7 +8,7 @@ import { InfoNotification } from '@blocklynx/ui';
 
 import addData from '../API';
 import { sampleJSONData } from '../Utilities/graphUtils';
-import { closeImportModal } from '../redux';
+import { closeImportModal, fetchError } from '../redux';
 
 const QueryFile = ({ info, tooltip }) => {
   const dispatch = useDispatch();
@@ -28,9 +28,13 @@ const QueryFile = ({ info, tooltip }) => {
     setIsUploading(true);
     const fileReader = new FileReader();
     fileReader.onload = e => {
-      const json = JSON.parse(e.target.result);
-      dispatch(closeImportModal());
-      dispatch(addData(json));
+      try {
+        const json = JSON.parse(e.target.result);
+        dispatch(closeImportModal());
+        dispatch(addData(json));
+      } catch (err) {
+        dispatch(fetchError(err));
+      }
     };
     fileReader.readAsText(acceptedFiles[0]);
     setIsUploading(false);

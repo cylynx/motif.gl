@@ -23,7 +23,7 @@ const QueryAccordian = () => {
     }
     return (
       <Panel title={title} key={title}>
-        <QueryList items={query.edges} />
+        {query.edges.length > 0 && <QueryList items={query.edges} />}
       </Panel>
     );
   });

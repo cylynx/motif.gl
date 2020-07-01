@@ -24,11 +24,7 @@ const checkMetaData = metadata => {
 
 const checkNewData = (graphList, newData) => {
   const graphListKeys = graphList.map(graph => graph.metadata.key);
-  return (
-    newData &&
-    !some(graphListKeys, key => key === newData.metadata.key) &&
-    newData.edges.length > 0
-  );
+  return newData && !some(graphListKeys, key => key === newData.metadata.key);
 };
 
 const checkEdgeTime = newData => isUndefined(newData.edges[0].data.blk_ts_unix);

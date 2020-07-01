@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import '@antv/graphin/dist/index.css';
 
 import Graphin from '@antv/graphin';
-import { setClickedId } from '../redux/graphInitSlice';
-import { getGraphInit, getGraph } from '../redux/accessors';
+import { setClickedId, getGraphInit, getGraph } from '../redux';
 
 const InvestigateGraph = props => {
   const { setMenu } = props;
