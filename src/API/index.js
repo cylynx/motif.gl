@@ -35,9 +35,9 @@ const checkNewData = (graphList, newData) => {
 };
 
 const checkEdgeTime = newData =>
-  hasEdges(newData) && isUndefined(newData.edges[0].data.blk_ts_unix);
+  hasEdges(newData) && !isUndefined(newData.edges[0].data.blk_ts_unix);
 const checkEdgeScore = newData =>
-  hasEdges(newData) && isUndefined(newData.edges[0].data.score_vector);
+  hasEdges(newData) && !isUndefined(newData.edges[0].data.score_vector);
 
 const processResponse = (dispatch, graphList, newData) => {
   dispatch(fetchBegin());
@@ -60,7 +60,7 @@ const processResponse = (dispatch, graphList, newData) => {
       dispatch(setBottomLock());
     }
     // Check if score-related UI should be displayed
-    if (checkEdgeScore(newData)) {
+    if (!checkEdgeScore(newData)) {
       dispatch(setScoreLock());
     }
   } else {
