@@ -42,8 +42,10 @@ const graph = createSlice({
   name: 'graph',
   initialState,
   reducers: {
-    resetState() {
-      return initialState;
+    resetState(state) {
+      const newGraphState = { ...initialState };
+      newGraphState.getFns = state.getFns;
+      return newGraphState;
     },
     addQuery(state, action) {
       const queryResults = action.payload;
