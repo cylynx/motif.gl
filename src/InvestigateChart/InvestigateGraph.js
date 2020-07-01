@@ -61,16 +61,16 @@ const InvestigateGraph = props => {
       setMenu(false);
     };
     const onNodeClick = e => {
-      const { id } = e.item.get('model');
-      if (clickedId === id) {
+      const node = e.item.get('model');
+      if (clickedId === node.id) {
         dispatch(setClickedId(null));
         setMenu(false);
       } else {
-        dispatch(setClickedId(id));
+        dispatch(setClickedId(node.id));
         setMenu({
           x: e.canvasX,
           y: e.canvasY,
-          node: id,
+          node,
         });
       }
     };

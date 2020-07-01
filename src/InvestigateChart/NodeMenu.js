@@ -9,7 +9,7 @@ import { getGraph } from '../redux/accessors';
 
 const NodeMenu = ({ menu }) => {
   const graphFlatten = useSelector(state => getGraph(state).graphFlatten);
-  const { data } = graphFlatten.nodes.find(x => x.id === menu.node);
+  const { data } = graphFlatten.nodes.find(x => x.id === menu.node.id);
 
   return (
     <ThemeProvider theme={DarkTheme}>
