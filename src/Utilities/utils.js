@@ -55,3 +55,10 @@ export const json2Blob = json =>
   new Blob([JSON.stringify(json)], {
     type: 'application/json',
   });
+
+export const shortifyLabel = label => {
+  if (label.length <= 8) {
+    return label;
+  }
+  return `${label.substring(0, 5)}...`;
+};

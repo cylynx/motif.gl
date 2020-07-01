@@ -15,6 +15,7 @@ import {
   multiplyArr,
   timeConverter,
   processScoreVector,
+  shortifyLabel,
 } from '../Utilities/utils';
 import { getGraphInit, getGraph } from '../redux/accessors';
 
@@ -39,19 +40,18 @@ const InvestigateDetailed = () => {
     blk_num,
     blk_ts_unix,
   } = item.data;
-  const headingTitle = `Transaction ${label.substring(0, 6)}...`;
-  const valueTitle = `${value} ${currency}`;
-  let blockTitle = '';
-  if (blk_num) {
-    blockTitle = `${blk_num}, ${timeConverter(blk_ts_unix)}`;
-  } else {
-    blockTitle = timeConverter(blk_ts_unix);
-  }
+  const headingTitle = `Transaction ${shortifyLabel(label)}...`;
+  // Value will not be displayed if it does not exists
+  const valueTitle = value ? `${value} ${currency}` : 'NA';
+  // Block num will not be displayed if it does not exists
+  const blockTitle = blk_num
+    ? `${blk_num}, ${timeConverter(blk_ts_unix)}`
+    : timeConverter(blk_ts_unix);
+
   return (
     <>
       <BackButton />
       <HeadingSmall marginTop="0">{headingTitle}</HeadingSmall>
-
       <div style={{ overflowWrap: 'break-word', width: '310px' }}>
         <Hash text={label} />
       </div>
@@ -72,7 +72,7 @@ const InvestigateDetailed = () => {
       <Hash text={from_address} />
       <LabelMedium>Receiving Address</LabelMedium>
       <Hash text={to_address} />
-      <LabelMedium>Block</LabelMedium>
+      <LabelMedium>Block and Time</LabelMedium>
       <ParagraphSmall>{blockTitle}</ParagraphSmall>
       {!scoreLock && (
         <>

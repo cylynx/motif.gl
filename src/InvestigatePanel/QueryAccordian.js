@@ -10,7 +10,7 @@ import { GoInfo } from 'react-icons/go';
 import { TagValue, TagRisk, SimpleTooltip } from '@blocklynx/ui';
 import { getDetails } from '../redux/graphSlice';
 
-import { multiplyArr, roundToTwo } from '../Utilities/utils';
+import { multiplyArr, roundToTwo, shortifyLabel } from '../Utilities/utils';
 import { getGraph, getGraphInit } from '../redux/accessors';
 
 const QueryAccordian = () => {
@@ -83,12 +83,7 @@ const QueryList = ({ items }) => {
       );
     }
     const { label, value } = item.data;
-    let shortenedLabel = '';
-    if (label.length <= 5) {
-      shortenedLabel = label;
-    } else {
-      shortenedLabel = `${label.substring(0, 5)}...`;
-    }
+    const shortenedLabel = shortifyLabel(label);
 
     return (
       // TODO: add unique key (unique import id + txn hash + trace)
