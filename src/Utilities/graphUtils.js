@@ -230,9 +230,9 @@ export const replaceData = (oldData, newNodes, newEdges) => {
   return modData;
 };
 
-export const datatoTS = data => {
+export const datatoTS = (data, getEdgeTime) => {
   const tsdata = data.edges
-    .map(i => [i.data.blk_ts_unix, 1])
+    .map(edge => [getEdgeTime(edge), 1])
     .sort((a, b) => {
       return a[0] - b[0];
     });

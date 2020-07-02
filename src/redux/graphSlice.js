@@ -122,7 +122,7 @@ const graph = createSlice({
       const modData = combineProcessedData(newData, state.graphFlatten);
       state.graphGrouped = groupEdges(modData, getEdgeValue);
       state.graphFlatten = modData;
-      const tsData = datatoTS(state.graphFlatten);
+      const tsData = datatoTS(state.graphFlatten, getEdgeTime);
       state.tsData = tsData;
       state.timeRange = isEmpty(tsData)
         ? []
