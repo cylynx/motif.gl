@@ -8,10 +8,10 @@ import { Accordion, Panel } from 'baseui/accordion';
 import { ListItem } from 'baseui/list';
 import { GoInfo } from 'react-icons/go';
 import { TagValue, TagRisk, SimpleTooltip } from '@blocklynx/ui';
-import { getDetails } from '../redux/graphSlice';
+import { getDetails } from '../../redux/graphSlice';
 
-import { multiplyArr, roundToTwo, shortifyLabel } from '../Utilities/utils';
-import { getGraph, getGraphInit } from '../redux/accessors';
+import { multiplyArr, roundToTwo, shortifyLabel } from '../../utils/utils';
+import { getGraph, getGraphInit } from '../../redux/accessors';
 
 const QueryAccordian = () => {
   const [css, theme] = useStyletron();

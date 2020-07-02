@@ -6,9 +6,9 @@ import { Block } from 'baseui/block';
 import { FileUploader } from 'baseui/file-uploader';
 import { InfoNotification } from '@blocklynx/ui';
 
-import addData from '../API';
-import { sampleJSONData } from '../Utilities/graphUtils';
-import { closeImportModal, fetchError } from '../redux';
+import addData from '../../processors';
+import { sampleJSONData } from '../../utils/graphUtils';
+import { closeImportModal, fetchError } from '../../redux';
 
 const QueryFile = ({ info, tooltip }) => {
   const dispatch = useDispatch();

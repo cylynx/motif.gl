@@ -5,7 +5,7 @@ import 'echarts/lib/chart/scatter';
 import 'echarts/lib/component/legend';
 import 'echarts/lib/component/legendScroll';
 
-import { CATEGORIES_COLOR } from '../Utilities/categories';
+import { CATEGORIES_COLOR } from '../../utils/categories';
 
 const deriveLegendCategories = data => {
   const nodes = [...data.nodes];

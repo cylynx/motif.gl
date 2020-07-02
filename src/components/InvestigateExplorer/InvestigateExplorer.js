@@ -12,10 +12,10 @@ import {
   setScore,
   setName,
   setCurrency,
-} from '../redux/graphInitSlice';
-import { setGetFns } from '../redux/graphSlice';
-import { getTabsOverride, getNodeMenuOverride } from '../Utilities/overrides';
-import { getGraphInit } from '../redux/accessors';
+} from '../../redux/graphInitSlice';
+import { setGetFns } from '../../redux/graphSlice';
+import { getTabsOverride, getNodeMenuOverride } from '../../utils/overrides';
+import { getGraphInit } from '../../redux/accessors';
 
 import SideLayer from './SideLayer';
 import BottomLayer from './BottomLayer';

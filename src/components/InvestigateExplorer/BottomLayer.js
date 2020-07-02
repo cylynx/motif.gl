@@ -6,8 +6,8 @@ import { Layer } from 'baseui/layer';
 import { Button } from 'baseui/button';
 
 import { ChevronDown, ChevronUp } from 'baseui/icon';
-import { setBottomOpen } from '../redux/graphInitSlice';
-import { getGraphInit } from '../redux/accessors';
+import { setBottomOpen } from '../../redux/graphInitSlice';
+import { getGraphInit } from '../../redux/accessors';
 
 const BottomLayer = ({ children }) => {
   const isOpen = useSelector(state => getGraphInit(state).bottomOpen);

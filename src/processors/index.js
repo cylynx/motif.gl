@@ -12,7 +12,7 @@ import {
   setScoreLock,
 } from '../redux/graphInitSlice';
 import { addQuery, processGraphResponse } from '../redux/graphSlice';
-import { processData } from '../Utilities/graphUtils';
+import { processData } from '../utils/graphUtils';
 
 // API Methods
 const checkMetaData = metadata => {

@@ -13,9 +13,9 @@ import {
 
 import { useStyletron } from 'baseui';
 
-import { setRange, timeRangeChange } from '../redux/graphSlice';
+import { setRange, timeRangeChange } from '../../redux/graphSlice';
 import EventChart from './EventChart';
-import { getGraph } from '../redux/accessors';
+import { getGraph } from '../../redux/accessors';
 
 const windowOptions = ['30d', '7d', '1d', '1h', '1m'];
 

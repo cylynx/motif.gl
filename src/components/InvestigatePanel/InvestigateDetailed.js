@@ -8,17 +8,17 @@ import { Button } from 'baseui/button';
 
 import { Cell } from 'baseui/layout-grid';
 import { FlushedGrid, Statistic, Hash } from '@blocklynx/ui';
-import { clearDetails } from '../redux/graphSlice';
+import { clearDetails } from '../../redux/graphSlice';
 import { RiskBarChart } from '../Charts';
 
-import { CATEGORIES } from '../Utilities/categories';
+import { CATEGORIES } from '../../utils/categories';
 import {
   multiplyArr,
   timeConverter,
   processScoreVector,
   shortifyLabel,
-} from '../Utilities/utils';
-import { getGraphInit, getGraph } from '../redux/accessors';
+} from '../../utils/utils';
+import { getGraphInit, getGraph } from '../../redux/accessors';
 
 const InvestigateDetailed = () => {
   const item = useSelector(state => getGraph(state).detailedSelection).data;

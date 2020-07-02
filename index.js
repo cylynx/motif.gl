@@ -1,7 +1,7 @@
-import Investigate from './src/InvestigateExplorer';
-import addData from './src/API';
+import Investigate from './src/components/InvestigateExplorer';
+import addData from './src/processors';
 
 export * from './src/redux';
-export * from './src/Utilities/utils';
+export * from './src/utils/utils';
 export { addData };
 export default Investigate;

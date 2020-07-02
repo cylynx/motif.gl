@@ -11,7 +11,7 @@ import {
   datatoTS,
   chartRange,
   filterDataByTime,
-} from '../Utilities/graphUtils';
+} from '../utils/graphUtils';
 
 const initialState = {
   getFns: {
