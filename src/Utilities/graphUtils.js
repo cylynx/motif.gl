@@ -47,32 +47,34 @@ export const adjustNodeSize = (data, nodeSize) => {
   return modNodes;
 };
 
-const isGroupEdges = edge =>
+const isGroupEdges = (edge, getEdgeValue) =>
   // Check edge.data.value is array to determine if it is grouped
-  Array.isArray(edge.data.value);
+  Array.isArray(getEdgeValue(edge));
 
-export const getMinMaxValue = data => {
+export const getMinMaxValue = (data, getEdgeValue) => {
   const arrValue = [];
   for (const edge of data.edges) {
-    if (isGroupEdges(edge)) {
+    if (isGroupEdges(edge, getEdgeValue)) {
       // Sum all values in array
-      arrValue.push(edge.data.value.reduce((a, b) => a + parseInt(b, 10), 0));
+      arrValue.push(
+        getEdgeValue(edge).reduce((a, b) => a + parseInt(b, 10), 0)
+      );
     } else {
-      arrValue.push(edge.data.value);
+      arrValue.push(getEdgeValue(edge));
     }
   }
   return { min: Math.min(...arrValue), max: Math.max(...arrValue) };
 };
 
-export const styleGroupedEdge = (data, mode) => {
+export const styleGroupedEdge = (data, mode, getEdgeValue) => {
   const modEdges = [];
-  const { min, max } = getMinMaxValue(data);
+  const { min, max } = getMinMaxValue(data, getEdgeValue);
   for (const edge of data.edges) {
     const edgeCopy = { ...edge };
     let w = 2; // default
-    if (mode === 'eth') {
+    if (mode === 'value') {
       w =
-        ((edge.data.value.reduce((a, b) => a + parseInt(b, 10), 0) - min) /
+        ((getEdgeValue(edge).reduce((a, b) => a + parseInt(b, 10), 0) - min) /
           (max - min)) *
           (10 - 2) +
         2;
@@ -88,16 +90,16 @@ export const styleGroupedEdge = (data, mode) => {
   return modEdges;
 };
 
-export const styleEdge = (data, mode) => {
+export const styleEdge = (data, mode, getEdgeValue) => {
   // Scales width based on min, max value of edges
   // mode = eth (scale width from 0.5-5) or fix (default value of 0.5)
   const modEdges = [];
-  const { min, max } = getMinMaxValue(data);
+  const { min, max } = getMinMaxValue(data, getEdgeValue);
   for (const edge of data.edges) {
     const edgeCopy = { ...edge };
-    let w = 2;
-    if (mode === 'eth') {
-      w = ((edge.data.value - min) / (max - min)) * (10 - 2) + 2;
+    let w = 2; // default
+    if (mode === 'value') {
+      w = ((getEdgeValue(edge) - min) / (max - min)) * (10 - 2) + 2;
     }
     edgeCopy.style = {
       ...edgeCopy.style,
@@ -115,33 +117,24 @@ const combineEdges = edges => {
     ...edges
       .reduce((r, o) => {
         const key = `${o.source}-${o.target}`;
-        // Changed [from, to] TO [source, target]
         const item = r.get(key) || {
           id: o.id,
           source: o.source,
           target: o.target,
           style: o.style,
           data: {
-            blk_num: [],
-            blk_ts_unix: [],
-            score_vector: [],
-            txn_hash: [],
-            value: [],
             count: 0,
           },
         };
-
-        item.data.blk_num.push(o.data.blk_num);
-        item.data.blk_ts_unix.push(o.data.blk_ts_unix);
-        item.data.score_vector.push(o.data.score_vector);
-        item.data.txn_hash.push(o.data.txn_hash);
-        item.data.value.push(o.data.value);
+        for (const [prop, value] of Object.entries(o.data)) {
+          if (isUndefined(item.data[prop])) item.data[prop] = [];
+          item.data[prop].push(value);
+        }
         item.data.count += 1;
         item.label = item.data.count.toString();
-
-        item.title = `${item.data.value
-          .reduce((a, b) => a + b, 0)
-          .toPrecision(3)} ETH`;
+        // item.title = `${getEdgeValue(item)
+        //   .reduce((a, b) => a + b, 0)
+        //   .toPrecision(3)} ETH`;
 
         return r.set(key, item);
       }, new Map())
@@ -150,12 +143,13 @@ const combineEdges = edges => {
   return modEdges;
 };
 
-export const filterDataByTime = (data, timerange) => {
+export const filterDataByTime = (data, timerange, getEdgeTime) => {
+  if (isUndefined(getEdgeTime)) return data;
   const { nodes, edges } = data;
   // Because our time data is on links, the timebar's filteredData object only contains links.
   // But we need to show nodes in the chart too: so for each link, track the connected nodes
   const filteredEdges = edges.filter(edge =>
-    inRange(edge.data.blk_ts_unix, timerange[0], timerange[1])
+    inRange(getEdgeTime(edge), timerange[0], timerange[1])
   );
   // Filter nodes which are connected to the edges
   const filteredNodesId = [];
@@ -177,12 +171,8 @@ export const processData = (data, getFns) => {
   const {
     getEdgeSource,
     getEdgeTarget,
-    getEdgeSourceAdd,
-    getEdgeTargetAdd,
     getEdgeID,
     getEdgeLabel,
-    getEdgeValue,
-    getEdgeTime,
     getNodeID,
     getNodeLabel,
   } = getFns;
@@ -219,21 +209,7 @@ export const processData = (data, getFns) => {
     edge.target = isUndefined(getEdgeTarget)
       ? edge.target
       : getEdgeTarget(edge);
-    edge.data.from_address = isUndefined(getEdgeSourceAdd)
-      ? edge.source
-      : getEdgeSourceAdd(edge);
-    edge.data.to_address = isUndefined(getEdgeTargetAdd)
-      ? edge.target
-      : getEdgeTargetAdd(edge);
-    edge.data.label = isUndefined(getEdgeLabel)
-      ? edge.data.label
-      : getEdgeLabel(edge);
-    edge.data.value = isUndefined(getEdgeValue)
-      ? edge.data.value
-      : getEdgeValue(edge);
-    edge.data.blk_ts_unix = isUndefined(getEdgeTime)
-      ? edge.data.blk_ts_unix
-      : getEdgeTime(edge);
+    edge.label = isUndefined(getEdgeLabel) ? edge.label : getEdgeLabel(edge);
     edge.style = {
       endArrow: true,
     };
@@ -291,21 +267,20 @@ export const combineProcessedData = (newData, oldData) => {
   return newData;
 };
 
-export const applyStyle = (data, defaultOptions) => {
+export const applyStyle = (data, defaultOptions, getEdgeValue) => {
   const { groupEdges, edgeWidth, nodeSize } = defaultOptions;
   if (groupEdges) {
-    const styledEdges = styleGroupedEdge(data, edgeWidth);
+    const styledEdges = styleGroupedEdge(data, edgeWidth, getEdgeValue);
     const styledNodes = adjustNodeSize(data, nodeSize);
     return { ...replaceData(data, styledNodes, styledEdges) };
   }
-  const styledEdges = styleEdge(data, edgeWidth);
+  const styledEdges = styleEdge(data, edgeWidth, getEdgeValue);
   const styledNodes = adjustNodeSize(data, nodeSize);
   return { ...replaceData(data, styledNodes, styledEdges) };
 };
 
-export const groupEdges = data => {
-  // combineEdges removed source and target properties of my edge initially
-  const newEdges = combineEdges(data.edges);
+export const groupEdges = (data, getEdgeValue) => {
+  const newEdges = combineEdges(data.edges, getEdgeValue);
   return { ...replaceEdges(data, newEdges) };
 };
 

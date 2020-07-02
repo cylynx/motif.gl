@@ -54,14 +54,20 @@ const graph = createSlice({
     changeOptions(state, action) {
       const { key, value } = action.payload;
       const defaultOptions = state.defaultOptions;
+      const { getEdgeValue, getEdgeTime } = state.getFns;
       defaultOptions[key] = value;
       const newFilteredData = filterDataByTime(
         state.graphFlatten,
-        state.selectTimeRange
+        state.selectTimeRange,
+        getEdgeTime
       );
       state.graphVisible = defaultOptions.groupEdges
-        ? applyStyle(groupEdges(newFilteredData), defaultOptions)
-        : applyStyle(newFilteredData, defaultOptions);
+        ? applyStyle(
+            groupEdges(newFilteredData, getEdgeValue),
+            defaultOptions,
+            getEdgeValue
+          )
+        : applyStyle(newFilteredData, defaultOptions, getEdgeValue);
     },
     changeLayout(state, action) {
       const newLayoutName = action.payload;
@@ -101,8 +107,9 @@ const graph = createSlice({
     },
     processGraphResponse(state, action) {
       const newData = action.payload;
+      const { getEdgeValue, getEdgeTime } = state.getFns;
       const modData = combineProcessedData(newData, state.graphFlatten);
-      state.graphGrouped = groupEdges(modData);
+      state.graphGrouped = groupEdges(modData, getEdgeValue);
       state.graphFlatten = modData;
       const tsData = datatoTS(state.graphFlatten);
       state.tsData = tsData;
@@ -114,11 +121,15 @@ const graph = createSlice({
       // Filter graphFlatten based on selectTimeRange
       const newFilteredData = isEmpty(tsData)
         ? state.graphFlatten
-        : filterDataByTime(state.graphFlatten, state.timeRange);
+        : filterDataByTime(state.graphFlatten, state.timeRange, getEdgeTime);
       const defaultOptions = state.defaultOptions;
       state.graphVisible = defaultOptions.groupEdges
-        ? applyStyle(groupEdges(newFilteredData), defaultOptions)
-        : applyStyle(newFilteredData, defaultOptions);
+        ? applyStyle(
+            groupEdges(newFilteredData, getEdgeValue),
+            defaultOptions,
+            getEdgeValue
+          )
+        : applyStyle(newFilteredData, defaultOptions, getEdgeValue);
     },
     setRange(state, action) {
       const selectedTimeRange = action.payload;
@@ -127,14 +138,20 @@ const graph = createSlice({
     timeRangeChange(state, action) {
       const selectedTimeRange = action.payload;
       const defaultOptions = state.defaultOptions;
+      const { getEdgeValue, getEdgeTime } = state.getFns;
       // Filter out all relevant edges and store from & to node id
       const newFilteredData = filterDataByTime(
         state.graphFlatten,
-        selectedTimeRange
+        selectedTimeRange,
+        getEdgeTime
       );
       state.graphVisible = state.defaultOptions.groupEdges
-        ? applyStyle(groupEdges(newFilteredData), defaultOptions)
-        : applyStyle(newFilteredData, defaultOptions);
+        ? applyStyle(
+            groupEdges(newFilteredData, getEdgeValue),
+            defaultOptions,
+            getEdgeValue
+          )
+        : applyStyle(newFilteredData, defaultOptions, getEdgeValue);
       state.selectTimeRange = selectedTimeRange;
     },
     getDetails(state, action) {

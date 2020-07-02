@@ -15,7 +15,7 @@ const nodeSizeOptions = [
 
 const edgeWidthOptions = [
   { label: 'Fixed', id: 'fix' },
-  { label: 'Ethereum Value', id: 'eth' },
+  { label: 'Value', id: 'value' },
 ];
 
 const layoutNames = [

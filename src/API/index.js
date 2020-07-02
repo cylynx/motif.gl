@@ -15,7 +15,6 @@ import { addQuery, processGraphResponse } from '../redux/graphSlice';
 import { processData } from '../Utilities/graphUtils';
 
 // API Methods
-const hasEdges = newData => newData.edges.length > 0;
 const checkMetaData = metadata => {
   if (metadata) {
     return metadata.search_size > metadata.retrieved_size;
@@ -34,14 +33,13 @@ const checkNewData = (graphList, newData) => {
   return newData && !some(graphListKeys, key => key === newData.metadata.key);
 };
 
-const checkEdgeTime = newData =>
-  hasEdges(newData) && !isUndefined(newData.edges[0].data.blk_ts_unix);
-const checkEdgeScore = newData =>
-  hasEdges(newData) && !isUndefined(newData.edges[0].data.score_vector);
+const checkEdgeTime = getEdgeTime => !isUndefined(getEdgeTime);
+const checkEdgeScore = getEdgeScore => !isUndefined(getEdgeScore);
 
-const processResponse = (dispatch, graphList, newData) => {
+const processResponse = (dispatch, graphList, getFns, newData) => {
   dispatch(fetchBegin());
   const { metadata } = newData;
+  const { getEdgeTime, getEdgeScore } = getFns;
   if (checkMetaData(metadata)) {
     const message = `${metadata.retrieved_size} / ${metadata.search_size} of the most recent transactions retrieved.
         We plan to allow large imports and visualization in the full version.
@@ -54,13 +52,13 @@ const processResponse = (dispatch, graphList, newData) => {
     dispatch(processGraphResponse(newData));
     dispatch(fetchDone());
     // Check if TimeBar should be opened
-    if (checkEdgeTime(newData)) {
+    if (checkEdgeTime(getEdgeTime)) {
       dispatch(setBottomOpen(true));
     } else {
       dispatch(setBottomLock());
     }
     // Check if score-related UI should be displayed
-    if (!checkEdgeScore(newData)) {
+    if (!checkEdgeScore(getEdgeScore)) {
       dispatch(setScoreLock());
     }
   } else {
@@ -86,14 +84,19 @@ export default data => (dispatch, getState) => {
     asyncForEach(data, async graph => {
       try {
         await waitFor(0);
-        processResponse(dispatch, graphList, processData(graph, getFns));
+        processResponse(
+          dispatch,
+          graphList,
+          getFns,
+          processData(graph, getFns)
+        );
       } catch (err) {
         dispatch(fetchError(err));
       }
     });
   } else {
     try {
-      processResponse(dispatch, graphList, processData(data, getFns));
+      processResponse(dispatch, graphList, getFns, processData(data, getFns));
     } catch (err) {
       dispatch(fetchError(err));
     }
