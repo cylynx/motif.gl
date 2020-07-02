@@ -6,16 +6,16 @@ import { Plus } from 'baseui/icon';
 import { Cell } from 'baseui/layout-grid';
 import { Block } from 'baseui/block';
 import { FlushedGrid, Statistic, FullButton } from '@blocklynx/ui';
-import { openImportModal, fetchDone } from '../../redux/graphInitSlice';
+import { openImportModal, fetchDone } from '../../redux/uiSlice';
 import { resetState } from '../../redux/graphSlice';
 import ExportDataButton from './ExportDataButton';
 import QueryAccordian from './QueryAccordian';
-import { getGraph, getGraphInit } from '../../redux/accessors';
+import { getGraph, getUI } from '../../redux/accessors';
 
 const InvestigateMain = () => {
   const dispatch = useDispatch();
   const graphFlatten = useSelector(state => getGraph(state).graphFlatten);
-  const currency = useSelector(state => getGraphInit(state).currency);
+  const currency = useSelector(state => getUI(state).currency);
 
   const onClickImport = e => {
     e.preventDefault();

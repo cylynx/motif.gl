@@ -11,7 +11,7 @@ import { TagValue, TagRisk, SimpleTooltip } from '@blocklynx/ui';
 import { getDetails } from '../../redux/graphSlice';
 
 import { multiplyArr, roundToTwo, shortifyLabel } from '../../utils/utils';
-import { getGraph, getGraphInit } from '../../redux/accessors';
+import { getGraph, getUI } from '../../redux/accessors';
 
 const QueryAccordian = () => {
   const [css, theme] = useStyletron();
@@ -71,9 +71,9 @@ const QueryAccordian = () => {
 const QueryList = ({ items }) => {
   const [css, theme] = useStyletron();
   const dispatch = useDispatch();
-  const currency = useSelector(state => getGraphInit(state).currency);
-  const scoreLock = useSelector(state => getGraphInit(state).scoreLock);
-  const score = useSelector(state => getGraphInit(state).score);
+  const currency = useSelector(state => getUI(state).currency);
+  const scoreLock = useSelector(state => getUI(state).scoreLock);
+  const score = useSelector(state => getUI(state).score);
   const { getEdgeValue } = useSelector(state => getGraph(state).getFns);
   const subList = items.map((item, index) => {
     let riskScore = 0;

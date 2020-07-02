@@ -10,7 +10,7 @@ import {
   setBottomLock,
   setBottomOpen,
   setScoreLock,
-} from '../redux/graphInitSlice';
+} from '../redux/uiSlice';
 import { addQuery, processGraphResponse } from '../redux/graphSlice';
 import { processData } from '../utils/graphUtils';
 

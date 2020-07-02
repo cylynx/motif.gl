@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import '@antv/graphin/dist/index.css';
 
 import Graphin from '@antv/graphin';
-import { setClickedId, getGraphInit, getGraph } from '../../redux';
+import { setClickedId, getUI, getGraph } from '../../redux';
 
 const InvestigateGraph = props => {
   const { setMenu } = props;
   const dispatch = useDispatch();
-  const clickedId = useSelector(state => getGraphInit(state).clickedId);
+  const clickedId = useSelector(state => getUI(state).clickedId);
   const graphVisible = useSelector(state => getGraph(state).graphVisible);
   const layout = useSelector(state => getGraph(state).defaultOptions.layout);
 

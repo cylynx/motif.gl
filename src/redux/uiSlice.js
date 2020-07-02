@@ -19,8 +19,8 @@ const initialState = {
   recentTrans: null,
 };
 
-const graphInit = createSlice({
-  name: 'graphInit',
+const ui = createSlice({
+  name: 'ui',
   initialState,
   reducers: {
     fetchBegin(state) {
@@ -89,6 +89,6 @@ export const {
   setScore,
   setName,
   setCurrency,
-} = graphInit.actions;
+} = ui.actions;
 
-export default graphInit.reducer;
+export default ui.reducer;

@@ -1,2 +1,2 @@
-export const getGraphInit = state => state.investigate.graphInit;
+export const getUI = state => state.investigate.ui;
 export const getGraph = state => state.investigate.graph.present;

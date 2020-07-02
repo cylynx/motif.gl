@@ -18,13 +18,13 @@ import {
   processScoreVector,
   shortifyLabel,
 } from '../../utils/utils';
-import { getGraphInit, getGraph } from '../../redux/accessors';
+import { getUI, getGraph } from '../../redux/accessors';
 
 const InvestigateDetailed = () => {
   const item = useSelector(state => getGraph(state).detailedSelection).data;
-  const currency = useSelector(state => getGraphInit(state).currency);
-  const scoreLock = useSelector(state => getGraphInit(state).scoreLock);
-  const score = useSelector(state => getGraphInit(state).score);
+  const currency = useSelector(state => getUI(state).currency);
+  const scoreLock = useSelector(state => getUI(state).scoreLock);
+  const score = useSelector(state => getUI(state).score);
   const {
     getEdgeValue,
     getEdgeSourceAdd,

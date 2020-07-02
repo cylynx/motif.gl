@@ -12,10 +12,10 @@ import {
   setScore,
   setName,
   setCurrency,
-} from '../../redux/graphInitSlice';
+} from '../../redux/uiSlice';
 import { setGetFns } from '../../redux/graphSlice';
 import { getTabsOverride, getNodeMenuOverride } from '../../utils/overrides';
-import { getGraphInit } from '../../redux/accessors';
+import { getUI } from '../../redux/accessors';
 
 import SideLayer from './SideLayer';
 import BottomLayer from './BottomLayer';
@@ -34,13 +34,11 @@ const InvestigateExplorer = props => {
 
   const dispatch = useDispatch();
 
-  const modalMsg = useSelector(state => getGraphInit(state).modalMsg);
-  const modalOpen = useSelector(state => getGraphInit(state).modalOpen);
-  const modalImportOpen = useSelector(
-    state => getGraphInit(state).modalImportOpen
-  );
-  const loading = useSelector(state => getGraphInit(state).loading);
-  const bottomLock = useSelector(state => getGraphInit(state).bottomLock);
+  const modalMsg = useSelector(state => getUI(state).modalMsg);
+  const modalOpen = useSelector(state => getUI(state).modalOpen);
+  const modalImportOpen = useSelector(state => getUI(state).modalImportOpen);
+  const loading = useSelector(state => getUI(state).loading);
+  const bottomLock = useSelector(state => getUI(state).bottomLock);
   const UserImportWizard = getTabsOverride(overrides, ImportWizard);
   const UserNodeMenu = getNodeMenuOverride(overrides, NodeMenu);
 

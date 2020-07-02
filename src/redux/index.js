@@ -1,6 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import undoable, { excludeAction } from 'redux-undo';
-import graphInitReducer from './graphInitSlice';
+import uiReducer from './uiSlice';
 import graphReducer, { setRange, setGetFns } from './graphSlice';
 
 // History group that collapses both actions into 1 undo/redo
@@ -26,11 +26,11 @@ const graphReducerHistory = undoable(graphReducer, {
 
 // Export combined reducers
 export const investigateReducer = combineReducers({
-  graphInit: graphInitReducer,
+  ui: uiReducer,
   graph: graphReducerHistory,
 });
 
 // Export all actions and accessors
-export * from './graphInitSlice';
+export * from './uiSlice';
 export * from './graphSlice';
 export * from './accessors';
