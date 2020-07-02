@@ -24,29 +24,28 @@ const InvestigateDetailed = () => {
   const currency = useSelector(state => getGraphInit(state).currency);
   const scoreLock = useSelector(state => getGraphInit(state).scoreLock);
   const score = useSelector(state => getGraphInit(state).score);
+  const {
+    getEdgeValue,
+    getEdgeSourceAdd,
+    getEdgeTargetAdd,
+    getEdgeTime,
+    getEdgeScore,
+  } = useSelector(state => getGraph(state).getFns);
   let riskScore = 0;
   if (!scoreLock) {
     riskScore = multiplyArr(
-      Object.values(item.data.score_vector),
+      Object.values(getEdgeScore(item)),
       Object.values(score)
     );
   }
-
-  const {
-    value,
-    label,
-    from_address,
-    to_address,
-    blk_num,
-    blk_ts_unix,
-  } = item.data;
+  const value = getEdgeValue(item);
+  const { label } = item;
+  const fromAddress = getEdgeSourceAdd(item);
+  const toAddress = getEdgeTargetAdd(item);
+  const time = timeConverter(getEdgeTime(item));
   const headingTitle = `Transaction ${shortifyLabel(label)}...`;
   // Value will not be displayed if it does not exists
   const valueTitle = value ? `${value} ${currency}` : 'NA';
-  // Block num will not be displayed if it does not exists
-  const blockTitle = blk_num
-    ? `${blk_num}, ${timeConverter(blk_ts_unix)}`
-    : timeConverter(blk_ts_unix);
 
   return (
     <>
@@ -69,17 +68,17 @@ const InvestigateDetailed = () => {
       <hr />
       <br />
       <LabelMedium>Sending Address</LabelMedium>
-      <Hash text={from_address} />
+      <Hash text={fromAddress} />
       <LabelMedium>Receiving Address</LabelMedium>
-      <Hash text={to_address} />
-      <LabelMedium>Block and Time</LabelMedium>
-      <ParagraphSmall>{blockTitle}</ParagraphSmall>
+      <Hash text={toAddress} />
+      <LabelMedium>Time</LabelMedium>
+      <ParagraphSmall>{time}</ParagraphSmall>
       {!scoreLock && (
         <>
           <LabelMedium>Source of Funds</LabelMedium>
           <div style={{ height: '180px' }}>
             <RiskBarChart
-              data={processScoreVector(CATEGORIES, item.data.score_vector)}
+              data={processScoreVector(CATEGORIES, getEdgeScore(item))}
             />
           </div>
         </>

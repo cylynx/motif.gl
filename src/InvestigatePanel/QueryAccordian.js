@@ -74,6 +74,7 @@ const QueryList = ({ items }) => {
   const currency = useSelector(state => getGraphInit(state).currency);
   const scoreLock = useSelector(state => getGraphInit(state).scoreLock);
   const score = useSelector(state => getGraphInit(state).score);
+  const { getEdgeValue } = useSelector(state => getGraph(state).getFns);
   const subList = items.map((item, index) => {
     let riskScore = 0;
     if (!scoreLock) {
@@ -82,7 +83,8 @@ const QueryList = ({ items }) => {
         Object.values(score)
       );
     }
-    const { label, value } = item.data;
+    const { label } = item;
+    const value = getEdgeValue(item);
     const shortenedLabel = shortifyLabel(label);
 
     return (
