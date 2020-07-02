@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import isUndefined from 'lodash/isUndefined';
 import { HeadingSmall, LabelMedium, ParagraphSmall } from 'baseui/typography';
 import { ChevronLeft } from 'baseui/icon';
 import { Button } from 'baseui/button';
@@ -40,8 +41,12 @@ const InvestigateDetailed = () => {
   }
   const value = getEdgeValue(item);
   const { label } = item;
-  const fromAddress = getEdgeSourceAdd(item);
-  const toAddress = getEdgeTargetAdd(item);
+  const fromAddress = isUndefined(getEdgeSourceAdd)
+    ? item.source
+    : getEdgeSourceAdd(item);
+  const toAddress = isUndefined(getEdgeTargetAdd)
+    ? item.target
+    : getEdgeTargetAdd(item);
   const time = timeConverter(getEdgeTime(item));
   const headingTitle = `Transaction ${shortifyLabel(label)}...`;
   // Value will not be displayed if it does not exists
