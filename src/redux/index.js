@@ -5,7 +5,6 @@ import graphReducer, { setRange, setGetFns } from './graphSlice';
 
 // History group that collapses both actions into 1 undo/redo
 const undoGroup = (action, currentState, previousHistory) => {
-  console.log(action);
   switch (action.type) {
     case 'graph/processGraphResponse':
       return previousHistory.group;
