@@ -107,6 +107,8 @@ export const styleEdge = (data, mode, getEdgeValue) => {
         width: w,
       },
     };
+    // Display edge value as default when edges are not grouped for now
+    edgeCopy.label = getEdgeValue(edge);
     modEdges.push(edgeCopy);
   }
   return modEdges;
