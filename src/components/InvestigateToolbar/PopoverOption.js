@@ -30,10 +30,10 @@ const layoutNames = [
 const PopoverOption = () => {
   const dispatch = useDispatch();
   const { nodeSize, edgeWidth, resetView, groupEdges } = useSelector(
-    state => getGraph(state).defaultOptions
+    state => getGraph(state).styleOptions
   );
   const layoutName = useSelector(
-    state => getGraph(state).defaultOptions.layout.name
+    state => getGraph(state).styleOptions.layout.name
   );
   const findID = (options, id) => options.find(x => x.id === id);
   const onChangeOptions = (key, newValue) => {

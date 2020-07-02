@@ -6,7 +6,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import isEmpty from 'lodash/isEmpty';
 import {
   combineProcessedData,
-  applyStyle,
+  deriveVisibleGraph,
   groupEdges,
   datatoTS,
   chartRange,
@@ -26,7 +26,7 @@ const initialState = {
     getNodeID: node => node.id,
     getNodeLabel: node => node.data.address,
   },
-  defaultOptions: {
+  styleOptions: {
     layout: {
       name: 'concentric',
     },
@@ -64,54 +64,51 @@ const graph = createSlice({
     },
     changeOptions(state, action) {
       const { key, value } = action.payload;
-      const defaultOptions = state.defaultOptions;
       const { getEdgeValue, getEdgeTime } = state.getFns;
-      defaultOptions[key] = value;
+      state.styleOptions[key] = value;
       const newFilteredData = filterDataByTime(
         state.graphFlatten,
         state.selectTimeRange,
         getEdgeTime
       );
-      state.graphVisible = defaultOptions.groupEdges
-        ? applyStyle(
-            groupEdges(newFilteredData, getEdgeValue),
-            defaultOptions,
-            getEdgeValue
-          )
-        : applyStyle(newFilteredData, defaultOptions, getEdgeValue);
+      state.graphVisible = deriveVisibleGraph(
+        newFilteredData,
+        state.styleOptions,
+        getEdgeValue
+      );
     },
     changeLayout(state, action) {
       const newLayoutName = action.payload;
       if (newLayoutName === 'dagre') {
-        state.defaultOptions.layout = {
+        state.styleOptions.layout = {
           name: newLayoutName,
           options: {
             rankSep: 10,
           },
         };
       } else if (newLayoutName === 'circle') {
-        state.defaultOptions.layout = {
+        state.styleOptions.layout = {
           name: newLayoutName,
           options: {
             r: 150,
           },
         };
       } else if (newLayoutName === 'grid') {
-        state.defaultOptions.layout = {
+        state.styleOptions.layout = {
           name: newLayoutName,
           options: {
             nodeSep: 45,
           },
         };
       } else if (newLayoutName === 'radial') {
-        state.defaultOptions.layout = {
+        state.styleOptions.layout = {
           name: newLayoutName,
           options: {
             unitRadius: 200,
           },
         };
       } else {
-        state.defaultOptions.layout = {
+        state.styleOptions.layout = {
           name: newLayoutName,
         };
       }
@@ -130,17 +127,16 @@ const graph = createSlice({
       // Update selectTimeRange to be timeRange always
       state.selectTimeRange = state.timeRange;
       // Filter graphFlatten based on selectTimeRange
-      const newFilteredData = isEmpty(tsData)
-        ? state.graphFlatten
-        : filterDataByTime(state.graphFlatten, state.timeRange, getEdgeTime);
-      const defaultOptions = state.defaultOptions;
-      state.graphVisible = defaultOptions.groupEdges
-        ? applyStyle(
-            groupEdges(newFilteredData, getEdgeValue),
-            defaultOptions,
-            getEdgeValue
-          )
-        : applyStyle(newFilteredData, defaultOptions, getEdgeValue);
+      const newFilteredData = filterDataByTime(
+        state.graphFlatten,
+        state.timeRange,
+        getEdgeTime
+      );
+      state.graphVisible = deriveVisibleGraph(
+        newFilteredData,
+        state.styleOptions,
+        getEdgeValue
+      );
     },
     setRange(state, action) {
       const selectedTimeRange = action.payload;
@@ -148,7 +144,6 @@ const graph = createSlice({
     },
     timeRangeChange(state, action) {
       const selectedTimeRange = action.payload;
-      const defaultOptions = state.defaultOptions;
       const { getEdgeValue, getEdgeTime } = state.getFns;
       // Filter out all relevant edges and store from & to node id
       const newFilteredData = filterDataByTime(
@@ -156,14 +151,11 @@ const graph = createSlice({
         selectedTimeRange,
         getEdgeTime
       );
-      state.graphVisible = state.defaultOptions.groupEdges
-        ? applyStyle(
-            groupEdges(newFilteredData, getEdgeValue),
-            defaultOptions,
-            getEdgeValue
-          )
-        : applyStyle(newFilteredData, defaultOptions, getEdgeValue);
-      state.selectTimeRange = selectedTimeRange;
+      state.graphVisible = deriveVisibleGraph(
+        newFilteredData,
+        state.styleOptions,
+        getEdgeValue
+      );
     },
     getDetails(state, action) {
       // TODO: There might be multiple matching hash! Need to match on trace

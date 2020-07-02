@@ -10,7 +10,7 @@ const InvestigateGraph = props => {
   const dispatch = useDispatch();
   const clickedId = useSelector(state => getUI(state).clickedId);
   const graphVisible = useSelector(state => getGraph(state).graphVisible);
-  const layout = useSelector(state => getGraph(state).defaultOptions.layout);
+  const layout = useSelector(state => getGraph(state).styleOptions.layout);
 
   const graphRef = useRef(null);
 

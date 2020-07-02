@@ -286,6 +286,15 @@ export const groupEdges = (data, getEdgeValue) => {
   return { ...replaceEdges(data, newEdges) };
 };
 
+export const deriveVisibleGraph = (graphData, styleOptions, getEdgeValue) =>
+  styleOptions.groupEdges
+    ? applyStyle(
+        groupEdges(graphData, getEdgeValue),
+        styleOptions,
+        getEdgeValue
+      )
+    : applyStyle(graphData, styleOptions, getEdgeValue);
+
 export const sampleJSONData = [
   {
     nodes: [
