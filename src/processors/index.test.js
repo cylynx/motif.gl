@@ -9,76 +9,97 @@ import {
   setScoreLock,
 } from '../redux/uiSlice';
 
-const simpleJSONData = {
-  nodes: [{ id: 'node-1' }, { id: 'node-2' }],
-  edges: [{ id: 'edge-1', source: 'node-1', target: 'node-2' }],
-};
-
-const newData = {
-  nodes: [
-    {
-      id: 'node-1',
-      label: 'node-1',
-      data: { category: 'Other', label: 'node-1' },
-      style: { nodeSize: 20, primaryColor: '#008080' },
-    },
-    {
-      id: 'node-2',
-      label: 'node-2',
-      data: { category: 'Other', label: 'node-2' },
-      style: { nodeSize: 20, primaryColor: '#008080' },
-    },
-  ],
-  edges: [
-    {
-      id: 'edge-1',
-      source: 'node-1',
-      target: 'node-2',
-      label: 'edge-1',
-      style: {
-        endArrow: true,
+const getData = type => {
+  const simpleJSONData = {
+    nodes: [{ id: 'node-1' }, { id: 'node-2' }],
+    edges: [{ id: 'edge-1', source: 'node-1', target: 'node-2' }],
+  };
+  const newData = {
+    nodes: [
+      {
+        id: 'node-1',
+        label: 'node-1',
+        data: { category: 'Other', label: 'node-1' },
+        style: { nodeSize: 20, primaryColor: '#008080' },
       },
-    },
-  ],
-  metadata: { key: 0 },
+      {
+        id: 'node-2',
+        label: 'node-2',
+        data: { category: 'Other', label: 'node-2' },
+        style: { nodeSize: 20, primaryColor: '#008080' },
+      },
+    ],
+    edges: [
+      {
+        id: 'edge-1',
+        source: 'node-1',
+        target: 'node-2',
+        label: 'edge-1',
+        style: {
+          endArrow: true,
+        },
+      },
+    ],
+    metadata: { key: 0 },
+  };
+  switch (type) {
+    case 'time':
+      simpleJSONData.edges[0].data.time = 1593774283;
+      newData.edges[0].data.time = 1593774283;
+      return [simpleJSONData, newData];
+    default:
+      return [simpleJSONData, newData];
+  }
 };
 
 const mockStore = configureMockStore([thunk]);
-
-describe('addData thunk', () => {
-  it('should dispatch calls correctly given simple input data', () => {
-    const store = mockStore({
-      investigate: {
-        ui: {},
-        graph: {
-          present: {
-            getFns: {},
-            styleOptions: {
-              layout: {
-                name: 'concentric',
-              },
-              nodeSize: 'default',
-              edgeWidth: 'fix',
-              resetView: true,
-              groupEdges: true,
+const getStore = type => {
+  const store = {
+    investigate: {
+      ui: {},
+      graph: {
+        present: {
+          getFns: {},
+          styleOptions: {
+            layout: {
+              name: 'concentric',
             },
-            graphList: [],
-            graphFlatten: { nodes: [], edges: [] },
-            graphGrouped: { nodes: [], edges: [] },
-            graphVisible: { nodes: [], edges: [] },
-            tsData: false,
-            // Set a large interval to display the data on initialize regardless of resetView
-            timeRange: [-2041571596000, 2041571596000],
-            selectTimeRange: [-2041571596000, 2041571596000],
-            detailedSelection: {
-              type: null,
-              data: null,
-            },
+            nodeSize: 'default',
+            edgeWidth: 'fix',
+            resetView: true,
+            groupEdges: true,
+          },
+          graphList: [],
+          graphFlatten: { nodes: [], edges: [] },
+          graphGrouped: { nodes: [], edges: [] },
+          graphVisible: { nodes: [], edges: [] },
+          tsData: false,
+          // Set a large interval to display the data on initialize regardless of resetView
+          timeRange: [-2041571596000, 2041571596000],
+          selectTimeRange: [-2041571596000, 2041571596000],
+          detailedSelection: {
+            type: null,
+            data: null,
           },
         },
       },
-    });
+    },
+  };
+  switch (type) {
+    case 'time':
+      store.investigate.graph.present.getFns.getEdgeTime = edge =>
+        edge.data.time;
+      return store;
+    default:
+      return store;
+  }
+};
+
+describe('addData thunk', () => {
+  it('should dispatch calls correctly given simple input data', () => {
     // Act
+    const [simpleJSONData, newData] = getData();
+    const store = mockStore(getStore());
     store.dispatch(addData(simpleJSONData));
 
     // Assert
