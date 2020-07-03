@@ -4,6 +4,7 @@
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
 import { createSlice } from '@reduxjs/toolkit';
 import isEmpty from 'lodash/isEmpty';
+import * as LAYOUT from '../constants/layoutOptions';
 import {
   combineProcessedData,
   deriveVisibleGraph,
@@ -82,30 +83,22 @@ const graph = createSlice({
       if (newLayoutName === 'dagre') {
         state.styleOptions.layout = {
           name: newLayoutName,
-          options: {
-            rankSep: 10,
-          },
+          options: LAYOUT.DAGRE,
         };
       } else if (newLayoutName === 'circle') {
         state.styleOptions.layout = {
           name: newLayoutName,
-          options: {
-            r: 150,
-          },
+          options: LAYOUT.CIRCLE,
         };
       } else if (newLayoutName === 'grid') {
         state.styleOptions.layout = {
           name: newLayoutName,
-          options: {
-            nodeSep: 45,
-          },
+          options: LAYOUT.GRID,
         };
       } else if (newLayoutName === 'radial') {
         state.styleOptions.layout = {
           name: newLayoutName,
-          options: {
-            unitRadius: 200,
-          },
+          options: LAYOUT.RADIAL,
         };
       } else {
         state.styleOptions.layout = {
