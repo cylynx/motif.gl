@@ -39,10 +39,9 @@
     "vis-network": "^7.3.4"
   },
   "peerDependencies": {
-    "react": "^16.13.1",
-    "babel-jest": "^24.9.0"
+    "react": "^16.13.1"
   },
   "devDependencies": {
-    "jest": "^26.1.0"
+    "jest": "^24.9.0"
   }
 }
