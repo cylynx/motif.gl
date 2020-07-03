@@ -179,12 +179,12 @@ export const processData = (data, getFns) => {
     getNodeLabel,
   } = getFns;
   for (const node of data.nodes) {
+    // Create data property if undefined
+    if (isUndefined(node.data)) node.data = {};
     // Give id to node
     node.id = isUndefined(getNodeID) ? node.id : getNodeID(node);
     // Give the display label of the node
-    node.data.label = isUndefined(getNodeLabel)
-      ? node.label
-      : getNodeLabel(node);
+    node.data.label = isUndefined(getNodeLabel) ? node.id : getNodeLabel(node);
     // Assign shortened label to node.label for graph display
     if (node.data.label.length >= 8) {
       node.label = `${node.data.label.substring(0, 5)}...`;
@@ -211,7 +211,7 @@ export const processData = (data, getFns) => {
     edge.target = isUndefined(getEdgeTarget)
       ? edge.target
       : getEdgeTarget(edge);
-    edge.label = isUndefined(getEdgeLabel) ? edge.label : getEdgeLabel(edge);
+    edge.label = isUndefined(getEdgeLabel) ? edge.id : getEdgeLabel(edge);
     edge.style = {
       endArrow: true,
     };
