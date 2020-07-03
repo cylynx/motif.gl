@@ -29,6 +29,7 @@
     "react-virtualized-auto-sizer": "^1.0.2",
     "recompose": "^0.30.0",
     "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
     "redux-undo": "^1.0.1",
     "sass": "^1.26.5",
     "semantic-ui-react": "^0.87.3",
@@ -44,8 +45,9 @@
   "devDependencies": {
     "@babel/core": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
-    "babel-jest": "^26.1.0",
-    "jest": "^24.9.0"
+    "babel-jest": "^24.9.0",
+    "jest": "^24.9.0",
+    "redux-mock-store": "^1.5.4"
   },
   "scripts": {
     "test": "jest"

@@ -68,11 +68,11 @@ export const getMinMaxValue = (data, getEdgeValue) => {
 
 export const styleGroupedEdge = (data, mode, getEdgeValue) => {
   const modEdges = [];
-  const { min, max } = getMinMaxValue(data, getEdgeValue);
   for (const edge of data.edges) {
     const edgeCopy = { ...edge };
     let w = 2; // default
     if (mode === 'value') {
+      const { min, max } = getMinMaxValue(data, getEdgeValue);
       w =
         ((getEdgeValue(edge).reduce((a, b) => a + parseInt(b, 10), 0) - min) /
           (max - min)) *
@@ -128,9 +128,11 @@ const combineEdges = edges => {
             count: 0,
           },
         };
-        for (const [prop, value] of Object.entries(o.data)) {
-          if (isUndefined(item.data[prop])) item.data[prop] = [];
-          item.data[prop].push(value);
+        if (!isUndefined(o.data)) {
+          for (const [prop, value] of Object.entries(o.data)) {
+            if (isUndefined(item.data[prop])) item.data[prop] = [];
+            item.data[prop].push(value);
+          }
         }
         item.data.count += 1;
         item.label = item.data.count.toString();
@@ -233,12 +235,13 @@ export const replaceData = (oldData, newNodes, newEdges) => {
 };
 
 export const datatoTS = (data, getEdgeTime) => {
-  const tsdata = data.edges
-    .map(edge => [getEdgeTime(edge), 1])
-    .sort((a, b) => {
-      return a[0] - b[0];
-    });
-  return tsdata;
+  return isUndefined(getEdgeTime)
+    ? []
+    : data.edges
+        .map(edge => [getEdgeTime(edge), 1])
+        .sort((a, b) => {
+          return a[0] - b[0];
+        });
 };
 
 export const chartRange = timeRange => {
@@ -281,18 +284,14 @@ export const applyStyle = (data, defaultOptions, getEdgeValue) => {
   return { ...replaceData(data, styledNodes, styledEdges) };
 };
 
-export const groupEdges = (data, getEdgeValue) => {
-  const newEdges = combineEdges(data.edges, getEdgeValue);
+export const groupEdges = data => {
+  const newEdges = combineEdges(data.edges);
   return { ...replaceEdges(data, newEdges) };
 };
 
 export const deriveVisibleGraph = (graphData, styleOptions, getEdgeValue) =>
   styleOptions.groupEdges
-    ? applyStyle(
-        groupEdges(graphData, getEdgeValue),
-        styleOptions,
-        getEdgeValue
-      )
+    ? applyStyle(groupEdges(graphData), styleOptions, getEdgeValue)
     : applyStyle(graphData, styleOptions, getEdgeValue);
 
 export const sampleJSONData = [
