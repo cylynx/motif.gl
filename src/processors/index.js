@@ -46,7 +46,7 @@ const processResponse = (dispatch, graphList, getFns, newData) => {
         Feel free to reach out to timothy at timothy.lin@cylynx.io if you are interesting in retrieving the full results.`;
     dispatch(postMessage(message));
   }
-  // Check edges for new data as it might just return nodes and repetition
+  // Check edges for new data as it might just be repeated
   if (checkNewData(graphList, newData)) {
     dispatch(addQuery(newData));
     dispatch(processGraphResponse(newData));
