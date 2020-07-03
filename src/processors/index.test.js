@@ -7,6 +7,7 @@ import {
   fetchDone,
   setBottomLock,
   setScoreLock,
+  setBottomOpen,
 } from '../redux/uiSlice';
 
 const getData = type => {
@@ -44,8 +45,12 @@ const getData = type => {
   };
   switch (type) {
     case 'time':
-      simpleJSONData.edges[0].data.time = 1593774283;
-      newData.edges[0].data.time = 1593774283;
+      simpleJSONData.edges[0].data = {
+        time: 1593774283,
+      };
+      newData.edges[0].data = {
+        time: 1593774283,
+      };
       return [simpleJSONData, newData];
     default:
       return [simpleJSONData, newData];
@@ -101,7 +106,6 @@ describe('addData thunk', () => {
     const [simpleJSONData, newData] = getData();
     const store = mockStore(getStore());
     store.dispatch(addData(simpleJSONData));
-
     // Assert
     const expectedActions = [
       fetchBegin(),
@@ -109,6 +113,22 @@ describe('addData thunk', () => {
       processGraphResponse(newData),
       fetchDone(),
       setBottomLock(),
+      setScoreLock(),
+    ];
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+  it('should dispatch calls correctly given input data with only time', () => {
+    // Act
+    const [simpleJSONData, newData] = getData('time');
+    const store = mockStore(getStore('time'));
+    store.dispatch(addData(simpleJSONData));
+    // Assert
+    const expectedActions = [
+      fetchBegin(),
+      addQuery(newData),
+      processGraphResponse(newData),
+      fetchDone(),
+      setBottomOpen(true),
       setScoreLock(),
     ];
     expect(store.getActions()).toEqual(expectedActions);
