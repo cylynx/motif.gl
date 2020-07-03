@@ -96,7 +96,7 @@ const getStore = type => {
 };
 
 describe('addData thunk', () => {
-  it('should dispatch calls correctly given simple input data', () => {
+  it('should dispatch calls correctly given input data with no time or score', () => {
     // Act
     const [simpleJSONData, newData] = getData();
     const store = mockStore(getStore());
