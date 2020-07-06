@@ -15,18 +15,7 @@ import {
 } from '../utils/graphUtils';
 
 const initialState = {
-  getFns: {
-    // getEdgeSource: edge => edge.from,
-    // getEdgeTarget: edge => edge.to,
-    // getEdgeSourceAdd: edge => edge.data.from_address,
-    // getEdgeTargetAdd: edge => edge.data.to_address,
-    // getEdgeID: edge => edge.id,
-    // getEdgeLabel: edge => edge.data.txn_hash,
-    // getEdgeTime: edge => edge.data.blk_ts_unix,
-    // getEdgeValue: edge => edge.data.value,
-    // getNodeID: node => node.id,
-    // getNodeLabel: node => node.data.address,
-  },
+  getFns: {},
   styleOptions: {
     layout: {
       name: 'concentric',
