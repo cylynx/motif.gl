@@ -1,7 +1,12 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import cloneDeep from 'lodash/cloneDeep';
 import addData from './index';
-import { addQuery, processGraphResponse } from '../redux/graphSlice';
+import {
+  initialState,
+  addQuery,
+  processGraphResponse,
+} from '../redux/graphSlice';
 import {
   fetchBegin,
   fetchDone,
@@ -141,34 +146,12 @@ const getData = type => {
 
 const mockStore = configureMockStore([thunk]);
 const getStore = type => {
+  const graphState = cloneDeep(initialState);
   const store = {
     investigate: {
       ui: {},
       graph: {
-        present: {
-          getFns: {},
-          styleOptions: {
-            layout: {
-              name: 'concentric',
-            },
-            nodeSize: 'default',
-            edgeWidth: 'fix',
-            resetView: true,
-            groupEdges: true,
-          },
-          graphList: [],
-          graphFlatten: { nodes: [], edges: [] },
-          graphGrouped: { nodes: [], edges: [] },
-          graphVisible: { nodes: [], edges: [] },
-          tsData: false,
-          // Set a large interval to display the data on initialize regardless of resetView
-          timeRange: [-2041571596000, 2041571596000],
-          selectTimeRange: [-2041571596000, 2041571596000],
-          detailedSelection: {
-            type: null,
-            data: null,
-          },
-        },
+        present: graphState,
       },
     },
   };
