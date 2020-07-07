@@ -24,6 +24,8 @@ const InvestigateDetailed = () => {
   const item = useSelector(state => getGraph(state).detailedSelection).data;
   const currency = useSelector(state => getUI(state).currency);
   const scoreLock = useSelector(state => getUI(state).scoreLock);
+  const timeLock = useSelector(state => getUI(state).timeLock);
+  const valueLock = useSelector(state => getUI(state).valueLock);
   const score = useSelector(state => getUI(state).score);
   const {
     getEdgeValue,
@@ -32,14 +34,7 @@ const InvestigateDetailed = () => {
     getEdgeTime,
     getEdgeScore,
   } = useSelector(state => getGraph(state).getFns);
-  let riskScore = 0;
-  if (!scoreLock) {
-    riskScore = multiplyArr(
-      Object.values(getEdgeScore(item)),
-      Object.values(score)
-    );
-  }
-  const value = getEdgeValue(item);
+
   const { label } = item;
   const fromAddress = isUndefined(getEdgeSourceAdd)
     ? item.source
@@ -47,10 +42,12 @@ const InvestigateDetailed = () => {
   const toAddress = isUndefined(getEdgeTargetAdd)
     ? item.target
     : getEdgeTargetAdd(item);
-  const time = timeConverter(getEdgeTime(item));
+  const riskScore = scoreLock
+    ? 'NA'
+    : multiplyArr(Object.values(getEdgeScore(item)), Object.values(score));
+  const time = timeLock ? 'NA' : timeConverter(getEdgeTime(item));
   const headingTitle = `Transaction ${shortifyLabel(label)}...`;
-  // Value will not be displayed if it does not exists
-  const valueTitle = value ? `${value} ${currency}` : 'NA';
+  const valueTitle = valueLock ? 'NA' : `${getEdgeValue(item)} ${currency}`;
 
   return (
     <>
@@ -62,7 +59,7 @@ const InvestigateDetailed = () => {
       <br />
       <FlushedGrid>
         <Cell span={6}>
-          <Statistic value={valueTitle} label="Value" />
+          {!valueLock && <Statistic value={valueTitle} label="Value" />}
         </Cell>
         <Cell span={6}>
           {!scoreLock && (
@@ -76,8 +73,12 @@ const InvestigateDetailed = () => {
       <Hash text={fromAddress} />
       <LabelMedium>Receiving Address</LabelMedium>
       <Hash text={toAddress} />
-      <LabelMedium>Time</LabelMedium>
-      <ParagraphSmall>{time}</ParagraphSmall>
+      {!timeLock && (
+        <>
+          <LabelMedium>Time</LabelMedium>
+          <ParagraphSmall>{time}</ParagraphSmall>
+        </>
+      )}
       {!scoreLock && (
         <>
           <LabelMedium>Source of Funds</LabelMedium>

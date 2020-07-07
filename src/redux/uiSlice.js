@@ -12,11 +12,11 @@ const initialState = {
   modalOpen: false,
   modalImportOpen: true,
   clickedId: null,
-  bottomLock: false,
+  timeLock: false,
   bottomOpen: false,
   scoreLock: false,
   score: null,
-  recentTrans: null,
+  valueLock: false,
 };
 
 const ui = createSlice({
@@ -49,8 +49,8 @@ const ui = createSlice({
       state.modalOpen = true;
       state.modalMsg = action.payload;
     },
-    setBottomLock(state) {
-      state.bottomLock = true;
+    setTimeLock(state) {
+      state.timeLock = true;
     },
     setBottomOpen(state, action) {
       state.bottomOpen = action.payload;
@@ -71,6 +71,9 @@ const ui = createSlice({
     setCurrency(state, action) {
       state.currency = action.payload;
     },
+    setValueLock(state) {
+      state.valueLock = true;
+    },
   },
 });
 
@@ -82,13 +85,14 @@ export const {
   openImportModal,
   closeImportModal,
   postMessage,
-  setBottomLock,
+  setTimeLock,
   setBottomOpen,
   setClickedId,
   setScoreLock,
   setScore,
   setName,
   setCurrency,
+  setValueLock,
 } = ui.actions;
 
 export default ui.reducer;

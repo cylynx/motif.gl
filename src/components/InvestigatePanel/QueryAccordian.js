@@ -73,18 +73,20 @@ const QueryList = ({ items }) => {
   const dispatch = useDispatch();
   const currency = useSelector(state => getUI(state).currency);
   const scoreLock = useSelector(state => getUI(state).scoreLock);
+  const valueLock = useSelector(state => getUI(state).valueLock);
   const score = useSelector(state => getUI(state).score);
-  const { getEdgeValue } = useSelector(state => getGraph(state).getFns);
+  const { getEdgeValue, getEdgeScore } = useSelector(
+    state => getGraph(state).getFns
+  );
   const subList = items.map((item, index) => {
-    let riskScore = 0;
-    if (!scoreLock) {
-      riskScore = multiplyArr(
-        Object.values(item.data.score_vector),
-        Object.values(score)
-      );
-    }
+    const riskScore = scoreLock
+      ? 'NA'
+      : multiplyArr(Object.values(getEdgeScore(item)), Object.values(score));
     const { label } = item;
-    const value = getEdgeValue(item);
+    let value = 0;
+    if (!valueLock) {
+      value = getEdgeValue(item);
+    }
     const shortenedLabel = shortifyLabel(label);
 
     return (
@@ -99,7 +101,9 @@ const QueryList = ({ items }) => {
           >
             <SimpleTooltip title={shortenedLabel} tooltip={label} />
           </div>
-          <TagValue value={Math.round(value)} title={currency} />
+          {!valueLock && (
+            <TagValue value={Math.round(value)} title={currency} />
+          )}
           {!scoreLock && (
             <TagRisk
               score={Math.round(riskScore)}

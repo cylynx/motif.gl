@@ -38,7 +38,7 @@ const InvestigateExplorer = props => {
   const modalOpen = useSelector(state => getUI(state).modalOpen);
   const modalImportOpen = useSelector(state => getUI(state).modalImportOpen);
   const loading = useSelector(state => getUI(state).loading);
-  const bottomLock = useSelector(state => getUI(state).bottomLock);
+  const timeLock = useSelector(state => getUI(state).timeLock);
   const UserImportWizard = getTabsOverride(overrides, ImportWizard);
   const UserNodeMenu = getNodeMenuOverride(overrides, NodeMenu);
 
@@ -101,7 +101,7 @@ const InvestigateExplorer = props => {
             <InvestigateToolbar />
           </Block>
         }
-        {!bottomLock && (
+        {!timeLock && (
           <BottomLayer>
             <InvestigateTimeBar />
           </BottomLayer>

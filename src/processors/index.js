@@ -7,9 +7,10 @@ import {
   fetchError,
   fetchDone,
   postMessage,
-  setBottomLock,
+  setTimeLock,
   setBottomOpen,
   setScoreLock,
+  setValueLock,
 } from '../redux/uiSlice';
 import { addQuery, processGraphResponse } from '../redux/graphSlice';
 import { processData } from '../utils/graphUtils';
@@ -35,11 +36,12 @@ const checkNewData = (graphList, newData) => {
 
 const checkEdgeTime = getEdgeTime => !isUndefined(getEdgeTime);
 const checkEdgeScore = getEdgeScore => !isUndefined(getEdgeScore);
+const checkEdgeValue = getEdgeValue => !isUndefined(getEdgeValue);
 
 const processResponse = (dispatch, graphList, getFns, newData) => {
   dispatch(fetchBegin());
   const { metadata } = newData;
-  const { getEdgeTime, getEdgeScore } = getFns;
+  const { getEdgeTime, getEdgeScore, getEdgeValue } = getFns;
   if (checkMetaData(metadata)) {
     const message = `${metadata.retrieved_size} / ${metadata.search_size} of the most recent transactions retrieved.
         We plan to allow large imports and visualization in the full version.
@@ -55,11 +57,15 @@ const processResponse = (dispatch, graphList, getFns, newData) => {
     if (checkEdgeTime(getEdgeTime)) {
       dispatch(setBottomOpen(true));
     } else {
-      dispatch(setBottomLock());
+      dispatch(setTimeLock());
     }
     // Check if score-related UI should be displayed
     if (!checkEdgeScore(getEdgeScore)) {
       dispatch(setScoreLock());
+    }
+    // Check if value-related UI should be displayed
+    if (!checkEdgeValue(getEdgeValue)) {
+      dispatch(setValueLock());
     }
   } else {
     dispatch(fetchDone());
