@@ -1,4 +1,4 @@
-export const timeConverter = timestamp => {
+export const timeConverter = (timestamp: string): string => {
   // Unix timestamp in milliseconds
   const a = new Date(timestamp);
   const months = [
@@ -27,7 +27,7 @@ export const timeConverter = timestamp => {
   return time;
 };
 
-export const multiplyArr = (arr1, arr2) => {
+export const multiplyArr = (arr1: number[], arr2: number[]): number => {
   // Dot product of two arrays
   let result = 0;
   for (let i = 0; i < arr1.length; i += 1) {
@@ -36,12 +36,12 @@ export const multiplyArr = (arr1, arr2) => {
   return result;
 };
 
-export const roundToTwo = (num: number) => num.toFixed(2);
+export const roundToTwo = (num: number): string => num.toFixed(2);
 
-export const processScoreVector = (categories, scoreVector) => {
-  // Map score vector to categories
-  // For PieChart
-  // Output needs to be an array with object {name, value}
+export const processScoreVector = (
+  categories: any,
+  scoreVector: number[],
+): any[] => {
   const results = Object.keys(categories)
     .map((key, index) => ({
       name: key,
@@ -51,12 +51,13 @@ export const processScoreVector = (categories, scoreVector) => {
   return results;
 };
 
-export const json2Blob = json =>
+export const json2Blob = (json: any): any => (
   new Blob([JSON.stringify(json)], {
     type: 'application/json',
-  });
+  })
+);
 
-export const shortifyLabel = label => {
+export const shortifyLabel = (label: string): string => {
   if (label.length <= 8) {
     return label;
   }
