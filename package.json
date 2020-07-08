@@ -46,6 +46,7 @@
   "devDependencies": {
     "@babel/core": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
+    "@babel/preset-typescript": "^7.10.4",
     "babel-jest": "^24.9.0",
     "jest": "^24.9.0",
     "redux-mock-store": "^1.5.4"
