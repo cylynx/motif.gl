@@ -1,4 +1,4 @@
-export const timeConverter = (timestamp: string): string => {
+export const timeConverter = (timestamp: number): string => {
   // Unix timestamp in milliseconds
   const a = new Date(timestamp);
   const months = [
@@ -47,15 +47,14 @@ export const processScoreVector = (
       name: key,
       value: parseFloat(roundToTwo(scoreVector[index] * 100)),
     }))
-    .filter(item => item.value > 0);
+    .filter((item) => item.value > 0);
   return results;
 };
 
-export const json2Blob = (json: any): any => (
+export const json2Blob = (json: any): any =>
   new Blob([JSON.stringify(json)], {
     type: 'application/json',
-  })
-);
+  });
 
 export const shortifyLabel = (label: string): string => {
   if (label.length <= 8) {
