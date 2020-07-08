@@ -36,7 +36,7 @@ export const multiplyArr = (arr1, arr2) => {
   return result;
 };
 
-export const roundToTwo = num => num.toFixed(2);
+export const roundToTwo = (num: number) => num.toFixed(2);
 
 export const processScoreVector = (categories, scoreVector) => {
   // Map score vector to categories
