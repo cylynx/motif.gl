@@ -1,9 +1,0 @@
-{
-  "compilerOptions": {
-    "outDir": "./built",
-    "allowJs": true,
-    "target": "es5",
-    "jsx": "preserve"
-  },
-  "include": ["./src/"]
-}
