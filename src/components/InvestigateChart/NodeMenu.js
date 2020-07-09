@@ -4,7 +4,7 @@ import { DarkTheme, ThemeProvider } from 'baseui';
 import { Label3, Paragraph3 } from 'baseui/typography';
 import { StyledInner, StyledPadding } from 'baseui/popover';
 import { TriGrid, Hash } from '@blocklynx/ui';
-import { timeConverter } from '../../utils/utils.ts';
+import { timeConverter } from '../../utils/utils';
 import { getGraph } from '../../redux/accessors';
 
 const NodeMenu = ({ menu }) => {
