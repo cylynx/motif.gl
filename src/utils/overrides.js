@@ -1,6 +1,12 @@
 import React from 'react';
 import has from 'lodash/has';
 
+// interface Overrides {
+//   Tabs: React.FC[],
+//   NodeMenu: React.FC,
+//   score: number[]
+// }
+
 export const getTabsOverride = (overrides, Component) => {
   if (overrides.Tabs) {
     const tabsObj = overrides.Tabs;
