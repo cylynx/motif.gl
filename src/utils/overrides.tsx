@@ -1,7 +1,11 @@
 import React from 'react';
 import has from 'lodash/has';
+import * as Prop from '../types/Prop';
 
-export const getTabsOverride = (overrides, Component) => {
+export const getTabsOverride = (
+  overrides: Prop.Overrides,
+  Component: React.ComponentType<Prop.ImportWizard>,
+): React.ComponentType<any> => {
   if (overrides.Tabs) {
     const tabsObj = overrides.Tabs;
     const tabs = [];
@@ -14,14 +18,15 @@ export const getTabsOverride = (overrides, Component) => {
         });
       }
     }
-    return React.forwardRef((props, ref) => {
-      return <Component ref={ref} tabs={tabs} {...props} />;
-    });
+    return React.forwardRef<any, any>((props, ref) => <Component ref={ref} tabs={tabs} {...props} />);
   }
   return Component;
 };
 
-export const getNodeMenuOverride = (overrides, Component) => {
+export const getNodeMenuOverride = (
+  overrides: Prop.Overrides,
+  Component: React.ComponentType<Prop.NodeMenu>,
+): React.ComponentType<Prop.NodeMenu> => {
   if (overrides.NodeMenu) {
     return overrides.NodeMenu;
   }

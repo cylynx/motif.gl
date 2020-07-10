@@ -3,8 +3,9 @@
     "outDir": "./built",
     "allowJs": true,
     "target": "es5",
-    "jsx": "preserve",
-    "downlevelIteration": true
+    "jsx": "react",
+    "downlevelIteration": true,
+    "esModuleInterop": true
   },
   "include": ["./src/"]
 }
