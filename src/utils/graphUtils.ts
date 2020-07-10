@@ -72,9 +72,7 @@ export const getMinMaxValue = (
   for (const edge of data.edges) {
     if (isGroupEdges(edge, getEdgeValue)) {
       // Sum all values in array
-      arrValue.push(
-        (getEdgeValue(edge) as number[]).reduce((a, b) => a + b, 0),
-      );
+      arrValue.push((<number[]>getEdgeValue(edge)).reduce((a, b) => a + b, 0));
     } else {
       arrValue.push(getEdgeValue(edge));
     }
@@ -94,7 +92,7 @@ export const styleGroupedEdge = (
     if (mode === 'value') {
       const { min, max } = getMinMaxValue(data, getEdgeValue);
       w =
-        (((getEdgeValue(edge) as number[]).reduce((a, b) => a + b, 0) - min) /
+        (((<number[]>getEdgeValue(edge)).reduce((a, b) => a + b, 0) - min) /
           (max - min)) *
           (10 - 2) +
         2;
@@ -123,7 +121,7 @@ export const styleEdge = (
     const edgeCopy = { ...edge };
     let w = 2; // default
     if (mode === 'value') {
-      w = (((getEdgeValue(edge) as number) - min) / (max - min)) * (10 - 2) + 2;
+      w = ((<number>getEdgeValue(edge) - min) / (max - min)) * (10 - 2) + 2;
     }
     edgeCopy.style = {
       ...edgeCopy.style,
@@ -177,7 +175,7 @@ export const filterDataByTime = (
   // Because our time data is on links, the timebar's filteredData object only contains links.
   // But we need to show nodes in the chart too: so for each link, track the connected nodes
   const filteredEdges = edges.filter((edge) =>
-    inRange(getEdgeTime(edge) as number, timerange[0], timerange[1]));
+    inRange(<number>getEdgeTime(edge), timerange[0], timerange[1]));
   // Filter nodes which are connected to the edges
   const filteredNodesId = [];
   filteredEdges.forEach((edge) => {
@@ -271,7 +269,7 @@ export const datatoTS = (
   (isUndefined(getEdgeTime) ?
     [] :
     data.edges
-        .map((edge) => [getEdgeTime(edge) as number, 1])
+        .map((edge) => [<number>getEdgeTime(edge), 1])
         .sort((a, b) => a[0] - b[0]));
 
 export const chartRange = (timeRange: number[]): number[] => {
