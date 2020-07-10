@@ -1,14 +1,21 @@
 import inRange from 'lodash/inRange';
 import isUndefined from 'lodash/isUndefined';
-import * as Graph from '../../Graph';
+import * as Graph from '../types/Graph';
+import * as State from '../types/State';
 import { CATEGORIES_COLOR } from './categories';
+
+interface MinMax {
+  min: number;
+  max: number;
+}
 
 export const findConnectedEdges = (
   data: Graph.Data,
   id: string,
 ): Graph.Edge[] => data.edges.filter((e) => e.source === id || e.target === id);
 
-export const getDegree = (data: Graph.Data, id: string): number => findConnectedEdges(data, id).length;
+export const getDegree = (data: Graph.Data, id: string): number =>
+  findConnectedEdges(data, id).length;
 
 export const getGraphDegree = (data: Graph.Data): object => {
   const nodeIds = [];
@@ -60,7 +67,7 @@ const isGroupEdges = (
 export const getMinMaxValue = (
   data: Graph.Data,
   getEdgeValue: Graph.GetEdgeNumber,
-): Graph.MinMax => {
+): MinMax => {
   const arrValue = [];
   for (const edge of data.edges) {
     if (isGroupEdges(edge, getEdgeValue)) {
@@ -260,7 +267,8 @@ export const replaceData = (
 export const datatoTS = (
   data: Graph.Data,
   getEdgeTime: Graph.GetEdgeNumber,
-): any => (isUndefined(getEdgeTime) ?
+): any =>
+  (isUndefined(getEdgeTime) ?
     [] :
     data.edges
         .map((edge) => [getEdgeTime(edge) as number, 1])
@@ -273,7 +281,10 @@ export const chartRange = (timeRange: number[]): number[] => {
 
 export const removeDuplicates = (myArr: any[], prop: string): any[] =>
   // Remove duplicates from array by checking on prop
-   myArr.filter((obj, pos, arr) => arr.map((mapObj) => mapObj[prop]).indexOf(obj[prop]) === pos);
+  myArr.filter(
+    (obj, pos, arr) =>
+      arr.map((mapObj) => mapObj[prop]).indexOf(obj[prop]) === pos,
+  );
 export const combineProcessedData = (
   newData: Graph.Data,
   oldData: Graph.Data,
@@ -295,7 +306,7 @@ export const combineProcessedData = (
 
 export const applyStyle = (
   data: Graph.Data,
-  defaultOptions: Graph.StyleOptions,
+  defaultOptions: State.StyleOptions,
   getEdgeValue: Graph.GetEdgeNumber,
 ): Graph.Data => {
   const { groupEdges, edgeWidth, nodeSize } = defaultOptions;
@@ -316,7 +327,7 @@ export const groupEdges = (data: Graph.Data): Graph.Data => {
 
 export const deriveVisibleGraph = (
   graphData: Graph.Data,
-  styleOptions: Graph.StyleOptions,
+  styleOptions: State.StyleOptions,
   getEdgeValue: Graph.GetEdgeNumber,
 ): Graph.Data =>
   (styleOptions.groupEdges ?
