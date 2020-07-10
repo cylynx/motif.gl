@@ -15,7 +15,10 @@ export interface Edge {
 export interface Node {
   id: string;
   label: string;
-  style: object;
+  style: {
+    nodeSize: number;
+    primaryColor: string;
+  };
   data?: {
     category?: string;
     label?: string;

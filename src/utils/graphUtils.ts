@@ -283,6 +283,7 @@ export const removeDuplicates = (myArr: any[], prop: string): any[] =>
     (obj, pos, arr) =>
       arr.map((mapObj) => mapObj[prop]).indexOf(obj[prop]) === pos,
   );
+
 export const combineProcessedData = (
   newData: Graph.Data,
   oldData: Graph.Data,
