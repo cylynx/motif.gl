@@ -1,6 +1,7 @@
 import some from 'lodash/some';
 import isUndefined from 'lodash/isUndefined';
 import { getGraph } from '../redux/accessors';
+import * as Graph from '../types/Graph';
 
 import {
   fetchBegin,
@@ -16,29 +17,40 @@ import { addQuery, processGraphResponse } from '../redux/graphSlice';
 import { processData } from '../utils/graphUtils';
 
 // API Methods
-const checkMetaData = metadata => {
+const checkMetaData = (metadata: Graph.Metadata): boolean => {
   if (metadata) {
     return metadata.search_size > metadata.retrieved_size;
   }
   return false;
 };
 
-const checkNewData = (graphList, newData) => {
+const checkNewData = (
+  graphList: Graph.Data[],
+  newData: Graph.Data,
+): boolean => {
   if (isUndefined(newData.metadata)) {
     // eslint-disable-next-line no-param-reassign
     newData.metadata = {
       key: graphList.length,
     };
   }
-  const graphListKeys = graphList.map(graph => graph.metadata.key);
-  return newData && !some(graphListKeys, key => key === newData.metadata.key);
+  const graphListKeys = graphList.map((graph) => graph.metadata.key);
+  return newData && !some(graphListKeys, (key) => key === newData.metadata.key);
 };
 
-const checkEdgeTime = getEdgeTime => !isUndefined(getEdgeTime);
-const checkEdgeScore = getEdgeScore => !isUndefined(getEdgeScore);
-const checkEdgeValue = getEdgeValue => !isUndefined(getEdgeValue);
+const checkEdgeTime = (getEdgeTime: Graph.GetEdgeNumber): boolean =>
+  !isUndefined(getEdgeTime);
+const checkEdgeScore = (getEdgeScore: Graph.GetEdgeNumber): boolean =>
+  !isUndefined(getEdgeScore);
+const checkEdgeValue = (getEdgeValue: Graph.GetEdgeNumber): boolean =>
+  !isUndefined(getEdgeValue);
 
-const processResponse = (dispatch, graphList, getFns, newData) => {
+const processResponse = (
+  dispatch: any,
+  graphList: Graph.Data[],
+  getFns: Graph.GetFns,
+  newData: Graph.Data,
+) => {
   dispatch(fetchBegin());
   const { metadata } = newData;
   const { getEdgeTime, getEdgeScore, getEdgeValue } = getFns;
@@ -74,9 +86,10 @@ const processResponse = (dispatch, graphList, getFns, newData) => {
 };
 
 // Asynchronous forEach to ensure graph renders in a nice circle
-const waitFor = ms => new Promise(r => setTimeout(r, ms));
+const waitFor = (ms: number): Promise<void> =>
+  new Promise((r) => setTimeout(r, ms));
 
-async function asyncForEach(array, callback) {
+async function asyncForEach(array: any[], callback: (item: any) => void) {
   for (const item of array) {
     await callback(item);
   }
@@ -84,17 +97,17 @@ async function asyncForEach(array, callback) {
 
 // One function to rule them all
 // Thunk to dispatch our calls
-export default data => (dispatch, getState) => {
+export default (data: Graph.Data) => (dispatch: any, getState: any) => {
   const { graphList, getFns } = getGraph(getState());
   if (Array.isArray(data)) {
-    asyncForEach(data, async graph => {
+    asyncForEach(data, async (graph) => {
       try {
         await waitFor(0);
         processResponse(
           dispatch,
           graphList,
           getFns,
-          processData(graph, getFns)
+          processData(graph, getFns),
         );
       } catch (err) {
         dispatch(fetchError(err));
