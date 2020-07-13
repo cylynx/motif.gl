@@ -15,10 +15,14 @@ import {
 } from '../utils/graphUtils';
 
 const initialState = {
-  getFns: {},
+  getFns: {
+    getEdgeWidth: null,
+    getEdgeTime: null,
+  },
   styleOptions: {
     layout: {
       name: 'concentric',
+      options: {},
     },
     nodeSize: 'default',
     edgeWidth: 'fix',
@@ -59,12 +63,12 @@ const graph = createSlice({
       const newFilteredData = filterDataByTime(
         state.graphFlatten,
         state.selectTimeRange,
-        getEdgeTime
+        getEdgeTime,
       );
       state.graphVisible = deriveVisibleGraph(
         newFilteredData,
         state.styleOptions,
-        getEdgeWidth
+        getEdgeWidth,
       );
     },
     changeLayout(state, action) {
@@ -92,6 +96,7 @@ const graph = createSlice({
       } else {
         state.styleOptions.layout = {
           name: newLayoutName,
+          options: {},
         };
       }
     },
@@ -99,25 +104,25 @@ const graph = createSlice({
       const newData = action.payload;
       const { getEdgeWidth, getEdgeTime } = state.getFns;
       const modData = combineProcessedData(newData, state.graphFlatten);
-      state.graphGrouped = groupEdges(modData, getEdgeWidth);
+      state.graphGrouped = groupEdges(modData);
       state.graphFlatten = modData;
       const tsData = datatoTS(state.graphFlatten, getEdgeTime);
       state.tsData = tsData;
-      state.timeRange = isEmpty(tsData)
-        ? []
-        : chartRange([tsData[0][0], tsData[tsData.length - 1][0]]);
+      state.timeRange = isEmpty(tsData) ?
+        [] :
+        chartRange([tsData[0][0], tsData[tsData.length - 1][0]]);
       // Update selectTimeRange to be timeRange always
       state.selectTimeRange = state.timeRange;
       // Filter graphFlatten based on selectTimeRange
       const newFilteredData = filterDataByTime(
         state.graphFlatten,
         state.timeRange,
-        getEdgeTime
+        getEdgeTime,
       );
       state.graphVisible = deriveVisibleGraph(
         newFilteredData,
         state.styleOptions,
-        getEdgeWidth
+        getEdgeWidth,
       );
     },
     setRange(state, action) {
@@ -131,18 +136,18 @@ const graph = createSlice({
       const newFilteredData = filterDataByTime(
         state.graphFlatten,
         selectedTimeRange,
-        getEdgeTime
+        getEdgeTime,
       );
       state.graphVisible = deriveVisibleGraph(
         newFilteredData,
         state.styleOptions,
-        getEdgeWidth
+        getEdgeWidth,
       );
     },
     getDetails(state, action) {
       // TODO: There might be multiple matching hash! Need to match on trace
       const { type, hash } = action.payload;
-      const data = state.graphFlatten.edges.filter(e => e.id === hash)[0];
+      const data = state.graphFlatten.edges.filter((e) => e.id === hash)[0];
       state.detailedSelection.type = type;
       state.detailedSelection.data = data;
     },
