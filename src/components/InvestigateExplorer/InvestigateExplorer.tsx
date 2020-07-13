@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useStyletron } from 'baseui';
 import { Block } from 'baseui/block';
 import { Modal, ModalBody, SIZE } from 'baseui/modal';
-import { withRouter } from 'react-router-dom';
 import { Loader } from '@blocklynx/ui';
 import * as Props from '../../types/Prop';
 import {
@@ -115,4 +114,4 @@ const InvestigateExplorer: React.FC<Props.InvestigateExplorer> = (props) => {
   );
 };
 
-export default withRouter(InvestigateExplorer);
+export default InvestigateExplorer;
