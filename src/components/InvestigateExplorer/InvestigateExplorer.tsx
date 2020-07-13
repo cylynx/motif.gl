@@ -5,7 +5,7 @@ import { useStyletron } from 'baseui';
 import { Block } from 'baseui/block';
 import { Modal, ModalBody, SIZE } from 'baseui/modal';
 import { Loader } from '@blocklynx/ui';
-import * as Props from '../../types/Prop';
+import * as Prop from '../../types/Prop';
 import {
   closeModal,
   closeImportModal,
@@ -27,7 +27,7 @@ import ImportWizard from '../ImportWizard';
 import InvestigateToolbar from '../InvestigateToolbar';
 import NodeMenu from '../InvestigateChart/NodeMenu';
 
-const InvestigateExplorer: React.FC<Props.InvestigateExplorer> = (props) => {
+const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
   const {
  name, currency, getFns, overrides,
 } = props;

@@ -6,11 +6,12 @@ import { Layer } from 'baseui/layer';
 import { Button } from 'baseui/button';
 
 import { ChevronDown, ChevronUp } from 'baseui/icon';
+import * as Prop from '../../types/Prop';
 import { setBottomOpen } from '../../redux/uiSlice';
 import { getUI } from '../../redux/accessors';
 
-const BottomLayer = ({ children }) => {
-  const isOpen = useSelector(state => getUI(state).bottomOpen);
+const BottomLayer: React.FC<Prop.BottomLayer> = ({ children }) => {
+  const isOpen = useSelector((state) => getUI(state).bottomOpen);
   const dispatch = useDispatch();
 
   return (
@@ -30,29 +31,29 @@ const BottomLayer = ({ children }) => {
   );
 };
 
-const ToggleButton = props => {
+const ToggleButton: React.FC<Prop.ToggleButton> = (props) => {
   const [css] = useStyletron();
   const { onClick, isOpen } = props;
   return (
-    <Button
+    <div
       className={css({
         position: 'fixed',
         bottom: isOpen ? '145px' : '5px',
         right: '2%',
       })}
-      size="mini"
-      shape="square"
-      kind="secondary"
-      onClick={onClick}
     >
-      {isOpen ? <ChevronDown size={18} /> : <ChevronUp size={18} />}
-    </Button>
+      <Button size="mini" shape="square" kind="secondary" onClick={onClick}>
+        {isOpen ? <ChevronDown size={18} /> : <ChevronUp size={18} />}
+      </Button>
+    </div>
   );
 };
 
-const Wrapper = props => {
+const Wrapper: React.FC<Prop.Wrapper> = (props) => {
   const [css, theme] = useStyletron();
-  const { offset, color, children, forwardedRef } = props;
+  const {
+ offset, color, children, forwardedRef,
+} = props;
   return (
     <div
       className={css({
