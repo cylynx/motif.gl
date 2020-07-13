@@ -12,6 +12,7 @@ import {
 } from 'date-fns';
 
 import { useStyletron } from 'baseui';
+import * as Prop from '../../types/Prop';
 
 import { setRange, timeRangeChange } from '../../redux/graphSlice';
 import EventChart from './EventChart';
@@ -19,7 +20,7 @@ import { getGraph } from '../../redux/accessors';
 
 const windowOptions = ['30d', '7d', '1d', '1h', '1m'];
 
-const deriveAggPeriod = timerange => {
+const deriveAggPeriod = (timerange: number) => {
   // If interval is a year used a month to break the bars down
   // Always use one smaller than the interval
   if (Math.floor(timerange / (1000 * 60 * 60 * 24 * 30 * 12)) > 0) {
@@ -37,7 +38,7 @@ const deriveAggPeriod = timerange => {
   return windowOptions[4];
 };
 
-const groupByTime = (ts, windowOption) => {
+const groupByTime = (ts: number, windowOption: string) => {
   if (windowOption === '1m') {
     return startOfMinute(ts);
   }
@@ -53,28 +54,26 @@ const groupByTime = (ts, windowOption) => {
   return startOfMonth(ts);
 };
 
-const InvestigateTimeBar = () => {
+const InvestigateTimeBar: React.FC<{}> = () => {
   const dispatch = useDispatch();
-  const timeRange = useSelector(state => getGraph(state).timeRange);
-  const sliderRange = useSelector(state => getGraph(state).selectTimeRange);
-  const tsData = useSelector(state => getGraph(state).tsData);
+  const timeRange = useSelector((state) => getGraph(state).timeRange);
+  const sliderRange = useSelector((state) => getGraph(state).selectTimeRange);
+  const tsData = useSelector((state) => getGraph(state).tsData);
   const [css] = useStyletron();
 
   // Group transactions with similar time together
   const aggPeriod = deriveAggPeriod(timeRange[1] - timeRange[0]);
 
-  const aggSeries = groupBy(tsData, result =>
-    groupByTime(result[0], aggPeriod)
-  );
+  const aggSeries = groupBy(tsData, (result) =>
+    groupByTime(result[0], aggPeriod));
 
   const dataSeries = [];
   Object.entries(aggSeries).forEach(([key, value]) =>
-    dataSeries.push([new Date(key).getTime(), value.length])
-  );
+    dataSeries.push([new Date(key).getTime(), value.length]));
 
   // Filter the bar graph to get the colour
-  const colouredData = dataSeries.map(point => {
-    const itemStyle = {};
+  const colouredData = dataSeries.map((point) => {
+    const itemStyle: Prop.ItemStyle = {};
     if (inRange(point[0], sliderRange[0], sliderRange[1])) {
       itemStyle.color = '#FE6B73';
     } else {

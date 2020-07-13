@@ -59,8 +59,17 @@ export interface ImportDataButton {
 }
 
 // Prop Types for EventChart
+export interface ItemStyle {
+  color?: string;
+}
+
+export interface TimeBarData {
+  value: any;
+  itemStyle: ItemStyle;
+}
+
 export interface EventChart {
   min: number;
   max: number;
-  data: object;
+  data: TimeBarData[];
 }
