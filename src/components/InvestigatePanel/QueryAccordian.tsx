@@ -8,15 +8,16 @@ import { Accordion, Panel } from 'baseui/accordion';
 import { ListItem } from 'baseui/list';
 import { GoInfo } from 'react-icons/go';
 import { TagValue, TagRisk, SimpleTooltip } from '@blocklynx/ui';
+import * as Graph from '../../types/Graph';
 import { getDetails } from '../../redux/graphSlice';
 
 import { multiplyArr, roundToTwo, shortifyLabel } from '../../utils/utils';
 import { getGraph, getUI } from '../../redux/accessors';
 
-const QueryAccordian = () => {
+const QueryAccordian: React.FC<{}> = () => {
   const [css, theme] = useStyletron();
-  const graphList = useSelector(state => getGraph(state).graphList);
-  const listItems = graphList.map((query, index) => {
+  const graphList = useSelector((state) => getGraph(state).graphList);
+  const listItems = graphList.map((query: Graph.Data, index: number) => {
     let title = `import ${index}`;
     if (query.metadata && query.metadata.title) {
       title = query.metadata.title;
@@ -42,9 +43,14 @@ const QueryAccordian = () => {
       <Accordion
         overrides={{
           ToggleIcon: {
+            // Type assert as any due to typing error with baseweb
             // eslint-disable-next-line react/display-name
-            component: ({ $expanded }) =>
-              $expanded ? <ChevronUp size={24} /> : <ChevronDown size={24} />,
+            component: (({ $expanded }) =>
+              ($expanded ? (
+                <ChevronUp size={24} />
+              ) : (
+                <ChevronDown size={24} />
+              ))) as any,
           },
           Header: {
             style: ({ $theme }) => ({
@@ -71,17 +77,17 @@ const QueryAccordian = () => {
 const QueryList = ({ items }) => {
   const [css, theme] = useStyletron();
   const dispatch = useDispatch();
-  const currency = useSelector(state => getUI(state).currency);
-  const scoreLock = useSelector(state => getUI(state).scoreLock);
-  const valueLock = useSelector(state => getUI(state).valueLock);
-  const score = useSelector(state => getUI(state).score);
+  const currency = useSelector((state) => getUI(state).currency);
+  const scoreLock = useSelector((state) => getUI(state).scoreLock);
+  const valueLock = useSelector((state) => getUI(state).valueLock);
+  const score = useSelector((state) => getUI(state).score);
   const { getEdgeValue, getEdgeScore } = useSelector(
-    state => getGraph(state).getFns
+    (state) => getGraph(state).getFns,
   );
   const subList = items.map((item, index) => {
-    const riskScore = scoreLock
-      ? 'NA'
-      : multiplyArr(Object.values(getEdgeScore(item)), Object.values(score));
+    const riskScore = scoreLock ?
+      'NA' :
+      multiplyArr(Object.values(getEdgeScore(item)), Object.values(score));
     const { label } = item;
     let value = 0;
     if (!valueLock) {
@@ -106,8 +112,8 @@ const QueryList = ({ items }) => {
           )}
           {!scoreLock && (
             <TagRisk
-              score={Math.round(riskScore)}
-              title={roundToTwo(riskScore)}
+              score={Math.round(riskScore as number)}
+              title={roundToTwo(riskScore as number)}
             />
           )}
           <InfoButton
@@ -142,11 +148,9 @@ const QueryListItem = ({ children, ...rest }) => (
     sublist
     overrides={{
       Root: {
-        style: ({ $theme }) => {
-          return {
+        style: ({ $theme }) => ({
             backgroundColor: $theme.colors.backgroundSecondary,
-          };
-        },
+          }),
       },
     }}
     {...rest}

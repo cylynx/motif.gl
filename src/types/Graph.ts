@@ -29,6 +29,7 @@ export interface Metadata {
   search_size?: number;
   retrieved_size?: number;
   key: number;
+  title: string;
 }
 
 export interface Data {
