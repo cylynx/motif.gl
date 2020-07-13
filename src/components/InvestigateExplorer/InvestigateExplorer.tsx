@@ -6,6 +6,7 @@ import { Block } from 'baseui/block';
 import { Modal, ModalBody, SIZE } from 'baseui/modal';
 import { withRouter } from 'react-router-dom';
 import { Loader } from '@blocklynx/ui';
+import * as Props from '../../types/Prop';
 import {
   closeModal,
   closeImportModal,
@@ -27,18 +28,20 @@ import ImportWizard from '../ImportWizard';
 import InvestigateToolbar from '../InvestigateToolbar';
 import NodeMenu from '../InvestigateChart/NodeMenu';
 
-const InvestigateExplorer = props => {
-  const { name, currency, getFns, overrides } = props;
+const InvestigateExplorer: React.FC<Props.InvestigateExplorer> = (props) => {
+  const {
+ name, currency, getFns, overrides,
+} = props;
 
   const [css] = useStyletron();
 
   const dispatch = useDispatch();
 
-  const modalMsg = useSelector(state => getUI(state).modalMsg);
-  const modalOpen = useSelector(state => getUI(state).modalOpen);
-  const modalImportOpen = useSelector(state => getUI(state).modalImportOpen);
-  const loading = useSelector(state => getUI(state).loading);
-  const timeLock = useSelector(state => getUI(state).timeLock);
+  const modalMsg = useSelector((state) => getUI(state).modalMsg);
+  const modalOpen = useSelector((state) => getUI(state).modalOpen);
+  const modalImportOpen = useSelector((state) => getUI(state).modalImportOpen);
+  const loading = useSelector((state) => getUI(state).loading);
+  const timeLock = useSelector((state) => getUI(state).timeLock);
   const UserImportWizard = getTabsOverride(overrides, ImportWizard);
   const UserNodeMenu = getNodeMenuOverride(overrides, NodeMenu);
 
@@ -95,12 +98,10 @@ const InvestigateExplorer = props => {
             <Loader />
           </div>
         )}
-        {
-          <Block position="absolute" width="100%" height="calc(100% - 70px)">
-            <InvestigateChart NodeMenu={UserNodeMenu} />
-            <InvestigateToolbar />
-          </Block>
-        }
+        <Block position="absolute" width="100%" height="calc(100% - 70px)">
+          <InvestigateChart NodeMenu={UserNodeMenu} />
+          <InvestigateToolbar />
+        </Block>
         {!timeLock && (
           <BottomLayer>
             <InvestigateTimeBar />

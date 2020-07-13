@@ -1,3 +1,5 @@
+import { GetFns } from './Graph';
+
 // Prop Types for Investigate Component
 export interface Overrides {
   Tabs: React.FC[];
@@ -11,7 +13,7 @@ export interface ImportWizard {
 }
 
 // Prop Types for NodeMenu
-interface Menu {
+export interface Menu {
   x: number;
   y: number;
   node: object;
@@ -19,4 +21,12 @@ interface Menu {
 
 export interface NodeMenu {
   menu: Menu | null;
+}
+
+// Prop Types for Investigate Explorer
+export interface InvestigateExplorer {
+  name: string;
+  currency: string;
+  getFns: GetFns;
+  overrides: Overrides;
 }
