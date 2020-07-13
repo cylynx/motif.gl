@@ -1,7 +1,6 @@
 import inRange from 'lodash/inRange';
 import isUndefined from 'lodash/isUndefined';
 import * as Graph from '../types/Graph';
-import * as State from '../types/State';
 import { CATEGORIES_COLOR } from './categories';
 
 interface MinMax {
@@ -305,7 +304,7 @@ export const combineProcessedData = (
 
 export const applyStyle = (
   data: Graph.Data,
-  defaultOptions: State.StyleOptions,
+  defaultOptions: Graph.StyleOptions,
   getEdgeWidth: Graph.GetEdgeNumber,
 ): Graph.Data => {
   const { groupEdges, edgeWidth, nodeSize } = defaultOptions;
@@ -326,7 +325,7 @@ export const groupEdges = (data: Graph.Data): Graph.Data => {
 
 export const deriveVisibleGraph = (
   graphData: Graph.Data,
-  styleOptions: State.StyleOptions,
+  styleOptions: Graph.StyleOptions,
   getEdgeWidth: Graph.GetEdgeNumber,
 ): Graph.Data =>
   (styleOptions.groupEdges ?
