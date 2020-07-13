@@ -57,3 +57,10 @@ export interface Wrapper {
 export interface ImportDataButton {
   onClick: (event: MouseEvent<HTMLButtonElement>) => any;
 }
+
+// Prop Types for EventChart
+export interface EventChart {
+  min: number;
+  max: number;
+  data: object;
+}

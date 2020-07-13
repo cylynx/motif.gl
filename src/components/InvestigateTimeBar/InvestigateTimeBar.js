@@ -86,10 +86,6 @@ const InvestigateTimeBar = () => {
     };
   });
 
-  // Time bar functions
-  // const onTimeRangeChange = selectedTimeRange => dispatch(timeRangeChange(selectedTimeRange));
-  // const onTimeRangeChangeDebounce = throttle(onTimeRangeChange, 500);
-
   return (
     <>
       <div

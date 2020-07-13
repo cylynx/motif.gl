@@ -2,10 +2,11 @@
 import React from 'react';
 import ReactEchartsCore from 'echarts-for-react/lib/core';
 import * as echarts from 'echarts/lib/echarts';
+import * as Prop from '../../types/Prop';
 import 'echarts/lib/chart/bar';
 import 'echarts/lib/component/tooltip';
 
-const EventChart = props => {
+const EventChart: React.FC<Prop.EventChart> = (props) => {
   const { min, max, data } = props;
 
   return (
