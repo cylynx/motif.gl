@@ -53,3 +53,5 @@ export interface GetFns {
   getNodeID?: GetNodeString;
   getNodeLabel?: GetNodeString;
 }
+
+// Redux Types
