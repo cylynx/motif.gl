@@ -20,31 +20,31 @@ import {
 } from '../../utils/utils';
 import { getUI, getGraph } from '../../redux/accessors';
 
-const InvestigateDetailed = () => {
-  const item = useSelector(state => getGraph(state).detailedSelection).data;
-  const currency = useSelector(state => getUI(state).currency);
-  const scoreLock = useSelector(state => getUI(state).scoreLock);
-  const timeLock = useSelector(state => getUI(state).timeLock);
-  const valueLock = useSelector(state => getUI(state).valueLock);
-  const score = useSelector(state => getUI(state).score);
+const InvestigateDetailed: React.FC<{}> = () => {
+  const item = useSelector((state) => getGraph(state).detailedSelection).data;
+  const currency = useSelector((state) => getUI(state).currency);
+  const scoreLock = useSelector((state) => getUI(state).scoreLock);
+  const timeLock = useSelector((state) => getUI(state).timeLock);
+  const valueLock = useSelector((state) => getUI(state).valueLock);
+  const score = useSelector((state) => getUI(state).score);
   const {
     getEdgeValue,
     getEdgeSourceAdd,
     getEdgeTargetAdd,
     getEdgeTime,
     getEdgeScore,
-  } = useSelector(state => getGraph(state).getFns);
+  } = useSelector((state) => getGraph(state).getFns);
 
   const { label } = item;
-  const fromAddress = isUndefined(getEdgeSourceAdd)
-    ? item.source
-    : getEdgeSourceAdd(item);
-  const toAddress = isUndefined(getEdgeTargetAdd)
-    ? item.target
-    : getEdgeTargetAdd(item);
-  const riskScore = scoreLock
-    ? 'NA'
-    : multiplyArr(Object.values(getEdgeScore(item)), Object.values(score));
+  const fromAddress = isUndefined(getEdgeSourceAdd) ?
+    item.source :
+    getEdgeSourceAdd(item);
+  const toAddress = isUndefined(getEdgeTargetAdd) ?
+    item.target :
+    getEdgeTargetAdd(item);
+  const riskScore = scoreLock ?
+    'NA' :
+    multiplyArr(Object.values(getEdgeScore(item)), Object.values(score));
   const time = timeLock ? 'NA' : timeConverter(getEdgeTime(item));
   const headingTitle = `Transaction ${shortifyLabel(label)}...`;
   const valueTitle = valueLock ? 'NA' : `${getEdgeValue(item)} ${currency}`;
@@ -63,7 +63,10 @@ const InvestigateDetailed = () => {
         </Cell>
         <Cell span={6}>
           {!scoreLock && (
-            <Statistic value={Math.round(riskScore)} label="Risk Score" />
+            <Statistic
+              value={Math.round(riskScore as number)}
+              label="Risk Score"
+            />
           )}
         </Cell>
       </FlushedGrid>
@@ -84,6 +87,7 @@ const InvestigateDetailed = () => {
           <LabelMedium>Source of Funds</LabelMedium>
           <div style={{ height: '180px' }}>
             <RiskBarChart
+              title=""
               data={processScoreVector(CATEGORIES, getEdgeScore(item))}
             />
           </div>
@@ -93,7 +97,7 @@ const InvestigateDetailed = () => {
   );
 };
 
-const BackButton = () => {
+const BackButton: React.FC<{}> = () => {
   const dispatch = useDispatch();
   return (
     <Button

@@ -7,7 +7,7 @@ import html2canvas from 'html2canvas';
 import { FullButton, Notification } from '@blocklynx/ui';
 import { getGraph } from '../../redux/accessors';
 
-const ExportDataButton: React.FC<void> = () => {
+const ExportDataButton: React.FC<{}> = () => {
   const exportGraph = useSelector((state) => getGraph(state).graphList);
   const [showNotification, setShowNotification] = useState(false);
 
