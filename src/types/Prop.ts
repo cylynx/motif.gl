@@ -52,3 +52,8 @@ export interface Wrapper {
   children: ReactNode;
   forwardedRef?: RefObject<any>;
 }
+
+// Prop Types for ImportDataButton
+export interface ImportDataButton {
+  onClick: (event: MouseEvent<HTMLButtonElement>) => any;
+}

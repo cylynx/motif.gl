@@ -1,28 +1,28 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { Button } from 'baseui/button';
 import { Plus } from 'baseui/icon';
 import { Cell } from 'baseui/layout-grid';
 import { Block } from 'baseui/block';
 import { FlushedGrid, Statistic, FullButton } from '@blocklynx/ui';
+import * as Prop from '../../types/Prop';
 import { openImportModal, fetchDone } from '../../redux/uiSlice';
 import { resetState } from '../../redux/graphSlice';
 import ExportDataButton from './ExportDataButton';
 import QueryAccordian from './QueryAccordian';
 import { getGraph, getUI } from '../../redux/accessors';
 
-const InvestigateMain = () => {
+const InvestigateMain: React.FC<{}> = () => {
   const dispatch = useDispatch();
-  const graphFlatten = useSelector(state => getGraph(state).graphFlatten);
-  const currency = useSelector(state => getUI(state).currency);
+  const graphFlatten = useSelector((state) => getGraph(state).graphFlatten);
+  const currency = useSelector((state) => getUI(state).currency);
 
-  const onClickImport = e => {
+  const onClickImport = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(openImportModal());
   };
 
-  const clearState = e => {
+  const clearState = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(resetState());
     dispatch(fetchDone());
@@ -75,12 +75,12 @@ const InvestigateMain = () => {
   );
 };
 
-const ImportDataButton = props => (
+const ImportDataButton: React.FC<Prop.ImportDataButton> = ({ onClick }) => (
   <Button
     kind="tertiary"
     size="compact"
     startEnhancer={() => <Plus size={24} />}
-    onClick={props.onClick}
+    onClick={onClick}
   >
     Import Data
   </Button>
