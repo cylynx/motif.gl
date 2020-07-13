@@ -34,7 +34,7 @@ export interface InvestigateExplorer {
   overrides: Overrides;
 }
 
-// Prop Types for Bottom Layer
+// Prop Types for Bottom and Side Layer
 export interface Layer {
   children: ReactNode;
 }
