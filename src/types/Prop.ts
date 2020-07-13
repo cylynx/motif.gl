@@ -79,9 +79,9 @@ export interface ToolbarItem {
   key: number;
   item: {
     name: string;
-    icon: React.FC<any>;
+    icon: JSX.Element;
     isDisabled: boolean;
-    popoverContent: () => FC<{}>;
+    popoverContent: () => JSX.Element;
     onClick: () => void | null;
   };
 }
