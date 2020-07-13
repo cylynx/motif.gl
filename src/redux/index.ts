@@ -1,10 +1,14 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import undoable, { excludeAction } from 'redux-undo';
+import undoable, { excludeAction, GroupByFunction } from 'redux-undo';
 import uiReducer from './uiSlice';
 import graphReducer, { setRange, setGetFns } from './graphSlice';
 
 // History group that collapses both actions into 1 undo/redo
-const undoGroup = (action, currentState, previousHistory) => {
+const undoGroup: GroupByFunction<GraphState> = (
+  action,
+  currentState,
+  previousHistory,
+) => {
   switch (action.type) {
     case 'graph/processGraphResponse':
       return previousHistory.group;
@@ -20,7 +24,7 @@ const undoGroup = (action, currentState, previousHistory) => {
 
 // Enhanced graph reducer
 const graphReducerHistory = undoable(graphReducer, {
-  filter: excludeAction(setRange.type, setGetFns.type),
+  filter: excludeAction([setRange.type, setGetFns.type]),
   groupBy: undoGroup,
 });
 
@@ -34,3 +38,7 @@ export const investigateReducer = combineReducers({
 export * from './uiSlice';
 export * from './graphSlice';
 export * from './accessors';
+
+// Export types
+export type GraphState = ReturnType<typeof graphReducer>;
+export type UIState = ReturnType<typeof uiReducer>;
