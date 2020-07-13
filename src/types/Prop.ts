@@ -85,3 +85,9 @@ export interface ToolbarItem {
     onClick: () => void | null;
   };
 }
+
+// Prop Types for PopoverOption
+export interface Layout {
+  label: string;
+  id: string;
+}
