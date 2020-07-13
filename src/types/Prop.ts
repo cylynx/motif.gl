@@ -35,7 +35,7 @@ export interface InvestigateExplorer {
 }
 
 // Prop Types for Bottom Layer
-export interface BottomLayer {
+export interface Layer {
   children: ReactNode;
 }
 

@@ -10,10 +10,9 @@ import * as Prop from '../../types/Prop';
 import { setBottomOpen } from '../../redux/uiSlice';
 import { getUI } from '../../redux/accessors';
 
-const BottomLayer: React.FC<Prop.BottomLayer> = ({ children }) => {
+const BottomLayer: React.FC<Prop.Layer> = ({ children }) => {
   const isOpen = useSelector((state) => getUI(state).bottomOpen);
   const dispatch = useDispatch();
-
   return (
     <>
       <ThemeProvider theme={DarkTheme}>
