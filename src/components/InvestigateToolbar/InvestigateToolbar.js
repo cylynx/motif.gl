@@ -11,7 +11,7 @@ import { resetState } from '../../redux/graphSlice';
 import ToolbarItem from './ToolbarItem';
 import PopoverOption from './PopoverOption';
 
-const InvestigateToolbar = props => {
+const InvestigateToolbar = () => {
   const [css] = useStyletron();
   const graph = document.getElementById('graphin-container');
   const dispatch = useDispatch();
@@ -79,7 +79,7 @@ const InvestigateToolbar = props => {
         })}
       >
         {menuItems.map(item => {
-          return <ToolbarItem key={item.key} item={item} graph={props.graph} />;
+          return <ToolbarItem key={item.key} item={item} />;
         })}
       </div>
     </ThemeProvider>

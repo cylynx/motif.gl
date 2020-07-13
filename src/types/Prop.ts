@@ -73,3 +73,15 @@ export interface EventChart {
   max: number;
   data: TimeBarData[];
 }
+
+// Prop Types for ToolbarItem
+export interface ToolbarItem {
+  key: number;
+  item: {
+    name: string;
+    icon: React.FC<any>;
+    isDisabled: boolean;
+    popoverContent: () => FC<{}>;
+    onClick: () => void | null;
+  };
+}
