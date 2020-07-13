@@ -6,11 +6,11 @@ import InvestigateMain from './InvestigateMain';
 import InvestigateDetailed from './InvestigateDetailed';
 import { getGraph, getUI } from '../../redux/accessors';
 
-const InvestigatePanel = () => {
+const InvestigatePanel: React.FC<{}> = () => {
   const detailedSelection = useSelector(
-    state => getGraph(state).detailedSelection
+    (state) => getGraph(state).detailedSelection,
   );
-  const name = useSelector(state => getUI(state).name);
+  const name = useSelector((state) => getUI(state).name);
 
   return (
     <>
