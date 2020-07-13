@@ -59,22 +59,22 @@ export const adjustNodeSize = (
 
 const isGroupEdges = (
   edge: Graph.Edge,
-  getEdgeValue: Graph.GetEdgeNumber,
+  getEdgeWidth: Graph.GetEdgeNumber,
 ): boolean =>
   // Check edge.data.value is array to determine if it is grouped
-  Array.isArray(getEdgeValue(edge));
+  Array.isArray(getEdgeWidth(edge));
 
 export const getMinMaxValue = (
   data: Graph.Data,
-  getEdgeValue: Graph.GetEdgeNumber,
+  getEdgeWidth: Graph.GetEdgeNumber,
 ): MinMax => {
   const arrValue = [];
   for (const edge of data.edges) {
-    if (isGroupEdges(edge, getEdgeValue)) {
+    if (isGroupEdges(edge, getEdgeWidth)) {
       // Sum all values in array
-      arrValue.push((<number[]>getEdgeValue(edge)).reduce((a, b) => a + b, 0));
+      arrValue.push((<number[]>getEdgeWidth(edge)).reduce((a, b) => a + b, 0));
     } else {
-      arrValue.push(getEdgeValue(edge));
+      arrValue.push(getEdgeWidth(edge));
     }
   }
   return { min: Math.min(...arrValue), max: Math.max(...arrValue) };
@@ -83,16 +83,16 @@ export const getMinMaxValue = (
 export const styleGroupedEdge = (
   data: Graph.Data,
   mode: string,
-  getEdgeValue: Graph.GetEdgeNumber,
+  getEdgeWidth: Graph.GetEdgeNumber,
 ): Graph.Edge[] => {
   const modEdges = [];
   for (const edge of data.edges) {
     const edgeCopy = { ...edge };
     let w = 2; // default
     if (mode === 'value') {
-      const { min, max } = getMinMaxValue(data, getEdgeValue);
+      const { min, max } = getMinMaxValue(data, getEdgeWidth);
       w =
-        (((<number[]>getEdgeValue(edge)).reduce((a, b) => a + b, 0) - min) /
+        (((<number[]>getEdgeWidth(edge)).reduce((a, b) => a + b, 0) - min) /
           (max - min)) *
           (10 - 2) +
         2;
@@ -111,17 +111,17 @@ export const styleGroupedEdge = (
 export const styleEdge = (
   data: Graph.Data,
   mode: string,
-  getEdgeValue: Graph.GetEdgeNumber,
+  getEdgeWidth: Graph.GetEdgeNumber,
 ): Graph.Edge[] => {
   // Scales width based on min, max value of edges
   // mode = eth (scale width from 0.5-5) or fix (default value of 0.5)
   const modEdges = [];
-  const { min, max } = getMinMaxValue(data, getEdgeValue);
+  const { min, max } = getMinMaxValue(data, getEdgeWidth);
   for (const edge of data.edges) {
     const edgeCopy = { ...edge };
     let w = 2; // default
     if (mode === 'value') {
-      w = ((<number>getEdgeValue(edge) - min) / (max - min)) * (10 - 2) + 2;
+      w = ((<number>getEdgeWidth(edge) - min) / (max - min)) * (10 - 2) + 2;
     }
     edgeCopy.style = {
       ...edgeCopy.style,
@@ -130,7 +130,7 @@ export const styleEdge = (
       },
     };
     // Display edge value as default when edges are not grouped for now
-    edgeCopy.label = getEdgeValue(edge).toString();
+    edgeCopy.label = getEdgeWidth(edge).toString();
     modEdges.push(edgeCopy);
   }
   return modEdges;
@@ -306,15 +306,15 @@ export const combineProcessedData = (
 export const applyStyle = (
   data: Graph.Data,
   defaultOptions: State.StyleOptions,
-  getEdgeValue: Graph.GetEdgeNumber,
+  getEdgeWidth: Graph.GetEdgeNumber,
 ): Graph.Data => {
   const { groupEdges, edgeWidth, nodeSize } = defaultOptions;
   if (groupEdges) {
-    const styledEdges = styleGroupedEdge(data, edgeWidth, getEdgeValue);
+    const styledEdges = styleGroupedEdge(data, edgeWidth, getEdgeWidth);
     const styledNodes = adjustNodeSize(data, nodeSize);
     return { ...replaceData(data, styledNodes, styledEdges) };
   }
-  const styledEdges = styleEdge(data, edgeWidth, getEdgeValue);
+  const styledEdges = styleEdge(data, edgeWidth, getEdgeWidth);
   const styledNodes = adjustNodeSize(data, nodeSize);
   return { ...replaceData(data, styledNodes, styledEdges) };
 };
@@ -327,11 +327,11 @@ export const groupEdges = (data: Graph.Data): Graph.Data => {
 export const deriveVisibleGraph = (
   graphData: Graph.Data,
   styleOptions: State.StyleOptions,
-  getEdgeValue: Graph.GetEdgeNumber,
+  getEdgeWidth: Graph.GetEdgeNumber,
 ): Graph.Data =>
   (styleOptions.groupEdges ?
-    applyStyle(groupEdges(graphData), styleOptions, getEdgeValue) :
-    applyStyle(graphData, styleOptions, getEdgeValue));
+    applyStyle(groupEdges(graphData), styleOptions, getEdgeWidth) :
+    applyStyle(graphData, styleOptions, getEdgeWidth));
 
 export const sampleJSONData = [
   {

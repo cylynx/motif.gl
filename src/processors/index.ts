@@ -42,8 +42,8 @@ const checkEdgeTime = (getEdgeTime: Graph.GetEdgeNumber): boolean =>
   !isUndefined(getEdgeTime);
 const checkEdgeScore = (getEdgeScore: Graph.GetEdgeNumber): boolean =>
   !isUndefined(getEdgeScore);
-const checkEdgeValue = (getEdgeValue: Graph.GetEdgeNumber): boolean =>
-  !isUndefined(getEdgeValue);
+const checkEdgeValue = (getEdgeWidth: Graph.GetEdgeNumber): boolean =>
+  !isUndefined(getEdgeWidth);
 
 const processResponse = (
   dispatch: any,
@@ -53,7 +53,7 @@ const processResponse = (
 ) => {
   dispatch(fetchBegin());
   const { metadata } = newData;
-  const { getEdgeTime, getEdgeScore, getEdgeValue } = getFns;
+  const { getEdgeTime, getEdgeScore, getEdgeWidth } = getFns;
   if (checkMetaData(metadata)) {
     const message = `${metadata.retrieved_size} / ${metadata.search_size} of the most recent transactions retrieved.
         We plan to allow large imports and visualization in the full version.
@@ -76,7 +76,7 @@ const processResponse = (
       dispatch(setScoreLock());
     }
     // Check if value-related UI should be displayed
-    if (!checkEdgeValue(getEdgeValue)) {
+    if (!checkEdgeValue(getEdgeWidth)) {
       dispatch(setValueLock());
     }
   } else {

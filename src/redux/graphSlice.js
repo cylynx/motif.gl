@@ -54,7 +54,7 @@ const graph = createSlice({
     },
     changeOptions(state, action) {
       const { key, value } = action.payload;
-      const { getEdgeValue, getEdgeTime } = state.getFns;
+      const { getEdgeWidth, getEdgeTime } = state.getFns;
       state.styleOptions[key] = value;
       const newFilteredData = filterDataByTime(
         state.graphFlatten,
@@ -64,7 +64,7 @@ const graph = createSlice({
       state.graphVisible = deriveVisibleGraph(
         newFilteredData,
         state.styleOptions,
-        getEdgeValue
+        getEdgeWidth
       );
     },
     changeLayout(state, action) {
@@ -97,9 +97,9 @@ const graph = createSlice({
     },
     processGraphResponse(state, action) {
       const newData = action.payload;
-      const { getEdgeValue, getEdgeTime } = state.getFns;
+      const { getEdgeWidth, getEdgeTime } = state.getFns;
       const modData = combineProcessedData(newData, state.graphFlatten);
-      state.graphGrouped = groupEdges(modData, getEdgeValue);
+      state.graphGrouped = groupEdges(modData, getEdgeWidth);
       state.graphFlatten = modData;
       const tsData = datatoTS(state.graphFlatten, getEdgeTime);
       state.tsData = tsData;
@@ -117,7 +117,7 @@ const graph = createSlice({
       state.graphVisible = deriveVisibleGraph(
         newFilteredData,
         state.styleOptions,
-        getEdgeValue
+        getEdgeWidth
       );
     },
     setRange(state, action) {
@@ -126,7 +126,7 @@ const graph = createSlice({
     },
     timeRangeChange(state, action) {
       const selectedTimeRange = action.payload;
-      const { getEdgeValue, getEdgeTime } = state.getFns;
+      const { getEdgeWidth, getEdgeTime } = state.getFns;
       // Filter out all relevant edges and store from & to node id
       const newFilteredData = filterDataByTime(
         state.graphFlatten,
@@ -136,7 +136,7 @@ const graph = createSlice({
       state.graphVisible = deriveVisibleGraph(
         newFilteredData,
         state.styleOptions,
-        getEdgeValue
+        getEdgeWidth
       );
     },
     getDetails(state, action) {

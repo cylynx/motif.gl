@@ -49,7 +49,7 @@ export interface GetFns {
   getEdgeLabel?: GetEdgeString;
   getEdgeTime?: GetEdgeNumber;
   getEdgeScore?: GetEdgeNumber;
-  getEdgeValue?: GetEdgeNumber;
+  getEdgeWidth?: GetEdgeNumber;
   getNodeID?: GetNodeString;
   getNodeLabel?: GetNodeString;
 }
