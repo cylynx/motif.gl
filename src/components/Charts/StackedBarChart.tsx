@@ -10,6 +10,7 @@ import 'echarts/lib/component/title';
 import { toolbox as featuresEN } from 'echarts/lib/langEN';
 import { useStyletron } from 'baseui';
 import { useWindowDimension } from '@blocklynx/ui';
+import * as Prop from '../../types/Prop';
 
 const toolbox = {
   show: true,
@@ -36,7 +37,11 @@ const scrollLegend = {
   right: 60,
 };
 
-const StackedBarChart = ({ data, title, yLabel }) => {
+const StackedBarChart: React.FC<Prop.YAxisChart> = ({
+  data,
+  title,
+  yLabel,
+}) => {
   const [, theme] = useStyletron();
   const { width } = useWindowDimension();
   const responsiveLegend =
