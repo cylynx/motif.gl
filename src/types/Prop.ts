@@ -3,16 +3,23 @@ import {
 } from 'react';
 import { GetFns, Data } from './Graph';
 
+// Prop Types for Tab Override
+export interface Tab {
+  title: string;
+  idx: string;
+  component: FC<any>;
+}
+
 // Prop Types for Investigate Component
 export interface Overrides {
-  Tabs: FC[];
+  Tabs: Tab[];
   NodeMenu: FC<NodeMenu>;
   score: number[];
 }
 
 // Prop Types for ImportWizard
 export interface ImportWizard {
-  tabs: FC[];
+  tabs: Tab[];
 }
 
 // Prop Types for NodeMenu
