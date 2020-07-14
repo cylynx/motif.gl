@@ -6,7 +6,7 @@ import { GetFns } from './Graph';
 // Prop Types for Investigate Component
 export interface Overrides {
   Tabs: FC[];
-  NodeMenu: FC;
+  NodeMenu: FC<NodeMenu>;
   score: number[];
 }
 
@@ -96,4 +96,9 @@ export interface Layout {
 export interface QueryFile {
   info: string;
   tooltip: string;
+}
+
+// Prop Types for InvestigateChart
+export interface InvestigateChart {
+  NodeMenu: FC<NodeMenu>;
 }
