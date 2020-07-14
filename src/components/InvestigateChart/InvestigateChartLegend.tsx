@@ -1,22 +1,22 @@
 import React from 'react';
 import ReactEchartsCore from 'echarts-for-react/lib/core';
 import * as echarts from 'echarts/lib/echarts';
+import * as Prop from '../../types/Prop';
+import * as Graph from '../../types/Graph';
 import 'echarts/lib/chart/scatter';
 import 'echarts/lib/component/legend';
 import 'echarts/lib/component/legendScroll';
 
 import { CATEGORIES_COLOR } from '../../utils/categories';
 
-const deriveLegendCategories = data => {
+const deriveLegendCategories = (data: Graph.Data) => {
   const nodes = [...data.nodes];
-  const newNodes = nodes.filter((obj, pos, arr) => {
-    return (
-      arr.map(mapObj => mapObj.data.category).indexOf(obj.data.category) === pos
-    );
-  });
+  const newNodes = nodes.filter((obj, pos, arr) => (
+      arr.map((mapObj) => mapObj.data.category).indexOf(obj.data.category) === pos
+    ));
   const legend = [];
   for (const node of newNodes) {
-    const n = {};
+    const n: any = {};
     n.name = node.data.category;
     n.type = 'scatter';
     n.color = CATEGORIES_COLOR[node.data.category];
@@ -25,7 +25,9 @@ const deriveLegendCategories = data => {
   return legend;
 };
 
-const InvestigateChartLegend = ({ data }) => {
+const InvestigateChartLegend: React.FC<Prop.InvestigateChartLegend> = ({
+  data,
+}) => {
   const legendCategories = deriveLegendCategories(data);
   return (
     <ReactEchartsCore

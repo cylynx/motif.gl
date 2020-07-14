@@ -1,7 +1,7 @@
 import {
  ReactNode, RefObject, MouseEvent, FC,
 } from 'react';
-import { GetFns } from './Graph';
+import { GetFns, Data } from './Graph';
 
 // Prop Types for Investigate Component
 export interface Overrides {
@@ -108,4 +108,9 @@ export interface InvestigateChart {
 // Prop Types for InvestigateGraph
 export interface InvestigateGraph {
   setMenu: (menu: Menu | boolean) => void;
+}
+
+// Prop Types for InvestigateChartLegend
+export interface InvestigateChartLegend {
+  data: Data;
 }
