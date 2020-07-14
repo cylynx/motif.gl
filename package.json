@@ -8,7 +8,7 @@
     "@antv/graphin-components": "^1.2.1",
     "@blocklynx/ui": "*",
     "@reduxjs/toolkit": "^1.2.3",
-    "baseui": "^9.85.2",
+    "baseui": "^9.65.2",
     "date-fns": "^2.14.0",
     "echarts": "^4.6.0",
     "echarts-for-react": "^2.0.0",

@@ -81,7 +81,7 @@ const QueryList = ({ items }) => {
   const scoreLock = useSelector((state) => getUI(state).scoreLock);
   const valueLock = useSelector((state) => getUI(state).valueLock);
   const score = useSelector((state) => getUI(state).score);
-  const { getEdgeValue, getEdgeScore } = useSelector(
+  const { getEdgeWidth, getEdgeScore } = useSelector(
     (state) => getGraph(state).getFns,
   );
   const subList = items.map((item, index) => {
@@ -91,7 +91,7 @@ const QueryList = ({ items }) => {
     const { label } = item;
     let value = 0;
     if (!valueLock) {
-      value = getEdgeValue(item);
+      value = getEdgeWidth(item);
     }
     const shortenedLabel = shortifyLabel(label);
 
@@ -149,8 +149,8 @@ const QueryListItem = ({ children, ...rest }) => (
     overrides={{
       Root: {
         style: ({ $theme }) => ({
-            backgroundColor: $theme.colors.backgroundSecondary,
-          }),
+          backgroundColor: $theme.colors.backgroundSecondary,
+        }),
       },
     }}
     {...rest}

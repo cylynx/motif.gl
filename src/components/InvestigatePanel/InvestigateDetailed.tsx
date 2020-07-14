@@ -28,7 +28,7 @@ const InvestigateDetailed: React.FC<{}> = () => {
   const valueLock = useSelector((state) => getUI(state).valueLock);
   const score = useSelector((state) => getUI(state).score);
   const {
-    getEdgeValue,
+    getEdgeWidth,
     getEdgeSourceAdd,
     getEdgeTargetAdd,
     getEdgeTime,
@@ -47,7 +47,7 @@ const InvestigateDetailed: React.FC<{}> = () => {
     multiplyArr(Object.values(getEdgeScore(item)), Object.values(score));
   const time = timeLock ? 'NA' : timeConverter(getEdgeTime(item));
   const headingTitle = `Transaction ${shortifyLabel(label)}...`;
-  const valueTitle = valueLock ? 'NA' : `${getEdgeValue(item)} ${currency}`;
+  const valueTitle = valueLock ? 'NA' : `${getEdgeWidth(item)} ${currency}`;
 
   return (
     <>
