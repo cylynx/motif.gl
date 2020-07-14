@@ -1,7 +1,7 @@
 import {
- ReactNode, RefObject, MouseEvent, FC,
+ ReactNode, RefObject, MouseEvent, FC, ComponentType,
 } from 'react';
-import { GetFns, Data } from './Graph';
+import { GetFns, Data, ChartData } from './Graph';
 
 // Prop Types for Tab Override
 export interface Tab {
@@ -109,7 +109,7 @@ export interface QueryFile {
 
 // Prop Types for InvestigateChart
 export interface InvestigateChart {
-  NodeMenu: FC<NodeMenu>;
+  NodeMenu: ComponentType<NodeMenu>;
 }
 
 // Prop Types for InvestigateGraph
@@ -122,9 +122,13 @@ export interface InvestigateChartLegend {
   data: Data;
 }
 
-// Prop Types for BarChart
-export interface BarChart {
-  data: Data;
+// Prop Types for Chart
+export interface Chart {
+  data: ChartData[];
   title: string;
+}
+
+// Prop Types for YAxisChart
+export interface YAxisChart extends Chart {
   yLabel: string;
 }

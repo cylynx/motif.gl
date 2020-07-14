@@ -1,3 +1,5 @@
+import { ChartData } from '../types/Graph';
+
 export const timeConverter = (timestamp: number): string => {
   // Unix timestamp in milliseconds
   const a = new Date(timestamp);
@@ -39,9 +41,9 @@ export const multiplyArr = (arr1: number[], arr2: number[]): number => {
 export const roundToTwo = (num: number): string => num.toFixed(2);
 
 export const processScoreVector = (
-  categories: any,
+  categories: { [key: string]: number | string },
   scoreVector: number[],
-): any[] => {
+): ChartData[] => {
   const results = Object.keys(categories)
     .map((key, index) => ({
       name: key,

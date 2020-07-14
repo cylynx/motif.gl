@@ -7,11 +7,12 @@ import 'echarts/lib/component/legendScroll';
 import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/title';
 import { useStyletron } from 'baseui';
+import * as Prop from '../../types/Prop';
 
-const RiskBarChart = ({ data, title }) => {
+const RiskBarChart: React.FC<Prop.Chart> = ({ data, title }) => {
   const [, theme] = useStyletron();
   // Data comes in an array of {name, value} - needs to be transformed to echarts format
-  const chartData = data.map(obj => ({
+  const chartData = data.map((obj) => ({
     name: obj.name,
     type: 'bar',
     stack: 'group',

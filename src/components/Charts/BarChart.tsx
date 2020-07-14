@@ -37,7 +37,7 @@ const scrollLegend = {
   right: 60,
 };
 
-const BarChart: React.FC<Prop.BarChart> = ({ data, title, yLabel }) => {
+const BarChart: React.FC<Prop.YAxisChart> = ({ data, title, yLabel }) => {
   const [, theme] = useStyletron();
   const { width } = useWindowDimension();
   const responsiveLegend =

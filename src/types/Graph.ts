@@ -54,3 +54,8 @@ export interface StyleOptions {
   resetView: boolean;
   groupEdges: boolean;
 }
+
+export interface ChartData {
+  name: string;
+  value: number;
+}
