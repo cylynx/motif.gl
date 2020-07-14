@@ -91,3 +91,9 @@ export interface Layout {
   label: string;
   id: string;
 }
+
+// Prop Types for QueryFile
+export interface QueryFile {
+  info: string;
+  tooltip: string;
+}

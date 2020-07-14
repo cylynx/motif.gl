@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, MouseEvent } from 'react';
 import { useDispatch } from 'react-redux';
-
 import { Button } from 'baseui/button';
 import { Block } from 'baseui/block';
 import { FileUploader } from 'baseui/file-uploader';
 import { InfoNotification } from '@blocklynx/ui';
+import * as Prop from '../../types/Prop';
 
 import addData from '../../processors';
 import { sampleJSONData } from '../../utils/graphUtils';
 import { closeImportModal, fetchError } from '../../redux';
 
-const QueryFile = ({ info, tooltip }) => {
+const QueryFile: React.FC<Prop.QueryFile> = ({ info, tooltip }) => {
   const dispatch = useDispatch();
 
   const [isUploading, setIsUploading] = useState(false);
@@ -24,12 +24,12 @@ const QueryFile = ({ info, tooltip }) => {
     setErrorMessage('');
   };
 
-  const onDropAccepted = acceptedFiles => {
+  const onDropAccepted = (acceptedFiles: File[]) => {
     setIsUploading(true);
     const fileReader = new FileReader();
-    fileReader.onload = e => {
+    fileReader.onload = (e) => {
       try {
-        const json = JSON.parse(e.target.result);
+        const json = JSON.parse(e.target.result as string);
         dispatch(closeImportModal());
         dispatch(addData(json));
       } catch (err) {
@@ -44,7 +44,7 @@ const QueryFile = ({ info, tooltip }) => {
     setErrorMessage('Please upload JSON file');
   };
 
-  const trySampleData = e => {
+  const trySampleData = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(closeImportModal());
     dispatch(addData(sampleJSONData));

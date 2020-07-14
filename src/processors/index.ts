@@ -97,7 +97,10 @@ async function asyncForEach(array: any[], callback: (item: any) => void) {
 
 // One function to rule them all
 // Thunk to dispatch our calls
-export default (data: Graph.Data) => (dispatch: any, getState: any) => {
+export default (data: Graph.Data | Graph.Data[]) => (
+  dispatch: any,
+  getState: any,
+) => {
   const { graphList, getFns } = getGraph(getState());
   if (Array.isArray(data)) {
     asyncForEach(data, async (graph) => {

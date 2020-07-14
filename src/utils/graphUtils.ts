@@ -332,7 +332,7 @@ export const deriveVisibleGraph = (
     applyStyle(groupEdges(graphData), styleOptions, getEdgeWidth) :
     applyStyle(graphData, styleOptions, getEdgeWidth));
 
-export const sampleJSONData = [
+export const sampleJSONData: Graph.Data[] = [
   {
     nodes: [
       {

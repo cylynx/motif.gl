@@ -3,6 +3,7 @@ export interface Edge {
   source: string;
   target: string;
   label: string;
+  title: string;
   style?: {
     line?: {
       width: number;
@@ -22,14 +23,19 @@ export interface Node {
   data?: {
     category?: string;
     label?: string;
+    _key?: string;
+    _id?: string;
+    _rev?: string;
+    address?: string;
+    created_ts_unix?: number;
   };
 }
 
 export interface Metadata {
+  key: number;
   search_size?: number;
   retrieved_size?: number;
-  key: number;
-  title: string;
+  title?: string;
 }
 
 export interface Data {
