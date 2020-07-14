@@ -1,4 +1,5 @@
 import React from 'react';
+import { useWindowDimension } from '@blocklynx/ui';
 import ReactEchartsCore from 'echarts-for-react/lib/core';
 import * as echarts from 'echarts/lib/echarts';
 import 'echarts/lib/chart/bar';
@@ -9,7 +10,7 @@ import 'echarts/lib/component/toolbox';
 import 'echarts/lib/component/title';
 import { toolbox as featuresEN } from 'echarts/lib/langEN';
 import { useStyletron } from 'baseui';
-import { useWindowDimension } from '@blocklynx/ui';
+import * as Prop from '../../types/Prop';
 
 const toolbox = {
   show: true,
@@ -36,7 +37,7 @@ const scrollLegend = {
   right: 60,
 };
 
-const BarChart = ({ data, title, yLabel }) => {
+const BarChart: React.FC<Prop.BarChart> = ({ data, title, yLabel }) => {
   const [, theme] = useStyletron();
   const { width } = useWindowDimension();
   const responsiveLegend =

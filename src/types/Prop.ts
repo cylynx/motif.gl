@@ -121,3 +121,10 @@ export interface InvestigateGraph {
 export interface InvestigateChartLegend {
   data: Data;
 }
+
+// Prop Types for BarChart
+export interface BarChart {
+  data: Data;
+  title: string;
+  yLabel: string;
+}
