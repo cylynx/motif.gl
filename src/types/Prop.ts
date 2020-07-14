@@ -19,7 +19,9 @@ export interface ImportWizard {
 export interface Menu {
   x: number;
   y: number;
-  node: object;
+  node: {
+    id: string;
+  };
 }
 
 export interface NodeMenu {

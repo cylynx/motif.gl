@@ -4,12 +4,16 @@ import { DarkTheme, ThemeProvider } from 'baseui';
 import { Label3, Paragraph3 } from 'baseui/typography';
 import { StyledInner, StyledPadding } from 'baseui/popover';
 import { TriGrid, Hash } from '@blocklynx/ui';
+import * as Graph from '../../types/Graph';
+import * as Prop from '../../types/Prop';
 import { timeConverter } from '../../utils/utils';
 import { getGraph } from '../../redux/accessors';
 
-const NodeMenu = ({ menu }) => {
-  const graphFlatten = useSelector(state => getGraph(state).graphFlatten);
-  const { data } = graphFlatten.nodes.find(x => x.id === menu.node.id);
+const NodeMenu: React.FC<Prop.NodeMenu> = ({ menu }) => {
+  const graphFlatten = useSelector((state) => getGraph(state).graphFlatten);
+  const { data } = graphFlatten.nodes.find(
+    (x: Graph.Node) => x.id === menu.node.id,
+  );
 
   return (
     <ThemeProvider theme={DarkTheme}>
@@ -21,12 +25,12 @@ const NodeMenu = ({ menu }) => {
             text={data.label}
           />
           <TriGrid
-            startComponent={
+            startComponent={(
               <>
                 <Label3>Category:</Label3>
                 <Paragraph3>{data.category}</Paragraph3>
               </>
-            }
+            )}
             midComponent={
               data.entity && (
                 <>
