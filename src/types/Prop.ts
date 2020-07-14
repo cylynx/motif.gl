@@ -104,3 +104,8 @@ export interface QueryFile {
 export interface InvestigateChart {
   NodeMenu: FC<NodeMenu>;
 }
+
+// Prop Types for InvestigateGraph
+export interface InvestigateGraph {
+  setMenu: (menu: Menu | boolean) => void;
+}

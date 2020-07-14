@@ -1,16 +1,16 @@
 import React, { useLayoutEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Graphin, { G6Event, Node, Edge } from '@antv/graphin';
+import * as Prop from '../../types/Prop';
 import '@antv/graphin/dist/index.css';
-
-import Graphin from '@antv/graphin';
 import { setClickedId, getUI, getGraph } from '../../redux';
 
-const InvestigateGraph = props => {
+const InvestigateGraph: React.FC<Prop.InvestigateGraph> = (props) => {
   const { setMenu } = props;
   const dispatch = useDispatch();
-  const clickedId = useSelector(state => getUI(state).clickedId);
-  const graphVisible = useSelector(state => getGraph(state).graphVisible);
-  const layout = useSelector(state => getGraph(state).styleOptions.layout);
+  const clickedId = useSelector((state) => getUI(state).clickedId);
+  const graphVisible = useSelector((state) => getGraph(state).graphVisible);
+  const layout = useSelector((state) => getGraph(state).styleOptions.layout);
 
   const graphRef = useRef(null);
 
@@ -18,26 +18,26 @@ const InvestigateGraph = props => {
     const { graph } = graphRef.current;
     const clearAllStats = () => {
       graph.setAutoPaint(false);
-      graph.getNodes().forEach(node => {
+      graph.getNodes().forEach((node: Node) => {
         graph.clearItemStates(node);
       });
-      graph.getEdges().forEach(edge => {
+      graph.getEdges().forEach((edge: Edge) => {
         graph.clearItemStates(edge);
       });
       graph.paint();
       graph.setAutoPaint(true);
     };
 
-    const onNodeHover = e => {
+    const onNodeHover = (e: G6Event) => {
       const { item } = e;
       graph.setAutoPaint(false);
-      graph.getNodes().forEach(node => {
+      graph.getNodes().forEach((node: Node) => {
         graph.clearItemStates(node);
         graph.setItemState(node, 'highlight.dark', true);
       });
       graph.setItemState(item, 'highlight.dark', false);
       graph.setItemState(item, 'highlight.light', true);
-      graph.getEdges().forEach(edge => {
+      graph.getEdges().forEach((edge: Edge) => {
         if (edge.getSource() === item) {
           graph.setItemState(edge.getTarget(), 'highlight.dark', false);
           graph.setItemState(edge.getTarget(), 'highlight.light', true);
@@ -60,7 +60,7 @@ const InvestigateGraph = props => {
       setClickedId(null);
       setMenu(false);
     };
-    const onNodeClick = e => {
+    const onNodeClick = (e) => {
       const node = e.item.get('model');
       if (clickedId === node.id) {
         dispatch(setClickedId(null));
