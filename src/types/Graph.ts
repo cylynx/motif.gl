@@ -1,33 +1,12 @@
-export interface Edge {
-  id: string;
-  source: string;
-  target: string;
-  label: string;
-  title: string;
-  style?: {
-    line?: {
-      width: number;
-    };
-    endArrow: boolean;
-  };
-  data?: object;
+import { Node as GraphinNode, Edge as GraphinEdge } from '@antv/graphin/';
+
+export interface Edge extends Omit<GraphinEdge, 'style'> {
+  style: Partial<GraphinEdge['style']>;
 }
 
-export interface Node {
-  id: string;
-  label: string;
-  style: {
-    nodeSize: number;
-    primaryColor: string;
-  };
-  data?: {
-    category?: string;
-    label?: string;
-    _key?: string;
-    _id?: string;
-    _rev?: string;
-    address?: string;
-    created_ts_unix?: number;
+export interface Node extends Omit<GraphinNode, 'data'> {
+  data: Partial<GraphinNode['data']> & {
+    [property: string]: any;
   };
 }
 
@@ -61,11 +40,15 @@ export interface GetFns {
   getNodeLabel?: GetNodeString;
 }
 
-export interface StyleOptions {
-  layout: {
-    name: string;
-    options?: object;
+export interface Layout {
+  name: string;
+  options?: {
+    [key: string]: any;
   };
+}
+
+export interface StyleOptions {
+  layout: Layout;
   nodeSize: string;
   edgeWidth: string;
   resetView: boolean;

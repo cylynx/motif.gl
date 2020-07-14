@@ -235,7 +235,7 @@ export const processData = (data: Graph.Data, getFns: any): Graph.Data => {
       getEdgeTarget(edge);
     edge.label = isUndefined(getEdgeLabel) ? edge.id : getEdgeLabel(edge);
     edge.style = {
-      endArrow: true,
+      endArrow: 'true',
     };
   }
   return data;
@@ -401,7 +401,7 @@ export const sampleJSONData: Graph.Data[] = [
         target: 'address/83923613',
         label: '1.00e+4',
         title: '1.00e+4 ETH',
-        style: { endArrow: true },
+        style: { endArrow: 'true' },
       },
     ],
     metadata: {
