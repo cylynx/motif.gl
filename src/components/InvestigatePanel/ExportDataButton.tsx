@@ -70,7 +70,7 @@ const ExportDataButton: React.FC<{}> = () => {
         placement={PLACEMENT.top}
         showArrow
       >
-        <FullButton width="140px" kind="primary" size="compact">
+        <FullButton width="140px" size="compact">
           Export As
         </FullButton>
       </StatefulPopover>
