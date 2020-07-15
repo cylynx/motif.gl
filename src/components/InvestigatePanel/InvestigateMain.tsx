@@ -61,7 +61,7 @@ const InvestigateMain: React.FC<{}> = () => {
         <Block width="100%" display="flex" justifyContent="space-between">
           <FullButton
             width="140px"
-            kind="secondary"
+            kind="primary"
             size="compact"
             onClick={clearState}
           >

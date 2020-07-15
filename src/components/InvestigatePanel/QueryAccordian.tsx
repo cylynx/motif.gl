@@ -43,14 +43,9 @@ const QueryAccordian: React.FC<{}> = () => {
       <Accordion
         overrides={{
           ToggleIcon: {
-            // Type assert as any due to typing error with baseweb
             // eslint-disable-next-line react/display-name
-            component: (({ $expanded }) =>
-              ($expanded ? (
-                <ChevronUp size={24} />
-              ) : (
-                <ChevronDown size={24} />
-              ))) as any,
+            component: ({ $expanded }) =>
+              ($expanded ? <ChevronUp size={24} /> : <ChevronDown size={24} />),
           },
           Header: {
             style: ({ $theme }) => ({
