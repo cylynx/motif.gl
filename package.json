@@ -17,7 +17,6 @@
     "html2canvas": "^1.0.0-rc.5",
     "lodash": "^4.17.15",
     "query-string": "5.1.1",
-    "react-data-table-component": "^6.9.3",
     "react-dom": "^16.13.1",
     "react-fast-compare": "^2.0.4",
     "react-graph-vis": "^1.0.5",
