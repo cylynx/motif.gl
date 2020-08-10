@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useLayoutEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Graphin, { G6Event, Node, Edge } from '@antv/graphin';

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useStyletron } from 'baseui';
@@ -7,14 +8,14 @@ import { ChevronDown, ChevronUp } from 'baseui/icon';
 import { Accordion, Panel } from 'baseui/accordion';
 import { ListItem } from 'baseui/list';
 import { GoInfo } from 'react-icons/go';
-import { TagValue, TagRisk, SimpleTooltip } from '@blocklynx/ui';
+import { TagValue, TagRisk, SimpleTooltip } from '../ui';
 import * as Graph from '../../types/Graph';
 import { getDetails } from '../../redux/graphSlice';
 
 import { multiplyArr, roundToTwo, shortifyLabel } from '../../utils/utils';
 import { getGraph, getUI } from '../../redux/accessors';
 
-const QueryAccordian: React.FC<{}> = () => {
+const QueryAccordian = () => {
   const [css, theme] = useStyletron();
   const graphList = useSelector((state) => getGraph(state).graphList);
   const listItems = graphList.map((query: Graph.Data, index: number) => {
@@ -44,8 +45,8 @@ const QueryAccordian: React.FC<{}> = () => {
         overrides={{
           ToggleIcon: {
             // eslint-disable-next-line react/display-name
-            component: ({ $expanded }) =>
-              ($expanded ? <ChevronUp size={24} /> : <ChevronDown size={24} />),
+            component: ({ $expanded }: { $expanded: boolean }) =>
+              $expanded ? <ChevronUp size={24} /> : <ChevronDown size={24} />,
           },
           Header: {
             style: ({ $theme }) => ({
@@ -80,9 +81,9 @@ const QueryList = ({ items }) => {
     (state) => getGraph(state).getFns,
   );
   const subList = items.map((item, index) => {
-    const riskScore = scoreLock ?
-      'NA' :
-      multiplyArr(Object.values(getEdgeScore(item)), Object.values(score));
+    const riskScore = scoreLock
+      ? 'NA'
+      : multiplyArr(Object.values(getEdgeScore(item)), Object.values(score));
     const { label } = item;
     let value = 0;
     if (!valueLock) {
@@ -94,7 +95,7 @@ const QueryList = ({ items }) => {
       // TODO: add unique key (unique import id + txn hash + trace)
       // eslint-disable-next-line react/no-array-index-key
       <QueryListItem title={`import ${index}`} key={index}>
-        <Block width="100%" display="flex" justifyContent="space-between">
+        <Block width='100%' display='flex' justifyContent='space-between'>
           <div
             className={css({
               paddingTop: '7px',
@@ -155,7 +156,7 @@ const QueryListItem = ({ children, ...rest }) => (
 );
 
 const InfoButton = ({ onClick }) => (
-  <Button size="compact" kind="tertiary" onClick={onClick} shape="square">
+  <Button size='compact' kind='tertiary' onClick={onClick} shape='square'>
     <GoInfo />
   </Button>
 );

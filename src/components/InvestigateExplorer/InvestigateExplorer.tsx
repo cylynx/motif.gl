@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useStyletron } from 'baseui';
 import { Block } from 'baseui/block';
 import { Modal, ModalBody, SIZE } from 'baseui/modal';
-import { Loader } from '@blocklynx/ui';
+import { Loader } from '../ui';
 import * as Prop from '../../types/Prop';
 import {
   closeModal,
@@ -28,9 +28,7 @@ import InvestigateToolbar from '../InvestigateToolbar';
 import NodeMenu from '../InvestigateChart/NodeMenu';
 
 const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
-  const {
- name, currency, getFns, overrides,
-} = props;
+  const { name, currency, getFns, overrides } = props;
 
   const [css] = useStyletron();
 
@@ -69,7 +67,7 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
   };
 
   return (
-    <>
+    <Fragment>
       <Modal isOpen={modalOpen} onClose={onCloseModal} closeable>
         <ModalBody>{modalMsg}</ModalBody>
       </Modal>
@@ -83,7 +81,7 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
           <UserImportWizard />
         </ModalBody>
       </Modal>
-      <>
+      <Fragment>
         {loading && (
           <div
             className={css({
@@ -97,7 +95,7 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
             <Loader />
           </div>
         )}
-        <Block position="absolute" width="100%" height="calc(100% - 70px)">
+        <Block position='absolute' width='100%' height='calc(100% - 70px)'>
           <InvestigateChart NodeMenu={UserNodeMenu} />
           <InvestigateToolbar />
         </Block>
@@ -109,8 +107,8 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
         <SideLayer>
           <InvestigatePanel />
         </SideLayer>
-      </>
-    </>
+      </Fragment>
+    </Fragment>
   );
 };
 

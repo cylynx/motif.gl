@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import * as Prop from '../../types/Prop';
 import InvestigateChartLegend from './InvestigateChartLegend';
@@ -10,7 +10,7 @@ const InvestigateChart: React.FC<Prop.InvestigateChart> = ({ NodeMenu }) => {
   const [menu, setMenu] = useState(null);
 
   return (
-    <>
+    <Fragment>
       <InvestigateGraph setMenu={setMenu} />
       <div
         style={{
@@ -33,7 +33,7 @@ const InvestigateChart: React.FC<Prop.InvestigateChart> = ({ NodeMenu }) => {
           <NodeMenu menu={menu} />
         </div>
       )}
-    </>
+    </Fragment>
   );
 };
 

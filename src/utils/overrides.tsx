@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import has from 'lodash/has';
 import * as Prop from '../types/Prop';
@@ -18,7 +19,9 @@ export const getTabsOverride = (
         });
       }
     }
-    return React.forwardRef<any, any>((props, ref) => <Component ref={ref} tabs={tabs} {...props} />);
+    return React.forwardRef<any, any>((props, ref) => (
+      <Component ref={ref} tabs={tabs} {...props} />
+    ));
   }
   return Component;
 };

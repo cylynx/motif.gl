@@ -1,9 +1,9 @@
-import React, { useState, MouseEvent } from 'react';
+import React, { useState, MouseEvent, Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button } from 'baseui/button';
 import { Block } from 'baseui/block';
 import { FileUploader } from 'baseui/file-uploader';
-import { InfoNotification } from '@blocklynx/ui';
+import { InfoNotification } from '../ui';
 import * as Prop from '../../types/Prop';
 
 import addData from '../../processors';
@@ -51,10 +51,10 @@ const QueryFile: React.FC<Prop.QueryFile> = ({ info, tooltip }) => {
   };
 
   return (
-    <>
+    <Fragment>
       {info && <InfoNotification info={info} tooltip={tooltip} />}
       <FileUploader
-        accept=".json,.csv"
+        accept='.json,.csv'
         onCancel={onCancel}
         onRetry={onRetry}
         onDropAccepted={onDropAccepted}
@@ -62,9 +62,9 @@ const QueryFile: React.FC<Prop.QueryFile> = ({ info, tooltip }) => {
         progressMessage={isUploading && 'Uploading... Hang tight'}
         errorMessage={errorMessage}
       />
-      <Block padding="5px" />
+      <Block padding='5px' />
       <Button onClick={trySampleData}>Try Sample Data</Button>
-    </>
+    </Fragment>
   );
 };
 

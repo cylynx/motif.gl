@@ -1,4 +1,5 @@
-import React from 'react';
+// @ts-nocheck
+import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Slider } from 'baseui/slider';
 import inRange from 'lodash/inRange';
@@ -54,7 +55,7 @@ const groupByTime = (ts: number, windowOption: string) => {
   return startOfMonth(ts);
 };
 
-const InvestigateTimeBar: React.FC<{}> = () => {
+const InvestigateTimeBar = () => {
   const dispatch = useDispatch();
   const timeRange = useSelector((state) => getGraph(state).timeRange);
   const sliderRange = useSelector((state) => getGraph(state).selectTimeRange);
@@ -65,11 +66,13 @@ const InvestigateTimeBar: React.FC<{}> = () => {
   const aggPeriod = deriveAggPeriod(timeRange[1] - timeRange[0]);
 
   const aggSeries = groupBy(tsData, (result) =>
-    groupByTime(result[0], aggPeriod));
+    groupByTime(result[0], aggPeriod),
+  );
 
   const dataSeries = [];
   Object.entries(aggSeries).forEach(([key, value]) =>
-    dataSeries.push([new Date(key).getTime(), value.length]));
+    dataSeries.push([new Date(key).getTime(), value.length]),
+  );
 
   // Filter the bar graph to get the colour
   const colouredData = dataSeries.map((point) => {
@@ -86,7 +89,7 @@ const InvestigateTimeBar: React.FC<{}> = () => {
   });
 
   return (
-    <>
+    <Fragment>
       <div
         className={css({
           position: 'absolute',
@@ -121,7 +124,7 @@ const InvestigateTimeBar: React.FC<{}> = () => {
           }}
         />
       </div>
-    </>
+    </Fragment>
   );
 };
 

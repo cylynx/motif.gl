@@ -1,11 +1,12 @@
+// @ts-nocheck
 import inRange from 'lodash/inRange';
 import isUndefined from 'lodash/isUndefined';
 import * as Graph from '../types/Graph';
 import { CATEGORIES_COLOR } from './categories';
 
 interface MinMax {
-  min: number;
-  max: number;
+  min: any;
+  max: any;
 }
 
 export const findConnectedEdges = (
@@ -16,7 +17,7 @@ export const findConnectedEdges = (
 export const getDegree = (data: Graph.Data, id: string): number =>
   findConnectedEdges(data, id).length;
 
-export const getGraphDegree = (data: Graph.Data): object => {
+export const getGraphDegree = (data: Graph.Data) => {
   const nodeIds = [];
   const degree = {};
   for (const item of data.nodes) {
@@ -174,7 +175,8 @@ export const filterDataByTime = (
   // Because our time data is on links, the timebar's filteredData object only contains links.
   // But we need to show nodes in the chart too: so for each link, track the connected nodes
   const filteredEdges = edges.filter((edge) =>
-    inRange(<number>getEdgeTime(edge), timerange[0], timerange[1]));
+    inRange(<number>getEdgeTime(edge), timerange[0], timerange[1]),
+  );
   // Filter nodes which are connected to the edges
   const filteredNodesId = [];
   filteredEdges.forEach((edge) => {
@@ -182,7 +184,9 @@ export const filterDataByTime = (
     filteredNodesId.push(edge.target);
   });
 
-  const filteredNodes = nodes.filter((node) => filteredNodesId.includes(node.id));
+  const filteredNodes = nodes.filter((node) =>
+    filteredNodesId.includes(node.id),
+  );
 
   const newFilteredData = {
     nodes: [...filteredNodes],
@@ -227,12 +231,12 @@ export const processData = (data: Graph.Data, getFns: any): Graph.Data => {
   // Add attrs if they are named smth else
   for (const edge of data.edges) {
     edge.id = isUndefined(getEdgeID) ? edge.id : getEdgeID(edge);
-    edge.source = isUndefined(getEdgeSource) ?
-      edge.source :
-      getEdgeSource(edge);
-    edge.target = isUndefined(getEdgeTarget) ?
-      edge.target :
-      getEdgeTarget(edge);
+    edge.source = isUndefined(getEdgeSource)
+      ? edge.source
+      : getEdgeSource(edge);
+    edge.target = isUndefined(getEdgeTarget)
+      ? edge.target
+      : getEdgeTarget(edge);
     edge.label = isUndefined(getEdgeLabel) ? edge.id : getEdgeLabel(edge);
     edge.style = {
       endArrow: 'true',
@@ -265,11 +269,11 @@ export const datatoTS = (
   data: Graph.Data,
   getEdgeTime: Graph.GetEdgeNumber,
 ): any =>
-  (isUndefined(getEdgeTime) ?
-    [] :
-    data.edges
+  isUndefined(getEdgeTime)
+    ? []
+    : data.edges
         .map((edge) => [<number>getEdgeTime(edge), 1])
-        .sort((a, b) => a[0] - b[0]));
+        .sort((a, b) => a[0] - b[0]);
 
 export const chartRange = (timeRange: number[]): number[] => {
   const range = Math.max((timeRange[1] - timeRange[0]) / 8, 1000 * 60 * 60 * 1);
@@ -328,9 +332,9 @@ export const deriveVisibleGraph = (
   styleOptions: Graph.StyleOptions,
   getEdgeWidth: Graph.GetEdgeNumber,
 ): Graph.Data =>
-  (styleOptions.groupEdges ?
-    applyStyle(groupEdges(graphData), styleOptions, getEdgeWidth) :
-    applyStyle(graphData, styleOptions, getEdgeWidth));
+  styleOptions.groupEdges
+    ? applyStyle(groupEdges(graphData), styleOptions, getEdgeWidth)
+    : applyStyle(graphData, styleOptions, getEdgeWidth);
 
 export const sampleJSONData: Graph.Data[] = [
   {

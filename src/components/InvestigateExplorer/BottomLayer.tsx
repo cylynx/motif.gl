@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { DarkTheme, ThemeProvider, useStyletron } from 'baseui';
@@ -14,7 +14,7 @@ const BottomLayer: React.FC<Prop.Layer> = ({ children }) => {
   const isOpen = useSelector((state) => getUI(state).bottomOpen);
   const dispatch = useDispatch();
   return (
-    <>
+    <Fragment>
       <ThemeProvider theme={DarkTheme}>
         <ToggleButton
           isOpen={isOpen}
@@ -26,7 +26,7 @@ const BottomLayer: React.FC<Prop.Layer> = ({ children }) => {
           </Layer>
         ) : null}
       </ThemeProvider>
-    </>
+    </Fragment>
   );
 };
 
@@ -41,7 +41,7 @@ const ToggleButton: React.FC<Prop.ToggleButton> = (props) => {
         right: '2%',
       })}
     >
-      <Button size="mini" shape="square" kind="secondary" onClick={onClick}>
+      <Button size='mini' shape='square' kind='secondary' onClick={onClick}>
         {isOpen ? <ChevronDown size={18} /> : <ChevronUp size={18} />}
       </Button>
     </div>
@@ -50,9 +50,7 @@ const ToggleButton: React.FC<Prop.ToggleButton> = (props) => {
 
 const Wrapper: React.FC<Prop.Wrapper> = (props) => {
   const [css, theme] = useStyletron();
-  const {
- offset, color, children, forwardedRef,
-} = props;
+  const { offset, color, children, forwardedRef } = props;
   return (
     <div
       className={css({

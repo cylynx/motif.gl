@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { useSelector } from 'react-redux';
 
 import { StatefulMenu } from 'baseui/menu';
 import { StatefulPopover, PLACEMENT } from 'baseui/popover';
 import html2canvas from 'html2canvas';
-import { FullButton, Notification } from '@blocklynx/ui';
+import { FullButton, Notification } from '../ui';
 import { getGraph } from '../../redux/accessors';
 
-const ExportDataButton: React.FC<{}> = () => {
+const ExportDataButton = () => {
   const exportGraph = useSelector((state) => getGraph(state).graphList);
   const [showNotification, setShowNotification] = useState(false);
 
@@ -41,7 +41,7 @@ const ExportDataButton: React.FC<{}> = () => {
     close();
   };
 
-  const onItemSelect = (e, close: () => void): void => {
+  const onItemSelect = (e: any, close: () => void): void => {
     const exportAction = e.item.label;
     if (exportAction === 'PNG') {
       exportPNG(close);
@@ -51,7 +51,7 @@ const ExportDataButton: React.FC<{}> = () => {
   };
 
   return (
-    <>
+    <Fragment>
       <StatefulPopover
         content={({ close }) => (
           <StatefulMenu
@@ -70,7 +70,7 @@ const ExportDataButton: React.FC<{}> = () => {
         placement={PLACEMENT.top}
         showArrow
       >
-        <FullButton width="140px" size="compact">
+        <FullButton width='140px' size='compact'>
           Export As
         </FullButton>
       </StatefulPopover>
@@ -88,7 +88,7 @@ const ExportDataButton: React.FC<{}> = () => {
           Please import a graph
         </Notification>
       )}
-    </>
+    </Fragment>
   );
 };
 

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable prefer-destructuring */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-param-reassign */

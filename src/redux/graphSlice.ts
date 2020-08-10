@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable prefer-destructuring */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-param-reassign */
@@ -108,9 +109,9 @@ const graph = createSlice({
       state.graphFlatten = modData;
       const tsData = datatoTS(state.graphFlatten, getEdgeTime);
       state.tsData = tsData;
-      state.timeRange = isEmpty(tsData) ?
-        [] :
-        chartRange([tsData[0][0], tsData[tsData.length - 1][0]]);
+      state.timeRange = isEmpty(tsData)
+        ? []
+        : chartRange([tsData[0][0], tsData[tsData.length - 1][0]]);
       // Update selectTimeRange to be timeRange always
       state.selectTimeRange = state.timeRange;
       // Filter graphFlatten based on selectTimeRange

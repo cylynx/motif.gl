@@ -11,7 +11,7 @@ import { resetState } from '../../redux/graphSlice';
 import ToolbarItem from './ToolbarItem';
 import PopoverOption from './PopoverOption';
 
-const InvestigateToolbar: React.FC<{}> = () => {
+const InvestigateToolbar = () => {
   const [css] = useStyletron();
   const graph = document.getElementById('graphin-container');
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ const InvestigateToolbar: React.FC<{}> = () => {
       icon: <GoGear />,
       isDisabled: false,
       popoverContent: () => <PopoverOption />,
-      onClick: null,
+      onClick: null as any,
     },
     {
       key: 2,
@@ -78,7 +78,9 @@ const InvestigateToolbar: React.FC<{}> = () => {
           right: '2%',
         })}
       >
-        {menuItems.map((item) => <ToolbarItem key={item.key} item={item} />)}
+        {menuItems.map((item) => (
+          <ToolbarItem key={item.key} item={item} />
+        ))}
       </div>
     </ThemeProvider>
   );

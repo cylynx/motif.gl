@@ -4,7 +4,7 @@ import { FormControl } from 'baseui/form-control';
 import { Select } from 'baseui/select';
 import { Checkbox } from 'baseui/checkbox';
 import { Block } from 'baseui/block';
-import { TriGrid } from '@blocklynx/ui';
+import { TriGrid } from '../ui';
 import * as Prop from '../../types/Prop';
 import { changeOptions, changeLayout } from '../../redux/graphSlice';
 import { getGraph } from '../../redux/accessors';
@@ -28,11 +28,9 @@ const layoutNames = [
   { label: 'Circular', id: 'circle' },
 ];
 
-const PopoverOption: React.FC<{}> = () => {
+const PopoverOption = () => {
   const dispatch = useDispatch();
-  const {
- nodeSize, edgeWidth, resetView, groupEdges,
-} = useSelector(
+  const { nodeSize, edgeWidth, resetView, groupEdges } = useSelector(
     (state) => getGraph(state).styleOptions,
   );
   const layoutName = useSelector(
@@ -49,53 +47,55 @@ const PopoverOption: React.FC<{}> = () => {
 
   return (
     <div style={{ width: '300px' }}>
-      <Block padding="10px">
-        <FormControl label="Graph Layout">
+      <Block padding='10px'>
+        <FormControl label='Graph Layout'>
           <Select
             options={layoutNames}
-            size="compact"
+            size='compact'
             clearable={false}
             value={[findID(layoutNames, layoutName)]}
             onChange={(params) => dispatch(changeLayout(params.option.id))}
           />
         </FormControl>
-        <FormControl label="Node Size">
+        <FormControl label='Node Size'>
           <Select
             options={nodeSizeOptions}
-            size="compact"
+            size='compact'
             clearable={false}
             value={[findID(nodeSizeOptions, nodeSize)]}
             onChange={(params) => onChangeOptions('nodeSize', params.option.id)}
           />
         </FormControl>
-        <FormControl label="Edge Width">
+        <FormControl label='Edge Width'>
           <Select
             options={edgeWidthOptions}
-            size="compact"
+            size='compact'
             clearable={false}
             value={[findID(edgeWidthOptions, edgeWidth)]}
-            onChange={(params) => onChangeOptions('edgeWidth', params.option.id)}
+            onChange={(params) =>
+              onChangeOptions('edgeWidth', params.option.id)
+            }
           />
         </FormControl>
         <TriGrid
-          startComponent={(
+          startComponent={
             <Checkbox
               checked={resetView}
               onChange={() => onChangeOptions('resetView', !resetView)}
-              labelPlacement="right"
+              labelPlacement='right'
             >
               Reset View
             </Checkbox>
-          )}
-          midComponent={(
+          }
+          midComponent={
             <Checkbox
               checked={groupEdges}
               onChange={() => onChangeOptions('groupEdges', !groupEdges)}
-              labelPlacement="right"
+              labelPlacement='right'
             >
               Group Edges
             </Checkbox>
-          )}
+          }
           span={[6, 6]}
         />
       </Block>
