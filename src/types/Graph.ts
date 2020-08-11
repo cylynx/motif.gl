@@ -26,11 +26,12 @@ export interface Data {
 export type TimeRange = [number, number];
 export type GetEdgeNumber = (edge: Edge) => number | number[];
 export type GetEdgeString = (edge: Edge) => string;
-export type GetNodeString = (edge: Node) => string;
+export type GetNodeString = (node: Node) => string;
 
 export interface GetFns {
   getEdgeSource?: GetEdgeString;
   getEdgeTarget?: GetEdgeString;
+  getEdgeID?: GetEdgeString;
   getEdgeSourceAdd?: GetEdgeString;
   getEdgeTargetAdd?: GetEdgeString;
   getEdgeLabel?: GetEdgeString;

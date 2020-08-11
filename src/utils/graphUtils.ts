@@ -1,4 +1,3 @@
-// @ts-nocheck
 import inRange from 'lodash/inRange';
 import isUndefined from 'lodash/isUndefined';
 import * as Graph from '../types/Graph';
@@ -17,7 +16,9 @@ export const findConnectedEdges = (
 export const getDegree = (data: Graph.Data, id: string): number =>
   findConnectedEdges(data, id).length;
 
-export const getGraphDegree = (data: Graph.Data) => {
+export const getGraphDegree = (
+  data: Graph.Data,
+): Record<string | number, number> => {
   const nodeIds = [];
   const degree = {};
   for (const item of data.nodes) {
@@ -77,7 +78,10 @@ export const getMinMaxValue = (
       arrValue.push(getEdgeWidth(edge));
     }
   }
-  return { min: Math.min(...arrValue), max: Math.max(...arrValue) };
+  return {
+    min: Math.min(...(arrValue as number[])),
+    max: Math.max(...(arrValue as number[])),
+  };
 };
 
 export const styleGroupedEdge = (
@@ -178,7 +182,7 @@ export const filterDataByTime = (
     inRange(<number>getEdgeTime(edge), timerange[0], timerange[1]),
   );
   // Filter nodes which are connected to the edges
-  const filteredNodesId = [];
+  const filteredNodesId: any[] = [];
   filteredEdges.forEach((edge) => {
     filteredNodesId.push(edge.source);
     filteredNodesId.push(edge.target);
@@ -285,6 +289,7 @@ export const chartRange = (timeRange: Graph.TimeRange): Graph.TimeRange => {
 
 export const removeDuplicates = (myArr: [], prop: string): [] =>
   // Remove duplicates from array by checking on prop
+  // @ts-ignore
   myArr.filter(
     (obj, pos, arr) =>
       arr.map((mapObj) => mapObj[prop]).indexOf(obj[prop]) === pos,
@@ -297,10 +302,12 @@ export const combineProcessedData = (
   if (oldData) {
     const modData = { ...oldData };
     modData.nodes = removeDuplicates(
+      // @ts-ignore
       [...newData.nodes, ...oldData.nodes],
       'id',
     );
     modData.edges = removeDuplicates(
+      // @ts-ignore
       [...newData.edges, ...oldData.edges],
       'id',
     );
