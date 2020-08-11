@@ -195,7 +195,10 @@ export const filterDataByTime = (
   return newFilteredData;
 };
 
-export const processData = (data: Graph.Data, getFns: any): Graph.Data => {
+export const processData = (
+  data: Graph.Data,
+  getFns: Graph.GetFns,
+): Graph.Data => {
   const {
     getEdgeSource,
     getEdgeTarget,
@@ -275,12 +278,12 @@ export const datatoTS = (
         .map((edge) => [<number>getEdgeTime(edge), 1])
         .sort((a, b) => a[0] - b[0]);
 
-export const chartRange = (timeRange: number[]): number[] => {
+export const chartRange = (timeRange: Graph.TimeRange): Graph.TimeRange => {
   const range = Math.max((timeRange[1] - timeRange[0]) / 8, 1000 * 60 * 60 * 1);
   return [timeRange[0] - range, timeRange[1] + range];
 };
 
-export const removeDuplicates = (myArr: any[], prop: string): any[] =>
+export const removeDuplicates = (myArr: [], prop: string): [] =>
   // Remove duplicates from array by checking on prop
   myArr.filter(
     (obj, pos, arr) =>

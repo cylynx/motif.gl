@@ -23,6 +23,7 @@ export interface Data {
   metadata?: Metadata;
 }
 
+export type TimeRange = [number, number];
 export type GetEdgeNumber = (edge: Edge) => number | number[];
 export type GetEdgeString = (edge: Edge) => string;
 export type GetNodeString = (edge: Node) => string;
@@ -41,8 +42,9 @@ export interface GetFns {
 }
 
 export interface Layout {
-  name: string;
+  name: 'concentric' | 'force' | 'radial' | 'grid' | 'dagre' | 'circle';
   options?: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
   };
 }

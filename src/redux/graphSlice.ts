@@ -1,4 +1,3 @@
-// @ts-nocheck
 /* eslint-disable prefer-destructuring */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-param-reassign */
@@ -6,6 +5,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import isEmpty from 'lodash/isEmpty';
 import * as LAYOUT from '../constants/layoutOptions';
+import * as Graph from '../types/Graph';
 import {
   combineProcessedData,
   deriveVisibleGraph,
@@ -15,7 +15,21 @@ import {
   filterDataByTime,
 } from '../utils/graphUtils';
 
-const initialState = {
+interface GraphState {
+  getFns: Graph.GetFns;
+  styleOptions: Graph.StyleOptions;
+  graphList: Graph.Data[];
+  graphFlatten: { nodes: Graph.Node[]; edges: Graph.Edge[] };
+  graphGrouped: { nodes: Graph.Node[]; edges: Graph.Edge[] };
+  graphVisible: { nodes: Graph.Node[]; edges: Graph.Edge[] };
+  tsData: boolean;
+  timeRange: Graph.TimeRange | [];
+  selectTimeRange: Graph.TimeRange | [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  detailedSelection: any;
+}
+
+const initialState: GraphState = {
   getFns: {
     getEdgeWidth: null,
     getEdgeTime: null,

@@ -28,6 +28,8 @@
   "rules": {
     "react/display-name": 0,
     "no-restricted-syntax": 0,
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/explicit-module-boundary-types": 0,
     "@typescript-eslint/ban-ts-comment": 0,
     "space-before-function-paren": 0,
     "react/prop-types": 0,
