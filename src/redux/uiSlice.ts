@@ -5,7 +5,22 @@
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+export interface UiState {
+  name: string;
+  currency: string;
+  loading: boolean;
+  modalMsg: string;
+  modalOpen: boolean;
+  modalImportOpen: boolean;
+  clickedId: any;
+  timeLock: boolean;
+  bottomOpen: boolean;
+  scoreLock: boolean;
+  score: any;
+  valueLock: boolean;
+}
+
+const initialState: UiState = {
   name: '',
   currency: '',
   loading: false,

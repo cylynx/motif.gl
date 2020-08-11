@@ -15,7 +15,7 @@ import {
   filterDataByTime,
 } from '../utils/graphUtils';
 
-interface GraphState {
+export interface GraphState {
   getFns: Graph.GetFns;
   styleOptions: Graph.StyleOptions;
   graphList: Graph.Data[];
