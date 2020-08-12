@@ -6,7 +6,7 @@ import { CATEGORIES_COLOR } from './categories';
 type MinMax = {
   min: number;
   max: number;
-}
+};
 
 /**
  * Filter all edges which contains a given node id as source or target
@@ -447,11 +447,11 @@ export const applyStyle = (
   if (groupEdges) {
     const styledEdges = styleGroupedEdge(data, edgeWidth, getEdgeWidth);
     const styledNodes = adjustNodeSize(data, nodeSize);
-    return { ...replaceData(data, styledNodes, styledEdges) };
+    return replaceData(data, styledNodes, styledEdges);
   }
   const styledEdges = styleEdge(data, edgeWidth, getEdgeWidth);
   const styledNodes = adjustNodeSize(data, nodeSize);
-  return { ...replaceData(data, styledNodes, styledEdges) };
+  return replaceData(data, styledNodes, styledEdges);
 };
 
 /**

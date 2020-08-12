@@ -7,7 +7,7 @@ import { InfoNotification } from '../ui';
 import * as Prop from '../../types/Prop';
 
 import { addData } from '../../processors';
-import { sampleJSONData } from '../../constants/sample-data';
+import * as DATA from '../../constants/sample-data';
 import { closeImportModal, fetchError } from '../../redux';
 
 const QueryFile: React.FC<Prop.QueryFile> = ({ info, tooltip }) => {
@@ -47,7 +47,7 @@ const QueryFile: React.FC<Prop.QueryFile> = ({ info, tooltip }) => {
   const trySampleData = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(closeImportModal());
-    dispatch(addData(sampleJSONData));
+    dispatch(addData(DATA.TriangleJSON));
   };
 
   return (
