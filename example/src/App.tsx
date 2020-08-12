@@ -17,12 +17,12 @@ const App = () => {
           <Investigate
             name='Blocklynx'
             currency='ETH'
-            getFns={{
+            accessorFns={{
               // getters below are for firebase
-              getEdgeSource: (edge) => edge.from,
-              getEdgeTarget: (edge) => edge.to,
-              getEdgeSourceAdd: (edge) => edge.data.from_address,
-              getEdgeTargetAdd: (edge) => edge.data.to_address,
+              getNodeID: (node) => node.id,
+              getEdgeID: (edge) => edge.id,
+              getEdgeSource: (edge) => edge.source,
+              getEdgeTarget: (edge) => edge.target,
               getEdgeLabel: (edge) => edge.data.txn_hash,
               getEdgeTime: (edge) => edge.data.blk_ts_unix,
               getEdgeScore: (edge) => edge.data.score_vector,

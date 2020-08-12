@@ -1,4 +1,4 @@
-import graph, { addQuery, updateGraph, timeRangeChange } from './graphSlice';
+import graph, { addQuery, updateGraph, timeRangeChange } from './graph-slice';
 import testNeighbourData from '../../constants/testNeighbourData.json';
 import testNeighbourData2 from '../../constants/testNeighbourData2.json';
 

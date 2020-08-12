@@ -3,7 +3,7 @@ import isUndefined from 'lodash/isUndefined';
 import * as Graph from '../types/Graph';
 import { CATEGORIES_COLOR } from './categories';
 
-interface MinMax {
+type MinMax = {
   min: number;
   max: number;
 }
@@ -33,7 +33,7 @@ export const getDegree = (data: Graph.Data, id: string) =>
  * @return {*}  {(Record<string | number, number>)}
  */
 export const getGraphDegree = (
-  data: Graph.Data
+  data: Graph.Data,
 ): Record<string | number, number> => {
   const nodeIds = [];
   const degree = {};
@@ -56,7 +56,7 @@ export const getGraphDegree = (
  */
 export const adjustNodeSize = (
   data: Graph.Data,
-  method: string
+  method: string,
 ): Graph.Node[] => {
   const degree = getGraphDegree(data);
   const min = Math.min(...Object.values(degree));
@@ -89,7 +89,7 @@ export const adjustNodeSize = (
  */
 export const isGroupEdges = (
   edge: Graph.Edge,
-  getEdgeWidth: Graph.EdgeAccessor<number | number[]>
+  getEdgeWidth: Graph.EdgeAccessor<number | number[]>,
 ) => Array.isArray(getEdgeWidth(edge));
 
 /**
@@ -101,14 +101,14 @@ export const isGroupEdges = (
  */
 export const getMinMaxValue = (
   data: Graph.Data,
-  getEdgeWidth: Graph.EdgeAccessor<number | number[]>
+  getEdgeWidth: Graph.EdgeAccessor<number | number[]>,
 ): MinMax => {
   const arrValue = [];
   for (const edge of data.edges) {
     if (isGroupEdges(edge, getEdgeWidth)) {
       // isGroupEdges ensures that it is of type number[]. Sum all values in array
       arrValue.push(
-        (getEdgeWidth(edge) as number[]).reduce((a, b) => a + b, 0)
+        (getEdgeWidth(edge) as number[]).reduce((a, b) => a + b, 0),
       );
     } else {
       arrValue.push(getEdgeWidth(edge));
@@ -131,7 +131,7 @@ export const getMinMaxValue = (
 export const styleGroupedEdge = (
   data: Graph.Data,
   method: string,
-  getEdgeWidth: Graph.EdgeAccessor<number | number[]>
+  getEdgeWidth: Graph.EdgeAccessor<number | number[]>,
 ): Graph.Edge[] => {
   const modEdges = [];
   for (const edge of data.edges) {
@@ -167,7 +167,7 @@ export const styleGroupedEdge = (
 export const styleEdge = (
   data: Graph.Data,
   method: string,
-  getEdgeWidth: Graph.EdgeAccessor<number>
+  getEdgeWidth: Graph.EdgeAccessor<number>,
 ): Graph.Edge[] => {
   // Scales width based on min, max value of edges
   // mode = eth (scale width from 0.5-5) or fix (default value of 0.5)
@@ -238,14 +238,14 @@ export const combineEdges = (edges: Graph.Edge[]): Graph.Edge[] => {
 export const filterDataByTime = (
   data: Graph.Data,
   timerange: number[],
-  getEdgeTime: Graph.EdgeAccessor<number>
+  getEdgeTime: Graph.EdgeAccessor<number>,
 ): Graph.Data => {
   if (isUndefined(getEdgeTime)) return data;
   const { nodes, edges } = data;
   // Because our time data is on links, the timebar's filteredData object only contains links.
   // But we need to show nodes in the chart too: so for each link, track the connected nodes
   const filteredEdges = edges.filter((edge) =>
-    inRange(<number>getEdgeTime(edge), timerange[0], timerange[1])
+    inRange(getEdgeTime(edge) as number, timerange[0], timerange[1]),
   );
   // Filter nodes which are connected to the edges
   const filteredNodesId: any[] = [];
@@ -255,7 +255,7 @@ export const filterDataByTime = (
   });
 
   const filteredNodes = nodes.filter((node) =>
-    filteredNodesId.includes(node.id)
+    filteredNodesId.includes(node.id),
   );
 
   const newFilteredData = {
@@ -275,7 +275,7 @@ export const filterDataByTime = (
  */
 export const processData = (
   data: Graph.Data,
-  AccessorFns: Graph.AccessorFns
+  AccessorFns: Graph.AccessorFns,
 ): Graph.Data => {
   const {
     getEdgeSource,
@@ -332,7 +332,7 @@ export const processData = (
  */
 export const replaceEdges = (
   oldData: Graph.Data,
-  newEdges: Graph.Edge[]
+  newEdges: Graph.Edge[],
 ): Graph.Data => {
   const modData = { ...oldData };
   modData.edges = [...newEdges];
@@ -350,7 +350,7 @@ export const replaceEdges = (
 export const replaceData = (
   oldData: Graph.Data,
   newNodes: Graph.Node[],
-  newEdges: Graph.Edge[]
+  newEdges: Graph.Edge[],
 ): Graph.Data => {
   const modData = { ...oldData };
   modData.edges = [...newEdges];
@@ -367,7 +367,7 @@ export const replaceData = (
  */
 export const datatoTS = (
   data: Graph.Data,
-  getEdgeTime: Graph.EdgeAccessor<number>
+  getEdgeTime: Graph.EdgeAccessor<number>,
 ): Graph.TimeSeries =>
   // @ts-ignore
   isUndefined(getEdgeTime)
@@ -398,7 +398,7 @@ export const removeDuplicates = (myArr: [], prop: string): [] =>
   // @ts-ignore
   myArr.filter(
     (obj, pos, arr) =>
-      arr.map((mapObj) => mapObj[prop]).indexOf(obj[prop]) === pos
+      arr.map((mapObj) => mapObj[prop]).indexOf(obj[prop]) === pos,
   );
 
 /**
@@ -410,19 +410,19 @@ export const removeDuplicates = (myArr: [], prop: string): [] =>
  */
 export const combineProcessedData = (
   newData: Graph.Data,
-  oldData: Graph.Data
+  oldData: Graph.Data,
 ): Graph.Data => {
   if (oldData) {
     const modData = { ...oldData };
     modData.nodes = removeDuplicates(
       // @ts-ignore
       [...newData.nodes, ...oldData.nodes],
-      'id'
+      'id',
     );
     modData.edges = removeDuplicates(
       // @ts-ignore
       [...newData.edges, ...oldData.edges],
-      'id'
+      'id',
     );
     return modData;
   }
@@ -441,7 +441,7 @@ export const combineProcessedData = (
 export const applyStyle = (
   data: Graph.Data,
   defaultOptions: Graph.StyleOptions,
-  getEdgeWidth: Graph.EdgeAccessor<number>
+  getEdgeWidth: Graph.EdgeAccessor<number>,
 ): Graph.Data => {
   const { groupEdges, edgeWidth, nodeSize } = defaultOptions;
   if (groupEdges) {
@@ -476,89 +476,8 @@ export const groupEdges = (data: Graph.Data): Graph.Data => {
 export const deriveVisibleGraph = (
   graphData: Graph.Data,
   styleOptions: Graph.StyleOptions,
-  getEdgeWidth: Graph.EdgeAccessor<number>
+  getEdgeWidth: Graph.EdgeAccessor<number>,
 ): Graph.Data =>
   styleOptions.groupEdges
     ? applyStyle(groupEdges(graphData), styleOptions, getEdgeWidth)
     : applyStyle(graphData, styleOptions, getEdgeWidth);
-
-export const sampleJSONData: Graph.Data[] = [
-  {
-    nodes: [
-      {
-        id: 'address/82574506',
-        data: {
-          category: 'Other',
-          _key: '82574506',
-          _id: 'address/82574506',
-          _rev: '_ane_iCm--x',
-          address: '0xd96ba527be241c2c31fd66cbb0a9430702906a2a',
-          created_ts_unix: 1557191325000,
-        },
-        label: 'd96ba...',
-        style: { nodeSize: 20, primaryColor: '#008080' },
-      },
-      {
-        id: 'address/83923613',
-        data: {
-          category: 'Other',
-          _key: '83923613',
-          _id: 'address/83923613',
-          _rev: '_ane_f9i--y',
-          address: '0xd4e79226f1e5a7a28abb58f4704e53cd364e8d11',
-          created_ts_unix: 1558371616000,
-        },
-        label: 'd4e79...',
-        style: { nodeSize: 20, primaryColor: '#008080' },
-      },
-    ],
-    edges: [
-      {
-        id: 'transaction/288844035',
-        data: {
-          _from: 'address/82574506',
-          _id: 'transaction/288844035',
-          _key: '288844035',
-          _rev: '_aneB-ZW--c',
-          _to: 'address/83923613',
-          blk_num: 7798067,
-          blk_ts_unix: 1558371817000,
-          score_vector: [
-            2.4669448502752394e-8,
-            0.0000015858786746827042,
-            3.6277524748966577e-12,
-            2.5527963821404863e-9,
-            0.00002864326272102155,
-            7.723923637444402e-9,
-            4.003233853929708e-9,
-            0.9999675128859348,
-            1.5164078785901573e-9,
-            3.9248534715014887e-7,
-            0.0000016792011583752624,
-            3.683347536863764e-8,
-            1.7903039945332553e-9,
-            8.348233243778563e-11,
-            1.0710946419298142e-7,
-          ],
-          trace_addr: '-1',
-          txn_hash:
-            '0x9969ca31352a32f796320dac61594bca629f3b8a709ac7a8e40439fb74444624',
-          value: 10000,
-          to_address: '0xd4e79226f1e5a7a28abb58f4704e53cd364e8d11',
-          from_address: '0xd96ba527be241c2c31fd66cbb0a9430702906a2a',
-        },
-        source: 'address/82574506',
-        target: 'address/83923613',
-        label: '1.00e+4',
-        title: '1.00e+4 ETH',
-        style: { endArrow: 'true' },
-      },
-    ],
-    metadata: {
-      search_size: 1,
-      retrieved_size: 1,
-      title: 'Txn 9969c',
-      key: 1592981050812,
-    },
-  },
-];

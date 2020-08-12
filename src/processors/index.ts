@@ -48,12 +48,12 @@ const checkEdgeValue = (getEdgeWidth: Graph.EdgeAccessor<number>): boolean =>
 const processResponse = (
   dispatch: any,
   graphList: Graph.Data[],
-  AccessorFns: Graph.AccessorFns,
+  accessorFns: Graph.AccessorFns,
   newData: Graph.Data,
 ) => {
   dispatch(fetchBegin());
   const { metadata } = newData;
-  const { getEdgeTime, getEdgeScore, getEdgeWidth } = AccessorFns;
+  const { getEdgeTime, getEdgeScore, getEdgeWidth } = accessorFns;
   if (checkMetaData(metadata)) {
     const message = `${metadata.retrieved_size} / ${metadata.search_size} of the most recent transactions retrieved.
         We plan to allow large imports and visualization in the full version.
@@ -98,11 +98,11 @@ async function asyncForEach(array: any[], callback: (item: any) => void) {
 
 // One function to rule them all
 // Thunk to dispatch our calls
-export default (data: Graph.Data | Graph.Data[]) => (
+export const addData = (data: Graph.Data | Graph.Data[]) => (
   dispatch: any,
   getState: any,
 ) => {
-  const { graphList, AccessorFns } = getGraph(getState());
+  const { graphList, accessorFns } = getGraph(getState());
   if (Array.isArray(data)) {
     asyncForEach(data, async (graph) => {
       try {
@@ -110,8 +110,8 @@ export default (data: Graph.Data | Graph.Data[]) => (
         processResponse(
           dispatch,
           graphList,
-          AccessorFns,
-          processData(graph, AccessorFns),
+          accessorFns,
+          processData(graph, accessorFns),
         );
       } catch (err) {
         dispatch(fetchError(err));
@@ -122,8 +122,8 @@ export default (data: Graph.Data | Graph.Data[]) => (
       processResponse(
         dispatch,
         graphList,
-        AccessorFns,
-        processData(data, AccessorFns),
+        accessorFns,
+        processData(data, accessorFns),
       );
     } catch (err) {
       dispatch(fetchError(err));

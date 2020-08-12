@@ -4,7 +4,7 @@
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
 import { createSlice } from '@reduxjs/toolkit';
 import isEmpty from 'lodash/isEmpty';
-import * as LAYOUT from '../constants/layoutOptions';
+import * as LAYOUT from '../constants/layout-options';
 import * as Graph from '../types/Graph';
 import {
   combineProcessedData,
@@ -16,7 +16,7 @@ import {
 } from '../utils/graph-utils';
 
 export interface GraphState {
-  AccessorFns: Graph.AccessorFns;
+  accessorFns: Graph.AccessorFns;
   styleOptions: Graph.StyleOptions;
   graphList: Graph.Data[];
   graphFlatten: { nodes: Graph.Node[]; edges: Graph.Edge[] };
@@ -30,13 +30,13 @@ export interface GraphState {
 }
 
 const initialState: GraphState = {
-  AccessorFns: {
+  accessorFns: {
     getNodeID: (node) => node.id,
     getEdgeID: (edge) => edge.id,
     getEdgeSource: (edge) => edge.source,
     getEdgeTarget: (edge) => edge.target,
-    getEdgeWidth: null,
-    getEdgeTime: null,
+    getEdgeWidth: (edge) => edge.data.blk_ts_unix,
+    getEdgeTime: (edge) => edge.data.blk_ts_unix,
   },
   styleOptions: {
     layout: {
@@ -68,7 +68,7 @@ const graph = createSlice({
   reducers: {
     resetState(state) {
       const newGraphState = { ...initialState };
-      newGraphState.AccessorFns = state.AccessorFns;
+      newGraphState.accessorFns = state.accessorFns;
       return newGraphState;
     },
     addQuery(state, action) {
@@ -77,7 +77,7 @@ const graph = createSlice({
     },
     changeOptions(state, action) {
       const { key, value } = action.payload;
-      const { getEdgeWidth, getEdgeTime } = state.AccessorFns;
+      const { getEdgeWidth, getEdgeTime } = state.accessorFns;
       state.styleOptions[key] = value;
       const newFilteredData = filterDataByTime(
         state.graphFlatten,
@@ -92,36 +92,11 @@ const graph = createSlice({
     },
     changeLayout(state, action) {
       const newLayoutName = action.payload;
-      if (newLayoutName === 'dagre') {
-        state.styleOptions.layout = {
-          name: newLayoutName,
-          options: LAYOUT.DAGRE,
-        };
-      } else if (newLayoutName === 'circle') {
-        state.styleOptions.layout = {
-          name: newLayoutName,
-          options: LAYOUT.CIRCLE,
-        };
-      } else if (newLayoutName === 'grid') {
-        state.styleOptions.layout = {
-          name: newLayoutName,
-          options: LAYOUT.GRID,
-        };
-      } else if (newLayoutName === 'radial') {
-        state.styleOptions.layout = {
-          name: newLayoutName,
-          options: LAYOUT.RADIAL,
-        };
-      } else {
-        state.styleOptions.layout = {
-          name: newLayoutName,
-          options: {},
-        };
-      }
+      state.styleOptions.layout = LAYOUT.OPTIONS.find((x) => x.name === newLayoutName)
     },
     processGraphResponse(state, action) {
       const newData = action.payload;
-      const { getEdgeWidth, getEdgeTime } = state.AccessorFns;
+      const { getEdgeWidth, getEdgeTime } = state.accessorFns;
       const modData = combineProcessedData(newData, state.graphFlatten);
       state.graphGrouped = groupEdges(modData);
       state.graphFlatten = modData;
@@ -150,7 +125,7 @@ const graph = createSlice({
     },
     timeRangeChange(state, action) {
       const selectedTimeRange = action.payload;
-      const { getEdgeWidth, getEdgeTime } = state.AccessorFns;
+      const { getEdgeWidth, getEdgeTime } = state.accessorFns;
       // Filter out all relevant edges and store from & to node id
       const newFilteredData = filterDataByTime(
         state.graphFlatten,
@@ -175,7 +150,7 @@ const graph = createSlice({
       state.detailedSelection.data = null;
     },
     setAccessorFns(state, action) {
-      state.AccessorFns = action.payload;
+      state.accessorFns = action.payload;
     },
   },
 });
