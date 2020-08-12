@@ -388,14 +388,15 @@ export const chartRange = (timeRange: Graph.TimeRange): Graph.TimeRange => {
 };
 
 /**
- *  Remove duplicates from array by checking on prop
+ * Remove duplicates from array by checking on prop
  *
- * @param {[]} myArr
+ * @param {(Graph.Node[] | Graph.Edge[] | [])} myArr
  * @param {string} prop
- * @return {*}  {[]}
  */
-export const removeDuplicates = (myArr: [], prop: string): [] =>
-  // @ts-ignore
+export const removeDuplicates = (
+  myArr: Graph.Node[] | Graph.Edge[] | [],
+  prop: string,
+) =>
   myArr.filter(
     (obj, pos, arr) =>
       arr.map((mapObj) => mapObj[prop]).indexOf(obj[prop]) === pos,
@@ -415,12 +416,10 @@ export const combineProcessedData = (
   if (oldData) {
     const modData = { ...oldData };
     modData.nodes = removeDuplicates(
-      // @ts-ignore
       [...newData.nodes, ...oldData.nodes],
       'id',
     );
     modData.edges = removeDuplicates(
-      // @ts-ignore
       [...newData.edges, ...oldData.edges],
       'id',
     );
