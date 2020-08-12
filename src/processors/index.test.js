@@ -15,7 +15,7 @@ import {
   setBottomOpen,
 } from '../redux/uiSlice';
 
-const getData = type => {
+const getData = (type) => {
   const simpleJSONData = {
     nodes: [{ id: 'node-1' }, { id: 'node-2' }],
     edges: [{ id: 'edge-1', source: 'node-1', target: 'node-2' }],
@@ -145,7 +145,7 @@ const getData = type => {
 };
 
 const mockStore = configureMockStore([thunk]);
-const getStore = type => {
+const getStore = (type) => {
   const graphState = cloneDeep(initialState);
   const store = {
     investigate: {
@@ -157,17 +157,17 @@ const getStore = type => {
   };
   switch (type) {
     case 'time':
-      store.investigate.graph.present.getFns.getEdgeTime = edge =>
+      store.investigate.graph.present.getFns.getEdgeTime = (edge) =>
         edge.data.time;
       return store;
     case 'score':
-      store.investigate.graph.present.getFns.getEdgeScore = edge =>
+      store.investigate.graph.present.getFns.getEdgeScore = (edge) =>
         edge.data.score;
       return store;
     case 'both':
       store.investigate.graph.present.getFns = {
-        getEdgeTime: edge => edge.data.time,
-        getEdgeScore: edge => edge.data.score,
+        getEdgeTime: (edge) => edge.data.time,
+        getEdgeScore: (edge) => edge.data.score,
       };
       return store;
     default:

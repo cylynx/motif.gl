@@ -16,13 +16,13 @@ import {
 } from '../utils/graphUtils';
 
 export interface GraphState {
-  getFns: Graph.GetFns;
+  AccessorFns: Graph.AccessorFns;
   styleOptions: Graph.StyleOptions;
   graphList: Graph.Data[];
   graphFlatten: { nodes: Graph.Node[]; edges: Graph.Edge[] };
   graphGrouped: { nodes: Graph.Node[]; edges: Graph.Edge[] };
   graphVisible: { nodes: Graph.Node[]; edges: Graph.Edge[] };
-  tsData: boolean;
+  tsData: Graph.TimeSeries;
   timeRange: Graph.TimeRange | [];
   selectTimeRange: Graph.TimeRange | [];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -30,7 +30,11 @@ export interface GraphState {
 }
 
 const initialState: GraphState = {
-  getFns: {
+  AccessorFns: {
+    getNodeID: (node) => node.id,
+    getEdgeID: (edge) => edge.id,
+    getEdgeSource: (edge) => edge.source,
+    getEdgeTarget: (edge) => edge.target,
     getEdgeWidth: null,
     getEdgeTime: null,
   },
@@ -48,7 +52,7 @@ const initialState: GraphState = {
   graphFlatten: { nodes: [], edges: [] },
   graphGrouped: { nodes: [], edges: [] },
   graphVisible: { nodes: [], edges: [] },
-  tsData: false,
+  tsData: [],
   // Set a large interval to display the data on initialize regardless of resetView
   timeRange: [-2041571596000, 2041571596000],
   selectTimeRange: [-2041571596000, 2041571596000],
@@ -64,7 +68,7 @@ const graph = createSlice({
   reducers: {
     resetState(state) {
       const newGraphState = { ...initialState };
-      newGraphState.getFns = state.getFns;
+      newGraphState.AccessorFns = state.AccessorFns;
       return newGraphState;
     },
     addQuery(state, action) {
@@ -73,17 +77,17 @@ const graph = createSlice({
     },
     changeOptions(state, action) {
       const { key, value } = action.payload;
-      const { getEdgeWidth, getEdgeTime } = state.getFns;
+      const { getEdgeWidth, getEdgeTime } = state.AccessorFns;
       state.styleOptions[key] = value;
       const newFilteredData = filterDataByTime(
         state.graphFlatten,
         state.selectTimeRange,
-        getEdgeTime,
+        getEdgeTime
       );
       state.graphVisible = deriveVisibleGraph(
         newFilteredData,
         state.styleOptions,
-        getEdgeWidth,
+        getEdgeWidth
       );
     },
     changeLayout(state, action) {
@@ -117,7 +121,7 @@ const graph = createSlice({
     },
     processGraphResponse(state, action) {
       const newData = action.payload;
-      const { getEdgeWidth, getEdgeTime } = state.getFns;
+      const { getEdgeWidth, getEdgeTime } = state.AccessorFns;
       const modData = combineProcessedData(newData, state.graphFlatten);
       state.graphGrouped = groupEdges(modData);
       state.graphFlatten = modData;
@@ -132,12 +136,12 @@ const graph = createSlice({
       const newFilteredData = filterDataByTime(
         state.graphFlatten,
         state.timeRange,
-        getEdgeTime,
+        getEdgeTime
       );
       state.graphVisible = deriveVisibleGraph(
         newFilteredData,
         state.styleOptions,
-        getEdgeWidth,
+        getEdgeWidth
       );
     },
     setRange(state, action) {
@@ -146,17 +150,17 @@ const graph = createSlice({
     },
     timeRangeChange(state, action) {
       const selectedTimeRange = action.payload;
-      const { getEdgeWidth, getEdgeTime } = state.getFns;
+      const { getEdgeWidth, getEdgeTime } = state.AccessorFns;
       // Filter out all relevant edges and store from & to node id
       const newFilteredData = filterDataByTime(
         state.graphFlatten,
         selectedTimeRange,
-        getEdgeTime,
+        getEdgeTime
       );
       state.graphVisible = deriveVisibleGraph(
         newFilteredData,
         state.styleOptions,
-        getEdgeWidth,
+        getEdgeWidth
       );
     },
     getDetails(state, action) {
@@ -170,8 +174,8 @@ const graph = createSlice({
       state.detailedSelection.type = null;
       state.detailedSelection.data = null;
     },
-    setGetFns(state, action) {
-      state.getFns = action.payload;
+    setAccessorFns(state, action) {
+      state.AccessorFns = action.payload;
     },
   },
 });
@@ -188,7 +192,7 @@ export const {
   timeRangeChange,
   getDetails,
   clearDetails,
-  setGetFns,
+  setAccessorFns,
 } = graph.actions;
 
 export default graph.reducer;

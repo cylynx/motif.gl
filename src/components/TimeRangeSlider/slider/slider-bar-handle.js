@@ -26,13 +26,13 @@ import MouseEventHandler from './mouse-event';
 
 const StyledSlider = styled.div`
   position: relative;
-  background-color: ${props =>
+  background-color: ${(props) =>
     props.active
       ? props.theme.sliderBarHoverColor
       : props.theme.sliderBarColor};
-  ${props =>
+  ${(props) =>
     `${props.vertical ? 'width' : 'height'}: ${props.theme.sliderBarHeight}px`};
-  border-radius: ${props => props.theme.sliderBarRadius};
+  border-radius: ${(props) => props.theme.sliderBarRadius};
   :hover {
     cursor: pointer;
   }

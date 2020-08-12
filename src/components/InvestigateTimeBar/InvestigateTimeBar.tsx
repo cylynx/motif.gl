@@ -66,12 +66,12 @@ const InvestigateTimeBar = () => {
   const aggPeriod = deriveAggPeriod(timeRange[1] - timeRange[0]);
 
   const aggSeries = groupBy(tsData, (result) =>
-    groupByTime(result[0], aggPeriod),
+    groupByTime(result[0], aggPeriod)
   );
 
   const dataSeries = [];
   Object.entries(aggSeries).forEach(([key, value]) =>
-    dataSeries.push([new Date(key).getTime(), value.length]),
+    dataSeries.push([new Date(key).getTime(), value.length])
   );
 
   // Filter the bar graph to get the colour

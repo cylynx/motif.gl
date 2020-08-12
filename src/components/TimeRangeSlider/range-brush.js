@@ -28,12 +28,12 @@ import { normalizeSliderValue } from './data-utils';
 const StyledG = styled.g`
   .selection {
     stroke: none;
-    fill: ${props =>
+    fill: ${(props) =>
       props.isRanged ? props.theme.rangeBrushBgd : props.theme.BLUE2};
-    fill-opacity: ${props => (props.isRanged ? 0.3 : 1)};
+    fill-opacity: ${(props) => (props.isRanged ? 0.3 : 1)};
   }
   .handle {
-    fill: ${props => props.theme.BLUE2};
+    fill: ${(props) => props.theme.BLUE2};
     fill-opacity: 0.3;
   }
 `;
@@ -146,7 +146,7 @@ class RangeBrush extends Component {
     } = this.props;
 
     if (width && max - min) {
-      const scale = x => ((x - min) * width) / (max - min);
+      const scale = (x) => ((x - min) * width) / (max - min);
       if (!isRanged) {
         // only draw a 1 pixel line
         this.brush.move(this.root, [scale(val0), scale(val0) + 1]);
@@ -156,7 +156,7 @@ class RangeBrush extends Component {
     }
   }
 
-  _brushed = evt => {
+  _brushed = (evt) => {
     if (evt.sourceEvent.type === 'brush') return;
     const [sel0, sel1] = evt.selection;
     const right = moveRight(this._startSel, evt.selection);
@@ -168,7 +168,7 @@ class RangeBrush extends Component {
       marks,
       isRanged,
     } = this.props;
-    const invert = x => (x * (max - min)) / width + min;
+    const invert = (x) => (x * (max - min)) / width + min;
     let d0 = invert(sel0);
     let d1 = invert(sel1);
 
@@ -204,7 +204,7 @@ class RangeBrush extends Component {
 
     return (
       <StyledG
-        className="kg-range-slider__brush"
+        className='kg-range-slider__brush'
         isRanged={isRanged}
         ref={this.rootContainer}
       />

@@ -37,7 +37,7 @@ export default class MouseEventHandler {
     this._setAnchor = setAnchor;
   }
 
-  handleMouseDown = e => {
+  handleMouseDown = (e) => {
     document.addEventListener('mouseup', this._mouseup);
     document.addEventListener('mousemove', this._mousemove);
     if (this._setAnchor) {
@@ -66,13 +66,13 @@ export default class MouseEventHandler {
     return pos - (this._vertical ? trackRect.bottom : trackRect.left);
   }
 
-  _mousemove = e => {
+  _mousemove = (e) => {
     e.preventDefault();
     const pos = this._getMousePos(e);
     this._valueListener(this._getDistanceToTrack(pos));
   };
 
-  handleTouchStart = e => {
+  handleTouchStart = (e) => {
     // TODO: fix touch event
     document.addEventListener('touchend', this._touchend);
     document.addEventListener('touchmove', this._touchmove);
@@ -83,7 +83,7 @@ export default class MouseEventHandler {
     this._toggleMouseOver();
   };
 
-  _touchmove = e => {
+  _touchmove = (e) => {
     // TODO: touch not tested
     const pos = this._getTouchPosition(e);
     this._valueListener(this._getDistanceToTrack(pos));

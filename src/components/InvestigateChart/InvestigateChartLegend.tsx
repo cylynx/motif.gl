@@ -11,9 +11,11 @@ import { CATEGORIES_COLOR } from '../../utils/categories';
 
 const deriveLegendCategories = (data: Graph.Data) => {
   const nodes = [...data.nodes];
-  const newNodes = nodes.filter((obj, pos, arr) => (
-      arr.map((mapObj) => mapObj.data.category).indexOf(obj.data.category) === pos
-    ));
+  const newNodes = nodes.filter(
+    (obj, pos, arr) =>
+      arr.map((mapObj) => mapObj.data.category).indexOf(obj.data.category) ===
+      pos
+  );
   const legend = [];
   for (const node of newNodes) {
     const n: any = {};

@@ -8,7 +8,7 @@ import { getGraph, getUI } from '../../redux/accessors';
 
 const InvestigatePanel = () => {
   const detailedSelection = useSelector(
-    (state) => getGraph(state).detailedSelection,
+    (state) => getGraph(state).detailedSelection
   );
   const name = useSelector((state) => getUI(state).name);
 

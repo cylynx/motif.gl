@@ -5,7 +5,7 @@ import * as Prop from '../types/Prop';
 
 export const getTabsOverride = (
   overrides: Prop.Overrides,
-  Component: React.ComponentType<Prop.ImportWizard>,
+  Component: React.ComponentType<Prop.ImportWizard>
 ): React.ComponentType<any> => {
   if (overrides.Tabs) {
     const tabsObj = overrides.Tabs;
@@ -28,7 +28,7 @@ export const getTabsOverride = (
 
 export const getNodeMenuOverride = (
   overrides: Prop.Overrides,
-  Component: React.ComponentType<Prop.NodeMenu>,
+  Component: React.ComponentType<Prop.NodeMenu>
 ): React.ComponentType<Prop.NodeMenu> => {
   if (overrides.NodeMenu) {
     return overrides.NodeMenu;

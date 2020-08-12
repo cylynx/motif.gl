@@ -25,25 +25,26 @@ import MouseEventHandler from './mouse-event';
 const StyledSliderHandle = styled.span`
   position: absolute;
   z-index: 10;
-  ${props => (props.vertical ? 'margin-left' : 'margin-top')}: -${props => (props.sliderHandleWidth - props.theme.sliderBarHeight) / 2}px;
-  height: ${props =>
+  ${(props) => (props.vertical ? 'margin-left' : 'margin-top')}: -${(props) =>
+  (props.sliderHandleWidth - props.theme.sliderBarHeight) / 2}px;
+  height: ${(props) =>
     Number.isFinite(props.sliderHandleWidth)
       ? props.sliderHandleWidth
       : props.theme.sliderHandleHeight}px;
-  width: ${props =>
+  width: ${(props) =>
     Number.isFinite(props.sliderHandleWidth)
       ? props.sliderHandleWidth
       : props.theme.sliderHandleHeight}px;
-  box-shadow: ${props => props.theme.sliderHandleShadow};
-  background-color: ${props => props.theme.sliderHandleColor};
+  box-shadow: ${(props) => props.theme.sliderHandleShadow};
+  background-color: ${(props) => props.theme.sliderHandleColor};
   border-width: 1px;
   border-style: solid;
-  border-color: ${props =>
+  border-color: ${(props) =>
     props.active
       ? props.theme.selectBorderColor
       : props.theme.sliderHandleColor};
   :hover {
-    background-color: ${props => props.theme.sliderHandleHoverColor};
+    background-color: ${(props) => props.theme.sliderHandleHoverColor};
     cursor: pointer;
   }
 `;
@@ -55,12 +56,12 @@ const StyledSliderTooltip = styled.div`
   pointer-events: none;
   transition: opacity 0.3s ease-out;
   z-index: 999;
-  margin-left: ${props => props.sliderHandleWidth + 12}px;
+  margin-left: ${(props) => props.sliderHandleWidth + 12}px;
   font-size: 9.5px;
   font-weight: 500;
   padding: 7px 10px;
-  background-color: ${props => props.theme.tooltipBg};
-  color: ${props => props.theme.tooltipColor};
+  background-color: ${(props) => props.theme.tooltipBg};
+  color: ${(props) => props.theme.tooltipColor};
   margin-bottom: -6px;
   width: 50px;
   :before,
@@ -82,7 +83,7 @@ const StyledSliderTooltip = styled.div`
     left: -6px;
     top: 50%;
     margin-top: -4px;
-    border-right-color: ${props => props.theme.tooltipBg};
+    border-right-color: ${(props) => props.theme.tooltipBg};
     border-right-style: solid;
     border-right-width: 6px;
   }
@@ -90,7 +91,7 @@ const StyledSliderTooltip = styled.div`
 
 const SliderTooltip = ({
   value,
-  format = val => val,
+  format = (val) => val,
   style,
   sliderHandleWidth,
 }) => {

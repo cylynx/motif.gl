@@ -38,22 +38,22 @@ const checkNewData = (
   return newData && !some(graphListKeys, (key) => key === newData.metadata.key);
 };
 
-const checkEdgeTime = (getEdgeTime: Graph.GetEdgeNumber): boolean =>
+const checkEdgeTime = (getEdgeTime: Graph.EdgeAccessor<number>): boolean =>
   !isUndefined(getEdgeTime);
-const checkEdgeScore = (getEdgeScore: Graph.GetEdgeNumber): boolean =>
+const checkEdgeScore = (getEdgeScore: Graph.EdgeAccessor<number>): boolean =>
   !isUndefined(getEdgeScore);
-const checkEdgeValue = (getEdgeWidth: Graph.GetEdgeNumber): boolean =>
+const checkEdgeValue = (getEdgeWidth: Graph.EdgeAccessor<number>): boolean =>
   !isUndefined(getEdgeWidth);
 
 const processResponse = (
   dispatch: any,
   graphList: Graph.Data[],
-  getFns: Graph.GetFns,
+  AccessorFns: Graph.AccessorFns,
   newData: Graph.Data,
 ) => {
   dispatch(fetchBegin());
   const { metadata } = newData;
-  const { getEdgeTime, getEdgeScore, getEdgeWidth } = getFns;
+  const { getEdgeTime, getEdgeScore, getEdgeWidth } = AccessorFns;
   if (checkMetaData(metadata)) {
     const message = `${metadata.retrieved_size} / ${metadata.search_size} of the most recent transactions retrieved.
         We plan to allow large imports and visualization in the full version.
@@ -91,6 +91,7 @@ const waitFor = (ms: number): Promise<void> =>
 
 async function asyncForEach(array: any[], callback: (item: any) => void) {
   for (const item of array) {
+    // eslint-disable-next-line no-await-in-loop
     await callback(item);
   }
 }
@@ -101,7 +102,7 @@ export default (data: Graph.Data | Graph.Data[]) => (
   dispatch: any,
   getState: any,
 ) => {
-  const { graphList, getFns } = getGraph(getState());
+  const { graphList, AccessorFns } = getGraph(getState());
   if (Array.isArray(data)) {
     asyncForEach(data, async (graph) => {
       try {
@@ -109,8 +110,8 @@ export default (data: Graph.Data | Graph.Data[]) => (
         processResponse(
           dispatch,
           graphList,
-          getFns,
-          processData(graph, getFns),
+          AccessorFns,
+          processData(graph, AccessorFns),
         );
       } catch (err) {
         dispatch(fetchError(err));
@@ -118,7 +119,12 @@ export default (data: Graph.Data | Graph.Data[]) => (
     });
   } else {
     try {
-      processResponse(dispatch, graphList, getFns, processData(data, getFns));
+      processResponse(
+        dispatch,
+        graphList,
+        AccessorFns,
+        processData(data, AccessorFns),
+      );
     } catch (err) {
       dispatch(fetchError(err));
     }

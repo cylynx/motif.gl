@@ -33,12 +33,12 @@ const TimeSliderContainer = styled.svg`
   position: absolute;
   .axis text {
     font-size: 9px;
-    fill: ${props => props.theme.textColor};
+    fill: ${(props) => props.theme.textColor};
   }
   .axis line,
   .axis path {
     fill: none;
-    stroke: ${props => props.theme.sliderBarBgd};
+    stroke: ${(props) => props.theme.sliderBarBgd};
     shape-rendering: crispEdges;
     stroke-width: 2;
   }
@@ -46,7 +46,7 @@ const TimeSliderContainer = styled.svg`
     display: none;
   }
   .value {
-    fill: ${props => props.theme.textColor};
+    fill: ${(props) => props.theme.textColor};
     font-size: 10px;
     &.start {
       text-anchor: start;
@@ -77,19 +77,15 @@ class TimeSliderMarker extends Component {
 
   xAxis = createRef();
 
-  domainSelector = props => props.domain;
+  domainSelector = (props) => props.domain;
 
-  widthSelector = props => props.width;
+  widthSelector = (props) => props.width;
 
   scaleSelector = createSelector(
     this.domainSelector,
     this.widthSelector,
     (domain, width) =>
-      Array.isArray(domain)
-        ? scaleUtc()
-            .domain(domain)
-            .range([0, width])
-        : null
+      Array.isArray(domain) ? scaleUtc().domain(domain).range([0, width]) : null
   );
 
   _updateAxis(scale) {
@@ -100,10 +96,7 @@ class TimeSliderMarker extends Component {
     // TODO: pass in ticks if interval is defined
     const ticks = Math.floor(this.props.width / MIN_TICK_WIDTH);
 
-    const xAxis = axisBottom(scale)
-      .ticks(ticks)
-      .tickSize(8)
-      .tickPadding(6);
+    const xAxis = axisBottom(scale).ticks(ticks).tickSize(8).tickPadding(6);
 
     select(this.xAxis.current).call(xAxis);
   }
@@ -111,11 +104,11 @@ class TimeSliderMarker extends Component {
   render() {
     return (
       <TimeSliderContainer
-        className="time-slider-marker"
+        className='time-slider-marker'
         width={this.props.width}
         height={height}
       >
-        <g className="x axis" ref={this.xAxis} transform="translate(0, 0)" />
+        <g className='x axis' ref={this.xAxis} transform='translate(0, 0)' />
       </TimeSliderContainer>
     );
   }

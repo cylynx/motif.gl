@@ -42,7 +42,7 @@ const AnimationPlaybacks = ({
     >
       <ButtonGroup>
         <IconButton
-          className="playback-control-button"
+          className='playback-control-button'
           {...btnStyle}
           onClick={updateAnimationTime}
         >

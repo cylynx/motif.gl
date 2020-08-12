@@ -85,9 +85,9 @@ export class TimeRangeSlider extends Component {
     );
   }
 
-  timeSelector = props => props.currentTime;
+  timeSelector = (props) => props.currentTime;
 
-  formatSelector = props => props.format;
+  formatSelector = (props) => props.format;
 
   displayTimeSelector = createSelector(
     this.timeSelector,
@@ -113,7 +113,7 @@ export class TimeRangeSlider extends Component {
     }
   );
 
-  _sliderUpdate = args => {
+  _sliderUpdate = (args) => {
     this._sliderThrottle.cancel();
     this._sliderThrottle(args);
   };
@@ -122,7 +122,7 @@ export class TimeRangeSlider extends Component {
     const { domain, value, isEnlarged, hideTimeTitle } = this.props;
 
     return (
-      <div className="time-range-slider">
+      <div className='time-range-slider'>
         {!hideTimeTitle ? (
           <TimeTitle
             timeFormat={this.props.timeFormat}
@@ -131,7 +131,7 @@ export class TimeRangeSlider extends Component {
           />
         ) : null}
         <StyledSliderContainer
-          className="time-range-slider__container"
+          className='time-range-slider__container'
           isEnlarged={isEnlarged}
         >
           {isEnlarged ? (
@@ -151,8 +151,8 @@ export class TimeRangeSlider extends Component {
                   pauseAnimation={pause}
                   resetAnimation={reset}
                   startAnimation={start}
-                  buttonHeight="12px"
-                  buttonStyle="secondary"
+                  buttonHeight='12px'
+                  buttonStyle='secondary'
                 />
               )}
             </AnimationController>
@@ -199,17 +199,18 @@ const TimeValueWrapper = styled.div`
   display: flex;
   align-items: center;
   font-size: 11px;
-  justify-content: ${props => (props.isEnlarged ? 'center' : 'space-between')};
+  justify-content: ${(props) =>
+    props.isEnlarged ? 'center' : 'space-between'};
   .horizontal-bar {
     padding: 0 12px;
-    color: ${props => props.theme.titleTextColor};
+    color: ${(props) => props.theme.titleTextColor};
   }
   .time-value {
     display: flex;
-    flex-direction: ${props => (props.isEnlarged ? 'row' : 'column')};
+    flex-direction: ${(props) => (props.isEnlarged ? 'row' : 'column')};
     align-items: flex-start;
     span {
-      color: ${props => props.theme.titleTextColor};
+      color: ${(props) => props.theme.titleTextColor};
     }
   }
   .time-value:last-child {
@@ -220,7 +221,7 @@ const TimeValueWrapper = styled.div`
 const TimeTitle = ({ value, isEnlarged, timeFormat = DEFAULT_TIME_FORMAT }) => (
   <TimeValueWrapper
     isEnlarged={isEnlarged}
-    className="time-range-slider__time-title"
+    className='time-range-slider__time-title'
   >
     <TimeValue
       key={0}
@@ -228,8 +229,8 @@ const TimeTitle = ({ value, isEnlarged, timeFormat = DEFAULT_TIME_FORMAT }) => (
       split={!isEnlarged}
     />
     {isEnlarged ? (
-      <div className="horizontal-bar">
-        <FaMinus height="12px" />
+      <div className='horizontal-bar'>
+        <FaMinus height='12px' />
       </div>
     ) : null}
     <TimeValue
@@ -242,7 +243,7 @@ const TimeTitle = ({ value, isEnlarged, timeFormat = DEFAULT_TIME_FORMAT }) => (
 
 const TimeValue = ({ value, split }) => (
   // render two lines if not enlarged
-  <div className="time-value">
+  <div className='time-value'>
     {split ? (
       value
         .split(' ')

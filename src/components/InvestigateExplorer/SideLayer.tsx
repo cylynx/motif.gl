@@ -31,7 +31,7 @@ const ToggleButton: React.FC<Prop.ToggleButton> = (props) => {
         left: isOpen ? '375px' : '10px',
       })}
     >
-      <Button size="mini" shape="square" kind="secondary" onClick={onClick}>
+      <Button size='mini' shape='square' kind='secondary' onClick={onClick}>
         {isOpen ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
       </Button>
     </div>
@@ -40,9 +40,7 @@ const ToggleButton: React.FC<Prop.ToggleButton> = (props) => {
 
 const Wrapper: React.FC<Prop.Wrapper> = (props) => {
   const [css, theme] = useStyletron();
-  const {
- offset, color, children, forwardedRef,
-} = props;
+  const { offset, color, children, forwardedRef } = props;
   return (
     <div
       className={css({

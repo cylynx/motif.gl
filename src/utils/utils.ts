@@ -42,7 +42,7 @@ export const roundToTwo = (num: number): string => num.toFixed(2);
 
 export const processScoreVector = (
   categories: { [key: string]: number | string },
-  scoreVector: number[],
+  scoreVector: number[]
 ): ChartData[] => {
   const results = Object.keys(categories)
     .map((key, index) => ({

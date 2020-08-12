@@ -32,15 +32,15 @@ function noop() {}
 const StyledRangeSlider = styled.div`
   position: relative;
   margin-bottom: 12px;
-  background-color: ${props => props.theme.sliderBarBgd};
-  ${props =>
+  background-color: ${(props) => props.theme.sliderBarBgd};
+  ${(props) =>
     `${props.vertical ? 'width' : 'height'}: ${props.theme.sliderBarHeight}px`};
-  ${props => `${props.vertical ? 'height' : 'width'}: 100%`};
+  ${(props) => `${props.vertical ? 'height' : 'width'}: 100%`};
 `;
 
 const SliderWrapper = styled.div`
   flex-grow: 1;
-  margin-top: ${props => props.theme.sliderMarginTop}px;
+  margin-top: ${(props) => props.theme.sliderMarginTop}px;
 `;
 
 export default class Slider extends Component {
@@ -86,7 +86,7 @@ export default class Slider extends Component {
 
   track = createRef();
 
-  _setAnchor = x => {
+  _setAnchor = (x) => {
     // used to calculate delta
     this._anchor = x;
   };
@@ -116,12 +116,12 @@ export default class Slider extends Component {
     return this._normalizeValue(rawValue);
   }
 
-  _isVal0InRange = val => {
+  _isVal0InRange = (val) => {
     const { value1, minValue } = this.props;
     return Boolean(val >= minValue && val <= value1);
   };
 
-  _isVal1InRange = val => {
+  _isVal1InRange = (val) => {
     const { maxValue, value0 } = this.props;
     return Boolean(val <= maxValue && val >= value0);
   };
@@ -131,7 +131,7 @@ export default class Slider extends Component {
     return normalizeSliderValue(val, minValue, step, marks);
   }
 
-  slide0Listener = x => {
+  slide0Listener = (x) => {
     const val = this._getValue(this.props.minValue, x);
 
     if (this._isVal0InRange(val)) {
@@ -139,14 +139,14 @@ export default class Slider extends Component {
     }
   };
 
-  slide1Listener = x => {
+  slide1Listener = (x) => {
     const val = this._getValue(this.props.minValue, x);
     if (this._isVal1InRange(val)) {
       this.props.onSlider1Change(val);
     }
   };
 
-  sliderBarListener = x => {
+  sliderBarListener = (x) => {
     const { minValue, maxValue } = this.props;
     // for slider bar, we use distance delta
     const anchor = this._anchor;
@@ -200,12 +200,12 @@ export default class Slider extends Component {
         vertical={vertical}
       >
         <StyledRangeSlider
-          className="kg-range-slider"
+          className='kg-range-slider'
           vertical={vertical}
           ref={this.track}
         >
           <SliderHandle
-            className="kg-range-slider__handle"
+            className='kg-range-slider__handle'
             left={this.calcHandleLeft0(width, v0Left)}
             valueListener={this.slide0Listener}
             sliderHandleWidth={sliderHandleWidth}
@@ -215,7 +215,7 @@ export default class Slider extends Component {
             track={this.track}
           />
           <SliderHandle
-            className="kg-range-slider__handle"
+            className='kg-range-slider__handle'
             left={this.calcHandleLeft1(width, v0Left)}
             valueListener={this.slide1Listener}
             sliderHandleWidth={sliderHandleWidth}

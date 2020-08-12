@@ -13,14 +13,14 @@ npm install --save motif.gl
 ## Usage
 
 ```tsx
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
-import MyComponent from 'motif.gl'
-import 'motif.gl/dist/index.css'
+import MyComponent from 'motif.gl';
+import 'motif.gl/dist/index.css';
 
 class Example extends Component {
   render() {
-    return <MyComponent />
+    return <MyComponent />;
   }
 }
 ```

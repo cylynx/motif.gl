@@ -12,7 +12,7 @@ import { getGraph } from '../../redux/accessors';
 const NodeMenu: React.FC<Prop.NodeMenu> = ({ menu }) => {
   const graphFlatten = useSelector((state) => getGraph(state).graphFlatten);
   const { data } = graphFlatten.nodes.find(
-    (x: Graph.Node) => x.id === menu.node.id,
+    (x: Graph.Node) => x.id === menu.node.id
   );
 
   return (

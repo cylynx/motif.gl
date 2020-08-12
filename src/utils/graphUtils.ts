@@ -33,7 +33,7 @@ export const getDegree = (data: Graph.Data, id: string) =>
  * @return {*}  {(Record<string | number, number>)}
  */
 export const getGraphDegree = (
-  data: Graph.Data,
+  data: Graph.Data
 ): Record<string | number, number> => {
   const nodeIds = [];
   const degree = {};
@@ -56,7 +56,7 @@ export const getGraphDegree = (
  */
 export const adjustNodeSize = (
   data: Graph.Data,
-  method: string,
+  method: string
 ): Graph.Node[] => {
   const degree = getGraphDegree(data);
   const min = Math.min(...Object.values(degree));
@@ -85,29 +85,31 @@ export const adjustNodeSize = (
  * Check edge.data.value is array to determine if it is grouped
  *
  * @param {Graph.Edge} edge
- * @param {Graph.GetEdgeNumber} getEdgeWidth accesor function that maps to edge width
+ * @param {Graph.EdgeAccessor<number | number[]>} getEdgeWidth accesor function that maps to edge width
  */
 export const isGroupEdges = (
   edge: Graph.Edge,
-  getEdgeWidth: Graph.GetEdgeNumber,
+  getEdgeWidth: Graph.EdgeAccessor<number | number[]>
 ) => Array.isArray(getEdgeWidth(edge));
 
 /**
  * Get minimum and maximum value of attribute that maps to edge width
  *
  * @param {Graph.Data} data
- * @param {Graph.GetEdgeNumber} getEdgeWidth accesor function that maps to edge width
+ * @param {Graph.EdgeAccessor<number | number[]>} getEdgeWidth accesor function that maps to edge width
  * @return {*}  {MinMax}
  */
 export const getMinMaxValue = (
   data: Graph.Data,
-  getEdgeWidth: Graph.GetEdgeNumber,
+  getEdgeWidth: Graph.EdgeAccessor<number | number[]>
 ): MinMax => {
   const arrValue = [];
   for (const edge of data.edges) {
     if (isGroupEdges(edge, getEdgeWidth)) {
       // isGroupEdges ensures that it is of type number[]. Sum all values in array
-      arrValue.push((<number[]>getEdgeWidth(edge)).reduce((a, b) => a + b, 0));
+      arrValue.push(
+        (getEdgeWidth(edge) as number[]).reduce((a, b) => a + b, 0)
+      );
     } else {
       arrValue.push(getEdgeWidth(edge));
     }
@@ -123,13 +125,13 @@ export const getMinMaxValue = (
  *
  * @param {Graph.Data} data
  * @param {string} method
- * @param {Graph.GetEdgeNumber} getEdgeWidth
+ * @param {Graph.EdgeAccessor<number>} getEdgeWidth
  * @return {*}  {Graph.Edge[]}
  */
 export const styleGroupedEdge = (
   data: Graph.Data,
   method: string,
-  getEdgeWidth: Graph.GetEdgeNumber,
+  getEdgeWidth: Graph.EdgeAccessor<number | number[]>
 ): Graph.Edge[] => {
   const modEdges = [];
   for (const edge of data.edges) {
@@ -159,13 +161,13 @@ export const styleGroupedEdge = (
  *
  * @param {Graph.Data} data
  * @param {string} method
- * @param {Graph.GetEdgeNumber} getEdgeWidth
+ * @param {Graph.EdgeAccessor<number>} getEdgeWidth
  * @return {*}  {Graph.Edge[]}
  */
 export const styleEdge = (
   data: Graph.Data,
   method: string,
-  getEdgeWidth: Graph.GetEdgeNumber,
+  getEdgeWidth: Graph.EdgeAccessor<number>
 ): Graph.Edge[] => {
   // Scales width based on min, max value of edges
   // mode = eth (scale width from 0.5-5) or fix (default value of 0.5)
@@ -230,20 +232,20 @@ export const combineEdges = (edges: Graph.Edge[]): Graph.Edge[] => {
  *
  * @param {Graph.Data} data
  * @param {number[]} timerange
- * @param {Graph.GetEdgeNumber} getEdgeTime
+ * @param {Graph.EdgeAccessor<number>} getEdgeTime
  * @return {*}  {Graph.Data}
  */
 export const filterDataByTime = (
   data: Graph.Data,
   timerange: number[],
-  getEdgeTime: Graph.GetEdgeNumber,
+  getEdgeTime: Graph.EdgeAccessor<number>
 ): Graph.Data => {
   if (isUndefined(getEdgeTime)) return data;
   const { nodes, edges } = data;
   // Because our time data is on links, the timebar's filteredData object only contains links.
   // But we need to show nodes in the chart too: so for each link, track the connected nodes
   const filteredEdges = edges.filter((edge) =>
-    inRange(<number>getEdgeTime(edge), timerange[0], timerange[1]),
+    inRange(<number>getEdgeTime(edge), timerange[0], timerange[1])
   );
   // Filter nodes which are connected to the edges
   const filteredNodesId: any[] = [];
@@ -253,7 +255,7 @@ export const filterDataByTime = (
   });
 
   const filteredNodes = nodes.filter((node) =>
-    filteredNodesId.includes(node.id),
+    filteredNodesId.includes(node.id)
   );
 
   const newFilteredData = {
@@ -265,14 +267,15 @@ export const filterDataByTime = (
 
 /**
  * Initial function to process data to required format
+ * Use accessors to create access node and edge attributes as required by graphin format
  *
  * @param {Graph.Data} data
- * @param {Graph.GetFns} getFns
+ * @param {Graph.AccessorFns} AccessorFns
  * @return {*}  {Graph.Data}
  */
 export const processData = (
   data: Graph.Data,
-  getFns: Graph.GetFns,
+  AccessorFns: Graph.AccessorFns
 ): Graph.Data => {
   const {
     getEdgeSource,
@@ -281,12 +284,12 @@ export const processData = (
     getEdgeLabel,
     getNodeID,
     getNodeLabel,
-  } = getFns;
+  } = AccessorFns;
   for (const node of data.nodes) {
     // Create data property if undefined
     if (isUndefined(node.data)) node.data = {};
-    // Give id to node
-    node.id = isUndefined(getNodeID) ? node.id : getNodeID(node);
+    // Node Id is required
+    node.id = getNodeID(node);
     // Give the display label of the node
     node.data.label = isUndefined(getNodeLabel) ? node.id : getNodeLabel(node);
     // Assign shortened label to node.label for graph display
@@ -306,15 +309,12 @@ export const processData = (
       primaryColor: CATEGORIES_COLOR[node.data.category],
     };
   }
-  // Add attrs if they are named smth else
   for (const edge of data.edges) {
-    edge.id = isUndefined(getEdgeID) ? edge.id : getEdgeID(edge);
-    edge.source = isUndefined(getEdgeSource)
-      ? edge.source
-      : getEdgeSource(edge);
-    edge.target = isUndefined(getEdgeTarget)
-      ? edge.target
-      : getEdgeTarget(edge);
+    // Id, source, target are required
+    edge.id = getEdgeID(edge);
+    edge.source = getEdgeSource(edge);
+    edge.target = getEdgeTarget(edge);
+    // Set id as label if undefined
     edge.label = isUndefined(getEdgeLabel) ? edge.id : getEdgeLabel(edge);
     edge.style = {
       endArrow: 'true',
@@ -332,7 +332,7 @@ export const processData = (
  */
 export const replaceEdges = (
   oldData: Graph.Data,
-  newEdges: Graph.Edge[],
+  newEdges: Graph.Edge[]
 ): Graph.Data => {
   const modData = { ...oldData };
   modData.edges = [...newEdges];
@@ -350,7 +350,7 @@ export const replaceEdges = (
 export const replaceData = (
   oldData: Graph.Data,
   newNodes: Graph.Node[],
-  newEdges: Graph.Edge[],
+  newEdges: Graph.Edge[]
 ): Graph.Data => {
   const modData = { ...oldData };
   modData.edges = [...newEdges];
@@ -362,12 +362,12 @@ export const replaceData = (
  * Aggregates a given edge time attribute in the to time series counts, sorted based on time
  *
  * @param {Graph.Data} data
- * @param {Graph.GetEdgeNumber} getEdgeTime
+ * @param {Graph.EdgeAccessor<number>} getEdgeTime
  * @return {*}  {Graph.TimeSeries}
  */
 export const datatoTS = (
   data: Graph.Data,
-  getEdgeTime: Graph.GetEdgeNumber,
+  getEdgeTime: Graph.EdgeAccessor<number>
 ): Graph.TimeSeries =>
   // @ts-ignore
   isUndefined(getEdgeTime)
@@ -398,7 +398,7 @@ export const removeDuplicates = (myArr: [], prop: string): [] =>
   // @ts-ignore
   myArr.filter(
     (obj, pos, arr) =>
-      arr.map((mapObj) => mapObj[prop]).indexOf(obj[prop]) === pos,
+      arr.map((mapObj) => mapObj[prop]).indexOf(obj[prop]) === pos
   );
 
 /**
@@ -410,19 +410,19 @@ export const removeDuplicates = (myArr: [], prop: string): [] =>
  */
 export const combineProcessedData = (
   newData: Graph.Data,
-  oldData: Graph.Data,
+  oldData: Graph.Data
 ): Graph.Data => {
   if (oldData) {
     const modData = { ...oldData };
     modData.nodes = removeDuplicates(
       // @ts-ignore
       [...newData.nodes, ...oldData.nodes],
-      'id',
+      'id'
     );
     modData.edges = removeDuplicates(
       // @ts-ignore
       [...newData.edges, ...oldData.edges],
-      'id',
+      'id'
     );
     return modData;
   }
@@ -435,13 +435,13 @@ export const combineProcessedData = (
  *
  * @param {Graph.Data} data
  * @param {Graph.StyleOptions} defaultOptions
- * @param {Graph.GetEdgeNumber} getEdgeWidth
+ * @param {Graph.EdgeAccessor<number>} getEdgeWidth
  * @return {*}  {Graph.Data}
  */
 export const applyStyle = (
   data: Graph.Data,
   defaultOptions: Graph.StyleOptions,
-  getEdgeWidth: Graph.GetEdgeNumber,
+  getEdgeWidth: Graph.EdgeAccessor<number>
 ): Graph.Data => {
   const { groupEdges, edgeWidth, nodeSize } = defaultOptions;
   if (groupEdges) {
@@ -470,13 +470,13 @@ export const groupEdges = (data: Graph.Data): Graph.Data => {
  *
  * @param {Graph.Data} graphData
  * @param {Graph.StyleOptions} styleOptions
- * @param {Graph.GetEdgeNumber} getEdgeWidth
+ * @param {Graph.EdgeAccessor<number>} getEdgeWidth
  * @return {*}  {Graph.Data}
  */
 export const deriveVisibleGraph = (
   graphData: Graph.Data,
   styleOptions: Graph.StyleOptions,
-  getEdgeWidth: Graph.GetEdgeNumber,
+  getEdgeWidth: Graph.EdgeAccessor<number>
 ): Graph.Data =>
   styleOptions.groupEdges
     ? applyStyle(groupEdges(graphData), styleOptions, getEdgeWidth)

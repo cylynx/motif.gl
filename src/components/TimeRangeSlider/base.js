@@ -320,24 +320,24 @@ export const breakPoints = {
 
 const input = css`
   align-items: center;
-  background-color: ${props => props.theme.inputBgd};
+  background-color: ${(props) => props.theme.inputBgd};
   border: 1px solid
-    ${props =>
+    ${(props) =>
       props.active
         ? props.theme.inputBorderActiveColor
         : props.error
         ? props.theme.errorColor
         : props.theme.inputBgd};
   border-radius: 2px;
-  caret-color: ${props => props.theme.inputBorderActiveColor};
-  color: ${props => props.theme.inputColor};
+  caret-color: ${(props) => props.theme.inputBorderActiveColor};
+  color: ${(props) => props.theme.inputColor};
   display: flex;
-  font-size: ${props =>
+  font-size: ${(props) =>
     ['small', 'tiny'].includes(props.size)
       ? props.theme.inputFontSizeSmall
       : props.theme.inputFontSize};
-  font-weight: ${props => props.theme.inputFontWeight};
-  height: ${props =>
+  font-weight: ${(props) => props.theme.inputFontWeight};
+  height: ${(props) =>
     props.size === 'small'
       ? props.theme.inputBoxHeightSmall
       : props.size === 'tiny'
@@ -346,24 +346,24 @@ const input = css`
   justify-content: space-between;
   outline: none;
   overflow: hidden;
-  padding: ${props =>
+  padding: ${(props) =>
     props.size === 'small'
       ? props.theme.inputPaddingSmall
       : props.size === 'tiny'
       ? props.theme.inputPaddingTiny
       : props.theme.inputPadding};
   text-overflow: ellipsis;
-  transition: ${props => props.theme.transition};
+  transition: ${(props) => props.theme.transition};
   white-space: nowrap;
   width: 100%;
   word-wrap: normal;
-  pointer-events: ${props => (props.disabled ? 'none' : 'all')};
-  opacity: ${props => (props.disabled ? 0.5 : 1)};
+  pointer-events: ${(props) => (props.disabled ? 'none' : 'all')};
+  opacity: ${(props) => (props.disabled ? 0.5 : 1)};
   :hover {
-    cursor: ${props => (props.type === 'number' ? 'text' : 'pointer')};
-    background-color: ${props =>
+    cursor: ${(props) => (props.type === 'number' ? 'text' : 'pointer')};
+    background-color: ${(props) =>
       props.active ? props.theme.inputBgdActive : props.theme.inputBgdHover};
-    border-color: ${props =>
+    border-color: ${(props) =>
       props.active
         ? props.theme.inputBorderActiveColor
         : props.theme.inputBorderHoverColor};
@@ -372,12 +372,12 @@ const input = css`
   :focus,
   &.focus,
   &.active {
-    background-color: ${props => props.theme.inputBgdActive};
-    border-color: ${props => props.theme.inputBorderActiveColor};
+    background-color: ${(props) => props.theme.inputBgdActive};
+    border-color: ${(props) => props.theme.inputBorderActiveColor};
   }
   ::placeholder {
-    color: ${props => props.theme.inputPlaceholderColor};
-    font-weight: ${props => props.theme.inputPlaceholderFontWeight};
+    color: ${(props) => props.theme.inputPlaceholderColor};
+    font-weight: ${(props) => props.theme.inputPlaceholderFontWeight};
   }
   /* Disable Arrows on Number Inputs */
   ::-webkit-inner-spin-button,
@@ -389,54 +389,54 @@ const input = css`
 
 const inputLT = css`
   ${input}
-  background-color: ${props => props.theme.selectBackgroundLT};
+  background-color: ${(props) => props.theme.selectBackgroundLT};
   border: 1px solid
-  ${props =>
+  ${(props) =>
     props.active
       ? props.theme.selectActiveBorderColor
       : props.error
       ? props.theme.errorColor
       : props.theme.selectBorderColorLT};
-  color: ${props => props.theme.selectColorLT};
-  caret-color: ${props => props.theme.selectColorLT};
+  color: ${(props) => props.theme.selectColorLT};
+  caret-color: ${(props) => props.theme.selectColorLT};
   ::-webkit-input-placeholder {
-    color: ${props => props.theme.subtextColorLT};
+    color: ${(props) => props.theme.subtextColorLT};
     font-weight: 400;
   }
   :active,
   :focus,
   &.focus,
   &.active {
-    background-color: ${props => props.theme.selectBackgroundLT};
-    border-color: ${props => props.theme.textColorLT};
+    background-color: ${(props) => props.theme.selectBackgroundLT};
+    border-color: ${(props) => props.theme.textColorLT};
   }
   :hover {
-    background-color: ${props => props.theme.selectBackgroundLT};
-    cursor: ${props =>
+    background-color: ${(props) => props.theme.selectBackgroundLT};
+    cursor: ${(props) =>
       ['number', 'text'].includes(props.type) ? 'text' : 'pointer'};
-    border-color: ${props =>
+    border-color: ${(props) =>
       props.active ? props.theme.textColorLT : props.theme.subtextColor};
   }
 `;
 
 const secondaryInput = css`
-  ${props => props.theme.input}
-  color: ${props => props.theme.secondaryInputColor};
-  background-color: ${props => props.theme.secondaryInputBgd};
+  ${(props) => props.theme.input}
+  color: ${(props) => props.theme.secondaryInputColor};
+  background-color: ${(props) => props.theme.secondaryInputBgd};
   border: 1px solid
-    ${props =>
+    ${(props) =>
       props.error
         ? props.theme.errorColor
         : props.theme.secondaryInputBorderColor};
   :hover {
     cursor: pointer;
-    background-color: ${props => props.theme.secondaryInputBgdHover};
-    border-color: ${props => props.theme.secondaryInputBgdHover};
+    background-color: ${(props) => props.theme.secondaryInputBgdHover};
+    border-color: ${(props) => props.theme.secondaryInputBgdHover};
   }
   :active,
   &.active {
-    background-color: ${props => props.theme.secondaryInputBgdActive};
-    border-color: ${props => props.theme.secondaryInputBorderActiveColor};
+    background-color: ${(props) => props.theme.secondaryInputBgdActive};
+    border-color: ${(props) => props.theme.secondaryInputBorderActiveColor};
   }
 `;
 
@@ -455,17 +455,17 @@ const chickletedInputContainer = css`
 `;
 
 const chickletedInput = css`
-  ${props => props.theme.input}
-  ${props => props.theme.chickletedInputContainer}
+  ${(props) => props.theme.input}
+  ${(props) => props.theme.chickletedInputContainer}
 `;
 
 const secondaryChickletedInput = css`
-  ${props => props.theme.secondaryInput}
-  ${props => props.theme.chickletedInputContainer}
+  ${(props) => props.theme.secondaryInput}
+  ${(props) => props.theme.chickletedInputContainer}
 `;
 
 const inlineInput = css`
-  ${props => props.theme.input} color: ${props => props.theme.textColor};
+  ${(props) => props.theme.input} color: ${(props) => props.theme.textColor};
   font-size: 13px;
   letter-spacing: 0.43px;
   line-height: 18px;
@@ -479,46 +479,46 @@ const inlineInput = css`
     height: 24px;
     cursor: text;
     background-color: transparent;
-    border: 1px solid ${props => props.theme.labelColor};
+    border: 1px solid ${(props) => props.theme.labelColor};
   }
   :active,
   .active,
   :focus {
     background-color: transparent;
-    border: 1px solid ${props => props.theme.inputBorderActiveColor};
+    border: 1px solid ${(props) => props.theme.inputBorderActiveColor};
   }
 `;
 
 const switchTrack = css`
-  background: ${props =>
+  background: ${(props) =>
     props.checked
       ? props.theme.switchTrackBgdActive
       : props.theme.switchTrackBgd};
   position: absolute;
   top: 0;
-  left: ${props => -props.theme.switchLabelMargin}px;
+  left: ${(props) => -props.theme.switchLabelMargin}px;
   content: '';
   display: block;
-  width: ${props => props.theme.switchWidth}px;
-  height: ${props => props.theme.switchHeight}px;
-  border-radius: ${props => props.theme.switchTrackBorderRadius};
+  width: ${(props) => props.theme.switchWidth}px;
+  height: ${(props) => props.theme.switchHeight}px;
+  border-radius: ${(props) => props.theme.switchTrackBorderRadius};
 `;
 
 const switchButton = css`
-  transition: ${props => props.theme.transition};
+  transition: ${(props) => props.theme.transition};
   position: absolute;
   top: 0;
-  left: ${props =>
+  left: ${(props) =>
     (props.checked ? props.theme.switchWidth / 2 : -1) -
     props.theme.switchLabelMargin}px;
   content: '';
   display: block;
-  height: ${props => props.theme.switchBtnHeight};
-  width: ${props => props.theme.switchBtnWidth};
-  background: ${props =>
+  height: ${(props) => props.theme.switchBtnHeight};
+  width: ${(props) => props.theme.switchBtnWidth};
+  background: ${(props) =>
     props.checked ? props.theme.switchBtnBgdActive : props.theme.switchBtnBgd};
-  box-shadow: ${props => props.theme.switchBtnBoxShadow};
-  border-radius: ${props => props.theme.switchBtnBorderRadius};
+  box-shadow: ${(props) => props.theme.switchBtnBoxShadow};
+  border-radius: ${(props) => props.theme.switchBtnBorderRadius};
 `;
 
 const inputSwitch = css`
@@ -527,18 +527,18 @@ const inputSwitch = css`
   line-height: 16px;
   font-weight: 500;
   font-size: 12px;
-  color: ${props => props.theme.labelColor};
+  color: ${(props) => props.theme.labelColor};
   position: relative;
   display: inline-block;
   padding-top: 0;
   padding-right: 0;
   padding-bottom: 0;
-  padding-left: ${props => props.theme.switchWidth}px;
+  padding-left: ${(props) => props.theme.switchWidth}px;
   :before {
-    ${props => props.theme.switchTrack};
+    ${(props) => props.theme.switchTrack};
   }
   :after {
-    ${props => props.theme.switchButton};
+    ${(props) => props.theme.switchButton};
   }
 `;
 
@@ -548,14 +548,14 @@ const checkboxBox = css`
   position: absolute;
   top: 0;
   left: 0;
-  width: ${props => props.theme.checkboxWidth}px;
-  height: ${props => props.theme.checkboxHeight}px;
-  background: ${props =>
+  width: ${(props) => props.theme.checkboxWidth}px;
+  height: ${(props) => props.theme.checkboxHeight}px;
+  background: ${(props) =>
     props.checked
       ? props.theme.checkboxBoxBgdChecked
       : props.theme.checkboxBoxBgd};
   border: 1px solid
-    ${props =>
+    ${(props) =>
       props.checked
         ? props.theme.checkboxBoxBgdChecked
         : props.theme.checkboxBorderColor};
@@ -573,7 +573,7 @@ const checkboxCheck = css`
   transform: rotate(-45deg);
   display: block;
   position: absolute;
-  opacity: ${props => (props.checked ? 1 : 0)};
+  opacity: ${(props) => (props.checked ? 1 : 0)};
   content: '';
 `;
 
@@ -586,27 +586,27 @@ const inputCheckbox = css`
   vertical-align: middle;
   cursor: pointer;
   font-size: 12px;
-  color: ${props => props.theme.labelColor};
-  margin-left: -${props => props.theme.switchLabelMargin}px;
+  color: ${(props) => props.theme.labelColor};
+  margin-left: -${(props) => props.theme.switchLabelMargin}px;
   :before {
-    ${props => props.theme.checkboxBox};
+    ${(props) => props.theme.checkboxBox};
   }
   :after {
-    ${props => props.theme.checkboxCheck};
+    ${(props) => props.theme.checkboxCheck};
   }
 `;
 
 const secondarySwitch = css`
-  ${props => props.theme.inputSwitch}
+  ${(props) => props.theme.inputSwitch}
   :before {
-    ${props => props.theme.switchTrack} background: ${props =>
+    ${(props) => props.theme.switchTrack} background: ${(props) =>
   props.checked
     ? props.theme.switchTrackBgdActive
     : props.theme.secondarySwitchTrackBgd};
   }
   :after {
-    ${props => props.theme.switchButton}
-    background: ${props =>
+    ${(props) => props.theme.switchButton}
+    background: ${(props) =>
       props.checked
         ? props.theme.switchBtnBgdActive
         : props.theme.secondarySwitchBtnBgd};
@@ -619,24 +619,24 @@ const dropdownScrollBar = css`
     width: 10px;
   }
   ::-webkit-scrollbar-corner {
-    background: ${props => props.theme.dropdownListBgd};
+    background: ${(props) => props.theme.dropdownListBgd};
   }
   ::-webkit-scrollbar-track {
-    background: ${props => props.theme.dropdownListBgd};
+    background: ${(props) => props.theme.dropdownListBgd};
   }
   ::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background: ${props => props.theme.labelColor};
-    border: 3px solid ${props => props.theme.dropdownListBgd};
+    background: ${(props) => props.theme.labelColor};
+    border: 3px solid ${(props) => props.theme.dropdownListBgd};
   };
   :vertical:hover {
-    background: ${props => props.theme.textColorHl};
+    background: ${(props) => props.theme.textColorHl};
     cursor: pointer;
   }
 }`;
 
 const dropdownListAnchor = css`
-  color: ${props => props.theme.selectColor};
+  color: ${(props) => props.theme.selectColor};
   padding-left: 3px;
 `;
 
@@ -652,23 +652,23 @@ const dropdownListItem = css`
   &.hover,
   &:hover {
     cursor: pointer;
-    background-color: ${props => props.theme.dropdownListHighlightBg};
+    background-color: ${(props) => props.theme.dropdownListHighlightBg};
     .list__item__anchor {
-      color: ${props => props.theme.textColorHl};
+      color: ${(props) => props.theme.textColorHl};
     }
   }
 `;
 
 const dropdownListItemLT = css`
   ${dropdownListSize}
-  color: ${props => props.theme.textColorLT};
+  color: ${(props) => props.theme.textColorLT};
   &.hover,
   &:hover {
     cursor: pointer;
-    color: ${props => props.theme.textColorHlLT};
-    background-color: ${props => props.theme.dropdownListHighlightBgLT};
+    color: ${(props) => props.theme.textColorHlLT};
+    background-color: ${(props) => props.theme.dropdownListHighlightBgLT};
     .list__item__anchor {
-      color: ${props => props.theme.textColorHlLT};
+      color: ${(props) => props.theme.textColorHlLT};
     }
   }
 `;
@@ -676,58 +676,58 @@ const dropdownListItemLT = css`
 const dropdownListHeader = css`
   font-size: 11px;
   padding: 5px 9px;
-  color: ${props => props.theme.labelColor};
+  color: ${(props) => props.theme.labelColor};
 `;
 
 const dropdownListSection = css`
   padding: 0 0 4px 0;
   margin-bottom: 4px;
-  border-bottom: 1px solid ${props => props.theme.labelColor};
+  border-bottom: 1px solid ${(props) => props.theme.labelColor};
 `;
 
 const dropdownList = css`
   overflow-y: auto;
   max-height: 280px;
-  box-shadow: ${props => props.theme.dropdownListShadow};
+  box-shadow: ${(props) => props.theme.dropdownListShadow};
   border-radius: 2px;
   .list__section {
-    ${props => props.theme.dropdownListSection};
+    ${(props) => props.theme.dropdownListSection};
   }
   .list__header {
-    ${props => props.theme.dropdownListHeader};
+    ${(props) => props.theme.dropdownListHeader};
   }
   .list__item {
-    ${props => props.theme.dropdownListItem};
+    ${(props) => props.theme.dropdownListItem};
   }
   .list__item__anchor {
-    ${props => props.theme.dropdownListAnchor};
+    ${(props) => props.theme.dropdownListAnchor};
   }
-  ${props => props.theme.dropdownScrollBar};
+  ${(props) => props.theme.dropdownScrollBar};
 `;
 
 const dropdownListLT = css`
   ${dropdownList}
   .list__item {
-    ${props => props.theme.dropdownListItemLT};
+    ${(props) => props.theme.dropdownListItemLT};
   }
 `;
 const sidePanelScrollBar = css`
   ::-webkit-scrollbar {
-    height: ${props => props.theme.sidePanelScrollBarHeight}px;
-    width: ${props => props.theme.sidePanelScrollBarWidth}px;
+    height: ${(props) => props.theme.sidePanelScrollBarHeight}px;
+    width: ${(props) => props.theme.sidePanelScrollBarWidth}px;
   }
   ::-webkit-scrollbar-corner {
-    background: ${props => props.theme.sidePanelBg};
+    background: ${(props) => props.theme.sidePanelBg};
   }
   ::-webkit-scrollbar-track {
-    background: ${props => props.theme.sidePanelBg};
+    background: ${(props) => props.theme.sidePanelBg};
   }
   ::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background: ${props => props.theme.panelBackgroundHover};
-    border: 3px solid ${props => props.theme.sidePanelBg};
+    background: ${(props) => props.theme.panelBackgroundHover};
+    border: 3px solid ${(props) => props.theme.sidePanelBg};
     :hover {
-      background: ${props => props.theme.labelColor};
+      background: ${(props) => props.theme.labelColor};
       cursor: pointer;
     }
   };
@@ -739,17 +739,17 @@ const panelDropdownScrollBar = css`
     width: 10px;
   }
   ::-webkit-scrollbar-corner {
-    background: ${props => props.theme.panelBackground};
+    background: ${(props) => props.theme.panelBackground};
   }
   ::-webkit-scrollbar-track {
-    background: ${props => props.theme.panelBackground};
+    background: ${(props) => props.theme.panelBackground};
   }
   ::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background: ${props => props.theme.panelBackgroundHover};
-    border: 3px solid ${props => props.theme.panelBackground};
+    background: ${(props) => props.theme.panelBackgroundHover};
+    border: 3px solid ${(props) => props.theme.panelBackground};
     :hover {
-      background: ${props => props.theme.labelColor};
+      background: ${(props) => props.theme.labelColor};
       cursor: pointer;
     }
   }
@@ -761,21 +761,21 @@ const scrollBar = css`
     width: 10px;
   }
   ::-webkit-scrollbar-corner {
-    background: ${props => props.theme.panelBackground};
+    background: ${(props) => props.theme.panelBackground};
   }
   ::-webkit-scrollbar-track {
-    background: ${props => props.theme.panelBackground};
+    background: ${(props) => props.theme.panelBackground};
   }
   ::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background: ${props => props.theme.labelColor};
-    border: 3px solid ${props => props.theme.panelBackground}
+    background: ${(props) => props.theme.labelColor};
+    border: 3px solid ${(props) => props.theme.panelBackground}
     :vertical:hover {
-      background: ${props => props.theme.textColorHl};
+      background: ${(props) => props.theme.textColorHl};
       cursor: pointer;
     }
     :horizontal:hover {
-      background: ${props => props.theme.textColorHl};
+      background: ${(props) => props.theme.textColorHl};
       cursor: pointer;
     }
   }
@@ -790,14 +790,14 @@ export const modalScrollBar = css`
     background: white;
   }
   ::-webkit-scrollbar-track:horizontal {
-    background: ${props => props.theme.textColorHl};
+    background: ${(props) => props.theme.textColorHl};
   }
   ::-webkit-scrollbar-thumb {
-    background: ${props => props.theme.labelColorLT};
+    background: ${(props) => props.theme.labelColorLT};
     border: 4px solid white;
   }
   ::-webkit-scrollbar-corner {
-    background: ${props => props.theme.textColorHl};
+    background: ${(props) => props.theme.textColorHl};
   }
   ::-webkit-scrollbar-thumb:hover {
     background: #969da9;
@@ -807,7 +807,7 @@ export const modalScrollBar = css`
   }
   ::-webkit-scrollbar-thumb:horizontal {
     border-radius: 9px;
-    border: 4px solid ${props => props.theme.textColorHl};
+    border: 4px solid ${(props) => props.theme.textColorHl};
   }
 `;
 

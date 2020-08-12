@@ -78,7 +78,7 @@ const QueryList = ({ items }) => {
   const valueLock = useSelector((state) => getUI(state).valueLock);
   const score = useSelector((state) => getUI(state).score);
   const { getEdgeWidth, getEdgeScore } = useSelector(
-    (state) => getGraph(state).getFns,
+    (state) => getGraph(state).getFns
   );
   const subList = items.map((item, index) => {
     const riskScore = scoreLock

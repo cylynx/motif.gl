@@ -86,13 +86,13 @@ export default class RangePlot extends Component {
     hoveredDP: null,
   };
 
-  domainSelector = props => props.lineChart && props.lineChart.xDomain;
+  domainSelector = (props) => props.lineChart && props.lineChart.xDomain;
 
-  hintFormatter = createSelector(this.domainSelector, domain =>
+  hintFormatter = createSelector(this.domainSelector, (domain) =>
     getTimeWidgetHintFormatter(domain)
   );
 
-  onMouseMove = hoveredDP => {
+  onMouseMove = (hoveredDP) => {
     this.setState({ hoveredDP });
   };
 
@@ -163,12 +163,10 @@ const Histogram = ({
   const domain = [histogram[0].x0, histogram[histogram.length - 1].x1];
   const barWidth = width / histogram.length;
 
-  const x = scaleLinear()
-    .domain(domain)
-    .range([0, width]);
+  const x = scaleLinear().domain(domain).range([0, width]);
 
   const y = scaleLinear()
-    .domain([0, max(histogram, d => d.count)])
+    .domain([0, max(histogram, (d) => d.count)])
     .range([0, height]);
 
   return (
@@ -177,8 +175,8 @@ const Histogram = ({
       height={height}
       style={{ marginTop: `${margin.top}px` }}
     >
-      <g className="histogram-bars">
-        {histogram.map(bar => {
+      <g className='histogram-bars'>
+        {histogram.map((bar) => {
           const inRange = bar.x0 >= value[0] && bar.x1 <= value[1];
           const wRatio = inRange
             ? histogramStyle.highlightW
@@ -213,10 +211,10 @@ const LineChartWrapper = styled.div`
 const HistogramWrapper = styled.svg`
   .histogram-bars {
     rect {
-      fill: ${props => props.theme.histogramFillOutRange};
+      fill: ${(props) => props.theme.histogramFillOutRange};
     }
     rect.in-range {
-      fill: ${props => props.theme.histogramFillInRange};
+      fill: ${(props) => props.theme.histogramFillInRange};
     }
   }
 `;
@@ -255,7 +253,7 @@ const LineChart = ({
           <Hint value={hoveredDP}>
             <HintContent
               {...hoveredDP}
-              format={val => moment.utc(val).format(hintFormat)}
+              format={(val) => moment.utc(val).format(hintFormat)}
             />
           </Hint>
         ) : null}
@@ -267,7 +265,7 @@ const LineChart = ({
 const StyledHint = styled.div`
   background-color: #d3d8e0;
   border-radius: 2px;
-  color: ${props => props.theme.textColorLT};
+  color: ${(props) => props.theme.textColorLT};
   font-size: 9px;
   margin: 4px;
   padding: 3px 6px;
@@ -276,7 +274,7 @@ const StyledHint = styled.div`
 `;
 const HintContent = ({ x, y, format }) => (
   <StyledHint>
-    <div className="hint--x">{format(x)}</div>
-    <div className="row">{y}</div>
+    <div className='hint--x'>{format(x)}</div>
+    <div className='row'>{y}</div>
   </StyledHint>
 );
