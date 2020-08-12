@@ -23,7 +23,14 @@ export interface Data {
   metadata?: Metadata;
 }
 
+const x: TimeSeries = [
+  [1, 2],
+  [3, 4],
+].sort((a, b) => a[0] - b[0]);
+
 export type TimeRange = [number, number];
+export type TimeSeries = Array<[number, number]> | [];
+export type TimeSeries2 = Array<[number, number]> | [];
 export type GetEdgeNumber = (edge: Edge) => number | number[];
 export type GetEdgeString = (edge: Edge) => string;
 export type GetNodeString = (node: Node) => string;
