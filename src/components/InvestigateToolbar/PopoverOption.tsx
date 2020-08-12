@@ -6,7 +6,7 @@ import { Checkbox } from 'baseui/checkbox';
 import { Block } from 'baseui/block';
 import { TriGrid } from '../ui';
 import * as Prop from '../../types/Prop';
-import { changeOptions, changeLayout } from '../../redux/graphSlice';
+import { changeOptions, changeLayout } from '../../redux/graph-slice';
 import { getGraph } from '../../redux/accessors';
 
 const nodeSizeOptions = [

@@ -7,7 +7,7 @@ import { InfoNotification } from '../ui';
 import * as Prop from '../../types/Prop';
 
 import addData from '../../processors';
-import { sampleJSONData } from '../../utils/graphUtils';
+import { sampleJSONData } from '../../utils/graph-utils';
 import { closeImportModal, fetchError } from '../../redux';
 
 const QueryFile: React.FC<Prop.QueryFile> = ({ info, tooltip }) => {

@@ -10,7 +10,7 @@ import { ListItem } from 'baseui/list';
 import { GoInfo } from 'react-icons/go';
 import { TagValue, TagRisk, SimpleTooltip } from '../ui';
 import * as Graph from '../../types/Graph';
-import { getDetails } from '../../redux/graphSlice';
+import { getDetails } from '../../redux/graph-slice';
 
 import { multiplyArr, roundToTwo, shortifyLabel } from '../../utils/utils';
 import { getGraph, getUI } from '../../redux/accessors';

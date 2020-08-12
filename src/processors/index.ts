@@ -12,9 +12,9 @@ import {
   setBottomOpen,
   setScoreLock,
   setValueLock,
-} from '../redux/uiSlice';
-import { addQuery, processGraphResponse } from '../redux/graphSlice';
-import { processData } from '../utils/graphUtils';
+} from '../redux/ui-slice';
+import { addQuery, processGraphResponse } from '../redux/graph-slice';
+import { processData } from '../utils/graph-utils';
 
 // API Methods
 const checkMetaData = (metadata: Graph.Metadata): boolean => {

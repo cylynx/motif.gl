@@ -12,8 +12,8 @@ import {
   setScore,
   setName,
   setCurrency,
-} from '../../redux/uiSlice';
-import { setAccessorFns } from '../../redux/graphSlice';
+} from '../../redux/ui-slice';
+import { setAccessorFns } from '../../redux/graph-slice';
 import { getTabsOverride, getNodeMenuOverride } from '../../utils/overrides';
 import { getUI } from '../../redux/accessors';
 

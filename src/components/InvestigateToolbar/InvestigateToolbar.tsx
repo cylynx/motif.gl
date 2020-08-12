@@ -7,7 +7,7 @@ import { useStyletron, DarkTheme, ThemeProvider } from 'baseui';
 
 import { GoGear, GoX } from 'react-icons/go';
 import { FaUndoAlt, FaRedoAlt, FaExpand } from 'react-icons/fa';
-import { resetState } from '../../redux/graphSlice';
+import { resetState } from '../../redux/graph-slice';
 import ToolbarItem from './ToolbarItem';
 import PopoverOption from './PopoverOption';
 

@@ -6,14 +6,14 @@ import {
   initialState,
   addQuery,
   processGraphResponse,
-} from '../redux/graphSlice';
+} from '../redux/graph-slice';
 import {
   fetchBegin,
   fetchDone,
   setBottomLock,
   setScoreLock,
   setBottomOpen,
-} from '../redux/uiSlice';
+} from '../redux/ui-slice';
 
 const getData = (type) => {
   const simpleJSONData = {

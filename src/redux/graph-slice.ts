@@ -13,7 +13,7 @@ import {
   datatoTS,
   chartRange,
   filterDataByTime,
-} from '../utils/graphUtils';
+} from '../utils/graph-utils';
 
 export interface GraphState {
   AccessorFns: Graph.AccessorFns;
@@ -82,12 +82,12 @@ const graph = createSlice({
       const newFilteredData = filterDataByTime(
         state.graphFlatten,
         state.selectTimeRange,
-        getEdgeTime
+        getEdgeTime,
       );
       state.graphVisible = deriveVisibleGraph(
         newFilteredData,
         state.styleOptions,
-        getEdgeWidth
+        getEdgeWidth,
       );
     },
     changeLayout(state, action) {
@@ -136,12 +136,12 @@ const graph = createSlice({
       const newFilteredData = filterDataByTime(
         state.graphFlatten,
         state.timeRange,
-        getEdgeTime
+        getEdgeTime,
       );
       state.graphVisible = deriveVisibleGraph(
         newFilteredData,
         state.styleOptions,
-        getEdgeWidth
+        getEdgeWidth,
       );
     },
     setRange(state, action) {
@@ -155,12 +155,12 @@ const graph = createSlice({
       const newFilteredData = filterDataByTime(
         state.graphFlatten,
         selectedTimeRange,
-        getEdgeTime
+        getEdgeTime,
       );
       state.graphVisible = deriveVisibleGraph(
         newFilteredData,
         state.styleOptions,
-        getEdgeWidth
+        getEdgeWidth,
       );
     },
     getDetails(state, action) {

@@ -15,7 +15,7 @@ import {
 import { useStyletron } from 'baseui';
 import * as Prop from '../../types/Prop';
 
-import { setRange, timeRangeChange } from '../../redux/graphSlice';
+import { setRange, timeRangeChange } from '../../redux/graph-slice';
 import EventChart from './EventChart';
 import { getGraph } from '../../redux/accessors';
 
