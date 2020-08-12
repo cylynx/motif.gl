@@ -32,14 +32,14 @@ const QueryAccordian = () => {
 
   return (
     <div
-      className={css({
-        // TODO: better approx top and bottom margin
-        maxHeight: 'calc(100vh - 200px - 150px)',
-        overflowY: 'scroll',
-        '::-webkit-scrollbar-thumb': {
-          backgroundColor: theme.colors.contentSecondary,
-        },
-      })}
+    // className={css({
+    //   // TODO: better approx top and bottom margin
+    //   maxHeight: 'calc(100vh - 200px - 150px)',
+    //   overflowY: 'scroll',
+    //   '::-webkit-scrollbar-thumb': {
+    //     backgroundColor: theme.colors.contentSecondary,
+    //   },
+    // })}
     >
       <Accordion
         overrides={{
@@ -50,7 +50,6 @@ const QueryAccordian = () => {
           },
           Header: {
             style: ({ $theme }) => ({
-              height: '50px',
               ...$theme.typography.LabelSmall,
             }),
           },
@@ -78,7 +77,7 @@ const QueryList = ({ items }) => {
   const valueLock = useSelector((state) => getUI(state).valueLock);
   const score = useSelector((state) => getUI(state).score);
   const { getEdgeWidth, getEdgeScore } = useSelector(
-    (state) => getGraph(state).getFns
+    (state) => getGraph(state).getFns,
   );
   const subList = items.map((item, index) => {
     const riskScore = scoreLock

@@ -28,7 +28,7 @@ const ToggleButton: React.FC<Prop.ToggleButton> = (props) => {
       className={css({
         position: 'fixed',
         top: '20px',
-        left: isOpen ? '375px' : '10px',
+        left: isOpen ? '405px' : '10px',
       })}
     >
       <Button size='mini' shape='square' kind='secondary' onClick={onClick}>

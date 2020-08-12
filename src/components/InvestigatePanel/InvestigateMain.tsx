@@ -55,9 +55,7 @@ const InvestigateMain = () => {
       <br />
       <QueryAccordian />
 
-      <Block bottom='0%' position='absolute' left='20px' right='20px'>
-        <br />
-        <br />
+      <Block bottom='30px' position='absolute' left='20px' right='20px'>
         <Block width='100%' display='flex' justifyContent='space-between'>
           <FullButton
             width='140px'
