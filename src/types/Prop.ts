@@ -37,7 +37,7 @@ export interface NodeMenu {
 export interface InvestigateExplorer {
   name: string;
   currency: string;
-  AccessorFns: AccessorFns;
+  accessorFns: AccessorFns;
   overrides: Overrides;
 }
 
