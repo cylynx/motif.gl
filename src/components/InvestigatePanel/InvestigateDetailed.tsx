@@ -18,7 +18,7 @@ import {
   processScoreVector,
   shortifyLabel,
 } from '../../utils/utils';
-import { getUI, getGraph } from '../../redux/accessors';
+import { getUI, getGraph, getAccessors } from '../../redux';
 
 const InvestigateDetailed = () => {
   const item = useSelector((state) => getGraph(state).detailedSelection).data;
@@ -33,7 +33,7 @@ const InvestigateDetailed = () => {
     getEdgeTargetAdd,
     getEdgeTime,
     getEdgeScore,
-  } = useSelector((state) => getGraph(state).getFns);
+  } = useSelector((state) => getAccessors(state));
 
   const { label } = item;
   const fromAddress = isUndefined(getEdgeSourceAdd)
@@ -88,6 +88,7 @@ const InvestigateDetailed = () => {
           <div style={{ height: '180px' }}>
             <RiskBarChart
               title=''
+              // @ts-ignore - Bug here needs to be fixed when removing getEdgeScore
               data={processScoreVector(CATEGORIES, getEdgeScore(item))}
             />
           </div>

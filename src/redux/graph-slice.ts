@@ -16,7 +16,6 @@ import {
 } from '../utils/graph-utils';
 
 export interface GraphState {
-  accessorFns: Graph.AccessorFns;
   styleOptions: Graph.StyleOptions;
   graphList: Graph.Data[];
   graphFlatten: { nodes: Graph.Node[]; edges: Graph.Edge[] };
@@ -30,14 +29,6 @@ export interface GraphState {
 }
 
 const initialState: GraphState = {
-  accessorFns: {
-    getNodeID: (node) => node.id,
-    getEdgeID: (edge) => edge.id,
-    getEdgeSource: (edge) => edge.source,
-    getEdgeTarget: (edge) => edge.target,
-    getEdgeWidth: (edge) => edge.data.blk_ts_unix,
-    getEdgeTime: (edge) => edge.data.blk_ts_unix,
-  },
   styleOptions: {
     layout: {
       name: 'concentric',
@@ -66,9 +57,8 @@ const graph = createSlice({
   name: 'graph',
   initialState,
   reducers: {
-    resetState(state) {
+    resetState() {
       const newGraphState = { ...initialState };
-      newGraphState.accessorFns = state.accessorFns;
       return newGraphState;
     },
     addQuery(state, action) {
@@ -76,8 +66,8 @@ const graph = createSlice({
       state.graphList.push(queryResults);
     },
     changeOptions(state, action) {
-      const { key, value } = action.payload;
-      const { getEdgeWidth, getEdgeTime } = state.accessorFns;
+      const { key, value, accessorFns } = action.payload;
+      const { getEdgeWidth, getEdgeTime } = accessorFns;
       state.styleOptions[key] = value;
       const newFilteredData = filterDataByTime(
         state.graphFlatten,
@@ -92,12 +82,14 @@ const graph = createSlice({
     },
     changeLayout(state, action) {
       const newLayoutName = action.payload;
-      state.styleOptions.layout = LAYOUT.OPTIONS.find((x) => x.name === newLayoutName)
+      state.styleOptions.layout = LAYOUT.OPTIONS.find(
+        (x) => x.name === newLayoutName,
+      );
     },
     processGraphResponse(state, action) {
-      const newData = action.payload;
-      const { getEdgeWidth, getEdgeTime } = state.accessorFns;
-      const modData = combineProcessedData(newData, state.graphFlatten);
+      const { data, accessorFns } = action.payload;
+      const { getEdgeWidth, getEdgeTime } = accessorFns;
+      const modData = combineProcessedData(data, state.graphFlatten);
       state.graphGrouped = groupEdges(modData);
       state.graphFlatten = modData;
       const tsData = datatoTS(state.graphFlatten, getEdgeTime);
@@ -124,12 +116,12 @@ const graph = createSlice({
       state.selectTimeRange = selectedTimeRange;
     },
     timeRangeChange(state, action) {
-      const selectedTimeRange = action.payload;
-      const { getEdgeWidth, getEdgeTime } = state.accessorFns;
+      const { timeRange, accessorFns } = action.payload;
+      const { getEdgeWidth, getEdgeTime } = accessorFns;
       // Filter out all relevant edges and store from & to node id
       const newFilteredData = filterDataByTime(
         state.graphFlatten,
-        selectedTimeRange,
+        timeRange,
         getEdgeTime,
       );
       state.graphVisible = deriveVisibleGraph(
@@ -149,9 +141,6 @@ const graph = createSlice({
       state.detailedSelection.type = null;
       state.detailedSelection.data = null;
     },
-    setAccessorFns(state, action) {
-      state.accessorFns = action.payload;
-    },
   },
 });
 
@@ -167,7 +156,6 @@ export const {
   timeRangeChange,
   getDetails,
   clearDetails,
-  setAccessorFns,
 } = graph.actions;
 
 export default graph.reducer;

@@ -7,12 +7,12 @@ import { TriGrid, Hash } from '../ui';
 import * as Graph from '../../types/Graph';
 import * as Prop from '../../types/Prop';
 import { timeConverter } from '../../utils/utils';
-import { getGraph } from '../../redux/accessors';
+import { getGraph } from '../../redux';
 
 const NodeMenu: React.FC<Prop.NodeMenu> = ({ menu }) => {
   const graphFlatten = useSelector((state) => getGraph(state).graphFlatten);
   const { data } = graphFlatten.nodes.find(
-    (x: Graph.Node) => x.id === menu.node.id
+    (x: Graph.Node) => x.id === menu.node.id,
   );
 
   return (

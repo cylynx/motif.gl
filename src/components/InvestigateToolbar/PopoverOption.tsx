@@ -7,7 +7,7 @@ import { Block } from 'baseui/block';
 import { TriGrid } from '../ui';
 import * as Prop from '../../types/Prop';
 import { changeOptions, changeLayout } from '../../redux/graph-slice';
-import { getGraph } from '../../redux/accessors';
+import { getGraph, getAccessors } from '../../redux';
 
 const nodeSizeOptions = [
   { label: 'Default', id: 'default' },
@@ -30,19 +30,21 @@ const layoutNames = [
 
 const PopoverOption = () => {
   const dispatch = useDispatch();
+  const accessorFns = useSelector((state) => getAccessors(state));
   const { nodeSize, edgeWidth, resetView, groupEdges } = useSelector(
-    (state) => getGraph(state).styleOptions
+    (state) => getGraph(state).styleOptions,
   );
   const layoutName = useSelector(
-    (state) => getGraph(state).styleOptions.layout.name
+    (state) => getGraph(state).styleOptions.layout.name,
   );
   const findID = (options: Prop.Layout[], id: string): Prop.Layout =>
     options.find((x) => x.id === id);
+
   const onChangeOptions = (
     key: string,
-    newValue: boolean | string | number
+    newValue: boolean | string | number,
   ) => {
-    dispatch(changeOptions({ key, value: newValue }));
+    dispatch(changeOptions({ key, value: newValue, accessorFns }));
   };
 
   return (

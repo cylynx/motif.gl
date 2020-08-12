@@ -10,7 +10,7 @@ import { openImportModal, fetchDone } from '../../redux/ui-slice';
 import { resetState } from '../../redux/graph-slice';
 import ExportDataButton from './ExportDataButton';
 import QueryAccordian from './QueryAccordian';
-import { getGraph, getUI } from '../../redux/accessors';
+import { getGraph, getUI } from '../../redux';
 
 const InvestigateMain = () => {
   const dispatch = useDispatch();

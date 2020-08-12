@@ -5,7 +5,7 @@ import { StatefulMenu } from 'baseui/menu';
 import { StatefulPopover, PLACEMENT } from 'baseui/popover';
 import html2canvas from 'html2canvas';
 import { FullButton, Notification } from '../ui';
-import { getGraph } from '../../redux/accessors';
+import { getGraph } from '../../redux';
 
 const ExportDataButton = () => {
   const exportGraph = useSelector((state) => getGraph(state).graphList);

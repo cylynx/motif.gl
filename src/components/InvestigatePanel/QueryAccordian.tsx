@@ -13,7 +13,7 @@ import * as Graph from '../../types/Graph';
 import { getDetails } from '../../redux/graph-slice';
 
 import { multiplyArr, roundToTwo, shortifyLabel } from '../../utils/utils';
-import { getGraph, getUI } from '../../redux/accessors';
+import { getGraph, getUI } from '../../redux';
 
 const QueryAccordian = () => {
   const [css, theme] = useStyletron();

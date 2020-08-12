@@ -17,7 +17,7 @@ import * as Prop from '../../types/Prop';
 
 import { setRange, timeRangeChange } from '../../redux/graph-slice';
 import EventChart from './EventChart';
-import { getGraph } from '../../redux/accessors';
+import { getGraph, getAccessors } from '../../redux';
 
 const windowOptions = ['30d', '7d', '1d', '1h', '1m'];
 
@@ -60,18 +60,19 @@ const InvestigateTimeBar = () => {
   const timeRange = useSelector((state) => getGraph(state).timeRange);
   const sliderRange = useSelector((state) => getGraph(state).selectTimeRange);
   const tsData = useSelector((state) => getGraph(state).tsData);
+  const accessorFns = useSelector((state) => getAccessors(state));
   const [css] = useStyletron();
 
   // Group transactions with similar time together
   const aggPeriod = deriveAggPeriod(timeRange[1] - timeRange[0]);
 
   const aggSeries = groupBy(tsData, (result) =>
-    groupByTime(result[0], aggPeriod)
+    groupByTime(result[0], aggPeriod),
   );
 
   const dataSeries = [];
   Object.entries(aggSeries).forEach(([key, value]) =>
-    dataSeries.push([new Date(key).getTime(), value.length])
+    dataSeries.push([new Date(key).getTime(), value.length]),
   );
 
   // Filter the bar graph to get the colour
@@ -112,7 +113,9 @@ const InvestigateTimeBar = () => {
           step={0.1}
           value={sliderRange}
           onChange={({ value }) => dispatch(setRange(value))}
-          onFinalChange={({ value }) => dispatch(timeRangeChange(value))}
+          onFinalChange={({ value }) =>
+            dispatch(timeRangeChange({ timeRange: value, accessorFns }))
+          }
           overrides={{
             ThumbValue: () => null,
             Tick: () => null,

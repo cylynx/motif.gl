@@ -8,7 +8,7 @@ import { Button } from 'baseui/button';
 import { ChevronDown, ChevronUp } from 'baseui/icon';
 import * as Prop from '../../types/Prop';
 import { setBottomOpen } from '../../redux/ui-slice';
-import { getUI } from '../../redux/accessors';
+import { getUI } from '../../redux';
 
 const BottomLayer: React.FC<Prop.Layer> = ({ children }) => {
   const isOpen = useSelector((state) => getUI(state).bottomOpen);

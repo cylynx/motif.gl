@@ -1,6 +1,6 @@
 import some from 'lodash/some';
 import isUndefined from 'lodash/isUndefined';
-import { getGraph } from '../redux/accessors';
+import { getGraph, getAccessors } from '../redux';
 import * as Graph from '../types/Graph';
 
 import {
@@ -63,7 +63,7 @@ const processResponse = (
   // Check edges for new data as it might just be repeated
   if (checkNewData(graphList, newData)) {
     dispatch(addQuery(newData));
-    dispatch(processGraphResponse(newData));
+    dispatch(processGraphResponse({ data: newData, accessorFns }));
     dispatch(fetchDone());
     // Check if TimeBar should be opened
     if (checkEdgeTime(getEdgeTime)) {
@@ -102,7 +102,8 @@ export const addData = (data: Graph.Data | Graph.Data[]) => (
   dispatch: any,
   getState: any,
 ) => {
-  const { graphList, accessorFns } = getGraph(getState());
+  const { graphList } = getGraph(getState());
+  const accessorFns = getAccessors(getState());
   if (Array.isArray(data)) {
     asyncForEach(data, async (graph) => {
       try {

@@ -13,9 +13,9 @@ import {
   setName,
   setCurrency,
 } from '../../redux/ui-slice';
-import { setAccessorFns } from '../../redux/graph-slice';
+import { setAccessorFns } from '../../redux/accessors-slice';
 import { getTabsOverride, getNodeMenuOverride } from '../../utils/overrides';
-import { getUI } from '../../redux/accessors';
+import { getUI } from '../../redux';
 
 import SideLayer from './SideLayer';
 import BottomLayer from './BottomLayer';
