@@ -418,11 +418,11 @@ export const combineProcessedData = (
     modData.nodes = removeDuplicates(
       [...newData.nodes, ...oldData.nodes],
       'id',
-    );
+    ) as Graph.Node[];
     modData.edges = removeDuplicates(
       [...newData.edges, ...oldData.edges],
       'id',
-    );
+    ) as Graph.Edge[];
     return modData;
   }
   return newData;
