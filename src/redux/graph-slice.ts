@@ -16,6 +16,7 @@ import {
 } from '../utils/graph-utils';
 
 export interface GraphState {
+  accessors: Graph.AccessorFns;
   styleOptions: Graph.StyleOptions;
   graphList: Graph.Data[];
   graphFlatten: { nodes: Graph.Node[]; edges: Graph.Edge[] };
@@ -29,6 +30,14 @@ export interface GraphState {
 }
 
 const initialState: GraphState = {
+  accessors: {
+    getNodeID: (node) => node.id,
+    getEdgeID: (edge) => edge.id,
+    getEdgeSource: (edge) => edge.source,
+    getEdgeTarget: (edge) => edge.target,
+    getEdgeWidth: (edge) => edge.data.blk_ts_unix,
+    getEdgeTime: (edge) => edge.data.blk_ts_unix,
+  },
   styleOptions: {
     layout: {
       name: 'concentric',
@@ -141,6 +150,9 @@ const graph = createSlice({
       state.detailedSelection.type = null;
       state.detailedSelection.data = null;
     },
+    setAccessorFns(state, action) {
+      state.accessors = action.payload;
+    },
   },
 });
 
@@ -156,6 +168,7 @@ export const {
   timeRangeChange,
   getDetails,
   clearDetails,
+  setAccessorFns,
 } = graph.actions;
 
 export default graph.reducer;

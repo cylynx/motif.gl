@@ -13,7 +13,7 @@ import {
   setName,
   setCurrency,
 } from '../../redux/ui-slice';
-import { setAccessorFns } from '../../redux/accessors-slice';
+import { setAccessorFns } from '../../redux/graph-slice';
 import { getTabsOverride, getNodeMenuOverride } from '../../utils/overrides';
 import { getUI } from '../../redux';
 

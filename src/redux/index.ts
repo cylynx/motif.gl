@@ -1,8 +1,11 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import undoable, { excludeAction, GroupByFunction } from 'redux-undo';
-import accessorsReducer from './accessors-slice';
 import uiReducer from './ui-slice';
-import graphReducer, { setRange, GraphState } from './graph-slice';
+import graphReducer, {
+  setRange,
+  GraphState,
+  setAccessorFns,
+} from './graph-slice';
 
 // History group that collapses both actions into 1 undo/redo
 const undoGroup: GroupByFunction<GraphState> = (
@@ -25,14 +28,13 @@ const undoGroup: GroupByFunction<GraphState> = (
 
 // Enhanced graph reducer
 const graphReducerHistory = undoable(graphReducer, {
-  filter: excludeAction([setRange.type]),
+  filter: excludeAction([setRange.type, setAccessorFns.type]),
   groupBy: undoGroup,
 });
 
 // Export combined reducers
 export const investigateReducer = combineReducers({
   ui: uiReducer,
-  accessors: accessorsReducer,
   graph: graphReducerHistory,
 });
 
@@ -47,9 +49,8 @@ export const getUI = (state: CombinedReducer) => clientState(state).ui;
 export const getGraph = (state: CombinedReducer) =>
   clientState(state).graph.present;
 export const getAccessors = (state: CombinedReducer) =>
-  clientState(state).accessors;
+  clientState(state).graph.present.accessors;
 
 // Export all actions and accessors
 export * from './ui-slice';
 export * from './graph-slice';
-export * from './accessors-slice';

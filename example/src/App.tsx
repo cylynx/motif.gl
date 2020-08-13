@@ -27,7 +27,7 @@ const App = () => {
               getEdgeTime: (edge) => edge.data.blk_ts_unix,
               getEdgeScore: (edge) => edge.data.score_vector,
               getEdgeWidth: (edge) => edge.data.value,
-              getNodeLabel: (node) => node.data.address,
+              getNodeLabel: (node) => node.label,
               // getters below are for nodobo
               // getEdgeWidth: edge => edge.data.other_id,
               // getEdgeTime: edge => edge.data.unix_ts,
