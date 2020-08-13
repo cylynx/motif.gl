@@ -28,18 +28,32 @@ export type TimeSeries = Array<[number, number]> | [];
 export type EdgeAccessor<T> = (edge: Edge) => T;
 export type NodeAccessor<T> = (node: Node) => T;
 
+// export interface AccessorFns {
+//   getEdgeSource: EdgeAccessor<string>;
+//   getEdgeTarget: EdgeAccessor<string>;
+//   getEdgeID?: EdgeAccessor<string>;
+//   getEdgeSourceAdd?: EdgeAccessor<string>;
+//   getEdgeTargetAdd?: EdgeAccessor<string>;
+//   getEdgeLabel?: EdgeAccessor<string>;
+//   getEdgeTime?: EdgeAccessor<number>;
+//   getEdgeScore?: EdgeAccessor<number>;
+//   getEdgeWidth?: EdgeAccessor<number>;
+//   getNodeID?: NodeAccessor<string>;
+//   getNodeLabel?: NodeAccessor<string>;
+// }
+
 export interface AccessorFns {
-  getEdgeSource: EdgeAccessor<string>;
-  getEdgeTarget: EdgeAccessor<string>;
-  getEdgeID?: EdgeAccessor<string>;
-  getEdgeSourceAdd?: EdgeAccessor<string>;
-  getEdgeTargetAdd?: EdgeAccessor<string>;
-  getEdgeLabel?: EdgeAccessor<string>;
-  getEdgeTime?: EdgeAccessor<number>;
-  getEdgeScore?: EdgeAccessor<number>;
-  getEdgeWidth?: EdgeAccessor<number>;
-  getNodeID?: NodeAccessor<string>;
-  getNodeLabel?: NodeAccessor<string>;
+  getEdgeSource: string;
+  getEdgeTarget: string;
+  getEdgeID?: string;
+  getEdgeSourceAdd?: string;
+  getEdgeTargetAdd?: string;
+  getEdgeLabel?: string;
+  getEdgeTime?: string;
+  getEdgeScore?: string;
+  getEdgeWidth?: string;
+  getNodeID?: string;
+  getNodeLabel?: string;
 }
 
 export interface Layout {

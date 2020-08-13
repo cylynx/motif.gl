@@ -38,11 +38,11 @@ const checkNewData = (
   return newData && !some(graphListKeys, (key) => key === newData.metadata.key);
 };
 
-const checkEdgeTime = (getEdgeTime: Graph.EdgeAccessor<number>): boolean =>
+const checkEdgeTime = (getEdgeTime: string): boolean =>
   !isUndefined(getEdgeTime);
-const checkEdgeScore = (getEdgeScore: Graph.EdgeAccessor<number>): boolean =>
+const checkEdgeScore = (getEdgeScore: string): boolean =>
   !isUndefined(getEdgeScore);
-const checkEdgeValue = (getEdgeWidth: Graph.EdgeAccessor<number>): boolean =>
+const checkEdgeValue = (getEdgeWidth: string): boolean =>
   !isUndefined(getEdgeWidth);
 
 const processResponse = (

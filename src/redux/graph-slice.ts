@@ -31,12 +31,12 @@ export interface GraphState {
 
 const initialState: GraphState = {
   accessors: {
-    getNodeID: (node) => node.id,
-    getEdgeID: (edge) => edge.id,
-    getEdgeSource: (edge) => edge.source,
-    getEdgeTarget: (edge) => edge.target,
-    getEdgeWidth: (edge) => edge.data.blk_ts_unix,
-    getEdgeTime: (edge) => edge.data.blk_ts_unix,
+    getNodeID: 'id',
+    getEdgeID: 'id',
+    getEdgeSource: 'source',
+    getEdgeTarget: 'target',
+    getEdgeWidth: 'data.blk_ts_unix',
+    getEdgeTime: 'data.blk_ts_unix',
   },
   styleOptions: {
     layout: {

@@ -2,6 +2,7 @@
 import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import isUndefined from 'lodash/isUndefined';
+import objectPath from 'object-path';
 import { HeadingSmall, LabelMedium, ParagraphSmall } from 'baseui/typography';
 import { ChevronLeft } from 'baseui/icon';
 import { Button } from 'baseui/button';
@@ -38,16 +39,23 @@ const InvestigateDetailed = () => {
   const { label } = item;
   const fromAddress = isUndefined(getEdgeSourceAdd)
     ? item.source
-    : getEdgeSourceAdd(item);
+    : objectPath.get(item, getEdgeSourceAdd);
   const toAddress = isUndefined(getEdgeTargetAdd)
     ? item.target
-    : getEdgeTargetAdd(item);
+    : objectPath.get(item, getEdgeTargetAdd);
   const riskScore = scoreLock
     ? 'NA'
-    : multiplyArr(Object.values(getEdgeScore(item)), Object.values(score));
-  const time = timeLock ? 'NA' : timeConverter(getEdgeTime(item));
+    : multiplyArr(
+        Object.values(objectPath.get(item, getEdgeScore)),
+        Object.values(score),
+      );
+  const time = timeLock
+    ? 'NA'
+    : timeConverter(objectPath.get(item, getEdgeTime));
   const headingTitle = `Transaction ${shortifyLabel(label)}...`;
-  const valueTitle = valueLock ? 'NA' : `${getEdgeWidth(item)} ${currency}`;
+  const valueTitle = valueLock
+    ? 'NA'
+    : `${objectPath.get(item, getEdgeWidth)} ${currency}`;
 
   return (
     <Fragment>

@@ -19,15 +19,15 @@ const App = () => {
             currency='ETH'
             accessorFns={{
               // getters below are for firebase
-              getNodeID: (node) => node.id,
-              getEdgeID: (edge) => edge.id,
-              getEdgeSource: (edge) => edge.source,
-              getEdgeTarget: (edge) => edge.target,
-              getEdgeLabel: (edge) => edge.data.txn_hash,
-              getEdgeTime: (edge) => edge.data.blk_ts_unix,
-              getEdgeScore: (edge) => edge.data.score_vector,
-              getEdgeWidth: (edge) => edge.data.value,
-              getNodeLabel: (node) => node.label,
+              getNodeID: 'id',
+              getEdgeID: 'id',
+              getEdgeSource: 'source',
+              getEdgeTarget: 'target',
+              getEdgeLabel: 'data.txn_hash',
+              getEdgeTime: 'data.blk_ts_unix',
+              getEdgeScore: 'data.score_vector',
+              getEdgeWidth: 'data.value',
+              getNodeLabel: 'label',
               // getters below are for nodobo
               // getEdgeWidth: edge => edge.data.other_id,
               // getEdgeTime: edge => edge.data.unix_ts,
