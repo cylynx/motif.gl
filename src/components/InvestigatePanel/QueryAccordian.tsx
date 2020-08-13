@@ -13,7 +13,7 @@ import * as Graph from '../../types/Graph';
 import { getDetails } from '../../redux/graph-slice';
 
 import { multiplyArr, roundToTwo, shortifyLabel } from '../../utils/utils';
-import { getGraph, getUI } from '../../redux';
+import { getGraph, getUI, getAccessors } from '../../redux';
 
 const QueryAccordian = () => {
   const [css, theme] = useStyletron();
@@ -76,17 +76,15 @@ const QueryList = ({ items }) => {
   const scoreLock = useSelector((state) => getUI(state).scoreLock);
   const valueLock = useSelector((state) => getUI(state).valueLock);
   const score = useSelector((state) => getUI(state).score);
-  const { getEdgeWidth, getEdgeScore } = useSelector(
-    (state) => getGraph(state).getFns,
-  );
+  const { edgeWidth, edgeScore } = useSelector((state) => getAccessors(state));
   const subList = items.map((item, index) => {
     const riskScore = scoreLock
       ? 'NA'
-      : multiplyArr(Object.values(getEdgeScore(item)), Object.values(score));
+      : multiplyArr(Object.values(edgeScore(item)), Object.values(score));
     const { label } = item;
     let value = 0;
     if (!valueLock) {
-      value = getEdgeWidth(item);
+      value = edgeWidth(item);
     }
     const shortenedLabel = shortifyLabel(label);
 

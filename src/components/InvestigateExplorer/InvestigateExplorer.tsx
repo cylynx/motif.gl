@@ -13,7 +13,7 @@ import {
   setName,
   setCurrency,
 } from '../../redux/ui-slice';
-import { setAccessorFns } from '../../redux/graph-slice';
+import { setAccessors } from '../../redux/graph-slice';
 import { getTabsOverride, getNodeMenuOverride } from '../../utils/overrides';
 import { getUI } from '../../redux';
 
@@ -28,7 +28,7 @@ import InvestigateToolbar from '../InvestigateToolbar';
 import NodeMenu from '../InvestigateChart/NodeMenu';
 
 const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
-  const { name, currency, accessorFns, overrides } = props;
+  const { name, currency, accessors, overrides } = props;
 
   const [css] = useStyletron();
 
@@ -43,8 +43,8 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
   const UserNodeMenu = getNodeMenuOverride(overrides, NodeMenu);
 
   useEffect(() => {
-    if (accessorFns) {
-      dispatch(setAccessorFns(accessorFns));
+    if (accessors) {
+      dispatch(setAccessors(accessors));
     }
     if (overrides.score) {
       dispatch(setScore(overrides.score));
@@ -55,7 +55,7 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
     if (currency) {
       dispatch(setCurrency(currency));
     }
-  }, [accessorFns, overrides.score, name, currency]);
+  }, [accessors, overrides.score, name, currency]);
 
   // UI Functions
   const onCloseModal = () => {

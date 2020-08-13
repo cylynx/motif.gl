@@ -157,17 +157,17 @@ const getStore = (type) => {
   };
   switch (type) {
     case 'time':
-      store.investigate.graph.present.getFns.getEdgeTime = (edge) =>
+      store.investigate.graph.present.accessors.edgeTime = (edge) =>
         edge.data.time;
       return store;
     case 'score':
-      store.investigate.graph.present.getFns.getEdgeScore = (edge) =>
+      store.investigate.graph.present.accessors.edgeScore = (edge) =>
         edge.data.score;
       return store;
     case 'both':
       store.investigate.graph.present.getFns = {
-        getEdgeTime: (edge) => edge.data.time,
-        getEdgeScore: (edge) => edge.data.score,
+        edgeTime: (edge) => edge.data.time,
+        edgeScore: (edge) => edge.data.score,
       };
       return store;
     default:

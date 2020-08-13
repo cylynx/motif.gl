@@ -1,5 +1,5 @@
 import { ReactNode, RefObject, MouseEvent, FC, ComponentType } from 'react';
-import { AccessorFns, Data, ChartData } from './Graph';
+import { Accessors, Data, ChartData } from './Graph';
 
 // Prop Types for Tab Override
 export interface Tab {
@@ -37,7 +37,7 @@ export interface NodeMenu {
 export interface InvestigateExplorer {
   name: string;
   currency: string;
-  accessorFns: AccessorFns;
+  accessors: Accessors;
   overrides: Overrides;
 }
 

@@ -4,7 +4,7 @@ import uiReducer from './ui-slice';
 import graphReducer, {
   setRange,
   GraphState,
-  setAccessorFns,
+  setAccessors,
 } from './graph-slice';
 
 // History group that collapses both actions into 1 undo/redo
@@ -28,7 +28,7 @@ const undoGroup: GroupByFunction<GraphState> = (
 
 // Enhanced graph reducer
 const graphReducerHistory = undoable(graphReducer, {
-  filter: excludeAction([setRange.type, setAccessorFns.type]),
+  filter: excludeAction([setRange.type, setAccessors.type]),
   groupBy: undoGroup,
 });
 

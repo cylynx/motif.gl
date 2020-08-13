@@ -38,22 +38,22 @@ const checkNewData = (
   return newData && !some(graphListKeys, (key) => key === newData.metadata.key);
 };
 
-const checkEdgeTime = (getEdgeTime: string): boolean =>
-  !isUndefined(getEdgeTime);
-const checkEdgeScore = (getEdgeScore: string): boolean =>
-  !isUndefined(getEdgeScore);
-const checkEdgeValue = (getEdgeWidth: string): boolean =>
-  !isUndefined(getEdgeWidth);
+const checkEdgeTime = (edgeTime: string): boolean =>
+  !isUndefined(edgeTime);
+const checkEdgeScore = (edgeScore: string): boolean =>
+  !isUndefined(edgeScore);
+const checkEdgeValue = (edgeWidth: string): boolean =>
+  !isUndefined(edgeWidth);
 
 const processResponse = (
   dispatch: any,
   graphList: Graph.Data[],
-  accessorFns: Graph.AccessorFns,
+  accessors: Graph.Accessors,
   newData: Graph.Data,
 ) => {
   dispatch(fetchBegin());
   const { metadata } = newData;
-  const { getEdgeTime, getEdgeScore, getEdgeWidth } = accessorFns;
+  const { edgeTime, edgeScore, edgeWidth } = accessors;
   if (checkMetaData(metadata)) {
     const message = `${metadata.retrieved_size} / ${metadata.search_size} of the most recent transactions retrieved.
         We plan to allow large imports and visualization in the full version.
@@ -63,20 +63,20 @@ const processResponse = (
   // Check edges for new data as it might just be repeated
   if (checkNewData(graphList, newData)) {
     dispatch(addQuery(newData));
-    dispatch(processGraphResponse({ data: newData, accessorFns }));
+    dispatch(processGraphResponse({ data: newData, accessors }));
     dispatch(fetchDone());
     // Check if TimeBar should be opened
-    if (checkEdgeTime(getEdgeTime)) {
+    if (checkEdgeTime(edgeTime)) {
       dispatch(setBottomOpen(true));
     } else {
       dispatch(setTimeLock());
     }
     // Check if score-related UI should be displayed
-    if (!checkEdgeScore(getEdgeScore)) {
+    if (!checkEdgeScore(edgeScore)) {
       dispatch(setScoreLock());
     }
     // Check if value-related UI should be displayed
-    if (!checkEdgeValue(getEdgeWidth)) {
+    if (!checkEdgeValue(edgeWidth)) {
       dispatch(setValueLock());
     }
   } else {
@@ -103,7 +103,7 @@ export const addData = (data: Graph.Data | Graph.Data[]) => (
   getState: any,
 ) => {
   const { graphList } = getGraph(getState());
-  const accessorFns = getAccessors(getState());
+  const accessors = getAccessors(getState());
   if (Array.isArray(data)) {
     asyncForEach(data, async (graph) => {
       try {
@@ -111,8 +111,8 @@ export const addData = (data: Graph.Data | Graph.Data[]) => (
         processResponse(
           dispatch,
           graphList,
-          accessorFns,
-          processData(graph, accessorFns),
+          accessors,
+          processData(graph, accessors),
         );
       } catch (err) {
         dispatch(fetchError(err));
@@ -123,8 +123,8 @@ export const addData = (data: Graph.Data | Graph.Data[]) => (
       processResponse(
         dispatch,
         graphList,
-        accessorFns,
-        processData(data, accessorFns),
+        accessors,
+        processData(data, accessors),
       );
     } catch (err) {
       dispatch(fetchError(err));

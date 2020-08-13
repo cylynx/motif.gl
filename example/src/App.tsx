@@ -17,17 +17,17 @@ const App = () => {
           <Investigate
             name='Blocklynx'
             currency='ETH'
-            accessorFns={{
+            accessors={{
               // getters below are for firebase
-              getNodeID: 'id',
-              getEdgeID: 'id',
-              getEdgeSource: 'source',
-              getEdgeTarget: 'target',
-              getEdgeLabel: 'data.txn_hash',
-              getEdgeTime: 'data.blk_ts_unix',
-              getEdgeScore: 'data.score_vector',
-              getEdgeWidth: 'data.value',
-              getNodeLabel: 'label',
+              nodeID: 'id',
+              edgeID: 'id',
+              edgeSource: 'source',
+              edgeTarget: 'target',
+              edgeLabel: 'data.txn_hash',
+              edgeTime: 'data.blk_ts_unix',
+              edgeScore: 'data.score_vector',
+              edgeWidth: 'data.value',
+              nodeLabel: 'label',
               // getters below are for nodobo
               // getEdgeWidth: edge => edge.data.other_id,
               // getEdgeTime: edge => edge.data.unix_ts,

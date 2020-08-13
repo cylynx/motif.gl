@@ -2,7 +2,7 @@
 import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import isUndefined from 'lodash/isUndefined';
-import objectPath from 'object-path';
+import get from 'lodash/get';
 import { HeadingSmall, LabelMedium, ParagraphSmall } from 'baseui/typography';
 import { ChevronLeft } from 'baseui/icon';
 import { Button } from 'baseui/button';
@@ -29,33 +29,26 @@ const InvestigateDetailed = () => {
   const valueLock = useSelector((state) => getUI(state).valueLock);
   const score = useSelector((state) => getUI(state).score);
   const {
-    getEdgeWidth,
-    getEdgeSourceAdd,
-    getEdgeTargetAdd,
-    getEdgeTime,
-    getEdgeScore,
+    edgeWidth,
+    edgeSourceAdd,
+    edgeTargetAdd,
+    edgeTime,
+    edgeScore,
   } = useSelector((state) => getAccessors(state));
 
   const { label } = item;
-  const fromAddress = isUndefined(getEdgeSourceAdd)
+  const fromAddress = isUndefined(edgeSourceAdd)
     ? item.source
-    : objectPath.get(item, getEdgeSourceAdd);
-  const toAddress = isUndefined(getEdgeTargetAdd)
+    : get(item, edgeSourceAdd);
+  const toAddress = isUndefined(edgeTargetAdd)
     ? item.target
-    : objectPath.get(item, getEdgeTargetAdd);
+    : get(item, edgeTargetAdd);
   const riskScore = scoreLock
     ? 'NA'
-    : multiplyArr(
-        Object.values(objectPath.get(item, getEdgeScore)),
-        Object.values(score),
-      );
-  const time = timeLock
-    ? 'NA'
-    : timeConverter(objectPath.get(item, getEdgeTime));
+    : multiplyArr(Object.values(get(item, edgeScore)), Object.values(score));
+  const time = timeLock ? 'NA' : timeConverter(get(item, edgeTime));
   const headingTitle = `Transaction ${shortifyLabel(label)}...`;
-  const valueTitle = valueLock
-    ? 'NA'
-    : `${objectPath.get(item, getEdgeWidth)} ${currency}`;
+  const valueTitle = valueLock ? 'NA' : `${get(item, edgeWidth)} ${currency}`;
 
   return (
     <Fragment>
@@ -97,7 +90,7 @@ const InvestigateDetailed = () => {
             <RiskBarChart
               title=''
               // @ts-ignore - Bug here needs to be fixed when removing getEdgeScore
-              data={processScoreVector(CATEGORIES, getEdgeScore(item))}
+              data={processScoreVector(CATEGORIES, edgeScore(item))}
             />
           </div>
         </Fragment>
