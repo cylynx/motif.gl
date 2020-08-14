@@ -25,8 +25,8 @@ const checkMetaData = (metadata: Graph.Metadata): boolean => {
 };
 
 const checkNewData = (
-  graphList: Graph.Data[],
-  newData: Graph.Data,
+  graphList: Graph.GraphList,
+  newData: Graph.GraphData,
 ): boolean => {
   if (isUndefined(newData.metadata)) {
     // eslint-disable-next-line no-param-reassign
@@ -38,18 +38,15 @@ const checkNewData = (
   return newData && !some(graphListKeys, (key) => key === newData.metadata.key);
 };
 
-const checkEdgeTime = (edgeTime: string): boolean =>
-  !isUndefined(edgeTime);
-const checkEdgeScore = (edgeScore: string): boolean =>
-  !isUndefined(edgeScore);
-const checkEdgeValue = (edgeWidth: string): boolean =>
-  !isUndefined(edgeWidth);
+const checkEdgeTime = (edgeTime: string): boolean => !isUndefined(edgeTime);
+const checkEdgeScore = (edgeScore: string): boolean => !isUndefined(edgeScore);
+const checkEdgeValue = (edgeWidth: string): boolean => !isUndefined(edgeWidth);
 
 const processResponse = (
   dispatch: any,
-  graphList: Graph.Data[],
+  graphList: Graph.GraphList,
   accessors: Graph.Accessors,
-  newData: Graph.Data,
+  newData: Graph.GraphData,
 ) => {
   dispatch(fetchBegin());
   const { metadata } = newData;
@@ -98,7 +95,7 @@ async function asyncForEach(array: any[], callback: (item: any) => void) {
 
 // One function to rule them all
 // Thunk to dispatch our calls
-export const addData = (data: Graph.Data | Graph.Data[]) => (
+export const addData = (data: Graph.GraphData | Graph.GraphList) => (
   dispatch: any,
   getState: any,
 ) => {

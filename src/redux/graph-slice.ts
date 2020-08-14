@@ -18,7 +18,7 @@ import {
 export interface GraphState {
   accessors: Graph.Accessors;
   styleOptions: Graph.StyleOptions;
-  graphList: Graph.Data[];
+  graphList: Graph.GraphList;
   graphFlatten: { nodes: Graph.Node[]; edges: Graph.Edge[] };
   graphGrouped: { nodes: Graph.Node[]; edges: Graph.Edge[] };
   graphVisible: { nodes: Graph.Node[]; edges: Graph.Edge[] };

@@ -9,12 +9,12 @@ import 'echarts/lib/component/legendScroll';
 
 import { CATEGORIES_COLOR } from '../../utils/categories';
 
-const deriveLegendCategories = (data: Graph.Data) => {
+const deriveLegendCategories = (data: Graph.GraphData) => {
   const nodes = [...data.nodes];
   const newNodes = nodes.filter(
     (obj, pos, arr) =>
       arr.map((mapObj) => mapObj.data.category).indexOf(obj.data.category) ===
-      pos
+      pos,
   );
   const legend = [];
   for (const node of newNodes) {

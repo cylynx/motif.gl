@@ -1,5 +1,5 @@
 import { ReactNode, RefObject, MouseEvent, FC, ComponentType } from 'react';
-import { Accessors, Data, ChartData } from './Graph';
+import { Accessors, GraphData, ChartData } from './Graph';
 
 // Prop Types for Tab Override
 export interface Tab {
@@ -117,7 +117,7 @@ export interface InvestigateGraph {
 
 // Prop Types for InvestigateChartLegend
 export interface InvestigateChartLegend {
-  data: Data;
+  data: GraphData;
 }
 
 // Prop Types for Chart

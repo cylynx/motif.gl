@@ -1,7 +1,15 @@
-import { Node as GraphinNode, Edge as GraphinEdge } from '@antv/graphin/';
+import {
+  Node as GraphinNode,
+  Edge as GraphinEdge,
+  InnerEdgeStyle,
+} from '@antv/graphin/';
 
 export interface Edge extends Omit<GraphinEdge, 'style'> {
-  style: Partial<GraphinEdge['style']>;
+  style:
+    | Partial<GraphinEdge['style']>
+    | {
+        [property: string]: boolean;
+      };
 }
 
 export interface Node extends Omit<GraphinNode, 'data'> {
@@ -17,11 +25,13 @@ export interface Metadata {
   title?: string;
 }
 
-export interface Data {
+export interface GraphData {
   nodes: Node[];
   edges: Edge[];
   metadata?: Metadata;
 }
+
+export type GraphList = GraphData[];
 
 export type TimeRange = [number, number];
 export type TimeSeries = Array<[number, number]> | [];

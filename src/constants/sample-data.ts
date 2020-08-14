@@ -1,6 +1,6 @@
 import * as Graph from '../types/Graph';
 
-export const TriangleJSON: Graph.Data[] = [
+export const TriangleJSON: Graph.GraphList = [
   {
     nodes: [
       {
@@ -40,7 +40,7 @@ export const TriangleJSON: Graph.Data[] = [
         },
         source: 'a',
         target: 'b',
-        style: { endArrow: 'true' },
+        style: { endArrow: true },
       },
       {
         id: 'txn b-c',
@@ -50,7 +50,7 @@ export const TriangleJSON: Graph.Data[] = [
         },
         source: 'b',
         target: 'c',
-        style: { endArrow: 'true' },
+        style: { endArrow: true },
       },
       {
         id: 'txn c-b',
@@ -60,7 +60,7 @@ export const TriangleJSON: Graph.Data[] = [
         },
         source: 'c',
         target: 'b',
-        style: { endArrow: 'true' },
+        style: { endArrow: true },
       },
     ],
     metadata: {
@@ -69,7 +69,7 @@ export const TriangleJSON: Graph.Data[] = [
   },
 ];
 
-export const txnJSON: Graph.Data[] = [
+export const txnJSON: Graph.GraphList = [
   {
     nodes: [
       {
