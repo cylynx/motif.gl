@@ -18,6 +18,15 @@ export interface Node extends Omit<GraphinNode, 'data'> {
   };
 }
 
+export type Field = {
+  analyzerType: string;
+  id?: string;
+  name: string;
+  format: string;
+  type: string;
+  filterProps?: any;
+};
+
 export interface Metadata {
   key: number;
   search_size?: number;

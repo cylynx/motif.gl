@@ -32,7 +32,13 @@
     "@typescript-eslint/no-explicit-any": 0,
     "@typescript-eslint/explicit-module-boundary-types": 0,
     "@typescript-eslint/ban-ts-comment": 0,
+    "@typescript-eslint/ban-types": 0,
+    "@typescript-eslint/no-use-before-define": [
+      "error",
+      { "variables": false, "functions": false }
+    ],
     "space-before-function-paren": 0,
+    "no-plusplus": 0,
     "react/prop-types": 0,
     "react/jsx-handler-names": 0,
     "react/jsx-fragments": 0,
