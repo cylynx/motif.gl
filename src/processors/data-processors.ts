@@ -132,6 +132,20 @@ export const processJson = async (
   );
 };
 
+export const processNodeEdgeCsv = async (
+  nodeCsv: string,
+  edgeCsv: string,
+  key = shortid.generate(),
+): Promise<Graph.GraphData> => {
+  const { fields: nodeFields, json: nodeJson } = await processCsvData(nodeCsv);
+  const { fields: edgeFields, json: edgeJson } = await processCsvData(edgeCsv);
+  const graphMetadata = {
+    fields: { nodes: nodeFields, edges: edgeFields },
+    key,
+  };
+  return { nodes: nodeJson, edges: edgeJson, metadata: graphMetadata };
+};
+
 /**
  * Converts a json object to csv and returns a promise.
  * Nested documents will have a '.' appended between the keys.
