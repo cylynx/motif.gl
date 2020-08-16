@@ -83,7 +83,13 @@ describe('Flatten object', () => {
   });
 });
 
-describe('Process csv data', () => {
+const complexCsv = `id,data.date,data.datetime,data.unixtsms,data.array,source,target
+txn a-b,2016-09-17,2016-09-17 00:09:55,1597563378349,"[1,2,3,4,5]",a,b
+txn b-c,2016-09-17,2016-09-17 00:30:08,1297563378349,"[1,2,3,4,5]",b,c
+txn c-b,2018-10-23,null,1497563378349,"[1,2,3,4,5]",c,b
+`;
+
+describe('Process csv data to required json format', () => {
   it('should get correct samples', async () => {
     const edgeJson = await csv2json(testCsv);
     const headerRow = testCsv.split('\n')[0].split(',');
@@ -101,6 +107,19 @@ describe('Process csv data', () => {
       'data.value',
       'data.blk_ts_unix',
       'style.endArrow',
+    ]);
+  });
+  it('should parse timestamps and array correctly', async () => {
+    const edgeJson = await csv2json(complexCsv);
+    cleanUpFalsyValue(edgeJson);
+    const headerRow = complexCsv.split('\n')[0].split(',');
+    const sample = getSampleForTypeAnalyze(headerRow, edgeJson);
+    const fields = getFieldsFromData(sample, headerRow);
+    expect(fields.map((x) => x.type)).toMatchObject([
+      'date',
+      'timestamp',
+      'timestamp',
+      'array',
     ]);
   });
   it('should parse the dataset correctly', async () => {
