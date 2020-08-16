@@ -3,6 +3,7 @@ import converter from 'json-2-csv';
 import { range } from 'd3-array';
 import get from 'lodash/get';
 import { Analyzer, DATA_TYPES as AnalyzerDATA_TYPES } from 'type-analyzer';
+import * as Graph from '../types/Graph';
 import { notNullorUndefined } from '../utils/data-utils';
 import { Field } from '../types/Graph';
 
@@ -76,6 +77,39 @@ export const PARSE_FIELD_VALUE_FROM_STRING = {
   },
 };
 
+export const processJson = async (json: any): Promise<Graph.GraphData> => {
+  // If the following fields are present skip on type checks and assume correct format
+  if (
+    json.nodes &&
+    json.edges &&
+    json.metadata &&
+    json.metadata.fields &&
+    json.metadata.fields.nodes &&
+    json.metadata.fields.edges &&
+    json.metadata.key
+  ) {
+    return json;
+  }
+  if (json.nodes && json.edges) {
+    const nodeCsv = await json2csv(json.nodes);
+    const edgeCsv = await json2csv(json.edges);
+    const { fields: nodeFields, json: nodeJson } = await processCsvData(
+      nodeCsv as string,
+    );
+    const { fields: edgeFields, json: edgeJson } = await processCsvData(
+      edgeCsv as string,
+    );
+    const graphMetadata = {
+      fields: { nodes: nodeFields, edges: edgeFields },
+      key: 'key',
+    };
+    return { nodes: nodeJson, edges: edgeJson, metadata: graphMetadata };
+  }
+  throw new Error(
+    'process Json Data Failed: Json has to contain a nodes & edges object',
+  );
+};
+
 /**
  * Converts a json object to csv and returns a promise.
  * Nested documents will have a '.' appended between the keys.
@@ -84,7 +118,7 @@ export const PARSE_FIELD_VALUE_FROM_STRING = {
  * @param {*} json
  * @return {*}
  */
-export const json2csv = async (json: any) => {
+export const json2csv = async (json: any): Promise<string | void> => {
   const csv = converter
     .json2csvAsync(json)
     .then()

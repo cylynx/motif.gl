@@ -7,6 +7,7 @@ import {
   getSampleForTypeAnalyze,
   getFieldsFromData,
   parseJsonByFields,
+  processJson,
 } from './data-processors';
 
 describe('Parsing json to csv', () => {
@@ -148,5 +149,39 @@ describe('Process csv data to required json format', () => {
     expect(cleanedJson[0].data.blk_ts_unix).toBeNull();
     expect(cleanedJson[1].data.blk_ts_unix).toEqual(2000000);
     expect(cleanedJson[2].style.endArrow).toEqual(true);
+  });
+});
+
+const testJson = {
+  nodes: 'a',
+  edges: 'b',
+  metadata: {
+    key: 10,
+    fields: {
+      nodes: 'a',
+      edges: 'c',
+    },
+  },
+};
+
+describe('Process json data', () => {
+  it('should throw if no nodes or edges is in the json', async () => {
+    await expect(processJson({ nodals: 'a', edges: 'b' })).rejects.toThrow();
+  });
+  it('should return the exact object if all the main keys are there', async () => {
+    const results = await processJson(testJson);
+    expect(results).toMatchObject(testJson);
+  });
+  it('should return the json object parsed, with the added metadata', async () => {
+    const results = await processJson(DATA.TriangleJSON[0]);
+    expect(results.metadata.key).not.toBeNull();
+    expect(results.metadata.fields.nodes).not.toBeNull();
+    expect(results.metadata.fields.edges).not.toBeNull();
+  });
+  it('should return metadata with the correct number of fields for nodes and edges', async () => {
+    const results = await processJson(DATA.TriangleJSON[0]);
+    const { nodes: nodeFields, edges: edgeFields } = results.metadata.fields;
+    expect(nodeFields).toHaveLength(5);
+    expect(edgeFields).toHaveLength(3);
   });
 });

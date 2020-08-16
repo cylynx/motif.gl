@@ -27,8 +27,14 @@ export type Field = {
   filterProps?: any;
 };
 
+export type GraphFields = {
+  nodes: Field[];
+  edges: Field[];
+};
+
 export interface Metadata {
-  key: number;
+  key: number | string;
+  fields?: GraphFields;
   search_size?: number;
   retrieved_size?: number;
   title?: string;
