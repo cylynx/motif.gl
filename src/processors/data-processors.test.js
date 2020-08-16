@@ -180,6 +180,7 @@ describe('Process json data', () => {
   });
   it('should return metadata with the correct number of fields for nodes and edges', async () => {
     const results = await processJson(DATA.TriangleJSON[0]);
+    console.log(results);
     const { nodes: nodeFields, edges: edgeFields } = results.metadata.fields;
     expect(nodeFields).toHaveLength(5);
     expect(edgeFields).toHaveLength(3);

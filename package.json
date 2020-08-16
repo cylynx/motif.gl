@@ -44,6 +44,7 @@
     "@antv/graphin-components": "^1.2.1",
     "@reduxjs/toolkit": "^1.2.3",
     "@types/d3-array": "^2.0.0",
+    "@types/shortid": "0.0.29",
     "d3-array": "^2.5.0",
     "date-fns": "^2.14.0",
     "echarts": "^4.6.0",

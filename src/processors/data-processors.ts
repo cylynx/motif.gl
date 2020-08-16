@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import converter from 'json-2-csv';
 import { range } from 'd3-array';
+import shortid from 'shortid';
 import get from 'lodash/get';
 import { Analyzer, DATA_TYPES as AnalyzerDATA_TYPES } from 'type-analyzer';
 import * as Graph from '../types/Graph';
@@ -77,8 +78,13 @@ export const PARSE_FIELD_VALUE_FROM_STRING = {
   },
 };
 
-export const processJson = async (json: any): Promise<Graph.GraphData> => {
-  // If the following fields are present skip on type checks and assume correct format
+/**
+ * Quick check to test whether json has the keys required of GraphData type
+ *
+ * @param {*} json
+ * @return {*} {boolean}
+ */
+export const validateGraphJson = (json: any): boolean => {
   if (
     json.nodes &&
     json.edges &&
@@ -88,8 +94,24 @@ export const processJson = async (json: any): Promise<Graph.GraphData> => {
     json.metadata.fields.edges &&
     json.metadata.key
   ) {
-    return json;
+    return true;
   }
+  return false;
+};
+
+/**
+ * Process json data, output a promise GraphData object with field information in metadata.
+ *
+ * @param {*} json
+ * @param {*} [key=shortid.generate()] Either an accessor string or the key itself
+ * @return {*}  {Promise<Graph.GraphData>}
+ */
+export const processJson = async (
+  json: any,
+  key = shortid.generate(),
+): Promise<Graph.GraphData> => {
+  if (validateGraphJson(json)) return json;
+
   if (json.nodes && json.edges) {
     const nodeCsv = await json2csv(json.nodes);
     const edgeCsv = await json2csv(json.edges);
@@ -101,7 +123,7 @@ export const processJson = async (json: any): Promise<Graph.GraphData> => {
     );
     const graphMetadata = {
       fields: { nodes: nodeFields, edges: edgeFields },
-      key: 'key',
+      key: get(json, key, key),
     };
     return { nodes: nodeJson, edges: edgeJson, metadata: graphMetadata };
   }
