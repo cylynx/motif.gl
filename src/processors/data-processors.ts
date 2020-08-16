@@ -108,22 +108,29 @@ export const csv2json = async (csv: string) => {
 };
 
 /**
+ * Clean up falsy null values and string like arrays
  * Recursively loop through json object and cast `'', 'null', 'NULL', 'Null', 'NaN'` to `null`,
  * so that type-analyzer won't detect it as string
+ * Convert arrays like '[a,b,c]' to an actual array [a,b,c]
  *
- * @param {Array<Array>} rows
+ * @param {*} obj value to parse and clean
  */
-export const cleanUpFalsyValue = (obj: any) => {
-  const re = new RegExp(CSV_NULLS, 'g');
+export const cleanUpValue = (obj: any) => {
+  const nullRe = new RegExp(CSV_NULLS, 'g');
+  const arrayRe = new RegExp(/^\[.*]$/, 'g'); // '[a,b,c]'
   for (const k in obj) {
-    if (typeof obj[k] === 'object' && obj[k] !== null) {
-      cleanUpFalsyValue(obj[k]);
-    } else if (
-      // eslint-disable-next-line no-prototype-builtins
-      obj.hasOwnProperty(k) &&
-      typeof obj[k] === 'string' &&
-      obj[k].match(re)
+    if (
+      typeof obj[k] === 'object' &&
+      !Array.isArray(obj[k]) &&
+      obj[k] !== null
     ) {
+      cleanUpValue(obj[k]);
+    } else if (typeof obj[k] === 'string' && obj[k].match(arrayRe)) {
+      const cleanArray: any[] = [];
+      const temp = obj[k].slice(1, -1).split(',');
+      temp.forEach((j: any) => cleanArray.push(j));
+      obj[k] = cleanArray;
+    } else if (typeof obj[k] === 'string' && obj[k].match(nullRe)) {
       obj[k] = null;
     }
   }
@@ -179,7 +186,7 @@ export async function processCsvData(rawCsv: string) {
   // assume the csv file that people uploaded will have first row
   // header names seperated by a dot indexes to the json position
 
-  cleanUpFalsyValue(parsedJson);
+  cleanUpValue(parsedJson);
   // here we get a list of none null values to run analyze on
   const sample = getSampleForTypeAnalyze(headerRow, parsedJson);
   // TODO: might want to add validation on id, source, target and style fields.
@@ -306,7 +313,7 @@ export const getFieldsFromData = (
   // add a check for epoch timestamp
   const metadata = Analyzer.computeColMeta(
     data,
-    [{ regex: /.*geojson|all_points/g, dataType: 'GEOMETRY' }],
+    [{ regex: /^\[.*]$/g, dataType: 'ARRAY' }],
     { ignoredDataTypes: IGNORE_DATA_TYPES },
   );
 
@@ -319,13 +326,30 @@ export const getFieldsFromData = (
 
       const fieldMeta = metadata.find((m: any) => m.key === field);
       const { type, format } = fieldMeta || {};
-
-      result.push({
-        name,
-        format,
-        type: analyzerTypeToFieldType(type),
-        analyzerType: type,
-      });
+      const fieldType = analyzerTypeToFieldType(type);
+      if (fieldType === 'array') {
+        // Check first value of the array
+        const arrayMetadata = Analyzer.computeColMeta(
+          data.map((x) => {
+            return { arrayValue: x[name][0] };
+          }),
+          [],
+          { ignoredDataTypes: IGNORE_DATA_TYPES },
+        );
+        result.push({
+          name,
+          format,
+          type: `array<${analyzerTypeToFieldType(arrayMetadata[0].type)}>`,
+          analyzerType: type,
+        });
+      } else {
+        result.push({
+          name,
+          format,
+          type: fieldType,
+          analyzerType: type,
+        });
+      }
     }
   });
 

@@ -2,7 +2,7 @@ import * as DATA from '../constants/sample-data';
 import {
   json2csv,
   csv2json,
-  cleanUpFalsyValue,
+  cleanUpValue,
   flattenObject,
   getSampleForTypeAnalyze,
   getFieldsFromData,
@@ -51,7 +51,7 @@ describe('Parsing csv to json', () => {
   });
   it('should convert falsy values to null', async () => {
     const edgeJson = await csv2json(testCsv);
-    cleanUpFalsyValue(edgeJson);
+    cleanUpValue(edgeJson);
     expect(edgeJson[0].data.blk_ts_unix).toBeNull();
     expect(edgeJson[2].data.blk_ts_unix).toBeNull();
   });
@@ -83,10 +83,15 @@ describe('Flatten object', () => {
   });
 });
 
-const complexCsv = `id,data.date,data.datetime,data.unixtsms,data.array,source,target
-txn a-b,2016-09-17,2016-09-17 00:09:55,1597563378349,"[1,2,3,4,5]",a,b
-txn b-c,2016-09-17,2016-09-17 00:30:08,1297563378349,"[1,2,3,4,5]",b,c
-txn c-b,2018-10-23,null,1497563378349,"[1,2,3,4,5]",c,b
+const complexCsv = `id,data.date,data.datetime,data.unixtsms,data.arrayint,source,target
+txn a-b,2016-09-17,2016-09-17 00:09:55,1597563378349,"[1,2]",a,b
+txn b-c,2016-09-17,2016-09-17 00:30:08,1297563378349,"[3,4,5]",b,c
+txn c-b,2018-10-23,null,1497563378349,"[4,5]",c,b
+`;
+
+const arrayCsv = `id,source,target,array1,array2
+txn a-b,a,b,"[a,a]","[""a"",""b""]"
+txn b-c,b,c,"[b]","[""c"",""z""]"
 `;
 
 describe('Process csv data to required json format', () => {
@@ -111,7 +116,7 @@ describe('Process csv data to required json format', () => {
   });
   it('should parse timestamps and array correctly', async () => {
     const edgeJson = await csv2json(complexCsv);
-    cleanUpFalsyValue(edgeJson);
+    cleanUpValue(edgeJson);
     const headerRow = complexCsv.split('\n')[0].split(',');
     const sample = getSampleForTypeAnalyze(headerRow, edgeJson);
     const fields = getFieldsFromData(sample, headerRow);
@@ -119,12 +124,23 @@ describe('Process csv data to required json format', () => {
       'date',
       'timestamp',
       'timestamp',
-      'array',
+      'array<integer>',
+    ]);
+  });
+  it('should parse simple arrays correctly', async () => {
+    const edgeJson = await csv2json(arrayCsv);
+    cleanUpValue(edgeJson);
+    const headerRow = arrayCsv.split('\n')[0].split(',');
+    const sample = getSampleForTypeAnalyze(headerRow, edgeJson);
+    const fields = getFieldsFromData(sample, headerRow);
+    expect(fields.map((x) => x.type)).toMatchObject([
+      'array<string>',
+      'array<string>',
     ]);
   });
   it('should parse the dataset correctly', async () => {
     const edgeJson = await csv2json(testCsv);
-    cleanUpFalsyValue(edgeJson);
+    cleanUpValue(edgeJson);
     const headerRow = testCsv.split('\n')[0].split(',');
     const sample = getSampleForTypeAnalyze(headerRow, edgeJson);
     const fields = getFieldsFromData(sample, headerRow);
