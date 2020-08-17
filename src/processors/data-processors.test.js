@@ -8,6 +8,7 @@ import {
   getFieldsFromData,
   parseJsonByFields,
   processJson,
+  processNodeEdgeCsv,
 } from './data-processors';
 
 describe('Parsing json to csv', () => {
@@ -37,6 +38,12 @@ txn b-c,200,2000000,b,c,true
 txn c-b,300,Null,c,b,true
 `;
 
+const nodeCsv = `id,data.value
+a,100
+b,200
+c,300
+`;
+
 describe('Parsing csv to json', () => {
   it('should contain the right number of objects', async () => {
     const edgeJson = await csv2json(testCsv);
@@ -60,6 +67,12 @@ describe('Parsing csv to json', () => {
     const edgeCsv = await json2csv(DATA.TriangleJSON[0].edges);
     const edgeJson = await csv2json(edgeCsv);
     expect(edgeJson).toMatchObject(DATA.TriangleJSON[0].edges);
+  });
+  it('should return a GraphData object with valid metadata', async () => {
+    const output = await processNodeEdgeCsv(nodeCsv, testCsv);
+    expect(output).toHaveProperty('nodes', 'edges', 'metadata');
+    expect(output.metadata.fields.nodes).toHaveLength(1);
+    expect(output.metadata.fields.edges).toHaveLength(3);
   });
 });
 
@@ -180,7 +193,6 @@ describe('Process json data', () => {
   });
   it('should return metadata with the correct number of fields for nodes and edges', async () => {
     const results = await processJson(DATA.TriangleJSON[0]);
-    console.log(results);
     const { nodes: nodeFields, edges: edgeFields } = results.metadata.fields;
     expect(nodeFields).toHaveLength(5);
     expect(edgeFields).toHaveLength(3);

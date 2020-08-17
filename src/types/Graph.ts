@@ -5,7 +5,7 @@ import {
 } from '@antv/graphin/';
 
 export interface Edge extends Omit<GraphinEdge, 'style'> {
-  style:
+  style?:
     | Partial<GraphinEdge['style']>
     | {
         [property: string]: boolean;
@@ -13,7 +13,7 @@ export interface Edge extends Omit<GraphinEdge, 'style'> {
 }
 
 export interface Node extends Omit<GraphinNode, 'data'> {
-  data: Partial<GraphinNode['data']> & {
+  data?: Partial<GraphinNode['data']> & {
     [property: string]: any;
   };
 }

@@ -132,6 +132,14 @@ export const processJson = async (
   );
 };
 
+/**
+ * Process a node and edge csv file, output a promise GraphData object with field information in metadata.
+ *
+ * @param {string} nodeCsv
+ * @param {string} edgeCsv
+ * @param {*} [key=shortid.generate()]
+ * @return {*}  {Promise<Graph.GraphData>}
+ */
 export const processNodeEdgeCsv = async (
   nodeCsv: string,
   edgeCsv: string,
