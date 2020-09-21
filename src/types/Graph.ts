@@ -28,8 +28,8 @@ export type Field = {
 };
 
 export type GraphFields = {
-  nodes: Field[];
-  edges: Field[];
+  nodes: Field[] | [];
+  edges: Field[] | [];
 };
 
 export interface Metadata {

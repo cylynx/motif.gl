@@ -147,8 +147,37 @@ export const processNodeEdgeCsv = async (
 ): Promise<Graph.GraphData> => {
   const { fields: nodeFields, json: nodeJson } = await processCsvData(nodeCsv);
   const { fields: edgeFields, json: edgeJson } = await processCsvData(edgeCsv);
-  const graphMetadata = {
+  const graphMetadata: Graph.Metadata = {
     fields: { nodes: nodeFields, edges: edgeFields },
+    key,
+  };
+  return { nodes: nodeJson, edges: edgeJson, metadata: graphMetadata };
+};
+
+/**
+ * Process an edge list csv file, output a promise GraphData object with field information in metadata.
+ *
+ * @param {string} edgeCsv
+ * @param {*} [key=shortid.generate()]
+ * @return {*}  {Promise<Graph.GraphData>}
+ */
+export const processEdgeListCsv = async (
+  edgeCsv: string,
+  key = shortid.generate(),
+): Promise<Graph.GraphData> => {
+  const { fields: edgeFields, json: edgeJson } = await processCsvData(edgeCsv);
+  const edgeIds: string[] = [];
+  edgeJson.forEach((edge: Graph.Edge) => {
+    edgeIds.push(edge.source);
+    edgeIds.push(edge.target);
+  });
+  const uniqueNodes = [...new Set(edgeIds)];
+  const nodeJson = uniqueNodes.map((node) => {
+    return { id: node };
+  });
+
+  const graphMetadata: Graph.Metadata = {
+    fields: { nodes: [], edges: edgeFields },
     key,
   };
   return { nodes: nodeJson, edges: edgeJson, metadata: graphMetadata };
@@ -238,13 +267,18 @@ export const flattenObject = (obj: any, history = '') => {
   return result;
 };
 
+export type ProcessedCsv = {
+  fields: Field[] | [];
+  json: Graph.Node[] | Graph.Edge[];
+};
+
 /**
- * Process csv data, output a promise data object with `{fields: [], json: []}`.
+ * Process csv data (node / edge csv or edge list), output a promise data object containing the parse fields and graph data.
  *
- * @param rawCsv raw csv string
- * @returns  data object `{fields: [], json: []}`
+ * @param {string} rawCsv raw csv string
+ * @return {*}  {Promise<ProcessedCsv>}
  */
-export async function processCsvData(rawCsv: string) {
+export const processCsvData = async (rawCsv: string): Promise<ProcessedCsv> => {
   let parsedJson;
   if (typeof rawCsv === 'string') {
     parsedJson = await csv2json(rawCsv);
@@ -272,7 +306,7 @@ export async function processCsvData(rawCsv: string) {
   const cleanedJson = parseJsonByFields(parsedJson, fields);
 
   return { fields, json: cleanedJson };
-}
+};
 
 /**
  * Parse rows of csv by analyzed field types. So that `'1'` -> `1`, `'True'` -> `true`

@@ -9,6 +9,7 @@ import {
   parseJsonByFields,
   processJson,
   processNodeEdgeCsv,
+  processEdgeListCsv,
 } from './data-processors';
 
 describe('Parsing json to csv', () => {
@@ -73,6 +74,12 @@ describe('Parsing csv to json', () => {
     expect(output).toHaveProperty('nodes', 'edges', 'metadata');
     expect(output.metadata.fields.nodes).toHaveLength(1);
     expect(output.metadata.fields.edges).toHaveLength(3);
+  });
+  it('should return distinct nodes in an edgelist csv format', async () => {
+    const output = await processEdgeListCsv(testCsv);
+    const nodeIds = output.nodes.map((n) => n.id);
+    expect(output).toHaveProperty('nodes', 'edges', 'metadata');
+    expect(nodeIds).toMatchObject(['a', 'b', 'c']);
   });
 });
 
