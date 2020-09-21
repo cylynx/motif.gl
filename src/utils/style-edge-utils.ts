@@ -79,6 +79,20 @@ export const styleGroupedEdge = (
   return modEdges;
 };
 
+type MinMax = {
+  min: number;
+  max: number;
+};
+
+/**
+ * Check edge.data.value is array to determine if it is grouped
+ *
+ * @param {Graph.Edge} edge
+ * @param {string} edgeWidth accesor function that maps to edge width
+ */
+export const isGroupEdges = (edge: Graph.Edge, edgeWidth: string) =>
+  Array.isArray(get(edge, edgeWidth));
+
 /**
  * Get minimum and maximum value of attribute that maps to edge width
  *

@@ -25,7 +25,6 @@ const App = () => {
               edgeTarget: 'target',
               edgeLabel: 'data.txn_hash',
               edgeTime: 'data.blk_ts_unix',
-              edgeScore: 'data.score_vector',
               edgeWidth: 'data.value',
               nodeLabel: 'label',
               // getters below are for nodobo

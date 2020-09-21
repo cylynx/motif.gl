@@ -9,15 +9,13 @@ import {
   fetchDone,
   setTimeLock,
   setBottomOpen,
-  setScoreLock,
-  setValueLock,
 } from './ui-slice';
 import { addQuery, processGraphResponse } from './graph-slice';
 import { processData } from '../utils/graph-utils';
 
 const checkNewData = (
   graphList: Graph.GraphList,
-  newData: Graph.GraphData
+  newData: Graph.GraphData,
 ): boolean => {
   if (isUndefined(newData.metadata)) {
     // eslint-disable-next-line no-param-reassign
@@ -30,16 +28,14 @@ const checkNewData = (
 };
 
 const checkEdgeTime = (edgeTime: string): boolean => !isUndefined(edgeTime);
-const checkEdgeScore = (edgeScore: string): boolean => !isUndefined(edgeScore);
-const checkEdgeValue = (edgeWidth: string): boolean => !isUndefined(edgeWidth);
 
 const processResponse = (
   dispatch: any,
   graphList: Graph.GraphList,
   accessors: Graph.Accessors,
-  newData: Graph.GraphData
+  newData: Graph.GraphData,
 ) => {
-  const { edgeTime, edgeScore, edgeWidth } = accessors;
+  const { edgeTime, edgeWidth } = accessors;
   dispatch(fetchBegin());
 
   // Check edges for new data as it might just be repeated
@@ -52,14 +48,6 @@ const processResponse = (
       dispatch(setBottomOpen(true));
     } else {
       dispatch(setTimeLock());
-    }
-    // Check if score-related UI should be displayed
-    if (!checkEdgeScore(edgeScore)) {
-      dispatch(setScoreLock());
-    }
-    // Check if value-related UI should be displayed
-    if (!checkEdgeValue(edgeWidth)) {
-      dispatch(setValueLock());
     }
   } else {
     dispatch(fetchDone());
@@ -86,7 +74,7 @@ async function asyncForEach(array: any[], callback: (item: any) => void) {
  */
 export const addData = (data: Graph.GraphData | Graph.GraphList) => (
   dispatch: any,
-  getState: any
+  getState: any,
 ) => {
   const { graphList } = getGraph(getState());
   const accessors = getAccessors(getState());
@@ -98,7 +86,7 @@ export const addData = (data: Graph.GraphData | Graph.GraphList) => (
         dispatch,
         graphList,
         accessors,
-        processData(graph, accessors)
+        processData(graph, accessors),
       );
     } catch (err) {
       dispatch(fetchError(err));

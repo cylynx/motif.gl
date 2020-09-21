@@ -64,49 +64,47 @@ const QueryList = ({ items }) => {
   const [css, theme] = useStyletron();
   const dispatch = useDispatch();
   const currency = useSelector((state) => getUI(state).currency);
-  const scoreLock = useSelector((state) => getUI(state).scoreLock);
-  const valueLock = useSelector((state) => getUI(state).valueLock);
-  const score = useSelector((state) => getUI(state).score);
-  const { edgeWidth, edgeScore } = useSelector((state) => getAccessors(state));
-  const subList = items.map((item, index) => {
-    const riskScore = scoreLock
-      ? 'NA'
-      : multiplyArr(Object.values(edgeScore(item)), Object.values(score));
-    const { label } = item;
-    let value = 0;
-    if (!valueLock) {
-      value = edgeWidth(item);
-    }
-    const shortenedLabel = shortifyLabel(label);
+  // const score = useSelector((state) => getUI(state).score);
+  // const { edgeWidth, edgeScore } = useSelector((state) => getAccessors(state));
+  // const subList = items.map((item, index) => {
+  //   const riskScore = scoreLock
+  //     ? 'NA'
+  //     : multiplyArr(Object.values(edgeScore(item)), Object.values(score));
+  //   const { label } = item;
+  //   let value = 0;
+  //   if (!valueLock) {
+  //     value = edgeWidth(item);
+  //   }
+  //   const shortenedLabel = shortifyLabel(label);
 
-    return (
-      // TODO: add unique key (unique import id + txn hash + trace)
-      // eslint-disable-next-line react/no-array-index-key
-      <QueryListItem title={`import ${index}`} key={index}>
-        <Block width='100%' display='flex' justifyContent='space-between'>
-          <div
-            className={css({
-              paddingTop: '7px',
-            })}
-          >
-            <SimpleTooltip title={shortenedLabel} tooltip={label} />
-          </div>
-          {!valueLock && (
-            <TagValue value={Math.round(value)} title={currency} />
-          )}
-          {!scoreLock && (
-            <TagRisk
-              score={Math.round(riskScore as number)}
-              title={roundToTwo(riskScore as number)}
-            />
-          )}
-          <InfoButton
-            onClick={() => dispatch(getDetails({ type: 'txn', hash: item.id }))}
-          />
-        </Block>
-      </QueryListItem>
-    );
-  });
+  //   return (
+  //     // TODO: add unique key (unique import id + txn hash + trace)
+  //     // eslint-disable-next-line react/no-array-index-key
+  //     <QueryListItem title={`import ${index}`} key={index}>
+  //       <Block width='100%' display='flex' justifyContent='space-between'>
+  //         <div
+  //           className={css({
+  //             paddingTop: '7px',
+  //           })}
+  //         >
+  //           <SimpleTooltip title={shortenedLabel} tooltip={label} />
+  //         </div>
+  //         {!valueLock && (
+  //           <TagValue value={Math.round(value)} title={currency} />
+  //         )}
+  //         {!scoreLock && (
+  //           <TagRisk
+  //             score={Math.round(riskScore as number)}
+  //             title={roundToTwo(riskScore as number)}
+  //           />
+  //         )}
+  //         <InfoButton
+  //           onClick={() => dispatch(getDetails({ type: 'txn', hash: item.id }))}
+  //         />
+  //       </Block>
+  //     </QueryListItem>
+  //   );
+  // });
   return (
     <ul
       className={css({
@@ -121,7 +119,8 @@ const QueryList = ({ items }) => {
         },
       })}
     >
-      {subList}
+      Temp
+      {/* {subList} */}
     </ul>
   );
 };

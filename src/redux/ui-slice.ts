@@ -15,9 +15,7 @@ export interface UiState {
   clickedId: any;
   timeLock: boolean;
   bottomOpen: boolean;
-  scoreLock: boolean;
   score: any;
-  valueLock: boolean;
 }
 
 const initialState: UiState = {
@@ -30,9 +28,7 @@ const initialState: UiState = {
   clickedId: null,
   timeLock: false,
   bottomOpen: false,
-  scoreLock: false,
   score: null,
-  valueLock: false,
 };
 
 const ui = createSlice({
@@ -75,9 +71,6 @@ const ui = createSlice({
       const id = action.payload;
       state.clickedId = id;
     },
-    setScoreLock(state) {
-      state.scoreLock = true;
-    },
     setScore(state, action) {
       state.score = action.payload;
     },
@@ -86,9 +79,6 @@ const ui = createSlice({
     },
     setCurrency(state, action) {
       state.currency = action.payload;
-    },
-    setValueLock(state) {
-      state.valueLock = true;
     },
   },
 });
@@ -104,11 +94,9 @@ export const {
   setTimeLock,
   setBottomOpen,
   setClickedId,
-  setScoreLock,
   setScore,
   setName,
   setCurrency,
-  setValueLock,
 } = ui.actions;
 
 export default ui.reducer;
