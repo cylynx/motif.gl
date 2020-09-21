@@ -93,38 +93,30 @@ async function asyncForEach(array: any[], callback: (item: any) => void) {
   }
 }
 
-// One function to rule them all
-// Thunk to dispatch our calls
+/**
+ * Thunk to add data to graph
+ * Input can either be a single GraphData object or an array of GraphData
+ *
+ * @param {(Graph.GraphData | Graph.GraphList)} data
+ */
 export const addData = (data: Graph.GraphData | Graph.GraphList) => (
   dispatch: any,
   getState: any,
 ) => {
   const { graphList } = getGraph(getState());
   const accessors = getAccessors(getState());
-  if (Array.isArray(data)) {
-    asyncForEach(data, async (graph) => {
-      try {
-        await waitFor(0);
-        processResponse(
-          dispatch,
-          graphList,
-          accessors,
-          processData(graph, accessors),
-        );
-      } catch (err) {
-        dispatch(fetchError(err));
-      }
-    });
-  } else {
+  const dataArray = Array.isArray(data) ? data : [data];
+  asyncForEach(dataArray, async (graph) => {
     try {
+      await waitFor(0);
       processResponse(
         dispatch,
         graphList,
         accessors,
-        processData(data, accessors),
+        processData(graph, accessors),
       );
     } catch (err) {
       dispatch(fetchError(err));
     }
-  }
+  });
 };
