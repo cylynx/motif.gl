@@ -3,6 +3,7 @@ import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
 import * as Graph from '../types/Graph';
 import { CATEGORIES_COLOR } from './categories';
+import { styleEdge, styleGroupedEdge } from './style-edge-utils';
 
 type MinMax = {
   min: number;
@@ -117,79 +118,6 @@ export const getMinMaxValue = (
     min: Math.min(...(arrValue as number[])),
     max: Math.max(...(arrValue as number[])),
   };
-};
-
-/**
- * Style a group edge dataset based on a given method
- *
- * @param {Graph.GraphData} data
- * @param {string} method
- * @param {string} edgeWidth
- * @return {*}  {Graph.Edge[]}
- */
-export const styleGroupedEdge = (
-  data: Graph.GraphData,
-  method: string,
-  edgeWidth: string,
-): Graph.Edge[] => {
-  const modEdges = [];
-  for (const edge of data.edges) {
-    const edgeCopy = { ...edge };
-    let w = 2; // default
-    if (method === 'value') {
-      const { min, max } = getMinMaxValue(data, edgeWidth);
-      w =
-        (((get(edge, edgeWidth) as number[]).reduce((a, b) => a + b, 0) - min) /
-          (max - min)) *
-          (10 - 2) +
-        2;
-    }
-    edgeCopy.style = {
-      ...edgeCopy.style,
-      line: {
-        width: w,
-      },
-    };
-    modEdges.push(edgeCopy);
-  }
-  return modEdges;
-};
-
-/**
- * Style an edge dataset based on a given method
- *
- * @param {Graph.GraphData} data
- * @param {string} method
- * @param {string} edgeWidth
- * @return {*}  {Graph.Edge[]}
- */
-export const styleEdge = (
-  data: Graph.GraphData,
-  method: string,
-  edgeWidth: string,
-): Graph.Edge[] => {
-  // Scales width based on min, max value of edges
-  // mode = eth (scale width from 0.5-5) or fix (default value of 0.5)
-  const modEdges = [];
-  const { min, max } = getMinMaxValue(data, edgeWidth);
-  for (const edge of data.edges) {
-    const edgeCopy = { ...edge };
-    let w = 2; // default
-    if (method === 'value') {
-      w =
-        (((get(edge, edgeWidth) as number) - min) / (max - min)) * (10 - 2) + 2;
-    }
-    edgeCopy.style = {
-      ...edgeCopy.style,
-      line: {
-        width: w,
-      },
-    };
-    // Display edge value as default when edges are not grouped for now
-    edgeCopy.label = get(edge, edgeWidth).toString();
-    modEdges.push(edgeCopy);
-  }
-  return modEdges;
 };
 
 /**
