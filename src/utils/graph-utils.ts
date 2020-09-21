@@ -76,7 +76,7 @@ export const adjustNodeSize = (
     }
     // nodeLabel
     // default same node size
-    nodeCopy.label = `${node.label ? node.label : node.data.category}`;
+    nodeCopy.label = `${node.label ? node.label : node.id}`;
     modNodes.push(nodeCopy);
   }
   return modNodes;
@@ -443,16 +443,9 @@ export const applyStyle = (
   edgeWidth: string,
 ): Graph.GraphData => {
   const { groupEdges, nodeSize } = defaultOptions;
-  if (groupEdges) {
-    const styledEdges = styleGroupedEdge(
-      data,
-      defaultOptions.edgeWidth,
-      edgeWidth,
-    );
-    const styledNodes = adjustNodeSize(data, nodeSize);
-    return replaceData(data, styledNodes, styledEdges);
-  }
-  const styledEdges = styleEdge(data, defaultOptions.edgeWidth, edgeWidth);
+  const styledEdges = groupEdges
+    ? styleGroupedEdge(data, defaultOptions.edgeWidth, edgeWidth)
+    : styleEdge(data, defaultOptions.edgeWidth, edgeWidth);
   const styledNodes = adjustNodeSize(data, nodeSize);
   return replaceData(data, styledNodes, styledEdges);
 };
