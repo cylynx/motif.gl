@@ -1,32 +1,23 @@
 import some from 'lodash/some';
 import isUndefined from 'lodash/isUndefined';
-import { getGraph, getAccessors } from '../redux';
+import { getGraph, getAccessors } from './combine-reducers';
 import * as Graph from '../types/Graph';
 
 import {
   fetchBegin,
   fetchError,
   fetchDone,
-  postMessage,
   setTimeLock,
   setBottomOpen,
   setScoreLock,
   setValueLock,
-} from '../redux/ui-slice';
-import { addQuery, processGraphResponse } from '../redux/graph-slice';
+} from './ui-slice';
+import { addQuery, processGraphResponse } from './graph-slice';
 import { processData } from '../utils/graph-utils';
-
-// API Methods
-const checkMetaData = (metadata: Graph.Metadata): boolean => {
-  if (metadata) {
-    return metadata.search_size > metadata.retrieved_size;
-  }
-  return false;
-};
 
 const checkNewData = (
   graphList: Graph.GraphList,
-  newData: Graph.GraphData,
+  newData: Graph.GraphData
 ): boolean => {
   if (isUndefined(newData.metadata)) {
     // eslint-disable-next-line no-param-reassign
@@ -46,17 +37,11 @@ const processResponse = (
   dispatch: any,
   graphList: Graph.GraphList,
   accessors: Graph.Accessors,
-  newData: Graph.GraphData,
+  newData: Graph.GraphData
 ) => {
-  dispatch(fetchBegin());
-  const { metadata } = newData;
   const { edgeTime, edgeScore, edgeWidth } = accessors;
-  if (checkMetaData(metadata)) {
-    const message = `${metadata.retrieved_size} / ${metadata.search_size} of the most recent transactions retrieved.
-        We plan to allow large imports and visualization in the full version.
-        Feel free to reach out to timothy at timothy.lin@cylynx.io if you are interesting in retrieving the full results.`;
-    dispatch(postMessage(message));
-  }
+  dispatch(fetchBegin());
+
   // Check edges for new data as it might just be repeated
   if (checkNewData(graphList, newData)) {
     dispatch(addQuery(newData));
@@ -101,7 +86,7 @@ async function asyncForEach(array: any[], callback: (item: any) => void) {
  */
 export const addData = (data: Graph.GraphData | Graph.GraphList) => (
   dispatch: any,
-  getState: any,
+  getState: any
 ) => {
   const { graphList } = getGraph(getState());
   const accessors = getAccessors(getState());
@@ -113,7 +98,7 @@ export const addData = (data: Graph.GraphData | Graph.GraphList) => (
         dispatch,
         graphList,
         accessors,
-        processData(graph, accessors),
+        processData(graph, accessors)
       );
     } catch (err) {
       dispatch(fetchError(err));

@@ -2,18 +2,14 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import cloneDeep from 'lodash/cloneDeep';
 import addData from './index';
-import {
-  initialState,
-  addQuery,
-  processGraphResponse,
-} from '../redux/graph-slice';
+import { initialState, addQuery, processGraphResponse } from './graph-slice';
 import {
   fetchBegin,
   fetchDone,
   setBottomLock,
   setScoreLock,
   setBottomOpen,
-} from '../redux/ui-slice';
+} from './ui-slice';
 
 const getData = (type) => {
   const simpleJSONData = {

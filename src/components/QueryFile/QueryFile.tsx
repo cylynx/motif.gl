@@ -6,9 +6,8 @@ import { FileUploader } from 'baseui/file-uploader';
 import { InfoNotification } from '../ui';
 import * as Prop from '../../types/Prop';
 
-import { addData } from '../../processors';
 import * as DATA from '../../constants/sample-data';
-import { closeImportModal, fetchError } from '../../redux';
+import { addData, closeImportModal, fetchError } from '../../redux';
 
 const QueryFile: React.FC<Prop.QueryFile> = ({ info, tooltip }) => {
   const dispatch = useDispatch();

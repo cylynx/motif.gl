@@ -1,5 +1,28 @@
 import * as Graph from '../types/Graph';
 
+export const SimpleEdge: Graph.GraphList = [
+  {
+    nodes: [
+      {
+        id: 'a',
+      },
+      {
+        id: 'b',
+      },
+    ],
+    edges: [
+      {
+        id: 'txn a-b',
+        source: 'a',
+        target: 'b',
+      },
+    ],
+    metadata: {
+      key: 123,
+    },
+  },
+];
+
 export const TriangleJSON: Graph.GraphList = [
   {
     nodes: [
