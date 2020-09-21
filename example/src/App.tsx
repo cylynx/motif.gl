@@ -23,10 +23,14 @@ const App = () => {
               edgeID: 'id',
               edgeSource: 'source',
               edgeTarget: 'target',
-              edgeLabel: 'data.txn_hash',
               edgeTime: 'data.blk_ts_unix',
-              edgeWidth: 'data.value',
-              nodeLabel: 'label',
+              edgeStyle: {
+                label: 'data.txn_hash',
+                width: 'data.value',
+              },
+              nodeStyle: {
+                label: 'label',
+              },
               // getters below are for nodobo
               // getEdgeWidth: edge => edge.data.other_id,
               // getEdgeTime: edge => edge.data.unix_ts,

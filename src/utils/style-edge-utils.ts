@@ -11,24 +11,27 @@ import * as Graph from '../types/Graph';
  *
  * @param {Graph.GraphData} data
  * @param {string} method
- * @param {string} edgeWidth
+ * @param {Graph.EdgeStyleAccessors} edgeStyleAccessors
  * @return {*}  {Graph.Edge[]}
  */
 export const styleEdge = (
   data: Graph.GraphData,
   method: string,
-  edgeWidth: string,
+  edgeStyleAccessors: Graph.EdgeStyleAccessors,
 ): Graph.Edge[] => {
   // Scales width based on min, max value of edges
   // mode = eth (scale width from 0.5-5) or fix (default value of 0.5)
   const modEdges = [];
-  const { min, max } = getMinMaxValue(data, edgeWidth);
+  const { min, max } = getMinMaxValue(data, edgeStyleAccessors.width);
   for (const edge of data.edges) {
     const edgeCopy = { ...edge };
     let w = 2; // default
     if (method === 'value') {
       w =
-        (((get(edge, edgeWidth) as number) - min) / (max - min)) * (10 - 2) + 2;
+        (((get(edge, edgeStyleAccessors.width) as number) - min) /
+          (max - min)) *
+          (10 - 2) +
+        2;
     }
     edgeCopy.style = {
       ...edgeCopy.style,
@@ -37,7 +40,7 @@ export const styleEdge = (
       },
     };
     // Display edge value as default when edges are not grouped for now
-    edgeCopy.label = get(edge, edgeWidth).toString();
+    edgeCopy.label = get(edge, edgeStyleAccessors.width).toString();
     modEdges.push(edgeCopy);
   }
   return modEdges;
@@ -54,16 +57,20 @@ export const styleEdge = (
 export const styleGroupedEdge = (
   data: Graph.GraphData,
   method: string,
-  edgeWidth: string,
+  edgeStyleAccessors: Graph.EdgeStyleAccessors,
 ): Graph.Edge[] => {
   const modEdges = [];
   for (const edge of data.edges) {
     const edgeCopy = { ...edge };
     let w = 2; // default
     if (method === 'value') {
-      const { min, max } = getMinMaxValue(data, edgeWidth);
+      const { min, max } = getMinMaxValue(data, edgeStyleAccessors.width);
       w =
-        (((get(edge, edgeWidth) as number[]).reduce((a, b) => a + b, 0) - min) /
+        (((get(edge, edgeStyleAccessors.width) as number[]).reduce(
+          (a, b) => a + b,
+          0,
+        ) -
+          min) /
           (max - min)) *
           (10 - 2) +
         2;

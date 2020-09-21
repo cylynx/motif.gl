@@ -35,7 +35,9 @@ const initialState: GraphState = {
     edgeID: 'id',
     edgeSource: 'source',
     edgeTarget: 'target',
-    edgeWidth: 'data.blk_ts_unix',
+    edgeStyle: {
+      width: 'data.blk_ts_unix',
+    },
     edgeTime: 'data.blk_ts_unix',
   },
   styleOptions: {
@@ -76,7 +78,7 @@ const graph = createSlice({
     },
     changeOptions(state, action) {
       const { key, value, accessors } = action.payload;
-      const { edgeWidth, edgeTime } = accessors;
+      const { edgeTime } = accessors;
       state.styleOptions[key] = value;
       const newFilteredData = filterDataByTime(
         state.graphFlatten,
@@ -86,7 +88,7 @@ const graph = createSlice({
       state.graphVisible = deriveVisibleGraph(
         newFilteredData,
         state.styleOptions,
-        edgeWidth,
+        accessors,
       );
     },
     changeLayout(state, action) {
@@ -97,7 +99,7 @@ const graph = createSlice({
     },
     processGraphResponse(state, action) {
       const { data, accessors } = action.payload;
-      const { edgeWidth, edgeTime } = accessors;
+      const { edgeTime } = accessors;
       const modData = combineProcessedData(data, state.graphFlatten);
       state.graphGrouped = groupEdges(modData);
       state.graphFlatten = modData;
@@ -117,7 +119,7 @@ const graph = createSlice({
       state.graphVisible = deriveVisibleGraph(
         newFilteredData,
         state.styleOptions,
-        edgeWidth,
+        accessors,
       );
     },
     setRange(state, action) {
@@ -126,7 +128,7 @@ const graph = createSlice({
     },
     timeRangeChange(state, action) {
       const { timeRange, accessors } = action.payload;
-      const { edgeWidth, edgeTime } = accessors;
+      const { edgeTime } = accessors;
       // Filter out all relevant edges and store from & to node id
       const newFilteredData = filterDataByTime(
         state.graphFlatten,
@@ -136,7 +138,7 @@ const graph = createSlice({
       state.graphVisible = deriveVisibleGraph(
         newFilteredData,
         state.styleOptions,
-        edgeWidth,
+        accessors,
       );
     },
     getDetails(state, action) {

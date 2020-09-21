@@ -209,9 +209,9 @@ export const processData = (
     edgeSource,
     edgeTarget,
     edgeID,
-    edgeLabel,
+    edgeStyle,
     nodeID,
-    nodeLabel,
+    nodeStyle,
   } = accessors;
   for (const node of data.nodes) {
     // Create data property if undefined
@@ -219,7 +219,9 @@ export const processData = (
     // Node Id is required
     node.id = get(node, nodeID);
     // Give the display label of the node
-    node.data.label = isUndefined(nodeLabel) ? node.id : get(node, nodeLabel);
+    node.data.label = isUndefined(nodeStyle.label)
+      ? node.id
+      : get(node, nodeStyle.label);
     // Assign shortened label to node.label for graph display
     if (node.data.label.length >= 8) {
       node.label = `${node.data.label.substring(0, 5)}...`;
@@ -243,7 +245,9 @@ export const processData = (
     edge.source = get(edge, edgeSource);
     edge.target = get(edge, edgeTarget);
     // Set id as label if undefined
-    edge.label = isUndefined(edgeLabel) ? edge.id : get(edge, edgeLabel);
+    edge.label = isUndefined(edgeStyle.label)
+      ? edge.id
+      : get(edge, edgeStyle.label);
     edge.style = {
       endArrow: 'true',
     };
@@ -362,18 +366,18 @@ export const combineProcessedData = (
  *
  * @param {Graph.GraphData} data
  * @param {Graph.StyleOptions} defaultOptions
- * @param {string} edgeWidth
+ * @param {Graph.Accessors} accessors
  * @return {*}  {Graph.GraphData}
  */
 export const applyStyle = (
   data: Graph.GraphData,
   defaultOptions: Graph.StyleOptions,
-  edgeWidth: string,
+  accessors: Graph.Accessors,
 ): Graph.GraphData => {
   const { groupEdges, nodeSize } = defaultOptions;
   const styledEdges = groupEdges
-    ? styleGroupedEdge(data, defaultOptions.edgeWidth, edgeWidth)
-    : styleEdge(data, defaultOptions.edgeWidth, edgeWidth);
+    ? styleGroupedEdge(data, defaultOptions.edgeWidth, accessors.edgeStyle)
+    : styleEdge(data, defaultOptions.edgeWidth, accessors.edgeStyle);
   const styledNodes = adjustNodeSize(data, nodeSize);
   return replaceData(data, styledNodes, styledEdges);
 };
@@ -394,14 +398,14 @@ export const groupEdges = (data: Graph.GraphData): Graph.GraphData => {
  *
  * @param {Graph.GraphData} graphData
  * @param {Graph.StyleOptions} styleOptions
- * @param {string} edgeWidth
+ * @param {Graph.Accessors} accessors
  * @return {*}  {Graph.GraphData}
  */
 export const deriveVisibleGraph = (
   graphData: Graph.GraphData,
   styleOptions: Graph.StyleOptions,
-  edgeWidth: string,
+  accessors: Graph.Accessors,
 ): Graph.GraphData =>
   styleOptions.groupEdges
-    ? applyStyle(groupEdges(graphData), styleOptions, edgeWidth)
-    : applyStyle(graphData, styleOptions, edgeWidth);
+    ? applyStyle(groupEdges(graphData), styleOptions, accessors)
+    : applyStyle(graphData, styleOptions, accessors);

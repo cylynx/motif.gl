@@ -50,18 +50,24 @@ export type GraphList = GraphData[];
 
 export type TimeRange = [number, number];
 export type TimeSeries = Array<[number, number]> | [];
-export type EdgeAccessor<T> = (edge: Edge) => T;
-export type NodeAccessor<T> = (node: Node) => T;
+
+export interface EdgeStyleAccessors {
+  label?: string;
+  width?: string;
+}
+
+export interface NodeStyleAccessors {
+  label?: string;
+}
 
 export interface Accessors {
   edgeSource: string;
   edgeTarget: string;
   edgeID?: string;
   nodeID?: string;
-  edgeLabel?: string;
   edgeTime?: string;
-  edgeWidth?: string;
-  nodeLabel?: string;
+  edgeStyle?: EdgeStyleAccessors;
+  nodeStyle?: NodeStyleAccessors;
 }
 
 export interface Layout {
