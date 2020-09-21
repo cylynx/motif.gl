@@ -61,7 +61,10 @@ const InvestigateGraph: React.FC<Prop.InvestigateGraph> = (props) => {
       setClickedId(null);
       setMenu(false);
     };
+
     const onNodeClick = (e) => {
+      const { centerX, centerY } = e.item.getBBox();
+      const canvasXY = graph.getCanvasByPoint(centerX, centerY);
       const node = e.item.get('model');
       if (clickedId === node.id) {
         dispatch(setClickedId(null));
@@ -69,8 +72,8 @@ const InvestigateGraph: React.FC<Prop.InvestigateGraph> = (props) => {
       } else {
         dispatch(setClickedId(node.id));
         setMenu({
-          x: e.canvasX,
-          y: e.canvasY,
+          x: canvasXY.x,
+          y: canvasXY.y,
           node,
         });
       }

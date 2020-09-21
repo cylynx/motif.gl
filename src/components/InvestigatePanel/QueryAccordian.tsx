@@ -31,16 +31,7 @@ const QueryAccordian = () => {
   });
 
   return (
-    <div
-    // className={css({
-    //   // TODO: better approx top and bottom margin
-    //   maxHeight: 'calc(100vh - 200px - 150px)',
-    //   overflowY: 'scroll',
-    //   '::-webkit-scrollbar-thumb': {
-    //     backgroundColor: theme.colors.contentSecondary,
-    //   },
-    // })}
-    >
+    <Block overflow='auto' maxHeight='calc(100vh - 200px - 150px)'>
       <Accordion
         overrides={{
           ToggleIcon: {
@@ -65,7 +56,7 @@ const QueryAccordian = () => {
       >
         {graphList && listItems}
       </Accordion>
-    </div>
+    </Block>
   );
 };
 
