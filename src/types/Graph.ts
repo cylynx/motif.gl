@@ -57,13 +57,10 @@ export interface Accessors {
   edgeSource: string;
   edgeTarget: string;
   edgeID?: string;
-  edgeSourceAdd?: string;
-  edgeTargetAdd?: string;
+  nodeID?: string;
   edgeLabel?: string;
   edgeTime?: string;
-  edgeScore?: string;
   edgeWidth?: string;
-  nodeID?: string;
   nodeLabel?: string;
 }
 

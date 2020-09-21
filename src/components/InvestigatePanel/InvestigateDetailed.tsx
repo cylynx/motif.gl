@@ -13,39 +13,17 @@ import { clearDetails } from '../../redux/graph-slice';
 import { RiskBarChart } from '../Charts';
 
 import { CATEGORIES } from '../../utils/categories';
-import {
-  multiplyArr,
-  timeConverter,
-  processScoreVector,
-  shortifyLabel,
-} from '../../utils/utils';
+import { timeConverter, shortifyLabel } from '../../utils/utils';
 import { getUI, getGraph, getAccessors } from '../../redux';
 
 const InvestigateDetailed = () => {
   const item = useSelector((state) => getGraph(state).detailedSelection).data;
   const currency = useSelector((state) => getUI(state).currency);
-  const scoreLock = useSelector((state) => getUI(state).scoreLock);
   const timeLock = useSelector((state) => getUI(state).timeLock);
   const valueLock = useSelector((state) => getUI(state).valueLock);
-  const score = useSelector((state) => getUI(state).score);
-  const {
-    edgeWidth,
-    edgeSourceAdd,
-    edgeTargetAdd,
-    edgeTime,
-    edgeScore,
-  } = useSelector((state) => getAccessors(state));
+  const { edgeWidth, edgeTime } = useSelector((state) => getAccessors(state));
 
   const { label } = item;
-  const fromAddress = isUndefined(edgeSourceAdd)
-    ? item.source
-    : get(item, edgeSourceAdd);
-  const toAddress = isUndefined(edgeTargetAdd)
-    ? item.target
-    : get(item, edgeTargetAdd);
-  const riskScore = scoreLock
-    ? 'NA'
-    : multiplyArr(Object.values(get(item, edgeScore)), Object.values(score));
   const time = timeLock ? 'NA' : timeConverter(get(item, edgeTime));
   const headingTitle = `Transaction ${shortifyLabel(label)}...`;
   const valueTitle = valueLock ? 'NA' : `${get(item, edgeWidth)} ${currency}`;
@@ -54,7 +32,7 @@ const InvestigateDetailed = () => {
     <Fragment>
       <BackButton />
       <HeadingSmall marginTop='0'>{headingTitle}</HeadingSmall>
-      <div style={{ overflowWrap: 'break-word', width: '310px' }}>
+      {/* <div style={{ overflowWrap: 'break-word', width: '310px' }}>
         <Hash text={label} />
       </div>
       <br />
@@ -74,9 +52,9 @@ const InvestigateDetailed = () => {
       <hr />
       <br />
       <LabelMedium>Sending Address</LabelMedium>
-      <Hash text={fromAddress} />
+      <Hash text='sender' />
       <LabelMedium>Receiving Address</LabelMedium>
-      <Hash text={toAddress} />
+      <Hash text='receiver' />
       {!timeLock && (
         <Fragment>
           <LabelMedium>Time</LabelMedium>
@@ -94,7 +72,7 @@ const InvestigateDetailed = () => {
             />
           </div>
         </Fragment>
-      )}
+      )} */}
     </Fragment>
   );
 };
