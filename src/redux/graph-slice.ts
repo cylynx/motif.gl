@@ -45,8 +45,12 @@ const initialState: GraphState = {
       name: 'concentric',
       options: {},
     },
-    nodeSize: 'default',
-    edgeWidth: 'fix',
+    nodeStyle: {
+      size: 'default',
+    },
+    edgeStyle: {
+      width: 'fix',
+    },
     resetView: true,
     groupEdges: true,
   },

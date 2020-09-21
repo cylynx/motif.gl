@@ -374,11 +374,11 @@ export const applyStyle = (
   defaultOptions: Graph.StyleOptions,
   accessors: Graph.Accessors,
 ): Graph.GraphData => {
-  const { groupEdges, nodeSize } = defaultOptions;
+  const { groupEdges, nodeStyle, edgeStyle } = defaultOptions;
   const styledEdges = groupEdges
-    ? styleGroupedEdge(data, defaultOptions.edgeWidth, accessors.edgeStyle)
-    : styleEdge(data, defaultOptions.edgeWidth, accessors.edgeStyle);
-  const styledNodes = adjustNodeSize(data, nodeSize);
+    ? styleGroupedEdge(data, edgeStyle, accessors.edgeStyle)
+    : styleEdge(data, edgeStyle, accessors.edgeStyle);
+  const styledNodes = adjustNodeSize(data, nodeStyle.size);
   return replaceData(data, styledNodes, styledEdges);
 };
 

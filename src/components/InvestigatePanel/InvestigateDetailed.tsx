@@ -20,18 +20,16 @@ const InvestigateDetailed = () => {
   const item = useSelector((state) => getGraph(state).detailedSelection).data;
   const currency = useSelector((state) => getUI(state).currency);
   const timeLock = useSelector((state) => getUI(state).timeLock);
-  const valueLock = useSelector((state) => getUI(state).valueLock);
-  const { edgeWidth, edgeTime } = useSelector((state) => getAccessors(state));
+  const { edgeStyle, edgeTime } = useSelector((state) => getAccessors(state));
 
   const { label } = item;
   const time = timeLock ? 'NA' : timeConverter(get(item, edgeTime));
   const headingTitle = `Transaction ${shortifyLabel(label)}...`;
-  const valueTitle = valueLock ? 'NA' : `${get(item, edgeWidth)} ${currency}`;
 
   return (
     <Fragment>
       <BackButton />
-      <HeadingSmall marginTop='0'>{headingTitle}</HeadingSmall>
+      <HeadingSmall marginTop='0'>Temp</HeadingSmall>
       {/* <div style={{ overflowWrap: 'break-word', width: '310px' }}>
         <Hash text={label} />
       </div>

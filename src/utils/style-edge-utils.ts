@@ -10,13 +10,13 @@ import * as Graph from '../types/Graph';
  * Style an edge dataset based on a given method
  *
  * @param {Graph.GraphData} data
- * @param {string} method
+ * @param {Graph.EdgeStyleOptions} edgeStyleOptions
  * @param {Graph.EdgeStyleAccessors} edgeStyleAccessors
  * @return {*}  {Graph.Edge[]}
  */
 export const styleEdge = (
   data: Graph.GraphData,
-  method: string,
+  edgeStyleOptions: Graph.EdgeStyleOptions,
   edgeStyleAccessors: Graph.EdgeStyleAccessors,
 ): Graph.Edge[] => {
   // Scales width based on min, max value of edges
@@ -26,7 +26,7 @@ export const styleEdge = (
   for (const edge of data.edges) {
     const edgeCopy = { ...edge };
     let w = 2; // default
-    if (method === 'value') {
+    if (edgeStyleOptions.width === 'value') {
       w =
         (((get(edge, edgeStyleAccessors.width) as number) - min) /
           (max - min)) *
@@ -50,20 +50,20 @@ export const styleEdge = (
  * Style a group edge dataset based on a given method
  *
  * @param {Graph.GraphData} data
- * @param {string} method
- * @param {string} edgeWidth
+ * @param {Graph.EdgeStyleOptions} edgeStyleOptions
+ * @param {Graph.EdgeStyleAccessors} edgeStyleAccessors
  * @return {*}  {Graph.Edge[]}
  */
 export const styleGroupedEdge = (
   data: Graph.GraphData,
-  method: string,
+  edgeStyleOptions: Graph.EdgeStyleOptions,
   edgeStyleAccessors: Graph.EdgeStyleAccessors,
 ): Graph.Edge[] => {
   const modEdges = [];
   for (const edge of data.edges) {
     const edgeCopy = { ...edge };
     let w = 2; // default
-    if (method === 'value') {
+    if (edgeStyleOptions.width === 'value') {
       const { min, max } = getMinMaxValue(data, edgeStyleAccessors.width);
       w =
         (((get(edge, edgeStyleAccessors.width) as number[]).reduce(

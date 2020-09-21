@@ -78,12 +78,20 @@ export interface Layout {
   };
 }
 
+export interface NodeStyleOptions {
+  size: string;
+}
+
+export interface EdgeStyleOptions {
+  width: string;
+}
+
 export interface StyleOptions {
   layout: Layout;
-  nodeSize: string;
-  edgeWidth: string;
   resetView: boolean;
   groupEdges: boolean;
+  nodeStyle: NodeStyleOptions;
+  edgeStyle: EdgeStyleOptions;
 }
 
 export interface ChartData {

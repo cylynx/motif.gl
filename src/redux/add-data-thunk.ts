@@ -35,7 +35,7 @@ const processResponse = (
   accessors: Graph.Accessors,
   newData: Graph.GraphData,
 ) => {
-  const { edgeTime, edgeWidth } = accessors;
+  const { edgeTime } = accessors;
   dispatch(fetchBegin());
 
   // Check edges for new data as it might just be repeated

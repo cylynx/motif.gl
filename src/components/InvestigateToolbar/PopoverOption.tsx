@@ -31,18 +31,18 @@ const layoutNames = [
 const PopoverOption = () => {
   const dispatch = useDispatch();
   const accessors = useSelector((state) => getAccessors(state));
-  const { nodeSize, edgeWidth, resetView, groupEdges } = useSelector(
-    (state) => getGraph(state).styleOptions
+  const { nodeStyle, edgeStyle, resetView, groupEdges } = useSelector(
+    (state) => getGraph(state).styleOptions,
   );
   const layoutName = useSelector(
-    (state) => getGraph(state).styleOptions.layout.name
+    (state) => getGraph(state).styleOptions.layout.name,
   );
   const findID = (options: Prop.Layout[], id: string): Prop.Layout =>
     options.find((x) => x.id === id);
 
   const onChangeOptions = (
     key: string,
-    newValue: boolean | string | number
+    newValue: boolean | string | number,
   ) => {
     dispatch(changeOptions({ key, value: newValue, accessors }));
   };
@@ -64,7 +64,7 @@ const PopoverOption = () => {
             options={nodeSizeOptions}
             size='compact'
             clearable={false}
-            value={[findID(nodeSizeOptions, nodeSize)]}
+            value={[findID(nodeSizeOptions, nodeStyle.size)]}
             onChange={(params) => onChangeOptions('nodeSize', params.option.id)}
           />
         </FormControl>
@@ -73,7 +73,7 @@ const PopoverOption = () => {
             options={edgeWidthOptions}
             size='compact'
             clearable={false}
-            value={[findID(edgeWidthOptions, edgeWidth)]}
+            value={[findID(edgeWidthOptions, edgeStyle.width)]}
             onChange={(params) =>
               onChangeOptions('edgeWidth', params.option.id)
             }
