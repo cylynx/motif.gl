@@ -3,7 +3,7 @@ import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
 import * as Graph from '../types/Graph';
 import { CATEGORIES_COLOR } from './categories';
-import { styleEdge, styleGroupedEdge } from './style-edge-utils';
+import { styleEdges } from './style-edge-utils';
 
 type MinMax = {
   min: number;
@@ -374,10 +374,8 @@ export const applyStyle = (
   options: Graph.StyleOptions,
   accessors: Graph.Accessors,
 ): Graph.GraphData => {
-  const { groupEdges, nodeStyle, edgeStyle } = options;
-  const styledEdges = groupEdges
-    ? styleGroupedEdge(data, edgeStyle, accessors.edgeStyle)
-    : styleEdge(data, edgeStyle, accessors.edgeStyle);
+  const { nodeStyle, edgeStyle } = options;
+  const styledEdges = styleEdges(data, edgeStyle, accessors.edgeStyle);
   const styledNodes = adjustNodeSize(data, nodeStyle.size);
   return replaceData(data, styledNodes, styledEdges);
 };

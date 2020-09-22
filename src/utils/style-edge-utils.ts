@@ -1,4 +1,5 @@
 import get from 'lodash/get';
+import produce from 'immer';
 import * as Graph from '../types/Graph';
 
 // Assume we can style an edge by its width, color and label
@@ -14,76 +15,62 @@ import * as Graph from '../types/Graph';
  * @param {Graph.EdgeStyleAccessors} edgeStyleAccessors
  * @return {*}  {Graph.Edge[]}
  */
-export const styleEdge = (
+export const styleEdges = (
   data: Graph.GraphData,
   edgeStyleOptions: Graph.EdgeStyleOptions,
   edgeStyleAccessors: Graph.EdgeStyleAccessors,
 ): Graph.Edge[] => {
   // Scales width based on min, max value of edges
   // mode = eth (scale width from 0.5-5) or fix (default value of 0.5)
-  const modEdges = [];
-  const { min, max } = getMinMaxValue(data, edgeStyleAccessors.width);
-  for (const edge of data.edges) {
-    const edgeCopy = { ...edge };
-    let w = 2; // default
-    if (edgeStyleOptions.width === 'value') {
-      w =
-        (((get(edge, edgeStyleAccessors.width) as number) - min) /
-          (max - min)) *
-          (10 - 2) +
-        2;
-    }
-    edgeCopy.style = {
-      ...edgeCopy.style,
-      line: {
-        width: w,
-      },
-    };
-    // Display edge value as default when edges are not grouped for now
-    edgeCopy.label = get(edge, edgeStyleAccessors.width).toString();
-    modEdges.push(edgeCopy);
-  }
-  return modEdges;
+  const nextData = produce(data, (draftData) => {
+    styleEdgeWidth(
+      draftData,
+      edgeStyleAccessors.width || false,
+      edgeStyleOptions.width,
+    );
+    styleEdgeLabel(draftData, edgeStyleAccessors.label || false);
+  });
+  return nextData.edges;
 };
 
-/**
- * Style a group edge dataset based on a given method
- *
- * @param {Graph.GraphData} data
- * @param {Graph.EdgeStyleOptions} edgeStyleOptions
- * @param {Graph.EdgeStyleAccessors} edgeStyleAccessors
- * @return {*}  {Graph.Edge[]}
- */
-export const styleGroupedEdge = (
+export const styleEdgeWidth = (
   data: Graph.GraphData,
-  edgeStyleOptions: Graph.EdgeStyleOptions,
-  edgeStyleAccessors: Graph.EdgeStyleAccessors,
-): Graph.Edge[] => {
-  const modEdges = [];
-  for (const edge of data.edges) {
-    const edgeCopy = { ...edge };
-    let w = 2; // default
-    if (edgeStyleOptions.width === 'value') {
-      const { min, max } = getMinMaxValue(data, edgeStyleAccessors.width);
-      w =
-        (((get(edge, edgeStyleAccessors.width) as number[]).reduce(
-          (a, b) => a + b,
-          0,
-        ) -
-          min) /
-          (max - min)) *
-          (10 - 2) +
-        2;
-    }
-    edgeCopy.style = {
-      ...edgeCopy.style,
-      line: {
+  accessor: string | boolean,
+  option: string,
+) => {
+  if (typeof accessor === 'string') {
+    const { min, max } = getMinMaxValue(data, accessor);
+    for (const edge of data.edges) {
+      let w = 2; // default
+      // For standard edge
+      if (option === 'value' && typeof get(edge, accessor) === 'number') {
+        w = ((get(edge, accessor) - min) / (max - min)) * (10 - 2) + 2;
+      }
+      // For grouped edge
+      if (option === 'value' && Array.isArray(get(edge, accessor))) {
+        w =
+          (((get(edge, accessor) as number[]).reduce((a, b) => a + b, 0) -
+            min) /
+            (max - min)) *
+            (10 - 2) +
+          2;
+      }
+      edge.style.line = {
         width: w,
-      },
-    };
-    modEdges.push(edgeCopy);
+      };
+    }
   }
-  return modEdges;
+};
+
+export const styleEdgeLabel = (
+  data: Graph.GraphData,
+  accessor: string | boolean,
+) => {
+  if (typeof accessor === 'string') {
+    for (const edge of data.edges) {
+      edge.label = get(edge, accessor).toString();
+    }
+  }
 };
 
 type MinMax = {
