@@ -25,7 +25,7 @@ import { InvestigatePanel } from '../InvestigatePanel';
 import InvestigateTimeBar from '../InvestigateTimeBar';
 import ImportWizard from '../ImportWizard';
 import InvestigateToolbar from '../InvestigateToolbar';
-import NodeMenu from '../InvestigateChart/NodeMenu';
+import Tooltip from '../InvestigateChart/Tooltip';
 
 const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
   const { name, currency, accessors, overrides } = props;
@@ -40,7 +40,7 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
   const loading = useSelector((state) => getUI(state).loading);
   const timeLock = useSelector((state) => getUI(state).timeLock);
   const UserImportWizard = getTabsOverride(overrides, ImportWizard);
-  const UserNodeMenu = getNodeMenuOverride(overrides, NodeMenu);
+  const UserTooltip = getNodeMenuOverride(overrides, Tooltip);
 
   useEffect(() => {
     if (accessors) {
@@ -96,7 +96,7 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
           </div>
         )}
         <Block position='absolute' width='100%' height='calc(100% - 70px)'>
-          <InvestigateChart NodeMenu={UserNodeMenu} />
+          <InvestigateChart Tooltip={UserTooltip} />
           <InvestigateToolbar />
         </Block>
         {!timeLock && (

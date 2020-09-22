@@ -11,7 +11,7 @@ export interface Tab {
 // Prop Types for Investigate Component
 export interface Overrides {
   Tabs: Tab[];
-  NodeMenu: FC<NodeMenu>;
+  NodeMenu: Tooltip | null;
   score: number[];
 }
 
@@ -21,7 +21,7 @@ export interface ImportWizard {
 }
 
 // Prop Types for NodeMenu
-export interface Menu {
+export interface Tooltip {
   x: number;
   y: number;
   node: {
@@ -29,8 +29,8 @@ export interface Menu {
   };
 }
 
-export interface NodeMenu {
-  menu: Menu | null;
+export interface TooltipComponent {
+  info: Tooltip;
 }
 
 // Prop Types for Investigate Explorer
@@ -107,12 +107,12 @@ export interface QueryFile {
 
 // Prop Types for InvestigateChart
 export interface InvestigateChart {
-  NodeMenu: ComponentType<NodeMenu>;
+  Tooltip: ComponentType<TooltipComponent>;
 }
 
 // Prop Types for InvestigateGraph
 export interface InvestigateGraph {
-  setMenu: (menu: Menu | boolean) => void;
+  setTooltip: (tooltip: Tooltip | boolean) => void;
 }
 
 // Prop Types for InvestigateChartLegend

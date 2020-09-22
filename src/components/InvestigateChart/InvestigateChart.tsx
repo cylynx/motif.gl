@@ -5,13 +5,13 @@ import InvestigateChartLegend from './InvestigateChartLegend';
 import InvestigateGraph from './InvestigateGraph';
 import { getGraph } from '../../redux';
 
-const InvestigateChart: React.FC<Prop.InvestigateChart> = ({ NodeMenu }) => {
+const InvestigateChart: React.FC<Prop.InvestigateChart> = ({ Tooltip }) => {
   const graphFlatten = useSelector((state) => getGraph(state).graphFlatten);
-  const [menu, setMenu] = useState(null);
+  const [tooltip, setTooltip] = useState(null);
 
   return (
     <Fragment>
-      <InvestigateGraph setMenu={setMenu} />
+      <InvestigateGraph setTooltip={setTooltip} />
       <div
         style={{
           position: 'absolute',
@@ -21,16 +21,16 @@ const InvestigateChart: React.FC<Prop.InvestigateChart> = ({ NodeMenu }) => {
       >
         <InvestigateChartLegend data={graphFlatten} />
       </div>
-      {menu && (
+      {tooltip && (
         <div
           style={{
             position: 'absolute',
-            left: menu.x,
-            top: menu.y,
+            left: tooltip.x,
+            top: tooltip.y,
             width: '250px',
           }}
         >
-          <NodeMenu menu={menu} />
+          <Tooltip info={tooltip} />
         </div>
       )}
     </Fragment>

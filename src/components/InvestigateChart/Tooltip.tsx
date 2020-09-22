@@ -9,10 +9,10 @@ import * as Prop from '../../types/Prop';
 import { timeConverter } from '../../utils/utils';
 import { getGraph } from '../../redux';
 
-const NodeMenu: React.FC<Prop.NodeMenu> = ({ menu }) => {
+const Tooltip: React.FC<Prop.TooltipComponent> = ({ info }) => {
   const graphFlatten = useSelector((state) => getGraph(state).graphFlatten);
   const { data } = graphFlatten.nodes.find(
-    (x: Graph.Node) => x.id === menu.node.id,
+    (x: Graph.Node) => x.id === info.node.id,
   );
 
   return (
@@ -54,4 +54,4 @@ const NodeMenu: React.FC<Prop.NodeMenu> = ({ menu }) => {
   );
 };
 
-export default NodeMenu;
+export default Tooltip;

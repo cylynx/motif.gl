@@ -7,7 +7,7 @@ import '@antv/graphin/dist/index.css';
 import { setClickedId, getUI, getGraph } from '../../redux';
 
 const InvestigateGraph: React.FC<Prop.InvestigateGraph> = (props) => {
-  const { setMenu } = props;
+  const { setTooltip } = props;
   const dispatch = useDispatch();
   const clickedId = useSelector((state) => getUI(state).clickedId);
   const graphVisible = useSelector((state) => getGraph(state).graphVisible);
@@ -59,7 +59,7 @@ const InvestigateGraph: React.FC<Prop.InvestigateGraph> = (props) => {
 
     const onResetClick = () => {
       setClickedId(null);
-      setMenu(false);
+      setTooltip(false);
     };
 
     const onNodeClick = (e) => {
@@ -68,10 +68,10 @@ const InvestigateGraph: React.FC<Prop.InvestigateGraph> = (props) => {
       const node = e.item.get('model');
       if (clickedId === node.id) {
         dispatch(setClickedId(null));
-        setMenu(false);
+        setTooltip(false);
       } else {
         dispatch(setClickedId(node.id));
-        setMenu({
+        setTooltip({
           x: canvasXY.x,
           y: canvasXY.y,
           node,
@@ -94,7 +94,7 @@ const InvestigateGraph: React.FC<Prop.InvestigateGraph> = (props) => {
       graph.off('node:mouseleave', clearAllStats);
       graph.off('canvas:drag', onResetClick);
     };
-  }, [clickedId, dispatch, setMenu]);
+  }, [clickedId, dispatch, setTooltip]);
 
   return (
     <Graphin
