@@ -24,8 +24,11 @@ export interface ImportWizard {
 export interface Tooltip {
   x: number;
   y: number;
-  node: {
-    id: string;
+  selected: {
+    type: 'node' | 'edge';
+    obj: {
+      id: string;
+    };
   };
 }
 

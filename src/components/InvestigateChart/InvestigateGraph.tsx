@@ -74,7 +74,10 @@ const InvestigateGraph: React.FC<Prop.InvestigateGraph> = (props) => {
         setTooltip({
           x: canvasXY.x,
           y: canvasXY.y,
-          node,
+          selected: {
+            type: 'node',
+            obj: node,
+          },
         });
       }
     };

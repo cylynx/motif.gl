@@ -11,9 +11,14 @@ import { getGraph } from '../../redux';
 
 const Tooltip: React.FC<Prop.TooltipComponent> = ({ info }) => {
   const graphFlatten = useSelector((state) => getGraph(state).graphFlatten);
-  const { data } = graphFlatten.nodes.find(
-    (x: Graph.Node) => x.id === info.node.id,
-  );
+  const { obj, type } = info.selected;
+
+  const selectedInfo =
+    type === 'node'
+      ? graphFlatten.nodes.find((x: Graph.Node) => x.id === obj.id)
+      : graphFlatten.edges.find((x: Graph.Edge) => x.id === obj.id);
+
+  console.log(selectedInfo);
 
   return (
     <ThemeProvider theme={DarkTheme}>
@@ -22,30 +27,32 @@ const Tooltip: React.FC<Prop.TooltipComponent> = ({ info }) => {
           <Label3>Address:</Label3>
           <Hash
             style={{ overflowWrap: 'break-word', width: '220px' }}
-            text={data.label}
+            text={selectedInfo.label}
           />
           <TriGrid
             startComponent={
               <Fragment>
                 <Label3>Category:</Label3>
-                <Paragraph3>{data.category}</Paragraph3>
+                <Paragraph3>{selectedInfo.category}</Paragraph3>
               </Fragment>
             }
             midComponent={
-              data.entity && (
+              selectedInfo.entity && (
                 <Fragment>
                   <Label3>Entity:</Label3>
-                  <Paragraph3>{data.entity}</Paragraph3>
+                  <Paragraph3>{selectedInfo.entity}</Paragraph3>
                 </Fragment>
               )
             }
             span={[6, 6]}
           />
-          {data.created_ts_unix && (
+          {selectedInfo.created_ts_unix && (
             <Fragment>
               <br />
               <Label3>Created timestamp</Label3>
-              <Paragraph3>{timeConverter(data.created_ts_unix)}</Paragraph3>
+              <Paragraph3>
+                {timeConverter(selectedInfo.created_ts_unix)}
+              </Paragraph3>
             </Fragment>
           )}
         </StyledPadding>
