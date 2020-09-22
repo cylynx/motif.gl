@@ -136,7 +136,6 @@ export const combineEdges = (edges: Graph.Edge[]): Graph.Edge[] => {
           id: o.id,
           source: o.source,
           target: o.target,
-          style: o.style,
           data: {
             count: 0,
           },
@@ -215,7 +214,7 @@ export const processData = (
     nodeStyle,
   } = accessors;
   for (const node of data.nodes) {
-    // Create data property if undefined
+    // data property required by graphin
     if (isUndefined(node.data)) node.data = {};
     node.id = isUndefined(nodeID) ? shortid.generate() : get(node, nodeID);
     if (nodeStyle?.label) {
@@ -226,14 +225,10 @@ export const processData = (
         node.label = get(node, nodeStyle.label);
       }
     }
-
-    // // Add style property to node
-    // node.style = {
-    //   nodeSize: 20,
-    //   primaryColor: CATEGORIES_COLOR[node.data.category],
-    // };
   }
   for (const edge of data.edges) {
+    // data property required by graphin
+    if (isUndefined(edge.data)) edge.data = {};
     // source, target are required
     edge.source = get(edge, edgeSource);
     edge.target = get(edge, edgeTarget);
@@ -244,9 +239,6 @@ export const processData = (
     if (edgeStyle?.width) {
       edge.width = get(edge, edgeStyle.width);
     }
-    edge.style = {
-      endArrow: 'true',
-    };
   }
   return data;
 };
@@ -373,6 +365,7 @@ export const applyStyle = (
   const { nodeStyle, edgeStyle } = options;
   const styledEdges = styleEdges(data, edgeStyle, accessors.edgeStyle);
   const styledNodes = adjustNodeSize(data, nodeStyle.size);
+  console.log(replaceData(data, styledNodes, styledEdges));
   return replaceData(data, styledNodes, styledEdges);
 };
 
