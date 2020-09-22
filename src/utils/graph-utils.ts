@@ -365,7 +365,6 @@ export const applyStyle = (
   const { nodeStyle, edgeStyle } = options;
   const styledEdges = styleEdges(data, edgeStyle, accessors.edgeStyle);
   const styledNodes = adjustNodeSize(data, nodeStyle.size);
-  console.log(replaceData(data, styledNodes, styledEdges));
   return replaceData(data, styledNodes, styledEdges);
 };
 

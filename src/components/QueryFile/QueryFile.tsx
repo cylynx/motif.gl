@@ -46,7 +46,7 @@ const QueryFile: React.FC<Prop.QueryFile> = ({ info, tooltip }) => {
   const trySampleData = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(closeImportModal());
-    dispatch(addData(DATA.SimpleEdge));
+    dispatch(addData(DATA.TriangleJSON));
   };
 
   return (

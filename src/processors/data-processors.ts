@@ -3,6 +3,7 @@ import converter from 'json-2-csv';
 import { range } from 'd3-array';
 import shortid from 'shortid';
 import get from 'lodash/get';
+// @ts-ignore
 import { Analyzer, DATA_TYPES as AnalyzerDATA_TYPES } from 'type-analyzer';
 import * as Graph from '../types/Graph';
 import { notNullorUndefined } from '../utils/data-utils';
@@ -350,7 +351,7 @@ export const getSampleForTypeAnalyze = (
 ) => {
   const total = Math.min(sampleCount, allData.length);
   // const fieldOrder = fields.map(f => f.name);
-  const sample = range(0, total, 1).map((d) => ({}));
+  const sample = range(0, total, 1).map(() => ({}));
 
   // collect sample data for each field
   fields.forEach((field) => {

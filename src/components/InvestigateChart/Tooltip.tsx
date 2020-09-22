@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import { DarkTheme, ThemeProvider } from 'baseui';
-import { Label3, Paragraph3 } from 'baseui/typography';
+import { ParagraphSmall } from 'baseui/typography';
+import { Block } from 'baseui/block';
 import { StyledInner, StyledPadding } from 'baseui/popover';
-import { TriGrid, Hash } from '../ui';
 import * as Graph from '../../types/Graph';
 import * as Prop from '../../types/Prop';
-import { timeConverter } from '../../utils/utils';
+import { flattenObject } from '../../processors/data-processors';
 import { getGraph } from '../../redux';
 
 const Tooltip: React.FC<Prop.TooltipComponent> = ({ info }) => {
@@ -18,44 +18,23 @@ const Tooltip: React.FC<Prop.TooltipComponent> = ({ info }) => {
       ? graphFlatten.nodes.find((x: Graph.Node) => x.id === obj.id)
       : graphFlatten.edges.find((x: Graph.Edge) => x.id === obj.id);
 
-  console.log(selectedInfo);
+  const flattenInfo = flattenObject(selectedInfo);
+
+  const contents = Object.keys(flattenInfo).map((key) => (
+    <Block key={key} display='flex' flexWrap marginTop='8px' marginBottom='8px'>
+      <ParagraphSmall paddingRight='12px' marginTop='0' marginBottom='0'>
+        <b>{`${key}:`}</b>
+      </ParagraphSmall>
+      <ParagraphSmall marginTop='0' marginBottom='0'>
+        {flattenInfo[key]}
+      </ParagraphSmall>
+    </Block>
+  ));
 
   return (
     <ThemeProvider theme={DarkTheme}>
       <StyledInner style={{ opacity: '0.9' }}>
-        <StyledPadding>
-          <Label3>Address:</Label3>
-          <Hash
-            style={{ overflowWrap: 'break-word', width: '220px' }}
-            text={selectedInfo.label}
-          />
-          <TriGrid
-            startComponent={
-              <Fragment>
-                <Label3>Category:</Label3>
-                <Paragraph3>{selectedInfo.category}</Paragraph3>
-              </Fragment>
-            }
-            midComponent={
-              selectedInfo.entity && (
-                <Fragment>
-                  <Label3>Entity:</Label3>
-                  <Paragraph3>{selectedInfo.entity}</Paragraph3>
-                </Fragment>
-              )
-            }
-            span={[6, 6]}
-          />
-          {selectedInfo.created_ts_unix && (
-            <Fragment>
-              <br />
-              <Label3>Created timestamp</Label3>
-              <Paragraph3>
-                {timeConverter(selectedInfo.created_ts_unix)}
-              </Paragraph3>
-            </Fragment>
-          )}
-        </StyledPadding>
+        <StyledPadding>{contents}</StyledPadding>
       </StyledInner>
     </ThemeProvider>
   );
