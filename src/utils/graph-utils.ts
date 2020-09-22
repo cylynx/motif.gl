@@ -365,16 +365,16 @@ export const combineProcessedData = (
  * Check if the graph is of group edges or non-group and apply the appropriate styling based on options.
  *
  * @param {Graph.GraphData} data
- * @param {Graph.StyleOptions} defaultOptions
+ * @param {Graph.StyleOptions} options
  * @param {Graph.Accessors} accessors
  * @return {*}  {Graph.GraphData}
  */
 export const applyStyle = (
   data: Graph.GraphData,
-  defaultOptions: Graph.StyleOptions,
+  options: Graph.StyleOptions,
   accessors: Graph.Accessors,
 ): Graph.GraphData => {
-  const { groupEdges, nodeStyle, edgeStyle } = defaultOptions;
+  const { groupEdges, nodeStyle, edgeStyle } = options;
   const styledEdges = groupEdges
     ? styleGroupedEdge(data, edgeStyle, accessors.edgeStyle)
     : styleEdge(data, edgeStyle, accessors.edgeStyle);
