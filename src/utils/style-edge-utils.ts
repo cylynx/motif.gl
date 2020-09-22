@@ -6,6 +6,7 @@ import * as Graph from '../types/Graph';
 // Each should be able to map to a edge property e.g. value or length or amount
 // There might be additional options passed as well e.g. width can be scaled based on different formulas applied to property
 // For each property there should be a default action, if for example there is no edge width option passed
+// Loop through each styling accessor and transform them based on the input option
 
 /**
  * Style an edge dataset based on a given method
@@ -25,17 +26,17 @@ export const styleEdges = (
   const nextData = produce(data, (draftData) => {
     styleEdgeWidth(
       draftData,
-      edgeStyleAccessors.width || false,
+      edgeStyleAccessors?.width,
       edgeStyleOptions.width,
     );
-    styleEdgeLabel(draftData, edgeStyleAccessors.label || false);
+    styleEdgeLabel(draftData, edgeStyleAccessors?.label);
   });
   return nextData.edges;
 };
 
 export const styleEdgeWidth = (
   data: Graph.GraphData,
-  accessor: string | boolean,
+  accessor: string | undefined,
   option: string,
 ) => {
   if (typeof accessor === 'string') {
@@ -64,11 +65,16 @@ export const styleEdgeWidth = (
 
 export const styleEdgeLabel = (
   data: Graph.GraphData,
-  accessor: string | boolean,
+  accessor: string | undefined,
 ) => {
   if (typeof accessor === 'string') {
     for (const edge of data.edges) {
       edge.label = get(edge, accessor).toString();
+    }
+  } else {
+    for (const edge of data.edges) {
+      // Default
+      edge.label = edge.id;
     }
   }
 };

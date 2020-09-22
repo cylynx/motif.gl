@@ -1,6 +1,7 @@
 import inRange from 'lodash/inRange';
 import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
+import shortid from 'shortid';
 import * as Graph from '../types/Graph';
 import { CATEGORIES_COLOR } from './categories';
 import { styleEdges } from './style-edge-utils';
@@ -216,38 +217,33 @@ export const processData = (
   for (const node of data.nodes) {
     // Create data property if undefined
     if (isUndefined(node.data)) node.data = {};
-    // Node Id is required
-    node.id = get(node, nodeID);
-    // Give the display label of the node
-    node.data.label = isUndefined(nodeStyle.label)
-      ? node.id
-      : get(node, nodeStyle.label);
-    // Assign shortened label to node.label for graph display
-    if (node.data.label.length >= 8) {
-      node.label = `${node.data.label.substring(0, 5)}...`;
-    } else {
-      node.label = node.data.label;
+    node.id = isUndefined(nodeID) ? shortid.generate() : get(node, nodeID);
+    if (nodeStyle?.label) {
+      if (get(node, nodeStyle.label) >= 8) {
+        // Assign shortened label to node.label for graph display
+        node.label = `${node.label.substring(0, 5)}...`;
+      } else {
+        node.label = get(node, nodeStyle.label);
+      }
     }
-    // Label nodes which have no defined category as 'Other'
-    node.data = {
-      category: node.data.category ? node.data.category : 'Other',
-      ...node.data,
-    };
-    // Add style property to node
-    node.style = {
-      nodeSize: 20,
-      primaryColor: CATEGORIES_COLOR[node.data.category],
-    };
+
+    // // Add style property to node
+    // node.style = {
+    //   nodeSize: 20,
+    //   primaryColor: CATEGORIES_COLOR[node.data.category],
+    // };
   }
   for (const edge of data.edges) {
-    // Id, source, target are required
-    edge.id = get(edge, edgeID);
+    // source, target are required
     edge.source = get(edge, edgeSource);
     edge.target = get(edge, edgeTarget);
-    // Set id as label if undefined
-    edge.label = isUndefined(edgeStyle.label)
-      ? edge.id
-      : get(edge, edgeStyle.label);
+    edge.id = isUndefined(edgeID) ? shortid.generate() : get(edge, nodeID);
+    if (edgeStyle?.label) {
+      edge.label = get(edge, edgeStyle.label);
+    }
+    if (edgeStyle?.width) {
+      edge.width = get(edge, edgeStyle.width);
+    }
     edge.style = {
       endArrow: 'true',
     };

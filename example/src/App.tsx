@@ -17,26 +17,33 @@ const App = () => {
           <Investigate
             name='Blocklynx'
             currency='ETH'
+            // accessors={{
+            //   // getters below are for triangle time data
+            //   nodeID: 'id',
+            //   edgeID: 'id',
+            //   edgeSource: 'source',
+            //   edgeTarget: 'target',
+            //   edgeTime: 'data.blk_ts_unix',
+            //   edgeStyle: {
+            //     label: 'id',
+            //     width: 'data.value',
+            //   },
+            //   nodeStyle: {
+            //     label: 'label',
+            //   },
+            //   // getters below are for nodobo
+            //   // getEdgeWidth: edge => edge.data.other_id,
+            //   // getEdgeTime: edge => edge.data.unix_ts,
+            //   // getEdgeLabel: edge => edge.id,
+            //   // getNodeLabel: node => node.data.name,
+            //   // no getters required for Graphin mock data
+            // }}
             accessors={{
-              // getters below are for firebase
+              // getters below are for simple edge
               nodeID: 'id',
               edgeID: 'id',
               edgeSource: 'source',
               edgeTarget: 'target',
-              edgeTime: 'data.blk_ts_unix',
-              edgeStyle: {
-                label: 'data.txn_hash',
-                width: 'data.value',
-              },
-              nodeStyle: {
-                label: 'label',
-              },
-              // getters below are for nodobo
-              // getEdgeWidth: edge => edge.data.other_id,
-              // getEdgeTime: edge => edge.data.unix_ts,
-              // getEdgeLabel: edge => edge.id,
-              // getNodeLabel: node => node.data.name,
-              // no getters required for Graphin mock data
             }}
             overrides={
               {
