@@ -1,4 +1,8 @@
+import { Utils } from '@antv/graphin';
 import * as Graph from '../types/Graph';
+
+export const RandomData = Utils.mock(15).random().graphin();
+export const CircleData = Utils.mock(10).circle().graphin();
 
 export const SimpleEdge: Graph.GraphList = [
   {
