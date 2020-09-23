@@ -53,14 +53,43 @@ const InvestigateGraph: React.FC<Prop.InvestigateGraph> = (props) => {
       }
     };
 
+    const onEdgeClick = (e: IG6GraphEvent) => {
+      const { item } = e;
+      // Avoid inconsistent styling between highlight.light and selected by giving priority to selected
+      graph.clearItemStates(item);
+      graph.setItemState(item, 'selected', true);
+      // Alt event is for multiple select so don't display tooltip
+      if (!e.originalEvent.altKey) {
+        const { centerX, centerY } = item.getBBox();
+        const canvasXY = graph.getCanvasByPoint(centerX, centerY);
+        const edge = item.get('model');
+        if (clickedId === edge.id) {
+          dispatch(setClickedId(null));
+          setTooltip(false);
+        } else {
+          dispatch(setClickedId(edge.id));
+          setTooltip({
+            x: canvasXY.x,
+            y: canvasXY.y,
+            selected: {
+              type: 'edge',
+              obj: edge,
+            },
+          });
+        }
+      }
+    };
+
     // Graph Behaviours
     graph.on('node:click', onNodeClick);
     graph.on('node:dragstart', onResetClick);
+    graph.on('edge:click', onEdgeClick);
     graph.on('canvas:click', onResetClick);
     graph.on('canvas:drag', onResetClick);
     return () => {
       graph.off('node:click', onNodeClick);
       graph.off('node:dragstart', onResetClick);
+      graph.on('edge:click', onEdgeClick);
       graph.off('canvas:click', onResetClick);
       graph.off('canvas:drag', onResetClick);
     };
