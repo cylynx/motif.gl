@@ -108,7 +108,6 @@ const InvestigateGraph: React.FC<Prop.InvestigateGraph> = (props) => {
               type: 'brush-select',
               trigger: 'shift',
               includeEdges: true,
-              onSelect: (nodes) => console.log(nodes),
             },
           ],
         },
