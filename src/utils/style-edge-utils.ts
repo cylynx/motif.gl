@@ -71,11 +71,6 @@ export const styleEdgeLabel = (
     for (const edge of data.edges) {
       edge.label = get(edge, accessor).toString();
     }
-  } else {
-    for (const edge of data.edges) {
-      // Default
-      edge.label = edge.id;
-    }
   }
 };
 

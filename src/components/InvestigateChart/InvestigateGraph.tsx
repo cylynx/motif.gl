@@ -1,10 +1,13 @@
+/* eslint-disable import/no-extraneous-dependencies */
 // @ts-nocheck
 import React, { useLayoutEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Graphin, { G6Event, Node, Edge } from '@antv/graphin';
+import Graphin from '@antv/graphin';
+import { IG6GraphEvent } from '@antv/g6/lib/types';
 import * as Prop from '../../types/Prop';
-import '@antv/graphin/dist/index.css';
+import activateRelations from './behaviors/activate-relations';
 import { setClickedId, getUI, getGraph } from '../../redux';
+import '@antv/graphin/dist/index.css';
 
 const InvestigateGraph: React.FC<Prop.InvestigateGraph> = (props) => {
   const { setTooltip } = props;
@@ -17,68 +20,36 @@ const InvestigateGraph: React.FC<Prop.InvestigateGraph> = (props) => {
 
   useLayoutEffect(() => {
     const { graph } = graphRef.current;
-    const clearAllStats = () => {
-      graph.setAutoPaint(false);
-      graph.getNodes().forEach((node: Node) => {
-        graph.clearItemStates(node);
-      });
-      graph.getEdges().forEach((edge: Edge) => {
-        graph.clearItemStates(edge);
-      });
-      graph.paint();
-      graph.setAutoPaint(true);
-    };
-
-    const onNodeHover = (e: G6Event) => {
-      const { item } = e;
-      graph.setAutoPaint(false);
-      graph.getNodes().forEach((node: Node) => {
-        graph.clearItemStates(node);
-        graph.setItemState(node, 'highlight.dark', true);
-      });
-      graph.setItemState(item, 'highlight.dark', false);
-      graph.setItemState(item, 'highlight.light', true);
-      graph.getEdges().forEach((edge: Edge) => {
-        if (edge.getSource() === item) {
-          graph.setItemState(edge.getTarget(), 'highlight.dark', false);
-          graph.setItemState(edge.getTarget(), 'highlight.light', true);
-          graph.setItemState(edge, 'highlight.light', true);
-          edge.toFront();
-        } else if (edge.getTarget() === item) {
-          graph.setItemState(edge.getSource(), 'highlight.dark', false);
-          graph.setItemState(edge.getSource(), 'highlight.light', true);
-          graph.setItemState(edge, 'highlight.light', true);
-          edge.toFront();
-        } else {
-          graph.setItemState(edge, 'highlight.light', false);
-        }
-      });
-      graph.paint();
-      graph.setAutoPaint(true);
-    };
 
     const onResetClick = () => {
       setClickedId(null);
       setTooltip(false);
     };
 
-    const onNodeClick = (e) => {
-      const { centerX, centerY } = e.item.getBBox();
-      const canvasXY = graph.getCanvasByPoint(centerX, centerY);
-      const node = e.item.get('model');
-      if (clickedId === node.id) {
-        dispatch(setClickedId(null));
-        setTooltip(false);
-      } else {
-        dispatch(setClickedId(node.id));
-        setTooltip({
-          x: canvasXY.x,
-          y: canvasXY.y,
-          selected: {
-            type: 'node',
-            obj: node,
-          },
-        });
+    const onNodeClick = (e: IG6GraphEvent) => {
+      const { item } = e;
+      // Avoid inconsistent styling between highlight.light and selected by giving priority to selected
+      graph.clearItemStates(item);
+      graph.setItemState(item, 'selected', true);
+      // Alt event is for multiple select so don't display tooltip
+      if (!e.originalEvent.altKey) {
+        const { centerX, centerY } = item.getBBox();
+        const canvasXY = graph.getCanvasByPoint(centerX, centerY);
+        const node = item.get('model');
+        if (clickedId === node.id) {
+          dispatch(setClickedId(null));
+          setTooltip(false);
+        } else {
+          dispatch(setClickedId(node.id));
+          setTooltip({
+            x: canvasXY.x,
+            y: canvasXY.y,
+            selected: {
+              type: 'node',
+              obj: node,
+            },
+          });
+        }
       }
     };
 
@@ -86,15 +57,11 @@ const InvestigateGraph: React.FC<Prop.InvestigateGraph> = (props) => {
     graph.on('node:click', onNodeClick);
     graph.on('node:dragstart', onResetClick);
     graph.on('canvas:click', onResetClick);
-    graph.on('node:mouseenter', onNodeHover);
-    graph.on('node:mouseleave', clearAllStats);
     graph.on('canvas:drag', onResetClick);
     return () => {
       graph.off('node:click', onNodeClick);
       graph.off('node:dragstart', onResetClick);
       graph.off('canvas:click', onResetClick);
-      graph.off('node:mouseenter', onNodeHover);
-      graph.off('node:mouseleave', clearAllStats);
       graph.off('canvas:drag', onResetClick);
     };
   }, [clickedId, dispatch, setTooltip]);
@@ -106,6 +73,28 @@ const InvestigateGraph: React.FC<Prop.InvestigateGraph> = (props) => {
       ref={graphRef}
       options={{
         autoPolyEdge: true,
+        modes: {
+          default: [
+            {
+              type: 'brush-select',
+              trigger: 'shift',
+              includeEdges: true,
+              onSelect: (nodes) => console.log(nodes),
+            },
+          ],
+        },
+      }}
+      register={{
+        behavior: (G6) => [
+          {
+            name: 'activate-relations',
+            mode: 'default',
+            options: {},
+            register: () => {
+              G6.registerBehavior('activate-relations', activateRelations);
+            },
+          },
+        ],
       }}
     />
   );
