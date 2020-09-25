@@ -11,7 +11,7 @@ import {
   setBottomOpen,
 } from './ui-slice';
 import { addQuery, processGraphResponse } from './graph-slice';
-import { processData } from '../processors/import-data';
+import { ImportFormat, processData } from '../processors/import-data';
 
 const checkNewData = (
   graphList: Graph.GraphList,
@@ -72,24 +72,33 @@ async function asyncForEach(array: any[], callback: (item: any) => void) {
  *
  * @param {(Graph.GraphData | Graph.GraphList)} data
  */
-export const addData = (data: Graph.GraphData | Graph.GraphList) => (
+export const addData = (importData: ImportFormat) => (
   dispatch: any,
   getState: any,
 ) => {
+  const { data, type } = importData;
   const { graphList } = getGraph(getState());
   const accessors = getAccessors(getState());
-  const dataArray = Array.isArray(data) ? data : [data];
-  asyncForEach(dataArray, async (graph) => {
-    try {
-      await waitFor(0);
-      processResponse(
-        dispatch,
-        graphList,
-        accessors,
-        processData(graph, accessors),
-      );
-    } catch (err) {
-      dispatch(fetchError(err));
-    }
-  });
+  if (type === 'json' || type === 'motif-json') {
+    const dataArray = Array.isArray(data) ? data : [data];
+    asyncForEach(dataArray, async (graph) => {
+      try {
+        await waitFor(0);
+        processResponse(
+          dispatch,
+          graphList,
+          accessors,
+          processData(graph, accessors),
+        );
+      } catch (err) {
+        dispatch(fetchError(err));
+      }
+    });
+  } else if (type === 'edge-list-csv') {
+    console.log('To be implemented...');
+  } else if (type === 'node-edge-csv') {
+    console.log('To be implemented...');
+  } else {
+    dispatch(fetchError('Invalid data format'));
+  }
 };

@@ -3,6 +3,43 @@ import get from 'lodash/get';
 import shortid from 'shortid';
 import * as Graph from '../types/Graph';
 
+export type ImportFormat = MotifJson | JsonImport | EdgeListCsv | NodeEdgeCsv;
+
+export type Csv = string;
+
+// TODO: Add stronger checking for metadata for MotifJson
+export type MotifJson = {
+  data: Graph.GraphData | Graph.GraphList;
+  type: 'motif-json';
+};
+
+export type JsonImport = {
+  data: Graph.GraphData | Graph.GraphList;
+  type: 'json';
+};
+
+export type EdgeListCsv = {
+  data: Csv;
+  type: 'edge-list-csv';
+};
+
+export type NodeEdgeCsv = {
+  data: {
+    nodeData: Csv;
+    edgeData: Csv;
+  };
+  type: 'node-edge-csv';
+};
+
+export type ImportData = {
+  data: string;
+  id?: string;
+  name: string;
+  format: string;
+  type: string;
+  filterProps?: any;
+};
+
 /**
  * Initial function to process data to required format
  * Use accessors to create access node and edge attributes as required by graphin format
