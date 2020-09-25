@@ -11,7 +11,7 @@ import {
   setBottomOpen,
 } from './ui-slice';
 import { addQuery, processGraphResponse } from './graph-slice';
-import { processData } from '../utils/graph-utils';
+import { processData } from '../processors/import-data';
 
 const checkNewData = (
   graphList: Graph.GraphList,
