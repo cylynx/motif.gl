@@ -1,87 +1,13 @@
 import inRange from 'lodash/inRange';
 import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
-import shortid from 'shortid';
 import * as Graph from '../types/Graph';
-import { CATEGORIES_COLOR } from './categories';
-import { styleEdges } from './style-edge-utils';
+import { styleEdges } from './style-edges';
+import { styleNodes } from './style-nodes';
 
 type MinMax = {
   min: number;
   max: number;
-};
-
-/**
- * Filter all edges which contains a given node id as source or target
- *
- * @param {Graph.GraphData} data
- * @param {string} id node id
- */
-export const findConnectedEdges = (data: Graph.GraphData, id: string) =>
-  data.edges.filter((e) => e.source === id || e.target === id);
-
-/**
- * Get degree of a given node id
- *
- * @param {Graph.GraphData} data
- * @param {string} id node id
- */
-export const getDegree = (data: Graph.GraphData, id: string) =>
-  findConnectedEdges(data, id).length;
-
-/**
- * Get degree of a given graph keyed by node id
- *
- * @param {Graph.GraphData} data
- * @return {*}  {(Record<string | number, number>)}
- */
-export const getGraphDegree = (
-  data: Graph.GraphData,
-): Record<string | number, number> => {
-  const nodeIds = [];
-  const degree = {};
-  for (const item of data.nodes) {
-    nodeIds.push(item.id);
-  }
-  for (const id of nodeIds) {
-    // Calculate degree
-    degree[id] = getDegree(data, id);
-  }
-  return degree;
-};
-
-/**
- * Adjust node size based on a given method
- *
- * @param {Graph.GraphData} data
- * @param {string} method
- * @return {*}  {Graph.Node[]}
- */
-export const adjustNodeSize = (
-  data: Graph.GraphData,
-  method: string,
-): Graph.Node[] => {
-  const degree = getGraphDegree(data);
-  const min = Math.min(...Object.values(degree));
-  const max = Math.max(...Object.values(degree));
-  const modNodes = [];
-  for (const node of data.nodes) {
-    const nodeCopy = { ...node };
-
-    // nodeSize
-    if (method === 'degree' && max !== min) {
-      // Scale by degree, from 8-30
-      nodeCopy.style = {
-        ...nodeCopy.style,
-        nodeSize: (((degree[node.id] - min) / (max - min)) * (30 - 8) + 8) * 3,
-      };
-    }
-    // nodeLabel
-    // default same node size
-    nodeCopy.label = `${node.label ? node.label : node.id}`;
-    modNodes.push(nodeCopy);
-  }
-  return modNodes;
 };
 
 /**
@@ -191,56 +117,6 @@ export const filterDataByTime = (
     edges: [...filteredEdges],
   };
   return newFilteredData;
-};
-
-/**
- * Initial function to process data to required format
- * Use accessors to create access node and edge attributes as required by graphin format
- *
- * @param {Graph.GraphData} data
- * @param {Graph.Accessors} Accessors
- * @return {*}  {Graph.GraphData}
- */
-export const processData = (
-  data: Graph.GraphData,
-  accessors: Graph.Accessors,
-): Graph.GraphData => {
-  const {
-    edgeSource,
-    edgeTarget,
-    edgeID,
-    edgeStyle,
-    nodeID,
-    nodeStyle,
-  } = accessors;
-  for (const node of data.nodes) {
-    // data property required by graphin
-    if (isUndefined(node.data)) node.data = {};
-    node.id = isUndefined(nodeID) ? shortid.generate() : get(node, nodeID);
-    if (nodeStyle?.label) {
-      if (get(node, nodeStyle.label) >= 8) {
-        // Assign shortened label to node.label for graph display
-        node.label = `${node.label.substring(0, 5)}...`;
-      } else {
-        node.label = get(node, nodeStyle.label);
-      }
-    }
-  }
-  for (const edge of data.edges) {
-    // data property required by graphin
-    if (isUndefined(edge.data)) edge.data = {};
-    // source, target are required
-    edge.source = get(edge, edgeSource);
-    edge.target = get(edge, edgeTarget);
-    edge.id = isUndefined(edgeID) ? shortid.generate() : get(edge, nodeID);
-    if (edgeStyle?.label) {
-      edge.label = get(edge, edgeStyle.label);
-    }
-    if (edgeStyle?.width) {
-      edge.width = get(edge, edgeStyle.width);
-    }
-  }
-  return data;
 };
 
 /**
@@ -362,9 +238,8 @@ export const applyStyle = (
   options: Graph.StyleOptions,
   accessors: Graph.Accessors,
 ): Graph.GraphData => {
-  const { nodeStyle, edgeStyle } = options;
-  const styledEdges = styleEdges(data, edgeStyle, accessors.edgeStyle);
-  const styledNodes = adjustNodeSize(data, nodeStyle.size);
+  const styledNodes = styleNodes(data, options.nodeStyle, accessors.nodeStyle);
+  const styledEdges = styleEdges(data, options.edgeStyle, accessors.edgeStyle);
   return replaceData(data, styledNodes, styledEdges);
 };
 

@@ -58,6 +58,7 @@ export interface EdgeStyleAccessors {
 
 export interface NodeStyleAccessors {
   label?: string;
+  size?: string;
 }
 
 export interface Accessors {
