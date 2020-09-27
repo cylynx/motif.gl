@@ -283,8 +283,7 @@ export const processCsvData = async (rawCsv: string): Promise<ProcessedCsv> => {
   let parsedJson;
   if (typeof rawCsv === 'string') {
     parsedJson = await csv2json(rawCsv);
-
-    if (!Array.isArray(parsedJson) || parsedJson.length < 2) {
+    if (!Array.isArray(parsedJson) || parsedJson.length < 1) {
       // looks like an empty file, throw error to be catch
       throw new Error('process Csv Data Failed: CSV is empty');
     }
