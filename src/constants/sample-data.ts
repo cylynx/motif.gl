@@ -1,31 +1,31 @@
-import { Utils } from '@antv/graphin';
+import mock from '../utils/mock';
 import * as Graph from '../types/Graph';
 
-export const RandomData = Utils.mock(15).random().graphin();
-export const CircleData = Utils.mock(10).circle().graphin();
+export const RandomData = mock(15).random().graphin();
+export const CircleData = mock(10).circle().graphin();
 
-export const SimpleEdge: Graph.GraphList = [
-  {
-    nodes: [
-      {
-        id: 'a',
-      },
-      {
-        id: 'b',
-      },
-    ],
-    edges: [
-      {
-        id: 'txn a-b',
-        source: 'a',
-        target: 'b',
-      },
-    ],
-    metadata: {
-      key: 123,
+export const SimpleEdge: Graph.GraphData = {
+  nodes: [
+    {
+      id: 'a',
     },
+    {
+      id: 'b',
+    },
+  ],
+  edges: [
+    {
+      id: 'txn a-b',
+      source: 'a',
+      target: 'b',
+    },
+  ],
+  metadata: {
+    key: 123,
   },
-];
+};
+
+export const SimpleGraphData = [SimpleEdge];
 
 export const TriangleJSON: Graph.GraphList = [
   {
