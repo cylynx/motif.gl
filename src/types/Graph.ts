@@ -44,6 +44,7 @@ export interface GraphData {
   nodes: Node[];
   edges: Edge[];
   metadata?: Metadata;
+  key?: number | string;
 }
 
 export type GraphList = GraphData[];

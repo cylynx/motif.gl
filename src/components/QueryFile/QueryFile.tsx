@@ -30,7 +30,7 @@ const QueryFile: React.FC<Prop.QueryFile> = ({ info, tooltip }) => {
       try {
         const json = JSON.parse(e.target.result as string);
         dispatch(closeImportModal());
-        dispatch(addData(json));
+        dispatch(addData({ data: json, type: 'json' }));
       } catch (err) {
         dispatch(fetchError(err));
       }
@@ -46,7 +46,7 @@ const QueryFile: React.FC<Prop.QueryFile> = ({ info, tooltip }) => {
   const trySampleData = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(closeImportModal());
-    dispatch(addData({ data: DATA.RandomData, type: 'json' }));
+    dispatch(addData({ data: DATA.TriangleJSON, type: 'json' }));
   };
 
   return (

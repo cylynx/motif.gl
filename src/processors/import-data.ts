@@ -2,16 +2,16 @@ import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
 import shortid from 'shortid';
 import * as Graph from '../types/Graph';
+import {
+  processJson,
+  processNodeEdgeCsv,
+  processEdgeListCsv,
+  validateMotifJson,
+} from './data-processors';
 
-export type ImportFormat = MotifJson | JsonImport | EdgeListCsv | NodeEdgeCsv;
+export type ImportFormat = JsonImport | EdgeListCsv | NodeEdgeCsv;
 
 export type Csv = string;
-
-// TODO: Add stronger checking for metadata for MotifJson
-export type MotifJson = {
-  data: Graph.GraphData | Graph.GraphList;
-  type: 'motif-json';
-};
 
 export type JsonImport = {
   data: Graph.GraphData | Graph.GraphList;
@@ -20,7 +20,7 @@ export type JsonImport = {
 
 export type EdgeListCsv = {
   data: Csv;
-  type: 'edge-list-csv';
+  type: 'edgeListCsv';
 };
 
 export type NodeEdgeCsv = {
@@ -28,16 +28,13 @@ export type NodeEdgeCsv = {
     nodeData: Csv;
     edgeData: Csv;
   };
-  type: 'node-edge-csv';
+  type: 'nodeEdgeCsv';
 };
 
-export type ImportData = {
-  data: string;
-  id?: string;
-  name: string;
-  format: string;
-  type: string;
-  filterProps?: any;
+export const OPTIONS = {
+  json: 'json',
+  edgeListCsv: 'edgeListCsv',
+  nodeEdgeCsv: 'nodeEdgeCsv',
 };
 
 /**
@@ -49,11 +46,30 @@ export type ImportData = {
  * @param {Graph.Accessors} Accessors
  * @return {*}  {Graph.GraphData}
  */
-export const processData = (
-  data: Graph.GraphData,
+export const importJson = async (
+  json: Graph.GraphData | Graph.GraphList,
   accessors: Graph.Accessors,
-): Graph.GraphData => {
+) => {
+  const results = [];
+  const jsonArray = Array.isArray(json) ? json : [json];
+  for (const data of jsonArray) {
+    if (validateMotifJson(data)) return jsonArray;
+    // eslint-disable-next-line no-await-in-loop
+    const processedData = await processJson(
+      data,
+      data?.key || data?.metadata?.key,
+    );
+    results.push(addRequiredFields(processedData, accessors));
+  }
+  return results;
+};
+
+export const addRequiredFields = (
+  processedData: Graph.GraphData,
+  accessors: Graph.Accessors,
+) => {
   const { edgeSource, edgeTarget, edgeID, nodeID } = accessors;
+  const data = processedData;
   for (const node of data.nodes) {
     // data property required by graphin
     if (isUndefined(node.data)) node.data = {};

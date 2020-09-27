@@ -85,7 +85,7 @@ export const PARSE_FIELD_VALUE_FROM_STRING = {
  * @param {*} json
  * @return {*} {boolean}
  */
-export const validateGraphJson = (json: any): boolean => {
+export const validateMotifJson = (json: any): boolean => {
   if (
     json.nodes &&
     json.edges &&
@@ -109,9 +109,9 @@ export const validateGraphJson = (json: any): boolean => {
  */
 export const processJson = async (
   json: any,
-  key = shortid.generate(),
+  key: string | number = shortid.generate(),
 ): Promise<Graph.GraphData> => {
-  if (validateGraphJson(json)) return json;
+  if (validateMotifJson(json)) return json;
 
   if (json.nodes && json.edges) {
     const nodeCsv = await json2csv(json.nodes);
@@ -449,12 +449,15 @@ export const getFieldsFromData = (
           [],
           { ignoredDataTypes: IGNORE_DATA_TYPES },
         );
-        result.push({
-          name,
-          format,
-          type: `array<${analyzerTypeToFieldType(arrayMetadata[0].type)}>`,
-          analyzerType: type,
-        });
+        // Only push if array is non-empty
+        if (arrayMetadata.length > 0) {
+          result.push({
+            name,
+            format,
+            type: `array<${analyzerTypeToFieldType(arrayMetadata[0].type)}>`,
+            analyzerType: type,
+          });
+        }
       } else {
         result.push({
           name,

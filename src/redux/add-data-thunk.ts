@@ -11,7 +11,11 @@ import {
   setBottomOpen,
 } from './ui-slice';
 import { addQuery, processGraphResponse } from './graph-slice';
-import { ImportFormat, processData } from '../processors/import-data';
+import {
+  OPTIONS as IMPORT_OPTIONS,
+  ImportFormat,
+  importJson,
+} from '../processors/import-data';
 
 const checkNewData = (
   graphList: Graph.GraphList,
@@ -20,7 +24,7 @@ const checkNewData = (
   if (isUndefined(newData.metadata)) {
     // eslint-disable-next-line no-param-reassign
     newData.metadata = {
-      key: graphList.length,
+      key: 'abc',
     };
   }
   const graphListKeys = graphList.map((graph) => graph.metadata.key);
@@ -33,25 +37,26 @@ const processResponse = (
   dispatch: any,
   graphList: Graph.GraphList,
   accessors: Graph.Accessors,
-  newData: Graph.GraphData,
+  newData: Graph.GraphData | Graph.GraphList,
 ) => {
   const { edgeTime } = accessors;
   dispatch(fetchBegin());
-
-  // Check edges for new data as it might just be repeated
-  if (checkNewData(graphList, newData)) {
-    dispatch(addQuery(newData));
-    dispatch(processGraphResponse({ data: newData, accessors }));
-    dispatch(fetchDone());
-    // Check if TimeBar should be opened
-    if (checkEdgeTime(edgeTime)) {
-      dispatch(setBottomOpen(true));
-    } else {
-      dispatch(setTimeLock());
-    }
+  // Check if TimeBar should be opened
+  if (checkEdgeTime(edgeTime)) {
+    dispatch(setBottomOpen(true));
   } else {
-    dispatch(fetchDone());
-    throw new Error('Data has already been imported');
+    dispatch(setTimeLock());
+  }
+  for (const data of Array.isArray(newData) ? newData : [newData]) {
+    // Check edges for new data as it might just be repeated
+    if (checkNewData(graphList, data)) {
+      dispatch(addQuery(data));
+      dispatch(processGraphResponse({ data, accessors }));
+      dispatch(fetchDone());
+    } else {
+      dispatch(fetchDone());
+      throw new Error('Data has already been imported');
+    }
   }
 };
 
@@ -67,7 +72,7 @@ async function asyncForEach(array: any[], callback: (item: any) => void) {
 }
 
 /**
- * Thunk to add data to graph
+ * Thunk to add data to graph - processes JSON / CSV add add to graphList
  * Input can either be a single GraphData object or an array of GraphData
  *
  * @param {(Graph.GraphData | Graph.GraphList)} data
@@ -79,26 +84,20 @@ export const addData = (importData: ImportFormat) => (
   const { data, type } = importData;
   const { graphList } = getGraph(getState());
   const accessors = getAccessors(getState());
-  if (type === 'json' || type === 'motif-json') {
-    const dataArray = Array.isArray(data) ? data : [data];
-    asyncForEach(dataArray, async (graph) => {
-      try {
-        await waitFor(0);
-        processResponse(
-          dispatch,
-          graphList,
-          accessors,
-          processData(graph, accessors),
-        );
-      } catch (err) {
-        dispatch(fetchError(err));
-      }
-    });
-  } else if (type === 'edge-list-csv') {
-    console.log('To be implemented...');
-  } else if (type === 'node-edge-csv') {
-    console.log('To be implemented...');
+  let newData;
+  if (type === IMPORT_OPTIONS.json) {
+    newData = importJson(data as Graph.GraphData | Graph.GraphList, accessors);
+  } else if (type === IMPORT_OPTIONS.nodeEdgeCsv) {
+    dispatch(fetchError('CSV import not yet implemented'));
+  } else if (type === IMPORT_OPTIONS.edgeListCsv) {
+    dispatch(fetchError('CSV import not yet implemented'));
   } else {
     dispatch(fetchError('Invalid data format'));
   }
+
+  newData
+    .then((graphData) => {
+      processResponse(dispatch, graphList, accessors, graphData);
+    })
+    .catch((err) => dispatch(fetchError(err)));
 };
