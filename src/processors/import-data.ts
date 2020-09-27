@@ -49,7 +49,7 @@ export const OPTIONS = {
 export const importJson = async (
   json: Graph.GraphData | Graph.GraphList,
   accessors: Graph.Accessors,
-) => {
+): Promise<Graph.GraphList> => {
   const results = [];
   const jsonArray = Array.isArray(json) ? json : [json];
   for (const data of jsonArray) {

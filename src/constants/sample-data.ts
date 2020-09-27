@@ -4,6 +4,8 @@ import * as Graph from '../types/Graph';
 export const RandomData = mock(15).random().graphin();
 export const CircleData = mock(10).circle().graphin();
 
+export const TwoDataArray = [RandomData, CircleData];
+
 export const SimpleEdge: Graph.GraphData = {
   nodes: [
     {
@@ -24,8 +26,6 @@ export const SimpleEdge: Graph.GraphData = {
     key: 123,
   },
 };
-
-export const SimpleGraphData = [SimpleEdge];
 
 export const TriangleJSON: Graph.GraphList = [
   {
