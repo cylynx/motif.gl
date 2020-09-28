@@ -432,11 +432,12 @@ export const getFieldsFromData = (
   const { fieldByIndex } = renameDuplicateFields(fieldOrder);
   const result: Field[] = [];
 
-  fieldOrder.forEach((field, index) => {
+  for (const [index, field] of fieldOrder.entries()) {
     if (!RESTRICTED_FIELDS.includes(fieldByIndex[index])) {
       const name = fieldByIndex[index];
 
       const fieldMeta = metadata.find((m: any) => m.key === field);
+      if (typeof fieldMeta === 'undefined') break;
       const { type, format } = fieldMeta || {};
       const fieldType = analyzerTypeToFieldType(type);
       if (fieldType === 'array') {
@@ -466,8 +467,7 @@ export const getFieldsFromData = (
         });
       }
     }
-  });
-
+  }
   return result;
 };
 

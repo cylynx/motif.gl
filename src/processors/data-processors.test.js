@@ -172,6 +172,25 @@ describe('Process csv data to required json format', () => {
   });
 });
 
+export const SimpleEdge = {
+  udf: undefined,
+  nodes: [
+    {
+      id: 'a',
+    },
+    {
+      id: 'b',
+    },
+  ],
+  edges: [
+    {
+      id: 'txn a-b',
+      source: 'a',
+      target: 'b',
+    },
+  ],
+};
+
 const testJson = {
   nodes: 'a',
   edges: 'b',
@@ -203,5 +222,13 @@ describe('Process json data', () => {
     const { nodes: nodeFields, edges: edgeFields } = results.metadata.fields;
     expect(nodeFields).toHaveLength(5);
     expect(edgeFields).toHaveLength(3);
+  });
+  it('should not parse undefined fields', async () => {
+    const results = await processJson(SimpleEdge);
+    expect(results.metadata.fields).not.toHaveProperty('udf');
+  });
+  it('should include a key in metadata if not specified', async () => {
+    const results = await processJson(SimpleEdge);
+    expect(results.metadata).toHaveProperty('key');
   });
 });
