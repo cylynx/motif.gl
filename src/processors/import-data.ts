@@ -38,11 +38,11 @@ export const OPTIONS = {
 };
 
 /**
- * Initial function to process node, edge json or motif json to required format
+ * Initial function to process json object with node, edge fields or motif json to required format
  * Parse and generates metadata fields
  *
  * @param {Graph.GraphData} data
- * @param {Graph.Accessors} Accessors
+ * @param {Graph.Accessors} accessors
  * @return {*} {Promise<Graph.GraphList>}
  */
 export const importJson = async (
@@ -60,6 +60,23 @@ export const importJson = async (
     );
     results.push(addRequiredFields(processedData, accessors));
   }
+  return results;
+};
+
+/**
+ * Initial function to process edge lisst csv
+ * Parse and generates metadata fields
+ *
+ * @param {string} csv
+ * @param {Graph.Accessors} accessors
+ * @return {*}  {Promise<Graph.GraphData>}
+ */
+export const importEdgeListCsv = async (
+  csv: string,
+  accessors: Graph.Accessors,
+): Promise<Graph.GraphData> => {
+  const processedData = await processEdgeListCsv(csv);
+  const results = addRequiredFields(processedData, accessors);
   return results;
 };
 

@@ -1,5 +1,9 @@
 import * as DATA from '../constants/sample-data';
-import { importJson, addRequiredFields } from './import-data';
+import {
+  importJson,
+  importEdgeListCsv,
+  addRequiredFields,
+} from './import-data';
 
 const accessors = {
   nodeID: 'id',
@@ -53,7 +57,7 @@ const accessors2 = {
   edgeTarget: 'to',
 };
 
-describe('Pre-process the data correctly', () => {
+describe('Pre-process Json data correctly', () => {
   it('should add the required node id fields', () => {
     const results = addRequiredFields(processedData, accessors2);
     expect(results.nodes[0].id).toEqual('a');
@@ -64,5 +68,29 @@ describe('Pre-process the data correctly', () => {
     expect(results.edges[0].id).toBeTruthy();
     expect(results.edges[0].source).toEqual('a');
     expect(results.edges[0].target).toEqual('b');
+  });
+});
+
+const edgeListCsv = `custom_id,data.value,data.blk_ts_unix,from,to
+txn a-b,100,NaN,a,b
+txn b-c,200,2000000,b,c
+txn c-b,300,Null,c,b
+`;
+
+const edgeListAccessors = {
+  nodeID: 'custom_id',
+  edgeSource: 'from',
+  edgeTarget: 'to',
+};
+
+describe('Import edge list csv', () => {
+  it('should import valid json graph data object', async () => {
+    const results = await importEdgeListCsv(edgeListCsv, edgeListAccessors);
+    expect(results).toHaveProperty('nodes', 'edges', 'metadata');
+  });
+  it('should map id, source and target accessors correctly', async () => {
+    const results = await importEdgeListCsv(edgeListCsv, edgeListAccessors);
+    expect(results.nodes[0]).toHaveProperty('id');
+    expect(results.edges[0]).toHaveProperty('id', 'from', 'to');
   });
 });
