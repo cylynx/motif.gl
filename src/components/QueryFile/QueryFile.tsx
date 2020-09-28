@@ -5,6 +5,7 @@ import { Block } from 'baseui/block';
 import { FileUploader } from 'baseui/file-uploader';
 import { InfoNotification } from '../ui';
 import * as Prop from '../../types/Prop';
+import * as Graph from '../../types/Graph';
 
 import * as DATA from '../../constants/sample-data';
 import { addData, closeImportModal, fetchError } from '../../redux';
@@ -25,17 +26,27 @@ const QueryFile: React.FC<Prop.QueryFile> = ({ info, tooltip }) => {
 
   const onDropAccepted = (acceptedFiles: File[]) => {
     setIsUploading(true);
-    const fileReader = new FileReader();
-    fileReader.onload = (e) => {
-      try {
-        const json = JSON.parse(e.target.result as string);
+    const promises = [];
+    for (const file of acceptedFiles) {
+      // eslint-disable-next-line no-loop-func
+      const filePromise = new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = () => resolve(reader.result);
+      });
+      promises.push(filePromise);
+    }
+    Promise.all(promises)
+      .then((fileContents) => {
+        const fileList = fileContents.map((content) =>
+          JSON.parse(content as string),
+        );
         dispatch(closeImportModal());
-        dispatch(addData({ data: json, type: 'json' }));
-      } catch (err) {
-        dispatch(fetchError(err));
-      }
-    };
-    fileReader.readAsText(acceptedFiles[0]);
+        for (const file of fileList) {
+          dispatch(addData({ data: file as Graph.GraphList, type: 'json' }));
+        }
+      })
+      .catch((err) => dispatch(fetchError(err)));
     setIsUploading(false);
   };
 
@@ -54,6 +65,7 @@ const QueryFile: React.FC<Prop.QueryFile> = ({ info, tooltip }) => {
       {info && <InfoNotification info={info} tooltip={tooltip} />}
       <FileUploader
         accept='.json,.csv'
+        multiple
         onCancel={onCancel}
         onRetry={onRetry}
         onDropAccepted={onDropAccepted}
