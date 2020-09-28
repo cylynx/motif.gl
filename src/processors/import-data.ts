@@ -64,7 +64,7 @@ export const importJson = async (
 };
 
 /**
- * Initial function to process edge lisst csv
+ * Initial function to process edge list csv
  * Parse and generates metadata fields
  *
  * @param {string} csv
@@ -76,6 +76,25 @@ export const importEdgeListCsv = async (
   accessors: Graph.Accessors,
 ): Promise<Graph.GraphData> => {
   const processedData = await processEdgeListCsv(csv);
+  const results = addRequiredFields(processedData, accessors);
+  return results;
+};
+
+/**
+ * Initial function to process node edge csv
+ * Parse and generates metadata fields
+ *
+ * @param {string} nodeCsv
+ * @param {string} edgeCsv
+ * @param {Graph.Accessors} accessors
+ * @return {*}  {Promise<Graph.GraphData>}
+ */
+export const importNodeEdgeCsv = async (
+  nodeCsv: string,
+  edgeCsv: string,
+  accessors: Graph.Accessors,
+): Promise<Graph.GraphData> => {
+  const processedData = await processNodeEdgeCsv(nodeCsv, edgeCsv);
   const results = addRequiredFields(processedData, accessors);
   return results;
 };

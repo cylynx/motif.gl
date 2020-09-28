@@ -2,6 +2,7 @@ import * as DATA from '../constants/sample-data';
 import {
   importJson,
   importEdgeListCsv,
+  importNodeEdgeCsv,
   addRequiredFields,
 } from './import-data';
 
@@ -84,12 +85,38 @@ const edgeListAccessors = {
 };
 
 describe('Import edge list csv', () => {
-  it('should import valid json graph data object', async () => {
+  it('should output valide json graph object', async () => {
     const results = await importEdgeListCsv(edgeListCsv, edgeListAccessors);
     expect(results).toHaveProperty('nodes', 'edges', 'metadata');
   });
   it('should map id, source and target accessors correctly', async () => {
     const results = await importEdgeListCsv(edgeListCsv, edgeListAccessors);
+    expect(results.nodes[0]).toHaveProperty('id');
+    expect(results.edges[0]).toHaveProperty('id', 'from', 'to');
+  });
+});
+
+const nodeCsv = `id,data.value
+a,100
+b,200
+c,300
+`;
+
+describe('Import node edge csv', () => {
+  it('should output valide json graph object', async () => {
+    const results = await importNodeEdgeCsv(
+      nodeCsv,
+      edgeListCsv,
+      edgeListAccessors,
+    );
+    expect(results).toHaveProperty('nodes', 'edges', 'metadata');
+  });
+  it('should map id, source and target accessors correctly', async () => {
+    const results = await importNodeEdgeCsv(
+      nodeCsv,
+      edgeListCsv,
+      edgeListAccessors,
+    );
     expect(results.nodes[0]).toHaveProperty('id');
     expect(results.edges[0]).toHaveProperty('id', 'from', 'to');
   });
