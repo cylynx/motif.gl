@@ -38,13 +38,12 @@ export const OPTIONS = {
 };
 
 /**
- * Initial function to process data to required format
- * Use accessors to create access node and edge attributes as required by graphin format
- * Generates metadata fields
+ * Initial function to process node, edge json or motif json to required format
+ * Parse and generates metadata fields
  *
  * @param {Graph.GraphData} data
  * @param {Graph.Accessors} Accessors
- * @return {*}  {Graph.GraphData}
+ * @return {*} {Promise<Graph.GraphList>}
  */
 export const importJson = async (
   json: Graph.GraphData | Graph.GraphList,

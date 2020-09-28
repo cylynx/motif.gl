@@ -50,7 +50,6 @@ const processResponse = (
   for (const data of Array.isArray(newData) ? newData : [newData]) {
     // Check edges for new data as it might just be repeated
     if (checkNewData(graphList, data)) {
-      console.log(data);
       dispatch(addQuery(data));
       dispatch(processGraphResponse({ data, accessors }));
       dispatch(fetchDone());
@@ -61,22 +60,11 @@ const processResponse = (
   }
 };
 
-// Asynchronous forEach to ensure graph renders in a nice circle
-const waitFor = (ms: number): Promise<void> =>
-  new Promise((r) => setTimeout(r, ms));
-
-async function asyncForEach(array: any[], callback: (item: any) => void) {
-  for (const item of array) {
-    // eslint-disable-next-line no-await-in-loop
-    await callback(item);
-  }
-}
-
 /**
- * Thunk to add data to graph - processes JSON / CSV add add to graphList
+ * Thunk to add data to graph - processes JSON / CSV and add to graphList
  * Input can either be a single GraphData object or an array of GraphData
  *
- * @param {(Graph.GraphData | Graph.GraphList)} data
+ * @param {ImportFormat} importData Json, Edge-list csv or Node edge csv
  */
 export const addData = (importData: ImportFormat) => (
   dispatch: any,
