@@ -1,5 +1,4 @@
 import get from 'lodash/get';
-import produce from 'immer';
 import * as Graph from '../types/Graph';
 
 /**
@@ -17,11 +16,9 @@ export const styleNodes = (
 ): Graph.Node[] => {
   // Scales width based on min, max value of edges
   // mode = eth (scale width from 0.5-5) or fix (default value of 0.5)
-  const nextData = produce(data, (draftData) => {
-    styleNodeSize(draftData, nodeStyleAccessors?.size, nodeStyleOptions.size);
-    styleNodeLabel(draftData, nodeStyleAccessors?.label);
-  });
-  return nextData.nodes;
+  styleNodeSize(data, nodeStyleAccessors?.size, nodeStyleOptions.size);
+  styleNodeLabel(data, nodeStyleAccessors?.label);
+  return data.nodes;
 };
 
 /**

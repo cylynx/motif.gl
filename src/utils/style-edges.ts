@@ -1,5 +1,4 @@
 import get from 'lodash/get';
-import produce from 'immer';
 import * as Graph from '../types/Graph';
 
 // Assume we can style an edge by its width, color and label
@@ -23,15 +22,9 @@ export const styleEdges = (
 ): Graph.Edge[] => {
   // Scales width based on min, max value of edges
   // mode = eth (scale width from 0.5-5) or fix (default value of 0.5)
-  const nextData = produce(data, (draftData) => {
-    styleEdgeWidth(
-      draftData,
-      edgeStyleAccessors?.width,
-      edgeStyleOptions.width,
-    );
-    styleEdgeLabel(draftData, edgeStyleAccessors?.label);
-  });
-  return nextData.edges;
+  styleEdgeWidth(data, edgeStyleAccessors?.width, edgeStyleOptions.width);
+  styleEdgeLabel(data, edgeStyleAccessors?.label);
+  return data.edges;
 };
 
 export const styleEdgeWidth = (

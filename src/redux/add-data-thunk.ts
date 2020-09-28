@@ -50,6 +50,7 @@ const processResponse = (
   for (const data of Array.isArray(newData) ? newData : [newData]) {
     // Check edges for new data as it might just be repeated
     if (checkNewData(graphList, data)) {
+      console.log(data);
       dispatch(addQuery(data));
       dispatch(processGraphResponse({ data, accessors }));
       dispatch(fetchDone());
