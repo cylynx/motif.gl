@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
 import { HeadingSmall } from 'baseui/typography';
 import { Block } from 'baseui/block';
-import { Tabs, TabsProps, Tab } from 'baseui/tabs';
+import { Tabs, Tab } from 'baseui/tabs-motion';
 import * as Prop from '../../types/Prop';
 
 import QueryFile from '../QueryFile';
-import { fileTip } from './Tips';
-
-type StyledTabsProps = TabsProps & {
-  children: React.ReactNode;
-};
 
 const ImportWizard: React.FC<Prop.ImportWizard> = ({ tabs }) => {
   const [activeKey, setActiveKey] = useState('0');
@@ -18,11 +13,11 @@ const ImportWizard: React.FC<Prop.ImportWizard> = ({ tabs }) => {
     setActiveKey(activeKey);
   };
   return (
-    <Block width='600px'>
+    <Block width='700px'>
       <HeadingSmall> Add Data To Graph </HeadingSmall>
-      <StyledTabs onChange={onChangeTab} activeKey={activeKey}>
+      <Tabs onChange={onChangeTab} activeKey={activeKey}>
         <Tab title='File'>
-          <QueryFile info='Loads data in JSON file format' tooltip={fileTip} />
+          <QueryFile />
         </Tab>
         {tabs &&
           tabs.map((tab) => (
@@ -30,30 +25,9 @@ const ImportWizard: React.FC<Prop.ImportWizard> = ({ tabs }) => {
               {tab.component}
             </Tab>
           ))}
-      </StyledTabs>
+      </Tabs>
     </Block>
   );
 };
-
-const StyledTabs = ({ children, ...rest }: StyledTabsProps) => (
-  <Tabs
-    overrides={{
-      TabContent: {
-        style: {
-          paddingLeft: 0,
-          paddingRight: 0,
-        },
-      },
-      TabBar: {
-        style: ({ $theme }) => ({
-          backgroundColor: $theme.colors.backgroundPrimary,
-        }),
-      },
-    }}
-    {...rest}
-  >
-    {children}
-  </Tabs>
-);
 
 export default ImportWizard;
