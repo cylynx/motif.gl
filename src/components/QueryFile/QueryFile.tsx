@@ -24,11 +24,6 @@ const QueryFile: React.FC<Prop.QueryFile> = ({ info, tooltip }) => {
     setErrorMessage('');
   };
 
-  const testCsv = `id,value,source,target
-txn a-b,100,a,b
-txn b-c,200,b,c
-txn c-b,300,c,a`;
-
   const onDropAccepted = (acceptedFiles: File[]) => {
     setIsUploading(true);
     const fileExts = acceptedFiles.map((f) => f.name.split('.').pop());
@@ -54,7 +49,7 @@ txn c-b,300,c,a`;
         }
         if (fileExts[0] === 'csv') {
           for (const file of fileContents) {
-            // use \n as new line delimiter
+            // remove \r and use \n as new line delimiter
             const cleanedFile = (file as string).replace(/\r/g, '');
             dispatch(addData({ data: cleanedFile, type: 'edgeListCsv' }));
           }
