@@ -177,7 +177,9 @@ const QueryFile = () => {
 
         <AdditionalOptions register={register} />
         <Block marginTop='10px' display='flex' justifyContent='flex-end'>
-          <Button type='submit'>Import Data</Button>
+          <Button type='submit' disabled={!files}>
+            Import Data
+          </Button>
           {/* <Button onClick={trySampleData}>Try Sample Data</Button> */}
         </Block>
       </form>
