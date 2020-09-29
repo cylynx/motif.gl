@@ -11,30 +11,28 @@ import {
 
 export type ImportFormat = JsonImport | EdgeListCsv | NodeEdgeCsv;
 
-export type Csv = string;
-
 export type JsonImport = {
   data: Graph.GraphData | Graph.GraphList;
   type: 'json';
 };
 
 export type EdgeListCsv = {
-  data: Csv;
+  data: string;
   type: 'edgeListCsv';
 };
 
 export type NodeEdgeCsv = {
   data: {
-    nodeData: Csv;
-    edgeData: Csv;
+    nodeData: string;
+    edgeData: string;
   };
   type: 'nodeEdgeCsv';
 };
 
 export const OPTIONS = {
-  json: 'json',
-  edgeListCsv: 'edgeListCsv',
-  nodeEdgeCsv: 'nodeEdgeCsv',
+  json: { label: 'Json', id: 'json' },
+  edgeListCsv: { label: 'Edge List Csv', id: 'edgeListCsv' },
+  nodeEdgeCsv: { label: 'Node Edge Csv (2 Files)', id: 'nodeEdgeCsv' },
 };
 
 /**

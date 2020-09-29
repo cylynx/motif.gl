@@ -76,11 +76,15 @@ export const addData = (importData: ImportFormat) => (
   const { graphList } = getGraph(getState());
   const accessors = getAccessors(getState());
   let newData: Promise<Graph.GraphData> | Promise<Graph.GraphList>;
-  if (type === IMPORT_OPTIONS.json) {
+  if (type === IMPORT_OPTIONS.json.id) {
     newData = importJson(data as Graph.GraphData | Graph.GraphList, accessors);
-  } else if (type === IMPORT_OPTIONS.nodeEdgeCsv) {
-    dispatch(fetchError('CSV import not yet implemented'));
-  } else if (type === IMPORT_OPTIONS.edgeListCsv) {
+  } else if (type === IMPORT_OPTIONS.nodeEdgeCsv.id) {
+    const { nodeData, edgeData } = data as {
+      nodeData: string;
+      edgeData: string;
+    };
+    newData = importNodeEdgeCsv(nodeData, edgeData, accessors);
+  } else if (type === IMPORT_OPTIONS.edgeListCsv.id) {
     newData = importEdgeListCsv(data as string, accessors);
   } else {
     dispatch(fetchError('Invalid data format'));
