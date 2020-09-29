@@ -24,8 +24,14 @@ const QueryFile: React.FC<Prop.QueryFile> = ({ info, tooltip }) => {
     setErrorMessage('');
   };
 
+  const testCsv = `id,value,source,target
+txn a-b,100,a,b
+txn b-c,200,b,c
+txn c-b,300,c,a`;
+
   const onDropAccepted = (acceptedFiles: File[]) => {
     setIsUploading(true);
+    const fileExts = acceptedFiles.map((f) => f.name.split('.').pop());
     const promises = [];
     for (const file of acceptedFiles) {
       // eslint-disable-next-line no-loop-func
@@ -38,13 +44,23 @@ const QueryFile: React.FC<Prop.QueryFile> = ({ info, tooltip }) => {
     }
     Promise.all(promises)
       .then((fileContents) => {
-        const fileList = fileContents.map((content) =>
-          JSON.parse(content as string),
-        );
-        dispatch(closeImportModal());
-        for (const file of fileList) {
-          dispatch(addData({ data: file as Graph.GraphList, type: 'json' }));
+        if (fileExts[0] === 'json') {
+          const fileList = fileContents.map((content) =>
+            JSON.parse(content as string),
+          );
+          for (const file of fileList) {
+            dispatch(addData({ data: file as Graph.GraphList, type: 'json' }));
+          }
         }
+        if (fileExts[0] === 'csv') {
+          for (const file of fileContents) {
+            // use \n as new line delimiter
+            const cleanedFile = (file as string).replace(/\r/g, '');
+            dispatch(addData({ data: cleanedFile, type: 'edgeListCsv' }));
+          }
+        }
+
+        dispatch(closeImportModal());
       })
       .catch((err) => dispatch(fetchError(err)));
     setIsUploading(false);

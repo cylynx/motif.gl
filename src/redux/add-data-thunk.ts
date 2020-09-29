@@ -14,6 +14,8 @@ import { addQuery, processGraphResponse } from './graph-slice';
 import {
   OPTIONS as IMPORT_OPTIONS,
   ImportFormat,
+  importEdgeListCsv,
+  importNodeEdgeCsv,
   importJson,
 } from '../processors/import-data';
 
@@ -73,20 +75,21 @@ export const addData = (importData: ImportFormat) => (
   const { data, type } = importData;
   const { graphList } = getGraph(getState());
   const accessors = getAccessors(getState());
-  let newData;
+  let newData: Promise<Graph.GraphData> | Promise<Graph.GraphList>;
   if (type === IMPORT_OPTIONS.json) {
     newData = importJson(data as Graph.GraphData | Graph.GraphList, accessors);
   } else if (type === IMPORT_OPTIONS.nodeEdgeCsv) {
     dispatch(fetchError('CSV import not yet implemented'));
   } else if (type === IMPORT_OPTIONS.edgeListCsv) {
-    dispatch(fetchError('CSV import not yet implemented'));
+    newData = importEdgeListCsv(data as string, accessors);
   } else {
     dispatch(fetchError('Invalid data format'));
   }
 
   newData
-    .then((graphData) => {
+    // @ts-ignore
+    .then((graphData: Graph.GraphData | Graph.GraphList) => {
       processResponse(dispatch, graphList, accessors, graphData);
     })
-    .catch((err) => dispatch(fetchError(err)));
+    .catch((err: Error) => dispatch(fetchError(err)));
 };
