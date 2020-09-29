@@ -109,11 +109,11 @@ export const addRequiredFields = (
     // data property required by graphin
     if (isUndefined(node.data)) node.data = {};
     // eslint-disable-next-line no-nested-ternary
-    node.id = isUndefined(node.id)
-      ? isUndefined(nodeID)
+    node.id = isUndefined(nodeID)
+      ? isUndefined(node.id)
         ? shortid.generate()
-        : get(node, nodeID)
-      : node.id;
+        : node.id
+      : get(node, nodeID);
   }
   for (const edge of data.edges) {
     // data property required by graphin
@@ -122,11 +122,11 @@ export const addRequiredFields = (
     edge.source = get(edge, edgeSource);
     edge.target = get(edge, edgeTarget);
     // eslint-disable-next-line no-nested-ternary
-    edge.id = isUndefined(edge.id)
-      ? isUndefined(edgeID)
+    edge.id = isUndefined(edgeID)
+      ? isUndefined(edge.id)
         ? shortid.generate()
-        : get(edge, edgeID)
-      : edge.id;
+        : edge.id
+      : get(edge, edgeID);
   }
   return data;
 };
