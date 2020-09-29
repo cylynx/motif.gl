@@ -19,6 +19,11 @@ import { addData, closeImportModal, fetchError } from '../../redux';
 
 const importOptions = Object.values(IMPORT_OPTIONS);
 
+/**
+ * remove \r and use \n as new line delimiter and strip whitespace
+ */
+const cleanInput = (file: string) => file.replace(/\r/g, '').trim();
+
 const QueryFile = () => {
   const dispatch = useDispatch();
 
@@ -73,8 +78,7 @@ const QueryFile = () => {
           watchDataType[0].id === 'edgeListCsv'
         ) {
           for (const file of fileContents) {
-            // remove \r and use \n as new line delimiter
-            const cleanedFile = (file as string).replace(/\r/g, '');
+            const cleanedFile = cleanInput(file as string);
             setFiles({ data: cleanedFile, type: 'edgeListCsv' });
             setFileNames(acceptedFileNames);
           }
@@ -87,8 +91,8 @@ const QueryFile = () => {
             acceptedFileNames[0].includes('node') &&
             acceptedFileNames[1].includes('edge')
           ) {
-            const nodeFile = (fileContents[0] as string).replace(/\r/g, '');
-            const edgeFile = (fileContents[1] as string).replace(/\r/g, '');
+            const nodeFile = cleanInput(fileContents[0] as string);
+            const edgeFile = cleanInput(fileContents[1] as string);
             setFiles({
               data: { nodeData: nodeFile, edgeData: edgeFile },
               type: 'nodeEdgeCsv',
@@ -98,8 +102,8 @@ const QueryFile = () => {
             acceptedFileNames[1].includes('node') &&
             acceptedFileNames[0].includes('edge')
           ) {
-            const nodeFile = (fileContents[1] as string).replace(/\r/g, '');
-            const edgeFile = (fileContents[0] as string).replace(/\r/g, '');
+            const nodeFile = cleanInput(fileContents[1] as string);
+            const edgeFile = cleanInput(fileContents[0] as string);
             setFiles({
               data: { nodeData: nodeFile, edgeData: edgeFile },
               type: 'nodeEdgeCsv',
