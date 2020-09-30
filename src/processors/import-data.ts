@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable no-param-reassign */
 import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
 import shortid from 'shortid';
@@ -7,6 +9,8 @@ import {
   processNodeEdgeCsv,
   processEdgeListCsv,
   validateMotifJson,
+  csv2json,
+  json2csv,
 } from './data-processors';
 
 export type ImportFormat = JsonImport | EdgeListCsv | NodeEdgeCsv;
@@ -51,12 +55,13 @@ export const importJson = async (
   const jsonArray = Array.isArray(json) ? json : [json];
   for (const data of jsonArray) {
     if (validateMotifJson(data)) return jsonArray;
+    const correctData = addRequiredFieldsJson(data, accessors);
     // eslint-disable-next-line no-await-in-loop
     const processedData = await processJson(
-      data,
-      data?.key || data?.metadata?.key,
+      correctData,
+      correctData?.key || correctData?.metadata?.key,
     );
-    results.push(addRequiredFields(processedData, accessors));
+    results.push(addRequiredDataFields(processedData));
   }
   return results;
 };
@@ -73,8 +78,9 @@ export const importEdgeListCsv = async (
   csv: string,
   accessors: Graph.Accessors,
 ): Promise<Graph.GraphData> => {
-  const processedData = await processEdgeListCsv(csv);
-  const results = addRequiredFields(processedData, accessors);
+  const mappedCsv = await addRequiredFieldsCsv(csv, accessors, 'edge');
+  const processedData = await processEdgeListCsv(mappedCsv);
+  const results = addRequiredDataFields(processedData);
   return results;
 };
 
@@ -92,39 +98,107 @@ export const importNodeEdgeCsv = async (
   edgeCsv: string,
   accessors: Graph.Accessors,
 ): Promise<Graph.GraphData> => {
-  const processedData = await processNodeEdgeCsv(nodeCsv, edgeCsv);
-  const results = addRequiredFields(processedData, accessors);
+  const mappedNodeCsv = await addRequiredFieldsCsv(nodeCsv, accessors, 'node');
+  const mappedEdgeCsv = await addRequiredFieldsCsv(edgeCsv, accessors, 'edge');
+  const processedData = await processNodeEdgeCsv(mappedNodeCsv, mappedEdgeCsv);
+  const results = addRequiredDataFields(processedData);
   return results;
 };
 
-export const addRequiredFields = (
-  processedData: Graph.GraphData,
+/**
+ * Add required node and edge attributes (id, source, target) for csv input based on given type
+ *
+ * @param {string} csv
+ * @param {Graph.Accessors} accessors
+ * @param {('node' | 'edge')} type
+ * @return {*}
+ */
+export const addRequiredFieldsCsv = async (
+  csv: string,
+  accessors: Graph.Accessors,
+  type: 'node' | 'edge',
+) => {
+  const parsedJson = (await csv2json(csv)) as any[];
+  if (type === 'node') {
+    for (const node of parsedJson) {
+      addNodeFields(node, accessors);
+    }
+  }
+  if (type === 'edge') {
+    for (const edge of parsedJson) {
+      addEdgeFields(edge, accessors);
+    }
+  }
+  const patchedCsv = await json2csv(parsedJson);
+  return patchedCsv as string;
+};
+
+/**
+ * Add required node and edge attributes (id, source, target) for json input
+ *
+ * @param {Graph.GraphData} data
+ * @param {Graph.Accessors} accessors
+ * @return {*}
+ */
+export const addRequiredFieldsJson = (
+  data: Graph.GraphData,
   accessors: Graph.Accessors,
 ) => {
-  const { edgeSource, edgeTarget, edgeID, nodeID } = accessors;
-  const data = processedData;
+  for (const node of data.nodes) {
+    addNodeFields(node, accessors);
+  }
+  for (const edge of data.edges) {
+    addEdgeFields(edge, accessors);
+  }
+  return data;
+};
+
+/**
+ * Created id field in the node based on nodeID accessor
+ *
+ * @param {*} node
+ * @param {Graph.Accessors} accessors
+ */
+export const addNodeFields = (node: any, accessors: Graph.Accessors) => {
+  const { nodeID } = accessors;
+  node.id = isUndefined(nodeID)
+    ? isUndefined(node.id)
+      ? shortid.generate()
+      : node.id
+    : get(node, nodeID);
+};
+
+/**
+ * Create id, source, target field in edge based on accessors
+ *
+ * @param {*} edge
+ * @param {Graph.Accessors} accessors
+ */
+export const addEdgeFields = (edge: any, accessors: Graph.Accessors) => {
+  const { edgeSource, edgeTarget, edgeID } = accessors;
+  edge.source = get(edge, edgeSource);
+  edge.target = get(edge, edgeTarget);
+  edge.id = isUndefined(edgeID)
+    ? isUndefined(edge.id)
+      ? shortid.generate()
+      : edge.id
+    : get(edge, edgeID);
+};
+
+/**
+ * Add data field in nodes and edges
+ *
+ * @param {Graph.GraphData} data
+ * @return {*}
+ */
+export const addRequiredDataFields = (data: Graph.GraphData) => {
   for (const node of data.nodes) {
     // data property required by graphin
     if (isUndefined(node.data)) node.data = {};
-    // eslint-disable-next-line no-nested-ternary
-    node.id = isUndefined(nodeID)
-      ? isUndefined(node.id)
-        ? shortid.generate()
-        : node.id
-      : get(node, nodeID);
   }
   for (const edge of data.edges) {
     // data property required by graphin
     if (isUndefined(edge.data)) edge.data = {};
-    // source, target are required
-    edge.source = get(edge, edgeSource);
-    edge.target = get(edge, edgeTarget);
-    // eslint-disable-next-line no-nested-ternary
-    edge.id = isUndefined(edgeID)
-      ? isUndefined(edge.id)
-        ? shortid.generate()
-        : edge.id
-      : get(edge, edgeID);
   }
   return data;
 };

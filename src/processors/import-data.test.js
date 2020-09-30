@@ -3,7 +3,7 @@ import {
   importJson,
   importEdgeListCsv,
   importNodeEdgeCsv,
-  addRequiredFields,
+  addRequiredFieldsJson,
 } from './import-data';
 
 const accessors = {
@@ -60,12 +60,12 @@ const accessors2 = {
 
 describe('Pre-process Json data correctly', () => {
   it('should add the required node id fields', () => {
-    const results = addRequiredFields(processedData, accessors2);
+    const results = addRequiredFieldsJson(processedData, accessors2);
     expect(results.nodes[0].id).toEqual('a');
     expect(results.nodes[1].id).toEqual('b');
   });
   it('should add the required edge id, source, target fields', () => {
-    const results = addRequiredFields(processedData, accessors2);
+    const results = addRequiredFieldsJson(processedData, accessors2);
     expect(results.edges[0].id).toBeTruthy();
     expect(results.edges[0].source).toEqual('a');
     expect(results.edges[0].target).toEqual('b');
@@ -75,8 +75,7 @@ describe('Pre-process Json data correctly', () => {
 const edgeListCsv = `custom_id,data.value,data.blk_ts_unix,from,to
 txn a-b,100,NaN,a,b
 txn b-c,200,2000000,b,c
-txn c-b,300,Null,c,b
-`;
+txn c-b,300,Null,c,b`;
 
 const edgeListAccessors = {
   nodeID: 'custom_id',
@@ -91,7 +90,9 @@ describe('Import edge list csv', () => {
   });
   it('should map id, source and target accessors correctly', async () => {
     const results = await importEdgeListCsv(edgeListCsv, edgeListAccessors);
+    expect(results.nodes).toHaveLength(3);
     expect(results.nodes[0]).toHaveProperty('id');
+    expect(results.edges).toHaveLength(3);
     expect(results.edges[0]).toHaveProperty('id', 'from', 'to');
   });
 });
@@ -99,8 +100,7 @@ describe('Import edge list csv', () => {
 const nodeCsv = `id,data.value
 a,100
 b,200
-c,300
-`;
+c,300`;
 
 describe('Import node edge csv', () => {
   it('should output valide json graph object', async () => {
@@ -117,7 +117,9 @@ describe('Import node edge csv', () => {
       edgeListCsv,
       edgeListAccessors,
     );
+    expect(results.nodes).toHaveLength(3);
     expect(results.nodes[0]).toHaveProperty('id');
+    expect(results.edges).toHaveLength(3);
     expect(results.edges[0]).toHaveProperty('id', 'from', 'to');
   });
 });
