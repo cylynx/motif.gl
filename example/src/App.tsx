@@ -40,10 +40,10 @@ const App = () => {
             // }}
             accessors={{
               // getters below are for simple edge
-              // nodeID: 'id',
-              edgeID: 'id',
-              edgeSource: 'source',
-              edgeTarget: 'target',
+              nodeID: 'id',
+              // edgeID: 'id',
+              edgeSource: 'from',
+              edgeTarget: 'to',
             }}
             overrides={
               {

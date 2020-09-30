@@ -17,6 +17,14 @@ import * as Graph from '../../types/Graph';
 import * as DATA from '../../constants/sample-data';
 import { addData, closeImportModal, fetchError } from '../../redux';
 
+type FormValues = {
+  dataType: { label: string; id: string }[];
+  nodeID?: string;
+  edgeID?: string;
+  edgeSource: string;
+  edgeTarget: string;
+};
+
 const importOptions = Object.values(IMPORT_OPTIONS);
 
 /**
@@ -31,11 +39,11 @@ const QueryFile = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [fileNames, setFileNames] = useState<string[]>(null);
   const [files, setFiles] = useState<ImportFormat>(null);
-  const { register, watch, control, handleSubmit } = useForm({
+  const { register, watch, control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       dataType: [importOptions[0]],
-      source: 'source',
-      target: 'target',
+      edgeSource: 'source',
+      edgeTarget: 'target',
     },
   });
 
@@ -139,9 +147,14 @@ const QueryFile = () => {
 
   const onChangeDropdown = ([data]: any[]) => data.value;
 
-  const onSubmitForm = (_data: any, e: FormEvent<HTMLFormElement>) => {
+  const onSubmitForm = (data: any, e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(addData(files));
+    const { dataType, ...accessors } = data;
+    // remove accessor keys with empty string
+    Object.keys(accessors)
+      .filter((k) => accessors[k] === '')
+      .map((k) => delete accessors[k]);
+    dispatch(addData(files, accessors as Graph.Accessors));
     dispatch(closeImportModal());
   };
 
@@ -209,7 +222,7 @@ const AdditionalOptions = ({ register }: { register: any }) => {
           <Block width='48%'>
             <FormControl label='Node ID Field'>
               <Input
-                name='nodeId'
+                name='nodeID'
                 size='compact'
                 inputRef={register}
                 placeholder='id'
@@ -219,7 +232,7 @@ const AdditionalOptions = ({ register }: { register: any }) => {
           <Block width='48%'>
             <FormControl label='Edge ID Field'>
               <Input
-                name='edgeId'
+                name='edgeID'
                 size='compact'
                 inputRef={register}
                 placeholder='id'
@@ -231,7 +244,7 @@ const AdditionalOptions = ({ register }: { register: any }) => {
           <Block width='48%'>
             <FormControl label='Source Field'>
               <Input
-                name='source'
+                name='edgeSource'
                 size='compact'
                 inputRef={register}
                 placeholder='source'
@@ -242,7 +255,7 @@ const AdditionalOptions = ({ register }: { register: any }) => {
           <Block width='48%'>
             <FormControl label='Target Field'>
               <Input
-                name='target'
+                name='edgeTarget'
                 size='compact'
                 inputRef={register}
                 placeholder='target'

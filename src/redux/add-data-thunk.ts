@@ -62,19 +62,24 @@ const processResponse = (
   }
 };
 
+type ImportAccessors = Graph.Accessors | null;
+
 /**
  * Thunk to add data to graph - processes JSON / CSV and add to graphList
  * Input can either be a single GraphData object or an array of GraphData
  *
- * @param {ImportFormat} importData Json, Edge-list csv or Node edge csv
+ * @param {ImportFormat} importData
+ * @param {ImportAccessors} [importAccessors=null] to customize node Id / edge Id / edge source or target
  */
-export const addData = (importData: ImportFormat) => (
-  dispatch: any,
-  getState: any,
-) => {
+export const addData = (
+  importData: ImportFormat,
+  importAccessors: ImportAccessors = null,
+) => (dispatch: any, getState: any) => {
   const { data, type } = importData;
   const { graphList } = getGraph(getState());
-  const accessors = getAccessors(getState());
+  const mainAccessors = getAccessors(getState());
+  // Use importAccessors if available to do initial mapping
+  const accessors = { ...mainAccessors, ...importAccessors };
   let newData: Promise<Graph.GraphData> | Promise<Graph.GraphList>;
   if (type === IMPORT_OPTIONS.json.id) {
     newData = importJson(data as Graph.GraphData | Graph.GraphList, accessors);
@@ -85,7 +90,7 @@ export const addData = (importData: ImportFormat) => (
     };
     newData = importNodeEdgeCsv(nodeData, edgeData, accessors);
   } else if (type === IMPORT_OPTIONS.edgeListCsv.id) {
-    newData = importEdgeListCsv(data as string, accessors);
+    newData = importEdgeListCsv(data as string, mainAccessors);
   } else {
     dispatch(fetchError('Invalid data format'));
   }
@@ -93,7 +98,7 @@ export const addData = (importData: ImportFormat) => (
   newData
     // @ts-ignore
     .then((graphData: Graph.GraphData | Graph.GraphList) => {
-      processResponse(dispatch, graphList, accessors, graphData);
+      processResponse(dispatch, graphList, mainAccessors, graphData);
     })
     .catch((err: Error) => dispatch(fetchError(err)));
 };
