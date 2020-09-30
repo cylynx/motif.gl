@@ -3,11 +3,13 @@
 import React, { useLayoutEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Graphin from '@antv/graphin';
+import { Block } from 'baseui/block';
 import { IG6GraphEvent } from '@antv/g6/lib/types';
 import * as Prop from '../../types/Prop';
 import activateRelations from './behaviors/activate-relations';
 import { setClickedId, getUI, getGraph } from '../../redux';
-import '@antv/graphin/dist/index.css';
+import './graphin.css';
+// import '@antv/graphin/dist/index.css';
 
 const InvestigateGraph: React.FC<Prop.InvestigateGraph> = (props) => {
   const { setTooltip } = props;
