@@ -1,5 +1,5 @@
-import React from 'react';
-import { DarkTheme, ThemeProvider, useStyletron } from 'baseui';
+import React, { Fragment } from 'react';
+import { ThemeProvider, useStyletron } from 'baseui';
 import { Layer } from 'baseui/layer';
 import { Button } from 'baseui/button';
 
@@ -9,14 +9,14 @@ import * as Prop from '../../types/Prop';
 const SideLayer: React.FC<Prop.Layer> = ({ children }) => {
   const [isOpen, setOpen] = React.useState(true);
   return (
-    <ThemeProvider theme={DarkTheme}>
+    <Fragment>
       <ToggleButton isOpen={isOpen} onClick={() => setOpen(!isOpen)} />
       {isOpen ? (
         <Layer>
           <Wrapper>{children}</Wrapper>
         </Layer>
       ) : null}
-    </ThemeProvider>
+    </Fragment>
   );
 };
 

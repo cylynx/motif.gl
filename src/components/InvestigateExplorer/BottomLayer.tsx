@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { DarkTheme, ThemeProvider, useStyletron } from 'baseui';
+import { useStyletron } from 'baseui';
 import { Layer } from 'baseui/layer';
 import { Button } from 'baseui/button';
 
@@ -15,17 +15,15 @@ const BottomLayer: React.FC<Prop.Layer> = ({ children }) => {
   const dispatch = useDispatch();
   return (
     <Fragment>
-      <ThemeProvider theme={DarkTheme}>
-        <ToggleButton
-          isOpen={isOpen}
-          onClick={() => dispatch(setBottomOpen(!isOpen))}
-        />
-        {isOpen ? (
-          <Layer>
-            <Wrapper>{children}</Wrapper>
-          </Layer>
-        ) : null}
-      </ThemeProvider>
+      <ToggleButton
+        isOpen={isOpen}
+        onClick={() => dispatch(setBottomOpen(!isOpen))}
+      />
+      {isOpen ? (
+        <Layer>
+          <Wrapper>{children}</Wrapper>
+        </Layer>
+      ) : null}
     </Fragment>
   );
 };

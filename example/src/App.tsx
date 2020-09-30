@@ -2,7 +2,7 @@
 import React from 'react';
 import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
-import { LightTheme, BaseProvider } from 'baseui';
+import { LightTheme, DarkTheme, BaseProvider } from 'baseui';
 import { Investigate } from 'motif.gl';
 import { Provider } from 'react-redux';
 import store from './redux-store';
@@ -17,6 +17,7 @@ const App = () => {
           <Investigate
             name='Blocklynx'
             currency='ETH'
+            secondaryTheme={DarkTheme}
             // accessors={{
             //   // getters below are for triangle time data
             //   nodeID: 'id',

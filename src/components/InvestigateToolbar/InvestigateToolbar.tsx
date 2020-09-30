@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { ActionCreators as UndoActionCreators } from 'redux-undo';
 import fscreen from 'fscreen';
 
-import { useStyletron, DarkTheme, ThemeProvider } from 'baseui';
+import { useStyletron } from 'baseui';
 
 import { GoGear, GoX } from 'react-icons/go';
 import { FaUndoAlt, FaRedoAlt, FaExpand } from 'react-icons/fa';
@@ -68,21 +68,19 @@ const InvestigateToolbar = () => {
   ];
 
   return (
-    <ThemeProvider theme={DarkTheme}>
-      <div
-        className={css({
-          display: 'inline-flex',
-          flexDirection: 'column',
-          position: 'absolute',
-          top: '120px',
-          right: '2%',
-        })}
-      >
-        {menuItems.map((item) => (
-          <ToolbarItem key={item.key} item={item} />
-        ))}
-      </div>
-    </ThemeProvider>
+    <div
+      className={css({
+        display: 'inline-flex',
+        flexDirection: 'column',
+        position: 'absolute',
+        top: '120px',
+        right: '2%',
+      })}
+    >
+      {menuItems.map((item) => (
+        <ToolbarItem key={item.key} item={item} />
+      ))}
+    </div>
   );
 };
 

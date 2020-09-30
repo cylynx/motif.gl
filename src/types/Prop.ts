@@ -1,4 +1,5 @@
 import { ReactNode, RefObject, MouseEvent, FC, ComponentType } from 'react';
+import { Theme } from 'baseui/theme';
 import { Accessors, GraphData, ChartData } from './Graph';
 
 // Prop Types for Tab Override
@@ -42,6 +43,7 @@ export interface InvestigateExplorer {
   currency: string;
   accessors: Accessors;
   overrides: Overrides;
+  secondaryTheme?: Theme;
 }
 
 // Prop Types for Bottom and Side Layer

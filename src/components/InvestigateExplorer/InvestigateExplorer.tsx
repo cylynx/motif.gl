@@ -1,7 +1,7 @@
 import React, { useEffect, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useStyletron } from 'baseui';
+import { useStyletron, ThemeProvider } from 'baseui';
 import { Block } from 'baseui/block';
 import { Modal, ModalBody, SIZE } from 'baseui/modal';
 import { Loader } from '../ui';
@@ -28,9 +28,9 @@ import InvestigateToolbar from '../InvestigateToolbar';
 import Tooltip from '../InvestigateChart/Tooltip';
 
 const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
-  const { name, currency, accessors, overrides } = props;
+  const { name, currency, accessors, overrides, secondaryTheme } = props;
 
-  const [css] = useStyletron();
+  const [css, theme] = useStyletron();
 
   const dispatch = useDispatch();
 
@@ -82,31 +82,33 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
         </ModalBody>
       </Modal>
       <Fragment>
-        {loading && (
-          <div
-            className={css({
-              position: 'absolute',
-              top: '70px',
-              height: '30px',
-              width: '100%',
-              zIndex: 1,
-            })}
-          >
-            <Loader />
-          </div>
-        )}
-        <Block position='absolute' width='100%' height='calc(100% - 70px)'>
-          <InvestigateChart Tooltip={UserTooltip} />
-          <InvestigateToolbar />
-        </Block>
-        {!timeLock && (
-          <BottomLayer>
-            <InvestigateTimeBar />
-          </BottomLayer>
-        )}
-        <SideLayer>
-          <InvestigatePanel />
-        </SideLayer>
+        <ThemeProvider theme={secondaryTheme || theme}>
+          {loading && (
+            <div
+              className={css({
+                position: 'absolute',
+                top: '70px',
+                height: '30px',
+                width: '100%',
+                zIndex: 1,
+              })}
+            >
+              <Loader />
+            </div>
+          )}
+          <Block position='absolute' width='100%' height='calc(100% - 70px)'>
+            <InvestigateChart Tooltip={UserTooltip} />
+            <InvestigateToolbar />
+          </Block>
+          {!timeLock && (
+            <BottomLayer>
+              <InvestigateTimeBar />
+            </BottomLayer>
+          )}
+          <SideLayer>
+            <InvestigatePanel />
+          </SideLayer>
+        </ThemeProvider>
       </Fragment>
     </Fragment>
   );
