@@ -1,6 +1,6 @@
-import React, { useState, MouseEvent, FormEvent, Fragment } from 'react';
+import React, { useState, MouseEvent, Fragment } from 'react';
 import { useDispatch } from 'react-redux';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { Button } from 'baseui/button';
 import { Input } from 'baseui/input';
 import { Block } from 'baseui/block';
@@ -145,9 +145,9 @@ const QueryFile = () => {
     dispatch(addData({ data: DATA.TwoDataArray, type: 'json' }));
   };
 
-  const onChangeDropdown = ([data]: any[]) => data.value;
+  const onChangeDropdown = ([data]: any) => data.value;
 
-  const onSubmitForm = (data: any, e: FormEvent<HTMLFormElement>) => {
+  const onSubmitForm: SubmitHandler<FormValues> = (data, e) => {
     e.preventDefault();
     const { dataType, ...accessors } = data;
     // remove accessor keys with empty string
