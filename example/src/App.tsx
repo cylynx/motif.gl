@@ -6,6 +6,7 @@ import { LightTheme, DarkTheme, BaseProvider } from 'baseui';
 import { Investigate } from 'motif.gl';
 import { Provider } from 'react-redux';
 import store from './redux-store';
+import 'motif.gl/dist/index.css';
 
 const engine = new Styletron();
 

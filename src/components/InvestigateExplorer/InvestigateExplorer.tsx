@@ -81,6 +81,14 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
           <UserImportWizard />
         </ModalBody>
       </Modal>
+      <Block
+        position='absolute'
+        width='100%'
+        height='100%'
+        backgroundColor='backgroundPrimary'
+      >
+        <InvestigateChart Tooltip={UserTooltip} />
+      </Block>
       <Fragment>
         <ThemeProvider theme={secondaryTheme || theme}>
           {loading && (
@@ -96,10 +104,8 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
               <Loader />
             </div>
           )}
-          <Block position='absolute' width='100%' height='calc(100% - 70px)'>
-            <InvestigateChart Tooltip={UserTooltip} />
-            <InvestigateToolbar />
-          </Block>
+
+          <InvestigateToolbar />
           {!timeLock && (
             <BottomLayer>
               <InvestigateTimeBar />
