@@ -32,7 +32,7 @@ const importOptions = Object.values(IMPORT_OPTIONS);
  */
 const cleanInput = (file: string) => file.replace(/\r/g, '').trim();
 
-const QueryFile = () => {
+const ImportLocalFile = () => {
   const dispatch = useDispatch();
 
   const [isUploading, setIsUploading] = useState(false);
@@ -139,12 +139,6 @@ const QueryFile = () => {
     );
   };
 
-  const trySampleData = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    dispatch(closeImportModal());
-    dispatch(addData({ data: DATA.TwoDataArray, type: 'json' }));
-  };
-
   const onChangeDropdown = ([data]: any) => data.value;
 
   const onSubmitForm: SubmitHandler<FormValues> = (data, e) => {
@@ -193,7 +187,6 @@ const QueryFile = () => {
           <Button type='submit' disabled={!files}>
             Import Data
           </Button>
-          {/* <Button onClick={trySampleData}>Try Sample Data</Button> */}
         </Block>
       </form>
     </Fragment>
@@ -269,4 +262,4 @@ const AdditionalOptions = ({ register }: { register: any }) => {
   );
 };
 
-export default QueryFile;
+export default ImportLocalFile;

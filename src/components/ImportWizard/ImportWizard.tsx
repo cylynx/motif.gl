@@ -5,6 +5,7 @@ import { Tabs, Tab } from 'baseui/tabs-motion';
 import * as Prop from '../../types/Prop';
 
 import ImportLocalFile from './ImportLocalFile';
+import ImportSampleData from './ImportSampleData';
 
 const ImportWizard: React.FC<Prop.ImportWizard> = ({ tabs }) => {
   const [activeKey, setActiveKey] = useState('0');
@@ -18,6 +19,9 @@ const ImportWizard: React.FC<Prop.ImportWizard> = ({ tabs }) => {
       <Tabs onChange={onChangeTab} activeKey={activeKey}>
         <Tab title='File'>
           <ImportLocalFile />
+        </Tab>
+        <Tab title='Sample Data'>
+          <ImportSampleData />
         </Tab>
         {tabs &&
           tabs.map((tab) => (
