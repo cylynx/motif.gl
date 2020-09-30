@@ -11,11 +11,11 @@ import { Show, Hide } from 'baseui/icon';
 import {
   OPTIONS as IMPORT_OPTIONS,
   ImportFormat,
-} from '../../processors/import-data';
-import * as Graph from '../../types/Graph';
+} from '../../../processors/import-data';
+import * as Graph from '../../../types/Graph';
 
-import * as DATA from '../../constants/sample-data';
-import { addData, closeImportModal, fetchError } from '../../redux';
+import * as DATA from '../../../constants/sample-data';
+import { addData, closeImportModal, fetchError } from '../../../redux';
 
 type FormValues = {
   dataType: { label: string; id: string }[];

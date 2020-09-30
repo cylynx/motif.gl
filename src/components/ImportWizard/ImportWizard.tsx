@@ -4,7 +4,7 @@ import { Block } from 'baseui/block';
 import { Tabs, Tab } from 'baseui/tabs-motion';
 import * as Prop from '../../types/Prop';
 
-import QueryFile from '../QueryFile';
+import ImportLocalFile from './ImportLocalFile';
 
 const ImportWizard: React.FC<Prop.ImportWizard> = ({ tabs }) => {
   const [activeKey, setActiveKey] = useState('0');
@@ -17,7 +17,7 @@ const ImportWizard: React.FC<Prop.ImportWizard> = ({ tabs }) => {
       <HeadingSmall> Add Data To Graph </HeadingSmall>
       <Tabs onChange={onChangeTab} activeKey={activeKey}>
         <Tab title='File'>
-          <QueryFile />
+          <ImportLocalFile />
         </Tab>
         {tabs &&
           tabs.map((tab) => (
