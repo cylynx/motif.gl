@@ -104,7 +104,6 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
               <Loader />
             </div>
           )}
-
           <InvestigateToolbar />
           {!timeLock && (
             <BottomLayer>

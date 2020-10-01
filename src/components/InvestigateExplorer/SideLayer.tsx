@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { ThemeProvider, useStyletron } from 'baseui';
+import { useStyletron } from 'baseui';
 import { Layer } from 'baseui/layer';
 import { Button } from 'baseui/button';
 
@@ -53,7 +53,7 @@ const Wrapper: React.FC<Prop.Wrapper> = (props) => {
         paddingBottom: '20px',
         paddingLeft: '15px',
         paddingRight: '15px',
-        backgroundColor: color || theme.colors.backgroundSecondary,
+        backgroundColor: color || theme.colors.backgroundPrimary,
         textAlign: 'left',
       })}
       ref={forwardedRef}

@@ -57,7 +57,7 @@ const Wrapper: React.FC<Prop.Wrapper> = (props) => {
         right: offset || '2%',
         height: '135px',
         width: '500px',
-        backgroundColor: color || theme.colors.backgroundSecondary,
+        backgroundColor: color || theme.colors.backgroundPrimary,
       })}
       ref={forwardedRef}
     >
