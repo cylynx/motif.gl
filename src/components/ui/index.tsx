@@ -7,6 +7,7 @@ import Statistic from './Statistic';
 import FullButton from './Button';
 import { DivPrimary, DivSecondary, Centered } from './StyledDiv';
 import { TagValue, TagRisk } from './Tag';
+import EditableField from './EditableField';
 import SimpleTooltip from './SimpleTooltip';
 import InfoIcon from './InfoIcon';
 import InfoNotification from './InfoNotification';
@@ -23,6 +24,7 @@ export {
   FlushedGrid,
   TriGrid,
   Statistic,
+  EditableField,
   TagValue,
   TagRisk,
   SimpleTooltip,
