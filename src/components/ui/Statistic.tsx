@@ -1,25 +1,29 @@
 import React, { Fragment } from 'react';
-import { useStyletron } from 'baseui';
-import { LabelLarge, ParagraphSmall } from 'baseui/typography';
+import { Block } from 'baseui/block';
+import { LabelLarge, LabelSmall } from 'baseui/typography';
 
 type StatisticProps = {
   value: string | number;
   label?: string | number;
-  align?: 'left' | 'right' | 'center';
+  subtitle?: string | number;
 };
 
-const Statistic = ({ value, label = '', align = 'left' }: StatisticProps) => {
-  const [css] = useStyletron();
+const Statistic = ({ value, label = '', subtitle = null }: StatisticProps) => {
   return (
     <Fragment>
-      <div
-        className={css({
-          textAlign: align,
-        })}
-      >
-        <LabelLarge marginBottom={0}>{value}</LabelLarge>
-        <ParagraphSmall marginBottom='0px'>{label}</ParagraphSmall>
-      </div>
+      <Block display='flex' flexDirection='column'>
+        <Block display='flex' alignItems='baseline'>
+          <LabelLarge marginBottom={0} marginRight='8px'>
+            {label}
+          </LabelLarge>
+          <LabelLarge marginBottom={0}>{value}</LabelLarge>
+        </Block>
+        {subtitle && (
+          <LabelSmall marginTop='8px' marginBottom={0} color='contentSecondary'>
+            {subtitle}
+          </LabelSmall>
+        )}
+      </Block>
     </Fragment>
   );
 };

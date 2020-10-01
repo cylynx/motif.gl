@@ -15,7 +15,10 @@ import { getGraph, getUI } from '../../redux';
 const InvestigateMain = () => {
   const dispatch = useDispatch();
   const graphFlatten = useSelector((state) => getGraph(state).graphFlatten);
-  const currency = useSelector((state) => getUI(state).currency);
+  const graphVisible = useSelector((state) => getGraph(state).graphVisible);
+  const haveData = graphFlatten && graphVisible;
+  const hiddenNodes = graphFlatten.nodes.length - graphVisible.nodes.length;
+  const hiddenEdges = graphFlatten.edges.length - graphVisible.edges.length;
 
   const onClickImport = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -31,20 +34,19 @@ const InvestigateMain = () => {
   return (
     <Fragment>
       <FlushedGrid>
-        <Cell span={4}>
+        <Cell span={6}>
           <Statistic
-            value={graphFlatten ? graphFlatten.nodes.length : 0}
-            label='Addresses'
+            value={haveData ? graphVisible.nodes.length : 0}
+            label='Nodes:'
+            subtitle={`${hiddenNodes} hidden`}
           />
         </Cell>
-        <Cell span={4}>
+        <Cell span={6}>
           <Statistic
-            value={graphFlatten ? graphFlatten.edges.length : 0 || 0}
-            label='Transactions'
+            value={haveData ? graphVisible.edges.length : 0}
+            label='Edges:'
+            subtitle={`${hiddenEdges} hidden`}
           />
-        </Cell>
-        <Cell span={4}>
-          <Statistic value={currency} label='Currency' />
         </Cell>
       </FlushedGrid>
       <br />
