@@ -2,8 +2,8 @@
 import React from 'react';
 import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
-import { LightTheme, DarkTheme, BaseProvider } from 'baseui';
-import { Investigate } from 'motif.gl';
+import { BaseProvider } from 'baseui';
+import { Investigate, MotifLightTheme, MotifDarkTheme } from 'motif.gl';
 import { Provider } from 'react-redux';
 import store from './redux-store';
 import 'motif.gl/dist/index.css';
@@ -13,12 +13,12 @@ const engine = new Styletron();
 const App = () => {
   return (
     <StyletronProvider value={engine}>
-      <BaseProvider theme={LightTheme}>
+      <BaseProvider theme={MotifLightTheme}>
         <Provider store={store}>
           <Investigate
             name='Blocklynx'
             currency='ETH'
-            secondaryTheme={DarkTheme}
+            secondaryTheme={MotifDarkTheme}
             // accessors={{
             //   // getters below are for triangle time data
             //   nodeID: 'id',
