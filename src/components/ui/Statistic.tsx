@@ -8,7 +8,7 @@ type StatisticProps = {
   align?: 'left' | 'right' | 'center';
 };
 
-const Statistic = ({ value, label, align = 'left' }: StatisticProps) => {
+const Statistic = ({ value, label = '', align = 'left' }: StatisticProps) => {
   const [css] = useStyletron();
   return (
     <Fragment>
@@ -17,12 +17,8 @@ const Statistic = ({ value, label, align = 'left' }: StatisticProps) => {
           textAlign: align,
         })}
       >
-        <LabelLarge marginBottom={0} color='white'>
-          {value}
-        </LabelLarge>
-        <ParagraphSmall color='white' marginBottom='0px'>
-          {label}
-        </ParagraphSmall>
+        <LabelLarge marginBottom={0}>{value}</LabelLarge>
+        <ParagraphSmall marginBottom='0px'>{label}</ParagraphSmall>
       </div>
     </Fragment>
   );
