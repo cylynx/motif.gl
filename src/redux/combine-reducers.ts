@@ -1,6 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import undoable, { excludeAction, GroupByFunction } from 'redux-undo';
 import uiReducer from './ui-slice';
+import widgetReducer from '../components/widgets/widget-slice';
 import graphReducer, {
   setRange,
   GraphState,
@@ -11,7 +12,7 @@ import graphReducer, {
 const undoGroup: GroupByFunction<GraphState> = (
   action,
   _currentState,
-  previousHistory
+  previousHistory,
 ) => {
   switch (action.type) {
     case 'graph/processGraphResponse':
@@ -35,6 +36,7 @@ const graphReducerHistory = undoable(graphReducer, {
 // Export combined reducers
 export const investigateReducer = combineReducers({
   ui: uiReducer,
+  widget: widgetReducer,
   graph: graphReducerHistory,
 });
 
@@ -46,6 +48,7 @@ type CombinedReducer = any;
 const clientState = (state: CombinedReducer): RootState => state.investigate;
 
 export const getUI = (state: CombinedReducer) => clientState(state).ui;
+export const getWidget = (state: CombinedReducer) => clientState(state).widget;
 export const getGraph = (state: CombinedReducer) =>
   clientState(state).graph.present;
 export const getAccessors = (state: CombinedReducer) =>
