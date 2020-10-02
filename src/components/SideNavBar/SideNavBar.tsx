@@ -1,0 +1,50 @@
+import React, { useState, Fragment } from 'react';
+import { Block } from 'baseui/block';
+import { ReactComponent as Logo } from '../../assets/logo.svg';
+import { defaultWidgetList } from '../widgets';
+
+const SideLayer = () => {
+  return (
+    <Wrapper>
+      <Logo width='35px' />
+      <Block
+        display='flex'
+        flexDirection='column'
+        justifyContent='space-between'
+        height='100%'
+      >
+        <Block>
+          {defaultWidgetList
+            .filter((w) => w.position === 'top')
+            .map((w) => w.icon)}
+        </Block>
+        <Block marginBottom='32px'>
+          {defaultWidgetList
+            .filter((w) => w.position === 'bottom')
+            .map((w) => w.icon)}
+        </Block>
+      </Block>
+    </Wrapper>
+  );
+};
+
+const Wrapper = ({ children }: { children: React.ReactNode }) => (
+  <Block
+    display='flex'
+    flexDirection='column'
+    position='fixed'
+    top='0%'
+    left='0%'
+    width='60px'
+    height='100%'
+    paddingTop='10px'
+    paddingBottom='20px'
+    paddingLeft='15px'
+    paddingRight='15px'
+    backgroundColor='backgroundSecondary'
+  >
+    {children}
+  </Block>
+);
+
+export default SideLayer;

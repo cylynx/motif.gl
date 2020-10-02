@@ -1,6 +1,7 @@
 import { ReactNode, RefObject, MouseEvent, FC, ComponentType } from 'react';
 import { Theme } from 'baseui/theme';
 import { Accessors, GraphData, ChartData } from './Graph';
+import { WidgetItem } from './Widget';
 
 // Prop Types for Tab Override
 export interface Tab {
@@ -13,6 +14,7 @@ export interface Tab {
 export interface Overrides {
   Tabs: Tab[];
   NodeMenu: Tooltip | null;
+  widgetList: WidgetItem[];
   score: number[];
 }
 

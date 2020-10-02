@@ -46,7 +46,7 @@ const Wrapper: React.FC<Prop.Wrapper> = (props) => {
       className={css({
         position: 'fixed',
         top: offset || '0%',
-        left: offset || '0%',
+        left: '60px',
         width: '365px',
         height: '100%',
         paddingTop: '20px',

@@ -13,13 +13,16 @@ import {
   setName,
   setCurrency,
 } from '../../redux/ui-slice';
+import { setWidget } from '../widgets/widget-slice';
 import { setAccessors } from '../../redux/graph-slice';
 import { getTabsOverride, getNodeMenuOverride } from '../../utils/overrides';
 import { getUI } from '../../redux';
 
 import SideLayer from './SideLayer';
 import BottomLayer from './BottomLayer';
+import { defaultWidgetList } from '../widgets';
 
+import SideNavBar from '../SideNavBar';
 import InvestigateChart from '../InvestigateChart';
 import { InvestigatePanel } from '../InvestigatePanel';
 import InvestigateTimeBar from '../InvestigateTimeBar';
@@ -43,6 +46,15 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
   const UserTooltip = getNodeMenuOverride(overrides, Tooltip);
 
   useEffect(() => {
+    // Filter out components
+    const widgetProp = (overrides.widgetList || defaultWidgetList).map((x) => {
+      return {
+        id: x.id,
+        group: x.group,
+        position: x.position,
+        active: x.active,
+      };
+    });
     if (accessors) {
       dispatch(setAccessors(accessors));
     }
@@ -55,7 +67,8 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
     if (currency) {
       dispatch(setCurrency(currency));
     }
-  }, [accessors, overrides.score, name, currency]);
+    dispatch(setWidget(widgetProp));
+  }, [accessors, overrides.score, overrides.widgetList, name, currency]);
 
   // UI Functions
   const onCloseModal = () => {
@@ -104,6 +117,7 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
               <Loader />
             </div>
           )}
+          <SideNavBar />
           <InvestigateToolbar />
           {!timeLock && (
             <BottomLayer>
