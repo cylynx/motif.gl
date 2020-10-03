@@ -1,6 +1,17 @@
 import React from 'react';
 import { Block } from 'baseui/block';
-import { EditOutlined, CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import {
+  EditOutlined,
+  CopyOutlined,
+  BarChartOutlined,
+  CheckOutlined,
+  MoreOutlined,
+} from '@ant-design/icons';
+import SideLayer from '../InvestigateExplorer/SideLayer';
+import BottomLayer from '../InvestigateExplorer/BottomLayer';
+import InvestigateTimeBar from '../InvestigateTimeBar';
+import InvestigateToolbar from '../InvestigateToolbar';
+import { InvestigatePanel } from '../InvestigatePanel';
 import IconButton from './IconButton';
 import { WidgetItem } from '../../types/Widget';
 
@@ -12,10 +23,14 @@ const defaultWidgetList: WidgetItem[] = [
       <IconButton
         id='layers'
         group='main'
-        icon={<EditOutlined style={{ fontSize: '16px' }} />}
+        icon={<CopyOutlined style={{ fontSize: '16px' }} />}
       />
     ),
-    widget: <Block />,
+    widget: (
+      <SideLayer>
+        <InvestigatePanel />
+      </SideLayer>
+    ),
     position: 'top',
     active: true,
   },
@@ -40,10 +55,28 @@ const defaultWidgetList: WidgetItem[] = [
       <IconButton
         id='toolbar'
         group='toolbar'
-        icon={<CloseOutlined style={{ fontSize: '16px' }} />}
+        icon={<MoreOutlined style={{ fontSize: '16px' }} />}
       />
     ),
-    widget: <Block />,
+    widget: <InvestigateToolbar />,
+    position: 'bottom',
+    active: true,
+  },
+  {
+    id: 'filter',
+    group: 'filter',
+    icon: (
+      <IconButton
+        id='filter'
+        group='filter'
+        icon={<BarChartOutlined style={{ fontSize: '16px' }} />}
+      />
+    ),
+    widget: (
+      <BottomLayer>
+        <InvestigateTimeBar />
+      </BottomLayer>
+    ),
     position: 'bottom',
     active: true,
   },

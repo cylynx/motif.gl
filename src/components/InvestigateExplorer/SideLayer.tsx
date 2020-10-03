@@ -51,8 +51,8 @@ const Wrapper: React.FC<Prop.Wrapper> = (props) => {
         height: '100%',
         paddingTop: '20px',
         paddingBottom: '20px',
-        paddingLeft: '15px',
-        paddingRight: '15px',
+        paddingLeft: '30px',
+        paddingRight: '30px',
         backgroundColor: color || theme.colors.backgroundPrimary,
         textAlign: 'left',
       })}

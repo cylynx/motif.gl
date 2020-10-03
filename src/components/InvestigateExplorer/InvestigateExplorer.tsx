@@ -16,18 +16,13 @@ import {
 import { setWidget } from '../widgets/widget-slice';
 import { setAccessors } from '../../redux/graph-slice';
 import { getTabsOverride, getNodeMenuOverride } from '../../utils/overrides';
-import { getUI } from '../../redux';
+import { getUI, getWidget } from '../../redux';
 
-import SideLayer from './SideLayer';
-import BottomLayer from './BottomLayer';
 import { defaultWidgetList } from '../widgets';
 
 import SideNavBar from '../SideNavBar';
 import InvestigateChart from '../InvestigateChart';
-import { InvestigatePanel } from '../InvestigatePanel';
-import InvestigateTimeBar from '../InvestigateTimeBar';
 import ImportWizard from '../ImportWizard';
-import InvestigateToolbar from '../InvestigateToolbar';
 import Tooltip from '../InvestigateChart/Tooltip';
 
 const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
@@ -41,13 +36,19 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
   const modalOpen = useSelector((state) => getUI(state).modalOpen);
   const modalImportOpen = useSelector((state) => getUI(state).modalImportOpen);
   const loading = useSelector((state) => getUI(state).loading);
-  const timeLock = useSelector((state) => getUI(state).timeLock);
+  // const timeLock = useSelector((state) => getUI(state).timeLock);
+  const widgetStateIds = useSelector((state) =>
+    Object.values(getWidget(state)),
+  );
   const UserImportWizard = getTabsOverride(overrides, ImportWizard);
   const UserTooltip = getNodeMenuOverride(overrides, Tooltip);
+  const widgetList = overrides.widgetList || defaultWidgetList;
+  const activeWidgetList =
+    widgetList.filter((x) => widgetStateIds.includes(x.id)) || [];
 
   useEffect(() => {
     // Filter out components
-    const widgetProp = (overrides.widgetList || defaultWidgetList).map((x) => {
+    const widgetProp = widgetList.map((x) => {
       return {
         id: x.id,
         group: x.group,
@@ -118,15 +119,10 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
             </div>
           )}
           <SideNavBar />
-          <InvestigateToolbar />
-          {!timeLock && (
-            <BottomLayer>
-              <InvestigateTimeBar />
-            </BottomLayer>
-          )}
-          <SideLayer>
-            <InvestigatePanel />
-          </SideLayer>
+          {activeWidgetList.length > 0 &&
+            activeWidgetList.map((item) => (
+              <Block key={item.id}>{item.widget}</Block>
+            ))}
         </ThemeProvider>
       </Fragment>
     </Fragment>

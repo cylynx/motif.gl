@@ -16,12 +16,16 @@ const SideLayer = () => {
         <Block>
           {defaultWidgetList
             .filter((w) => w.position === 'top')
-            .map((w) => w.icon)}
+            .map((w) => (
+              <Block key={w.id}>{w.icon}</Block>
+            ))}
         </Block>
         <Block marginBottom='32px'>
           {defaultWidgetList
             .filter((w) => w.position === 'bottom')
-            .map((w) => w.icon)}
+            .map((w) => (
+              <Block key={w.id}>{w.icon}</Block>
+            ))}
         </Block>
       </Block>
     </Wrapper>
@@ -32,6 +36,7 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => (
   <Block
     display='flex'
     flexDirection='column'
+    alignItems='center'
     position='fixed'
     top='0%'
     left='0%'
@@ -39,8 +44,6 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => (
     height='100%'
     paddingTop='10px'
     paddingBottom='20px'
-    paddingLeft='15px'
-    paddingRight='15px'
     backgroundColor='backgroundSecondary'
   >
     {children}
