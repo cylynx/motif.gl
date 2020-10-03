@@ -6,7 +6,7 @@ import { defaultWidgetList } from '../widgets';
 const SideLayer = () => {
   return (
     <Wrapper>
-      <Logo width='35px' />
+      <Logo width='30px' />
       <Block
         display='flex'
         flexDirection='column'

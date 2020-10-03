@@ -8,8 +8,8 @@ export const BottomRightLayer = ({
 }) => (
   <Block
     position='fixed'
-    bottom='5px'
-    right='2%'
+    bottom='10px'
+    right='20px'
     height='135px'
     width='500px'
     backgroundColor='backgroundPrimary'
@@ -24,7 +24,7 @@ export const LeftLayer = ({ children }: { children: React.ReactNode }) => {
       position='fixed'
       top='0%'
       left='60px'
-      width='360px'
+      width='320px'
       height='100%'
       paddingTop='20px'
       paddingBottom='20px'
@@ -42,9 +42,9 @@ export const TopRightLayer = ({ children }: { children: React.ReactNode }) => {
     <Block
       display='flex'
       flexDirection='column'
-      position='absolute'
+      position='fixed'
       top='20px'
-      right='2%'
+      right='20px'
     >
       {children}
     </Block>
