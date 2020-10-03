@@ -1,10 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 import { ActionCreators as UndoActionCreators } from 'redux-undo';
 import fscreen from 'fscreen';
-
-import { useStyletron } from 'baseui';
-
 import { GoGear, GoX } from 'react-icons/go';
 import { FaUndoAlt, FaRedoAlt, FaExpand } from 'react-icons/fa';
 import { resetState } from '../../redux/graph-slice';
@@ -12,7 +9,6 @@ import ToolbarItem from './ToolbarItem';
 import PopoverOption from './PopoverOption';
 
 const InvestigateToolbar = () => {
-  const [css] = useStyletron();
   const graph = document.getElementById('graphin-container');
   const dispatch = useDispatch();
 
@@ -68,19 +64,11 @@ const InvestigateToolbar = () => {
   ];
 
   return (
-    <div
-      className={css({
-        display: 'inline-flex',
-        flexDirection: 'column',
-        position: 'absolute',
-        top: '120px',
-        right: '2%',
-      })}
-    >
+    <Fragment>
       {menuItems.map((item) => (
         <ToolbarItem key={item.key} item={item} />
       ))}
-    </div>
+    </Fragment>
   );
 };
 

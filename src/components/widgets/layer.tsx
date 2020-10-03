@@ -1,7 +1,11 @@
 import React from 'react';
 import { Block } from 'baseui/block';
 
-export const BottomLayer = ({ children }: { children: React.ReactNode }) => (
+export const BottomRightLayer = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => (
   <Block
     position='fixed'
     bottom='5px'
@@ -14,7 +18,7 @@ export const BottomLayer = ({ children }: { children: React.ReactNode }) => (
   </Block>
 );
 
-export const SideLayer = ({ children }: { children: React.ReactNode }) => {
+export const LeftLayer = ({ children }: { children: React.ReactNode }) => {
   return (
     <Block
       position='fixed'
@@ -27,6 +31,20 @@ export const SideLayer = ({ children }: { children: React.ReactNode }) => {
       paddingLeft='30px'
       paddingRight='30px'
       backgroundColor='backgroundPrimary'
+    >
+      {children}
+    </Block>
+  );
+};
+
+export const TopRightLayer = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <Block
+      display='flex'
+      flexDirection='column'
+      position='absolute'
+      top='120px'
+      right='2%'
     >
       {children}
     </Block>

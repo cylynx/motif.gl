@@ -6,7 +6,7 @@ import {
   CheckOutlined,
   MoreOutlined,
 } from '@ant-design/icons';
-import { SideLayer, BottomLayer } from './layer';
+import { LeftLayer, BottomRightLayer, TopRightLayer } from './layer';
 import InvestigateTimeBar from '../InvestigateTimeBar';
 import InvestigateToolbar from '../InvestigateToolbar';
 import { InvestigatePanel } from '../InvestigatePanel';
@@ -25,9 +25,9 @@ const defaultWidgetList: WidgetItem[] = [
       />
     ),
     widget: (
-      <SideLayer>
+      <LeftLayer>
         <InvestigatePanel />
-      </SideLayer>
+      </LeftLayer>
     ),
     position: 'top',
     active: true,
@@ -56,7 +56,11 @@ const defaultWidgetList: WidgetItem[] = [
         icon={<MoreOutlined style={{ fontSize: '16px' }} />}
       />
     ),
-    widget: <InvestigateToolbar />,
+    widget: (
+      <TopRightLayer>
+        <InvestigateToolbar />
+      </TopRightLayer>
+    ),
     position: 'bottom',
     active: true,
   },
@@ -71,9 +75,9 @@ const defaultWidgetList: WidgetItem[] = [
       />
     ),
     widget: (
-      <BottomLayer>
+      <BottomRightLayer>
         <InvestigateTimeBar />
-      </BottomLayer>
+      </BottomRightLayer>
     ),
     position: 'bottom',
     active: true,
