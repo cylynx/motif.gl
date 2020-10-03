@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useStyletron } from 'baseui';
+import { Block } from 'baseui/block';
 import { Layer } from 'baseui/layer';
 import { Button } from 'baseui/button';
 
@@ -10,7 +11,7 @@ import * as Prop from '../../types/Prop';
 import { setBottomOpen } from '../../redux/ui-slice';
 import { getUI } from '../../redux';
 
-const BottomLayer: React.FC<Prop.Layer> = ({ children }) => {
+const BottomLayer = ({ children }: { children: React.ReactNode }) => {
   const isOpen = useSelector((state) => getUI(state).bottomOpen);
   const dispatch = useDispatch();
   return (
@@ -46,24 +47,16 @@ const ToggleButton: React.FC<Prop.ToggleButton> = (props) => {
   );
 };
 
-const Wrapper: React.FC<Prop.Wrapper> = (props) => {
-  const [css, theme] = useStyletron();
-  const { offset, color, children, forwardedRef } = props;
-  return (
-    <div
-      className={css({
-        position: 'fixed',
-        bottom: offset || '5px',
-        right: offset || '2%',
-        height: '135px',
-        width: '500px',
-        backgroundColor: color || theme.colors.backgroundPrimary,
-      })}
-      ref={forwardedRef}
-    >
-      {children}
-    </div>
-  );
-};
-
+const Wrapper = ({ children }: { children: React.ReactNode }) => (
+  <Block
+    position='fixed'
+    bottom='5px'
+    right='2%'
+    height='135px'
+    width='500px'
+    backgroundColor='backgroundPrimary'
+  >
+    {children}
+  </Block>
+);
 export default BottomLayer;
