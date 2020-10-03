@@ -1,7 +1,20 @@
 import React from 'react';
 import { Block } from 'baseui/block';
 
-const SideLayer = ({ children }: { children: React.ReactNode }) => {
+export const BottomLayer = ({ children }: { children: React.ReactNode }) => (
+  <Block
+    position='fixed'
+    bottom='5px'
+    right='2%'
+    height='135px'
+    width='500px'
+    backgroundColor='backgroundPrimary'
+  >
+    {children}
+  </Block>
+);
+
+export const SideLayer = ({ children }: { children: React.ReactNode }) => {
   return (
     <Block
       position='fixed'
@@ -19,5 +32,3 @@ const SideLayer = ({ children }: { children: React.ReactNode }) => {
     </Block>
   );
 };
-
-export default SideLayer;

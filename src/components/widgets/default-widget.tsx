@@ -1,14 +1,12 @@
 import React from 'react';
 import { Block } from 'baseui/block';
 import {
-  EditOutlined,
   CopyOutlined,
   BarChartOutlined,
   CheckOutlined,
   MoreOutlined,
 } from '@ant-design/icons';
-import SideLayer from '../InvestigateExplorer/SideLayer';
-import BottomLayer from '../InvestigateExplorer/BottomLayer';
+import { SideLayer, BottomLayer } from './layer';
 import InvestigateTimeBar from '../InvestigateTimeBar';
 import InvestigateToolbar from '../InvestigateToolbar';
 import { InvestigatePanel } from '../InvestigatePanel';
