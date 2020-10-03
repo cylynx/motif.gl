@@ -22,6 +22,7 @@ const ToolbarItem: React.FC<Prop.ToolbarItem> = (props) => {
           onClick={onClick}
           disabled={isDisabled}
           kind='secondary'
+          size='compact'
         >
           {icon}
         </Button>

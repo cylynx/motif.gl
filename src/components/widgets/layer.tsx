@@ -43,7 +43,7 @@ export const TopRightLayer = ({ children }: { children: React.ReactNode }) => {
       display='flex'
       flexDirection='column'
       position='absolute'
-      top='120px'
+      top='20px'
       right='2%'
     >
       {children}
