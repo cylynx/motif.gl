@@ -1,7 +1,9 @@
 import inRange from 'lodash/inRange';
 import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
+import pick from 'lodash/pick';
 import * as Graph from '../types/Graph';
+import { flattenObject } from '../processors/data-processors';
 import { styleEdges } from './style-edges';
 import { styleNodes } from './style-nodes';
 
@@ -270,3 +272,92 @@ export const deriveVisibleGraph = (
   styleOptions.groupEdges
     ? applyStyle(groupEdges(graphData), styleOptions, accessors)
     : applyStyle(graphData, styleOptions, accessors);
+
+/**
+ * Check is value is truthy and if it is an array, it should be length > 0
+ *
+ * @param {*} value
+ * @return {*}  {boolean}
+ */
+export const isValidValue = (value: any): boolean =>
+  (Array.isArray(value) && value.length > 0) ||
+  (!Array.isArray(value) && value);
+
+/**
+ * Helper function to retrieve relevant node properties.
+ * Also removes non-truthy values and arrays of length 0
+ *
+ * @param {Graph.Node} node
+ * @param {('all' | 'style' | 'data')} [kind='all'] set to 'style' to get only style fields and 'data' to exclude style fields
+ * @return {*} object sorted by id, data fields followed by style fields
+ */
+export const getNodeProperties = (
+  node: Graph.Node,
+  kind: 'all' | 'style' | 'data' = 'all',
+) => {
+  const flattenInfo = flattenObject(node);
+  const dataKeys = Object.keys(flattenInfo).filter(
+    (k) => k !== 'id' && !k.includes('style'),
+  );
+  const styleKeys = Object.keys(flattenInfo).filter(
+    (k) => k !== 'id' && k.includes('style'),
+  );
+  const newObj = {};
+  // @ts-ignore
+  newObj.id = flattenInfo.id;
+
+  if (kind === 'data' || kind === 'all') {
+    dataKeys.forEach((k) => {
+      if (isValidValue(flattenInfo[k])) newObj[k] = flattenInfo[k];
+    });
+  }
+
+  if (kind === 'style' || kind === 'all') {
+    styleKeys.forEach((k) => {
+      if (isValidValue(flattenInfo[k])) newObj[k] = flattenInfo[k];
+    });
+  }
+  return newObj;
+};
+
+/**
+ * Helper function to retrieve relevant edge properties.
+ * Also removes non-truthy values and arrays of length 0
+ *
+ * @param {Graph.Edge} edge
+ * @param {('all' | 'style' | 'data')} [kind='all'] set to 'style' to get only style fields and 'data' to exclude style fields
+ * @return {*} object sorted by id, source, target, data fields followed by style fields
+ */
+export const getEdgeProperties = (
+  edge: Graph.Edge,
+  kind: 'all' | 'style' | 'data' = 'all',
+) => {
+  const flattenInfo = flattenObject(edge);
+  const restrictedTerms = ['id', 'source', 'target'];
+  const dataKeys = Object.keys(flattenInfo).filter(
+    (k) => !restrictedTerms.includes(k) && !k.includes('style'),
+  );
+  const styleKeys = Object.keys(flattenInfo).filter(
+    (k) => !restrictedTerms.includes(k) && k.includes('style'),
+  );
+  const newObj = {};
+  // @ts-ignore
+  newObj.id = flattenInfo.id;
+  // @ts-ignore
+  newObj.source = flattenInfo.source;
+  // @ts-ignore
+  newObj.target = flattenInfo.target;
+
+  if (kind === 'data' || kind === 'all') {
+    dataKeys.forEach((k) => {
+      if (isValidValue(flattenInfo[k])) newObj[k] = flattenInfo[k];
+    });
+  }
+
+  if (kind === 'style' || kind === 'all') {
+    styleKeys.forEach((k) => {
+      if (isValidValue(flattenInfo[k])) newObj[k] = flattenInfo[k];
+    });
+  }
+  return newObj;
+};
