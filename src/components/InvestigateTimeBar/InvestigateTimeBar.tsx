@@ -2,6 +2,8 @@
 import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Slider } from 'baseui/slider';
+import { Block } from 'baseui/block';
+import { LabelLarge } from 'baseui/typography';
 import inRange from 'lodash/inRange';
 import groupBy from 'lodash/groupBy';
 import {
@@ -67,12 +69,12 @@ const InvestigateTimeBar = () => {
   const aggPeriod = deriveAggPeriod(timeRange[1] - timeRange[0]);
 
   const aggSeries = groupBy(tsData, (result) =>
-    groupByTime(result[0], aggPeriod)
+    groupByTime(result[0], aggPeriod),
   );
 
   const dataSeries = [];
   Object.entries(aggSeries).forEach(([key, value]) =>
-    dataSeries.push([new Date(key).getTime(), value.length])
+    dataSeries.push([new Date(key).getTime(), value.length]),
   );
 
   // Filter the bar graph to get the colour
@@ -91,42 +93,55 @@ const InvestigateTimeBar = () => {
 
   return (
     <Fragment>
-      <div
-        className={css({
-          position: 'absolute',
-          height: '135px',
-          width: '500px',
-        })}
-      >
-        <EventChart data={colouredData} min={timeRange[0]} max={timeRange[1]} />
-      </div>
-      <div
-        className={css({
-          marginTop: '77px',
-          marginLeft: '20px',
-          marginRight: '20px',
-        })}
-      >
-        <Slider
-          min={timeRange[0]}
-          max={timeRange[1]}
-          step={0.1}
-          value={sliderRange}
-          onChange={({ value }) => dispatch(setRange(value))}
-          onFinalChange={({ value }) =>
-            dispatch(timeRangeChange({ timeRange: value, accessors }))
-          }
-          overrides={{
-            ThumbValue: () => null,
-            Tick: () => null,
-            Thumb: {
-              style: {
-                height: '20px',
-              },
-            },
-          }}
-        />
-      </div>
+      {tsData.length === 0 && (
+        <LabelLarge marginLeft='24px' marginTop='24px'>
+          No Time Series Data Available
+        </LabelLarge>
+      )}
+      {tsData.length > 0 && (
+        <Block>
+          <div
+            className={css({
+              position: 'absolute',
+              height: '135px',
+              width: '500px',
+            })}
+          >
+            <EventChart
+              data={colouredData}
+              min={timeRange[0]}
+              max={timeRange[1]}
+            />
+          </div>
+          <div
+            className={css({
+              marginTop: '77px',
+              marginLeft: '20px',
+              marginRight: '20px',
+            })}
+          >
+            <Slider
+              min={timeRange[0]}
+              max={timeRange[1]}
+              step={0.1}
+              value={sliderRange}
+              onChange={({ value }) => dispatch(setRange(value))}
+              onFinalChange={({ value }) =>
+                dispatch(timeRangeChange({ timeRange: value, accessors }))
+              }
+              overrides={{
+                ThumbValue: () => null,
+                Tick: () => null,
+                Thumb: {
+                  style: {
+                    height: '20px',
+                  },
+                },
+              }}
+            />
+          </div>
+        </Block>
+      )}
     </Fragment>
   );
 };
