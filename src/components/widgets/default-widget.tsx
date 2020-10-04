@@ -8,7 +8,7 @@ import {
 } from '@ant-design/icons';
 import { LeftLayer, BottomRightLayer, TopRightLayer } from './layer';
 import InvestigateTimeBar from '../InvestigateTimeBar';
-import InvestigateToolbar from '../InvestigateToolbar';
+import Toolbar from '../Toolbar';
 import { InvestigatePanel } from '../InvestigatePanel';
 import IconButton from './IconButton';
 import { WidgetItem } from '../../types/Widget';
@@ -58,7 +58,7 @@ const defaultWidgetList: WidgetItem[] = [
     ),
     widget: (
       <TopRightLayer>
-        <InvestigateToolbar />
+        <Toolbar />
       </TopRightLayer>
     ),
     position: 'bottom',
