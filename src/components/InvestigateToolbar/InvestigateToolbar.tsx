@@ -1,14 +1,28 @@
-import React, { Fragment } from 'react';
+import React, { useContext, Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 import { ActionCreators as UndoActionCreators } from 'redux-undo';
 import fscreen from 'fscreen';
 import { GoGear, GoX } from 'react-icons/go';
+import { FiZoomIn, FiZoomOut } from 'react-icons/fi';
 import { FaUndoAlt, FaRedoAlt, FaExpand } from 'react-icons/fa';
+import { GraphRefContext } from '../Graph';
 import { resetState } from '../../redux/graph-slice';
-import ToolbarItem from './ToolbarItem';
+import ToolbarButton, { ToolbarItem } from './ToolbarButton';
 import PopoverOption from './PopoverOption';
 
+const MIN_ZOOM = 0.1;
+const MAX_ZOOM = 10;
+
+const getNextZoom = (currentZoom: number, isZoomIn: boolean) => {
+  const zoom = currentZoom + (isZoomIn ? 0.1 : -0.1);
+  if (zoom < MIN_ZOOM) return MIN_ZOOM;
+  if (zoom > MAX_ZOOM) return MAX_ZOOM;
+  return zoom;
+};
+
 const InvestigateToolbar = () => {
+  const graphRef = useContext(GraphRefContext);
+  const { graph } = graphRef;
   const graphContainer = document.getElementById('graphin-container');
   const dispatch = useDispatch();
 
@@ -19,14 +33,20 @@ const InvestigateToolbar = () => {
     }
   };
 
-  const menuItems = [
+  const handleGraphZoom = (isZoomIn: boolean) => {
+    const currentZoom: number = graph?.getZoom();
+    const newZoom = getNextZoom(currentZoom, isZoomIn);
+    graph.zoomTo(newZoom);
+  };
+
+  const menuItems: ToolbarItem[] = [
     {
       key: 1,
       name: 'Graph Settings',
       icon: <GoGear />,
       isDisabled: false,
       popoverContent: () => <PopoverOption />,
-      onClick: null as any,
+      onClick: null,
     },
     {
       key: 2,
@@ -54,6 +74,22 @@ const InvestigateToolbar = () => {
     },
     {
       key: 5,
+      name: 'Zoom In',
+      icon: <FiZoomIn />,
+      isDisabled: false,
+      popoverContent: null,
+      onClick: () => handleGraphZoom(true),
+    },
+    {
+      key: 6,
+      name: 'Zoom Out',
+      icon: <FiZoomOut />,
+      isDisabled: false,
+      popoverContent: null,
+      onClick: () => handleGraphZoom(false),
+    },
+    {
+      key: 7,
       name: 'Clear',
       icon: <GoX />,
       isDisabled: false,
@@ -65,7 +101,7 @@ const InvestigateToolbar = () => {
   return (
     <Fragment>
       {menuItems.map((item) => (
-        <ToolbarItem key={item.key} item={item} />
+        <ToolbarButton key={item.key} item={item} />
       ))}
     </Fragment>
   );

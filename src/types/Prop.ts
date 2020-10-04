@@ -88,18 +88,6 @@ export interface EventChart {
   data: TimeBarData[];
 }
 
-// Prop Types for ToolbarItem
-export interface ToolbarItem {
-  key: number;
-  item: {
-    name: string;
-    icon: JSX.Element;
-    isDisabled: boolean;
-    popoverContent: () => JSX.Element;
-    onClick: () => void | null;
-  };
-}
-
 // Prop Types for PopoverOption
 export interface Layout {
   label: string;

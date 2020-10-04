@@ -4,9 +4,22 @@ import { Button } from 'baseui/button';
 import { StatefulPopover, PLACEMENT, TRIGGER_TYPE } from 'baseui/popover';
 import { Label3 } from 'baseui/typography';
 import { Block } from 'baseui/block';
-import * as Prop from '../../types/Prop';
 
-const ToolbarItem: React.FC<Prop.ToolbarItem> = (props) => {
+export type ToolbarItem = {
+  key: number;
+  name: string;
+  icon: React.ReactNode;
+  isDisabled: boolean;
+  popoverContent: null | (() => any);
+  onClick: null | (() => any);
+};
+
+export type ToolbarButtonProp = {
+  key: number;
+  item: ToolbarItem;
+};
+
+const ToolbarButton = (props: ToolbarButtonProp) => {
   const { name, icon, isDisabled, popoverContent, onClick } = props.item;
 
   return (
@@ -32,4 +45,4 @@ const ToolbarItem: React.FC<Prop.ToolbarItem> = (props) => {
   );
 };
 
-export default ToolbarItem;
+export default ToolbarButton;
