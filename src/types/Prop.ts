@@ -118,12 +118,12 @@ export interface InvestigateChart {
 }
 
 // Prop Types for InvestigateGraph
-export interface InvestigateGraph {
+export interface Graph {
   setTooltip: (tooltip: Tooltip | boolean) => void;
 }
 
 // Prop Types for InvestigateChartLegend
-export interface InvestigateChartLegend {
+export interface GraphLegend {
   data: GraphData;
 }
 

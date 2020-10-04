@@ -1,4 +1,6 @@
-import { withStyle } from 'baseui';
+/* eslint-disable import/no-extraneous-dependencies */
+import React from 'react';
+import { useStyletron, withStyle } from 'baseui';
 import { StyledSpinnerNext } from 'baseui/spinner';
 
 const getAlignment = (align: string) => {
@@ -18,4 +20,22 @@ const Loader = withStyle(StyledSpinnerNext, ({ align }: { align: string }) => {
   };
 });
 
-export default Loader;
+const MotifLoader = () => {
+  const [css] = useStyletron();
+
+  return (
+    <div
+      className={css({
+        position: 'absolute',
+        top: '70px',
+        height: '30px',
+        width: '100%',
+        zIndex: 1,
+      })}
+    >
+      <Loader />
+    </div>
+  );
+};
+
+export default MotifLoader;

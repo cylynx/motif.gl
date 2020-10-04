@@ -1,9 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
 // @ts-nocheck
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Graphin from '@antv/graphin';
-import { Block } from 'baseui/block';
 import { IG6GraphEvent } from '@antv/g6/lib/types';
 import * as Prop from '../../types/Prop';
 import activateRelations from './behaviors/activate-relations';
@@ -11,17 +10,15 @@ import { setClickedId, getUI, getGraph } from '../../redux';
 import './graphin.css';
 // import '@antv/graphin/dist/index.css';
 
-const InvestigateGraph: React.FC<Prop.InvestigateGraph> = (props) => {
+const Graph = React.forwardRef<HTMLDivElement, Prop.Graph>((props, ref) => {
   const { setTooltip } = props;
   const dispatch = useDispatch();
   const clickedId = useSelector((state) => getUI(state).clickedId);
   const graphVisible = useSelector((state) => getGraph(state).graphVisible);
   const layout = useSelector((state) => getGraph(state).styleOptions.layout);
 
-  const graphRef = useRef(null);
-
   useLayoutEffect(() => {
-    const { graph } = graphRef.current;
+    const { graph } = ref.current;
 
     const onResetClick = () => {
       setClickedId(null);
@@ -101,7 +98,7 @@ const InvestigateGraph: React.FC<Prop.InvestigateGraph> = (props) => {
     <Graphin
       data={graphVisible}
       layout={layout}
-      ref={graphRef}
+      ref={ref}
       options={{
         autoPolyEdge: true,
         modes: {
@@ -128,6 +125,6 @@ const InvestigateGraph: React.FC<Prop.InvestigateGraph> = (props) => {
       }}
     />
   );
-};
+});
 
-export default InvestigateGraph;
+export default Graph;

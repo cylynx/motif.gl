@@ -27,9 +27,7 @@ const deriveLegendCategories = (data: Graph.GraphData) => {
   return legend;
 };
 
-const InvestigateChartLegend: React.FC<Prop.InvestigateChartLegend> = ({
-  data,
-}) => {
+const GraphLegend: React.FC<Prop.GraphLegend> = ({ data }) => {
   const legendCategories = deriveLegendCategories(data);
   return (
     <ReactEchartsCore
@@ -58,4 +56,4 @@ const InvestigateChartLegend: React.FC<Prop.InvestigateChartLegend> = ({
   );
 };
 
-export default InvestigateChartLegend;
+export default GraphLegend;

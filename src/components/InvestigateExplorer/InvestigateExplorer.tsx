@@ -1,7 +1,9 @@
-import React, { useEffect, Fragment } from 'react';
+/* eslint-disable import/no-extraneous-dependencies */
+import React, { useState, useEffect, useRef, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useStyletron, ThemeProvider } from 'baseui';
+import { Theme } from 'baseui/theme';
 import { Block } from 'baseui/block';
 import { Modal, ModalBody, SIZE } from 'baseui/modal';
 import { Loader } from '../ui';
@@ -21,15 +23,37 @@ import { getUI, getWidget } from '../../redux';
 import { defaultWidgetList } from '../widgets';
 
 import SideNavBar from '../SideNavBar';
-import InvestigateChart from '../InvestigateChart';
+import Graph, { Tooltip, GraphRefContext } from '../Graph';
 import ImportWizard from '../ImportWizard';
-import Tooltip from '../InvestigateChart/Tooltip';
+
+type WidgetContainerProps = {
+  children: React.ReactNode;
+  graphRef: React.MutableRefObject<HTMLDivElement | null>;
+  theme: Theme;
+};
+
+const WidgetContainer = (props: WidgetContainerProps) => {
+  const { children, theme, graphRef } = props;
+
+  // @ts-ignore not sure what to type for current.graph
+  if (graphRef && graphRef.current && graphRef.current.graph) {
+    return (
+      <ThemeProvider theme={theme}>
+        <GraphRefContext.Provider value={graphRef.current}>
+          {children}
+        </GraphRefContext.Provider>
+      </ThemeProvider>
+    );
+  }
+  return null;
+};
 
 const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
   const { name, currency, accessors, overrides, secondaryTheme } = props;
+  const [tooltip, setTooltip] = useState(null);
+  const graphRef = useRef(null);
 
-  const [css, theme] = useStyletron();
-
+  const [, theme] = useStyletron();
   const dispatch = useDispatch();
 
   const modalMsg = useSelector((state) => getUI(state).modalMsg);
@@ -37,6 +61,7 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
   const modalImportOpen = useSelector((state) => getUI(state).modalImportOpen);
   const loading = useSelector((state) => getUI(state).loading);
   // const timeLock = useSelector((state) => getUI(state).timeLock);
+
   const widgetStateIds = useSelector((state) =>
     Object.values(getWidget(state)),
   );
@@ -101,30 +126,17 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
         height='100%'
         backgroundColor='backgroundPrimary'
       >
-        <InvestigateChart Tooltip={UserTooltip} />
+        <Graph setTooltip={setTooltip} ref={graphRef} />
       </Block>
-      <Fragment>
-        <ThemeProvider theme={secondaryTheme || theme}>
-          {loading && (
-            <div
-              className={css({
-                position: 'absolute',
-                top: '70px',
-                height: '30px',
-                width: '100%',
-                zIndex: 1,
-              })}
-            >
-              <Loader />
-            </div>
-          )}
-          <SideNavBar />
-          {activeWidgetList.length > 0 &&
-            activeWidgetList.map((item) => (
-              <Block key={item.id}>{item.widget}</Block>
-            ))}
-        </ThemeProvider>
-      </Fragment>
+      <WidgetContainer graphRef={graphRef} theme={secondaryTheme || theme}>
+        <SideNavBar />
+        {loading && <Loader />}
+        {tooltip && <UserTooltip info={tooltip} />}
+        {activeWidgetList.length > 0 &&
+          activeWidgetList.map((item) => (
+            <Block key={item.id}>{item.widget}</Block>
+          ))}
+      </WidgetContainer>
     </Fragment>
   );
 };
