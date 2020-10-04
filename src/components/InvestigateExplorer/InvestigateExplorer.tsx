@@ -120,12 +120,7 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
           <UserImportWizard />
         </ModalBody>
       </Modal>
-      <Block
-        position='absolute'
-        width='100%'
-        height='100%'
-        backgroundColor='backgroundPrimary'
-      >
+      <Block position='absolute' width='100%' height='100%'>
         <Graph setTooltip={setTooltip} ref={graphRef} />
       </Block>
       <WidgetContainer graphRef={graphRef} theme={secondaryTheme || theme}>

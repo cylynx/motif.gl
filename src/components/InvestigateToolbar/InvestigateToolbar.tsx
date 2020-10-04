@@ -9,14 +9,13 @@ import ToolbarItem from './ToolbarItem';
 import PopoverOption from './PopoverOption';
 
 const InvestigateToolbar = () => {
-  const graph = document.getElementById('graphin-container');
+  const graphContainer = document.getElementById('graphin-container');
   const dispatch = useDispatch();
 
   const toggleFullScreen = () => {
+    // Exit will be handled by the esc key (no button is available)
     if (!fscreen.fullscreenElement) {
-      fscreen.requestFullscreen(graph);
-    } else {
-      fscreen.exitFullscreen();
+      fscreen.requestFullscreen(graphContainer);
     }
   };
 

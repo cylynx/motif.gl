@@ -2,6 +2,7 @@
 // @ts-nocheck
 import React, { useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useStyletron } from 'baseui';
 import Graphin from '@antv/graphin';
 import { IG6GraphEvent } from '@antv/g6/lib/types';
 import * as Prop from '../../types/Prop';
@@ -13,11 +14,16 @@ import './graphin.css';
 const Graph = React.forwardRef<HTMLDivElement, Prop.Graph>((props, ref) => {
   const { setTooltip } = props;
   const dispatch = useDispatch();
+  const [, theme] = useStyletron();
   const clickedId = useSelector((state) => getUI(state).clickedId);
   const graphVisible = useSelector((state) => getGraph(state).graphVisible);
   const layout = useSelector((state) => getGraph(state).styleOptions.layout);
 
   useLayoutEffect(() => {
+    // Imperatively set the color by theme
+    document.getElementById('graphin-container').style.backgroundColor =
+      theme.colors.backgroundPrimary;
+
     const { graph } = ref.current;
 
     const onResetClick = () => {
