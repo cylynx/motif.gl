@@ -4,6 +4,7 @@ import { Button } from 'baseui/button';
 import { Plus } from 'baseui/icon';
 import { Cell } from 'baseui/layout-grid';
 import { Block } from 'baseui/block';
+import { LabelLarge, ParagraphLarge } from 'baseui/typography';
 import { FlushedGrid, Statistic, FullButton } from '../ui';
 import * as Prop from '../../types/Prop';
 import { openImportModal, fetchDone } from '../../redux/ui-slice';

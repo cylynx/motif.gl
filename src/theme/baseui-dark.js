@@ -24,6 +24,9 @@ const primitives = {
   // mono1000: "black", #default
 };
 
+const backgroundSecondary = '#272C36';
+const backgroundTertiary = primitives.primary700;
+
 // mono200 / gray400 (https://github.com/uber/baseweb/blob/master/src/tokens/colors.js)
 const mono200 = '#AFAFAF';
 
@@ -32,8 +35,8 @@ const overrides = {
     // Ref: https://github.com/uber/baseweb/blob/master/src/themes/light-theme/color-semantic-tokens.js
     // Background
     backgroundPrimary: primitives.primaryB,
-    backgroundSecondary: '#272C36',
-    backgroundTertiary: primitives.primary700,
+    backgroundSecondary,
+    backgroundTertiary,
     backgroundInversePrimary: primitives.primaryA,
     backgroundInverseSecondary: primitives.primary300,
 
@@ -64,6 +67,8 @@ const overrides = {
     tooltipText: primitives.primaryA,
 
     // Components
+    listHeaderFill: backgroundSecondary,
+    listBodyFill: backgroundTertiary,
     // inputBorder: primitives.mono400,
     // inputFill: primitives.mono400,
     // menuFill: primitives.mono400,

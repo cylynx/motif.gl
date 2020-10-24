@@ -1,3 +1,4 @@
+import { Content, Accordion } from './Accordion';
 import Hash from './Hash';
 import Loader from './Loader';
 import Notification from './Notification';
@@ -14,6 +15,8 @@ import InfoNotification from './InfoNotification';
 import useWindowDimension from './useWindowDimension';
 
 export {
+  Accordion,
+  Content,
   FullButton,
   DivPrimary,
   DivSecondary,
