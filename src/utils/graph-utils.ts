@@ -192,7 +192,7 @@ export const chartRange = (timeRange: Graph.TimeRange): Graph.TimeRange => {
  * @param {string} prop
  */
 export const removeDuplicates = (
-  myArr: Graph.Node[] | Graph.Edge[] | [],
+  myArr: Graph.Node[] | Graph.Edge[] | Graph.Field[] | [],
   prop: string,
 ) =>
   myArr.filter(
@@ -221,6 +221,15 @@ export const combineProcessedData = (
       [...newData.edges, ...oldData.edges],
       'id',
     ) as Graph.Edge[];
+    // Get unique fields metadata
+    modData.metadata.fields.nodes = removeDuplicates(
+      [...newData.metadata.fields.nodes, ...oldData.metadata.fields.nodes],
+      'name',
+    ) as Graph.Field[];
+    modData.metadata.fields.edges = removeDuplicates(
+      [...newData.metadata.fields.edges, ...oldData.metadata.fields.edges],
+      'name',
+    ) as Graph.Field[];
     return modData;
   }
   return newData;

@@ -33,7 +33,7 @@ export type GraphFields = {
 };
 
 export interface Metadata {
-  key: number | string;
+  key?: number | string;
   fields?: GraphFields;
   search_size?: number;
   retrieved_size?: number;

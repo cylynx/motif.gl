@@ -19,7 +19,7 @@ export interface GraphState {
   accessors: Graph.Accessors;
   styleOptions: Graph.StyleOptions;
   graphList: Graph.GraphList;
-  graphFlatten: { nodes: Graph.Node[]; edges: Graph.Edge[] };
+  graphFlatten: Graph.GraphData;
   graphGrouped: { nodes: Graph.Node[]; edges: Graph.Edge[] };
   graphVisible: { nodes: Graph.Node[]; edges: Graph.Edge[] };
   tsData: Graph.TimeSeries;
@@ -55,7 +55,11 @@ const initialState: GraphState = {
     groupEdges: true,
   },
   graphList: [],
-  graphFlatten: { nodes: [], edges: [] },
+  graphFlatten: {
+    nodes: [],
+    edges: [],
+    metadata: { fields: { nodes: [], edges: [] } },
+  },
   graphGrouped: { nodes: [], edges: [] },
   graphVisible: { nodes: [], edges: [] },
   tsData: [],
