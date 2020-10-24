@@ -23,13 +23,13 @@ export const LeftLayer = ({ children }: { children: React.ReactNode }) => {
     <Block
       position='fixed'
       top='0%'
-      left='60px'
+      left='50px'
       width='320px'
       height='100%'
-      paddingTop='20px'
-      paddingBottom='20px'
-      paddingLeft='30px'
-      paddingRight='30px'
+      paddingTop='scale650'
+      paddingBottom='scale650'
+      paddingLeft='scale800'
+      paddingRight='scale800'
       backgroundColor='backgroundPrimary'
     >
       {children}

@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React from 'react';
 import { Block } from 'baseui/block';
 import { ReactComponent as Logo } from '../../assets/logo.svg';
 import { defaultWidgetList } from '../widgets';
@@ -6,7 +6,7 @@ import { defaultWidgetList } from '../widgets';
 const SideLayer = () => {
   return (
     <Wrapper>
-      <Logo width='30px' />
+      <Logo width='26px' />
       <Block
         display='flex'
         flexDirection='column'
@@ -40,9 +40,8 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => (
     position='fixed'
     top='0%'
     left='0%'
-    width='60px'
+    width='50px'
     height='100%'
-    paddingTop='10px'
     paddingBottom='20px'
     backgroundColor='backgroundSecondary'
   >
