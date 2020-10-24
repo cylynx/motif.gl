@@ -1,11 +1,13 @@
 import React, { MouseEvent, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { VscCircleOutline } from 'react-icons/vsc';
+import { HiOutlineShare } from 'react-icons/hi';
 import { Button } from 'baseui/button';
 import { Plus } from 'baseui/icon';
 import { Cell } from 'baseui/layout-grid';
 import { Block } from 'baseui/block';
 import { LabelLarge, ParagraphLarge } from 'baseui/typography';
-import { FlushedGrid, Statistic, FullButton } from '../ui';
+import { Accordion, Content, FlushedGrid, Statistic, FullButton } from '../ui';
 import * as Prop from '../../types/Prop';
 import { openImportModal, fetchDone } from '../../redux/ui-slice';
 import { resetState } from '../../redux/graph-slice';
@@ -50,6 +52,30 @@ const InvestigateMain = () => {
           />
         </Cell>
       </FlushedGrid>
+      <Block marginTop='scale800'>
+        <Accordion
+          icon={<VscCircleOutline size={16} />}
+          items={[
+            {
+              title: 'Node Properties',
+              key: 'node properties',
+              content: 'Hello World',
+            },
+          ]}
+        />
+      </Block>
+      <Block marginTop='scale400'>
+        <Accordion
+          icon={<HiOutlineShare size={16} />}
+          items={[
+            {
+              title: 'Edge Properties',
+              key: 'edge properties',
+              content: 'Hello World',
+            },
+          ]}
+        />
+      </Block>
       <br />
       <hr />
       <Block width='100%' display='flex' justifyContent='space-between'>

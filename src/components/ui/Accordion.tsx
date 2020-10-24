@@ -4,13 +4,18 @@ import { useStyletron } from 'baseui';
 import { ChevronDown, ChevronUp } from 'baseui/icon';
 import { Accordion as BaseAccordion, Panel } from 'baseui/accordion';
 
+type AccordionProps = {
+  items: AccordionItem[];
+  icon?: React.ReactNode;
+};
+
 type AccordionItem = {
   key: string;
   title: string;
   content: React.ReactNode;
 };
 
-export const Accordion = ({ items }: { items: AccordionItem[] }) => {
+export const Accordion = ({ items, icon }: AccordionProps) => {
   const listItems = items.map((x) => {
     return (
       <Panel title={x.title} key={x.key}>
@@ -25,13 +30,16 @@ export const Accordion = ({ items }: { items: AccordionItem[] }) => {
         ToggleIcon: {
           // eslint-disable-next-line react/display-name
           component: ({ $expanded }: { $expanded: boolean }) =>
-            $expanded ? <ChevronUp size={24} /> : <ChevronDown size={24} />,
+            icon ||
+            ($expanded ? <ChevronUp size={24} /> : <ChevronDown size={24} />),
         },
         Header: {
           style: ({ $theme }) => ({
             ...$theme.typography.LabelSmall,
             paddingTop: $theme.sizing.scale400,
+            paddingLeft: $theme.sizing.scale600,
             paddingBottom: $theme.sizing.scale400,
+            borderBottomStyle: 'none',
           }),
         },
       }}
