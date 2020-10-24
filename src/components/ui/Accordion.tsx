@@ -42,6 +42,12 @@ export const Accordion = ({ items, icon }: AccordionProps) => {
             borderBottomStyle: 'none',
           }),
         },
+        Content: {
+          style: ({ $expanded, $theme }) => ({
+            paddingTop: $expanded ? $theme.sizing.scale600 : 0,
+            paddingBottom: $expanded ? $theme.sizing.scale600 : 0,
+          }),
+        },
       }}
     >
       {listItems}
@@ -58,7 +64,6 @@ export const Content = ({ children }: { children: React.ReactNode }) => {
         paddingBottom: 0,
         paddingLeft: 0,
         paddingRight: 0,
-        maxHeight: '300px',
         overflowY: 'auto',
       })}
     >

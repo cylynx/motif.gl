@@ -6,8 +6,9 @@ import { Button } from 'baseui/button';
 import { Plus } from 'baseui/icon';
 import { Cell } from 'baseui/layout-grid';
 import { Block } from 'baseui/block';
-import { Accordion, Content, FlushedGrid, Statistic, FullButton } from '../ui';
+import { Accordion, FlushedGrid, Statistic, FullButton } from '../ui';
 import * as Prop from '../../types/Prop';
+import * as Graph from '../../types/Graph';
 import { openImportModal, fetchDone } from '../../redux/ui-slice';
 import { resetState } from '../../redux/graph-slice';
 import ExportDataButton from './ExportDataButton';
@@ -21,6 +22,44 @@ const InvestigateMain = () => {
   const haveData = graphFlatten && graphVisible;
   const hiddenNodes = graphFlatten.nodes.length - graphVisible.nodes.length;
   const hiddenEdges = graphFlatten.edges.length - graphVisible.edges.length;
+  const nodeMetadata = graphFlatten.metadata.fields.nodes as Graph.Field[];
+  const edgeMetadata = graphFlatten.metadata.fields.edges as Graph.Field[];
+  const nodePropertyBlock = nodeMetadata.map((field) => {
+    return (
+      <Block
+        key={field.name}
+        display='flex'
+        flexWrap
+        marginTop='8px'
+        marginBottom='8px'
+      >
+        <Block paddingRight='12px' marginTop='0' marginBottom='0'>
+          <b>{`${field.name}:`}</b>
+        </Block>
+        <Block marginTop='0' marginBottom='0'>
+          {field.type}
+        </Block>
+      </Block>
+    );
+  });
+  const edgePropertyBlock = edgeMetadata.map((field) => {
+    return (
+      <Block
+        key={field.name}
+        display='flex'
+        flexWrap
+        marginTop='8px'
+        marginBottom='8px'
+      >
+        <Block paddingRight='12px' marginTop='0' marginBottom='0'>
+          <b>{`${field.name}:`}</b>
+        </Block>
+        <Block marginTop='0' marginBottom='0'>
+          {field.type}
+        </Block>
+      </Block>
+    );
+  });
 
   const onClickImport = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -58,7 +97,7 @@ const InvestigateMain = () => {
             {
               title: 'Node Properties',
               key: 'node properties',
-              content: 'Hello World',
+              content: nodePropertyBlock,
             },
           ]}
         />
@@ -70,7 +109,7 @@ const InvestigateMain = () => {
             {
               title: 'Edge Properties',
               key: 'edge properties',
-              content: 'Hello World',
+              content: edgePropertyBlock,
             },
           ]}
         />
