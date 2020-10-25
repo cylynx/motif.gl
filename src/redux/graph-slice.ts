@@ -2,7 +2,7 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-param-reassign */
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import isEmpty from 'lodash/isEmpty';
 import * as LAYOUT from '../constants/layout-options';
 import * as Graph from '../types/Graph';
@@ -79,6 +79,20 @@ const graph = createSlice({
     resetState() {
       const newGraphState = { ...initialState };
       return newGraphState;
+    },
+    updateGraphList(
+      state,
+      action: PayloadAction<{ from: number; to: number }>,
+    ) {
+      const { from, to } = action.payload;
+      state.graphList.splice(
+        to < 0 ? state.graphList.length + to : to,
+        0,
+        state.graphList.splice(from, 1)[0],
+      );
+    },
+    deleteGraphList(state, action: PayloadAction<number>) {
+      state.graphList.splice(action.payload, 1);
     },
     addQuery(state, action) {
       const queryResults = action.payload;
@@ -170,6 +184,8 @@ export { initialState };
 
 export const {
   resetState,
+  updateGraphList,
+  deleteGraphList,
   addQuery,
   changeOptions,
   changeLayout,

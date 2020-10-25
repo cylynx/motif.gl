@@ -1,4 +1,5 @@
 import { Content, Accordion } from './Accordion';
+import DataDndList from './DataDndList';
 import Hash from './Hash';
 import Loader from './Loader';
 import Notification from './Notification';
@@ -17,6 +18,7 @@ import useWindowDimension from './useWindowDimension';
 export {
   Accordion,
   Content,
+  DataDndList,
   FullButton,
   DivPrimary,
   DivSecondary,

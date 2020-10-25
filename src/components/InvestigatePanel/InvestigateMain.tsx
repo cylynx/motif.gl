@@ -12,7 +12,7 @@ import * as Graph from '../../types/Graph';
 import { openImportModal, fetchDone } from '../../redux/ui-slice';
 import { resetState } from '../../redux/graph-slice';
 import ExportDataButton from './ExportDataButton';
-import QueryAccordian from './QueryAccordian';
+import ImportLayers from './ImportLayers';
 import { getGraph, getUI } from '../../redux';
 
 const InvestigateMain = () => {
@@ -120,7 +120,7 @@ const InvestigateMain = () => {
         <ImportDataButton onClick={onClickImport} />
       </Block>
       <br />
-      <QueryAccordian />
+      <ImportLayers />
 
       <Block bottom='30px' position='absolute' left='20px' right='20px'>
         <Block width='100%' display='flex' justifyContent='space-between'>
