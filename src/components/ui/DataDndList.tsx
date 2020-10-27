@@ -11,16 +11,19 @@ import { List } from 'baseui/dnd-list';
 type DndItem = {
   key: number;
   title: string;
+  isVisible: boolean;
 };
 
 type DataDndListProps = {
   items: DndItem[];
   onChangeOrder: (oldIndex: number, newIndex: number) => void;
   onDelete: (index: number) => void;
+  onChangeVisibility: (index: number, isVisible: boolean) => void;
 };
 
 type DndContainerProps = {
   onDelete: (index: number) => void;
+  onChangeVisibility: (index: number, isVisible: boolean) => void;
   item: DndItem;
 };
 
@@ -31,13 +34,11 @@ type ActionButton = {
 
 const VisibilityButton = ({
   onClick: onClickVisibility,
+  isVisible,
   ...rest
 }: ActionButton) => {
-  const [isVisible, setIsVisible] = useState(true);
   const toggleVisibility = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    console.log('toggle visibility');
-    setIsVisible((visible) => !visible);
     if (onClickVisibility) {
       onClickVisibility();
     }
@@ -83,11 +84,19 @@ const DeleteButton = ({ onClick: onClickDelete, ...rest }: ActionButton) => {
   );
 };
 
-const DndContainer = ({ item, onDelete }: DndContainerProps) => {
+const DndContainer = ({
+  item,
+  onDelete,
+  onChangeVisibility,
+}: DndContainerProps) => {
+  const { key, isVisible, title } = item;
   const ButtonGroup = () => (
     <Block>
-      <VisibilityButton />
-      <DeleteButton onClick={() => onDelete(item.key)} />
+      <VisibilityButton
+        isVisible={isVisible}
+        onClick={() => onChangeVisibility(key, !isVisible)}
+      />
+      <DeleteButton onClick={() => onDelete(key)} />
     </Block>
   );
 
@@ -117,12 +126,17 @@ const DndContainer = ({ item, onDelete }: DndContainerProps) => {
         },
       }}
     >
-      {item.title}
+      {title}
     </Button>
   );
 };
 
-const DataDndList = ({ items, onChangeOrder, onDelete }: DataDndListProps) => {
+const DataDndList = ({
+  items,
+  onChangeOrder,
+  onChangeVisibility,
+  onDelete,
+}: DataDndListProps) => {
   return (
     <List
       items={items}
@@ -141,7 +155,11 @@ const DataDndList = ({ items, onChangeOrder, onDelete }: DataDndListProps) => {
             console.log($value);
             return (
               <Block width='100%'>
-                <DndContainer item={$value} onDelete={onDelete} />
+                <DndContainer
+                  item={$value}
+                  onDelete={onDelete}
+                  onChangeVisibility={onChangeVisibility}
+                />
               </Block>
             );
           },

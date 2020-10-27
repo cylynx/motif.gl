@@ -38,6 +38,7 @@ export interface Metadata {
   search_size?: number;
   retrieved_size?: number;
   title?: string;
+  visible?: boolean;
 }
 
 export interface GraphData {

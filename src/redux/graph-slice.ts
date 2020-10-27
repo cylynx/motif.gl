@@ -2,7 +2,7 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-param-reassign */
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, current } from '@reduxjs/toolkit';
 import isEmpty from 'lodash/isEmpty';
 import * as LAYOUT from '../constants/layout-options';
 import * as Graph from '../types/Graph';
@@ -158,7 +158,23 @@ const graph = createSlice({
       // Loop through graphList to generate new graphData
       let graphData;
       for (const data of state.graphList) {
-        graphData = combineProcessedData(data, graphData);
+        if (data?.metadata?.visible !== false) {
+          graphData = combineProcessedData(data, graphData);
+        }
+      }
+      updateAll(state, graphData, state.accessors);
+    },
+    changeVisibilityGraphList(
+      state,
+      action: PayloadAction<{ index: number; isVisible: boolean }>,
+    ) {
+      const { index, isVisible } = action.payload;
+      state.graphList[index].metadata.visible = isVisible;
+      let graphData;
+      for (const data of state.graphList) {
+        if (data?.metadata?.visible !== false) {
+          graphData = combineProcessedData(data, graphData);
+        }
       }
       updateAll(state, graphData, state.accessors);
     },
@@ -215,6 +231,7 @@ export const {
   resetState,
   updateGraphList,
   deleteGraphList,
+  changeVisibilityGraphList,
   addQuery,
   changeOptions,
   changeLayout,
