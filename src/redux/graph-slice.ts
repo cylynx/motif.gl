@@ -54,17 +54,27 @@ export const updateAll = (
   graphData: Graph.GraphData,
   accessors: Graph.Accessors,
 ) => {
-  state.graphGrouped = groupEdges(graphData);
-  state.graphFlatten = graphData;
-  const tsData = datatoTS(state.graphFlatten, accessors.edgeTime);
-  state.tsData = tsData;
-  state.timeRange = isEmpty(tsData)
-    ? []
-    : chartRange([tsData[0][0], tsData[tsData.length - 1][0]]);
-  // Update selectTimeRange to be timeRange always
-  state.selectTimeRange = state.timeRange;
-  // Filter graphFlatten based on selectTimeRange
-  updateVisible(state, state.timeRange, accessors);
+  if (graphData) {
+    state.graphGrouped = groupEdges(graphData);
+    state.graphFlatten = graphData;
+    const tsData = datatoTS(state.graphFlatten, accessors.edgeTime);
+    state.tsData = tsData;
+    state.timeRange = isEmpty(tsData)
+      ? []
+      : chartRange([tsData[0][0], tsData[tsData.length - 1][0]]);
+    // Update selectTimeRange to be timeRange always
+    state.selectTimeRange = state.timeRange;
+    // Filter graphFlatten based on selectTimeRange
+    updateVisible(state, state.timeRange, accessors);
+  } else {
+    // Reset data state when all data is deleted
+    state.graphGrouped = initialState.graphGrouped;
+    state.graphFlatten = initialState.graphFlatten;
+    state.graphVisible = initialState.graphVisible;
+    state.tsData = initialState.tsData;
+    state.timeRange = initialState.timeRange;
+    state.selectTimeRange = initialState.selectTimeRange;
+  }
 };
 
 export interface GraphState {
@@ -145,6 +155,12 @@ const graph = createSlice({
     },
     deleteGraphList(state, action: PayloadAction<number>) {
       state.graphList.splice(action.payload, 1);
+      // Loop through graphList to generate new graphData
+      let graphData;
+      for (const data of state.graphList) {
+        graphData = combineProcessedData(data, graphData);
+      }
+      updateAll(state, graphData, state.accessors);
     },
     addQuery(state, action) {
       const queryResults = action.payload;
