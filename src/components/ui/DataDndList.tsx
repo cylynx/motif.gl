@@ -145,8 +145,8 @@ const DataDndList = ({
         Item: {
           style: ({ $theme }) => {
             return {
-              paddingTop: $theme.sizing.scale500,
-              paddingBottom: $theme.sizing.scale500,
+              paddingTop: $theme.sizing.scale200,
+              paddingBottom: $theme.sizing.scale200,
             };
           },
         },

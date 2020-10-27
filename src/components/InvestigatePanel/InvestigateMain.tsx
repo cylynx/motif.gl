@@ -119,7 +119,6 @@ const InvestigateMain = () => {
       <Block width='100%' display='flex' justifyContent='space-between'>
         <ImportDataButton onClick={onClickImport} />
       </Block>
-      <br />
       <ImportLayers />
 
       <Block bottom='30px' position='absolute' left='20px' right='20px'>
