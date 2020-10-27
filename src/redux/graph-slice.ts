@@ -15,6 +15,58 @@ import {
   filterDataByTime,
 } from '../utils/graph-utils';
 
+/**
+ * Meant to be use on graph-slice state only
+ * Update visible graph object by re-applying filtering and styling
+ * Does not affect graphList / graphFlatten / graphGrouped
+ *
+ * @param {GraphState} state
+ * @param {(Graph.TimeRange | [])} timeRange
+ * @param {Graph.Accessors} accessors
+ */
+export const updateVisible = (
+  state: GraphState,
+  timeRange: Graph.TimeRange | [],
+  accessors: Graph.Accessors,
+) => {
+  const newFilteredData = filterDataByTime(
+    state.graphFlatten,
+    timeRange,
+    accessors.edgeTime,
+  );
+  state.graphVisible = deriveVisibleGraph(
+    newFilteredData,
+    state.styleOptions,
+    accessors,
+  );
+};
+
+/**
+ * Meant to be use on graph-slice state only
+ * Updates graphFlatten and graphGrouped onwards
+ *
+ * @param {GraphState} state
+ * @param {Graph.GraphData} graphData
+ * @param {Graph.Accessors} accessors
+ */
+export const updateAll = (
+  state: GraphState,
+  graphData: Graph.GraphData,
+  accessors: Graph.Accessors,
+) => {
+  state.graphGrouped = groupEdges(graphData);
+  state.graphFlatten = graphData;
+  const tsData = datatoTS(state.graphFlatten, accessors.edgeTime);
+  state.tsData = tsData;
+  state.timeRange = isEmpty(tsData)
+    ? []
+    : chartRange([tsData[0][0], tsData[tsData.length - 1][0]]);
+  // Update selectTimeRange to be timeRange always
+  state.selectTimeRange = state.timeRange;
+  // Filter graphFlatten based on selectTimeRange
+  updateVisible(state, state.timeRange, accessors);
+};
+
 export interface GraphState {
   accessors: Graph.Accessors;
   styleOptions: Graph.StyleOptions;
@@ -100,18 +152,9 @@ const graph = createSlice({
     },
     changeOptions(state, action) {
       const { key, value, accessors } = action.payload;
-      const { edgeTime } = accessors;
+      // const { edgeTime } = accessors;
       state.styleOptions[key] = value;
-      const newFilteredData = filterDataByTime(
-        state.graphFlatten,
-        state.selectTimeRange,
-        edgeTime,
-      );
-      state.graphVisible = deriveVisibleGraph(
-        newFilteredData,
-        state.styleOptions,
-        accessors,
-      );
+      updateVisible(state, state.selectTimeRange, accessors);
     },
     changeLayout(state, action) {
       const newLayoutName = action.payload;
@@ -121,28 +164,8 @@ const graph = createSlice({
     },
     processGraphResponse(state, action) {
       const { data, accessors } = action.payload;
-      const { edgeTime } = accessors;
-      const modData = combineProcessedData(data, state.graphFlatten);
-      state.graphGrouped = groupEdges(modData);
-      state.graphFlatten = modData;
-      const tsData = datatoTS(state.graphFlatten, edgeTime);
-      state.tsData = tsData;
-      state.timeRange = isEmpty(tsData)
-        ? []
-        : chartRange([tsData[0][0], tsData[tsData.length - 1][0]]);
-      // Update selectTimeRange to be timeRange always
-      state.selectTimeRange = state.timeRange;
-      // Filter graphFlatten based on selectTimeRange
-      const newFilteredData = filterDataByTime(
-        state.graphFlatten,
-        state.timeRange,
-        edgeTime,
-      );
-      state.graphVisible = deriveVisibleGraph(
-        newFilteredData,
-        state.styleOptions,
-        accessors,
-      );
+      const graphData = combineProcessedData(data, state.graphFlatten);
+      updateAll(state, graphData, accessors);
     },
     setRange(state, action) {
       const selectedTimeRange = action.payload;
@@ -150,18 +173,8 @@ const graph = createSlice({
     },
     timeRangeChange(state, action) {
       const { timeRange, accessors } = action.payload;
-      const { edgeTime } = accessors;
       // Filter out all relevant edges and store from & to node id
-      const newFilteredData = filterDataByTime(
-        state.graphFlatten,
-        timeRange,
-        edgeTime,
-      );
-      state.graphVisible = deriveVisibleGraph(
-        newFilteredData,
-        state.styleOptions,
-        accessors,
-      );
+      updateVisible(state, timeRange, accessors);
     },
     getDetails(state, action) {
       // TODO: There might be multiple matching hash! Need to match on trace
