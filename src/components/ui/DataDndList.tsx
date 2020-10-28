@@ -3,15 +3,17 @@ import {
   AiOutlineDelete,
   AiOutlineEye,
   AiOutlineEyeInvisible,
+  AiOutlineDown,
 } from 'react-icons/ai';
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
-import { List } from 'baseui/dnd-list';
+import DndAccordian from './DndAccordian';
 
 type DndItem = {
   key: number;
   title: string;
   isVisible: boolean;
+  children: React.ReactNode;
 };
 
 type DataDndListProps = {
@@ -24,6 +26,7 @@ type DataDndListProps = {
 type DndContainerProps = {
   onDelete: (index: number) => void;
   onChangeVisibility: (index: number, isVisible: boolean) => void;
+  toggleActive: (key: number) => void;
   item: DndItem;
 };
 
@@ -46,7 +49,7 @@ const VisibilityButton = ({
 
   return (
     <Button
-      size='compact'
+      size='mini'
       shape='round'
       kind='minimal'
       $as='div' // Avoid button in button error
@@ -54,9 +57,9 @@ const VisibilityButton = ({
       {...rest}
     >
       {isVisible ? (
-        <AiOutlineEye size={18} />
+        <AiOutlineEye size={16} />
       ) : (
-        <AiOutlineEyeInvisible size={18} />
+        <AiOutlineEyeInvisible size={16} />
       )}
     </Button>
   );
@@ -72,14 +75,29 @@ const DeleteButton = ({ onClick: onClickDelete, ...rest }: ActionButton) => {
 
   return (
     <Button
-      size='compact'
+      size='mini'
       shape='round'
       kind='minimal'
       $as='div'
       onClick={toggleDelete}
       {...rest}
     >
-      <AiOutlineDelete size={18} />
+      <AiOutlineDelete size={16} />
+    </Button>
+  );
+};
+
+const ShowMoreButton = ({ onClick, ...rest }: ActionButton) => {
+  return (
+    <Button
+      size='mini'
+      shape='round'
+      kind='minimal'
+      $as='div'
+      onClick={onClick}
+      {...rest}
+    >
+      <AiOutlineDown size={16} />
     </Button>
   );
 };
@@ -88,6 +106,7 @@ const DndContainer = ({
   item,
   onDelete,
   onChangeVisibility,
+  toggleActive,
 }: DndContainerProps) => {
   const { key, isVisible, title } = item;
   const ButtonGroup = () => (
@@ -97,12 +116,12 @@ const DndContainer = ({
         onClick={() => onChangeVisibility(key, !isVisible)}
       />
       <DeleteButton onClick={() => onDelete(key)} />
+      <ShowMoreButton onClick={() => toggleActive(key)} />
     </Block>
   );
 
   return (
     <Button
-      onClick={() => console.log('clicked')}
       kind='tertiary'
       size='compact'
       endEnhancer={<ButtonGroup />}
@@ -137,28 +156,57 @@ const DataDndList = ({
   onChangeVisibility,
   onDelete,
 }: DataDndListProps) => {
+  const [expanded, setExpanded] = useState([]);
+
+  const onChange = ({
+    oldIndex,
+    newIndex,
+  }: {
+    oldIndex: number;
+    newIndex: number;
+  }) => {
+    setExpanded(expanded.filter((x) => x !== oldIndex && x !== newIndex));
+    onChangeOrder(oldIndex, newIndex);
+  };
+
+  const onExpand = (key: number) => {
+    if (expanded.includes(key)) {
+      setExpanded(expanded.filter((x) => x !== key));
+    } else {
+      setExpanded([...expanded, key]);
+    }
+  };
+
+  const onDeleteItem = (key: number) => {
+    onDelete(key);
+    setExpanded(expanded.filter((x) => x !== key));
+  };
+
   return (
-    <List
+    <DndAccordian
       items={items}
-      onChange={({ oldIndex, newIndex }) => onChangeOrder(oldIndex, newIndex)}
+      expanded={expanded}
+      onChange={onChange}
       overrides={{
         Item: {
-          style: ({ $theme }) => {
+          style: ({ $theme }: { $theme: any }) => {
             return {
               paddingTop: $theme.sizing.scale200,
               paddingBottom: $theme.sizing.scale200,
+              paddingLeft: $theme.sizing.scale200,
+              paddingRight: $theme.sizing.scale200,
             };
           },
         },
         Label: {
           component: ({ $value }: { $value: any }) => {
-            console.log($value);
             return (
               <Block width='100%'>
                 <DndContainer
                   item={$value}
-                  onDelete={onDelete}
+                  onDelete={onDeleteItem}
                   onChangeVisibility={onChangeVisibility}
+                  toggleActive={onExpand}
                 />
               </Block>
             );

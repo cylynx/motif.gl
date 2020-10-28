@@ -19,7 +19,6 @@ const ImportLayers = () => {
     if (query.metadata?.title) {
       title = query.metadata.title;
     }
-    console.log(index, query.metadata?.visible);
     return {
       key: index,
       title,
@@ -27,6 +26,7 @@ const ImportLayers = () => {
         typeof query.metadata?.visible === 'undefined'
           ? true
           : query.metadata?.visible,
+      children: query.metadata.key,
     };
   });
 
