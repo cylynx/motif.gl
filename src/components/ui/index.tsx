@@ -8,7 +8,7 @@ import TriGrid from './TriGrid';
 import Statistic from './Statistic';
 import FullButton from './Button';
 import { DivPrimary, DivSecondary, Centered } from './StyledDiv';
-import { TagValue, TagRisk } from './Tag';
+import { TagValue, TagRisk, TagData } from './Tag';
 import EditableField from './EditableField';
 import SimpleTooltip from './SimpleTooltip';
 import InfoIcon from './InfoIcon';
@@ -32,6 +32,7 @@ export {
   EditableField,
   TagValue,
   TagRisk,
+  TagData,
   SimpleTooltip,
   InfoIcon,
   InfoNotification,
