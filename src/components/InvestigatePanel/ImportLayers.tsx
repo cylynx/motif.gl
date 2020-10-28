@@ -1,32 +1,64 @@
-// @ts-nocheck
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Cell } from 'baseui/layout-grid';
 import { Block } from 'baseui/block';
 import {
   updateGraphList,
   deleteGraphList,
   changeVisibilityGraphList,
 } from '../../redux/graph-slice';
-import { DataDndList } from '../ui';
+import { Statistic, FlushedGrid, DataDndList } from '../ui';
 import * as Graph from '../../types/Graph';
 import { getGraph } from '../../redux';
+
+const LayerDetailed = ({ graph }: { graph: Graph.GraphData }) => {
+  const graphVisible = useSelector((state) => getGraph(state).graphVisible);
+  const visibleNodeList = graphVisible.nodes.map((x) => x.id);
+  const visibleEdgeList = graphVisible.edges.map((x) => x.id);
+  const hiddenNodes = graph.nodes.filter(
+    (x) => !visibleNodeList.includes(x.id),
+  );
+  const hiddenEdges = graph.edges.filter(
+    (x) => !visibleEdgeList.includes(x.id),
+  );
+
+  return (
+    <FlushedGrid>
+      <Cell span={6}>
+        <Statistic
+          value={graph.nodes.length}
+          label='Nodes:'
+          subtitle={`${hiddenNodes.length} hidden`}
+        />
+      </Cell>
+      <Cell span={6}>
+        <Statistic
+          value={graph.edges.length}
+          label='Edges:'
+          subtitle={`${hiddenEdges.length} hidden`}
+        />
+      </Cell>
+    </FlushedGrid>
+  );
+};
 
 const ImportLayers = () => {
   const dispatch = useDispatch();
   const graphList = useSelector((state) => getGraph(state).graphList);
-  const importItems = graphList.map((query: Graph.Data, index: number) => {
+
+  const importItems = graphList.map((graph: Graph.GraphData, index: number) => {
     let title = `import ${index}`;
-    if (query.metadata?.title) {
-      title = query.metadata.title;
+    if (graph.metadata?.title) {
+      title = graph.metadata.title;
     }
     return {
       key: index,
       title,
       isVisible:
-        typeof query.metadata?.visible === 'undefined'
+        typeof graph.metadata?.visible === 'undefined'
           ? true
-          : query.metadata?.visible,
-      children: query.metadata.key,
+          : graph.metadata?.visible,
+      children: <LayerDetailed graph={graph} />,
     };
   });
 
