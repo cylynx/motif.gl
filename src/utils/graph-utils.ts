@@ -298,11 +298,13 @@ export const isValidValue = (value: any): boolean =>
  *
  * @param {Graph.Node} node
  * @param {('all' | 'style' | 'data')} [kind='all'] set to 'style' to get only style fields and 'data' to exclude style fields
+ * @param {string[]} filter list of items to filter out
  * @return {*} object sorted by id, data fields followed by style fields
  */
 export const getNodeProperties = (
   node: Graph.Node,
   kind: 'all' | 'style' | 'data' = 'all',
+  filter: string[],
 ) => {
   const flattenInfo = flattenObject(node);
   const dataKeys = Object.keys(flattenInfo).filter(
@@ -317,13 +319,15 @@ export const getNodeProperties = (
 
   if (kind === 'data' || kind === 'all') {
     dataKeys.forEach((k) => {
-      if (isValidValue(flattenInfo[k])) newObj[k] = flattenInfo[k];
+      if (isValidValue(flattenInfo[k]) && !filter.includes(k))
+        newObj[k] = flattenInfo[k];
     });
   }
 
   if (kind === 'style' || kind === 'all') {
     styleKeys.forEach((k) => {
-      if (isValidValue(flattenInfo[k])) newObj[k] = flattenInfo[k];
+      if (isValidValue(flattenInfo[k]) && !filter.includes(k))
+        newObj[k] = flattenInfo[k];
     });
   }
   return newObj;
@@ -335,11 +339,13 @@ export const getNodeProperties = (
  *
  * @param {Graph.Edge} edge
  * @param {('all' | 'style' | 'data')} [kind='all'] set to 'style' to get only style fields and 'data' to exclude style fields
+ * @param {string[]} filter list of items to filter out
  * @return {*} object sorted by id, source, target, data fields followed by style fields
  */
 export const getEdgeProperties = (
   edge: Graph.Edge,
   kind: 'all' | 'style' | 'data' = 'all',
+  filter: string[],
 ) => {
   const flattenInfo = flattenObject(edge);
   const restrictedTerms = ['id', 'source', 'target'];
@@ -359,13 +365,15 @@ export const getEdgeProperties = (
 
   if (kind === 'data' || kind === 'all') {
     dataKeys.forEach((k) => {
-      if (isValidValue(flattenInfo[k])) newObj[k] = flattenInfo[k];
+      if (isValidValue(flattenInfo[k]) && !filter.includes(k))
+        newObj[k] = flattenInfo[k];
     });
   }
 
   if (kind === 'style' || kind === 'all') {
     styleKeys.forEach((k) => {
-      if (isValidValue(flattenInfo[k])) newObj[k] = flattenInfo[k];
+      if (isValidValue(flattenInfo[k]) && !filter.includes(k))
+        newObj[k] = flattenInfo[k];
     });
   }
   return newObj;

@@ -194,7 +194,13 @@ const graph = createSlice({
         (x) => x.name === newLayoutName,
       );
     },
-    processGraphResponse(state, action) {
+    processGraphResponse(
+      state,
+      action: PayloadAction<{
+        data: Graph.GraphData;
+        accessors: Graph.Accessors;
+      }>,
+    ) {
       const { data, accessors } = action.payload;
       const graphData = combineProcessedData(data, state.graphFlatten);
       updateAll(state, graphData, accessors);

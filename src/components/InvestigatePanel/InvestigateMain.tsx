@@ -6,10 +6,21 @@ import { Button } from 'baseui/button';
 import { Plus } from 'baseui/icon';
 import { Cell } from 'baseui/layout-grid';
 import { Block } from 'baseui/block';
-import { Accordion, FlushedGrid, Statistic, FullButton } from '../ui';
+import {
+  Accordion,
+  FlushedGrid,
+  Statistic,
+  FullButton,
+  ToggleTokens,
+} from '../ui';
 import * as Prop from '../../types/Prop';
 import * as Graph from '../../types/Graph';
-import { openImportModal, fetchDone } from '../../redux/ui-slice';
+import {
+  openImportModal,
+  fetchDone,
+  updateNodeSelection,
+  updateEdgeSelection,
+} from '../../redux/ui-slice';
 import { resetState } from '../../redux/graph-slice';
 import ExportDataButton from './ExportDataButton';
 import ImportLayers from './ImportLayers';
@@ -17,49 +28,24 @@ import { getGraph, getUI } from '../../redux';
 
 const InvestigateMain = () => {
   const dispatch = useDispatch();
+  const graphList = useSelector((state) => getGraph(state).graphList);
   const graphFlatten = useSelector((state) => getGraph(state).graphFlatten);
   const graphVisible = useSelector((state) => getGraph(state).graphVisible);
+  const nodeFields = useSelector((state) => getUI(state).nodeSelection);
+  const edgeFields = useSelector((state) => getUI(state).edgeSelection);
   const haveData = graphFlatten && graphVisible;
   const hiddenNodes = graphFlatten.nodes.length - graphVisible.nodes.length;
   const hiddenEdges = graphFlatten.edges.length - graphVisible.edges.length;
   const nodeMetadata = graphFlatten.metadata.fields.nodes as Graph.Field[];
   const edgeMetadata = graphFlatten.metadata.fields.edges as Graph.Field[];
-  const nodePropertyBlock = nodeMetadata.map((field) => {
-    return (
-      <Block
-        key={field.name}
-        display='flex'
-        flexWrap
-        marginTop='8px'
-        marginBottom='8px'
-      >
-        <Block paddingRight='12px' marginTop='0' marginBottom='0'>
-          <b>{`${field.name}:`}</b>
-        </Block>
-        <Block marginTop='0' marginBottom='0'>
-          {field.type}
-        </Block>
-      </Block>
-    );
-  });
-  const edgePropertyBlock = edgeMetadata.map((field) => {
-    return (
-      <Block
-        key={field.name}
-        display='flex'
-        flexWrap
-        marginTop='8px'
-        marginBottom='8px'
-      >
-        <Block paddingRight='12px' marginTop='0' marginBottom='0'>
-          <b>{`${field.name}:`}</b>
-        </Block>
-        <Block marginTop='0' marginBottom='0'>
-          {field.type}
-        </Block>
-      </Block>
-    );
-  });
+
+  const onClickNodeToken = (index: number, status: boolean) => {
+    dispatch(updateNodeSelection({ index, status }));
+  };
+
+  const onClickEdgeToken = (index: number, status: boolean) => {
+    dispatch(updateEdgeSelection({ index, status }));
+  };
 
   const onClickImport = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -92,24 +78,42 @@ const InvestigateMain = () => {
       </FlushedGrid>
       <Block marginTop='scale800'>
         <Accordion
-          icon={<VscCircleOutline size={16} />}
           items={[
             {
-              title: 'Node Properties',
+              title: (
+                <Block display='flex' justifyContent='center'>
+                  <VscCircleOutline size={16} style={{ paddingRight: '8px' }} />
+                  Node Properties
+                </Block>
+              ),
               key: 'node properties',
-              content: nodePropertyBlock,
+              content: (
+                <ToggleTokens
+                  options={graphList.length > 0 ? nodeFields : []}
+                  onClick={onClickNodeToken}
+                />
+              ),
             },
           ]}
         />
       </Block>
       <Block marginTop='scale400'>
         <Accordion
-          icon={<HiOutlineShare size={16} />}
           items={[
             {
-              title: 'Edge Properties',
+              title: (
+                <Block display='flex' justifyContent='center'>
+                  <HiOutlineShare size={16} style={{ paddingRight: '8px' }} />
+                  Edge Properties
+                </Block>
+              ),
               key: 'edge properties',
-              content: edgePropertyBlock,
+              content: (
+                <ToggleTokens
+                  options={graphList.length > 0 ? edgeFields : []}
+                  onClick={onClickEdgeToken}
+                />
+              ),
             },
           ]}
         />
