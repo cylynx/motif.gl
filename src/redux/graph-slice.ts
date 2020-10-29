@@ -97,10 +97,6 @@ const initialState: GraphState = {
     edgeID: 'id',
     edgeSource: 'source',
     edgeTarget: 'target',
-    edgeStyle: {
-      width: 'data.blk_ts_unix',
-    },
-    edgeTime: 'data.blk_ts_unix',
   },
   styleOptions: {
     layout: {
