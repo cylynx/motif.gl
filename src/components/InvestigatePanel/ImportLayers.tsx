@@ -29,6 +29,7 @@ const LayerDetailed = ({ graph }: { graph: Graph.GraphData }) => {
           value={graph.nodes.length}
           label='Nodes:'
           subtitle={`${hiddenNodes.length} hidden`}
+          size='medium'
         />
       </Cell>
       <Cell span={6}>
@@ -36,6 +37,7 @@ const LayerDetailed = ({ graph }: { graph: Graph.GraphData }) => {
           value={graph.edges.length}
           label='Edges:'
           subtitle={`${hiddenEdges.length} hidden`}
+          size='medium'
         />
       </Cell>
     </FlushedGrid>
