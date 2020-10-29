@@ -1,9 +1,10 @@
 import * as React from 'react';
+import { colors } from 'baseui/tokens';
 import { Block } from 'baseui/block';
 import { Tag, KIND, VARIANT } from 'baseui/tag';
 import { StatefulTooltip, PLACEMENT, TRIGGER_TYPE } from 'baseui/tooltip';
 import { VscSymbolKey } from 'react-icons/vsc';
-import { BiAdjust, BiBracket, BiText, BiHash, BiTime } from 'react-icons/bi';
+import { BiAdjust, BiBracket, BiHash, BiTime } from 'react-icons/bi';
 
 export * from 'baseui/tag';
 
@@ -19,7 +20,8 @@ export type TypeProps =
   | 'real'
   | 'string'
   | 'timestamp'
-  | 'array';
+  | 'array'
+  | string;
 
 export type TagDataProps = {
   type?: TypeProps;
@@ -27,7 +29,7 @@ export type TagDataProps = {
   closeable?: boolean;
 };
 
-export type TagRisk = {
+export type TagRiskProps = {
   score: number;
   title: string;
 };
@@ -35,21 +37,63 @@ export type TagRisk = {
 export const getIcon = (type: TypeProps) => {
   switch (type) {
     case 'boolean':
-      return <BiAdjust size='14px' style={{ paddingRight: '8px' }} />;
+      return (
+        <BiAdjust
+          size='14px'
+          color={colors.brown500}
+          style={{ paddingRight: '8px' }}
+        />
+      );
     case 'date':
-      return <BiTime size='14px' style={{ paddingRight: '8px' }} />;
+      return (
+        <BiTime
+          size='14px'
+          color={colors.green500}
+          style={{ paddingRight: '8px' }}
+        />
+      );
     case 'integer':
-      return <BiHash size='14px' style={{ paddingRight: '8px' }} />;
+      return (
+        <BiHash
+          size='14px'
+          color={colors.yellow500}
+          style={{ paddingRight: '8px' }}
+        />
+      );
     case 'real':
-      return <BiHash size='14px' style={{ paddingRight: '8px' }} />;
+      return (
+        <BiHash
+          size='14px'
+          color={colors.yellow500}
+          style={{ paddingRight: '8px' }}
+        />
+      );
     case 'string':
-      return <VscSymbolKey size='16px' style={{ paddingRight: '8px' }} />;
+      return (
+        <VscSymbolKey
+          size='16px'
+          color={colors.blue500}
+          style={{ paddingRight: '8px' }}
+        />
+      );
     case 'timestamp':
-      return <BiTime size='14px' style={{ paddingRight: '8px' }} />;
+      return (
+        <BiTime
+          size='14px'
+          color={colors.green500}
+          style={{ paddingRight: '8px' }}
+        />
+      );
     case 'array':
-      return <BiBracket size='14px' style={{ paddingRight: '8px' }} />;
+      return (
+        <BiBracket
+          size='14px'
+          color={colors.purple500}
+          style={{ paddingRight: '8px' }}
+        />
+      );
     default:
-      return <BiBracket size='0px' />;
+      return <BiBracket color={colors.gray600} size='0px' />;
   }
 };
 
@@ -117,7 +161,7 @@ export const TagValue = ({ value, title }: TagValueProps) => {
   );
 };
 
-export const TagRisk = ({ score, title }: TagRisk) => {
+export const TagRisk = ({ score, title }: TagRiskProps) => {
   const content = `Risk Score: ${title}`;
   let kind = KIND.positive;
   if (score >= 75) {
