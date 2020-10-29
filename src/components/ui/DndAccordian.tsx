@@ -1,5 +1,6 @@
 /* eslint-disable */
 import * as React from 'react';
+import { styled } from 'baseui';
 //@ts-ignore
 import { getOverrides } from 'baseui/helpers/overrides.js';
 import {
@@ -11,7 +12,6 @@ import {
   StyledLabel,
 } from 'baseui/dnd-list';
 import { List as MovableList } from 'react-movable';
-import { StyledContent } from 'baseui/accordion';
 import { Block } from 'baseui/block';
 import { Grab, Delete } from 'baseui/icon';
 //@ts-ignore
@@ -19,6 +19,38 @@ import { isFocusVisible, forkFocus, forkBlur } from 'baseui/utils/focusVisible';
 import { Layer } from 'baseui/layer';
 //@ts-ignore
 import { ListPropsT, SharedStylePropsArgT } from 'baseui/dnd-list/types';
+
+// https://github.com/uber/baseweb/blob/master/src/accordion/styled-components.js
+export const Content = styled('div', (props) => {
+  const {
+    $theme: { animation, colors, sizing, typography },
+    //@ts-ignore
+    $expanded,
+  } = props;
+  return {
+    ...typography.font200,
+    backgroundColor: colors.listBodyFill,
+    color: colors.contentPrimary,
+    paddingTop: $expanded ? sizing.scale600 : 0,
+    paddingBottom: $expanded ? sizing.scale600 : 0,
+    paddingLeft: sizing.scale800,
+    paddingRight: sizing.scale800,
+    marginTop: 0,
+    marginBottom: 0,
+    marginLeft: 0,
+    marginRight: 0,
+    borderBottomWidth: '1px',
+    borderBottomStyle: $expanded ? 'solid' : 'none',
+    borderBottomColor: colors.border,
+    boxSizing: 'border-box',
+    height: $expanded ? 'auto' : 0,
+    maxHeight: $expanded ? '100%' : 0,
+    overflow: 'hidden',
+    transitionProperty: 'all',
+    transitionDuration: animation.timing400,
+    transitionTimingFunction: animation.easeInOutCurve,
+  };
+});
 
 const ItemLayer = ({
   children,
@@ -164,14 +196,14 @@ class DndAccordian extends React.Component<
                       </CloseHandle>
                     )}
                   </Block>
-                  <StyledContent //@ts-ignore
+                  <Content //@ts-ignore
                     $expanded={this.props.expanded.includes(value.key)}
                   >
                     {
                       //@ts-ignore
                       value.children
                     }
-                  </StyledContent>
+                  </Content>
                 </Item>
               </ItemLayer>
             );
