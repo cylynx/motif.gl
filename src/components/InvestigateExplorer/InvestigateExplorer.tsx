@@ -8,12 +8,7 @@ import { Block } from 'baseui/block';
 import { Modal, ModalBody, SIZE } from 'baseui/modal';
 import { Loader } from '../ui';
 import * as Prop from '../../types/Prop';
-import {
-  closeModal,
-  setScore,
-  setName,
-  setCurrency,
-} from '../../redux/ui-slice';
+import { closeModal, setName } from '../../redux/ui-slice';
 import { setWidget } from '../widgets/widget-slice';
 import { setAccessors } from '../../redux/graph-slice';
 import { getTabsOverride, getNodeMenuOverride } from '../../utils/overrides';
@@ -81,17 +76,11 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
     if (accessors) {
       dispatch(setAccessors(accessors));
     }
-    if (overrides.score) {
-      dispatch(setScore(overrides.score));
-    }
     if (name) {
       dispatch(setName(name));
     }
-    if (currency) {
-      dispatch(setCurrency(currency));
-    }
     dispatch(setWidget(widgetProp));
-  }, [accessors, overrides.score, overrides.widgetList, name, currency]);
+  }, [accessors, overrides.widgetList, name]);
 
   // UI Functions
   const onCloseModal = () => {

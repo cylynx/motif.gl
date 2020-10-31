@@ -15,12 +15,9 @@ export type Selection = {
 
 export interface UiState {
   name: string;
-  currency: string;
   loading: boolean;
   modal: { isOpen: boolean; content: 'import' | string };
   clickedId: any;
-  timeLock: boolean;
-  bottomOpen: boolean;
   score: any;
   nodeSelection: Selection[];
   edgeSelection: Selection[];
@@ -32,8 +29,6 @@ const initialState: UiState = {
   loading: false,
   modal: { isOpen: true, content: 'import' },
   clickedId: null,
-  timeLock: false,
-  bottomOpen: false,
   score: null,
   nodeSelection: [{ label: 'id', id: 'id', type: 'string', selected: true }],
   edgeSelection: [
@@ -71,12 +66,6 @@ const ui = createSlice({
       state.modal.isOpen = true;
       state.modal.content = action.payload;
     },
-    setTimeLock(state) {
-      state.timeLock = true;
-    },
-    setBottomOpen(state, action) {
-      state.bottomOpen = action.payload;
-    },
     setClickedId(state, action) {
       const id = action.payload;
       state.clickedId = id;
@@ -86,9 +75,6 @@ const ui = createSlice({
     },
     setName(state, action) {
       state.name = action.payload;
-    },
-    setCurrency(state, action) {
-      state.currency = action.payload;
     },
     updateNodeSelection(
       state,
@@ -141,12 +127,8 @@ export const {
   closeModal,
   openImportModal,
   postMessage,
-  setTimeLock,
-  setBottomOpen,
   setClickedId,
-  setScore,
   setName,
-  setCurrency,
   updateNodeSelection,
   updateEdgeSelection,
 } = ui.actions;

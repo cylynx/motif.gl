@@ -3,13 +3,7 @@ import isUndefined from 'lodash/isUndefined';
 import { getGraph, getAccessors } from './combine-reducers';
 import * as Graph from '../types/Graph';
 
-import {
-  fetchBegin,
-  fetchError,
-  fetchDone,
-  setTimeLock,
-  setBottomOpen,
-} from './ui-slice';
+import { fetchBegin, fetchError, fetchDone } from './ui-slice';
 import { addQuery, processGraphResponse } from './graph-slice';
 import {
   OPTIONS as IMPORT_OPTIONS,
@@ -41,14 +35,7 @@ const processResponse = (
   accessors: Graph.Accessors,
   newData: Graph.GraphData | Graph.GraphList,
 ) => {
-  const { edgeTime } = accessors;
   dispatch(fetchBegin());
-  // Check if TimeBar should be opened
-  if (checkEdgeTime(edgeTime)) {
-    dispatch(setBottomOpen(true));
-  } else {
-    dispatch(setTimeLock());
-  }
   for (const data of Array.isArray(newData) ? newData : [newData]) {
     // Check edges for new data as it might just be repeated
     if (checkNewData(graphList, data)) {
