@@ -3,7 +3,7 @@ import React from 'react';
 import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
 import { BaseProvider } from 'baseui';
-import { Investigate, MotifLightTheme, MotifDarkTheme } from 'motif.gl';
+import { Motif, MotifLightTheme, MotifDarkTheme } from 'motif.gl';
 import { Provider } from 'react-redux';
 import store from './redux-store';
 import 'motif.gl/dist/index.css';
@@ -15,7 +15,7 @@ const App = () => {
     <StyletronProvider value={engine}>
       <BaseProvider theme={MotifLightTheme}>
         <Provider store={store}>
-          <Investigate
+          <Motif
             name='Blocklynx'
             currency='ETH'
             secondaryTheme={MotifDarkTheme}

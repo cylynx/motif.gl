@@ -6,19 +6,19 @@ import { Button } from 'baseui/button';
 import { Block } from 'baseui/block';
 import { EditOutlined, CheckOutlined, CloseOutlined } from '@ant-design/icons';
 
-type EditableFieldProps = {
+export type EditableProps = {
   text: string;
   placeholder?: string;
   iconPosition: 'left' | 'right';
   onSubmit?: (editedText: string) => any;
 };
 
-type ButtonGroupProps = {
+export type ButtonGroupProps = {
   onSubmit: () => any;
   onCancel: () => any;
 };
 
-const ButtonGroup = ({ onSubmit, onCancel }: ButtonGroupProps) => (
+export const ButtonGroup = ({ onSubmit, onCancel }: ButtonGroupProps) => (
   <Fragment>
     <Button shape='round' onClick={onSubmit} kind='tertiary' size='mini'>
       <CheckOutlined style={{ fontSize: '16px' }} />
@@ -29,12 +29,12 @@ const ButtonGroup = ({ onSubmit, onCancel }: ButtonGroupProps) => (
   </Fragment>
 );
 
-const EditableField = ({
+const Editable = ({
   text,
   placeholder = '...',
   iconPosition = 'left',
   onSubmit,
-}: EditableFieldProps) => {
+}: EditableProps) => {
   const [isEdit, setIsEdit] = useState(false);
   const [value, setValue] = useState(text);
 
@@ -102,4 +102,4 @@ const EditableField = ({
   );
 };
 
-export default EditableField;
+export default Editable;

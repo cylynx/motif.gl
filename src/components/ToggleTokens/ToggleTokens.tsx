@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { colors } from 'baseui/tokens';
+import React from 'react';
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
 import { ButtonGroup, SHAPE, SIZE, MODE } from 'baseui/button-group';
-import { TypeProps, TagData, getColor, getIcon } from './Tag';
+import { getIcon } from '../TagData';
 
 export type ToggleTokensProps = {
   options: {
@@ -15,14 +14,14 @@ export type ToggleTokensProps = {
   onClick: (index: number, status: boolean) => void;
 };
 
-const defaultOptions = [
-  { label: 'data.id', id: 'data.id', type: 'string', selected: true },
-  { label: 'dataStr', id: 'datastr', type: 'boolean', selected: true },
-  { label: 'value', id: 'value', type: 'real', selected: true },
-  { label: 'start_dt', id: 'start_dt', type: 'timestamp', selected: true },
-];
+// const sampleOptions = [
+//   { label: 'data.id', id: 'data.id', type: 'string', selected: true },
+//   { label: 'dataStr', id: 'datastr', type: 'boolean', selected: true },
+//   { label: 'value', id: 'value', type: 'real', selected: true },
+//   { label: 'start_dt', id: 'start_dt', type: 'timestamp', selected: true },
+// ];
 
-export const ToggleTokens = ({ options, onClick }: ToggleTokensProps) => {
+const ToggleTokens = ({ options, onClick }: ToggleTokensProps) => {
   return (
     <ButtonGroup
       mode={MODE.checkbox}
@@ -33,7 +32,6 @@ export const ToggleTokens = ({ options, onClick }: ToggleTokensProps) => {
           .map((o, idx) => (o.selected === true ? idx : ''))
           .filter(String) as number[]
       }
-      // @ts-ignore
       onClick={(_, index) => {
         onClick(index, !options[index].selected);
       }}
@@ -69,3 +67,5 @@ export const ToggleTokens = ({ options, onClick }: ToggleTokensProps) => {
     </ButtonGroup>
   );
 };
+
+export default ToggleTokens;

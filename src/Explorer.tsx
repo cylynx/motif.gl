@@ -6,19 +6,19 @@ import { useStyletron, ThemeProvider } from 'baseui';
 import { Theme } from 'baseui/theme';
 import { Block } from 'baseui/block';
 import { Modal, ModalBody, SIZE } from 'baseui/modal';
-import { Loader } from '../ui';
-import * as Prop from '../../types/Prop';
-import { closeModal, setName } from '../../redux/ui-slice';
-import { setWidget } from '../widgets/widget-slice';
-import { setAccessors } from '../../redux/graph-slice';
-import { getTabsOverride, getNodeMenuOverride } from '../../utils/overrides';
-import { getUI, getWidget } from '../../redux';
+import { Loader } from './components/ui';
+import * as Prop from './types/Prop';
+import { closeModal, setName } from './redux/ui-slice';
+import { setWidget } from './containers/widgets/widget-slice';
+import { setAccessors } from './redux/graph-slice';
+import { getTabsOverride, getNodeMenuOverride } from './utils/overrides';
+import { getUI, getWidget } from './redux';
 
-import { defaultWidgetList } from '../widgets';
+import { defaultWidgetList } from './containers/widgets';
 
-import SideNavBar from '../SideNavBar';
-import Graph, { Tooltip, GraphRefContext } from '../Graph';
-import ImportWizard from '../ImportWizard';
+import SideNavBar from './containers/SideNavBar';
+import Graph, { Tooltip, GraphRefContext } from './containers/Graph';
+import ImportWizard from './containers/ImportWizard';
 
 type WidgetContainerProps = {
   children: React.ReactNode;
@@ -42,8 +42,8 @@ const WidgetContainer = (props: WidgetContainerProps) => {
   return null;
 };
 
-const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
-  const { name, currency, accessors, overrides, secondaryTheme } = props;
+const Explorer: React.FC<Prop.Explorer> = (props) => {
+  const { name, accessors, overrides, secondaryTheme } = props;
   const [tooltip, setTooltip] = useState(null);
   const graphRef = useRef(null);
 
@@ -115,4 +115,4 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
   );
 };
 
-export default InvestigateExplorer;
+export default Explorer;

@@ -9,33 +9,33 @@ import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
 import DndAccordian from './DndAccordian';
 
-type DndItem = {
+export type DndItem = {
   key: number;
   title: string;
   isVisible: boolean;
   children: React.ReactNode;
 };
 
-type DataDndListProps = {
+export type DndListProps = {
   items: DndItem[];
   onChangeOrder: (oldIndex: number, newIndex: number) => void;
   onDelete: (index: number) => void;
   onChangeVisibility: (index: number, isVisible: boolean) => void;
 };
 
-type DndContainerProps = {
+export type DndContainerProps = {
   onDelete: (index: number) => void;
   onChangeVisibility: (index: number, isVisible: boolean) => void;
   toggleActive: (key: number) => void;
   item: DndItem;
 };
 
-type ActionButton = {
+export type ActionButton = {
   onClick?: (...args: any[]) => void;
   [x: string]: any;
 };
 
-const VisibilityButton = ({
+export const VisibilityButton = ({
   onClick: onClickVisibility,
   isVisible,
   ...rest
@@ -65,7 +65,10 @@ const VisibilityButton = ({
   );
 };
 
-const DeleteButton = ({ onClick: onClickDelete, ...rest }: ActionButton) => {
+export const DeleteButton = ({
+  onClick: onClickDelete,
+  ...rest
+}: ActionButton) => {
   const toggleDelete = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (onClickDelete) {
@@ -87,7 +90,7 @@ const DeleteButton = ({ onClick: onClickDelete, ...rest }: ActionButton) => {
   );
 };
 
-const ShowMoreButton = ({ onClick, ...rest }: ActionButton) => {
+export const ShowMoreButton = ({ onClick, ...rest }: ActionButton) => {
   return (
     <Button
       size='mini'
@@ -102,7 +105,7 @@ const ShowMoreButton = ({ onClick, ...rest }: ActionButton) => {
   );
 };
 
-const DndContainer = ({
+export const DndContainer = ({
   item,
   onDelete,
   onChangeVisibility,
@@ -150,12 +153,12 @@ const DndContainer = ({
   );
 };
 
-const DataDndList = ({
+const DndList = ({
   items,
   onChangeOrder,
   onChangeVisibility,
   onDelete,
-}: DataDndListProps) => {
+}: DndListProps) => {
   const [expanded, setExpanded] = useState([]);
 
   const onChange = ({
@@ -217,4 +220,4 @@ const DataDndList = ({
   );
 };
 
-export default DataDndList;
+export default DndList;

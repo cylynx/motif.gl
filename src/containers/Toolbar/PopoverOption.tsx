@@ -4,7 +4,7 @@ import { FormControl } from 'baseui/form-control';
 import { Select } from 'baseui/select';
 import { Checkbox } from 'baseui/checkbox';
 import { Block } from 'baseui/block';
-import { TriGrid } from '../ui';
+import { TriGrid } from '../../components/ui';
 import * as Prop from '../../types/Prop';
 import { changeOptions, changeLayout } from '../../redux/graph-slice';
 import { getGraph, getAccessors } from '../../redux';

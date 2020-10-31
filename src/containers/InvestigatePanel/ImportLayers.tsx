@@ -8,7 +8,8 @@ import {
   deleteGraphList,
   changeVisibilityGraphList,
 } from '../../redux/graph-slice';
-import { Statistic, FlushedGrid, DataDndList, DataTable } from '../ui';
+import { Statistic, FlushedGrid } from '../../components/ui';
+import DndList from '../../components/DndList';
 import * as Graph from '../../types/Graph';
 import { getGraph } from '../../redux';
 
@@ -82,7 +83,7 @@ const ImportLayers = () => {
 
   return (
     <Block overflow='auto' maxHeight='calc(100vh - 200px - 150px)'>
-      <DataDndList
+      <DndList
         items={importItems}
         onChangeOrder={onChangeOrder}
         onChangeVisibility={onChangeVisibility}

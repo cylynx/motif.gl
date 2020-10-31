@@ -1,6 +1,6 @@
-import Investigate from './components/InvestigateExplorer';
+import Explorer from './Explorer';
 
 export * from './theme';
 export * from './redux';
 export * from './utils/utils';
-export { Investigate };
+export { Explorer as Motif };

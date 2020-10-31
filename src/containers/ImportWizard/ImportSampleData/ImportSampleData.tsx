@@ -7,7 +7,7 @@ import { LabelMedium, ParagraphMedium } from 'baseui/typography';
 import { ImportFormat } from '../../../processors/import-data';
 import * as Graph from '../../../types/Graph';
 import * as DATA from '../../../constants/sample-data';
-import { FlushedGrid } from '../../ui';
+import { FlushedGrid } from '../../../components/ui';
 import { addData, closeModal } from '../../../redux';
 
 export type SampleDataItem = ImportFormat & {

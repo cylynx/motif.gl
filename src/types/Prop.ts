@@ -39,8 +39,8 @@ export interface TooltipComponent {
   info: Tooltip;
 }
 
-// Prop Types for Investigate Explorer
-export interface InvestigateExplorer {
+// Prop Types for Explorer
+export interface Explorer {
   name: string;
   currency: string;
   accessors: Accessors;

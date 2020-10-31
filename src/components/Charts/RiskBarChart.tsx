@@ -2,10 +2,10 @@
 import React from 'react';
 import ReactEchartsCore from 'echarts-for-react/lib/core';
 import * as echarts from 'echarts/lib/echarts';
-import 'echarts/lib/chart/bar';
-import 'echarts/lib/component/legend';
-import 'echarts/lib/component/legendScroll';
-import 'echarts/lib/component/tooltip';
+import '../../../node_modules/echarts/lib/chart/bar';
+import '../../../node_modules/echarts/lib/component/legend';
+import '../../../node_modules/echarts/lib/component/legendScroll';
+import '../../../node_modules/echarts/lib/component/tooltip';
 import 'echarts/lib/component/title';
 import { useStyletron } from 'baseui';
 import * as Prop from '../../types/Prop';

@@ -1,7 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import undoable, { excludeAction, GroupByFunction } from 'redux-undo';
 import uiReducer from './ui-slice';
-import widgetReducer from '../components/widgets/widget-slice';
+import widgetReducer from '../containers/widgets/widget-slice';
 import graphReducer, {
   setRange,
   GraphState,

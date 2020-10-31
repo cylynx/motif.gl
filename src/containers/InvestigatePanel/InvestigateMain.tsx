@@ -6,13 +6,9 @@ import { Button } from 'baseui/button';
 import { Plus } from 'baseui/icon';
 import { Cell } from 'baseui/layout-grid';
 import { Block } from 'baseui/block';
-import {
-  Accordion,
-  FlushedGrid,
-  Statistic,
-  FullButton,
-  ToggleTokens,
-} from '../ui';
+import { FlushedGrid, Statistic, FullButton } from '../../components/ui';
+import ToggleTokens from '../../components/ToggleTokens';
+import Accordion from '../../components/Accordion';
 import * as Prop from '../../types/Prop';
 import * as Graph from '../../types/Graph';
 import {

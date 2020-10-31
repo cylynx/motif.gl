@@ -6,8 +6,6 @@ import { StatefulTooltip, PLACEMENT, TRIGGER_TYPE } from 'baseui/tooltip';
 import { VscSymbolKey } from 'react-icons/vsc';
 import { BiAdjust, BiBracket, BiHash, BiTime } from 'react-icons/bi';
 
-export * from 'baseui/tag';
-
 export type TagValueProps = {
   value: string;
   title: string;
@@ -118,7 +116,7 @@ export const getColor = (type: TypeProps) => {
   }
 };
 
-export const TagData = ({
+const TagData = ({
   type = 'string',
   title,
   closeable = true,
@@ -187,3 +185,5 @@ export const TagRisk = ({ score, title }: TagRiskProps) => {
     </StatefulTooltip>
   );
 };
+
+export default TagData;
