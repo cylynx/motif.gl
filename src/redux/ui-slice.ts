@@ -17,9 +17,7 @@ export interface UiState {
   name: string;
   currency: string;
   loading: boolean;
-  modalMsg: string;
-  modalOpen: boolean;
-  modalImportOpen: boolean;
+  modal: { isOpen: boolean; content: 'import' | string };
   clickedId: any;
   timeLock: boolean;
   bottomOpen: boolean;
@@ -32,9 +30,7 @@ const initialState: UiState = {
   name: '',
   currency: '',
   loading: false,
-  modalMsg: '',
-  modalOpen: false,
-  modalImportOpen: true,
+  modal: { isOpen: true, content: 'import' },
   clickedId: null,
   timeLock: false,
   bottomOpen: false,
@@ -53,29 +49,27 @@ const ui = createSlice({
   reducers: {
     fetchBegin(state) {
       state.loading = true;
-      state.modalMsg = '';
-      state.modalOpen = false;
+      state.modal.content = '';
+      state.modal.isOpen = false;
     },
     fetchError(state, action) {
       state.loading = false;
-      state.modalMsg = action.payload.message;
-      state.modalOpen = true;
+      state.modal.content = '';
+      state.modal.isOpen = true;
     },
     fetchDone(state) {
       state.loading = false;
     },
     closeModal(state) {
-      state.modalOpen = false;
+      state.modal.isOpen = false;
     },
     openImportModal(state) {
-      state.modalImportOpen = true;
-    },
-    closeImportModal(state) {
-      state.modalImportOpen = false;
+      state.modal.isOpen = true;
+      state.modal.content = 'import';
     },
     postMessage(state, action) {
-      state.modalOpen = true;
-      state.modalMsg = action.payload;
+      state.modal.isOpen = true;
+      state.modal.content = action.payload;
     },
     setTimeLock(state) {
       state.timeLock = true;
@@ -146,7 +140,6 @@ export const {
   fetchDone,
   closeModal,
   openImportModal,
-  closeImportModal,
   postMessage,
   setTimeLock,
   setBottomOpen,

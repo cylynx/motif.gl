@@ -1,5 +1,6 @@
 import { Content, Accordion } from './Accordion';
 import DataDndList from './DataDndList';
+import DataTable from './DataTable';
 import Hash from './Hash';
 import Loader from './Loader';
 import Notification from './Notification';
@@ -21,6 +22,7 @@ export {
   Accordion,
   Content,
   DataDndList,
+  DataTable,
   FullButton,
   DivPrimary,
   DivSecondary,

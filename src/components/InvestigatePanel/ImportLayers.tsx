@@ -2,12 +2,13 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Cell } from 'baseui/layout-grid';
 import { Block } from 'baseui/block';
+import { Button } from 'baseui/button';
 import {
   updateGraphList,
   deleteGraphList,
   changeVisibilityGraphList,
 } from '../../redux/graph-slice';
-import { Statistic, FlushedGrid, DataDndList } from '../ui';
+import { Statistic, FlushedGrid, DataDndList, DataTable } from '../ui';
 import * as Graph from '../../types/Graph';
 import { getGraph } from '../../redux';
 
@@ -40,6 +41,9 @@ const LayerDetailed = ({ graph }: { graph: Graph.GraphData }) => {
           size='medium'
         />
       </Cell>
+      <Button kind='secondary' size='compact'>
+        View Node Data
+      </Button>
     </FlushedGrid>
   );
 };

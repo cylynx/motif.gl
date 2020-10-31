@@ -15,7 +15,7 @@ import {
 import * as Graph from '../../../types/Graph';
 
 import * as DATA from '../../../constants/sample-data';
-import { addData, closeImportModal, fetchError } from '../../../redux';
+import { addData, closeModal, fetchError } from '../../../redux';
 
 type FormValues = {
   dataType: { label: string; id: string }[];
@@ -149,7 +149,7 @@ const ImportLocalFile = () => {
       .filter((k) => accessors[k] === '')
       .map((k) => delete accessors[k]);
     dispatch(addData(files, accessors as Graph.Accessors));
-    dispatch(closeImportModal());
+    dispatch(closeModal());
   };
 
   return (

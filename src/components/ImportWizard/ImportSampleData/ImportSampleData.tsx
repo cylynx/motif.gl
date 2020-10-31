@@ -8,7 +8,7 @@ import { ImportFormat } from '../../../processors/import-data';
 import * as Graph from '../../../types/Graph';
 import * as DATA from '../../../constants/sample-data';
 import { FlushedGrid } from '../../ui';
-import { addData, closeImportModal } from '../../../redux';
+import { addData, closeModal } from '../../../redux';
 
 export type SampleDataItem = ImportFormat & {
   title: string;
@@ -68,7 +68,7 @@ const StyledItem = ({ item }: { item: SampleDataItem }) => {
     e: MouseEvent<HTMLButtonElement>,
   ) => {
     e.preventDefault();
-    dispatch(closeImportModal());
+    dispatch(closeModal());
     // @ts-ignore
     dispatch(addData({ data: item.data, type: item.type }, defaultAccessors));
   };

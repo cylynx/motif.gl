@@ -10,7 +10,6 @@ import { Loader } from '../ui';
 import * as Prop from '../../types/Prop';
 import {
   closeModal,
-  closeImportModal,
   setScore,
   setName,
   setCurrency,
@@ -56,9 +55,7 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
   const [, theme] = useStyletron();
   const dispatch = useDispatch();
 
-  const modalMsg = useSelector((state) => getUI(state).modalMsg);
-  const modalOpen = useSelector((state) => getUI(state).modalOpen);
-  const modalImportOpen = useSelector((state) => getUI(state).modalImportOpen);
+  const modal = useSelector((state) => getUI(state).modal);
   const loading = useSelector((state) => getUI(state).loading);
   // const timeLock = useSelector((state) => getUI(state).timeLock);
 
@@ -101,23 +98,16 @@ const InvestigateExplorer: React.FC<Prop.InvestigateExplorer> = (props) => {
     dispatch(closeModal());
   };
 
-  const onCloseModalImport = () => {
-    dispatch(closeImportModal());
-  };
-
   return (
     <Fragment>
-      <Modal isOpen={modalOpen} onClose={onCloseModal} closeable>
-        <ModalBody>{modalMsg}</ModalBody>
-      </Modal>
       <Modal
-        isOpen={modalImportOpen}
-        onClose={onCloseModalImport}
+        isOpen={modal.isOpen}
+        onClose={onCloseModal}
         closeable
         size={SIZE.auto}
       >
         <ModalBody>
-          <UserImportWizard />
+          {modal.content === 'import' ? <UserImportWizard /> : modal.content}
         </ModalBody>
       </Modal>
       <Block position='absolute' width='100%' height='100%'>
