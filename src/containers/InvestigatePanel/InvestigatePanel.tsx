@@ -14,11 +14,7 @@ const InvestigatePanel = () => {
 
   return (
     <Fragment>
-      <Editable
-        text={value}
-        iconPosition='right'
-        onSubmit={(text) => setValue(text)}
-      />
+      <Editable text={value} editIcon onSubmit={(text) => setValue(text)} />
       <br />
       <InvestigateMain />
     </Fragment>

@@ -1,16 +1,33 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, Fragment } from 'react';
 
-import { LabelLarge } from 'baseui/typography';
+import { useStyletron } from 'baseui';
+import {
+  LabelLarge,
+  LabelMedium,
+  LabelSmall,
+  ParagraphLarge,
+  ParagraphMedium,
+  ParagraphSmall,
+} from 'baseui/typography';
 import { Input } from 'baseui/input';
 import { Button } from 'baseui/button';
-import { Block } from 'baseui/block';
-import { EditOutlined, CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import { HiCheck, HiX, HiOutlinePencil } from 'react-icons/hi';
 
 export type EditableProps = {
   text: string;
+  textComponent?:
+    | 'LabelLarge'
+    | 'LabelMedium'
+    | 'LabelSmall'
+    | 'ParagraphLarge'
+    | 'ParagraphMedium'
+    | 'ParagraphSmall';
   placeholder?: string;
-  iconPosition: 'left' | 'right';
+  editIcon?: boolean;
   onSubmit?: (editedText: string) => any;
+  onChange?: (editedText: string) => any;
 };
 
 export type ButtonGroupProps = {
@@ -18,87 +35,149 @@ export type ButtonGroupProps = {
   onCancel: () => any;
 };
 
+const componentMapper = {
+  LabelLarge,
+  LabelMedium,
+  LabelSmall,
+  ParagraphLarge,
+  ParagraphMedium,
+  ParagraphSmall,
+};
+
 export const ButtonGroup = ({ onSubmit, onCancel }: ButtonGroupProps) => (
   <Fragment>
-    <Button shape='round' onClick={onSubmit} kind='tertiary' size='mini'>
-      <CheckOutlined style={{ fontSize: '16px' }} />
+    <Button shape='square' onClick={onSubmit} kind='primary' size='mini'>
+      <HiCheck size={16} />
     </Button>
-    <Button shape='round' onClick={onCancel} kind='tertiary' size='mini'>
-      <CloseOutlined style={{ fontSize: '16px' }} />
+    <Button shape='square' onClick={onCancel} kind='primary' size='mini'>
+      <HiX size={16} />
     </Button>
   </Fragment>
 );
 
+/**
+ * Use either onSubmit or onChange event handler.
+ * If onSubmit is used, component will render a tick / cross button to confirm changes.
+ * If onChange is used the new value is passed back to the parent component immediately.
+ *
+ */
 const Editable = ({
   text,
+  textComponent = 'LabelLarge',
   placeholder = '...',
-  iconPosition = 'left',
+  editIcon = false,
   onSubmit,
+  onChange,
 }: EditableProps) => {
-  const [isEdit, setIsEdit] = useState(false);
+  const [css, theme] = useStyletron();
   const [value, setValue] = useState(text);
-
-  const onClickEdit = () => {
-    setIsEdit(true);
-  };
+  const [isEditing, setEditing] = useState(false);
 
   const onCancel = () => {
     setValue(text);
-    setIsEdit(false);
+    setEditing(false);
+  };
+
+  // if using submit buttons do not use blur to control
+  const onBlur = () => {
+    if (onSubmit) return;
+
+    setEditing(false);
   };
 
   const onConfirmSubmit = () => {
     onSubmit(value);
-    setIsEdit(false);
+    setEditing(false);
+  };
+
+  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+    if (onChange) {
+      onChange(e.target.value);
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    const { key } = event;
+    const keys = ['Escape', 'Tab'];
+    const enterKey = 'Enter';
+    const allKeys = [...keys, enterKey];
+    if (key === enterKey && onSubmit) {
+      onConfirmSubmit();
+    } else if (allKeys.indexOf(key) > -1) {
+      setEditing(false);
+    }
   };
 
   return (
-    <Fragment>
-      {!isEdit && (
-        <Block
-          display='flex'
-          paddingTop='4px'
-          paddingBottom='4px'
-          alignItems='center'
+    <div
+      className={css({ height: theme.typography[textComponent].lineHeight })}
+    >
+      {isEditing ? (
+        <div onBlur={onBlur} onKeyDown={(e) => handleKeyDown(e)}>
+          <Input
+            value={value}
+            autoFocus
+            onChange={onChangeInput}
+            size={textComponent.includes('Small') ? 'mini' : 'compact'}
+            placeholder={placeholder}
+            endEnhancer={
+              onSubmit && (
+                <ButtonGroup onSubmit={onConfirmSubmit} onCancel={onCancel} />
+              )
+            }
+            overrides={{
+              Root: {
+                style: { paddingBottom: 0 },
+              },
+              Input: {
+                style: { paddingLeft: '8px' },
+              },
+              EndEnhancer: {
+                style: {
+                  paddingRight: 0,
+                },
+              },
+            }}
+          />
+        </div>
+      ) : (
+        <div
+          className={css({ display: 'flex' })}
+          onClick={() => setEditing(true)}
         >
-          {iconPosition === 'right' && (
-            <LabelLarge marginRight='8px'>{value}</LabelLarge>
-          )}
-          <Button
-            shape='round'
-            onClick={onClickEdit}
-            kind='minimal'
-            size='mini'
+          <div
+            className={css({
+              borderBottomStyle: 'dashed',
+              borderBottomWidth: '1px',
+              borderBottomColor: theme.colors.primary400,
+              marginRight: editIcon ? '8px' : '0',
+              ':hover': { borderBottomColor: theme.colors.primary },
+            })}
           >
-            <EditOutlined style={{ fontSize: '16px' }} />
-          </Button>
-          {iconPosition === 'left' && (
-            <LabelLarge marginLeft='8px'>{value}</LabelLarge>
+            {React.createElement(
+              componentMapper[textComponent],
+              {
+                marginRight: '4px',
+                marginTop: '0',
+                marginBottom: '0',
+              },
+              text || placeholder || 'Editable',
+            )}
+          </div>
+          {editIcon && (
+            <Button
+              shape='round'
+              onClick={() => setEditing(true)}
+              kind='minimal'
+              size='mini'
+            >
+              <HiOutlinePencil size={16} />
+            </Button>
           )}
-        </Block>
+        </div>
       )}
-      {isEdit && (
-        <Input
-          value={value}
-          autoFocus
-          // @ts-ignore
-          onChange={(e) => setValue(e.target.value)}
-          size='compact'
-          placeholder={placeholder}
-          endEnhancer={
-            <ButtonGroup onSubmit={onConfirmSubmit} onCancel={onCancel} />
-          }
-          overrides={{
-            Root: {
-              style: { backgroundColor: 'transparent' },
-            },
-            EndEnhancer: {
-              style: { backgroundColor: 'transparent' },
-            },
-          }}
-        />
-      )}
-    </Fragment>
+    </div>
   );
 };
 
