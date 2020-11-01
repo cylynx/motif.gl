@@ -1,4 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable no-nested-ternary */
 import React, { useState, useEffect, useRef, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -7,6 +8,7 @@ import { Theme } from 'baseui/theme';
 import { Block } from 'baseui/block';
 import { Modal, ModalBody, SIZE } from 'baseui/modal';
 import { Loader } from './components/ui';
+import DataTable from './components/DataTable';
 import * as Prop from './types/Prop';
 import { closeModal, setName } from './redux/ui-slice';
 import { setWidget } from './containers/widgets/widget-slice';
@@ -96,7 +98,13 @@ const Explorer: React.FC<Prop.Explorer> = (props) => {
         size={SIZE.auto}
       >
         <ModalBody>
-          {modal.content === 'import' ? <UserImportWizard /> : modal.content}
+          {modal.content === 'import' ? (
+            <UserImportWizard />
+          ) : modal.content.startsWith('table') ? (
+            <DataTable dataKey={modal.content} />
+          ) : (
+            modal.content
+          )}
         </ModalBody>
       </Modal>
       <Block position='absolute' width='100%' height='100%'>

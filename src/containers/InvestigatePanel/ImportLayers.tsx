@@ -8,12 +8,20 @@ import {
   deleteGraphList,
   changeVisibilityGraphList,
 } from '../../redux/graph-slice';
+import { openDataTableModal } from '../../redux/ui-slice';
 import { Statistic, FlushedGrid } from '../../components/ui';
 import DndList from '../../components/DndList';
 import * as Graph from '../../types/Graph';
 import { getGraph } from '../../redux';
 
-const LayerDetailed = ({ graph }: { graph: Graph.GraphData }) => {
+const LayerDetailed = ({
+  graph,
+  index,
+}: {
+  graph: Graph.GraphData;
+  index: number;
+}) => {
+  const dispatch = useDispatch();
   const graphVisible = useSelector((state) => getGraph(state).graphVisible);
   const visibleNodeList = graphVisible.nodes.map((x) => x.id);
   const visibleEdgeList = graphVisible.edges.map((x) => x.id);
@@ -42,8 +50,23 @@ const LayerDetailed = ({ graph }: { graph: Graph.GraphData }) => {
           size='medium'
         />
       </Cell>
-      <Button kind='secondary' size='compact'>
+      <Button
+        kind='secondary'
+        size='compact'
+        onClick={() =>
+          dispatch(openDataTableModal(`table_graphList_${index}_nodes`))
+        }
+      >
         View Node Data
+      </Button>
+      <Button
+        kind='secondary'
+        size='compact'
+        onClick={() =>
+          dispatch(openDataTableModal(`table_graphList_${index}_edges`))
+        }
+      >
+        View Edge Data
       </Button>
     </FlushedGrid>
   );
@@ -65,7 +88,7 @@ const ImportLayers = () => {
         typeof graph.metadata?.visible === 'undefined'
           ? true
           : graph.metadata?.visible,
-      children: <LayerDetailed graph={graph} />,
+      children: <LayerDetailed graph={graph} index={index} />,
     };
   });
 

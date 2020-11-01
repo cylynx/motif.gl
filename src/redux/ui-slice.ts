@@ -62,6 +62,10 @@ const ui = createSlice({
       state.modal.isOpen = true;
       state.modal.content = 'import';
     },
+    openDataTableModal(state, action: PayloadAction<string>) {
+      state.modal.isOpen = true;
+      state.modal.content = action.payload;
+    },
     postMessage(state, action) {
       state.modal.isOpen = true;
       state.modal.content = action.payload;
@@ -126,6 +130,7 @@ export const {
   fetchDone,
   closeModal,
   openImportModal,
+  openDataTableModal,
   postMessage,
   setClickedId,
   setName,
