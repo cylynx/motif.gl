@@ -1,10 +1,11 @@
 import React, { useState, MouseEvent } from 'react';
 import {
-  AiOutlineDelete,
-  AiOutlineEye,
-  AiOutlineEyeInvisible,
-  AiOutlineDown,
-} from 'react-icons/ai';
+  HiOutlineEye,
+  HiOutlineEyeOff,
+  HiOutlineTrash,
+  HiChevronDown,
+} from 'react-icons/hi';
+
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
 import DndAccordian from './DndAccordian';
@@ -56,11 +57,7 @@ export const VisibilityButton = ({
       onClick={toggleVisibility}
       {...rest}
     >
-      {isVisible ? (
-        <AiOutlineEye size={16} />
-      ) : (
-        <AiOutlineEyeInvisible size={16} />
-      )}
+      {isVisible ? <HiOutlineEye size={16} /> : <HiOutlineEyeOff size={16} />}
     </Button>
   );
 };
@@ -85,7 +82,7 @@ export const DeleteButton = ({
       onClick={toggleDelete}
       {...rest}
     >
-      <AiOutlineDelete size={16} />
+      <HiOutlineTrash size={16} />
     </Button>
   );
 };
@@ -100,7 +97,7 @@ export const ShowMoreButton = ({ onClick, ...rest }: ActionButton) => {
       onClick={onClick}
       {...rest}
     >
-      <AiOutlineDown size={16} />
+      <HiChevronDown size={16} />
     </Button>
   );
 };

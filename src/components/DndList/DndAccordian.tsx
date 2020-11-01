@@ -173,7 +173,7 @@ class DndAccordian extends React.Component<
                     paddingTop='scale200'
                   >
                     <DragHandle {...sharedProps} {...dragHandleProps}>
-                      <Grab size={24} color='#CCC' />
+                      <Grab size={20} color='#CCC' />
                     </DragHandle>
                     <Label {...sharedProps} {...labelProps}>
                       {value}
