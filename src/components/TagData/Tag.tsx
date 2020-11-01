@@ -38,7 +38,7 @@ export const getIcon = (type: TypeProps) => {
       return (
         <BiAdjust
           size='14px'
-          color={colors.brown500}
+          color={colors.brown400}
           style={{ paddingRight: '8px' }}
         />
       );
@@ -46,7 +46,7 @@ export const getIcon = (type: TypeProps) => {
       return (
         <BiTime
           size='14px'
-          color={colors.green500}
+          color={colors.green400}
           style={{ paddingRight: '8px' }}
         />
       );
@@ -54,7 +54,7 @@ export const getIcon = (type: TypeProps) => {
       return (
         <BiHash
           size='14px'
-          color={colors.yellow500}
+          color={colors.yellow400}
           style={{ paddingRight: '8px' }}
         />
       );
@@ -62,7 +62,7 @@ export const getIcon = (type: TypeProps) => {
       return (
         <BiHash
           size='14px'
-          color={colors.yellow500}
+          color={colors.yellow400}
           style={{ paddingRight: '8px' }}
         />
       );
@@ -70,7 +70,7 @@ export const getIcon = (type: TypeProps) => {
       return (
         <VscSymbolKey
           size='16px'
-          color={colors.blue500}
+          color={colors.blue400}
           style={{ paddingRight: '8px' }}
         />
       );
@@ -78,7 +78,7 @@ export const getIcon = (type: TypeProps) => {
       return (
         <BiTime
           size='14px'
-          color={colors.green500}
+          color={colors.green400}
           style={{ paddingRight: '8px' }}
         />
       );
@@ -86,7 +86,7 @@ export const getIcon = (type: TypeProps) => {
       return (
         <BiBracket
           size='14px'
-          color={colors.purple500}
+          color={colors.purple400}
           style={{ paddingRight: '8px' }}
         />
       );

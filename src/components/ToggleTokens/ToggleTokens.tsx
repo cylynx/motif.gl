@@ -53,6 +53,9 @@ const ToggleTokens = ({ options, onClick }: ToggleTokensProps) => {
                 return {
                   marginLeft: $theme.sizing.scale300,
                   marginBottom: $theme.sizing.scale200,
+                  borderStyle: 'solid',
+                  borderWidth: '2px',
+                  borderColor: $theme.colors.primary,
                 };
               },
             },
