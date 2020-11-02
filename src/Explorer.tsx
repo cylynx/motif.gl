@@ -46,12 +46,12 @@ const WidgetContainer = (props: WidgetContainerProps) => {
 
 const Explorer: React.FC<Prop.Explorer> = (props) => {
   const { name, accessors, overrides, secondaryTheme } = props;
-  const [tooltip, setTooltip] = useState(null);
   const graphRef = useRef(null);
 
   const [, theme] = useStyletron();
   const dispatch = useDispatch();
 
+  const tooltip = useSelector((state) => getUI(state).tooltip);
   const modal = useSelector((state) => getUI(state).modal);
   const loading = useSelector((state) => getUI(state).loading);
   // const timeLock = useSelector((state) => getUI(state).timeLock);
@@ -108,12 +108,12 @@ const Explorer: React.FC<Prop.Explorer> = (props) => {
         </ModalBody>
       </Modal>
       <Block position='absolute' width='100%' height='100%'>
-        <Graph setTooltip={setTooltip} ref={graphRef} />
+        <Graph ref={graphRef} />
       </Block>
       <WidgetContainer graphRef={graphRef} theme={secondaryTheme || theme}>
         <SideNavBar />
         {loading && <Loader />}
-        {tooltip && <UserTooltip info={tooltip} />}
+        {tooltip && <UserTooltip />}
         {activeWidgetList.length > 0 &&
           activeWidgetList.map((item) => (
             <Block key={item.id}>{item.widget}</Block>

@@ -3,24 +3,23 @@ import { useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
 import { StyledInner, StyledPadding } from 'baseui/popover';
 import * as Graph from '../../types/Graph';
-import * as Prop from '../../types/Prop';
 import { getNodeProperties, getEdgeProperties } from '../../utils/graph-utils';
 import { getGraph, getUI } from '../../redux';
 
-const Tooltip: React.FC<Prop.TooltipComponent> = ({ info }) => {
+const Tooltip = () => {
+  const tooltip = useSelector((state) => getUI(state).tooltip);
   const graphFlatten = useSelector((state) => getGraph(state).graphFlatten);
   const nodeFields = useSelector((state) => getUI(state).nodeSelection);
   const edgeFields = useSelector((state) => getUI(state).edgeSelection);
-  const { obj, type } = info.selected;
   const properties =
-    type === 'node'
+    tooltip.type === 'node'
       ? getNodeProperties(
-          graphFlatten.nodes.find((x: Graph.Node) => x.id === obj.id),
+          graphFlatten.nodes.find((x: Graph.Node) => x.id === tooltip.id),
           'data',
           nodeFields.filter((x) => !x.selected).map((x) => x.id),
         )
       : getEdgeProperties(
-          graphFlatten.edges.find((x: Graph.Edge) => x.id === obj.id),
+          graphFlatten.edges.find((x: Graph.Edge) => x.id === tooltip.id),
           'data',
           edgeFields.filter((x) => !x.selected).map((x) => x.id),
         );
@@ -40,8 +39,8 @@ const Tooltip: React.FC<Prop.TooltipComponent> = ({ info }) => {
     <div
       style={{
         position: 'absolute',
-        left: info.x,
-        top: info.y,
+        left: tooltip.x,
+        top: tooltip.y,
         width: '250px',
       }}
     >

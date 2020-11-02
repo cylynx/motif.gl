@@ -1,6 +1,7 @@
-import { ReactNode, RefObject, MouseEvent, FC, ComponentType } from 'react';
+import { ReactNode, RefObject, MouseEvent, FC } from 'react';
 import { Theme } from 'baseui/theme';
 import { Accessors, GraphData, ChartData } from './Graph';
+import { Tooltip } from '../redux/ui-slice';
 import { WidgetItem } from './Widget';
 
 // Prop Types for Tab Override
@@ -22,23 +23,6 @@ export interface Overrides {
 export interface ImportWizard {
   tabs: Tab[];
 }
-
-// Prop Types for NodeMenu
-export interface Tooltip {
-  x: number;
-  y: number;
-  selected: {
-    type: 'node' | 'edge';
-    obj: {
-      id: string;
-    };
-  };
-}
-
-export interface TooltipComponent {
-  info: Tooltip;
-}
-
 // Prop Types for Explorer
 export interface Explorer {
   name: string;
@@ -98,16 +82,6 @@ export interface Layout {
 export interface QueryFile {
   info: string;
   tooltip: string;
-}
-
-// Prop Types for InvestigateChart
-export interface InvestigateChart {
-  Tooltip: ComponentType<TooltipComponent>;
-}
-
-// Prop Types for InvestigateGraph
-export interface Graph {
-  setTooltip: (tooltip: Tooltip | boolean) => void;
 }
 
 // Prop Types for InvestigateChartLegend

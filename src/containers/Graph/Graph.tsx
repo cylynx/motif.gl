@@ -5,14 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useStyletron } from 'baseui';
 import Graphin from '@antv/graphin';
 import { IG6GraphEvent } from '@antv/g6/lib/types';
-import * as Prop from '../../types/Prop';
 import activateRelations from './behaviors/activate-relations';
-import { setClickedId, getGraph } from '../../redux';
+import { setTooltip, getGraph } from '../../redux';
 import './graphin.css';
 // import '@antv/graphin/dist/index.css';
 
-const Graph = React.forwardRef<HTMLDivElement, Prop.Graph>((props, ref) => {
-  const { setTooltip } = props;
+const Graph = React.forwardRef<HTMLDivElement>((props, ref) => {
   const dispatch = useDispatch();
   const [, theme] = useStyletron();
   const graphVisible = useSelector((state) => getGraph(state).graphVisible);
@@ -26,8 +24,7 @@ const Graph = React.forwardRef<HTMLDivElement, Prop.Graph>((props, ref) => {
     const { graph } = ref.current;
 
     const onResetClick = () => {
-      setClickedId(null);
-      setTooltip(false);
+      dispatch(setTooltip(null));
     };
 
     const onNodeClick = (e: IG6GraphEvent) => {
@@ -40,15 +37,14 @@ const Graph = React.forwardRef<HTMLDivElement, Prop.Graph>((props, ref) => {
         const { centerX, centerY } = item.getBBox();
         const canvasXY = graph.getCanvasByPoint(centerX, centerY);
         const node = item.get('model');
-        dispatch(setClickedId(node.id));
-        setTooltip({
-          x: canvasXY.x,
-          y: canvasXY.y,
-          selected: {
+        dispatch(
+          setTooltip({
+            id: node.id,
+            x: canvasXY.x,
+            y: canvasXY.y,
             type: 'node',
-            obj: node,
-          },
-        });
+          }),
+        );
       }
     };
 
@@ -62,15 +58,14 @@ const Graph = React.forwardRef<HTMLDivElement, Prop.Graph>((props, ref) => {
         const { centerX, centerY } = item.getBBox();
         const canvasXY = graph.getCanvasByPoint(centerX, centerY);
         const edge = item.get('model');
-        dispatch(setClickedId(edge.id));
-        setTooltip({
-          x: canvasXY.x,
-          y: canvasXY.y,
-          selected: {
+        dispatch(
+          setTooltip({
+            id: edge.id,
+            x: canvasXY.x,
+            y: canvasXY.y,
             type: 'edge',
-            obj: edge,
-          },
-        });
+          }),
+        );
       }
     };
 
@@ -79,13 +74,13 @@ const Graph = React.forwardRef<HTMLDivElement, Prop.Graph>((props, ref) => {
     graph.on('node:dragstart', onResetClick);
     graph.on('edge:click', onEdgeClick);
     graph.on('canvas:click', onResetClick);
-    graph.on('canvas:drag', onResetClick);
+    graph.on('canvas:dragstart', onResetClick);
     return () => {
       graph.off('node:click', onNodeClick);
       graph.off('node:dragstart', onResetClick);
       graph.on('edge:click', onEdgeClick);
       graph.off('canvas:click', onResetClick);
-      graph.off('canvas:drag', onResetClick);
+      graph.off('canvas:dragstart', onResetClick);
     };
   }, [dispatch, setTooltip]);
 

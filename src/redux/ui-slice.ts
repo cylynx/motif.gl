@@ -13,11 +13,18 @@ export type Selection = {
   selected: boolean;
 };
 
+export type Tooltip = null | {
+  id: string;
+  x: number;
+  y: number;
+  type: 'edge' | 'node';
+};
+
 export interface UiState {
   name: string;
   loading: boolean;
   modal: { isOpen: boolean; content: 'import' | string };
-  clickedId: any;
+  tooltip: Tooltip;
   score: any;
   nodeSelection: Selection[];
   edgeSelection: Selection[];
@@ -28,7 +35,7 @@ const initialState: UiState = {
   currency: '',
   loading: false,
   modal: { isOpen: true, content: 'import' },
-  clickedId: null,
+  tooltip: null,
   score: null,
   nodeSelection: [{ label: 'id', id: 'id', type: 'string', selected: true }],
   edgeSelection: [
@@ -70,9 +77,8 @@ const ui = createSlice({
       state.modal.isOpen = true;
       state.modal.content = action.payload;
     },
-    setClickedId(state, action) {
-      const id = action.payload;
-      state.clickedId = id;
+    setTooltip(state, action: PayloadAction<Tooltip>) {
+      state.tooltip = action.payload;
     },
     setScore(state, action) {
       state.score = action.payload;
@@ -132,7 +138,7 @@ export const {
   openImportModal,
   openDataTableModal,
   postMessage,
-  setClickedId,
+  setTooltip,
   setName,
   updateNodeSelection,
   updateEdgeSelection,
