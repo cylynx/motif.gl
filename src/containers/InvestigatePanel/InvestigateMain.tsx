@@ -6,6 +6,7 @@ import { Button } from 'baseui/button';
 import { Plus } from 'baseui/icon';
 import { Cell } from 'baseui/layout-grid';
 import { Block } from 'baseui/block';
+import { ParagraphSmall } from 'baseui/typography';
 import { FlushedGrid, Statistic, FullButton } from '../../components/ui';
 import ToggleTokens from '../../components/ToggleTokens';
 import Accordion from '../../components/Accordion';
@@ -84,10 +85,16 @@ const InvestigateMain = () => {
               ),
               key: 'node properties',
               content: (
-                <ToggleTokens
-                  options={graphList.length > 0 ? nodeFields : []}
-                  onClick={onClickNodeToken}
-                />
+                <Fragment>
+                  <ParagraphSmall marginTop={0}>
+                    Hint: Customize node tooltip by selecting the attributes to
+                    include
+                  </ParagraphSmall>
+                  <ToggleTokens
+                    options={graphList.length > 0 ? nodeFields : []}
+                    onClick={onClickNodeToken}
+                  />
+                </Fragment>
               ),
             },
           ]}
@@ -105,10 +112,16 @@ const InvestigateMain = () => {
               ),
               key: 'edge properties',
               content: (
-                <ToggleTokens
-                  options={graphList.length > 0 ? edgeFields : []}
-                  onClick={onClickEdgeToken}
-                />
+                <Fragment>
+                  <ParagraphSmall marginTop={0}>
+                    Hint: Customize edge tooltip by selecting the attributes to
+                    include
+                  </ParagraphSmall>
+                  <ToggleTokens
+                    options={graphList.length > 0 ? edgeFields : []}
+                    onClick={onClickEdgeToken}
+                  />
+                </Fragment>
               ),
             },
           ]}
