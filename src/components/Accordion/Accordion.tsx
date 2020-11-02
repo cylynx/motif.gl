@@ -65,6 +65,7 @@ const Accordion = ({ items, icon }: AccordionProps) => {
             paddingBottom: $expanded ? $theme.sizing.scale600 : 0,
             paddingLeft: $theme.sizing.scale600,
             paddingRight: $theme.sizing.scale600,
+            borderBottomWidth: 0,
           }),
         },
       }}

@@ -50,7 +50,7 @@ export const VisibilityButton = ({
   };
 
   return (
-    <SimpleTooltip tooltip={isVisible ? 'Hide' : 'Show'}>
+    <SimpleTooltip tooltip={isVisible ? 'Hide Layer' : 'Show Layer'}>
       <Button
         size='mini'
         shape='round'
@@ -77,7 +77,7 @@ export const DeleteButton = ({
   };
 
   return (
-    <SimpleTooltip tooltip='Delete'>
+    <SimpleTooltip tooltip='Delete Layer'>
       <Button
         size='mini'
         shape='round'
@@ -94,7 +94,7 @@ export const DeleteButton = ({
 
 export const ShowMoreButton = ({ onClick, ...rest }: ActionButton) => {
   return (
-    <SimpleTooltip tooltip='Expand'>
+    <SimpleTooltip tooltip='More Details'>
       <Button
         size='mini'
         shape='round'
@@ -142,10 +142,10 @@ export const DndContainer = ({
               paddingRight: '0',
               justifyContent: 'space-between',
               ':hover': {
-                backgroundColor: $theme.colors.backgroundPrimary,
+                backgroundColor: $theme.colors.backgroundSecondary,
               },
               ':active': {
-                backgroundColor: $theme.colors.backgroundPrimary,
+                backgroundColor: $theme.colors.backgroundSecondary,
               },
             };
           },
@@ -199,16 +199,20 @@ const DndList = ({
           style: ({ $theme }: { $theme: any }) => {
             return {
               paddingTop: $theme.sizing.scale200,
-              paddingBottom: $theme.sizing.scale200,
-              paddingLeft: $theme.sizing.scale200,
-              paddingRight: $theme.sizing.scale200,
+              paddingBottom: 0,
+              paddingLeft: 0,
+              paddingRight: 0,
+              borderBottomColor: $theme.colors.backgroundSecondary,
+              borderLeftColor: $theme.colors.backgroundSecondary,
+              borderRightColor: $theme.colors.backgroundSecondary,
+              backgroundColor: $theme.colors.backgroundSecondary,
             };
           },
         },
         Label: {
           component: ({ $value }: { $value: any }) => {
             return (
-              <Block width='100%'>
+              <Block width='100%' paddingBottom='scale200'>
                 <DndContainer
                   item={$value}
                   onDelete={onDeleteItem}
