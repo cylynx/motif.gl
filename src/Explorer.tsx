@@ -98,12 +98,12 @@ const Explorer: React.FC<Prop.Explorer> = (props) => {
         size={SIZE.auto}
       >
         <ModalBody>
-          {modal.content === 'import' ? (
+          {modal.isOpen && modal.content === 'import' ? (
             <UserImportWizard />
-          ) : modal.content.startsWith('table') ? (
+          ) : modal.isOpen && modal.content.startsWith('table') ? (
             <DataTable dataKey={modal.content} />
           ) : (
-            modal.content
+            modal.isOpen && modal.content
           )}
         </ModalBody>
       </Modal>
