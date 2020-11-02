@@ -1,23 +1,33 @@
 import React from 'react';
 
-import { StatefulTooltip, PLACEMENT, TRIGGER_TYPE } from 'baseui/tooltip';
+import { LabelSmall } from 'baseui/typography';
+import { StatefulPopover, PLACEMENT, TRIGGER_TYPE } from 'baseui/popover';
+// @ts-ignore
+import { PopoverPlacementT } from 'baseui/popover/types';
 
 type SimpleTooltipProps = {
-  title: string;
   tooltip: string;
+  title?: string;
+  children?: React.ReactNode;
+  placement?: PopoverPlacementT;
 };
 
-const SimpleTooltip = ({ title, tooltip }: SimpleTooltipProps) => {
+const SimpleTooltip = ({
+  title,
+  tooltip,
+  placement = PLACEMENT.top,
+  children,
+}: SimpleTooltipProps) => {
   return (
-    <StatefulTooltip
-      content={tooltip}
-      placement={PLACEMENT.topLeft}
+    <StatefulPopover
+      content={<LabelSmall padding='scale300'>{tooltip}</LabelSmall>}
+      placement={placement}
       triggerType={TRIGGER_TYPE.hover}
       showArrow
       ignoreBoundary
     >
-      {title}
-    </StatefulTooltip>
+      {title || children}
+    </StatefulPopover>
   );
 };
 

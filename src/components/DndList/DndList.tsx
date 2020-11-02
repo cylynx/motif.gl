@@ -8,6 +8,7 @@ import {
 
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
+import { SimpleTooltip } from '../ui';
 import DndAccordian from './DndAccordian';
 
 export type DndItem = {
@@ -49,16 +50,18 @@ export const VisibilityButton = ({
   };
 
   return (
-    <Button
-      size='mini'
-      shape='round'
-      kind='minimal'
-      $as='div' // Avoid button in button error
-      onClick={toggleVisibility}
-      {...rest}
-    >
-      {isVisible ? <HiOutlineEye size={16} /> : <HiOutlineEyeOff size={16} />}
-    </Button>
+    <SimpleTooltip tooltip={isVisible ? 'Hide' : 'Show'}>
+      <Button
+        size='mini'
+        shape='round'
+        kind='minimal'
+        $as='div' // Avoid button in button error
+        onClick={toggleVisibility}
+        {...rest}
+      >
+        {isVisible ? <HiOutlineEye size={16} /> : <HiOutlineEyeOff size={16} />}
+      </Button>
+    </SimpleTooltip>
   );
 };
 
@@ -74,31 +77,35 @@ export const DeleteButton = ({
   };
 
   return (
-    <Button
-      size='mini'
-      shape='round'
-      kind='minimal'
-      $as='div'
-      onClick={toggleDelete}
-      {...rest}
-    >
-      <HiOutlineTrash size={16} />
-    </Button>
+    <SimpleTooltip tooltip='Delete'>
+      <Button
+        size='mini'
+        shape='round'
+        kind='minimal'
+        $as='div'
+        onClick={toggleDelete}
+        {...rest}
+      >
+        <HiOutlineTrash size={16} />
+      </Button>
+    </SimpleTooltip>
   );
 };
 
 export const ShowMoreButton = ({ onClick, ...rest }: ActionButton) => {
   return (
-    <Button
-      size='mini'
-      shape='round'
-      kind='minimal'
-      $as='div'
-      onClick={onClick}
-      {...rest}
-    >
-      <HiChevronDown size={16} />
-    </Button>
+    <SimpleTooltip tooltip='Expand'>
+      <Button
+        size='mini'
+        shape='round'
+        kind='minimal'
+        $as='div'
+        onClick={onClick}
+        {...rest}
+      >
+        <HiChevronDown size={16} />
+      </Button>
+    </SimpleTooltip>
   );
 };
 
