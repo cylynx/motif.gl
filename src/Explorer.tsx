@@ -8,7 +8,7 @@ import { Theme } from 'baseui/theme';
 import { Block } from 'baseui/block';
 import { Modal, ModalBody, SIZE } from 'baseui/modal';
 import { Loader } from './components/ui';
-import DataTable from './components/DataTable';
+import DataTable from './containers/DataTable';
 import * as Prop from './types/Prop';
 import { closeModal, setName } from './redux/ui-slice';
 import { setWidget } from './containers/widgets/widget-slice';
