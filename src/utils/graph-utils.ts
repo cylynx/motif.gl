@@ -378,3 +378,25 @@ export const getEdgeProperties = (
   }
   return newObj;
 };
+
+/**
+ * For a given accessor and node / edge dataset, the function creates a dictionary of value / count pairs
+ *
+ * @param {(Graph.Node[] | Graph.Edge[])} data
+ * @param {string} accessor
+ * @return {*} map of property: counts
+ */
+export const countProperty = (
+  data: Graph.Node[] | Graph.Edge[],
+  accessor: string,
+) => {
+  const map = {};
+  data.forEach((o: any) => {
+    if (!Object.prototype.hasOwnProperty.call(map, get(o, accessor))) {
+      map[get(o, accessor)] = 1;
+    } else {
+      map[get(o, accessor)] = map[get(o, accessor)] + 1;
+    }
+  });
+  return map;
+};

@@ -142,10 +142,10 @@ export const DndContainer = ({
               paddingRight: '0',
               justifyContent: 'space-between',
               ':hover': {
-                backgroundColor: $theme.colors.backgroundSecondary,
+                backgroundColor: $theme.colors.backgroundPrimary,
               },
               ':active': {
-                backgroundColor: $theme.colors.backgroundSecondary,
+                backgroundColor: $theme.colors.backgroundPrimary,
               },
             };
           },
@@ -202,10 +202,13 @@ const DndList = ({
               paddingBottom: 0,
               paddingLeft: 0,
               paddingRight: 0,
-              borderBottomColor: $theme.colors.backgroundSecondary,
-              borderLeftColor: $theme.colors.backgroundSecondary,
-              borderRightColor: $theme.colors.backgroundSecondary,
-              backgroundColor: $theme.colors.backgroundSecondary,
+            };
+          },
+        },
+        DragHandle: {
+          style: ({ $theme }: { $theme: any }) => {
+            return {
+              marginRight: $theme.sizing.scale400,
             };
           },
         },

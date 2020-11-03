@@ -43,6 +43,7 @@ const App = () => {
             accessors={{
               // getters below are for simple edge
               nodeID: 'id',
+              nodeType: 'data.type',
               // edgeID: 'id',
               edgeSource: 'from',
               edgeTarget: 'to',

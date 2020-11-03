@@ -48,7 +48,7 @@ const Statistic = ({
         )}
         {subtitle && size === 'medium' && (
           <LabelXSmall
-            marginTop='8px'
+            marginTop='6px'
             marginBottom={0}
             color='contentSecondary'
           >

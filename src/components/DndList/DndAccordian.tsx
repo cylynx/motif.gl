@@ -169,8 +169,8 @@ class DndAccordian extends React.Component<
                 >
                   <Block
                     display='flex'
-                    paddingLeft='scale200'
-                    paddingRight='scale200'
+                    paddingLeft='scale600'
+                    paddingRight='scale600'
                   >
                     <DragHandle {...sharedProps} {...dragHandleProps}>
                       <Grab size={20} color='#CCC' />

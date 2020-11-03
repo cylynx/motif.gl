@@ -64,13 +64,15 @@ export interface NodeStyleAccessors {
 }
 
 export interface Accessors {
+  nodeID?: string;
+  nodeStyle?: NodeStyleAccessors;
+  nodeType?: string;
+  edgeID?: string;
+  edgeType?: string;
   edgeSource: string;
   edgeTarget: string;
-  edgeID?: string;
-  nodeID?: string;
   edgeTime?: string;
   edgeStyle?: EdgeStyleAccessors;
-  nodeStyle?: NodeStyleAccessors;
 }
 
 export interface Layout {

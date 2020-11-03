@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Cell } from 'baseui/layout-grid';
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
+import { LabelSmall, ParagraphSmall } from 'baseui/typography';
 import {
   updateGraphList,
   deleteGraphList,
@@ -11,8 +12,20 @@ import {
 import { openDataTableModal } from '../../redux/ui-slice';
 import { Statistic, FlushedGrid } from '../../components/ui';
 import DndList from '../../components/DndList';
+import { countProperty } from '../../utils/graph-utils';
 import * as Graph from '../../types/Graph';
 import { getGraph } from '../../redux';
+
+const StyledText = ({ children }: { children: React.ReactNode }) => (
+  <ParagraphSmall
+    marginLeft='scale200'
+    marginBottom={0}
+    marginTop='scale200'
+    color='contentSecondary'
+  >
+    {children}
+  </ParagraphSmall>
+);
 
 const LayerDetailed = ({
   graph,
@@ -23,6 +36,7 @@ const LayerDetailed = ({
 }) => {
   const dispatch = useDispatch();
   const graphVisible = useSelector((state) => getGraph(state).graphVisible);
+  const accessors = useSelector((state) => getGraph(state).accessors);
   const visibleNodeList = graphVisible.nodes.map((x) => x.id);
   const visibleEdgeList = graphVisible.edges.map((x) => x.id);
   const hiddenNodes = graph.nodes.filter(
@@ -31,44 +45,67 @@ const LayerDetailed = ({
   const hiddenEdges = graph.edges.filter(
     (x) => !visibleEdgeList.includes(x.id),
   );
+  const nodeTypeMap = accessors.nodeType
+    ? countProperty(graph.nodes, accessors.nodeType)
+    : null;
+  const edgeTypeMap = accessors.edgeType
+    ? countProperty(graph.edges, accessors.edgeType)
+    : null;
 
   return (
-    <FlushedGrid>
-      <Cell span={6}>
-        <Statistic
-          value={graph.nodes.length}
-          label='Nodes:'
-          subtitle={`${hiddenNodes.length} hidden`}
-          size='medium'
-        />
-      </Cell>
-      <Cell span={6}>
-        <Statistic
-          value={graph.edges.length}
-          label='Edges:'
-          subtitle={`${hiddenEdges.length} hidden`}
-          size='medium'
-        />
-      </Cell>
-      <Button
-        kind='secondary'
-        size='compact'
-        onClick={() =>
-          dispatch(openDataTableModal(`table_graphList_${index}_nodes`))
-        }
-      >
-        View Node Data
-      </Button>
-      <Button
-        kind='secondary'
-        size='compact'
-        onClick={() =>
-          dispatch(openDataTableModal(`table_graphList_${index}_edges`))
-        }
-      >
-        View Edge Data
-      </Button>
-    </FlushedGrid>
+    <Fragment>
+      <Block display='flex' justifyContent='space-between'>
+        <Block>
+          <Statistic
+            value={graph.nodes.length}
+            label='Nodes:'
+            subtitle={`${hiddenNodes.length} hidden`}
+            size='medium'
+          />
+          <LabelSmall marginTop='scale600'>Types:</LabelSmall>
+          {nodeTypeMap &&
+            Object.entries(nodeTypeMap).map(([key, value]) => (
+              <StyledText key={key}>{`${value} x ${key}`}</StyledText>
+            ))}
+          {!nodeTypeMap && <StyledText>No node types...</StyledText>}
+          <Block marginTop='scale600' />
+          <Button
+            kind='primary'
+            size='mini'
+            onClick={() =>
+              dispatch(openDataTableModal(`table_graphList_${index}_nodes`))
+            }
+          >
+            View Node Data
+          </Button>
+        </Block>
+        <Block>
+          <Statistic
+            value={graph.edges.length}
+            label='Edges:'
+            subtitle={`${hiddenEdges.length} hidden`}
+            size='medium'
+          />
+          <LabelSmall marginTop='scale600'>Types:</LabelSmall>
+          {edgeTypeMap &&
+            Object.entries(edgeTypeMap).map(([key, value]) => (
+              <StyledText key={key}>{`${value} x ${key}`}</StyledText>
+            ))}
+          {!edgeTypeMap && <StyledText>No edge types...</StyledText>}
+          <Block marginTop='scale600' />
+          <Button
+            kind='primary'
+            size='mini'
+            onClick={() =>
+              dispatch(openDataTableModal(`table_graphList_${index}_edges`))
+            }
+          >
+            View Edge Data
+          </Button>
+        </Block>
+      </Block>
+      <br />
+    </Fragment>
   );
 };
 
