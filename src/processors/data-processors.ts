@@ -159,18 +159,22 @@ export const processNodeEdgeCsv = async (
  * Process an edge list csv file, output a promise GraphData object with field information in metadata.
  *
  * @param {string} edgeCsv
+ * @param {string} [edgeSourceAccessor='source']
+ * @param {string} [edgeTargetAccessor='target']
  * @param {*} [key=shortid.generate()]
  * @return {*}  {Promise<Graph.GraphData>}
  */
 export const processEdgeListCsv = async (
   edgeCsv: string,
+  edgeSourceAccessor = 'source',
+  edgeTargetAccessor = 'target',
   key = shortid.generate(),
 ): Promise<Graph.GraphData> => {
   const { fields: edgeFields, json: edgeJson } = await processCsvData(edgeCsv);
   const edgeIds: string[] = [];
   edgeJson.forEach((edge: Graph.Edge) => {
-    edgeIds.push(edge.source);
-    edgeIds.push(edge.target);
+    edgeIds.push(edge[edgeSourceAccessor]);
+    edgeIds.push(edge[edgeTargetAccessor]);
   });
   const uniqueNodes = [...new Set(edgeIds)];
   const nodeJson = uniqueNodes.map((node) => {

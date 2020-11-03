@@ -55,13 +55,12 @@ export const importJson = async (
   const jsonArray = Array.isArray(json) ? json : [json];
   for (const data of jsonArray) {
     if (validateMotifJson(data)) return jsonArray;
-    const correctData = addRequiredFieldsJson(data, accessors);
     // eslint-disable-next-line no-await-in-loop
     const processedData = await processJson(
-      correctData,
-      correctData?.key || correctData?.metadata?.key,
+      data,
+      data?.key || data?.metadata?.key,
     );
-    results.push(addRequiredDataFields(processedData));
+    results.push(addRequiredFieldsJson(processedData, accessors));
   }
   return results;
 };
@@ -78,10 +77,9 @@ export const importEdgeListCsv = async (
   csv: string,
   accessors: Graph.Accessors,
 ): Promise<Graph.GraphData> => {
-  const mappedCsv = await addRequiredFieldsCsv(csv, accessors, 'edge');
-  const processedData = await processEdgeListCsv(mappedCsv);
-  const results = addRequiredDataFields(processedData);
-  return results;
+  const { edgeSource, edgeTarget } = accessors;
+  const processedData = await processEdgeListCsv(csv, edgeSource, edgeTarget);
+  return addRequiredFieldsJson(processedData, accessors);
 };
 
 /**
@@ -98,39 +96,8 @@ export const importNodeEdgeCsv = async (
   edgeCsv: string,
   accessors: Graph.Accessors,
 ): Promise<Graph.GraphData> => {
-  const mappedNodeCsv = await addRequiredFieldsCsv(nodeCsv, accessors, 'node');
-  const mappedEdgeCsv = await addRequiredFieldsCsv(edgeCsv, accessors, 'edge');
-  const processedData = await processNodeEdgeCsv(mappedNodeCsv, mappedEdgeCsv);
-  const results = addRequiredDataFields(processedData);
-  return results;
-};
-
-/**
- * Add required node and edge attributes (id, source, target) for csv input based on given type
- *
- * @param {string} csv
- * @param {Graph.Accessors} accessors
- * @param {('node' | 'edge')} type
- * @return {*}
- */
-export const addRequiredFieldsCsv = async (
-  csv: string,
-  accessors: Graph.Accessors,
-  type: 'node' | 'edge',
-) => {
-  const parsedJson = (await csv2json(csv)) as any[];
-  if (type === 'node') {
-    for (const node of parsedJson) {
-      addNodeFields(node, accessors);
-    }
-  }
-  if (type === 'edge') {
-    for (const edge of parsedJson) {
-      addEdgeFields(edge, accessors);
-    }
-  }
-  const patchedCsv = await json2csv(parsedJson);
-  return patchedCsv as string;
+  const processedData = await processNodeEdgeCsv(nodeCsv, edgeCsv);
+  return addRequiredFieldsJson(processedData, accessors);
 };
 
 /**
@@ -146,9 +113,11 @@ export const addRequiredFieldsJson = (
 ) => {
   for (const node of data.nodes) {
     addNodeFields(node, accessors);
+    if (isUndefined(node.data)) node.data = {}; // required by graphin
   }
   for (const edge of data.edges) {
     addEdgeFields(edge, accessors);
+    if (isUndefined(edge.data)) edge.data = {};
   }
   return data;
 };
@@ -165,7 +134,7 @@ export const addNodeFields = (node: any, accessors: Graph.Accessors) => {
     ? isUndefined(node.id)
       ? shortid.generate()
       : node.id
-    : get(node, nodeID);
+    : get(node, nodeID).toString();
 };
 
 /**
@@ -176,29 +145,11 @@ export const addNodeFields = (node: any, accessors: Graph.Accessors) => {
  */
 export const addEdgeFields = (edge: any, accessors: Graph.Accessors) => {
   const { edgeSource, edgeTarget, edgeID } = accessors;
-  edge.source = get(edge, edgeSource);
-  edge.target = get(edge, edgeTarget);
+  edge.source = get(edge, edgeSource).toString();
+  edge.target = get(edge, edgeTarget).toString();
   edge.id = isUndefined(edgeID)
     ? isUndefined(edge.id)
       ? shortid.generate()
       : edge.id
-    : get(edge, edgeID);
-};
-
-/**
- * Add data field in nodes and edges
- *
- * @param {Graph.GraphData} data
- * @return {*}
- */
-export const addRequiredDataFields = (data: Graph.GraphData) => {
-  for (const node of data.nodes) {
-    // data property required by graphin
-    if (isUndefined(node.data)) node.data = {};
-  }
-  for (const edge of data.edges) {
-    // data property required by graphin
-    if (isUndefined(edge.data)) edge.data = {};
-  }
-  return data;
+    : get(edge, edgeID).toString();
 };

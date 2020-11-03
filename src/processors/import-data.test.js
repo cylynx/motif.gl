@@ -34,17 +34,17 @@ describe('Import various json data types', () => {
 const processedData = {
   nodes: [
     {
-      id2: 'a',
+      id2: '1',
     },
     {
-      id2: 'b',
+      id2: '2',
     },
   ],
   edges: [
     {
-      id2: 'txn a-b',
-      from: 'a',
-      to: 'b',
+      id2: 'txn 1-2',
+      from: '1',
+      to: '2',
     },
   ],
   metadata: {
@@ -61,24 +61,30 @@ const accessors2 = {
 describe('Pre-process Json data correctly', () => {
   it('should add the required node id fields', () => {
     const results = addRequiredFieldsJson(processedData, accessors2);
-    expect(results.nodes[0].id).toEqual('a');
-    expect(results.nodes[1].id).toEqual('b');
+    expect(results.nodes[0].id).toEqual('1');
+    expect(results.nodes[1].id).toEqual('2');
   });
   it('should add the required edge id, source, target fields', () => {
     const results = addRequiredFieldsJson(processedData, accessors2);
     expect(results.edges[0].id).toBeTruthy();
-    expect(results.edges[0].source).toEqual('a');
-    expect(results.edges[0].target).toEqual('b');
+    expect(results.edges[0].source).toEqual('1');
+    expect(results.edges[0].target).toEqual('2');
+  });
+  it('should keep id, source and target fields as string after processing', async () => {
+    const results = await importJson(processedData, accessors2);
+    expect(results[0].edges[0].id).toBeTruthy();
+    expect(results[0].edges[0].source).toEqual('1');
+    expect(results[0].edges[0].target).toEqual('2');
   });
 });
 
 const edgeListCsv = `custom_id,data.value,data.blk_ts_unix,from,to
-txn a-b,100,NaN,a,b
-txn b-c,200,2000000,b,c
-txn c-b,300,Null,c,b`;
+1,100,NaN,a,b
+2,200,2000000,b,c
+3,300,Null,c,b`;
 
 const edgeListAccessors = {
-  nodeID: 'custom_id',
+  edgeID: 'custom_id',
   edgeSource: 'from',
   edgeTarget: 'to',
 };
@@ -121,5 +127,6 @@ describe('Import node edge csv', () => {
     expect(results.nodes[0]).toHaveProperty('id');
     expect(results.edges).toHaveLength(3);
     expect(results.edges[0]).toHaveProperty('id', 'from', 'to');
+    expect(results.edges[0].id).toEqual('1');
   });
 });
