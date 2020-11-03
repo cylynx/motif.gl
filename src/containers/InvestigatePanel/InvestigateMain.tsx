@@ -1,17 +1,14 @@
 import React, { MouseEvent, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { VscCircleOutline } from 'react-icons/vsc';
-import { HiOutlineShare } from 'react-icons/hi';
 import { Button } from 'baseui/button';
-import { Plus } from 'baseui/icon';
 import { Cell } from 'baseui/layout-grid';
 import { Block } from 'baseui/block';
 import { ParagraphSmall } from 'baseui/typography';
 import { FlushedGrid, Statistic, FullButton } from '../../components/ui';
 import ToggleTokens from '../../components/ToggleTokens';
 import Accordion from '../../components/Accordion';
+import * as Icon from '../../components/Icons';
 import * as Prop from '../../types/Prop';
-import * as Graph from '../../types/Graph';
 import {
   openImportModal,
   fetchDone,
@@ -33,8 +30,6 @@ const InvestigateMain = () => {
   const haveData = graphFlatten && graphVisible;
   const hiddenNodes = graphFlatten.nodes.length - graphVisible.nodes.length;
   const hiddenEdges = graphFlatten.edges.length - graphVisible.edges.length;
-  const nodeMetadata = graphFlatten.metadata.fields.nodes as Graph.Field[];
-  const edgeMetadata = graphFlatten.metadata.fields.edges as Graph.Field[];
 
   const onClickNodeToken = (index: number, status: boolean) => {
     dispatch(updateNodeSelection({ index, status }));
@@ -79,7 +74,7 @@ const InvestigateMain = () => {
             {
               title: (
                 <Block display='flex' justifyContent='center'>
-                  <VscCircleOutline size={16} style={{ paddingRight: '8px' }} />
+                  <Icon.Node style={{ paddingRight: '8px' }} />
                   Node Properties
                 </Block>
               ),
@@ -106,7 +101,7 @@ const InvestigateMain = () => {
             {
               title: (
                 <Block display='flex' justifyContent='center'>
-                  <HiOutlineShare size={16} style={{ paddingRight: '8px' }} />
+                  <Icon.Edge size={16} style={{ paddingRight: '8px' }} />
                   Edge Properties
                 </Block>
               ),
@@ -156,7 +151,7 @@ const ImportDataButton: React.FC<Prop.ImportDataButton> = ({ onClick }) => (
   <Button
     kind='tertiary'
     size='compact'
-    startEnhancer={() => <Plus size={24} />}
+    startEnhancer={() => <Icon.Plus size={20} />}
     onClick={onClick}
   >
     Import Data

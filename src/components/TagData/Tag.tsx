@@ -3,8 +3,7 @@ import { colors } from 'baseui/tokens';
 import { Block } from 'baseui/block';
 import { Tag, KIND, VARIANT } from 'baseui/tag';
 import { StatefulTooltip, PLACEMENT, TRIGGER_TYPE } from 'baseui/tooltip';
-import { VscSymbolKey } from 'react-icons/vsc';
-import { BiAdjust, BiBracket, BiHash, BiTime } from 'react-icons/bi';
+import * as Icon from '../Icons';
 
 export type TagValueProps = {
   value: string;
@@ -36,62 +35,62 @@ export const getIcon = (type: TypeProps) => {
   switch (type) {
     case 'boolean':
       return (
-        <BiAdjust
-          size='14px'
+        <Icon.Adjust
+          size={14}
           color={colors.brown400}
           style={{ paddingRight: '8px' }}
         />
       );
     case 'date':
       return (
-        <BiTime
-          size='14px'
+        <Icon.Time
+          size={14}
           color={colors.green400}
           style={{ paddingRight: '8px' }}
         />
       );
     case 'integer':
       return (
-        <BiHash
-          size='14px'
+        <Icon.Hash
+          size={14}
           color={colors.yellow400}
           style={{ paddingRight: '8px' }}
         />
       );
     case 'real':
       return (
-        <BiHash
-          size='14px'
+        <Icon.Hash
+          size={14}
           color={colors.yellow400}
           style={{ paddingRight: '8px' }}
         />
       );
     case 'string':
       return (
-        <VscSymbolKey
-          size='16px'
+        <Icon.Symbol
+          size={16}
           color={colors.blue400}
           style={{ paddingRight: '8px' }}
         />
       );
     case 'timestamp':
       return (
-        <BiTime
-          size='14px'
+        <Icon.Time
+          size={14}
           color={colors.green400}
           style={{ paddingRight: '8px' }}
         />
       );
     case 'array':
       return (
-        <BiBracket
-          size='14px'
+        <Icon.Bracket
+          size={14}
           color={colors.purple400}
           style={{ paddingRight: '8px' }}
         />
       );
     default:
-      return <BiBracket color={colors.gray600} size='0px' />;
+      return <Icon.Bracket color={colors.gray600} size={0} />;
   }
 };
 

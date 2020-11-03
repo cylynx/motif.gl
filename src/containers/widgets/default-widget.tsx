@@ -1,29 +1,18 @@
 import React from 'react';
 import { Block } from 'baseui/block';
-import {
-  CopyOutlined,
-  BarChartOutlined,
-  CheckOutlined,
-  MoreOutlined,
-} from '@ant-design/icons';
 import { LeftLayer, BottomRightLayer, TopRightLayer } from './layer';
 import InvestigateTimeBar from '../InvestigateTimeBar';
 import Toolbar from '../Toolbar';
 import { InvestigatePanel } from '../InvestigatePanel';
 import IconButton from './IconButton';
+import * as Icon from '../../components/Icons';
 import { WidgetItem } from '../../types/Widget';
 
 const defaultWidgetList: WidgetItem[] = [
   {
     id: 'layers',
     group: 'main',
-    icon: (
-      <IconButton
-        id='layers'
-        group='main'
-        icon={<CopyOutlined style={{ fontSize: '16px' }} />}
-      />
-    ),
+    icon: <IconButton id='layers' group='main' icon={<Icon.Layer />} />,
     widget: (
       <LeftLayer>
         <InvestigatePanel />
@@ -35,13 +24,7 @@ const defaultWidgetList: WidgetItem[] = [
   {
     id: 'layer2',
     group: 'main',
-    icon: (
-      <IconButton
-        id='layer2'
-        group='main'
-        icon={<CheckOutlined style={{ fontSize: '16px' }} />}
-      />
-    ),
+    icon: <IconButton id='layer2' group='main' icon={<Icon.Tick />} />,
     widget: <Block />,
     position: 'top',
     active: false,
@@ -50,11 +33,7 @@ const defaultWidgetList: WidgetItem[] = [
     id: 'toolbar',
     group: 'toolbar',
     icon: (
-      <IconButton
-        id='toolbar'
-        group='toolbar'
-        icon={<MoreOutlined style={{ fontSize: '16px' }} />}
-      />
+      <IconButton id='toolbar' group='toolbar' icon={<Icon.DotsVertical />} />
     ),
     widget: (
       <TopRightLayer>
@@ -67,13 +46,7 @@ const defaultWidgetList: WidgetItem[] = [
   {
     id: 'filter',
     group: 'filter',
-    icon: (
-      <IconButton
-        id='filter'
-        group='filter'
-        icon={<BarChartOutlined style={{ fontSize: '16px' }} />}
-      />
-    ),
+    icon: <IconButton id='filter' group='filter' icon={<Icon.BarChart />} />,
     widget: (
       <BottomRightLayer>
         <InvestigateTimeBar />

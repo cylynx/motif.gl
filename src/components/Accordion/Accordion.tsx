@@ -1,8 +1,8 @@
 // @ts-nocheck
 import React from 'react';
 import { useStyletron } from 'baseui';
-import { ChevronDown, ChevronUp } from 'baseui/icon';
 import { Accordion as BaseAccordion, Panel } from 'baseui/accordion';
+import * as Icon from '../Icons';
 
 export type AccordionProps = {
   items: AccordionItem[];
@@ -47,8 +47,7 @@ const Accordion = ({ items, icon }: AccordionProps) => {
         ToggleIcon: {
           // eslint-disable-next-line react/display-name
           component: ({ $expanded }: { $expanded: boolean }) =>
-            icon ||
-            ($expanded ? <ChevronUp size={24} /> : <ChevronDown size={24} />),
+            icon || <Icon.ChevronDown />,
         },
         Header: {
           style: ({ $theme }) => ({

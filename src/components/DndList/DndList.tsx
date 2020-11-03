@@ -1,13 +1,7 @@
 import React, { useState, MouseEvent } from 'react';
-import {
-  HiOutlineEye,
-  HiOutlineEyeOff,
-  HiOutlineTrash,
-  HiChevronDown,
-} from 'react-icons/hi';
-
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
+import * as Icon from '../Icons';
 import { SimpleTooltip } from '../ui';
 import DndAccordian from './DndAccordian';
 
@@ -59,7 +53,7 @@ export const VisibilityButton = ({
         onClick={toggleVisibility}
         {...rest}
       >
-        {isVisible ? <HiOutlineEye size={16} /> : <HiOutlineEyeOff size={16} />}
+        {isVisible ? <Icon.Eye /> : <Icon.EyeOff />}
       </Button>
     </SimpleTooltip>
   );
@@ -86,7 +80,7 @@ export const DeleteButton = ({
         onClick={toggleDelete}
         {...rest}
       >
-        <HiOutlineTrash size={16} />
+        <Icon.Trash />
       </Button>
     </SimpleTooltip>
   );
@@ -103,7 +97,7 @@ export const ShowMoreButton = ({ onClick, ...rest }: ActionButton) => {
         onClick={onClick}
         {...rest}
       >
-        <HiChevronDown size={16} />
+        <Icon.ChevronDown />
       </Button>
     </SimpleTooltip>
   );

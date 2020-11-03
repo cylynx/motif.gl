@@ -13,7 +13,7 @@ import {
 } from 'baseui/typography';
 import { Input } from 'baseui/input';
 import { Button } from 'baseui/button';
-import { HiCheck, HiX, HiOutlinePencil } from 'react-icons/hi';
+import * as Icon from '../Icons';
 
 export type EditableProps = {
   text: string;
@@ -47,10 +47,10 @@ const componentMapper = {
 export const ButtonGroup = ({ onSubmit, onCancel }: ButtonGroupProps) => (
   <Fragment>
     <Button shape='square' onClick={onSubmit} kind='primary' size='mini'>
-      <HiCheck size={16} />
+      <Icon.Tick />
     </Button>
     <Button shape='square' onClick={onCancel} kind='primary' size='mini'>
-      <HiX size={16} />
+      <Icon.X />
     </Button>
   </Fragment>
 );
@@ -172,7 +172,7 @@ const Editable = ({
               kind='minimal'
               size='mini'
             >
-              <HiOutlinePencil size={16} />
+              <Icon.Pencil />
             </Button>
           )}
         </div>

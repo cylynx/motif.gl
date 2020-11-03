@@ -2,9 +2,7 @@ import React, { useContext, Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 import { ActionCreators as UndoActionCreators } from 'redux-undo';
 import fscreen from 'fscreen';
-import { GoGear, GoX } from 'react-icons/go';
-import { FiZoomIn, FiZoomOut } from 'react-icons/fi';
-import { FaUndoAlt, FaRedoAlt, FaExpand } from 'react-icons/fa';
+import * as Icon from '../../components/Icons';
 import { GraphRefContext } from '../Graph';
 import { resetState } from '../../redux/graph-slice';
 import ToolbarButton, { ToolbarItem } from './ToolbarButton';
@@ -43,7 +41,7 @@ const Toolbar = () => {
     {
       key: 1,
       name: 'Graph Settings',
-      icon: <GoGear />,
+      icon: <Icon.Gear size={18} />,
       isDisabled: false,
       popoverContent: () => <PopoverOption />,
       onClick: null,
@@ -51,7 +49,7 @@ const Toolbar = () => {
     {
       key: 2,
       name: 'Full Screen',
-      icon: <FaExpand />,
+      icon: <Icon.FullScreen size={18} />,
       isDisabled: false,
       popoverContent: null,
       onClick: () => toggleFullScreen(),
@@ -59,7 +57,7 @@ const Toolbar = () => {
     {
       key: 3,
       name: 'Undo',
-      icon: <FaUndoAlt />,
+      icon: <Icon.Undo size={22} />,
       isDisabled: false,
       popoverContent: null,
       onClick: () => dispatch(UndoActionCreators.undo()),
@@ -67,7 +65,7 @@ const Toolbar = () => {
     {
       key: 4,
       name: 'Redo',
-      icon: <FaRedoAlt />,
+      icon: <Icon.Redo size={22} />,
       isDisabled: false,
       popoverContent: null,
       onClick: () => dispatch(UndoActionCreators.redo()),
@@ -75,7 +73,7 @@ const Toolbar = () => {
     {
       key: 5,
       name: 'Zoom In',
-      icon: <FiZoomIn />,
+      icon: <Icon.ZoomIn size={18} />,
       isDisabled: false,
       popoverContent: null,
       onClick: () => handleGraphZoom(true),
@@ -83,7 +81,7 @@ const Toolbar = () => {
     {
       key: 6,
       name: 'Zoom Out',
-      icon: <FiZoomOut />,
+      icon: <Icon.ZoomOut size={18} />,
       isDisabled: false,
       popoverContent: null,
       onClick: () => handleGraphZoom(false),
@@ -91,7 +89,7 @@ const Toolbar = () => {
     {
       key: 7,
       name: 'Clear',
-      icon: <GoX />,
+      icon: <Icon.X size={18} />,
       isDisabled: false,
       popoverContent: null,
       onClick: () => dispatch(resetState()),
