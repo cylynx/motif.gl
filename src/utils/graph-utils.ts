@@ -75,7 +75,7 @@ export const combineEdges = (edges: Graph.Edge[]): Graph.Edge[] => {
           }
         }
         item.data.count += 1;
-        item.label = item.data.count.toString();
+        // item.label = item.data.count.toString();
         return r.set(key, item);
       }, new Map())
       .values(),
