@@ -6,11 +6,18 @@ import { useStyletron } from 'baseui';
 import Graphin from '@antv/graphin';
 import { IG6GraphEvent } from '@antv/g6/lib/types';
 import activateRelations from './behaviors/activate-relations';
-import { setTooltip, getGraph } from '../../redux';
+// import RegisterCircleNode from './shape/CircleNode';
+import { getGraph } from '../../redux';
+import { Tooltip } from './Tooltip';
 import './graphin.css';
 // import '@antv/graphin/dist/index.css';
 
-const Graph = React.forwardRef<HTMLDivElement>((props, ref) => {
+export type GraphProps = {
+  setTooltip: (tooltip: Tooltip | null) => void;
+};
+
+const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
+  const { setTooltip } = props;
   const dispatch = useDispatch();
   const [, theme] = useStyletron();
   const graphVisible = useSelector((state) => getGraph(state).graphVisible);
@@ -24,7 +31,7 @@ const Graph = React.forwardRef<HTMLDivElement>((props, ref) => {
     const { graph } = ref.current;
 
     const onResetClick = () => {
-      dispatch(setTooltip(null));
+      setTooltip(null);
     };
 
     const onNodeClick = (e: IG6GraphEvent) => {
@@ -37,14 +44,12 @@ const Graph = React.forwardRef<HTMLDivElement>((props, ref) => {
         const { centerX, centerY } = item.getBBox();
         const canvasXY = graph.getCanvasByPoint(centerX, centerY);
         const node = item.get('model');
-        dispatch(
-          setTooltip({
-            id: node.id,
-            x: canvasXY.x,
-            y: canvasXY.y,
-            type: 'node',
-          }),
-        );
+        setTooltip({
+          id: node.id,
+          x: canvasXY.x,
+          y: canvasXY.y,
+          type: 'node',
+        });
       }
     };
 
@@ -58,14 +63,12 @@ const Graph = React.forwardRef<HTMLDivElement>((props, ref) => {
         const { centerX, centerY } = item.getBBox();
         const canvasXY = graph.getCanvasByPoint(centerX, centerY);
         const edge = item.get('model');
-        dispatch(
-          setTooltip({
-            id: edge.id,
-            x: canvasXY.x,
-            y: canvasXY.y,
-            type: 'edge',
-          }),
-        );
+        setTooltip({
+          id: edge.id,
+          x: canvasXY.x,
+          y: canvasXY.y,
+          type: 'edge',
+        });
       }
     };
 
@@ -77,8 +80,8 @@ const Graph = React.forwardRef<HTMLDivElement>((props, ref) => {
     graph.on('canvas:dragstart', onResetClick);
     return () => {
       graph.off('node:click', onNodeClick);
-      graph.off('node:dragstart', onResetClick);
-      graph.on('edge:click', onEdgeClick);
+      graph.off('node:mouseleave', onResetClick);
+      graph.off('edge:click', onEdgeClick);
       graph.off('canvas:click', onResetClick);
       graph.off('canvas:dragstart', onResetClick);
     };
@@ -87,9 +90,18 @@ const Graph = React.forwardRef<HTMLDivElement>((props, ref) => {
   return (
     <Graphin
       data={graphVisible}
-      layout={layout}
+      layout={null}
       ref={ref}
       options={{
+        isZoomOptimize: () => true,
+        keyShapeZoom: 0.6,
+        defaultNode: {
+          nodeSize: 10,
+          size: 20,
+          defaultStyle: {
+            primaryColor: 'blue',
+          },
+        },
         autoPolyEdge: true,
         modes: {
           default: [
@@ -98,10 +110,22 @@ const Graph = React.forwardRef<HTMLDivElement>((props, ref) => {
               trigger: 'shift',
               includeEdges: true,
             },
+            {
+              type: 'drag-canvas',
+              enableOptimize: true,
+            },
           ],
         },
       }}
       register={{
+        // nodeShape: (G6) => [
+        //   {
+        //     name: 'CircleNode',
+        //     register: () => {
+        //       RegisterCircleNode(G6);
+        //     },
+        //   },
+        // ],
         behavior: (G6) => [
           {
             name: 'activate-relations',
