@@ -38,6 +38,14 @@ const sampleData: SampleDataItem[] = [
     type: 'json',
     src: '/images/sample.png',
   },
+  {
+    // @ts-ignore
+    data: DATA.NetworkData(),
+    title: 'Perf Test Dataset',
+    description: '1.5k Nodes, 2.7k edges',
+    type: 'json',
+    src: '/images/sample.png',
+  },
 ];
 
 const defaultAccessors: Graph.Accessors = {
@@ -69,8 +77,10 @@ const StyledItem = ({ item }: { item: SampleDataItem }) => {
   ) => {
     e.preventDefault();
     dispatch(closeModal());
-    // @ts-ignore
-    dispatch(addData({ data: item.data, type: item.type }, defaultAccessors));
+    Promise.resolve(item.data).then((d) =>
+      // @ts-ignore
+      dispatch(addData({ data: d, type: item.type }, defaultAccessors)),
+    );
   };
 
   return (

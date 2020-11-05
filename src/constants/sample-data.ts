@@ -1,25 +1,47 @@
+/* eslint-disable no-restricted-properties */
+/* eslint-disable no-param-reassign */
+// @ts-nocheck
 import mock from '../utils/mock';
 import * as Graph from '../types/Graph';
 
 export const RandomData = mock(15).random().graphin();
 export const CircleData = mock(10).circle().graphin();
 
+const mapNodeSize = (nodes, propertyName, visualRange) => {
+  let minp = 9999999999;
+  let maxp = -9999999999;
+  nodes.forEach((node) => {
+    node[propertyName] = Math.pow(node[propertyName], 1 / 3);
+    minp = node[propertyName] < minp ? node[propertyName] : minp;
+    maxp = node[propertyName] > maxp ? node[propertyName] : maxp;
+  });
+  const rangepLength = maxp - minp;
+  const rangevLength = visualRange[1] - visualRange[0];
+  nodes.forEach((node) => {
+    node.style = {
+      nodeSize:
+        ((node[propertyName] - minp) / rangepLength) * rangevLength +
+        visualRange[0],
+    };
+  });
+};
+
 export const TwoDataArray = [RandomData, CircleData];
 
 export const SimpleEdge: Graph.GraphData = {
   nodes: [
     {
-      id: 'a',
+      id: '1',
     },
     {
-      id: 'b',
+      id: '2',
     },
   ],
   edges: [
     {
       id: 'txn a-b',
-      source: 'a',
-      target: 'b',
+      source: '1',
+      target: '2',
     },
   ],
   metadata: {
@@ -95,6 +117,29 @@ export const TriangleJSON: Graph.GraphList = [
     },
   },
 ];
+
+export const asyncTriangleJSON = async () => {
+  return TriangleJSON;
+};
+
+export const NetworkData = () =>
+  fetch(
+    'https://gw.alipayobjects.com/os/basement_prod/da5a1b47-37d6-44d7-8d10-f3e046dabf82.json',
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      data.nodes.forEach((node) => {
+        node.label = node.olabel;
+        node.degree = 0;
+        data.edges.forEach((edge) => {
+          if (edge.source === node.id || edge.target === node.id) {
+            node.degree++;
+          }
+        });
+      });
+      mapNodeSize(data.nodes, 'degree', [1, 10]);
+      return data;
+    });
 
 export const txnJSON: Graph.GraphList = [
   {
