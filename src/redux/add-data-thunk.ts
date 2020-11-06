@@ -68,6 +68,7 @@ export const addData = (
   // Use importAccessors if available to do initial mapping
   const accessors = { ...mainAccessors, ...importAccessors };
   let newData: Promise<Graph.GraphData> | Promise<Graph.GraphList>;
+
   if (type === IMPORT_OPTIONS.json.id) {
     newData = importJson(data as Graph.GraphData | Graph.GraphList, accessors);
   } else if (type === IMPORT_OPTIONS.nodeEdgeCsv.id) {
@@ -87,5 +88,7 @@ export const addData = (
     .then((graphData: Graph.GraphData | Graph.GraphList) => {
       processResponse(dispatch, graphList, mainAccessors, graphData);
     })
-    .catch((err: Error) => dispatch(fetchError(err)));
+    .catch((err: Error) => {
+      dispatch(fetchError(err));
+    });
 };

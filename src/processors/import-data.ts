@@ -128,11 +128,16 @@ export const addRequiredFieldsJson = (
  */
 export const addNodeFields = (node: any, accessors: Graph.Accessors) => {
   const { nodeID } = accessors;
-  node.id = isUndefined(nodeID)
-    ? isUndefined(node.id)
-      ? shortid.generate()
-      : node.id
-    : get(node, nodeID).toString();
+  if (isUndefined(nodeID)) {
+    if (isUndefined(node.id)) {
+      node.id = shortid.generate();
+    }
+    // else node.id = node.id
+  } else if (isUndefined(get(node, nodeID))) {
+    node.id = shortid.generate();
+  } else {
+    node.id = get(node, nodeID).toString();
+  }
 };
 
 /**
@@ -145,9 +150,14 @@ export const addEdgeFields = (edge: any, accessors: Graph.Accessors) => {
   const { edgeSource, edgeTarget, edgeID } = accessors;
   edge.source = get(edge, edgeSource).toString();
   edge.target = get(edge, edgeTarget).toString();
-  edge.id = isUndefined(edgeID)
-    ? isUndefined(edge.id)
-      ? shortid.generate()
-      : edge.id
-    : get(edge, edgeID).toString();
+  if (isUndefined(edgeID)) {
+    if (isUndefined(edge.id)) {
+      edge.id = shortid.generate();
+    }
+    // else edge.id = edge.id
+  } else if (isUndefined(get(edge, edgeID))) {
+    edge.id = shortid.generate();
+  } else {
+    edge.id = get(edge, edgeID).toString();
+  }
 };
