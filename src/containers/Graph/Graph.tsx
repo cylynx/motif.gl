@@ -6,7 +6,7 @@ import { useStyletron } from 'baseui';
 import Graphin from '@antv/graphin';
 import { IG6GraphEvent } from '@antv/g6/lib/types';
 import activateRelations from './behaviors/activate-relations';
-// import RegisterCircleNode from './shape/CircleNode';
+import RegisterCircleNode from './shape/CircleNode';
 import { getGraph } from '../../redux';
 import { Tooltip } from './Tooltip';
 import './graphin.css';
@@ -94,12 +94,11 @@ const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
       ref={ref}
       options={{
         isZoomOptimize: () => true,
-        keyShapeZoom: 0.6,
+        keyShapeZoom: 0.9,
         defaultNode: {
-          nodeSize: 10,
-          size: 20,
           defaultStyle: {
-            primaryColor: 'blue',
+            primaryColor: 'teal',
+            nodeSize: 5,
           },
         },
         autoPolyEdge: true,
@@ -110,22 +109,18 @@ const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
               trigger: 'shift',
               includeEdges: true,
             },
-            {
-              type: 'drag-canvas',
-              enableOptimize: true,
-            },
           ],
         },
       }}
       register={{
-        // nodeShape: (G6) => [
-        //   {
-        //     name: 'CircleNode',
-        //     register: () => {
-        //       RegisterCircleNode(G6);
-        //     },
-        //   },
-        // ],
+        nodeShape: (G6) => [
+          {
+            name: 'CircleNode',
+            register: () => {
+              RegisterCircleNode(G6);
+            },
+          },
+        ],
         behavior: (G6) => [
           {
             name: 'activate-relations',

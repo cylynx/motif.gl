@@ -3,25 +3,35 @@ import { Group, Shape } from '@antv/g-canvas';
 import { INode } from '@antv/g6/lib/interface/item';
 import G6 from '@antv/g6';
 import { G6Node } from '@antv/graphin';
-import {
-  GREY,
-  PRIMARY_NODE_COLOR,
-  EnumNodeAndEdgeStatus,
-  DEFAULT_ICON_FONT_FAMILY,
-} from './constants';
+import { GREY, EnumNodeAndEdgeStatus, DEFAULT_NODE_STYLE } from './constants';
 import { normalizeColor } from './utils';
 
 export default (g6: typeof G6) => {
   g6.registerNode('CircleNode', {
     draw(cfg: G6Node, group: Group) {
       const hasLabel = cfg.label;
-      const innerNodeSize = cfg.style?.nodeSize || 4;
-      const innerSize = innerNodeSize > 4 ? innerNodeSize : 4;
+      const defaultStyle = cfg?.defaultStyle;
+      const innerNodeSize =
+        cfg.style?.nodeSize ||
+        defaultStyle.nodeSize ||
+        DEFAULT_NODE_STYLE.nodeSize;
+      const innerSize =
+        innerNodeSize > DEFAULT_NODE_STYLE.nodeSize
+          ? innerNodeSize
+          : DEFAULT_NODE_STYLE.nodeSize;
       const outerSize = innerSize + 4;
 
       const color = cfg.style?.dark
         ? GREY
-        : normalizeColor(cfg.style?.primaryColor || PRIMARY_NODE_COLOR);
+        : normalizeColor(
+            cfg.style?.primaryColor ||
+              defaultStyle.primaryColor ||
+              DEFAULT_NODE_STYLE.primaryColor,
+          );
+
+      const strokeColor = cfg.style?.dark
+        ? GREY
+        : normalizeColor(cfg.style?.stroke || defaultStyle.stroke || color);
 
       group.addShape('circle', {
         attrs: {
@@ -51,7 +61,7 @@ export default (g6: typeof G6) => {
           x: 0,
           y: 0,
           r: outerSize / 2,
-          stroke: cfg.style?.dark ? GREY.normal : color.normal,
+          stroke: strokeColor.normal,
           lineWidth: 2,
         },
         name: 'circle-border',
@@ -74,7 +84,7 @@ export default (g6: typeof G6) => {
           x: 0,
           y: 0,
           r: innerSize / 2,
-          fill: cfg.style?.dark ? GREY.dark : color.dark,
+          fill: color.dark,
         },
         draggable: true,
         name: 'circle-inner',
@@ -88,7 +98,10 @@ export default (g6: typeof G6) => {
           fontSize: 20,
           textAlign: 'center',
           textBaseline: 'middle',
-          fontFamily: cfg.style?.fontFamily || DEFAULT_ICON_FONT_FAMILY,
+          fontFamily:
+            cfg.style?.fontFamily ||
+            defaultStyle.fontFamily ||
+            DEFAULT_NODE_STYLE.fontFamily,
           fill: cfg.style?.dark ? '#8D93B0' : '#FFFFFF',
         },
         draggable: true,
@@ -153,6 +166,7 @@ export default (g6: typeof G6) => {
     setState(name: EnumNodeAndEdgeStatus, value: string, node: INode) {
       if (!name) return;
       const data: G6Node = node.get('model');
+      const defaultStyle = data?.defaultStyle;
       const container = node.getContainer();
       // const circleFloor = container.get('children').find(node => node.attr().id === 'circle-floor');
       const circleBorder = container
@@ -183,16 +197,32 @@ export default (g6: typeof G6) => {
         ?.get('children')
         .find((item: Shape.Base) => item.attr().id === 'circle-children-icon');
 
+      const innerNodeSize =
+        data.style?.nodeSize ||
+        defaultStyle.nodeSize ||
+        DEFAULT_NODE_STYLE.nodeSize;
+      const innerSize =
+        innerNodeSize > DEFAULT_NODE_STYLE.nodeSize
+          ? innerNodeSize
+          : DEFAULT_NODE_STYLE.nodeSize;
+      const outerSize = innerNodeSize > 4 ? innerSize + 4 : innerSize + 2;
+      const adjustment = innerNodeSize > 10 ? 4 : 2;
+
       const color = data.style?.dark
         ? GREY
-        : normalizeColor(data.style?.primaryColor || PRIMARY_NODE_COLOR);
-      const innerNodeSize = data.style?.nodeSize || 12;
-      const innerSize = innerNodeSize > 12 ? innerNodeSize : 12;
-      const outerSize = innerSize + 4;
+        : normalizeColor(
+            data.style?.primaryColor ||
+              defaultStyle.primaryColor ||
+              DEFAULT_NODE_STYLE.primaryColor,
+          );
+
+      const strokeColor = data.style?.dark
+        ? GREY
+        : normalizeColor(data.style?.stroke || defaultStyle.stroke || color);
 
       const targetAttrs = {
         border: {
-          stroke: color.normal,
+          stroke: strokeColor.normal,
           lineWidth: 2,
         },
         selected: {
@@ -216,12 +246,12 @@ export default (g6: typeof G6) => {
       };
 
       if (name === EnumNodeAndEdgeStatus.SELECTED && value) {
-        targetAttrs.border.lineWidth = 5;
-        targetAttrs.selected.r = outerSize / 2 + 5;
+        targetAttrs.border.lineWidth = innerNodeSize > 10 ? 5 : 3;
+        targetAttrs.selected.r = outerSize / 2 + adjustment;
       }
 
       if (name === EnumNodeAndEdgeStatus.LIGHT && value) {
-        targetAttrs.selected.r = outerSize / 2 + 5;
+        targetAttrs.selected.r = outerSize / 2 + adjustment;
       }
 
       if (name === EnumNodeAndEdgeStatus.DARK && value) {

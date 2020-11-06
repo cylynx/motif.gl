@@ -16,3 +16,13 @@ export enum EnumNodeAndEdgeStatus {
   DARK = 'highlight.dark',
   HOVERED = 'hovered',
 }
+
+/* Additions */
+
+export const DEFAULT_NODE_STYLE = {
+  nodeSize: 2,
+  primaryColor: PRIMARY_NODE_COLOR,
+  fontFamily: DEFAULT_ICON_FONT_FAMILY,
+};
+
+export type NodeStyle = keyof typeof DEFAULT_NODE_STYLE;
