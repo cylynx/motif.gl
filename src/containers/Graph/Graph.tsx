@@ -98,7 +98,7 @@ const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
         defaultNode: {
           defaultStyle: {
             color: 'teal',
-            size: 5,
+            size: 2,
           },
         },
         autoPolyEdge: true,

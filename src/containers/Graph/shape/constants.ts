@@ -22,7 +22,7 @@ export enum EnumNodeAndEdgeStatus {
 /* Additions */
 
 export const DEFAULT_NODE_STYLE = {
-  size: 10,
+  size: 1,
   color: PRIMARY_NODE_COLOR,
   fontFamily: DEFAULT_ICON_FONT_FAMILY,
 };

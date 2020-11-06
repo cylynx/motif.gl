@@ -11,13 +11,13 @@ export default (g6: typeof G6) => {
     draw(cfg: G6Node, group: Group) {
       const hasLabel = cfg.label;
       const defaultStyle = cfg?.defaultStyle;
-      const innersize =
+      const innerNodeSize =
         cfg.style?.size || defaultStyle.size || DEFAULT_NODE_STYLE.size;
       const innerSize =
-        innersize > DEFAULT_NODE_STYLE.size
-          ? innersize
+        innerNodeSize > DEFAULT_NODE_STYLE.size
+          ? innerNodeSize
           : DEFAULT_NODE_STYLE.size;
-      const outerSize = innerSize + 4;
+      const outerSize = innerNodeSize > 4 ? innerSize + 4 : innerSize + 2;
 
       const color = cfg.style?.dark
         ? GREY
@@ -193,14 +193,14 @@ export default (g6: typeof G6) => {
         ?.get('children')
         .find((item: Shape.Base) => item.attr().id === 'circle-children-icon');
 
-      const innersize =
+      const innerNodeSize =
         data.style?.size || defaultStyle.size || DEFAULT_NODE_STYLE.size;
       const innerSize =
-        innersize > DEFAULT_NODE_STYLE.size
-          ? innersize
+        innerNodeSize > DEFAULT_NODE_STYLE.size
+          ? innerNodeSize
           : DEFAULT_NODE_STYLE.size;
-      const outerSize = innersize > 4 ? innerSize + 4 : innerSize + 2;
-      const adjustment = innersize > 10 ? 4 : 2;
+      const outerSize = innerNodeSize > 4 ? innerSize + 4 : innerSize + 2;
+      const adjustment = innerNodeSize > 10 ? 4 : 2;
 
       const color = data.style?.dark
         ? GREY
@@ -238,7 +238,7 @@ export default (g6: typeof G6) => {
       };
 
       if (name === EnumNodeAndEdgeStatus.SELECTED && value) {
-        targetAttrs.border.lineWidth = innersize > 10 ? 5 : 3;
+        targetAttrs.border.lineWidth = innerNodeSize > 10 ? 5 : 3;
         targetAttrs.selected.r = outerSize / 2 + adjustment;
       }
 

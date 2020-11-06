@@ -77,9 +77,7 @@ const StyledItem = ({ item }: { item: SampleDataItem }) => {
   ) => {
     e.preventDefault();
     dispatch(closeModal());
-    const results = item.data();
-    console.log(results);
-    Promise.resolve(results).then((d) =>
+    Promise.resolve(item.data()).then((d) =>
       // @ts-ignore
       dispatch(addData({ data: d, type: item.type }, defaultAccessors)),
     );

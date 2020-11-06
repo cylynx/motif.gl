@@ -19,7 +19,7 @@ const mapNodeSize = (nodes, propertyName, visualRange) => {
   const rangevLength = visualRange[1] - visualRange[0];
   nodes.forEach((node) => {
     node.style = {
-      nodeSize:
+      size:
         ((node[propertyName] - minp) / rangepLength) * rangevLength +
         visualRange[0],
     };
