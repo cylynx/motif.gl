@@ -7,7 +7,9 @@ export const HIDDEN_LABEL_COLOR = normalizeColor([238, 238, 238]);
 export const HIDDEN_LINE_COLOR = normalizeColor([238, 238, 238]);
 export const PRIMARY_NODE_COLOR = normalizeColor([135, 59, 244]);
 
-export const DEFAULT_ICON_FONT_FAMILY = 'graphin';
+export const DEFAULT_ICON_FONT_FAMILY = `-apple-system, system-ui, BlinkMacSystemFont, 
+'Segoe UI', Roboto, 'Helvetica Neue', 
+Ubuntu, Arial, sans-serif`;
 
 export enum EnumNodeAndEdgeStatus {
   NORMAL = 'normal',
