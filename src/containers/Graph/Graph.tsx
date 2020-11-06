@@ -97,8 +97,8 @@ const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
         keyShapeZoom: 0.9,
         defaultNode: {
           defaultStyle: {
-            primaryColor: 'teal',
-            nodeSize: 5,
+            color: 'teal',
+            size: 5,
           },
         },
         autoPolyEdge: true,
