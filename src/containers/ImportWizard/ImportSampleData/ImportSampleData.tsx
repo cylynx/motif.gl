@@ -41,8 +41,15 @@ const sampleData: SampleDataItem[] = [
   },
   {
     data: DATA.NetworkData,
-    title: 'Perf Test Dataset',
+    title: 'Network Dataset',
     description: '1.5k Nodes, 2.7k edges',
+    type: 'json',
+    src: '/images/sample.png',
+  },
+  {
+    data: DATA.NetworkData2,
+    title: 'Perf Test Dataset',
+    description: '7.1k Nodes, 5.4k edges',
     type: 'json',
     src: '/images/sample.png',
   },
@@ -77,10 +84,10 @@ const StyledItem = ({ item }: { item: SampleDataItem }) => {
   ) => {
     e.preventDefault();
     dispatch(closeModal());
-    Promise.resolve(item.data()).then((d) =>
+    Promise.resolve(item.data()).then((d) => {
       // @ts-ignore
-      dispatch(addData({ data: d, type: item.type }, defaultAccessors)),
-    );
+      dispatch(addData({ data: d, type: item.type }, defaultAccessors));
+    });
   };
 
   return (

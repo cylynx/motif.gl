@@ -18,11 +18,9 @@ const mapNodeSize = (nodes, propertyName, visualRange) => {
   const rangepLength = maxp - minp;
   const rangevLength = visualRange[1] - visualRange[0];
   nodes.forEach((node) => {
-    node.style = {
-      size:
-        ((node[propertyName] - minp) / rangepLength) * rangevLength +
-        visualRange[0],
-    };
+    node.style.size =
+      ((node[propertyName] - minp) / rangepLength) * rangevLength +
+      visualRange[0];
   });
 };
 
@@ -127,6 +125,7 @@ export const NetworkData = () =>
       data.nodes.forEach((node) => {
         node.label = node.olabel;
         node.degree = 0;
+        node.style = {};
         data.edges.forEach((edge) => {
           if (edge.source === node.id || edge.target === node.id) {
             node.degree++;
@@ -134,6 +133,27 @@ export const NetworkData = () =>
         });
       });
       mapNodeSize(data.nodes, 'degree', [1, 10]);
+      return data;
+    });
+
+export const NetworkData2 = () =>
+  fetch(
+    'https://gw.alipayobjects.com/os/basement_prod/0b9730ff-0850-46ff-84d0-1d4afecd43e6.json',
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      data.nodes.forEach((node) => {
+        node.label = node.olabel;
+        node.degree = 0;
+        node.style = {};
+        node.style.fontSize = 1.3;
+        data.edges.forEach((edge) => {
+          if (edge.source === node.id || edge.target === node.id) {
+            node.degree++;
+          }
+        });
+      });
+      mapNodeSize(data.nodes, 'degree', [1, 15]);
       return data;
     });
 
