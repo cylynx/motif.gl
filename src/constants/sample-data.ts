@@ -4,8 +4,8 @@
 import mock from '../utils/mock';
 import * as Graph from '../types/Graph';
 
-export const RandomData = mock(15).random().graphin();
-export const CircleData = mock(10).circle().graphin();
+export const RandomData = () => mock(15).random().graphin();
+export const CircleData = () => mock(10).circle().graphin();
 
 const mapNodeSize = (nodes, propertyName, visualRange) => {
   let minp = 9999999999;
@@ -26,9 +26,9 @@ const mapNodeSize = (nodes, propertyName, visualRange) => {
   });
 };
 
-export const TwoDataArray = [RandomData, CircleData];
+export const TwoDataArray = () => [RandomData(), CircleData()];
 
-export const SimpleEdge: Graph.GraphData = {
+export const SimpleEdge = (): Graph.GraphData => ({
   nodes: [
     {
       id: '1',
@@ -47,9 +47,9 @@ export const SimpleEdge: Graph.GraphData = {
   metadata: {
     key: 123,
   },
-};
+});
 
-export const TriangleJSON: Graph.GraphList = [
+export const TriangleJSON = (): Graph.GraphList => [
   {
     nodes: [
       {
@@ -117,10 +117,6 @@ export const TriangleJSON: Graph.GraphList = [
     },
   },
 ];
-
-export const asyncTriangleJSON = async () => {
-  return TriangleJSON;
-};
 
 export const NetworkData = () =>
   fetch(

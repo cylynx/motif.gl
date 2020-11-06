@@ -4,16 +4,17 @@ import { Button } from 'baseui/button';
 import { Block } from 'baseui/block';
 import { Cell } from 'baseui/layout-grid';
 import { LabelMedium, ParagraphMedium } from 'baseui/typography';
-import { ImportFormat } from '../../../processors/import-data';
 import * as Graph from '../../../types/Graph';
 import * as DATA from '../../../constants/sample-data';
 import { FlushedGrid } from '../../../components/ui';
 import { addData, closeModal } from '../../../redux';
 
-export type SampleDataItem = ImportFormat & {
+export type SampleDataItem = {
+  data: () => void;
   title: string;
   description: string;
   src: string;
+  type: 'json' | 'edgeListCsv' | 'nodeEdgeCsv';
 };
 
 const sampleData: SampleDataItem[] = [
@@ -39,8 +40,7 @@ const sampleData: SampleDataItem[] = [
     src: '/images/sample.png',
   },
   {
-    // @ts-ignore
-    data: DATA.NetworkData(),
+    data: DATA.NetworkData,
     title: 'Perf Test Dataset',
     description: '1.5k Nodes, 2.7k edges',
     type: 'json',
@@ -77,7 +77,9 @@ const StyledItem = ({ item }: { item: SampleDataItem }) => {
   ) => {
     e.preventDefault();
     dispatch(closeModal());
-    Promise.resolve(item.data).then((d) =>
+    const results = item.data();
+    console.log(results);
+    Promise.resolve(results).then((d) =>
       // @ts-ignore
       dispatch(addData({ data: d, type: item.type }, defaultAccessors)),
     );

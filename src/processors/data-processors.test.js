@@ -14,20 +14,20 @@ import {
 
 describe('Parsing json to csv', () => {
   it('should contain the right number of rows (including header)', async () => {
-    const nodeCsv = await json2csv(TriangleJSON[0].nodes);
-    const edgeCsv = await json2csv(TriangleJSON[0].edges);
+    const nodeCsv = await json2csv(TriangleJSON()[0].nodes);
+    const edgeCsv = await json2csv(TriangleJSON()[0].edges);
     expect(nodeCsv.split('\n')).toHaveLength(4);
     expect(edgeCsv.split('\n')).toHaveLength(4);
   });
   it('should contain id at root level', async () => {
-    const nodeCsv = await json2csv(TriangleJSON[0].nodes);
-    const edgeCsv = await json2csv(TriangleJSON[0].edges);
+    const nodeCsv = await json2csv(TriangleJSON()[0].nodes);
+    const edgeCsv = await json2csv(TriangleJSON()[0].edges);
     expect(nodeCsv).toContain('id');
     expect(edgeCsv).toContain('id');
   });
   it('should contain nested style fields', async () => {
-    const nodeCsv = await json2csv(TriangleJSON[0].nodes);
-    const edgeCsv = await json2csv(TriangleJSON[0].edges);
+    const nodeCsv = await json2csv(TriangleJSON()[0].nodes);
+    const edgeCsv = await json2csv(TriangleJSON()[0].edges);
     expect(nodeCsv).toContain('style.nodeSize');
     expect(edgeCsv).toContain('style.endArrow');
   });
@@ -65,9 +65,9 @@ describe('Parsing csv to json', () => {
     expect(edgeJson[2].data.blk_ts_unix).toBeNull();
   });
   it('should be the same when converted from json to csv to json', async () => {
-    const edgeCsv = await json2csv(TriangleJSON[0].edges);
+    const edgeCsv = await json2csv(TriangleJSON()[0].edges);
     const edgeJson = await csv2json(edgeCsv);
-    expect(edgeJson).toMatchObject(TriangleJSON[0].edges);
+    expect(edgeJson).toMatchObject(TriangleJSON()[0].edges);
   });
   it('should return a GraphData object with valid metadata', async () => {
     const output = await processNodeEdgeCsv(nodeCsv, testCsv);
@@ -212,13 +212,13 @@ describe('Process json data', () => {
     expect(results).toMatchObject(testJson);
   });
   it('should return the json object parsed, with the added metadata', async () => {
-    const results = await processJson(TriangleJSON[0]);
+    const results = await processJson(TriangleJSON()[0]);
     expect(results.metadata.key).not.toBeNull();
     expect(results.metadata.fields.nodes).not.toBeNull();
     expect(results.metadata.fields.edges).not.toBeNull();
   });
   it('should return metadata with the correct number of fields for nodes and edges', async () => {
-    const results = await processJson(TriangleJSON[0]);
+    const results = await processJson(TriangleJSON()[0]);
     const { nodes: nodeFields, edges: edgeFields } = results.metadata.fields;
     expect(nodeFields).toHaveLength(5);
     expect(edgeFields).toHaveLength(3);

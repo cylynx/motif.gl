@@ -14,17 +14,17 @@ const accessors = {
 
 describe('Import various json data types', () => {
   it('should import valid json graph data object', async () => {
-    const results = await importJson(DATA.RandomData, accessors);
+    const results = await importJson(DATA.RandomData(), accessors);
     expect(results).toHaveLength(1);
     expect(results[0]).toHaveProperty('nodes', 'edges', 'metadata');
   });
   it('should import valid json graph list array', async () => {
-    const results = await importJson([DATA.RandomData], accessors);
+    const results = await importJson([DATA.RandomData()], accessors);
     expect(results).toHaveLength(1);
     expect(results[0]).toHaveProperty('nodes', 'edges', 'metadata');
   });
   it('should output a valid graph data for each object in graph list array', async () => {
-    const results = await importJson(DATA.TwoDataArray, accessors);
+    const results = await importJson(DATA.TwoDataArray(), accessors);
     expect(results).toHaveLength(2);
     expect(results[0]).toHaveProperty('nodes', 'edges', 'metadata');
     expect(results[1]).toHaveProperty('nodes', 'edges', 'metadata');
