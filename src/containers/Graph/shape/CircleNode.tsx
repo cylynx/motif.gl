@@ -11,13 +11,9 @@ export default (g6: typeof G6) => {
     draw(cfg: G6Node, group: Group) {
       const hasLabel = cfg.label;
       const defaultStyle = cfg?.defaultStyle;
-      const innerNodeSize =
-        cfg.style?.size || defaultStyle.size || DEFAULT_NODE_STYLE.size;
       const innerSize =
-        innerNodeSize > DEFAULT_NODE_STYLE.size
-          ? innerNodeSize
-          : DEFAULT_NODE_STYLE.size;
-      const outerSize = innerNodeSize > 4 ? innerSize + 4 : innerSize + 2;
+        cfg.style?.size || defaultStyle.size || DEFAULT_NODE_STYLE.size;
+      const outerSize = innerSize > 5 ? innerSize + 4 : innerSize + 2;
 
       const color = cfg.style?.dark
         ? GREY
@@ -58,7 +54,7 @@ export default (g6: typeof G6) => {
           y: 0,
           r: outerSize / 2,
           stroke: strokeColor.normal,
-          lineWidth: 2,
+          lineWidth: innerSize > 10 ? 2 : 1,
         },
         name: 'circle-border',
         draggable: true,
@@ -85,6 +81,7 @@ export default (g6: typeof G6) => {
         draggable: true,
         name: 'circle-inner',
       });
+      // font-icon
       inner.addShape('text', {
         attrs: {
           id: 'circle-icon',
@@ -94,10 +91,7 @@ export default (g6: typeof G6) => {
           fontSize: 20,
           textAlign: 'center',
           textBaseline: 'middle',
-          fontFamily:
-            cfg.style?.fontFamily ||
-            defaultStyle.fontFamily ||
-            DEFAULT_NODE_STYLE.fontFamily,
+          fontFamily: 'graphin',
           fill: cfg.style?.dark ? '#8D93B0' : '#FFFFFF',
         },
         draggable: true,
@@ -109,9 +103,16 @@ export default (g6: typeof G6) => {
             id: 'circle-label',
             x: 0,
             y: outerSize / 2 + 14,
-            fontSize: 12,
+            fontSize:
+              cfg.style?.fontSize ||
+              defaultStyle.fontSize ||
+              DEFAULT_NODE_STYLE.fontSize,
             text: cfg.label,
             textAlign: 'center',
+            fontFamily:
+              cfg.style?.fontFamily ||
+              defaultStyle.fontFamily ||
+              DEFAULT_NODE_STYLE.fontFamily,
             fill: cfg.style?.dark ? '#8D93B0' : '#3B3B3B',
           },
           draggable: true,
@@ -193,14 +194,10 @@ export default (g6: typeof G6) => {
         ?.get('children')
         .find((item: Shape.Base) => item.attr().id === 'circle-children-icon');
 
-      const innerNodeSize =
-        data.style?.size || defaultStyle.size || DEFAULT_NODE_STYLE.size;
       const innerSize =
-        innerNodeSize > DEFAULT_NODE_STYLE.size
-          ? innerNodeSize
-          : DEFAULT_NODE_STYLE.size;
-      const outerSize = innerNodeSize > 4 ? innerSize + 4 : innerSize + 2;
-      const adjustment = innerNodeSize > 10 ? 4 : 2;
+        data.style?.size || defaultStyle.size || DEFAULT_NODE_STYLE.size;
+      const outerSize = innerSize > 5 ? innerSize + 4 : innerSize + 2;
+      const adjustment = innerSize > 10 ? 4 : 2;
 
       const color = data.style?.dark
         ? GREY
@@ -215,7 +212,7 @@ export default (g6: typeof G6) => {
       const targetAttrs = {
         border: {
           stroke: strokeColor.normal,
-          lineWidth: 2,
+          lineWidth: innerSize > 10 ? 2 : 1,
         },
         selected: {
           r: 0,
@@ -238,7 +235,7 @@ export default (g6: typeof G6) => {
       };
 
       if (name === EnumNodeAndEdgeStatus.SELECTED && value) {
-        targetAttrs.border.lineWidth = innerNodeSize > 10 ? 5 : 3;
+        targetAttrs.border.lineWidth = innerSize > 10 ? 4 : 2;
         targetAttrs.selected.r = outerSize / 2 + adjustment;
       }
 
