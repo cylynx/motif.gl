@@ -3,10 +3,9 @@
 import { Group, Shape } from '@antv/g-canvas';
 import { IEdge } from '@antv/g6/lib/interface/item';
 import { G6Edge } from '@antv/graphin';
-import { normalizeColor } from './utils';
+import { normalizeColor, mapEdgePattern } from './utils';
 import {
-  EDGE_LINE_DEFAULT_COLOR,
-  EDGE_LABEL_DEFAULT_COLOR,
+  DEFAULT_EDGE_STYLE,
   HIDDEN_LABEL_COLOR,
   GREY,
   EnumNodeAndEdgeStatus,
@@ -17,8 +16,7 @@ export default (g6: any) => {
   g6.registerEdge('LineEdge', {
     draw(cfg: G6Edge, group: Group) {
       const hasLabel = cfg.label;
-      const { startPoint, endPoint } = cfg;
-      const d = (cfg.style?.line?.width || 1) + 1;
+      const { startPoint, endPoint, style, defaultStyle } = cfg;
 
       const attrs = {
         path: [
@@ -27,12 +25,38 @@ export default (g6: any) => {
         ],
       };
 
-      const lineColor = cfg.style?.line?.color
-        ? normalizeColor(cfg.style?.line?.color)
-        : EDGE_LINE_DEFAULT_COLOR;
-      const labelColor = cfg.style?.label?.color
-        ? normalizeColor(cfg.style?.label?.color)
-        : EDGE_LABEL_DEFAULT_COLOR;
+      const lineColor = style?.dark
+        ? GREY
+        : normalizeColor(
+            style?.color || defaultStyle?.color || DEFAULT_EDGE_STYLE.color,
+          );
+
+      const linePattern = mapEdgePattern(
+        style?.pattern || defaultStyle?.pattern || DEFAULT_EDGE_STYLE.pattern,
+      );
+
+      const basicLineWidth =
+        style?.width || defaultStyle?.width || DEFAULT_EDGE_STYLE.width;
+
+      const d = basicLineWidth + 1;
+
+      const labelFontColor = style?.dark
+        ? HIDDEN_LABEL_COLOR
+        : normalizeColor(
+            style?.fontColor ||
+              defaultStyle?.fontColor ||
+              DEFAULT_EDGE_STYLE.fontColor,
+          );
+
+      const labelFontSize =
+        style?.fontSize ||
+        defaultStyle?.fontSize ||
+        DEFAULT_EDGE_STYLE.fontSize;
+
+      const labelFontFamily =
+        style?.fontFamily ||
+        defaultStyle?.fontFamily ||
+        DEFAULT_EDGE_STYLE.fontFamily;
 
       group.addShape('path', {
         attrs: {
@@ -51,9 +75,10 @@ export default (g6: any) => {
           id: 'main',
           ...attrs,
           lineAppendWidth: 4,
-          stroke: cfg.style?.dark ? GREY.dark : lineColor.dark,
-          lineWidth: cfg.style?.dark ? 1 : cfg.style?.line?.width || 1,
-          lineDash: cfg.style?.line?.dash,
+          stroke: lineColor.dark,
+          lineWidth: basicLineWidth,
+          // lineDash: style?.line?.dash,
+          lineDash: linePattern,
           endArrow: {
             d: -d / 2,
             path: `M 0,0 L ${d},${d / 2} L ${d},-${d / 2} Z`,
@@ -69,11 +94,11 @@ export default (g6: any) => {
             id: 'label',
             x: 0,
             y: 0,
-            fontSize: cfg.style?.label?.size || 12,
+            fontSize: labelFontSize,
             text: cfg.label,
             textAlign: 'center',
-            fontFamily: cfg.style?.label?.family,
-            fill: cfg.style?.dark ? HIDDEN_LABEL_COLOR.normal : labelColor.dark,
+            fontFamily: labelFontFamily,
+            fill: labelFontColor.dark,
           },
           draggable: true,
           name: 'label',
@@ -95,6 +120,7 @@ export default (g6: any) => {
     setState(name: EnumNodeAndEdgeStatus, value: string, edge: IEdge) {
       if (!name) return;
       const data: G6Edge = edge.get('model');
+      const { style, defaultStyle } = data;
       const mainShape = edge
         .getContainer()
         .get('children')
@@ -107,17 +133,25 @@ export default (g6: any) => {
         .getContainer()
         .get('children')
         .find((item: Shape.Base) => item.attr().id === 'label');
-      const d = (data.style?.line?.width || 1) + 1;
-      const basicLineWidth = data.style?.dark
-        ? 1
-        : data.style?.line?.width || 1;
-      const lineColor = data.style?.line?.color
-        ? normalizeColor(data.style?.line?.color)
-        : EDGE_LINE_DEFAULT_COLOR;
-      const labelColor = data.style?.label?.color
-        ? normalizeColor(data.style?.label?.color)
-        : EDGE_LABEL_DEFAULT_COLOR;
 
+      const lineColor = data.style?.dark
+        ? GREY
+        : normalizeColor(
+            style?.color || defaultStyle?.color || DEFAULT_EDGE_STYLE.color,
+          );
+
+      const basicLineWidth =
+        style?.width || defaultStyle?.width || DEFAULT_EDGE_STYLE.width;
+
+      const d = basicLineWidth + 1;
+
+      const labelFontColor = data.style?.dark
+        ? HIDDEN_LABEL_COLOR
+        : normalizeColor(
+            style?.fontColor ||
+              defaultStyle?.fontColor ||
+              DEFAULT_EDGE_STYLE.fontColor,
+          );
       const targetAttrs = {
         main: {},
         selected: {},
@@ -125,7 +159,7 @@ export default (g6: any) => {
       };
 
       targetAttrs.main = {
-        stroke: data.style?.dark ? GREY.dark : lineColor.dark,
+        stroke: lineColor.dark,
         lineWidth: basicLineWidth,
         endArrow: {
           d: -d / 2,
@@ -136,7 +170,7 @@ export default (g6: any) => {
         lineWidth: 0,
       };
       targetAttrs.text = {
-        fill: data.style?.dark ? HIDDEN_LABEL_COLOR.normal : labelColor.dark,
+        fill: labelFontColor.dark,
       };
 
       if (name === EnumNodeAndEdgeStatus.HOVERED && value) {

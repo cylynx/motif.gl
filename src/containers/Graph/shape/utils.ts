@@ -8,9 +8,9 @@ export interface NormalizedColor {
   reflect: string;
 }
 
-function normalizeColor(
+export const normalizeColor = (
   rgb: string | [number, number, number] | NormalizedColor,
-): NormalizedColor {
+): NormalizedColor => {
   if (Array.isArray(rgb)) {
     const color = `rgba(${rgb.join(',')}, 1)`;
     return {
@@ -27,6 +27,23 @@ function normalizeColor(
     };
   }
   return rgb as NormalizedColor;
-}
+};
 
-export { normalizeColor };
+export type EdgePattern = null | 'dot' | 'dash' | 'dash-dot';
+
+export const mapEdgePattern = (str: EdgePattern) => {
+  let result: null | number[] = null;
+  // eslint-disable-next-line no-empty
+  if (str === null) {
+  } else if (str === 'dot') {
+    result = [1, 1];
+  } else if (str === 'dash') {
+    result = [5, 5];
+  } else if (str === 'dash-dot') {
+    result = [4, 2, 1, 2];
+  } else {
+    // eslint-disable-next-line no-console
+    console.warn(`Edge pattern ${str} not supported`);
+  }
+  return result;
+};

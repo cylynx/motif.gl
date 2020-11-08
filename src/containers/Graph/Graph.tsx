@@ -96,7 +96,7 @@ const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
   return (
     <Graphin
       data={graphVisible}
-      layout={null}
+      layout={layout}
       ref={ref}
       options={{
         isZoomOptimize: () => true,
@@ -107,7 +107,15 @@ const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
             size: 20,
           },
         },
+        // defaultEdge: {
+        //   defaultStyle: {
+        //     width: 2,
+        //     pattern: 'dot',
+        //     color: 'blue',
+        //   },
+        // },
         autoPolyEdge: true,
+        autoLoopEdge: true,
         modes: {
           default: [
             {
