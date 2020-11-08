@@ -126,6 +126,7 @@ export const NetworkData = () =>
         node.label = node.olabel;
         node.degree = 0;
         node.style = {};
+        node.style.fontSize = 6;
         data.edges.forEach((edge) => {
           if (edge.source === node.id || edge.target === node.id) {
             node.degree++;

@@ -25,6 +25,11 @@ export default (g6: typeof G6) => {
         ? GREY
         : normalizeColor(cfg.style?.stroke || defaultStyle.stroke || color);
 
+      const labelFontSize =
+        cfg.style?.fontSize ||
+        defaultStyle.fontSize ||
+        DEFAULT_NODE_STYLE.fontSize;
+
       group.addShape('circle', {
         attrs: {
           id: 'circle-floor',
@@ -47,17 +52,19 @@ export default (g6: typeof G6) => {
         draggable: true,
         name: 'circle-selected',
       });
+
       const keyShape = group.addShape('circle', {
         attrs: {
-          id: 'circle-border',
+          id: 'circle-inner',
           x: 0,
           y: 0,
-          r: outerSize / 2,
+          r: innerSize / 2,
+          fill: color.dark,
           stroke: strokeColor.normal,
           lineWidth: innerSize > 10 ? 2 : 1,
         },
-        name: 'circle-border',
         draggable: true,
+        name: 'circle-inner',
       });
       const inner = group.addGroup(
         {
@@ -70,17 +77,6 @@ export default (g6: typeof G6) => {
         },
         {},
       );
-      inner.addShape('circle', {
-        attrs: {
-          id: 'circle-inner',
-          x: 0,
-          y: 0,
-          r: innerSize / 2,
-          fill: color.dark,
-        },
-        draggable: true,
-        name: 'circle-inner',
-      });
       // font-icon
       inner.addShape('text', {
         attrs: {
@@ -102,11 +98,8 @@ export default (g6: typeof G6) => {
           attrs: {
             id: 'circle-label',
             x: 0,
-            y: outerSize / 2 + 14,
-            fontSize:
-              cfg.style?.fontSize ||
-              defaultStyle.fontSize ||
-              DEFAULT_NODE_STYLE.fontSize,
+            y: outerSize / 2 + labelFontSize,
+            fontSize: labelFontSize,
             text: cfg.label,
             textAlign: 'center',
             fontFamily:
@@ -165,17 +158,13 @@ export default (g6: typeof G6) => {
       const data: G6Node = node.get('model');
       const defaultStyle = data?.defaultStyle;
       const container = node.getContainer();
-      // const circleFloor = container.get('children').find(node => node.attr().id === 'circle-floor');
-      const circleBorder = container
-        .get('children')
-        .find((item: Shape.Base) => item.attr().id === 'circle-border');
       const circleSelected = container
         .get('children')
         .find((item: Shape.Base) => item.attr().id === 'circle-selected');
       const circleInnerGroup = container
         .get('children')
         .find((item: Shape.Base) => item.attr().id === 'circle-inner-group');
-      const circleInner = circleInnerGroup
+      const circleInner = container
         .get('children')
         .find((item: Shape.Base) => item.attr().id === 'circle-inner');
       const circleIcon = circleInnerGroup
@@ -210,15 +199,13 @@ export default (g6: typeof G6) => {
         : normalizeColor(data.style?.stroke || defaultStyle.stroke || color);
 
       const targetAttrs = {
-        border: {
-          stroke: strokeColor.normal,
-          lineWidth: innerSize > 10 ? 2 : 1,
-        },
         selected: {
           r: 0,
         },
         inner: {
           fill: color.dark,
+          stroke: strokeColor.normal,
+          lineWidth: innerSize > 10 ? 2 : 1,
         },
         icon: {
           fill: data.style?.dark ? '#8D93B0' : '#FFFFFF',
@@ -235,7 +222,7 @@ export default (g6: typeof G6) => {
       };
 
       if (name === EnumNodeAndEdgeStatus.SELECTED && value) {
-        targetAttrs.border.lineWidth = innerSize > 10 ? 4 : 2;
+        targetAttrs.inner.lineWidth = innerSize > 10 ? 4 : 2;
         targetAttrs.selected.r = outerSize / 2 + adjustment;
       }
 
@@ -244,7 +231,7 @@ export default (g6: typeof G6) => {
       }
 
       if (name === EnumNodeAndEdgeStatus.DARK && value) {
-        targetAttrs.border.stroke = GREY.dark;
+        targetAttrs.inner.stroke = GREY.dark;
         targetAttrs.inner.fill = GREY.dark;
         targetAttrs.icon.fill = '#8D93B0';
         targetAttrs.label.fill = '#8D93B0';
@@ -252,7 +239,7 @@ export default (g6: typeof G6) => {
         targetAttrs.childrenIcon.fill = '#8D93B0';
       }
 
-      circleBorder.attr(targetAttrs.border);
+      // circleBorder.attr(targetAttrs.border);
       circleSelected.attr(targetAttrs.selected);
       circleInner.attr(targetAttrs.inner);
       circleIcon.attr(targetAttrs.icon);

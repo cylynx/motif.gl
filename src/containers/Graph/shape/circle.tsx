@@ -1,6 +1,7 @@
 /* G6 Circle for reference */
 /* https://github.com/antvis/G6/blob/master/src/shape/nodes/circle.ts */
 /* eslint-disable import/no-extraneous-dependencies */
+// @ts-nocheck
 import G6 from '@antv/g6';
 import GGroup from '@antv/g-canvas/lib/group';
 import { IShape } from '@antv/g-canvas/lib/interfaces';
