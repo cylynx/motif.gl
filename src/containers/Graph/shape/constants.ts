@@ -28,7 +28,7 @@ export const DEFAULT_NODE_STYLE = {
   fontSize: 12,
 };
 
-export type NodeStyleType = typeof DEFAULT_NODE_STYLE;
+export type NodeStyleType = Partial<typeof DEFAULT_NODE_STYLE>;
 export type NodeStyleKey = keyof typeof DEFAULT_NODE_STYLE;
 
 export const EDGE_DEFAULT_PATTERN: EdgePattern = null;
@@ -42,5 +42,5 @@ export const DEFAULT_EDGE_STYLE = {
   fontSize: 12,
 };
 
-export type EdgeStyleType = typeof DEFAULT_EDGE_STYLE;
+export type EdgeStyleType = Partial<typeof DEFAULT_EDGE_STYLE>;
 export type EdgeStyleKey = keyof typeof DEFAULT_EDGE_STYLE;

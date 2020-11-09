@@ -2,10 +2,14 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-param-reassign */
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
-import { createSlice, PayloadAction, current } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import isEmpty from 'lodash/isEmpty';
 import * as LAYOUT from '../constants/layout-options';
 import * as Graph from '../types/Graph';
+import {
+  NodeStyleType,
+  EdgeStyleType,
+} from '../containers/Graph/shape/constants';
 import {
   combineProcessedData,
   deriveVisibleGraph,
@@ -80,6 +84,8 @@ export const updateAll = (
 export interface GraphState {
   accessors: Graph.Accessors;
   styleOptions: Graph.StyleOptions;
+  defaultNodeStyle: NodeStyleType;
+  defaultEdgeStyle: EdgeStyleType;
   graphList: Graph.GraphList;
   graphFlatten: Graph.GraphData;
   graphGrouped: { nodes: Graph.Node[]; edges: Graph.Edge[] };
@@ -112,6 +118,8 @@ const initialState: GraphState = {
     resetView: true,
     groupEdges: true,
   },
+  defaultNodeStyle: {},
+  defaultEdgeStyle: {},
   graphList: [],
   graphFlatten: {
     nodes: [],
@@ -224,6 +232,17 @@ const graph = createSlice({
     setAccessors(state, action) {
       state.accessors = action.payload;
     },
+    setDefaultStyles(
+      state,
+      action: PayloadAction<{
+        defaultNodeStyle: NodeStyleType;
+        defaultEdgeStyle: EdgeStyleType;
+      }>,
+    ) {
+      const { defaultNodeStyle, defaultEdgeStyle } = action.payload;
+      state.defaultNodeStyle = defaultNodeStyle;
+      state.defaultEdgeStyle = defaultEdgeStyle;
+    },
   },
 });
 
@@ -243,6 +262,7 @@ export const {
   getDetails,
   clearDetails,
   setAccessors,
+  setDefaultStyles,
 } = graph.actions;
 
 export default graph.reducer;
