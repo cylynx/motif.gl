@@ -71,7 +71,7 @@ const Explorer = (props: ExplorerProps) => {
     accessors,
     overrides,
     secondaryTheme,
-    defaultNodeStyle = {},
+    defaultNodeStyle = { color: 'teal' },
     defaultEdgeStyle = {},
   } = props;
   const graphRef = useRef(null);

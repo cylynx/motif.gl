@@ -158,10 +158,11 @@ const graph = createSlice({
       );
     },
     deleteGraphList(state, action: PayloadAction<number>) {
-      state.graphList.splice(action.payload, 1);
+      const { graphList } = state;
+      graphList.splice(action.payload, 1);
       // Loop through graphList to generate new graphData
       let graphData;
-      for (const data of state.graphList) {
+      for (const data of graphList) {
         if (data?.metadata?.visible !== false) {
           graphData = combineProcessedData(data, graphData);
         }
@@ -173,9 +174,10 @@ const graph = createSlice({
       action: PayloadAction<{ index: number; isVisible: boolean }>,
     ) {
       const { index, isVisible } = action.payload;
-      state.graphList[index].metadata.visible = isVisible;
+      const { graphList } = state;
+      graphList[index].metadata.visible = isVisible;
       let graphData;
-      for (const data of state.graphList) {
+      for (const data of graphList) {
         if (data?.metadata?.visible !== false) {
           graphData = combineProcessedData(data, graphData);
         }
@@ -206,7 +208,8 @@ const graph = createSlice({
       }>,
     ) {
       const { data, accessors } = action.payload;
-      const graphData = combineProcessedData(data, state.graphFlatten);
+      const { graphFlatten } = state;
+      const graphData = combineProcessedData(data, graphFlatten);
       updateAll(state, graphData, accessors);
     },
     setRange(state, action) {
