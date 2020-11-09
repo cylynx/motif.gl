@@ -1,36 +1,5 @@
-import { ReactNode, RefObject, MouseEvent, FC } from 'react';
-import { Theme } from 'baseui/theme';
-import { Accessors, GraphData, ChartData } from './Graph';
-import { Tooltip } from '../redux/ui-slice';
-import { WidgetItem } from './Widget';
-
-// Prop Types for Tab Override
-export interface Tab {
-  title: string;
-  idx: string;
-  component: FC<any>;
-}
-
-// Prop Types for Investigate Component
-export interface Overrides {
-  Tabs: Tab[];
-  NodeMenu: Tooltip | null;
-  widgetList: WidgetItem[];
-  score: number[];
-}
-
-// Prop Types for ImportWizard
-export interface ImportWizard {
-  tabs: Tab[];
-}
-// Prop Types for Explorer
-export interface Explorer {
-  name: string;
-  currency: string;
-  accessors: Accessors;
-  overrides: Overrides;
-  secondaryTheme?: Theme;
-}
+import { ReactNode, RefObject, MouseEvent } from 'react';
+import { GraphData, ChartData } from './Graph';
 
 // Prop Types for Bottom and Side Layer
 export interface Layer {

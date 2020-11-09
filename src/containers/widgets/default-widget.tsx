@@ -6,7 +6,7 @@ import Toolbar from '../Toolbar';
 import { InvestigatePanel } from '../InvestigatePanel';
 import IconButton from './IconButton';
 import * as Icon from '../../components/Icons';
-import { WidgetItem } from '../../types/Widget';
+import { WidgetItem } from './widget-slice';
 
 const defaultWidgetList: WidgetItem[] = [
   {
