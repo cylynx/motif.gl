@@ -77,7 +77,6 @@ export default (g6: any) => {
           lineAppendWidth: 4,
           stroke: lineColor.dark,
           lineWidth: basicLineWidth,
-          // lineDash: style?.line?.dash,
           lineDash: linePattern,
           endArrow: {
             d: -d / 2,

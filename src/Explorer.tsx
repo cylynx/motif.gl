@@ -9,26 +9,43 @@ import { Block } from 'baseui/block';
 import { Modal, ModalBody, SIZE } from 'baseui/modal';
 import { Loader } from './components/ui';
 import DataTable from './containers/DataTable';
-import * as Prop from './types/Prop';
+import { Accessors } from './types/Graph';
 import { closeModal, setName } from './redux/ui-slice';
+import { WidgetItem, defaultWidgetList } from './containers/widgets';
 import { setWidget } from './containers/widgets/widget-slice';
 import { setAccessors } from './redux/graph-slice';
 import { getTabsOverride, getNodeMenuOverride } from './utils/overrides';
 import { getUI, getWidget } from './redux';
 
-import { defaultWidgetList } from './containers/widgets';
-
 import SideNavBar from './containers/SideNavBar';
-import Graph, { Tooltip, GraphRefContext } from './containers/Graph';
-import ImportWizard from './containers/ImportWizard';
+import Graph, {
+  Tooltip,
+  TooltipProps,
+  GraphRefContext,
+} from './containers/Graph';
+import ImportWizard, { Tab } from './containers/ImportWizard';
 
-type WidgetContainerProps = {
+export interface WidgetContainerProps {
   children: React.ReactNode;
   graphRef: React.MutableRefObject<HTMLDivElement | null>;
   theme: Theme;
-};
+}
 
-const WidgetContainer = (props: WidgetContainerProps) => {
+export interface Overrides {
+  Tabs: Tab[];
+  NodeMenu: TooltipProps | null;
+  widgetList: WidgetItem[];
+  score: number[];
+}
+
+export interface ExplorerProps {
+  name: string;
+  accessors: Accessors;
+  overrides: Overrides;
+  secondaryTheme?: Theme;
+}
+
+export const WidgetContainer = (props: WidgetContainerProps) => {
   const { children, theme, graphRef } = props;
 
   // @ts-ignore not sure what to type for current.graph
@@ -44,7 +61,7 @@ const WidgetContainer = (props: WidgetContainerProps) => {
   return null;
 };
 
-const Explorer: React.FC<Prop.Explorer> = (props) => {
+const Explorer = (props: ExplorerProps) => {
   const { name, accessors, overrides, secondaryTheme } = props;
   const graphRef = useRef(null);
   const [tooltip, setTooltip] = useState(null);

@@ -12,14 +12,14 @@ import RegisterPolyEdge from './shape/PolyEdge';
 import RegisterLineEdge from './shape/LineEdge';
 import RegisterLoopEdge from './shape/LoopEdge';
 import { getGraph } from '../../redux';
-import { Tooltip } from './Tooltip';
+import { TooltipProps } from './Tooltip';
 import './graphin.css';
 // import '@antv/graphin/dist/index.css';
 
 const INTERACTION_LIMIT = 500;
 
 export type GraphProps = {
-  setTooltip: (tooltip: Tooltip | null) => void;
+  setTooltip: (tooltip: TooltipProps | null) => void;
 };
 
 const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
@@ -101,19 +101,6 @@ const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
       options={{
         isZoomOptimize: () => true,
         keyShapeZoom: 0.9,
-        defaultNode: {
-          defaultStyle: {
-            color: 'teal',
-            size: 20,
-          },
-        },
-        // defaultEdge: {
-        //   defaultStyle: {
-        //     width: 2,
-        //     pattern: 'dot',
-        //     color: 'blue',
-        //   },
-        // },
         autoPolyEdge: true,
         autoLoopEdge: true,
         modes: {
