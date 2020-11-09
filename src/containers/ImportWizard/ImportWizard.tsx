@@ -2,12 +2,21 @@ import React, { useState } from 'react';
 import { HeadingSmall } from 'baseui/typography';
 import { Block } from 'baseui/block';
 import { Tabs, Tab } from 'baseui/tabs-motion';
-import * as Prop from '../../types/Prop';
 
 import ImportLocalFile from './ImportLocalFile';
 import ImportSampleData from './ImportSampleData';
 
-const ImportWizard: React.FC<Prop.ImportWizard> = ({ tabs }) => {
+export interface Tab {
+  title: string;
+  idx: string;
+  component: React.ReactNode;
+}
+
+export interface ImportWizardProps {
+  tabs: Tab[];
+}
+
+const ImportWizard = ({ tabs }: ImportWizardProps) => {
   const [activeKey, setActiveKey] = useState('0');
   // eslint-disable-next-line no-shadow
   const onChangeTab = ({ activeKey }: { activeKey: any }) => {

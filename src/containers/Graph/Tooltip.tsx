@@ -6,18 +6,14 @@ import * as Graph from '../../types/Graph';
 import { getNodeProperties, getEdgeProperties } from '../../utils/graph-utils';
 import { getGraph, getUI } from '../../redux';
 
-export type Tooltip = null | {
+export type TooltipProps = null | {
   id: string;
   x: number;
   y: number;
   type: 'edge' | 'node';
 };
 
-export type TooltipProps = {
-  tooltip: Tooltip;
-};
-
-const Tooltip = ({ tooltip }: TooltipProps) => {
+const Tooltip = ({ tooltip }: { tooltip: TooltipProps }) => {
   // const tooltip = useSelector((state) => getUI(state).tooltip);
   const graphFlatten = useSelector((state) => getGraph(state).graphFlatten);
   const nodeFields = useSelector((state) => getUI(state).nodeSelection);
