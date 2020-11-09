@@ -1,7 +1,6 @@
 import inRange from 'lodash/inRange';
 import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
-import pick from 'lodash/pick';
 import * as Graph from '../types/Graph';
 import { flattenObject } from '../processors/data-processors';
 import { styleEdges } from './style-edges';
@@ -194,11 +193,15 @@ export const chartRange = (timeRange: Graph.TimeRange): Graph.TimeRange => {
 export const removeDuplicates = (
   myArr: Graph.Node[] | Graph.Edge[] | Graph.Field[] | [],
   prop: string,
-) =>
-  myArr.filter(
-    (obj, pos, arr) =>
-      arr.map((mapObj) => mapObj[prop]).indexOf(obj[prop]) === pos,
-  );
+) => {
+  const seen = new Set();
+  const filteredArr = myArr.filter((el) => {
+    const duplicate = seen.has(el[prop]);
+    seen.add(el[prop]);
+    return !duplicate;
+  });
+  return filteredArr;
+};
 
 /**
  * Combines processed data by removing duplicate nodes and edges
