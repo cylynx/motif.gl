@@ -3,8 +3,14 @@ import { Group, Shape } from '@antv/g-canvas';
 import { INode } from '@antv/g6/lib/interface/item';
 import G6 from '@antv/g6';
 import { G6Node } from '@antv/graphin';
-import { GREY, EnumNodeAndEdgeStatus, DEFAULT_NODE_STYLE } from './constants';
+import {
+  GREY as GREY_RGB,
+  EnumNodeAndEdgeStatus,
+  DEFAULT_NODE_STYLE,
+} from './constants';
 import { normalizeColor } from './utils';
+
+const GREY = normalizeColor(GREY_RGB);
 
 export default (g6: typeof G6) => {
   g6.registerNode('CircleNode', {
