@@ -6,6 +6,7 @@ import TriGrid from './TriGrid';
 import Statistic from './Statistic';
 import FullButton from './Button';
 import { DivPrimary, DivSecondary, Centered } from './StyledDiv';
+import SimpleSlider from './SimpleSlider';
 import SimpleTooltip from './SimpleTooltip';
 import InfoIcon from './InfoIcon';
 import InfoNotification from './InfoNotification';
@@ -22,6 +23,7 @@ export {
   FlushedGrid,
   TriGrid,
   Statistic,
+  SimpleSlider,
   SimpleTooltip,
   InfoIcon,
   InfoNotification,
