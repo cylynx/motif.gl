@@ -5,6 +5,10 @@ import get from 'lodash/get';
 import shortid from 'shortid';
 import * as Graph from '../types/Graph';
 import {
+  NodeStyleType,
+  EdgeStyleType,
+} from '../containers/Graph/shape/constants';
+import {
   processJson,
   processNodeEdgeCsv,
   processEdgeListCsv,
@@ -48,6 +52,10 @@ export const OPTIONS = {
 export const importJson = async (
   json: Graph.GraphData | Graph.GraphList,
   accessors: Graph.Accessors,
+  styles: {
+    defaultNodeStyle: NodeStyleType;
+    defaultEdgeStyle: EdgeStyleType;
+  } = { defaultNodeStyle: {}, defaultEdgeStyle: {} },
 ): Promise<Graph.GraphList> => {
   const results = [];
   const jsonArray = Array.isArray(json) ? json : [json];
@@ -58,7 +66,7 @@ export const importJson = async (
       data,
       data?.key || data?.metadata?.key,
     );
-    results.push(addRequiredFieldsJson(processedData, accessors));
+    results.push(addRequiredFieldsJson(processedData, accessors, styles));
   }
   return results;
 };
@@ -74,10 +82,14 @@ export const importJson = async (
 export const importEdgeListCsv = async (
   csv: string,
   accessors: Graph.Accessors,
+  styles: {
+    defaultNodeStyle: NodeStyleType;
+    defaultEdgeStyle: EdgeStyleType;
+  } = { defaultNodeStyle: {}, defaultEdgeStyle: {} },
 ): Promise<Graph.GraphData> => {
   const { edgeSource, edgeTarget } = accessors;
   const processedData = await processEdgeListCsv(csv, edgeSource, edgeTarget);
-  return addRequiredFieldsJson(processedData, accessors);
+  return addRequiredFieldsJson(processedData, accessors, styles);
 };
 
 /**
@@ -93,9 +105,13 @@ export const importNodeEdgeCsv = async (
   nodeCsv: string,
   edgeCsv: string,
   accessors: Graph.Accessors,
+  styles: {
+    defaultNodeStyle: NodeStyleType;
+    defaultEdgeStyle: EdgeStyleType;
+  } = { defaultNodeStyle: {}, defaultEdgeStyle: {} },
 ): Promise<Graph.GraphData> => {
   const processedData = await processNodeEdgeCsv(nodeCsv, edgeCsv);
-  return addRequiredFieldsJson(processedData, accessors);
+  return addRequiredFieldsJson(processedData, accessors, styles);
 };
 
 /**
@@ -108,14 +124,21 @@ export const importNodeEdgeCsv = async (
 export const addRequiredFieldsJson = (
   data: Graph.GraphData,
   accessors: Graph.Accessors,
+  styles: {
+    defaultNodeStyle: NodeStyleType;
+    defaultEdgeStyle: EdgeStyleType;
+  } = { defaultNodeStyle: {}, defaultEdgeStyle: {} },
 ) => {
   for (const node of data.nodes) {
     addNodeFields(node, accessors);
     if (isUndefined(node.data)) node.data = {}; // required by graphin
+    if (isUndefined(node.defaultStyle))
+      node.defaultStyle = styles.defaultNodeStyle;
   }
   for (const edge of data.edges) {
     addEdgeFields(edge, accessors);
-    if (isUndefined(edge.data)) edge.data = {};
+    if (isUndefined(edge.defaultStyle))
+      edge.defaultStyle = styles.defaultEdgeStyle;
   }
   return data;
 };
