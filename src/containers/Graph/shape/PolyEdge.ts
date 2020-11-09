@@ -7,10 +7,13 @@ import { G6Edge } from '@antv/graphin';
 import { normalizeColor, mapEdgePattern } from './utils';
 import {
   DEFAULT_EDGE_STYLE,
-  HIDDEN_LABEL_COLOR,
-  GREY,
+  HIDDEN_LABEL_COLOR as HIDDEN_LABEL_COLOR_RGB,
+  GREY as GREY_RGB,
   EnumNodeAndEdgeStatus,
 } from './constants';
+
+const HIDDEN_LABEL_COLOR = normalizeColor(HIDDEN_LABEL_COLOR_RGB);
+const GREY = normalizeColor(GREY_RGB);
 
 interface Position {
   x: number;

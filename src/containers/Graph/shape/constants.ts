@@ -1,11 +1,11 @@
-import { normalizeColor, EdgePattern } from './utils';
+import { EdgePattern } from './utils';
 
-export const GREY = normalizeColor([204, 204, 204]);
-export const EDGE_DEFAULT_COLOR = normalizeColor([105, 123, 140]);
-export const EDGE_LABEL_DEFAULT_COLOR = normalizeColor([59, 59, 59]);
-export const HIDDEN_LABEL_COLOR = normalizeColor([238, 238, 238]);
-export const HIDDEN_LINE_COLOR = normalizeColor([238, 238, 238]);
-export const PRIMARY_NODE_COLOR = normalizeColor([135, 59, 244]);
+export const GREY = 'rgba(204,204,204,1)';
+export const EDGE_DEFAULT_COLOR = 'rgba(105, 123, 140,1)';
+export const EDGE_LABEL_DEFAULT_COLOR = 'rgba(59, 59, 59,1)';
+export const HIDDEN_LABEL_COLOR = 'rgba(238, 238, 238,1)';
+export const HIDDEN_LINE_COLOR = 'rgba(238, 238, 238,1)';
+export const PRIMARY_NODE_COLOR = 'rgba(135, 59, 244, 1)';
 
 export const DEFAULT_ICON_FONT_FAMILY = `-apple-system, system-ui, BlinkMacSystemFont, 
 'Segoe UI', Roboto, 'Helvetica Neue', 
@@ -22,7 +22,7 @@ export enum EnumNodeAndEdgeStatus {
 /* Additions */
 
 export const DEFAULT_NODE_STYLE = {
-  size: 5,
+  size: 20,
   color: PRIMARY_NODE_COLOR,
   fontFamily: DEFAULT_ICON_FONT_FAMILY,
   fontSize: 12,
