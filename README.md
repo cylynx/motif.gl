@@ -21,13 +21,17 @@ Made with create-react-library
 ### Develop with hot-reloading
 
 ```bash
+npm install
 npm start
 ```
+
+Or `npm run build` to build the motif.gl components
 
 ### Simple CRA preview
 
 ```bash
 cd example
+npm install
 npm start
 ```
 
