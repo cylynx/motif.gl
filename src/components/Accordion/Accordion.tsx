@@ -57,9 +57,9 @@ const Accordion = ({ items, icon }: AccordionProps) => {
         Header: {
           style: ({ $theme }) => ({
             ...$theme.typography.LabelSmall,
-            paddingTop: $theme.sizing.scale200,
+            paddingTop: $theme.sizing.scale300,
             paddingLeft: $theme.sizing.scale600,
-            paddingBottom: $theme.sizing.scale200,
+            paddingBottom: $theme.sizing.scale300,
             borderBottomStyle: 'none',
           }),
         },
