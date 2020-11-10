@@ -1,4 +1,4 @@
-import InvestigatePanel from './InvestigatePanel';
+import OptionsPanel from './OptionsPanel';
 import LayersPanel from './LayersPanel';
 
-export { InvestigatePanel, LayersPanel };
+export { OptionsPanel, LayersPanel };
