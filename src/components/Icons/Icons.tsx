@@ -25,6 +25,7 @@ import {
   BiFullscreen,
   BiUndo,
   BiRedo,
+  BiNetworkChart,
 } from 'react-icons/bi';
 import { VscSymbolKey, VscCircleOutline } from 'react-icons/vsc';
 import { IconBaseProps } from 'react-icons';
@@ -39,6 +40,12 @@ export const Edge = ({ children, size = 16, ...rest }: IconBaseProps) => (
   <HiOutlineShare size={size} {...rest}>
     {children}
   </HiOutlineShare>
+);
+
+export const Network = ({ children, size = 16, ...rest }: IconBaseProps) => (
+  <BiNetworkChart size={size} {...rest}>
+    {children}
+  </BiNetworkChart>
 );
 
 export const Eye = ({ children, size = 16, ...rest }: IconBaseProps) => (

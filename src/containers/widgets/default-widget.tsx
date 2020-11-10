@@ -3,7 +3,7 @@ import { Block } from 'baseui/block';
 import { LeftLayer, BottomRightLayer, TopRightLayer } from './layer';
 import InvestigateTimeBar from '../InvestigateTimeBar';
 import Toolbar from '../Toolbar';
-import { LayersPanel } from '../SidePanel';
+import { LayersPanel, OptionsPanel } from '../SidePanel';
 import IconButton from './IconButton';
 import * as Icon from '../../components/Icons';
 import { WidgetItem } from './widget-slice';
@@ -27,7 +27,7 @@ const defaultWidgetList: WidgetItem[] = [
     icon: <IconButton id='options' group='main' icon={<Icon.Gear />} />,
     widget: (
       <LeftLayer>
-        <Block />
+        <OptionsPanel />
       </LeftLayer>
     ),
     position: 'top',
