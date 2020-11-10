@@ -74,23 +74,26 @@ export default App;
 
 ### Json Import
 
-To import as a json object, the object needs to have two properties: nodes and edges. Nodes take an array with an id field along with any other variables. Edges take an array with an id, source and target field and any other other variables. The source and target should correspond to the node Ids. A metadata with key is optional. A sample json import is shown below:
+To import as a json object, the object needs to have two properties: nodes and edges. Nodes take an array with an id field along with any other variables. Edges take an array with an id, source and target field and any other other variables. The source and target should correspond to the node Ids. Each accept a label property as well. A metadata with key is optional. A sample json import is shown below:
 
 ```json
 {
   "nodes": [
     {
-      "id": "1"
+      "id": "1",
+      "label": "cat"
     },
     {
-      "id": "2"
+      "id": "2",
+      "label": "dog"
     }
   ],
   "edges": [
     {
       "id": "txn a-b",
       "source": "1",
-      "target": "2"
+      "target": "2",
+      "label": "cat-dog"
     }
   ],
   "metadata": {
