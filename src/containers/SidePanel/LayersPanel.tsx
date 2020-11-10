@@ -19,8 +19,9 @@ import { resetState } from '../../redux/graph-slice';
 import ExportDataButton from './ExportDataButton';
 import ImportLayers from './ImportLayers';
 import { getGraph, getUI } from '../../redux';
+import Header from './Header';
 
-const InvestigateMain = () => {
+const LayersPanel = () => {
   const dispatch = useDispatch();
   const graphList = useSelector((state) => getGraph(state).graphList);
   const graphFlatten = useSelector((state) => getGraph(state).graphFlatten);
@@ -52,6 +53,7 @@ const InvestigateMain = () => {
 
   return (
     <Fragment>
+      <Header />
       <FlushedGrid>
         <Cell span={6}>
           <Statistic
@@ -158,4 +160,4 @@ const ImportDataButton: React.FC<Prop.ImportDataButton> = ({ onClick }) => (
   </Button>
 );
 
-export default InvestigateMain;
+export default LayersPanel;

@@ -1,7 +1,7 @@
 import React, { useState, Fragment } from 'react';
 
 import { useSelector } from 'react-redux';
-import InvestigateMain from './InvestigateMain';
+import InvestigateMain from './LayersPanel';
 import { getGraph, getUI } from '../../redux';
 import Editable from '../../components/Editable';
 
