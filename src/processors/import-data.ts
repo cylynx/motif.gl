@@ -137,6 +137,7 @@ export const addRequiredFieldsJson = (
   }
   for (const edge of data.edges) {
     addEdgeFields(edge, accessors);
+    if (isUndefined(edge.data)) edge.data = {}; // required by graphin
     if (isUndefined(edge.defaultStyle))
       edge.defaultStyle = styles.defaultEdgeStyle;
   }
