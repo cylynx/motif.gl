@@ -311,10 +311,10 @@ export const getNodeProperties = (
 ) => {
   const flattenInfo = flattenObject(node);
   const dataKeys = Object.keys(flattenInfo).filter(
-    (k) => k !== 'id' && !k.includes('style'),
+    (k) => k !== 'id' && !k.includes('style.') && !k.includes('defaultStyle.'),
   );
   const styleKeys = Object.keys(flattenInfo).filter(
-    (k) => k !== 'id' && k.includes('style'),
+    (k) => k !== 'id' && (k.includes('style.') || k.includes('deafultStyle.')),
   );
   const newObj = {};
   // @ts-ignore
@@ -353,10 +353,15 @@ export const getEdgeProperties = (
   const flattenInfo = flattenObject(edge);
   const restrictedTerms = ['id', 'source', 'target'];
   const dataKeys = Object.keys(flattenInfo).filter(
-    (k) => !restrictedTerms.includes(k) && !k.includes('style'),
+    (k) =>
+      !restrictedTerms.includes(k) &&
+      !k.includes('style.') &&
+      !k.includes('defaultStyle.'),
   );
   const styleKeys = Object.keys(flattenInfo).filter(
-    (k) => !restrictedTerms.includes(k) && k.includes('style'),
+    (k) =>
+      !restrictedTerms.includes(k) &&
+      (k.includes('style.') || k.includes('defaultStyle.')),
   );
   const newObj = {};
   // @ts-ignore
