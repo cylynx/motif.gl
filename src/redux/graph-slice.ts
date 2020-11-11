@@ -142,8 +142,13 @@ const graph = createSlice({
   name: 'graph',
   initialState,
   reducers: {
-    resetState() {
-      const newGraphState = { ...initialState };
+    resetState(state) {
+      const newGraphState = initialState;
+      // Only reset data state
+      newGraphState.accessors = state.accessors;
+      newGraphState.styleOptions = state.styleOptions;
+      newGraphState.defaultNodeStyle = state.defaultNodeStyle;
+      newGraphState.defaultEdgeStyle = state.defaultEdgeStyle;
       return newGraphState;
     },
     updateGraphList(
