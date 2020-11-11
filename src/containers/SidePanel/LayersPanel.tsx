@@ -1,10 +1,9 @@
 import React, { MouseEvent, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'baseui/button';
-import { Cell } from 'baseui/layout-grid';
 import { Block } from 'baseui/block';
 import { ParagraphSmall } from 'baseui/typography';
-import { FlushedGrid, Statistic, FullButton } from '../../components/ui';
+import { Statistic, FullButton } from '../../components/ui';
 import ToggleTokens from '../../components/ToggleTokens';
 import Accordion from '../../components/Accordion';
 import * as Icon from '../../components/Icons';
@@ -54,22 +53,23 @@ const LayersPanel = () => {
   return (
     <Fragment>
       <Header />
-      <FlushedGrid>
-        <Cell span={6}>
-          <Statistic
-            value={haveData ? graphVisible.nodes.length : 0}
-            label='Nodes:'
-            subtitle={`${hiddenNodes} hidden`}
-          />
-        </Cell>
-        <Cell span={6}>
-          <Statistic
-            value={haveData ? graphVisible.edges.length : 0}
-            label='Edges:'
-            subtitle={`${hiddenEdges} hidden`}
-          />
-        </Cell>
-      </FlushedGrid>
+      <Block
+        display='flex'
+        justifyContent='space-between'
+        marginLeft='scale600'
+        width='260px'
+      >
+        <Statistic
+          value={haveData ? graphVisible.nodes.length : 0}
+          label='Nodes:'
+          subtitle={`${hiddenNodes} hidden`}
+        />
+        <Statistic
+          value={haveData ? graphVisible.edges.length : 0}
+          label='Edges:'
+          subtitle={`${hiddenEdges} hidden`}
+        />
+      </Block>
       <Block marginTop='scale800'>
         <Accordion
           items={[
