@@ -1,19 +1,29 @@
+// https://graphin.antv.vision/en/docs/manual/main-concepts/layout
+
 import * as Graph from '../types/Graph';
 
 export const DAGRE_DEFAULT = {
-  rankSep: 10,
+  rankSep: 50,
+  nodeSep: 12,
 };
 
 export const CIRCLE_DEFAULT = {
   r: 150,
+  scale: 0.8,
 };
 
 export const GRID_DEFAULT = {
   nodeSep: 45,
+  nodeSize: 50,
 };
 
 export const RADIAL_DEFAULT = {
-  unitRadius: 200,
+  unitRadius: 100,
+  nodeSize: 50,
+};
+
+export const CONCENTRIC_DEFAULT = {
+  minNodeSpacing: 60,
 };
 
 export const OPTIONS: Graph.Layout[] = [
@@ -21,6 +31,6 @@ export const OPTIONS: Graph.Layout[] = [
   { name: 'circle', options: CIRCLE_DEFAULT },
   { name: 'grid', options: GRID_DEFAULT },
   { name: 'radial', options: RADIAL_DEFAULT },
-  { name: 'concentric' },
+  { name: 'concentric', options: CONCENTRIC_DEFAULT },
   { name: 'force' },
 ];
