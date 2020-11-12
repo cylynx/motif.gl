@@ -9,8 +9,16 @@ import {
   DEFAULT_NODE_STYLE,
 } from './constants';
 import { normalizeColor } from './utils';
+import iconmap from '../../../components/icon/icon-map.json';
 
 const GREY = normalizeColor(GREY_RGB);
+
+const getIcon = (str: string) => {
+  const unicode = iconmap[str]
+    ? String.fromCodePoint(parseInt(iconmap[str], 16))
+    : '';
+  return unicode;
+};
 
 export default (g6: typeof G6) => {
   g6.registerNode('CircleNode', {
@@ -94,11 +102,11 @@ export default (g6: typeof G6) => {
           id: 'circle-icon',
           x: 0,
           y: 0,
-          text: '',
-          fontSize: 20,
+          text: getIcon(cfg.style?.icon || cfg.icon),
+          fontSize: innerSize > 12 ? innerSize - 8 : innerSize - 4,
           textAlign: 'center',
           textBaseline: 'middle',
-          fontFamily: 'graphin',
+          fontFamily: 'Material Icons',
           fill: style?.dark ? '#8D93B0' : '#FFFFFF',
         },
         draggable: true,
