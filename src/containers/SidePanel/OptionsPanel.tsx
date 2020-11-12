@@ -12,6 +12,15 @@ import { changeLayout } from '../../redux/graph-slice';
 import * as LAYOUT from '../../constants/layout-options';
 import * as Icon from '../../components/Icons';
 
+const layoutNames = [
+  { label: 'Concentric', id: 'concentric' },
+  { label: 'Force-Directed', id: 'force' },
+  { label: 'Radial', id: 'radial' },
+  { label: 'Grid', id: 'grid' },
+  { label: 'Dagre', id: 'dagre' },
+  { label: 'Circular', id: 'circle' },
+];
+
 const genLayoutForm = (
   currentOptions: any,
   callback: (data: any) => void,
@@ -20,9 +29,7 @@ const genLayoutForm = (
     id: 'layout',
     label: 'Layout',
     value: currentOptions.id || 'circle',
-    options: LAYOUT.OPTIONS.map((o) => {
-      return { id: o.name, label: o.name };
-    }),
+    options: layoutNames,
     callback,
     dagre: [
       {
@@ -31,16 +38,34 @@ const genLayoutForm = (
         type: 'slider',
         value: LAYOUT.DAGRE_DEFAULT.rankSep,
         min: 1,
-        max: 50,
+        max: 500,
+      },
+      {
+        id: 'nodeSep',
+        label: 'nodeSep',
+        type: 'slider',
+        value: LAYOUT.DAGRE_DEFAULT.nodeSep,
+        min: 1,
+        max: 500,
       },
     ],
     circle: [
       {
         id: 'r',
-        label: 'r',
+        label: 'radius',
         type: 'slider',
         value: LAYOUT.CIRCLE_DEFAULT.r,
         min: 10,
+        max: 300,
+      },
+    ],
+    concentric: [
+      {
+        id: 'minNodeSpacing',
+        label: 'minNodeSpacing',
+        type: 'slider',
+        value: LAYOUT.CONCENTRIC_DEFAULT.minNodeSpacing,
+        min: 1,
         max: 300,
       },
     ],
@@ -50,7 +75,15 @@ const genLayoutForm = (
         label: 'nodeSep',
         type: 'slider',
         value: LAYOUT.GRID_DEFAULT.nodeSep,
-        min: 10,
+        min: 1,
+        max: 500,
+      },
+      {
+        id: 'nodeSize',
+        label: 'nodeSize',
+        type: 'slider',
+        value: LAYOUT.GRID_DEFAULT.nodeSize,
+        min: 1,
         max: 100,
       },
     ],
@@ -60,8 +93,16 @@ const genLayoutForm = (
         label: 'radius',
         type: 'slider',
         value: LAYOUT.RADIAL_DEFAULT.unitRadius,
-        min: 10,
+        min: 1,
         max: 500,
+      },
+      {
+        id: 'nodeSize',
+        label: 'nodeSize',
+        type: 'slider',
+        value: LAYOUT.RADIAL_DEFAULT.nodeSize,
+        min: 1,
+        max: 100,
       },
     ],
   };
