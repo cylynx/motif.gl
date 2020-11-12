@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getGraph } from '../../../redux';
 import Header from '../Header';
 import Accordion from '../../../components/Accordion';
-import FormGenerator from '../../../components/FormGenerator';
+import { SimpleForm, NestedForm } from '../../../components/form-generator';
 import { changeLayout } from '../../../redux/graph-slice';
 import * as Icon from '../../../components/Icons';
 import { genLayoutForm } from './utils';
@@ -31,7 +31,7 @@ const OptionsPanel = () => {
             key: 'layout',
             content: (
               <Fragment>
-                <FormGenerator
+                <NestedForm
                   data={genLayoutForm(layoutOptions, (data) =>
                     dispatch(changeLayout(data)),
                   )}
@@ -55,7 +55,25 @@ const OptionsPanel = () => {
             key: 'node styles',
             content: (
               <Fragment>
-                <Block>Node Settings</Block>
+                <SimpleForm
+                  data={{
+                    id: 'name',
+                    label: 'Test Input',
+                    value: 10,
+                    type: 'input',
+                    callback: (data) => console.log(data),
+                  }}
+                />
+                <SimpleForm
+                  data={{
+                    id: 'name',
+                    label: 'Test Slider',
+                    value: [5, 10],
+                    type: 'slider',
+                    max: 20,
+                    callback: (data) => console.log(data),
+                  }}
+                />
               </Fragment>
             ),
             expanded: true,

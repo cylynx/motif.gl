@@ -9,7 +9,7 @@ import {
   DEFAULT_NODE_STYLE,
 } from './constants';
 import { normalizeColor } from './utils';
-import iconmap from '../../../components/icon/icon-map.json';
+import iconmap from '../../../components/font-icon/icon-map.json';
 
 const GREY = normalizeColor(GREY_RGB);
 

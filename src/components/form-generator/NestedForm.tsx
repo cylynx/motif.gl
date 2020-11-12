@@ -5,7 +5,7 @@ import { Select } from 'baseui/select';
 import { Input } from 'baseui/input';
 import { SimpleSlider } from '../ui';
 
-export type FormGeneratorData = {
+export type NestedFormData = {
   id: string;
   label: string;
   value: string;
@@ -46,7 +46,7 @@ const cleanGetValues = (obj: any) => {
   return results;
 };
 
-const testData: FormGeneratorData = {
+const testData: NestedFormData = {
   id: 'name',
   label: 'The Two Gentlemen of Verona',
   value: 'AliceBlue',
@@ -139,10 +139,10 @@ const testData: FormGeneratorData = {
     },
   ],
 };
- * @param {{ data: FormGeneratorData }} { data = testData }
+ * @param {{ data: NestedFormData }} { data = testData }
  * @return {*} 
  */
-const FormGenerator = ({ data = testData }: { data: FormGeneratorData }) => {
+const NestedForm = ({ data = testData }: { data: NestedFormData }) => {
   const { callback } = data;
   const { watch, control, getValues } = useForm();
   const watchSelection = watch(data.id, [
@@ -264,4 +264,4 @@ const FormGenerator = ({ data = testData }: { data: FormGeneratorData }) => {
   );
 };
 
-export default FormGenerator;
+export default NestedForm;

@@ -1,5 +1,6 @@
-import { FormGeneratorData } from '../../../components/FormGenerator';
+import { NestedFormData } from '../../../components/form-generator';
 import * as LAYOUT from '../../../constants/layout-options';
+import { DEFAULT_EDGE_STYLE, DEFAULT_NODE_STYLE } from '../../Graph';
 
 export const layoutNames = [
   { label: 'Concentric', id: 'concentric' },
@@ -10,7 +11,7 @@ export const layoutNames = [
   { label: 'Circular', id: 'circle' },
 ];
 
-const defaultLayoutForm: FormGeneratorData = {
+const defaultLayoutForm: NestedFormData = {
   id: 'layout',
   label: 'Layout',
   value: 'concentric',
@@ -101,14 +102,14 @@ const defaultLayoutForm: FormGeneratorData = {
 export const genLayoutForm = (
   currentOptions: any,
   callback: (data: any) => void,
-): FormGeneratorData => {
+): NestedFormData => {
   const option = defaultLayoutForm;
   option.value = currentOptions.id || 'concentric';
   option.callback = callback;
 
   // override value for option if exist in currentOption
   if (option[currentOptions.id]) {
-    Object.entries(currentOptions).forEach(([key, value]) => {
+    Object.entries(currentOptions).forEach(([key, value]: any[]) => {
       const idx = option[currentOptions.id].findIndex((x: any) => x.id === key);
       if (idx > -1) {
         option[currentOptions.id][idx].value = value;
