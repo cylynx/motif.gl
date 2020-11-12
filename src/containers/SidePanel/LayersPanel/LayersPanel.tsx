@@ -3,22 +3,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'baseui/button';
 import { Block } from 'baseui/block';
 import { ParagraphSmall } from 'baseui/typography';
-import { Statistic, FullButton } from '../../components/ui';
-import ToggleTokens from '../../components/ToggleTokens';
-import Accordion from '../../components/Accordion';
-import * as Icon from '../../components/Icons';
-import * as Prop from '../../types/Prop';
+import { Statistic, FullButton } from '../../../components/ui';
+import ToggleTokens from '../../../components/ToggleTokens';
+import Accordion from '../../../components/Accordion';
+import * as Icon from '../../../components/Icons';
+import * as Prop from '../../../types/Prop';
 import {
   openImportModal,
   fetchDone,
   updateNodeSelection,
   updateEdgeSelection,
-} from '../../redux/ui-slice';
-import { resetState } from '../../redux/graph-slice';
-import ExportDataButton from './ExportDataButton';
-import ImportLayers from './ImportLayers';
-import { getGraph, getUI } from '../../redux';
-import Header from './Header';
+} from '../../../redux/ui-slice';
+import { resetState } from '../../../redux/graph-slice';
+import ExportDataButton from '../ExportDataButton';
+import ImportLayers from "./ImportLayers";
+import { getGraph, getUI } from '../../../redux';
+import Header from '../Header';
 
 const LayersPanel = () => {
   const dispatch = useDispatch();
