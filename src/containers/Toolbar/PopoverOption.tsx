@@ -56,7 +56,9 @@ const PopoverOption = () => {
             size='compact'
             clearable={false}
             value={[findID(layoutNames, layoutName)]}
-            onChange={(params) => dispatch(changeLayout(params.option.id))}
+            onChange={(params) =>
+              dispatch(changeLayout({ layout: params.option.id }))
+            }
           />
         </FormControl>
         <FormControl label='Node Size'>

@@ -17,10 +17,10 @@ export const RADIAL_DEFAULT = {
 };
 
 export const OPTIONS: Graph.Layout[] = [
-  {name: 'dagre', options: DAGRE_DEFAULT},
-  {name: 'circle', options: CIRCLE_DEFAULT},
-  {name: 'grid', options: GRID_DEFAULT},
-  {name: 'radial', options: RADIAL_DEFAULT},
-  {name: 'concentric'},
-  {name: 'force'},
-]
+  { name: 'dagre', options: DAGRE_DEFAULT },
+  { name: 'circle', options: CIRCLE_DEFAULT },
+  { name: 'grid', options: GRID_DEFAULT },
+  { name: 'radial', options: RADIAL_DEFAULT },
+  { name: 'concentric' },
+  { name: 'force' },
+];
