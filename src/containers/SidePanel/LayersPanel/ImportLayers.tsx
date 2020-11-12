@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Cell } from 'baseui/layout-grid';
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
 import { LabelSmall, ParagraphSmall } from 'baseui/typography';
@@ -8,13 +7,13 @@ import {
   updateGraphList,
   deleteGraphList,
   changeVisibilityGraphList,
-} from '../../redux/graph-slice';
-import { openDataTableModal } from '../../redux/ui-slice';
-import { Statistic, FlushedGrid } from '../../components/ui';
-import DndList from '../../components/DndList';
-import { countProperty } from '../../utils/graph-utils';
-import * as Graph from '../../types/Graph';
-import { getGraph } from '../../redux';
+} from '../../../redux/graph-slice';
+import { openDataTableModal } from '../../../redux/ui-slice';
+import { Statistic } from '../../../components/ui';
+import DndList from '../../../components/DndList';
+import { countProperty } from '../../../utils/graph-utils';
+import * as Graph from '../../../types/Graph';
+import { getGraph } from '../../../redux';
 
 const StyledText = ({ children }: { children: React.ReactNode }) => (
   <ParagraphSmall
