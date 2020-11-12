@@ -146,7 +146,7 @@ const FormGenerator = ({ data = testData }: { data: FormGeneratorData }) => {
   const { callback } = data;
   const { watch, control, getValues } = useForm();
   const watchSelection = watch(data.id, [
-    { label: 'AliceBlue', id: 'AliceBlue' },
+    data.options.find((x: any) => x.id === data.value),
   ]);
 
   // Triggers react-hook-form onChange and custom callback
@@ -164,9 +164,12 @@ const FormGenerator = ({ data = testData }: { data: FormGeneratorData }) => {
     onChange(value);
     const results = {};
     results[data.id] = value[0].id;
-    data[value[0].id].forEach((o: any) => {
-      results[o.id] = o.value;
-    });
+    // child might not exist
+    if (data[value[0].id]) {
+      data[value[0].id].forEach((o: any) => {
+        results[o.id] = o.value;
+      });
+    }
     callback(results);
   };
 
@@ -191,68 +194,71 @@ const FormGenerator = ({ data = testData }: { data: FormGeneratorData }) => {
             )}
           />
         </FormControl>
-        {(data[watchSelection[0].id] as []).map((d: any) => {
-          const { id, label, type, value, ...rest } = d;
-          let parsedValue =
-            type === 'select'
-              ? [d.options.find((x: any) => x.id === value)]
-              : value;
-          parsedValue =
-            type === 'slider' && !Array.isArray(value) ? [value] : parsedValue;
-          return (
-            <FormControl
-              key={`${data[watchSelection[0].id]}_${id}`}
-              label={label}
-            >
-              <Controller
-                name={id}
-                control={control}
-                defaultValue={parsedValue}
-                // eslint-disable-next-line no-shadow
-                render={({ value, onChange }) => {
-                  let component;
-                  if (type === 'select') {
-                    component = (
-                      <Select
-                        onChange={(params) =>
-                          handleChange(params.value, onChange)
-                        }
-                        value={value}
-                        size='compact'
-                        clearable={false}
-                        {...rest}
-                      />
-                    );
-                  }
-                  if (type === 'input') {
-                    component = (
-                      <Input
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          handleChange(e.target.value, onChange)
-                        }
-                        value={value}
-                        size='compact'
-                        {...rest}
-                      />
-                    );
-                  }
-                  if (type === 'slider') {
-                    component = (
-                      <SimpleSlider
-                        // eslint-disable-next-line no-shadow
-                        onChange={({ value }) => value && onChange(value)}
-                        onFinalChange={handleFinalChange}
-                        value={value}
-                        {...rest}
-                      />
-                    );
-                  }
-                  return component;
-                }}
-              />
-            </FormControl>
-          );
-        })}
+        {data[watchSelection[0].id] &&
+          data[watchSelection[0].id].map((d: any) => {
+            const { id, label, type, value, ...rest } = d;
+            let parsedValue =
+              type === 'select'
+                ? [d.options.find((x: any) => x.id === value)]
+                : value;
+            parsedValue =
+              type === 'slider' && !Array.isArray(value)
+                ? [value]
+                : parsedValue;
+            return (
+              <FormControl
+                key={`${data[watchSelection[0].id]}_${id}`}
+                label={label}
+              >
+                <Controller
+                  name={id}
+                  control={control}
+                  defaultValue={parsedValue}
+                  // eslint-disable-next-line no-shadow
+                  render={({ value, onChange }) => {
+                    let component;
+                    if (type === 'select') {
+                      component = (
+                        <Select
+                          onChange={(params) =>
+                            handleChange(params.value, onChange)
+                          }
+                          value={value}
+                          size='compact'
+                          clearable={false}
+                          {...rest}
+                        />
+                      );
+                    }
+                    if (type === 'input') {
+                      component = (
+                        <Input
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            handleChange(e.target.value, onChange)
+                          }
+                          value={value}
+                          size='compact'
+                          {...rest}
+                        />
+                      );
+                    }
+                    if (type === 'slider') {
+                      component = (
+                        <SimpleSlider
+                          // eslint-disable-next-line no-shadow
+                          onChange={({ value }) => value && onChange(value)}
+                          onFinalChange={handleFinalChange}
+                          value={value}
+                          {...rest}
+                        />
+                      );
+                    }
+                    return component;
+                  }}
+                />
+              </FormControl>
+            );
+          })}
       </form>
     </Fragment>
   );
