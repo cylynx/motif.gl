@@ -107,14 +107,15 @@ To import as a json object, the object needs to have two properties: nodes and e
 ```
 
 **Node Styles**  
-Each node can take a style property as follows. All style property are optional.
+Each node can take a style property as follows. All style property are optional. Icon is based on [material icons outlined style](https://material.io/resources/icons/)
 
 ```json
 style : {
   "size": 20,
   "color": "rgba(0,124,124,1)",
   "fontFamily": "sans-serif",
-  "fontSize": 12
+  "fontSize": 12,
+  "icon": "face",
 }
 ```
 
