@@ -106,8 +106,8 @@ const initialState: GraphState = {
   },
   styleOptions: {
     layout: {
-      name: 'concentric',
-      options: {},
+      name: 'dagre',
+      options: { rankSep: 30 },
     },
     nodeStyle: {
       size: 'default',
@@ -200,10 +200,11 @@ const graph = createSlice({
       updateVisible(state, state.selectTimeRange, accessors);
     },
     changeLayout(state, action) {
-      const newLayoutName = action.payload;
-      state.styleOptions.layout = LAYOUT.OPTIONS.find(
-        (x) => x.name === newLayoutName,
-      );
+      const { layout, ...options } = action.payload;
+      const defaultOptions = LAYOUT.OPTIONS.find((x) => x.name === layout);
+      const newOptions = { ...defaultOptions.options, ...options };
+      state.styleOptions.layout.name = layout;
+      state.styleOptions.layout.options = newOptions;
     },
     processGraphResponse(
       state,
