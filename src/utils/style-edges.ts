@@ -19,12 +19,11 @@ export const styleEdges = (
   data: Graph.GraphData,
   edgeStyleOptions: Graph.EdgeStyleOptions,
   edgeStyleAccessors: Graph.EdgeStyleAccessors,
-): Graph.Edge[] => {
+) => {
   // Scales width based on min, max value of edges
   // mode = eth (scale width from 0.5-5) or fix (default value of 0.5)
   styleEdgeWidth(data, edgeStyleAccessors?.width, edgeStyleOptions.width);
   styleEdgeLabel(data, edgeStyleAccessors?.label);
-  return data.edges;
 };
 
 export const styleEdgeWidth = (

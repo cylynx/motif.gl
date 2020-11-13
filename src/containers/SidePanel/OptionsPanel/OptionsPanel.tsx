@@ -11,10 +11,10 @@ import {
   genNestedForm,
   genSimpleForm,
 } from '../../../components/form';
-import { changeLayout } from '../../../redux/graph-slice';
+import { changeLayout, changeNodeStyle } from '../../../redux/graph-slice';
 import * as Icon from '../../../components/Icons';
 import {
-  defaultLayoutForm,
+  layoutForm,
   nodeSizeForm,
   nodeColorForm,
   nodeFontSizeForm,
@@ -24,9 +24,10 @@ const OptionsPanel = () => {
   const dispatch = useDispatch();
 
   const styleOptions = useSelector((state) => getGraph(state).styleOptions);
-  const { layout } = styleOptions;
-  const layoutOptions = { id: layout.name, ...layout.options };
+  const { layout, nodeStyle } = styleOptions;
+  const layoutOptions = { layout: { id: layout.name, ...layout.options } };
   const updateLayout = (data: any) => dispatch(changeLayout(data));
+  const updateNodeStyle = (data: any) => dispatch(changeNodeStyle(data));
 
   return (
     <Fragment>
@@ -44,11 +45,7 @@ const OptionsPanel = () => {
             content: (
               <Fragment>
                 <NestedForm
-                  data={genNestedForm(
-                    defaultLayoutForm,
-                    layoutOptions,
-                    updateLayout,
-                  )}
+                  data={genNestedForm(layoutForm, layoutOptions, updateLayout)}
                 />
               </Fragment>
             ),
@@ -67,7 +64,27 @@ const OptionsPanel = () => {
               </Block>
             ),
             key: 'node styles',
-            content: <Fragment />,
+            content: (
+              <Fragment>
+                <NestedForm
+                  data={genNestedForm(nodeSizeForm, nodeStyle, updateNodeStyle)}
+                />
+                <SimpleForm
+                  data={genSimpleForm(
+                    nodeColorForm,
+                    nodeStyle,
+                    updateNodeStyle,
+                  )}
+                />
+                <SimpleForm
+                  data={genSimpleForm(
+                    nodeFontSizeForm,
+                    nodeStyle,
+                    updateNodeStyle,
+                  )}
+                />
+              </Fragment>
+            ),
             expanded: true,
           },
         ]}

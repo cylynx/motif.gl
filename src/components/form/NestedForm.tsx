@@ -17,8 +17,8 @@ export type NestedFormData = {
   [optionId: string]: any;
 };
 
-const cleanGetValues = (obj: any) => {
-  const results = {};
+const cleanGetValues = (obj: any, mainKey: string) => {
+  const results: any = {};
   Object.entries(obj).forEach(([key, value]) => {
     if (Array.isArray(value) && value[0]?.id) {
       // select
@@ -43,7 +43,11 @@ const cleanGetValues = (obj: any) => {
       results[key] = value;
     }
   });
-  return results;
+
+  results.id = results[mainKey];
+  delete results[mainKey];
+
+  return { [mainKey]: results };
 };
 
 const testData: NestedFormData = {
@@ -152,25 +156,25 @@ const NestedForm = ({ data = testData }: { data: NestedFormData }) => {
   // Triggers react-hook-form onChange and custom callback
   const handleChange = (value: any, onChange: (v: any) => void) => {
     onChange(value);
-    callback(cleanGetValues(getValues()));
+    callback(cleanGetValues(getValues(), data.id));
   };
 
   const handleFinalChange = () => {
-    callback(cleanGetValues(getValues()));
+    callback(cleanGetValues(getValues(), data.id));
   };
 
   // For parent component, need to return new child defaults
   const handleChangeParent = (value: any, onChange: (v: any) => void) => {
     onChange(value);
-    const results = {};
-    results[data.id] = value[0].id;
+    const results: any = {};
+    results.id = value[0].id;
     // child might not exist
     if (data[value[0].id]) {
       data[value[0].id].forEach((o: any) => {
         results[o.id] = o.value;
       });
     }
-    callback(results);
+    callback({ [data.id]: results });
   };
 
   return (

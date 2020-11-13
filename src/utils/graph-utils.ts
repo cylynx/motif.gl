@@ -1,6 +1,7 @@
 import inRange from 'lodash/inRange';
 import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
+import cloneDeep from 'lodash/cloneDeep';
 import * as Graph from '../types/Graph';
 import { flattenObject } from '../processors/data-processors';
 import { styleEdges } from './style-edges';
@@ -251,10 +252,9 @@ export const applyStyle = (
   data: Graph.GraphData,
   options: Graph.StyleOptions,
   accessors: Graph.Accessors,
-): Graph.GraphData => {
-  const styledNodes = styleNodes(data, options.nodeStyle, accessors.nodeStyle);
-  const styledEdges = styleEdges(data, options.edgeStyle, accessors.edgeStyle);
-  return replaceData(data, styledNodes, styledEdges);
+) => {
+  styleNodes(data, options.nodeStyle, accessors.nodeStyle);
+  styleEdges(data, options.edgeStyle, accessors.edgeStyle);
 };
 
 /**
@@ -280,11 +280,17 @@ export const deriveVisibleGraph = (
   graphData: Graph.GraphData,
   styleOptions: Graph.StyleOptions,
   accessors: Graph.Accessors,
-): Graph.GraphData =>
-  styleOptions.groupEdges
-    ? applyStyle(groupEdges(graphData), styleOptions, accessors)
-    : applyStyle(graphData, styleOptions, accessors);
+): Graph.GraphData => {
+  const copyData = cloneDeep(graphData);
 
+  if (styleOptions.groupEdges) {
+    applyStyle(groupEdges(copyData), styleOptions, accessors);
+  } else {
+    applyStyle(copyData, styleOptions, accessors);
+  }
+
+  return copyData;
+};
 /**
  * Check is value is truthy and if it is an array, it should be length > 0
  *
