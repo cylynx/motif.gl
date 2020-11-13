@@ -16,7 +16,7 @@ import {
 } from '../../../redux/ui-slice';
 import { resetState } from '../../../redux/graph-slice';
 import ExportDataButton from '../ExportDataButton';
-import ImportLayers from "./ImportLayers";
+import ImportLayers from './ImportLayers';
 import { getGraph, getUI } from '../../../redux';
 import Header from '../Header';
 
