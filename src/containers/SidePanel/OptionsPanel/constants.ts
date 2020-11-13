@@ -113,7 +113,7 @@ export const nodeSizeForm: NestedFormData = {
   fixed: [
     {
       id: 'value',
-      label: 'size',
+      label: 'Size',
       type: 'slider',
       value: DEFAULT_NODE_STYLE.size,
       min: 1,
@@ -133,7 +133,7 @@ export const nodeSizeForm: NestedFormData = {
   property: [
     {
       id: 'variable',
-      label: 'variable',
+      label: 'Variable',
       type: 'select',
       value: 'number',
       options: [

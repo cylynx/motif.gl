@@ -102,7 +102,23 @@ const OptionsPanel = () => {
             key: 'edge styles',
             content: (
               <Fragment>
-                <Block>Edge Settings</Block>
+                <NestedForm
+                  data={genNestedForm(nodeSizeForm, nodeStyle, updateNodeStyle)}
+                />
+                <SimpleForm
+                  data={genSimpleForm(
+                    nodeColorForm,
+                    nodeStyle,
+                    updateNodeStyle,
+                  )}
+                />
+                <SimpleForm
+                  data={genSimpleForm(
+                    nodeFontSizeForm,
+                    nodeStyle,
+                    updateNodeStyle,
+                  )}
+                />
               </Fragment>
             ),
             expanded: true,
