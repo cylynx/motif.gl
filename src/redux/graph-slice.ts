@@ -106,11 +106,16 @@ const initialState: GraphState = {
   },
   styleOptions: {
     layout: {
-      name: 'dagre',
-      options: { rankSep: 30 },
+      name: 'concentric',
+      options: {
+        minNodeSpacing: 60,
+      },
     },
     nodeStyle: {
-      size: 'default',
+      size: {
+        id: 'fixed',
+        value: 20,
+      },
     },
     edgeStyle: {
       width: 'fix',
@@ -199,12 +204,33 @@ const graph = createSlice({
       state.styleOptions[key] = value;
       updateVisible(state, state.selectTimeRange, accessors);
     },
-    changeLayout(state, action) {
-      const { layout, ...options } = action.payload;
-      const defaultOptions = LAYOUT.OPTIONS.find((x) => x.name === layout);
+    changeLayout(
+      state,
+      action: PayloadAction<{
+        layout: {
+          id: string;
+          [key: string]: any;
+        };
+      }>,
+    ) {
+      const { id, ...options } = action.payload.layout;
+      const defaultOptions = LAYOUT.OPTIONS.find((x) => x.name === id);
       const newOptions = { ...defaultOptions.options, ...options };
-      state.styleOptions.layout.name = layout;
+      // @ts-ignore
+      state.styleOptions.layout.name = id;
       state.styleOptions.layout.options = newOptions;
+    },
+    changeNodeStyle(
+      state,
+      action: PayloadAction<{
+        key: any;
+      }>,
+    ) {
+      const { selectTimeRange, accessors } = state;
+      Object.entries(action.payload).forEach(([key, value]) => {
+        state.styleOptions.nodeStyle[key] = value;
+      });
+      updateVisible(state, selectTimeRange, accessors);
     },
     processGraphResponse(
       state,
@@ -265,6 +291,7 @@ export const {
   addQuery,
   changeOptions,
   changeLayout,
+  changeNodeStyle,
   processGraphResponse,
   setRange,
   timeRangeChange,

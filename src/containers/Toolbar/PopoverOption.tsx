@@ -57,11 +57,13 @@ const PopoverOption = () => {
             clearable={false}
             value={[findID(layoutNames, layoutName)]}
             onChange={(params) =>
-              dispatch(changeLayout({ layout: params.option.id }))
+              dispatch(
+                changeLayout({ layout: { id: params.option.id as string } }),
+              )
             }
           />
         </FormControl>
-        <FormControl label='Node Size'>
+        {/* <FormControl label='Node Size'>
           <Select
             options={nodeSizeOptions}
             size='compact'
@@ -69,7 +71,7 @@ const PopoverOption = () => {
             value={[findID(nodeSizeOptions, nodeStyle.size)]}
             onChange={(params) => onChangeOptions('nodeSize', params.option.id)}
           />
-        </FormControl>
+        </FormControl> */}
         <FormControl label='Edge Width'>
           <Select
             options={edgeWidthOptions}

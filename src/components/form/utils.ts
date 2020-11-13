@@ -16,15 +16,16 @@ export const genNestedForm = (
   callback: (data: any) => void,
 ): NestedFormData => {
   const option = nestedForm;
-  option.value = currentOptions.id || nestedForm.value;
+  const details = currentOptions[nestedForm.id];
+  option.value = details.id || nestedForm.value;
   option.callback = callback;
 
   // override value for option if exist in currentOption
-  if (option[currentOptions.id]) {
-    Object.entries(currentOptions).forEach(([key, value]: any[]) => {
-      const idx = option[currentOptions.id].findIndex((x: any) => x.id === key);
+  if (option[details.id]) {
+    Object.entries(details).forEach(([key, value]: any[]) => {
+      const idx = option[details.id].findIndex((x: any) => x.id === key);
       if (idx > -1) {
-        option[currentOptions.id][idx].value = value;
+        option[details.id][idx].value = value;
       }
     });
   }

@@ -83,8 +83,28 @@ export interface Layout {
   };
 }
 
+export type NodeSizeFixed = {
+  id: 'fixed';
+  value: number;
+};
+
+export type NodeSizeDegree = {
+  id: 'degree';
+  range: [number, number];
+};
+
+export type NodeSizeProperty = {
+  id: 'property';
+  variable: string;
+  range: [number, number];
+};
+
+export type NodeSize = NodeSizeFixed | NodeSizeDegree | NodeSizeProperty;
+
 export interface NodeStyleOptions {
-  size: string;
+  size?: NodeSize;
+  color?: string;
+  fontSize?: number;
 }
 
 export interface EdgeStyleOptions {

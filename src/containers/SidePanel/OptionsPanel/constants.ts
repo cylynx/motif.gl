@@ -12,7 +12,7 @@ export const layoutNames = [
   { label: 'Circular', id: 'circle' },
 ];
 
-export const defaultLayoutForm: NestedFormData = {
+export const layoutForm: NestedFormData = {
   id: 'layout',
   label: 'Layout',
   value: 'concentric',
@@ -106,13 +106,13 @@ export const nodeSizeForm: NestedFormData = {
   value: 'fixed',
   callback: (data: any) => console.log(data),
   options: [
-    { id: 'fixed', label: 'fixed' },
-    { id: 'degree', label: 'degree (number of connections)' },
-    { id: 'property', label: 'node property (user defined)' },
+    { id: 'fixed', label: 'Fixed' },
+    { id: 'degree', label: 'Degree (number of connections)' },
+    { id: 'property', label: 'Property (user defined)' },
   ],
   fixed: [
     {
-      id: 'size',
+      id: 'value',
       label: 'size',
       type: 'slider',
       value: DEFAULT_NODE_STYLE.size,
@@ -127,7 +127,7 @@ export const nodeSizeForm: NestedFormData = {
       type: 'slider',
       value: [5, 20],
       min: 1,
-      max: 100,
+      max: 50,
     },
   ],
   property: [
@@ -135,7 +135,11 @@ export const nodeSizeForm: NestedFormData = {
       id: 'variable',
       label: 'variable',
       type: 'select',
-      value: [{ id: 'number', label: 'number' }],
+      value: 'number',
+      options: [
+        { id: 'number', label: 'number' },
+        { id: 'number2', label: 'number2' },
+      ],
     },
     {
       id: 'range',
@@ -143,7 +147,7 @@ export const nodeSizeForm: NestedFormData = {
       type: 'slider',
       value: [5, 20],
       min: 1,
-      max: 100,
+      max: 50,
     },
   ],
 };
@@ -151,8 +155,14 @@ export const nodeSizeForm: NestedFormData = {
 export const nodeColorForm: SimpleFormData = {
   id: 'color',
   label: 'Node Color',
-  type: 'input',
+  type: 'select',
   value: 'teal',
+  options: [
+    { id: 'teal', label: 'Teal' },
+    { id: 'blue', label: 'Blue' },
+    { id: 'green', label: 'Green' },
+    { id: 'orange', label: 'Orange' },
+  ],
   callback: (data: any) => console.log(data),
 };
 
