@@ -107,8 +107,23 @@ export interface NodeStyleOptions {
   fontSize?: number;
 }
 
+export type EdgeWidthFixed = {
+  id: 'fixed';
+  value: number;
+};
+
+export type EdgeWidthProperty = {
+  id: 'property';
+  variable: string;
+  range: [number, number];
+};
+
+export type EdgeWidth = EdgeWidthFixed | EdgeWidthProperty;
+
 export interface EdgeStyleOptions {
-  width: string;
+  width?: EdgeWidth;
+  pattern?: 'none' | 'dot' | 'dash' | 'dash-dot';
+  fontSize?: number;
 }
 
 export interface StyleOptions {

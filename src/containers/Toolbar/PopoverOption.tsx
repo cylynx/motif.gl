@@ -72,7 +72,7 @@ const PopoverOption = () => {
             onChange={(params) => onChangeOptions('nodeSize', params.option.id)}
           />
         </FormControl> */}
-        <FormControl label='Edge Width'>
+        {/* <FormControl label='Edge Width'>
           <Select
             options={edgeWidthOptions}
             size='compact'
@@ -82,7 +82,7 @@ const PopoverOption = () => {
               onChangeOptions('edgeWidth', params.option.id)
             }
           />
-        </FormControl>
+        </FormControl> */}
         <TriGrid
           startComponent={
             <Checkbox

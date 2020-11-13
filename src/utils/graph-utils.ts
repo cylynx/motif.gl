@@ -1,6 +1,7 @@
 import inRange from 'lodash/inRange';
 import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
+import set from 'lodash/set';
 import cloneDeep from 'lodash/cloneDeep';
 import * as Graph from '../types/Graph';
 import { flattenObject } from '../processors/data-processors';
@@ -55,7 +56,10 @@ export const getMinMaxValue = (
  * @param {Graph.Edge[]} edges
  * @return {*}  {Graph.Edge[]}
  */
-export const combineEdges = (edges: Graph.Edge[]): Graph.Edge[] => {
+export const combineEdges = (
+  edges: Graph.Edge[],
+  fields: Graph.Field[],
+): Graph.Edge[] => {
   const modEdges = [
     ...edges
       .reduce((r, o) => {
@@ -64,18 +68,19 @@ export const combineEdges = (edges: Graph.Edge[]): Graph.Edge[] => {
           id: o.id,
           source: o.source,
           target: o.target,
-          data: {
-            count: 0,
-          },
+          defaultStyle: {},
+          data: {},
+          // count underlying edges
+          edgeCount: 0,
         };
-        if (!isUndefined(o.data)) {
-          for (const [prop, value] of Object.entries(o.data)) {
-            if (isUndefined(item.data[prop])) item.data[prop] = [];
-            item.data[prop].push(value);
-          }
-        }
-        item.data.count += 1;
-        // item.label = item.data.count.toString();
+        // combine edge properties to array
+        fields
+          .map((field) => field.name)
+          .forEach((field) => {
+            if (isUndefined(get(item, field))) set(item, field, []);
+            get(item, field).push(get(o, field));
+          });
+        item.edgeCount += 1;
         return r.set(key, item);
       }, new Map())
       .values(),
@@ -264,8 +269,10 @@ export const applyStyle = (
  * @return {*}  {Graph.GraphData}
  */
 export const groupEdges = (data: Graph.GraphData): Graph.GraphData => {
-  const newEdges = combineEdges(data.edges);
-  return { ...replaceEdges(data, newEdges) };
+  // const newEdges = combineEdges(data.edges);
+  // eslint-disable-next-line no-param-reassign
+  data.edges = combineEdges(data.edges, data.metadata.fields.edges);
+  return data;
 };
 
 /**

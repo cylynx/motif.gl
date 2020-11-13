@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import get from 'lodash/get';
 import * as Graph from '../types/Graph';
 
@@ -20,37 +21,60 @@ export const styleEdges = (
   edgeStyleOptions: Graph.EdgeStyleOptions,
   edgeStyleAccessors: Graph.EdgeStyleAccessors,
 ) => {
-  // Scales width based on min, max value of edges
-  // mode = eth (scale width from 0.5-5) or fix (default value of 0.5)
-  styleEdgeWidth(data, edgeStyleAccessors?.width, edgeStyleOptions.width);
+  if (edgeStyleOptions.width) {
+    styleEdgeWidth(data, edgeStyleOptions.width);
+  }
+  if (edgeStyleOptions.pattern) {
+    styleEdgePattern(data, edgeStyleOptions.pattern);
+  }
+  if (edgeStyleOptions.fontSize) {
+    styleEdgeFontSize(data, edgeStyleOptions.fontSize);
+  }
   styleEdgeLabel(data, edgeStyleAccessors?.label);
+};
+
+/**
+ * Utility function to map a edge property between a given range
+ *
+ * @param {Graph.Edge[]} edges
+ * @param {string} propertyName
+ * @param {[number, number]} visualRange
+ */
+export const mapEdgeWidth = (
+  edges: Graph.Edge[],
+  propertyName: string,
+  visualRange: [number, number],
+) => {
+  let minp = 9999999999;
+  let maxp = -9999999999;
+  edges.forEach((edge) => {
+    edge.defaultStyle.width = get(edge, propertyName) ** (1 / 3);
+    minp = edge.defaultStyle.width < minp ? edge.defaultStyle.width : minp;
+    maxp = edge.defaultStyle.width > maxp ? edge.defaultStyle.width : maxp;
+  });
+  const rangepLength = maxp - minp;
+  const rangevLength = visualRange[1] - visualRange[0];
+  edges.forEach((edge) => {
+    edge.defaultStyle.width =
+      ((get(edge, propertyName) ** (1 / 3) - minp) / rangepLength) *
+        rangevLength +
+      visualRange[0];
+  });
 };
 
 export const styleEdgeWidth = (
   data: Graph.GraphData,
-  accessor: string | undefined,
-  option: string,
+  option: Graph.EdgeWidth,
 ) => {
-  if (typeof accessor === 'string') {
-    const { min, max } = getMinMaxValue(data, accessor);
+  if (option.id === 'fixed') {
     for (const edge of data.edges) {
-      let w = 2; // default
-      // For standard edge
-      if (option === 'value' && typeof get(edge, accessor) === 'number') {
-        w = ((get(edge, accessor) - min) / (max - min)) * (10 - 2) + 2;
-      }
-      // For grouped edge
-      if (option === 'value' && Array.isArray(get(edge, accessor))) {
-        w =
-          (((get(edge, accessor) as number[]).reduce((a, b) => a + b, 0) -
-            min) /
-            (max - min)) *
-            (10 - 2) +
-          2;
-      }
-      edge.style.line = {
-        width: w,
-      };
+      edge.defaultStyle.width = option.value;
+    }
+  } else if (option.id === 'property') {
+    // mapEdgeWidth(data.edges, 'property', option.range);
+    console.warn('Not implemented yet');
+    for (const edge of data.edges) {
+      edge.defaultStyle.width = 20;
     }
   }
 };
@@ -63,6 +87,22 @@ export const styleEdgeLabel = (
     for (const edge of data.edges) {
       edge.label = get(edge, accessor).toString();
     }
+  }
+};
+
+export const styleEdgePattern = (data: Graph.GraphData, pattern: string) => {
+  for (const edge of data.edges) {
+    if (pattern === 'none') {
+      delete edge.defaultStyle.pattern;
+    } else {
+      edge.defaultStyle.pattern = pattern;
+    }
+  }
+};
+
+export const styleEdgeFontSize = (data: Graph.GraphData, fontSize: number) => {
+  for (const edge of data.edges) {
+    edge.defaultStyle.fontSize = fontSize;
   }
 };
 

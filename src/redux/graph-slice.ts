@@ -13,7 +13,6 @@ import {
 import {
   combineProcessedData,
   deriveVisibleGraph,
-  groupEdges,
   datatoTS,
   chartRange,
   filterDataByTime,
@@ -22,7 +21,7 @@ import {
 /**
  * Meant to be use on graph-slice state only
  * Update visible graph object by re-applying filtering and styling
- * Does not affect graphList / graphFlatten / graphGrouped
+ * Does not affect graphList / graphFlatten
  *
  * @param {GraphState} state
  * @param {(Graph.TimeRange | [])} timeRange
@@ -47,7 +46,7 @@ export const updateVisible = (
 
 /**
  * Meant to be use on graph-slice state only
- * Updates graphFlatten and graphGrouped onwards
+ * Updates graphFlatten onwards
  *
  * @param {GraphState} state
  * @param {Graph.GraphData} graphData
@@ -59,7 +58,6 @@ export const updateAll = (
   accessors: Graph.Accessors,
 ) => {
   if (graphData) {
-    state.graphGrouped = groupEdges(graphData);
     state.graphFlatten = graphData;
     const tsData = datatoTS(state.graphFlatten, accessors.edgeTime);
     state.tsData = tsData;
@@ -72,7 +70,6 @@ export const updateAll = (
     updateVisible(state, state.timeRange, accessors);
   } else {
     // Reset data state when all data is deleted
-    state.graphGrouped = initialState.graphGrouped;
     state.graphFlatten = initialState.graphFlatten;
     state.graphVisible = initialState.graphVisible;
     state.tsData = initialState.tsData;
@@ -88,7 +85,6 @@ export interface GraphState {
   defaultEdgeStyle: EdgeStyleType;
   graphList: Graph.GraphList;
   graphFlatten: Graph.GraphData;
-  graphGrouped: { nodes: Graph.Node[]; edges: Graph.Edge[] };
   graphVisible: { nodes: Graph.Node[]; edges: Graph.Edge[] };
   tsData: Graph.TimeSeries;
   timeRange: Graph.TimeRange | [];
@@ -118,7 +114,10 @@ const initialState: GraphState = {
       },
     },
     edgeStyle: {
-      width: 'fix',
+      width: {
+        id: 'fixed',
+        value: 1,
+      },
     },
     resetView: true,
     groupEdges: true,
@@ -131,7 +130,6 @@ const initialState: GraphState = {
     edges: [],
     metadata: { fields: { nodes: [], edges: [] } },
   },
-  graphGrouped: { nodes: [], edges: [] },
   graphVisible: { nodes: [], edges: [] },
   tsData: [],
   // Set a large interval to display the data on initialize regardless of resetView
@@ -232,6 +230,18 @@ const graph = createSlice({
       });
       updateVisible(state, selectTimeRange, accessors);
     },
+    changeEdgeStyle(
+      state,
+      action: PayloadAction<{
+        key: any;
+      }>,
+    ) {
+      const { selectTimeRange, accessors } = state;
+      Object.entries(action.payload).forEach(([key, value]) => {
+        state.styleOptions.edgeStyle[key] = value;
+      });
+      updateVisible(state, selectTimeRange, accessors);
+    },
     processGraphResponse(
       state,
       action: PayloadAction<{
@@ -292,6 +302,7 @@ export const {
   changeOptions,
   changeLayout,
   changeNodeStyle,
+  changeEdgeStyle,
   processGraphResponse,
   setRange,
   timeRangeChange,

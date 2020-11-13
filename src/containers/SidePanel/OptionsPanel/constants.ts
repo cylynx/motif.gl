@@ -175,3 +175,69 @@ export const nodeFontSizeForm: SimpleFormData = {
   max: 50,
   callback: (data: any) => console.log(data),
 };
+
+export const edgeWidthForm: NestedFormData = {
+  id: 'width',
+  label: 'Edge Width',
+  value: 'fixed',
+  callback: (data: any) => console.log(data),
+  options: [
+    { id: 'fixed', label: 'Fixed' },
+    { id: 'property', label: 'Property (user defined)' },
+  ],
+  fixed: [
+    {
+      id: 'value',
+      label: 'Width',
+      type: 'slider',
+      value: DEFAULT_EDGE_STYLE.width,
+      min: 0.1,
+      max: 25,
+      step: 0.1,
+    },
+  ],
+  property: [
+    {
+      id: 'variable',
+      label: 'Variable',
+      type: 'select',
+      value: 'number',
+      options: [
+        { id: 'number', label: 'number' },
+        { id: 'number2', label: 'number2' },
+      ],
+    },
+    {
+      id: 'range',
+      label: 'Scaling range (min - max)',
+      type: 'slider',
+      value: [1, 10],
+      min: 1,
+      max: 25,
+    },
+  ],
+};
+
+export const edgePatternForm: SimpleFormData = {
+  id: 'pattern',
+  label: 'Edge Pattern',
+  type: 'select',
+  value: 'none',
+  options: [
+    { id: 'none', label: 'None' },
+    { id: 'dot', label: 'Dot' },
+    { id: 'dash', label: 'Dash' },
+    { id: 'dash-dot', label: 'dash-dot' },
+  ],
+  callback: (data: any) => console.log(data),
+};
+
+export const EdgeFontSizeForm: SimpleFormData = {
+  id: 'fontSize',
+  label: 'Font Size',
+  type: 'slider',
+  value: 12,
+  min: 0,
+  max: 50,
+  callback: (data: any) => console.log(data),
+};

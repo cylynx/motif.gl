@@ -11,23 +11,31 @@ import {
   genNestedForm,
   genSimpleForm,
 } from '../../../components/form';
-import { changeLayout, changeNodeStyle } from '../../../redux/graph-slice';
+import {
+  changeLayout,
+  changeNodeStyle,
+  changeEdgeStyle,
+} from '../../../redux/graph-slice';
 import * as Icon from '../../../components/Icons';
 import {
   layoutForm,
   nodeSizeForm,
   nodeColorForm,
   nodeFontSizeForm,
+  edgeWidthForm,
+  edgePatternForm,
+  EdgeFontSizeForm,
 } from './constants';
 
 const OptionsPanel = () => {
   const dispatch = useDispatch();
 
   const styleOptions = useSelector((state) => getGraph(state).styleOptions);
-  const { layout, nodeStyle } = styleOptions;
+  const { layout, nodeStyle, edgeStyle } = styleOptions;
   const layoutOptions = { layout: { id: layout.name, ...layout.options } };
   const updateLayout = (data: any) => dispatch(changeLayout(data));
   const updateNodeStyle = (data: any) => dispatch(changeNodeStyle(data));
+  const updateEdgeStyle = (data: any) => dispatch(changeEdgeStyle(data));
 
   return (
     <Fragment>
@@ -103,20 +111,24 @@ const OptionsPanel = () => {
             content: (
               <Fragment>
                 <NestedForm
-                  data={genNestedForm(nodeSizeForm, nodeStyle, updateNodeStyle)}
-                />
-                <SimpleForm
-                  data={genSimpleForm(
-                    nodeColorForm,
-                    nodeStyle,
-                    updateNodeStyle,
+                  data={genNestedForm(
+                    edgeWidthForm,
+                    edgeStyle,
+                    updateEdgeStyle,
                   )}
                 />
                 <SimpleForm
                   data={genSimpleForm(
-                    nodeFontSizeForm,
-                    nodeStyle,
-                    updateNodeStyle,
+                    edgePatternForm,
+                    edgeStyle,
+                    updateEdgeStyle,
+                  )}
+                />
+                <SimpleForm
+                  data={genSimpleForm(
+                    EdgeFontSizeForm,
+                    edgeStyle,
+                    updateEdgeStyle,
                   )}
                 />
               </Fragment>
@@ -125,6 +137,7 @@ const OptionsPanel = () => {
           },
         ]}
       />
+      <Block marginBottom='scale1000' />
     </Fragment>
   );
 };
