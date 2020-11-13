@@ -65,8 +65,8 @@ const Accordion = ({ items, icon }: AccordionProps) => {
         },
         Content: {
           style: ({ $expanded, $theme }) => ({
-            paddingTop: $expanded ? $theme.sizing.scale600 : 0,
-            paddingBottom: $expanded ? $theme.sizing.scale600 : 0,
+            paddingTop: $expanded ? $theme.sizing.scale500 : 0,
+            paddingBottom: $expanded ? $theme.sizing.scale500 : 0,
             paddingLeft: $theme.sizing.scale600,
             paddingRight: $theme.sizing.scale600,
             borderBottomWidth: 0,

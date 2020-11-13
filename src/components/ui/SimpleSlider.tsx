@@ -16,8 +16,8 @@ const SimpleSlider = (props: SliderProps) => {
               isRight = !isRight;
             }
             return {
-              height: '14px',
-              width: isLeft || isRight ? '7px' : '14px',
+              height: '12px',
+              width: isLeft || isRight ? '6px' : '12px',
               borderTopLeftRadius: isRight ? '1px' : '4px',
               borderTopRightRadius: isLeft ? '1px' : '4px',
               borderBottomLeftRadius: isRight ? '1px' : '4px',
@@ -73,6 +73,13 @@ const SimpleSlider = (props: SliderProps) => {
           style: ({ $theme }) => {
             return {
               paddingBottom: $theme.sizing.scale200,
+            };
+          },
+        },
+        TickBar: {
+          style: () => {
+            return {
+              paddingBottom: 0,
             };
           },
         },

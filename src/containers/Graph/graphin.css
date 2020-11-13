@@ -9,3 +9,15 @@
   min-height: 500px;
 }
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #595f6d;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #595f6d;
+}

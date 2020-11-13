@@ -31,6 +31,7 @@ export const LeftLayer = ({ children }: { children: React.ReactNode }) => {
       paddingLeft='scale800'
       paddingRight='scale800'
       backgroundColor='backgroundPrimary'
+      overflow='auto'
     >
       {children}
     </Block>
