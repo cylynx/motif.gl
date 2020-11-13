@@ -1,4 +1,5 @@
-import { NestedFormData } from '../../../components/form-generator';
+/* eslint-disable no-console */
+import { SimpleFormData, NestedFormData } from '../../../components/form';
 import * as LAYOUT from '../../../constants/layout-options';
 import { DEFAULT_EDGE_STYLE, DEFAULT_NODE_STYLE } from '../../Graph';
 
@@ -11,7 +12,7 @@ export const layoutNames = [
   { label: 'Circular', id: 'circle' },
 ];
 
-const defaultLayoutForm: NestedFormData = {
+export const defaultLayoutForm: NestedFormData = {
   id: 'layout',
   label: 'Layout',
   value: 'concentric',
@@ -99,22 +100,68 @@ const defaultLayoutForm: NestedFormData = {
   ],
 };
 
-export const genLayoutForm = (
-  currentOptions: any,
-  callback: (data: any) => void,
-): NestedFormData => {
-  const option = defaultLayoutForm;
-  option.value = currentOptions.id || 'concentric';
-  option.callback = callback;
+export const nodeSizeForm: NestedFormData = {
+  id: 'size',
+  label: 'Node Size',
+  value: 'fixed',
+  callback: (data: any) => console.log(data),
+  options: [
+    { id: 'fixed', label: 'fixed' },
+    { id: 'degree', label: 'degree (number of connections)' },
+    { id: 'property', label: 'node property (user defined)' },
+  ],
+  fixed: [
+    {
+      id: 'size',
+      label: 'size',
+      type: 'slider',
+      value: DEFAULT_NODE_STYLE.size,
+      min: 1,
+      max: 100,
+    },
+  ],
+  degree: [
+    {
+      id: 'range',
+      label: 'Scaling range (min - max)',
+      type: 'slider',
+      value: [5, 20],
+      min: 1,
+      max: 100,
+    },
+  ],
+  property: [
+    {
+      id: 'variable',
+      label: 'variable',
+      type: 'select',
+      value: [{ id: 'number', label: 'number' }],
+    },
+    {
+      id: 'range',
+      label: 'Scaling range (min - max)',
+      type: 'slider',
+      value: [5, 20],
+      min: 1,
+      max: 100,
+    },
+  ],
+};
 
-  // override value for option if exist in currentOption
-  if (option[currentOptions.id]) {
-    Object.entries(currentOptions).forEach(([key, value]: any[]) => {
-      const idx = option[currentOptions.id].findIndex((x: any) => x.id === key);
-      if (idx > -1) {
-        option[currentOptions.id][idx].value = value;
-      }
-    });
-  }
-  return option;
+export const nodeColorForm: SimpleFormData = {
+  id: 'color',
+  label: 'Node Color',
+  type: 'input',
+  value: 'teal',
+  callback: (data: any) => console.log(data),
+};
+
+export const nodeFontSizeForm: SimpleFormData = {
+  id: 'fontSize',
+  label: 'Font Size',
+  type: 'slider',
+  value: 12,
+  min: 0,
+  max: 50,
+  callback: (data: any) => console.log(data),
 };

@@ -5,10 +5,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getGraph } from '../../../redux';
 import Header from '../Header';
 import Accordion from '../../../components/Accordion';
-import { SimpleForm, NestedForm } from '../../../components/form-generator';
+import {
+  SimpleForm,
+  NestedForm,
+  genNestedForm,
+  genSimpleForm,
+} from '../../../components/form';
 import { changeLayout } from '../../../redux/graph-slice';
 import * as Icon from '../../../components/Icons';
-import { genLayoutForm } from './utils';
+import {
+  defaultLayoutForm,
+  nodeSizeForm,
+  nodeColorForm,
+  nodeFontSizeForm,
+} from './constants';
 
 const OptionsPanel = () => {
   const dispatch = useDispatch();
@@ -16,6 +26,8 @@ const OptionsPanel = () => {
   const styleOptions = useSelector((state) => getGraph(state).styleOptions);
   const { layout } = styleOptions;
   const layoutOptions = { id: layout.name, ...layout.options };
+  const updateLayout = (data: any) => dispatch(changeLayout(data));
+
   return (
     <Fragment>
       <Header />
@@ -32,8 +44,10 @@ const OptionsPanel = () => {
             content: (
               <Fragment>
                 <NestedForm
-                  data={genLayoutForm(layoutOptions, (data) =>
-                    dispatch(changeLayout(data)),
+                  data={genNestedForm(
+                    defaultLayoutForm,
+                    layoutOptions,
+                    updateLayout,
                   )}
                 />
               </Fragment>
@@ -53,29 +67,7 @@ const OptionsPanel = () => {
               </Block>
             ),
             key: 'node styles',
-            content: (
-              <Fragment>
-                <SimpleForm
-                  data={{
-                    id: 'name',
-                    label: 'Test Input',
-                    value: 10,
-                    type: 'input',
-                    callback: (data) => console.log(data),
-                  }}
-                />
-                <SimpleForm
-                  data={{
-                    id: 'name',
-                    label: 'Test Slider',
-                    value: [5, 10],
-                    type: 'slider',
-                    max: 20,
-                    callback: (data) => console.log(data),
-                  }}
-                />
-              </Fragment>
-            ),
+            content: <Fragment />,
             expanded: true,
           },
         ]}
