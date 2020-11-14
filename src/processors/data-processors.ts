@@ -474,7 +474,6 @@ export const getFieldsFromData = (
       }
     }
   }
-  console.log(result);
   return result;
 };
 

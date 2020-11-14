@@ -73,7 +73,7 @@ describe('Parsing csv to json', () => {
     const output = await processNodeEdgeCsv(nodeCsv, testCsv);
     expect(output).toHaveProperty('nodes', 'edges', 'metadata');
     expect(output.metadata.fields.nodes).toHaveLength(1);
-    expect(output.metadata.fields.edges).toHaveLength(3);
+    expect(output.metadata.fields.edges).toHaveLength(2);
   });
   it('should return distinct nodes in an edgelist csv format', async () => {
     const output = await processEdgeListCsv(testCsv);
@@ -124,7 +124,7 @@ describe('Process csv data to required json format', () => {
     expect(sample).toHaveLength(3);
     expect(sample[0]).toMatchObject(firstEdgeFlatten);
   });
-  it('should exclude restricted columns (id, target, source) when generating fields', async () => {
+  it('should exclude restricted columns (id, target, source, style, defaultStyle) when generating fields', async () => {
     const edgeJson = await csv2json(testCsv);
     const headerRow = testCsv.split('\n')[0].split(',');
     const sample = getSampleForTypeAnalyze(headerRow, edgeJson);
@@ -132,7 +132,6 @@ describe('Process csv data to required json format', () => {
     expect(fields.map((x) => x.name)).toMatchObject([
       'data.value',
       'data.blk_ts_unix',
-      'style.endArrow',
     ]);
   });
   it('should parse timestamps and array correctly', async () => {
@@ -220,8 +219,8 @@ describe('Process json data', () => {
   it('should return metadata with the correct number of fields for nodes and edges', async () => {
     const results = await processJson(TriangleJSON()[0]);
     const { nodes: nodeFields, edges: edgeFields } = results.metadata.fields;
-    expect(nodeFields).toHaveLength(5);
-    expect(edgeFields).toHaveLength(3);
+    expect(nodeFields).toHaveLength(3);
+    expect(edgeFields).toHaveLength(2);
   });
   it('should not parse undefined fields', async () => {
     const results = await processJson(SimpleEdge);
