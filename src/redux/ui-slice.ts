@@ -112,10 +112,7 @@ const ui = createSlice({
         const currentNodeFields = state.nodeSelection.map((x) => x.id);
         const currentEdgeFields = state.edgeSelection.map((x) => x.id);
         for (const field of data.metadata.fields.nodes) {
-          if (
-            !currentNodeFields.includes(field.name) &&
-            !field.name.includes('style.')
-          ) {
+          if (!currentNodeFields.includes(field.name)) {
             state.nodeSelection.push({
               label: field.name,
               id: field.name,
@@ -125,10 +122,7 @@ const ui = createSlice({
           }
         }
         for (const field of data.metadata.fields.edges) {
-          if (
-            !currentEdgeFields.includes(field.name) &&
-            !field.name.includes('style.')
-          ) {
+          if (!currentEdgeFields.includes(field.name)) {
             state.edgeSelection.push({
               label: field.name,
               id: field.name,
