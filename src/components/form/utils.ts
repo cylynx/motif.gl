@@ -29,11 +29,11 @@ export const genNestedForm = (
 ): NestedFormData => {
   const option = nestedForm;
   const details = currentOptions[nestedForm.id];
-  option.value = details.id || nestedForm.value;
+  option.value = details?.id || nestedForm.value;
   option.callback = callback;
 
   // override value for option if exist in currentOption
-  if (option[details.id]) {
+  if (option[details?.id]) {
     Object.entries(details).forEach(([key, value]: any[]) => {
       const idx = option[details.id].findIndex((x: any) => x.id === key);
       if (idx > -1) {
@@ -47,7 +47,6 @@ export const genNestedForm = (
       set(option, key, value);
     });
   }
-  console.log(option);
   return option;
 };
 
