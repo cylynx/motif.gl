@@ -437,7 +437,13 @@ export const getFieldsFromData = (
   for (const [index, field] of fieldOrder.entries()) {
     const name = fieldByIndex[index];
     const fieldMeta = metadata.find((m: any) => m.key === field);
-    if (!RESTRICTED_FIELDS.includes(name) && typeof fieldMeta !== 'undefined') {
+    // Excludes undefiend type, restricted fields and style / defaultStyle fields
+    if (
+      !RESTRICTED_FIELDS.includes(name) &&
+      typeof fieldMeta !== 'undefined' &&
+      !name.includes('style.') &&
+      !name.includes('defaultStyle.')
+    ) {
       const { type, format } = fieldMeta || {};
       const fieldType = analyzerTypeToFieldType(type);
       if (fieldType === 'array') {
@@ -468,6 +474,7 @@ export const getFieldsFromData = (
       }
     }
   }
+  console.log(result);
   return result;
 };
 
