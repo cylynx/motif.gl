@@ -4,7 +4,7 @@ import get from 'lodash/get';
 import set from 'lodash/set';
 import cloneDeep from 'lodash/cloneDeep';
 import * as Graph from '../types/Graph';
-import { flattenObject } from '../processors/data-processors';
+import { flattenObject, ALL_FIELD_TYPES } from '../processors/data-processors';
 import { styleEdges } from './style-edges';
 import { styleNodes } from './style-nodes';
 
@@ -421,3 +421,19 @@ export const countProperty = (
   });
   return map;
 };
+
+type FieldTypes = (keyof typeof ALL_FIELD_TYPES)[];
+const allFields = Object.keys(ALL_FIELD_TYPES) as FieldTypes;
+
+/**
+ * Returns field name of which has type which matches the given type array
+ *
+ * @param {Graph.Field[]} fields
+ * @param {FieldTypes} [typeArray=allFields]
+ */
+export const getFieldNames = (
+  fields: Graph.Field[],
+  typeArray: FieldTypes = allFields,
+) =>
+  // @ts-ignore
+  fields.filter((f) => typeArray.includes(f.type)).map((f) => f.name);

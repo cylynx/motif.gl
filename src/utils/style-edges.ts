@@ -70,12 +70,8 @@ export const styleEdgeWidth = (
     for (const edge of data.edges) {
       edge.defaultStyle.width = option.value;
     }
-  } else if (option.id === 'property') {
-    // mapEdgeWidth(data.edges, 'property', option.range);
-    console.warn('Not implemented yet');
-    for (const edge of data.edges) {
-      edge.defaultStyle.width = 20;
-    }
+  } else if (option.id === 'property' && option.variable) {
+    mapEdgeWidth(data.edges, option.variable, option.range);
   }
 };
 
