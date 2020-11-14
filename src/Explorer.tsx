@@ -9,11 +9,11 @@ import { Block } from 'baseui/block';
 import { Modal, ModalBody, SIZE } from 'baseui/modal';
 import { Loader } from './components/ui';
 import DataTable from './containers/DataTable';
-import { Accessors } from './types/Graph';
+import { Accessors, StyleOptions } from './types/Graph';
 import { closeModal, setName } from './redux/ui-slice';
 import { WidgetItem, defaultWidgetList } from './containers/widgets';
 import { setWidget } from './containers/widgets/widget-slice';
-import { setAccessors, setDefaultStyles } from './redux/graph-slice';
+import { setAccessors, overrideStyles } from './redux/graph-slice';
 import { getTabsOverride, getNodeMenuOverride } from './utils/overrides';
 import { getUI, getWidget } from './redux';
 
@@ -22,8 +22,6 @@ import Graph, {
   Tooltip,
   TooltipProps,
   GraphRefContext,
-  NodeStyleType,
-  EdgeStyleType,
 } from './containers/Graph';
 import ImportWizard, { Tab } from './containers/ImportWizard';
 
@@ -44,8 +42,7 @@ export interface ExplorerProps {
   name: string;
   accessors: Accessors;
   overrides: Overrides;
-  defaultNodeStyle?: NodeStyleType;
-  defaultEdgeStyle?: EdgeStyleType;
+  styleOptions?: StyleOptions;
   secondaryTheme?: Theme;
 }
 
@@ -65,14 +62,17 @@ export const WidgetContainer = (props: WidgetContainerProps) => {
   return null;
 };
 
+const defaultNodeStyle: StyleOptions['nodeStyle'] = {
+  color: 'teal',
+};
+
 const Explorer = (props: ExplorerProps) => {
   const {
     name,
     accessors,
     overrides,
     secondaryTheme,
-    defaultNodeStyle = { color: 'teal' },
-    defaultEdgeStyle = {},
+    styleOptions = { nodeStyle: defaultNodeStyle },
   } = props;
   const graphRef = useRef(null);
   const [tooltip, setTooltip] = useState(null);
@@ -111,7 +111,7 @@ const Explorer = (props: ExplorerProps) => {
       dispatch(setName(name));
     }
     dispatch(setWidget(widgetProp));
-    dispatch(setDefaultStyles({ defaultNodeStyle, defaultEdgeStyle }));
+    dispatch(overrideStyles(styleOptions));
   }, [accessors, overrides.widgetList, name]);
 
   // UI Functions

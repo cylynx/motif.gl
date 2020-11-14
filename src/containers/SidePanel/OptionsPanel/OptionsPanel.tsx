@@ -23,10 +23,17 @@ import {
   nodeSizeForm,
   nodeColorForm,
   nodeFontSizeForm,
+  nodeLabelForm,
   edgeWidthForm,
   edgePatternForm,
-  EdgeFontSizeForm,
+  edgeFontSizeForm,
+  edgeLabelForm,
 } from './constants';
+
+const defaultLabelOptions = [
+  { id: 'label', label: 'label (default)' },
+  { id: 'none', label: 'None' },
+];
 
 const OptionsPanel = () => {
   const dispatch = useDispatch();
@@ -35,10 +42,30 @@ const OptionsPanel = () => {
   const graphFields = useSelector(
     (state) => getGraph(state).graphFlatten.metadata.fields,
   );
-  const numericNodeOptions =
-    getFieldNames(graphFields.nodes, ['integer', 'real']).map((x) => {
+
+  let nodeLabelOptions = getFieldNames(graphFields.nodes)
+    .map((x) => {
       return { id: x, label: x };
-    }) || [];
+    })
+    .filter((x) => x.id !== 'label');
+
+  nodeLabelOptions = [...defaultLabelOptions, ...nodeLabelOptions];
+
+  const numericNodeOptions = getFieldNames(graphFields.nodes, [
+    'integer',
+    'real',
+  ]).map((x) => {
+    return { id: x, label: x };
+  });
+
+  let edgeLabelOptions = getFieldNames(graphFields.edges)
+    .map((x) => {
+      return { id: x, label: x };
+    })
+    .filter((x) => x.id !== 'label');
+
+  edgeLabelOptions = [...defaultLabelOptions, ...edgeLabelOptions];
+
   const numericEdgeOptions =
     getFieldNames(graphFields.edges, ['integer', 'real']).map((x) => {
       return { id: x, label: x };
@@ -104,6 +131,14 @@ const OptionsPanel = () => {
                 />
                 <SimpleForm
                   data={genSimpleForm(
+                    nodeLabelForm,
+                    nodeStyle,
+                    updateNodeStyle,
+                    { options: nodeLabelOptions },
+                  )}
+                />
+                <SimpleForm
+                  data={genSimpleForm(
                     nodeColorForm,
                     nodeStyle,
                     updateNodeStyle,
@@ -151,6 +186,14 @@ const OptionsPanel = () => {
                 />
                 <SimpleForm
                   data={genSimpleForm(
+                    edgeLabelForm,
+                    edgeStyle,
+                    updateEdgeStyle,
+                    { options: edgeLabelOptions },
+                  )}
+                />
+                <SimpleForm
+                  data={genSimpleForm(
                     edgePatternForm,
                     edgeStyle,
                     updateEdgeStyle,
@@ -158,7 +201,7 @@ const OptionsPanel = () => {
                 />
                 <SimpleForm
                   data={genSimpleForm(
-                    EdgeFontSizeForm,
+                    edgeFontSizeForm,
                     edgeStyle,
                     updateEdgeStyle,
                   )}

@@ -105,6 +105,7 @@ export interface NodeStyleOptions {
   size?: NodeSize;
   color?: string;
   fontSize?: number;
+  label?: string;
 }
 
 export type EdgeWidthFixed = {
@@ -124,14 +125,15 @@ export interface EdgeStyleOptions {
   width?: EdgeWidth;
   pattern?: 'none' | 'dot' | 'dash' | 'dash-dot';
   fontSize?: number;
+  label?: string;
 }
 
 export interface StyleOptions {
-  layout: Layout;
-  resetView: boolean;
-  groupEdges: boolean;
-  nodeStyle: NodeStyleOptions;
-  edgeStyle: EdgeStyleOptions;
+  layout?: Layout;
+  resetView?: boolean;
+  groupEdges?: boolean;
+  nodeStyle?: NodeStyleOptions;
+  edgeStyle?: EdgeStyleOptions;
 }
 
 export interface ChartData {

@@ -2,24 +2,16 @@
 import get from 'lodash/get';
 import * as Graph from '../types/Graph';
 
-// Assume we can style an edge by its width, color and label
-// Each should be able to map to a edge property e.g. value or length or amount
-// There might be additional options passed as well e.g. width can be scaled based on different formulas applied to property
-// For each property there should be a default action, if for example there is no edge width option passed
-// Loop through each styling accessor and transform them based on the input option
-
 /**
  * Style an edge dataset based on a given method
  *
  * @param {Graph.GraphData} data
  * @param {Graph.EdgeStyleOptions} edgeStyleOptions
- * @param {Graph.EdgeStyleAccessors} edgeStyleAccessors
  * @return {*}  {Graph.Edge[]}
  */
 export const styleEdges = (
   data: Graph.GraphData,
   edgeStyleOptions: Graph.EdgeStyleOptions,
-  edgeStyleAccessors: Graph.EdgeStyleAccessors,
 ) => {
   if (edgeStyleOptions.width) {
     styleEdgeWidth(data, edgeStyleOptions.width);
@@ -30,7 +22,9 @@ export const styleEdges = (
   if (edgeStyleOptions.fontSize) {
     styleEdgeFontSize(data, edgeStyleOptions.fontSize);
   }
-  styleEdgeLabel(data, edgeStyleAccessors?.label);
+  if (edgeStyleOptions.label) {
+    styleEdgeLabel(data, edgeStyleOptions.label);
+  }
 };
 
 /**
@@ -75,13 +69,12 @@ export const styleEdgeWidth = (
   }
 };
 
-export const styleEdgeLabel = (
-  data: Graph.GraphData,
-  accessor: string | undefined,
-) => {
-  if (typeof accessor === 'string') {
-    for (const edge of data.edges) {
-      edge.label = get(edge, accessor).toString();
+export const styleEdgeLabel = (data: Graph.GraphData, label: string) => {
+  for (const edge of data.edges) {
+    if (label === 'none') {
+      edge.label = '';
+    } else if (label !== 'label') {
+      edge.label = get(edge, label, '').toString();
     }
   }
 };
