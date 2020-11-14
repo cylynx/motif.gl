@@ -7,13 +7,11 @@ import * as Graph from '../types/Graph';
  *
  * @param {Graph.GraphData} data
  * @param {Graph.NodeStyleOptions} nodeStyleOptions
- * @param {Graph.NodeStyleAccessors} nodeStyleAccessors
  * @return {*}  {Graph.Node[]}
  */
 export const styleNodes = (
   data: Graph.GraphData,
   nodeStyleOptions: Graph.NodeStyleOptions,
-  nodeStyleAccessors: Graph.NodeStyleAccessors,
 ) => {
   if (nodeStyleOptions.size) {
     styleNodeSize(data, nodeStyleOptions.size);
@@ -24,7 +22,9 @@ export const styleNodes = (
   if (nodeStyleOptions.fontSize) {
     styleFontSize(data, nodeStyleOptions.fontSize);
   }
-  styleNodeLabel(data, nodeStyleAccessors?.label);
+  if (nodeStyleOptions.label) {
+    styleNodeLabel(data, nodeStyleOptions.label);
+  }
 };
 
 /**
@@ -86,13 +86,12 @@ export const styleNodeSize = (
   }
 };
 
-export const styleNodeLabel = (
-  data: Graph.GraphData,
-  accessor: string | undefined,
-) => {
-  if (typeof accessor === 'string') {
-    for (const node of data.nodes) {
-      node.label = get(node, accessor).toString();
+export const styleNodeLabel = (data: Graph.GraphData, label: string) => {
+  for (const node of data.nodes) {
+    if (label === 'none') {
+      node.label = '';
+    } else if (label !== 'label') {
+      node.label = get(node, label, '').toString();
     }
   }
 };

@@ -250,16 +250,14 @@ export const combineProcessedData = (
  *
  * @param {Graph.GraphData} data
  * @param {Graph.StyleOptions} options
- * @param {Graph.Accessors} accessors
  * @return {*}  {Graph.GraphData}
  */
 export const applyStyle = (
   data: Graph.GraphData,
   options: Graph.StyleOptions,
-  accessors: Graph.Accessors,
 ) => {
-  styleNodes(data, options.nodeStyle, accessors.nodeStyle);
-  styleEdges(data, options.edgeStyle, accessors.edgeStyle);
+  styleNodes(data, options.nodeStyle);
+  styleEdges(data, options.edgeStyle);
 };
 
 /**
@@ -280,20 +278,17 @@ export const groupEdges = (data: Graph.GraphData): Graph.GraphData => {
  *
  * @param {Graph.GraphData} graphData
  * @param {Graph.StyleOptions} styleOptions
- * @param {Graph.Accessors} accessors
  * @return {*}  {Graph.GraphData}
  */
 export const deriveVisibleGraph = (
   graphData: Graph.GraphData,
   styleOptions: Graph.StyleOptions,
-  accessors: Graph.Accessors,
 ): Graph.GraphData => {
   const copyData = cloneDeep(graphData);
-
   if (styleOptions.groupEdges) {
-    applyStyle(groupEdges(copyData), styleOptions, accessors);
+    applyStyle(groupEdges(copyData), styleOptions);
   } else {
-    applyStyle(copyData, styleOptions, accessors);
+    applyStyle(copyData, styleOptions);
   }
 
   return copyData;

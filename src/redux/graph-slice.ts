@@ -7,10 +7,6 @@ import isEmpty from 'lodash/isEmpty';
 import * as LAYOUT from '../constants/layout-options';
 import * as Graph from '../types/Graph';
 import {
-  NodeStyleType,
-  EdgeStyleType,
-} from '../containers/Graph/shape/constants';
-import {
   combineProcessedData,
   deriveVisibleGraph,
   datatoTS,
@@ -37,11 +33,7 @@ export const updateVisible = (
     timeRange,
     accessors.edgeTime,
   );
-  state.graphVisible = deriveVisibleGraph(
-    newFilteredData,
-    state.styleOptions,
-    accessors,
-  );
+  state.graphVisible = deriveVisibleGraph(newFilteredData, state.styleOptions);
 };
 
 /**
@@ -81,8 +73,6 @@ export const updateAll = (
 export interface GraphState {
   accessors: Graph.Accessors;
   styleOptions: Graph.StyleOptions;
-  defaultNodeStyle: NodeStyleType;
-  defaultEdgeStyle: EdgeStyleType;
   graphList: Graph.GraphList;
   graphFlatten: Graph.GraphData;
   graphVisible: { nodes: Graph.Node[]; edges: Graph.Edge[] };
@@ -122,8 +112,6 @@ const initialState: GraphState = {
     resetView: true,
     groupEdges: true,
   },
-  defaultNodeStyle: {},
-  defaultEdgeStyle: {},
   graphList: [],
   graphFlatten: {
     nodes: [],
@@ -150,8 +138,6 @@ const graph = createSlice({
       // Only reset data state
       newGraphState.accessors = state.accessors;
       newGraphState.styleOptions = state.styleOptions;
-      newGraphState.defaultNodeStyle = state.defaultNodeStyle;
-      newGraphState.defaultEdgeStyle = state.defaultEdgeStyle;
       return newGraphState;
     },
     updateGraphList(
@@ -277,16 +263,8 @@ const graph = createSlice({
     setAccessors(state, action) {
       state.accessors = action.payload;
     },
-    setDefaultStyles(
-      state,
-      action: PayloadAction<{
-        defaultNodeStyle: NodeStyleType;
-        defaultEdgeStyle: EdgeStyleType;
-      }>,
-    ) {
-      const { defaultNodeStyle, defaultEdgeStyle } = action.payload;
-      state.defaultNodeStyle = defaultNodeStyle;
-      state.defaultEdgeStyle = defaultEdgeStyle;
+    overrideStyles(state, action: PayloadAction<Graph.StyleOptions>) {
+      state.styleOptions = { ...state.styleOptions, ...action.payload };
     },
   },
 });
@@ -309,7 +287,7 @@ export const {
   getDetails,
   clearDetails,
   setAccessors,
-  setDefaultStyles,
+  overrideStyles,
 } = graph.actions;
 
 export default graph.reducer;

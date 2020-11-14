@@ -176,6 +176,15 @@ export const nodeFontSizeForm: SimpleFormData = {
   callback: (data: any) => console.log(data),
 };
 
+export const nodeLabelForm: SimpleFormData = {
+  id: 'label',
+  label: 'Label',
+  type: 'select',
+  value: 'label',
+  options: [{ id: 'label', label: 'label' }],
+  callback: (data: any) => console.log(data),
+};
+
 export const edgeWidthForm: NestedFormData = {
   id: 'width',
   label: 'Edge Width',
@@ -233,12 +242,21 @@ export const edgePatternForm: SimpleFormData = {
   callback: (data: any) => console.log(data),
 };
 
-export const EdgeFontSizeForm: SimpleFormData = {
+export const edgeFontSizeForm: SimpleFormData = {
   id: 'fontSize',
   label: 'Font Size',
   type: 'slider',
   value: 12,
   min: 0,
   max: 50,
+  callback: (data: any) => console.log(data),
+};
+
+export const edgeLabelForm: SimpleFormData = {
+  id: 'label',
+  label: 'Label',
+  type: 'select',
+  value: 'label',
+  options: [{ id: 'label', label: 'label' }],
   callback: (data: any) => console.log(data),
 };
