@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 
 import { Block } from 'baseui/block';
 import { useDispatch, useSelector } from 'react-redux';
-import { getGraph } from '../../../redux';
+import { getGraph, getUI } from '../../../redux';
 import Header from '../Header';
 import Accordion from '../../../components/Accordion';
 import {
@@ -16,6 +16,7 @@ import {
   changeNodeStyle,
   changeEdgeStyle,
 } from '../../../redux/graph-slice';
+import { getFieldNames } from '../../../utils/graph-utils';
 import * as Icon from '../../../components/Icons';
 import {
   layoutForm,
@@ -31,8 +32,21 @@ const OptionsPanel = () => {
   const dispatch = useDispatch();
 
   const styleOptions = useSelector((state) => getGraph(state).styleOptions);
+  const graphFields = useSelector(
+    (state) => getGraph(state).graphFlatten.metadata.fields,
+  );
+  const numericNodeOptions =
+    getFieldNames(graphFields.nodes, ['integer', 'real']).map((x) => {
+      return { id: x, label: x };
+    }) || [];
+  const numericEdgeOptions =
+    getFieldNames(graphFields.edges, ['integer', 'real']).map((x) => {
+      return { id: x, label: x };
+    }) || [];
+
   const { layout, nodeStyle, edgeStyle } = styleOptions;
   const layoutOptions = { layout: { id: layout.name, ...layout.options } };
+
   const updateLayout = (data: any) => dispatch(changeLayout(data));
   const updateNodeStyle = (data: any) => dispatch(changeNodeStyle(data));
   const updateEdgeStyle = (data: any) => dispatch(changeEdgeStyle(data));
@@ -75,7 +89,18 @@ const OptionsPanel = () => {
             content: (
               <Fragment>
                 <NestedForm
-                  data={genNestedForm(nodeSizeForm, nodeStyle, updateNodeStyle)}
+                  data={genNestedForm(
+                    nodeSizeForm,
+                    nodeStyle,
+                    updateNodeStyle,
+                    {
+                      'property[0].options': numericNodeOptions,
+                      'property[0].value':
+                        numericNodeOptions.length > 0
+                          ? numericNodeOptions[0].id
+                          : null,
+                    },
+                  )}
                 />
                 <SimpleForm
                   data={genSimpleForm(
@@ -115,6 +140,13 @@ const OptionsPanel = () => {
                     edgeWidthForm,
                     edgeStyle,
                     updateEdgeStyle,
+                    {
+                      'property[0].options': numericEdgeOptions,
+                      'property[0].value':
+                        numericEdgeOptions.length > 0
+                          ? numericEdgeOptions[0].id
+                          : null,
+                    },
                   )}
                 />
                 <SimpleForm

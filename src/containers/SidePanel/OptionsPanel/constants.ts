@@ -211,9 +211,10 @@ export const edgeWidthForm: NestedFormData = {
       id: 'range',
       label: 'Scaling range (min - max)',
       type: 'slider',
-      value: [1, 10],
-      min: 1,
+      value: [1, 5],
+      min: 0.1,
       max: 25,
+      step: 0.1,
     },
   ],
 };

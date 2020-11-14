@@ -81,11 +81,8 @@ export const styleNodeSize = (
       });
     });
     mapNodeSize(data.nodes, 'degree', option.range);
-  } else if (option.id === 'property') {
-    console.warn('Not implemented yet');
-    for (const node of data.nodes) {
-      node.defaultStyle.size = 20;
-    }
+  } else if (option.id === 'property' && option.variable) {
+    mapNodeSize(data.nodes, option.variable, option.range);
   }
 };
 
