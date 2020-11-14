@@ -75,7 +75,12 @@ const SimpleForm = ({ data }: { data: SimpleFormData }) => {
 
   // Select needs to have an options
   let parsedValue =
-    type === 'select' ? [data.options.find((x: any) => x.id === value)] : value;
+    // eslint-disable-next-line no-nested-ternary
+    type === 'select'
+      ? data.options.find((x: any) => x.id === value)
+        ? [data.options.find((x: any) => x.id === value)]
+        : []
+      : value;
   parsedValue =
     type === 'slider' && !Array.isArray(value) ? [value] : parsedValue;
 

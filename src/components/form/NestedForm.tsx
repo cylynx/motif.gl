@@ -202,8 +202,11 @@ const NestedForm = ({ data = testData }: { data: NestedFormData }) => {
           data[watchSelection[0].id].map((d: any) => {
             const { id, label, type, value, ...rest } = d;
             let parsedValue =
+              // eslint-disable-next-line no-nested-ternary
               type === 'select'
-                ? [d.options.find((x: any) => x.id === value)]
+                ? d.options.find((x: any) => x.id === value)
+                  ? [d.options.find((x: any) => x.id === value)]
+                  : []
                 : value;
             parsedValue =
               type === 'slider' && !Array.isArray(value)
