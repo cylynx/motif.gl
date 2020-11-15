@@ -6,18 +6,15 @@ import { Checkbox } from 'baseui/checkbox';
 import { Block } from 'baseui/block';
 import { TriGrid } from '../../components/ui';
 import * as Prop from '../../types/Prop';
-import { changeOptions, changeLayout } from '../../redux/graph-slice';
+import {
+  changeOptions,
+  changeLayout,
+  changeNodeStyle,
+  changeEdgeStyle,
+} from '../../redux/graph-slice';
 import { getGraph, getAccessors } from '../../redux';
-
-const nodeSizeOptions = [
-  { label: 'Default', id: 'default' },
-  { label: 'Number of Connections', id: 'degree' },
-];
-
-const edgeWidthOptions = [
-  { label: 'Fixed', id: 'fix' },
-  { label: 'Value', id: 'value' },
-];
+import { NestedForm, genNestedForm } from '../../components/form';
+import { nodeSizeForm, edgeWidthForm } from '../SidePanel/OptionsPanel';
 
 const layoutNames = [
   { label: 'Concentric', id: 'concentric' },
@@ -47,6 +44,9 @@ const PopoverOption = () => {
     dispatch(changeOptions({ key, value: newValue, accessors }));
   };
 
+  const updateNodeStyle = (data: any) => dispatch(changeNodeStyle(data));
+  const updateEdgeStyle = (data: any) => dispatch(changeEdgeStyle(data));
+
   return (
     <div style={{ width: '300px' }}>
       <Block padding='10px'>
@@ -56,29 +56,19 @@ const PopoverOption = () => {
             size='compact'
             clearable={false}
             value={[findID(layoutNames, layoutName)]}
-            onChange={(params) => dispatch(changeLayout(params.option.id))}
-          />
-        </FormControl>
-        <FormControl label='Node Size'>
-          <Select
-            options={nodeSizeOptions}
-            size='compact'
-            clearable={false}
-            value={[findID(nodeSizeOptions, nodeStyle.size)]}
-            onChange={(params) => onChangeOptions('nodeSize', params.option.id)}
-          />
-        </FormControl>
-        <FormControl label='Edge Width'>
-          <Select
-            options={edgeWidthOptions}
-            size='compact'
-            clearable={false}
-            value={[findID(edgeWidthOptions, edgeStyle.width)]}
             onChange={(params) =>
-              onChangeOptions('edgeWidth', params.option.id)
+              dispatch(
+                changeLayout({ layout: { id: params.option.id as string } }),
+              )
             }
           />
         </FormControl>
+        <NestedForm
+          data={genNestedForm(nodeSizeForm, nodeStyle, updateNodeStyle)}
+        />
+        <NestedForm
+          data={genNestedForm(edgeWidthForm, edgeStyle, updateEdgeStyle)}
+        />
         <TriGrid
           startComponent={
             <Checkbox

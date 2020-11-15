@@ -4,7 +4,7 @@
 /* eslint-disable no-param-reassign */
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { processGraphResponse } from './graph-slice';
+import { processGraphResponse, resetState } from './graph-slice';
 
 export type Selection = {
   label: string;
@@ -102,31 +102,36 @@ const ui = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(processGraphResponse, (state, action) => {
-      const { data } = action.payload;
-      const currentNodeFields = state.nodeSelection.map((x) => x.id);
-      const currentEdgeFields = state.edgeSelection.map((x) => x.id);
-      for (const field of data.metadata.fields.nodes) {
-        if (!currentNodeFields.includes(field.name)) {
-          state.nodeSelection.push({
-            label: field.name,
-            id: field.name,
-            type: field.type,
-            selected: false,
-          });
+    builder
+      .addCase(resetState, (state) => {
+        state.nodeSelection = initialState.nodeSelection;
+        state.edgeSelection = initialState.edgeSelection;
+      })
+      .addCase(processGraphResponse, (state, action) => {
+        const { data } = action.payload;
+        const currentNodeFields = state.nodeSelection.map((x) => x.id);
+        const currentEdgeFields = state.edgeSelection.map((x) => x.id);
+        for (const field of data.metadata.fields.nodes) {
+          if (!currentNodeFields.includes(field.name)) {
+            state.nodeSelection.push({
+              label: field.name,
+              id: field.name,
+              type: field.type,
+              selected: false,
+            });
+          }
         }
-      }
-      for (const field of data.metadata.fields.edges) {
-        if (!currentEdgeFields.includes(field.name)) {
-          state.edgeSelection.push({
-            label: field.name,
-            id: field.name,
-            type: field.type,
-            selected: false,
-          });
+        for (const field of data.metadata.fields.edges) {
+          if (!currentEdgeFields.includes(field.name)) {
+            state.edgeSelection.push({
+              label: field.name,
+              id: field.name,
+              type: field.type,
+              selected: false,
+            });
+          }
         }
-      }
-    });
+      });
   },
 });
 

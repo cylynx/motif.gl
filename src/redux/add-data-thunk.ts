@@ -63,31 +63,21 @@ export const addData = (
   importAccessors: ImportAccessors = null,
 ) => (dispatch: any, getState: any) => {
   const { data, type } = importData;
-  const {
-    graphList,
-    accessors: mainAccessors,
-    defaultNodeStyle,
-    defaultEdgeStyle,
-  } = getGraph(getState());
+  const { graphList, accessors: mainAccessors } = getGraph(getState());
   // Use importAccessors if available to do initial mapping
   const accessors = { ...mainAccessors, ...importAccessors };
-  const styles = { defaultNodeStyle, defaultEdgeStyle };
   let newData: Promise<Graph.GraphData> | Promise<Graph.GraphList>;
 
   if (type === IMPORT_OPTIONS.json.id) {
-    newData = importJson(
-      data as Graph.GraphData | Graph.GraphList,
-      accessors,
-      styles,
-    );
+    newData = importJson(data as Graph.GraphData | Graph.GraphList, accessors);
   } else if (type === IMPORT_OPTIONS.nodeEdgeCsv.id) {
     const { nodeData, edgeData } = data as {
       nodeData: string;
       edgeData: string;
     };
-    newData = importNodeEdgeCsv(nodeData, edgeData, accessors, styles);
+    newData = importNodeEdgeCsv(nodeData, edgeData, accessors);
   } else if (type === IMPORT_OPTIONS.edgeListCsv.id) {
-    newData = importEdgeListCsv(data as string, mainAccessors, styles);
+    newData = importEdgeListCsv(data as string, mainAccessors);
   } else {
     dispatch(fetchError('Invalid data format'));
   }

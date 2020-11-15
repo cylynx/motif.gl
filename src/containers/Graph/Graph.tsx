@@ -100,7 +100,7 @@ const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
       ref={ref}
       options={{
         isZoomOptimize: () => true,
-        keyShapeZoom: 0.9,
+        keyShapeZoom: 0.6,
         autoPolyEdge: true,
         autoLoopEdge: true,
         modes: {

@@ -53,26 +53,14 @@ export type GraphList = GraphData[];
 export type TimeRange = [number, number];
 export type TimeSeries = Array<[number, number]> | [];
 
-export interface EdgeStyleAccessors {
-  label?: string;
-  width?: string;
-}
-
-export interface NodeStyleAccessors {
-  label?: string;
-  size?: string;
-}
-
 export interface Accessors {
   nodeID?: string;
-  nodeStyle?: NodeStyleAccessors;
   nodeType?: string;
   edgeID?: string;
   edgeType?: string;
   edgeSource: string;
   edgeTarget: string;
   edgeTime?: string;
-  edgeStyle?: EdgeStyleAccessors;
 }
 
 export interface Layout {
@@ -83,20 +71,57 @@ export interface Layout {
   };
 }
 
+export type NodeSizeFixed = {
+  id: 'fixed';
+  value: number;
+};
+
+export type NodeSizeDegree = {
+  id: 'degree';
+  range: [number, number];
+};
+
+export type NodeSizeProperty = {
+  id: 'property';
+  variable: string;
+  range: [number, number];
+};
+
+export type NodeSize = NodeSizeFixed | NodeSizeDegree | NodeSizeProperty;
+
 export interface NodeStyleOptions {
-  size: string;
+  size?: NodeSize;
+  color?: string;
+  fontSize?: number;
+  label?: string;
 }
 
+export type EdgeWidthFixed = {
+  id: 'fixed';
+  value: number;
+};
+
+export type EdgeWidthProperty = {
+  id: 'property';
+  variable: string;
+  range: [number, number];
+};
+
+export type EdgeWidth = EdgeWidthFixed | EdgeWidthProperty;
+
 export interface EdgeStyleOptions {
-  width: string;
+  width?: EdgeWidth;
+  pattern?: 'none' | 'dot' | 'dash' | 'dash-dot';
+  fontSize?: number;
+  label?: string;
 }
 
 export interface StyleOptions {
-  layout: Layout;
-  resetView: boolean;
-  groupEdges: boolean;
-  nodeStyle: NodeStyleOptions;
-  edgeStyle: EdgeStyleOptions;
+  layout?: Layout;
+  resetView?: boolean;
+  groupEdges?: boolean;
+  nodeStyle?: NodeStyleOptions;
+  edgeStyle?: EdgeStyleOptions;
 }
 
 export interface ChartData {

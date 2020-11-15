@@ -4,8 +4,20 @@
 import mock from '../utils/mock';
 import * as Graph from '../types/Graph';
 
-export const RandomData = () => mock(15).random().graphin();
-export const CircleData = () => mock(10).circle().graphin();
+export const RandomData = () => {
+  const data = mock(15).random().graphin();
+  data.nodes.forEach((n) => {
+    n.numeric = Math.floor(Math.random() * 100 + 1);
+  });
+  return data;
+};
+export const CircleData = () => {
+  const data = mock(10).circle().graphin();
+  data.edges.forEach((e) => {
+    e.numeric = Math.floor(Math.random() * 10 + 1);
+  });
+  return data;
+};
 
 const mapNodeSize = (nodes, propertyName, visualRange) => {
   let minp = 9999999999;

@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import get from 'lodash/get';
 import * as Graph from '../types/Graph';
 
@@ -6,19 +7,61 @@ import * as Graph from '../types/Graph';
  *
  * @param {Graph.GraphData} data
  * @param {Graph.NodeStyleOptions} nodeStyleOptions
- * @param {Graph.NodeStyleAccessors} nodeStyleAccessors
  * @return {*}  {Graph.Node[]}
  */
 export const styleNodes = (
   data: Graph.GraphData,
   nodeStyleOptions: Graph.NodeStyleOptions,
-  nodeStyleAccessors: Graph.NodeStyleAccessors,
-): Graph.Node[] => {
-  // Scales width based on min, max value of edges
-  // mode = eth (scale width from 0.5-5) or fix (default value of 0.5)
-  styleNodeSize(data, nodeStyleAccessors?.size, nodeStyleOptions.size);
-  styleNodeLabel(data, nodeStyleAccessors?.label);
-  return data.nodes;
+) => {
+  // Separated out as it cannot be done in the loop
+  if (nodeStyleOptions.size && nodeStyleOptions.size.id !== 'fixed') {
+    styleNodeSizeByProp(data, nodeStyleOptions.size);
+  }
+
+  // For perf reasons, batch style operations which require a single loop through nodes
+  for (const node of data.nodes) {
+    if (nodeStyleOptions.size && nodeStyleOptions.size.id === 'fixed') {
+      node.defaultStyle.size = nodeStyleOptions.size.value;
+    }
+    if (nodeStyleOptions.color) {
+      styleNodeColor(node, nodeStyleOptions.color);
+    }
+    if (nodeStyleOptions.fontSize) {
+      styleFontSize(node, nodeStyleOptions.fontSize);
+    }
+    if (nodeStyleOptions.label) {
+      styleNodeLabel(node, nodeStyleOptions.label);
+    }
+  }
+};
+
+/**
+ * Utility function to map a node property between a given range
+ *
+ * @param {Graph.Node[]} nodes
+ * @param {string} propertyName
+ * @param {[number, number]} visualRange
+ */
+export const mapNodeSize = (
+  nodes: Graph.Node[],
+  propertyName: string,
+  visualRange: [number, number],
+) => {
+  let minp = 9999999999;
+  let maxp = -9999999999;
+  nodes.forEach((node) => {
+    node.defaultStyle.size = get(node, propertyName) ** (1 / 3);
+    minp = node.defaultStyle.size < minp ? node.defaultStyle.size : minp;
+    maxp = node.defaultStyle.size > maxp ? node.defaultStyle.size : maxp;
+  });
+  const rangepLength = maxp - minp;
+  const rangevLength = visualRange[1] - visualRange[0];
+  nodes.forEach((node) => {
+    node.defaultStyle.size =
+      ((get(node, propertyName) ** (1 / 3) - minp) / rangepLength) *
+        rangevLength +
+      visualRange[0];
+  });
 };
 
 /**
@@ -28,35 +71,39 @@ export const styleNodes = (
  * @param {(string | undefined)} accessor
  * @param {string} option
  */
-export const styleNodeSize = (
+export const styleNodeSizeByProp = (
   data: Graph.GraphData,
-  accessor: string | undefined,
-  option: string,
+  option: Graph.NodeSize,
 ) => {
-  if (typeof accessor === 'string') {
-    const degree = getGraphDegree(data);
-    const min = Math.min(...Object.values(degree));
-    const max = Math.max(...Object.values(degree));
-    for (const node of data.nodes) {
-      // nodeSize
-      if (option === 'degree' && max !== min) {
-        // Scale by degree, from 8-30
-        node.style.nodeSize =
-          (((degree[node.id] - min) / (max - min)) * (30 - 8) + 8) * 3;
-      }
-    }
+  if (option.id === 'degree') {
+    data.nodes.forEach((node) => {
+      node.degree = 0;
+      data.edges.forEach((edge) => {
+        if (edge.source === node.id || edge.target === node.id) {
+          node.degree++;
+        }
+      });
+    });
+    mapNodeSize(data.nodes, 'degree', option.range);
+  } else if (option.id === 'property' && option.variable) {
+    mapNodeSize(data.nodes, option.variable, option.range);
   }
 };
 
-export const styleNodeLabel = (
-  data: Graph.GraphData,
-  accessor: string | undefined,
-) => {
-  if (typeof accessor === 'string') {
-    for (const node of data.nodes) {
-      node.label = get(node, accessor).toString();
-    }
+export const styleNodeLabel = (node: Graph.Node, label: string) => {
+  if (label === 'none') {
+    node.label = '';
+  } else if (label !== 'label') {
+    node.label = get(node, label, '').toString();
   }
+};
+
+export const styleNodeColor = (node: Graph.Node, color: string) => {
+  node.defaultStyle.color = color;
+};
+
+export const styleFontSize = (node: Graph.Node, fontSize: number) => {
+  node.defaultStyle.fontSize = fontSize;
 };
 
 /**

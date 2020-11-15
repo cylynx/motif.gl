@@ -4,16 +4,12 @@
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import isEmpty from 'lodash/isEmpty';
+import cloneDeep from 'lodash/cloneDeep';
 import * as LAYOUT from '../constants/layout-options';
 import * as Graph from '../types/Graph';
 import {
-  NodeStyleType,
-  EdgeStyleType,
-} from '../containers/Graph/shape/constants';
-import {
   combineProcessedData,
   deriveVisibleGraph,
-  groupEdges,
   datatoTS,
   chartRange,
   filterDataByTime,
@@ -22,7 +18,7 @@ import {
 /**
  * Meant to be use on graph-slice state only
  * Update visible graph object by re-applying filtering and styling
- * Does not affect graphList / graphFlatten / graphGrouped
+ * Does not affect graphList / graphFlatten
  *
  * @param {GraphState} state
  * @param {(Graph.TimeRange | [])} timeRange
@@ -38,16 +34,12 @@ export const updateVisible = (
     timeRange,
     accessors.edgeTime,
   );
-  state.graphVisible = deriveVisibleGraph(
-    newFilteredData,
-    state.styleOptions,
-    accessors,
-  );
+  state.graphVisible = deriveVisibleGraph(newFilteredData, state.styleOptions);
 };
 
 /**
  * Meant to be use on graph-slice state only
- * Updates graphFlatten and graphGrouped onwards
+ * Updates graphFlatten onwards
  *
  * @param {GraphState} state
  * @param {Graph.GraphData} graphData
@@ -59,7 +51,6 @@ export const updateAll = (
   accessors: Graph.Accessors,
 ) => {
   if (graphData) {
-    state.graphGrouped = groupEdges(graphData);
     state.graphFlatten = graphData;
     const tsData = datatoTS(state.graphFlatten, accessors.edgeTime);
     state.tsData = tsData;
@@ -69,10 +60,18 @@ export const updateAll = (
     // Update selectTimeRange to be timeRange always
     state.selectTimeRange = state.timeRange;
     // Filter graphFlatten based on selectTimeRange
-    updateVisible(state, state.timeRange, accessors);
+    const newFilteredData = filterDataByTime(
+      state.graphFlatten,
+      state.timeRange,
+      accessors.edgeTime,
+    );
+    // Clone here to avoid messing up graphFlatten
+    state.graphVisible = deriveVisibleGraph(
+      cloneDeep(newFilteredData),
+      state.styleOptions,
+    );
   } else {
     // Reset data state when all data is deleted
-    state.graphGrouped = initialState.graphGrouped;
     state.graphFlatten = initialState.graphFlatten;
     state.graphVisible = initialState.graphVisible;
     state.tsData = initialState.tsData;
@@ -84,11 +83,8 @@ export const updateAll = (
 export interface GraphState {
   accessors: Graph.Accessors;
   styleOptions: Graph.StyleOptions;
-  defaultNodeStyle: NodeStyleType;
-  defaultEdgeStyle: EdgeStyleType;
   graphList: Graph.GraphList;
   graphFlatten: Graph.GraphData;
-  graphGrouped: { nodes: Graph.Node[]; edges: Graph.Edge[] };
   graphVisible: { nodes: Graph.Node[]; edges: Graph.Edge[] };
   tsData: Graph.TimeSeries;
   timeRange: Graph.TimeRange | [];
@@ -107,26 +103,31 @@ const initialState: GraphState = {
   styleOptions: {
     layout: {
       name: 'concentric',
-      options: {},
+      options: {
+        minNodeSpacing: 60,
+      },
     },
     nodeStyle: {
-      size: 'default',
+      size: {
+        id: 'fixed',
+        value: 20,
+      },
     },
     edgeStyle: {
-      width: 'fix',
+      width: {
+        id: 'fixed',
+        value: 1,
+      },
     },
     resetView: true,
     groupEdges: true,
   },
-  defaultNodeStyle: {},
-  defaultEdgeStyle: {},
   graphList: [],
   graphFlatten: {
     nodes: [],
     edges: [],
     metadata: { fields: { nodes: [], edges: [] } },
   },
-  graphGrouped: { nodes: [], edges: [] },
   graphVisible: { nodes: [], edges: [] },
   tsData: [],
   // Set a large interval to display the data on initialize regardless of resetView
@@ -142,8 +143,11 @@ const graph = createSlice({
   name: 'graph',
   initialState,
   reducers: {
-    resetState() {
+    resetState(state) {
       const newGraphState = { ...initialState };
+      // Only reset data state
+      newGraphState.accessors = state.accessors;
+      newGraphState.styleOptions = state.styleOptions;
       return newGraphState;
     },
     updateGraphList(
@@ -194,11 +198,45 @@ const graph = createSlice({
       state.styleOptions[key] = value;
       updateVisible(state, state.selectTimeRange, accessors);
     },
-    changeLayout(state, action) {
-      const newLayoutName = action.payload;
-      state.styleOptions.layout = LAYOUT.OPTIONS.find(
-        (x) => x.name === newLayoutName,
-      );
+    changeLayout(
+      state,
+      action: PayloadAction<{
+        layout: {
+          id: string;
+          [key: string]: any;
+        };
+      }>,
+    ) {
+      const { id, ...options } = action.payload.layout;
+      const defaultOptions = LAYOUT.OPTIONS.find((x) => x.name === id);
+      const newOptions = { ...defaultOptions.options, ...options };
+      // @ts-ignore
+      state.styleOptions.layout.name = id;
+      state.styleOptions.layout.options = newOptions;
+    },
+    changeNodeStyle(
+      state,
+      action: PayloadAction<{
+        key: any;
+      }>,
+    ) {
+      const { selectTimeRange, accessors } = state;
+      Object.entries(action.payload).forEach(([key, value]) => {
+        state.styleOptions.nodeStyle[key] = value;
+      });
+      updateVisible(state, selectTimeRange, accessors);
+    },
+    changeEdgeStyle(
+      state,
+      action: PayloadAction<{
+        key: any;
+      }>,
+    ) {
+      const { selectTimeRange, accessors } = state;
+      Object.entries(action.payload).forEach(([key, value]) => {
+        state.styleOptions.edgeStyle[key] = value;
+      });
+      updateVisible(state, selectTimeRange, accessors);
     },
     processGraphResponse(
       state,
@@ -235,16 +273,8 @@ const graph = createSlice({
     setAccessors(state, action) {
       state.accessors = action.payload;
     },
-    setDefaultStyles(
-      state,
-      action: PayloadAction<{
-        defaultNodeStyle: NodeStyleType;
-        defaultEdgeStyle: EdgeStyleType;
-      }>,
-    ) {
-      const { defaultNodeStyle, defaultEdgeStyle } = action.payload;
-      state.defaultNodeStyle = defaultNodeStyle;
-      state.defaultEdgeStyle = defaultEdgeStyle;
+    overrideStyles(state, action: PayloadAction<Graph.StyleOptions>) {
+      state.styleOptions = { ...state.styleOptions, ...action.payload };
     },
   },
 });
@@ -259,13 +289,15 @@ export const {
   addQuery,
   changeOptions,
   changeLayout,
+  changeNodeStyle,
+  changeEdgeStyle,
   processGraphResponse,
   setRange,
   timeRangeChange,
   getDetails,
   clearDetails,
   setAccessors,
-  setDefaultStyles,
+  overrideStyles,
 } = graph.actions;
 
 export default graph.reducer;

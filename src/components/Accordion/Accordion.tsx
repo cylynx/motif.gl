@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React from 'react';
 import { useStyletron } from 'baseui';
-import { Accordion as BaseAccordion, Panel } from 'baseui/accordion';
+import { Accordion as BaseAccordion, StatefulPanel } from 'baseui/accordion';
 import * as Icon from '../Icons';
 
 export type AccordionProps = {
@@ -13,6 +13,7 @@ export type AccordionItem = {
   key: string;
   title: React.ReactNode;
   content: React.ReactNode;
+  expanded?: boolean;
 };
 
 export const Content = ({ children }: { children: React.ReactNode }) => {
@@ -35,9 +36,13 @@ export const Content = ({ children }: { children: React.ReactNode }) => {
 const Accordion = ({ items, icon }: AccordionProps) => {
   const listItems = items.map((x) => {
     return (
-      <Panel title={x.title} key={x.key}>
+      <StatefulPanel
+        title={x.title}
+        key={x.key}
+        initialState={{ expanded: x.expanded || false }}
+      >
         {x.content}
-      </Panel>
+      </StatefulPanel>
     );
   });
 
@@ -52,16 +57,16 @@ const Accordion = ({ items, icon }: AccordionProps) => {
         Header: {
           style: ({ $theme }) => ({
             ...$theme.typography.LabelSmall,
-            paddingTop: $theme.sizing.scale200,
+            paddingTop: $theme.sizing.scale300,
             paddingLeft: $theme.sizing.scale600,
-            paddingBottom: $theme.sizing.scale200,
+            paddingBottom: $theme.sizing.scale300,
             borderBottomStyle: 'none',
           }),
         },
         Content: {
           style: ({ $expanded, $theme }) => ({
-            paddingTop: $expanded ? $theme.sizing.scale600 : 0,
-            paddingBottom: $expanded ? $theme.sizing.scale600 : 0,
+            paddingTop: $expanded ? $theme.sizing.scale500 : 0,
+            paddingBottom: $expanded ? $theme.sizing.scale500 : 0,
             paddingLeft: $theme.sizing.scale600,
             paddingRight: $theme.sizing.scale600,
             borderBottomWidth: 0,

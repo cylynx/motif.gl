@@ -299,8 +299,8 @@ export const processCsvData = async (rawCsv: string): Promise<ProcessedCsv> => {
     throw new Error('invalid input passed to process Csv data');
   }
 
-  // assume the csv file that people uploaded will have first row
-  // header names seperated by a dot indexes to the json position
+  // assume the csv file that uploaded csv will have first row
+  // header names seperated by a dot indexed to the json position
 
   cleanUpValue(parsedJson);
   // here we get a list of none null values to run analyze on
@@ -432,16 +432,18 @@ export const getFieldsFromData = (
     [{ regex: /^\[.*]$/g, dataType: 'ARRAY' }],
     { ignoredDataTypes: IGNORE_DATA_TYPES },
   );
-
   const { fieldByIndex } = renameDuplicateFields(fieldOrder);
   const result: Field[] = [];
-
   for (const [index, field] of fieldOrder.entries()) {
-    if (!RESTRICTED_FIELDS.includes(fieldByIndex[index])) {
-      const name = fieldByIndex[index];
-
-      const fieldMeta = metadata.find((m: any) => m.key === field);
-      if (typeof fieldMeta === 'undefined') break;
+    const name = fieldByIndex[index];
+    const fieldMeta = metadata.find((m: any) => m.key === field);
+    // Excludes undefiend type, restricted fields and style / defaultStyle fields
+    if (
+      !RESTRICTED_FIELDS.includes(name) &&
+      typeof fieldMeta !== 'undefined' &&
+      !name.includes('style.') &&
+      !name.includes('defaultStyle.')
+    ) {
       const { type, format } = fieldMeta || {};
       const fieldType = analyzerTypeToFieldType(type);
       if (fieldType === 'array') {

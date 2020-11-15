@@ -14,13 +14,20 @@ export type ToggleTokensProps = {
   onClick: (index: number, status: boolean) => void;
 };
 
-// const sampleOptions = [
-//   { label: 'data.id', id: 'data.id', type: 'string', selected: true },
-//   { label: 'dataStr', id: 'datastr', type: 'boolean', selected: true },
-//   { label: 'value', id: 'value', type: 'real', selected: true },
-//   { label: 'start_dt', id: 'start_dt', type: 'timestamp', selected: true },
-// ];
-
+/**
+ * @example
+ * Example options: 
+ * 
+ * const sampleOptions = [
+    { label: 'data.id', id: 'data.id', type: 'string', selected: true },
+    { label: 'dataStr', id: 'datastr', type: 'boolean', selected: true },
+    { label: 'value', id: 'value', type: 'real', selected: true },
+    { label: 'start_dt', id: 'start_dt', type: 'timestamp', selected: true },
+];
+ *
+ * @param {ToggleTokensProps} { options, onClick }
+ * @return {*} 
+ */
 const ToggleTokens = ({ options, onClick }: ToggleTokensProps) => {
   return (
     <ButtonGroup

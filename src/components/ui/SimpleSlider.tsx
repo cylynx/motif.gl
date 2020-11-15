@@ -1,12 +1,9 @@
 import * as React from 'react';
-import {
-  StatefulSlider as BaseStatefulSlider,
-  StatefulSliderProps,
-} from 'baseui/slider';
+import { Slider as BaseSlider, SliderProps } from 'baseui/slider';
 
-const SimpleSlider = (props: StatefulSliderProps) => {
+const SimpleSlider = (props: SliderProps) => {
   return (
-    <BaseStatefulSlider
+    <BaseSlider
       {...props}
       overrides={{
         Thumb: {
@@ -19,8 +16,8 @@ const SimpleSlider = (props: StatefulSliderProps) => {
               isRight = !isRight;
             }
             return {
-              height: '14px',
-              width: isLeft || isRight ? '7px' : '14px',
+              height: '12px',
+              width: isLeft || isRight ? '6px' : '12px',
               borderTopLeftRadius: isRight ? '1px' : '4px',
               borderTopRightRadius: isLeft ? '1px' : '4px',
               borderBottomLeftRadius: isRight ? '1px' : '4px',
@@ -51,7 +48,7 @@ const SimpleSlider = (props: StatefulSliderProps) => {
             return {
               position: 'absolute',
               backgroundColor: 'transparent',
-              top: `-${$theme.sizing.scale800}`,
+              top: `-${$theme.sizing.scale700}`,
               ...$theme.typography.font200,
               color: $theme.colors.contentPrimary,
               paddingLeft: 0,
@@ -76,6 +73,13 @@ const SimpleSlider = (props: StatefulSliderProps) => {
           style: ({ $theme }) => {
             return {
               paddingBottom: $theme.sizing.scale200,
+            };
+          },
+        },
+        TickBar: {
+          style: () => {
+            return {
+              paddingBottom: 0,
             };
           },
         },

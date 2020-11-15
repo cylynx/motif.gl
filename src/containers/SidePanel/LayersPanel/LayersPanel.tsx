@@ -1,26 +1,26 @@
 import React, { MouseEvent, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'baseui/button';
-import { Cell } from 'baseui/layout-grid';
 import { Block } from 'baseui/block';
 import { ParagraphSmall } from 'baseui/typography';
-import { FlushedGrid, Statistic, FullButton } from '../../components/ui';
-import ToggleTokens from '../../components/ToggleTokens';
-import Accordion from '../../components/Accordion';
-import * as Icon from '../../components/Icons';
-import * as Prop from '../../types/Prop';
+import { Statistic, FullButton } from '../../../components/ui';
+import ToggleTokens from '../../../components/ToggleTokens';
+import Accordion from '../../../components/Accordion';
+import * as Icon from '../../../components/Icons';
+import * as Prop from '../../../types/Prop';
 import {
   openImportModal,
   fetchDone,
   updateNodeSelection,
   updateEdgeSelection,
-} from '../../redux/ui-slice';
-import { resetState } from '../../redux/graph-slice';
-import ExportDataButton from './ExportDataButton';
+} from '../../../redux/ui-slice';
+import { resetState } from '../../../redux/graph-slice';
+import ExportDataButton from '../ExportDataButton';
 import ImportLayers from './ImportLayers';
-import { getGraph, getUI } from '../../redux';
+import { getGraph, getUI } from '../../../redux';
+import Header from '../Header';
 
-const InvestigateMain = () => {
+const LayersPanel = () => {
   const dispatch = useDispatch();
   const graphList = useSelector((state) => getGraph(state).graphList);
   const graphFlatten = useSelector((state) => getGraph(state).graphFlatten);
@@ -52,22 +52,24 @@ const InvestigateMain = () => {
 
   return (
     <Fragment>
-      <FlushedGrid>
-        <Cell span={6}>
-          <Statistic
-            value={haveData ? graphVisible.nodes.length : 0}
-            label='Nodes:'
-            subtitle={`${hiddenNodes} hidden`}
-          />
-        </Cell>
-        <Cell span={6}>
-          <Statistic
-            value={haveData ? graphVisible.edges.length : 0}
-            label='Edges:'
-            subtitle={`${hiddenEdges} hidden`}
-          />
-        </Cell>
-      </FlushedGrid>
+      <Header />
+      <Block
+        display='flex'
+        justifyContent='space-between'
+        marginLeft='scale600'
+        width='260px'
+      >
+        <Statistic
+          value={haveData ? graphVisible.nodes.length : 0}
+          label='Nodes:'
+          subtitle={`${hiddenNodes} hidden`}
+        />
+        <Statistic
+          value={haveData ? graphVisible.edges.length : 0}
+          label='Edges:'
+          subtitle={`${hiddenEdges} hidden`}
+        />
+      </Block>
       <Block marginTop='scale800'>
         <Accordion
           items={[
@@ -158,4 +160,4 @@ const ImportDataButton: React.FC<Prop.ImportDataButton> = ({ onClick }) => (
   </Button>
 );
 
-export default InvestigateMain;
+export default LayersPanel;
