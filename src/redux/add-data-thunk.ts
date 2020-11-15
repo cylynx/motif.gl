@@ -61,7 +61,7 @@ type ImportAccessors = Graph.Accessors | null;
 export const addData = (
   importData: ImportFormat,
   importAccessors: ImportAccessors = null,
-) => (dispatch: any, getState: any) => {
+) => async (dispatch: any, getState: any) => {
   const { data, type } = importData;
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   // Use importAccessors if available to do initial mapping
@@ -82,12 +82,14 @@ export const addData = (
     dispatch(fetchError('Invalid data format'));
   }
 
-  newData
-    // @ts-ignore
-    .then((graphData: Graph.GraphData | Graph.GraphList) => {
-      processResponse(dispatch, graphList, mainAccessors, graphData);
-    })
-    .catch((err: Error) => {
-      dispatch(fetchError(err));
-    });
+  return (
+    newData
+      // @ts-ignore
+      .then((graphData: Graph.GraphData | Graph.GraphList) => {
+        processResponse(dispatch, graphList, mainAccessors, graphData);
+      })
+      .catch((err: Error) => {
+        dispatch(fetchError(err));
+      })
+  );
 };
