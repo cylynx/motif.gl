@@ -12,5 +12,6 @@ export type {
   EdgeStyleType,
   EdgeStyleKey,
 } from './shape/constants';
+export * from './types';
 export type { GraphProps } from './Graph';
 export type { TooltipProps } from './Tooltip';

@@ -3,11 +3,7 @@
 import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
 import shortid from 'shortid';
-import * as Graph from '../types/Graph';
-import {
-  NodeStyleType,
-  EdgeStyleType,
-} from '../containers/Graph/shape/constants';
+import * as Graph from '../containers/Graph/types';
 import {
   processJson,
   processNodeEdgeCsv,

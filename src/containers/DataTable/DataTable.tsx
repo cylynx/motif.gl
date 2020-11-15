@@ -15,7 +15,7 @@ import {
 } from 'baseui/data-table';
 import { getGraph } from '../../redux';
 import { ALL_FIELD_TYPES } from '../../processors/data-processors';
-import * as Graph from '../../types/Graph';
+import * as Graph from '../Graph/types';
 
 export const FIELDS_COLUMN_MAP = {
   [ALL_FIELD_TYPES.boolean]: (title, mapDataToValue) =>

@@ -5,15 +5,14 @@ import shortid from 'shortid';
 import get from 'lodash/get';
 // @ts-ignore
 import { Analyzer, DATA_TYPES as AnalyzerDATA_TYPES } from 'type-analyzer';
-import * as Graph from '../types/Graph';
+import * as Graph from '../containers/Graph/types';
 import { notNullorUndefined } from '../utils/data-utils';
-import { Field } from '../types/Graph';
 
 type RowData = {
   [key: string]: any;
 }[];
 
-type ProcessorResult = { fields: Field[]; rows: any[][] } | null;
+type ProcessorResult = { fields: Graph.Field[]; rows: any[][] } | null;
 
 // Type analyzer adapted from https://github.com/keplergl/kepler.gl/blob/master/src/processors/data-processor.js
 
@@ -273,7 +272,7 @@ export const flattenObject = (obj: any, history = '') => {
 };
 
 export type ProcessedCsv = {
-  fields: Field[] | [];
+  fields: Graph.Field[] | [];
   json: Graph.Node[] | Graph.Edge[];
 };
 
@@ -317,7 +316,7 @@ export const processCsvData = async (rawCsv: string): Promise<ProcessedCsv> => {
  * @param {Array<Array>} rows
  * @param {Array<Object>} fields
  */
-export const parseJsonByFields = (json: any[], fields: Field[]) => {
+export const parseJsonByFields = (json: any[], fields: Graph.Field[]) => {
   // Edit rows in place
   fields.forEach((field) => {
     const parser = PARSE_FIELD_VALUE_FROM_STRING[field.type];
@@ -425,7 +424,7 @@ export const getSampleForTypeAnalyze = (
 export const getFieldsFromData = (
   data: RowData,
   fieldOrder: string[],
-): Field[] => {
+): Graph.Field[] => {
   // add a check for epoch timestamp
   const metadata = Analyzer.computeColMeta(
     data,
@@ -433,7 +432,7 @@ export const getFieldsFromData = (
     { ignoredDataTypes: IGNORE_DATA_TYPES },
   );
   const { fieldByIndex } = renameDuplicateFields(fieldOrder);
-  const result: Field[] = [];
+  const result: Graph.Field[] = [];
   for (const [index, field] of fieldOrder.entries()) {
     const name = fieldByIndex[index];
     const fieldMeta = metadata.find((m: any) => m.key === field);
