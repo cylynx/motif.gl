@@ -8,16 +8,15 @@ import ToggleTokens from '../../../components/ToggleTokens';
 import Accordion from '../../../components/Accordion';
 import * as Icon from '../../../components/Icons';
 import * as Prop from '../../../types/Prop';
+import { openImportModal, fetchDone } from '../../../redux/ui-slice';
 import {
-  openImportModal,
-  fetchDone,
+  resetState,
   updateNodeSelection,
   updateEdgeSelection,
-} from '../../../redux/ui-slice';
-import { resetState } from '../../../redux/graph-slice';
+} from '../../../redux/graph-slice';
 import ExportDataButton from '../ExportDataButton';
 import ImportLayers from './ImportLayers';
-import { getGraph, getUI } from '../../../redux';
+import { getGraph } from '../../../redux';
 import Header from '../Header';
 
 const LayersPanel = () => {
@@ -25,8 +24,8 @@ const LayersPanel = () => {
   const graphList = useSelector((state) => getGraph(state).graphList);
   const graphFlatten = useSelector((state) => getGraph(state).graphFlatten);
   const graphVisible = useSelector((state) => getGraph(state).graphVisible);
-  const nodeFields = useSelector((state) => getUI(state).nodeSelection);
-  const edgeFields = useSelector((state) => getUI(state).edgeSelection);
+  const nodeFields = useSelector((state) => getGraph(state).nodeSelection);
+  const edgeFields = useSelector((state) => getGraph(state).edgeSelection);
   const haveData = graphFlatten && graphVisible;
   const hiddenNodes = graphFlatten.nodes.length - graphVisible.nodes.length;
   const hiddenEdges = graphFlatten.edges.length - graphVisible.edges.length;
