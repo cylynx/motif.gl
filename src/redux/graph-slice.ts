@@ -15,6 +15,31 @@ import {
   filterDataByTime,
 } from '../utils/graph-utils';
 
+export const updateSelections = (state: GraphState, data: Graph.GraphData) => {
+  const currentNodeFields = state.nodeSelection.map((x) => x.id);
+  const currentEdgeFields = state.edgeSelection.map((x) => x.id);
+  for (const field of data.metadata.fields.nodes) {
+    if (!currentNodeFields.includes(field.name)) {
+      state.nodeSelection.push({
+        label: field.name,
+        id: field.name,
+        type: field.type,
+        selected: false,
+      });
+    }
+  }
+  for (const field of data.metadata.fields.edges) {
+    if (!currentEdgeFields.includes(field.name)) {
+      state.edgeSelection.push({
+        label: field.name,
+        id: field.name,
+        type: field.type,
+        selected: false,
+      });
+    }
+  }
+};
+
 /**
  * Meant to be use on graph-slice state only
  * Update visible graph object by re-applying filtering and styling
@@ -77,7 +102,16 @@ export const updateAll = (
     state.tsData = initialState.tsData;
     state.timeRange = initialState.timeRange;
     state.selectTimeRange = initialState.selectTimeRange;
+    state.nodeSelection = initialState.nodeSelection;
+    state.edgeSelection = initialState.edgeSelection;
   }
+};
+
+export type Selection = {
+  label: string;
+  id: string;
+  type: string;
+  selected: boolean;
 };
 
 export interface GraphState {
@@ -89,7 +123,8 @@ export interface GraphState {
   tsData: Graph.TimeSeries;
   timeRange: Graph.TimeRange | [];
   selectTimeRange: Graph.TimeRange | [];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  nodeSelection: Selection[];
+  edgeSelection: Selection[];
   detailedSelection: any;
 }
 
@@ -133,6 +168,12 @@ const initialState: GraphState = {
   // Set a large interval to display the data on initialize regardless of resetView
   timeRange: [-2041571596000, 2041571596000],
   selectTimeRange: [-2041571596000, 2041571596000],
+  nodeSelection: [{ label: 'id', id: 'id', type: 'string', selected: true }],
+  edgeSelection: [
+    { label: 'id', id: 'id', type: 'string', selected: true },
+    { label: 'source', id: 'source', type: 'string', selected: true },
+    { label: 'target', id: 'target', type: 'string', selected: true },
+  ],
   detailedSelection: {
     type: null,
     data: null,
@@ -249,6 +290,7 @@ const graph = createSlice({
       const { graphFlatten } = state;
       const graphData = combineProcessedData(data, graphFlatten);
       updateAll(state, graphData, accessors);
+      updateSelections(state, data);
     },
     setRange(state, action) {
       const selectedTimeRange = action.payload;
@@ -276,6 +318,20 @@ const graph = createSlice({
     overrideStyles(state, action: PayloadAction<Graph.StyleOptions>) {
       state.styleOptions = { ...state.styleOptions, ...action.payload };
     },
+    updateNodeSelection(
+      state,
+      action: PayloadAction<{ index: number; status: boolean }>,
+    ) {
+      const { index, status } = action.payload;
+      state.nodeSelection[index].selected = status;
+    },
+    updateEdgeSelection(
+      state,
+      action: PayloadAction<{ index: number; status: boolean }>,
+    ) {
+      const { index, status } = action.payload;
+      state.edgeSelection[index].selected = status;
+    },
   },
 });
 
@@ -298,6 +354,8 @@ export const {
   clearDetails,
   setAccessors,
   overrideStyles,
+  updateNodeSelection,
+  updateEdgeSelection,
 } = graph.actions;
 
 export default graph.reducer;
