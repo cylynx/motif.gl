@@ -1,7 +1,7 @@
 import some from 'lodash/some';
 import isUndefined from 'lodash/isUndefined';
-import { getGraph, getAccessors } from './combine-reducers';
-import * as Graph from '../types/Graph';
+import { getGraph } from './combine-reducers';
+import * as Graph from '../containers/Graph/types';
 
 import { fetchBegin, fetchError, fetchDone } from './ui-slice';
 import { addQuery, processGraphResponse } from './graph-slice';

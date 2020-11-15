@@ -12,7 +12,7 @@ import { openDataTableModal } from '../../../redux/ui-slice';
 import { Statistic } from '../../../components/ui';
 import DndList from '../../../components/DndList';
 import { countProperty } from '../../../utils/graph-utils';
-import * as Graph from '../../../types/Graph';
+import * as Graph from '../../Graph/types';
 import { getGraph } from '../../../redux';
 
 const StyledText = ({ children }: { children: React.ReactNode }) => (

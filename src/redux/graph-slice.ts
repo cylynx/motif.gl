@@ -6,7 +6,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import isEmpty from 'lodash/isEmpty';
 import cloneDeep from 'lodash/cloneDeep';
 import * as LAYOUT from '../constants/layout-options';
-import * as Graph from '../types/Graph';
+import * as Graph from '../containers/Graph/types';
 import {
   combineProcessedData,
   deriveVisibleGraph,

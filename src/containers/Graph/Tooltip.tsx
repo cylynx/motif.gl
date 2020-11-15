@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
 import { StyledInner, StyledPadding } from 'baseui/popover';
-import * as Graph from '../../types/Graph';
+import * as Graph from './types';
 import { getNodeProperties, getEdgeProperties } from '../../utils/graph-utils';
 import { getGraph } from '../../redux';
 

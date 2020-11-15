@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent, Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { Button } from 'baseui/button';
@@ -12,9 +12,7 @@ import {
   OPTIONS as IMPORT_OPTIONS,
   ImportFormat,
 } from '../../../processors/import-data';
-import * as Graph from '../../../types/Graph';
-
-import * as DATA from '../../../constants/sample-data';
+import * as Graph from '../../Graph/types';
 import { addData, closeModal, fetchError } from '../../../redux';
 
 type FormValues = {
