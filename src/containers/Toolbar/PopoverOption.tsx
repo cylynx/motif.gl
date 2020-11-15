@@ -5,7 +5,6 @@ import { Select } from 'baseui/select';
 import { Checkbox } from 'baseui/checkbox';
 import { Block } from 'baseui/block';
 import { TriGrid } from '../../components/ui';
-import * as Prop from '../../types/Prop';
 import {
   changeOptions,
   changeLayout,
@@ -34,7 +33,7 @@ const PopoverOption = () => {
   const layoutName = useSelector(
     (state) => getGraph(state).styleOptions.layout.name,
   );
-  const findID = (options: Prop.Layout[], id: string): Prop.Layout =>
+  const findID = (options: { label: string; id: string }[], id: string) =>
     options.find((x) => x.id === id);
 
   const onChangeOptions = (

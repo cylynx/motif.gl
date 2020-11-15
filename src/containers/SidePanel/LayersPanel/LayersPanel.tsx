@@ -7,7 +7,6 @@ import { Statistic, FullButton } from '../../../components/ui';
 import ToggleTokens from '../../../components/ToggleTokens';
 import Accordion from '../../../components/Accordion';
 import * as Icon from '../../../components/Icons';
-import * as Prop from '../../../types/Prop';
 import { openImportModal, fetchDone } from '../../../redux/ui-slice';
 import {
   resetState,
@@ -148,7 +147,7 @@ const LayersPanel = () => {
   );
 };
 
-const ImportDataButton: React.FC<Prop.ImportDataButton> = ({ onClick }) => (
+const ImportDataButton = ({ onClick }: { onClick: (e: MouseEvent) => any }) => (
   <Button
     kind='tertiary'
     size='compact'
