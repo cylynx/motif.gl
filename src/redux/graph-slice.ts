@@ -4,6 +4,7 @@
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import isEmpty from 'lodash/isEmpty';
+import cloneDeep from 'lodash/cloneDeep';
 import * as LAYOUT from '../constants/layout-options';
 import * as Graph from '../types/Graph';
 import {
@@ -59,7 +60,16 @@ export const updateAll = (
     // Update selectTimeRange to be timeRange always
     state.selectTimeRange = state.timeRange;
     // Filter graphFlatten based on selectTimeRange
-    updateVisible(state, state.timeRange, accessors);
+    const newFilteredData = filterDataByTime(
+      state.graphFlatten,
+      state.timeRange,
+      accessors.edgeTime,
+    );
+    // Clone here to avoid messing up graphFlatten
+    state.graphVisible = deriveVisibleGraph(
+      cloneDeep(newFilteredData),
+      state.styleOptions,
+    );
   } else {
     // Reset data state when all data is deleted
     state.graphFlatten = initialState.graphFlatten;

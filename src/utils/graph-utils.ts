@@ -2,7 +2,7 @@ import inRange from 'lodash/inRange';
 import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
 import set from 'lodash/set';
-import cloneDeep from 'lodash/cloneDeep';
+
 import * as Graph from '../types/Graph';
 import { flattenObject, ALL_FIELD_TYPES } from '../processors/data-processors';
 import { styleEdges } from './style-edges';
@@ -284,14 +284,13 @@ export const deriveVisibleGraph = (
   graphData: Graph.GraphData,
   styleOptions: Graph.StyleOptions,
 ): Graph.GraphData => {
-  const copyData = cloneDeep(graphData);
   if (styleOptions.groupEdges) {
-    applyStyle(groupEdges(copyData), styleOptions);
+    applyStyle(groupEdges(graphData), styleOptions);
   } else {
-    applyStyle(copyData, styleOptions);
+    applyStyle(graphData, styleOptions);
   }
 
-  return copyData;
+  return graphData;
 };
 /**
  * Check is value is truthy and if it is an array, it should be length > 0
