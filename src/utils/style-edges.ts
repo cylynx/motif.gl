@@ -13,17 +13,25 @@ export const styleEdges = (
   data: Graph.GraphData,
   edgeStyleOptions: Graph.EdgeStyleOptions,
 ) => {
-  if (edgeStyleOptions.width) {
-    styleEdgeWidth(data, edgeStyleOptions.width);
+  // Separated out as it cannot be done in the loop
+  if (edgeStyleOptions.width && edgeStyleOptions.width.id !== 'fixed') {
+    styleEdgeWidthByProp(data, edgeStyleOptions.width);
   }
-  if (edgeStyleOptions.pattern) {
-    styleEdgePattern(data, edgeStyleOptions.pattern);
-  }
-  if (edgeStyleOptions.fontSize) {
-    styleEdgeFontSize(data, edgeStyleOptions.fontSize);
-  }
-  if (edgeStyleOptions.label) {
-    styleEdgeLabel(data, edgeStyleOptions.label);
+
+  // For perf reasons, batch style operations which require a single loop through nodes
+  for (const edge of data.edges) {
+    if (edgeStyleOptions.width && edgeStyleOptions.width.id === 'fixed') {
+      edge.defaultStyle.width = edgeStyleOptions.width.value;
+    }
+    if (edgeStyleOptions.pattern) {
+      styleEdgePattern(edge, edgeStyleOptions.pattern);
+    }
+    if (edgeStyleOptions.fontSize) {
+      styleEdgeFontSize(edge, edgeStyleOptions.fontSize);
+    }
+    if (edgeStyleOptions.label) {
+      styleEdgeLabel(edge, edgeStyleOptions.label);
+    }
   }
 };
 
@@ -56,43 +64,33 @@ export const mapEdgeWidth = (
   });
 };
 
-export const styleEdgeWidth = (
+export const styleEdgeWidthByProp = (
   data: Graph.GraphData,
   option: Graph.EdgeWidth,
 ) => {
-  if (option.id === 'fixed') {
-    for (const edge of data.edges) {
-      edge.defaultStyle.width = option.value;
-    }
-  } else if (option.id === 'property' && option.variable) {
+  if (option.id === 'property' && option.variable) {
     mapEdgeWidth(data.edges, option.variable, option.range);
   }
 };
 
-export const styleEdgeLabel = (data: Graph.GraphData, label: string) => {
-  for (const edge of data.edges) {
-    if (label === 'none') {
-      edge.label = '';
-    } else if (label !== 'label') {
-      edge.label = get(edge, label, '').toString();
-    }
+export const styleEdgeLabel = (edge: Graph.Edge, label: string) => {
+  if (label === 'none') {
+    edge.label = '';
+  } else if (label !== 'label') {
+    edge.label = get(edge, label, '').toString();
   }
 };
 
-export const styleEdgePattern = (data: Graph.GraphData, pattern: string) => {
-  for (const edge of data.edges) {
-    if (pattern === 'none') {
-      delete edge.defaultStyle.pattern;
-    } else {
-      edge.defaultStyle.pattern = pattern;
-    }
+export const styleEdgePattern = (edge: Graph.Edge, pattern: string) => {
+  if (pattern === 'none') {
+    delete edge.defaultStyle.pattern;
+  } else {
+    edge.defaultStyle.pattern = pattern;
   }
 };
 
-export const styleEdgeFontSize = (data: Graph.GraphData, fontSize: number) => {
-  for (const edge of data.edges) {
-    edge.defaultStyle.fontSize = fontSize;
-  }
+export const styleEdgeFontSize = (edge: Graph.Edge, fontSize: number) => {
+  edge.defaultStyle.fontSize = fontSize;
 };
 
 type MinMax = {

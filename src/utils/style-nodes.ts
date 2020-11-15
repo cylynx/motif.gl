@@ -13,17 +13,25 @@ export const styleNodes = (
   data: Graph.GraphData,
   nodeStyleOptions: Graph.NodeStyleOptions,
 ) => {
-  if (nodeStyleOptions.size) {
-    styleNodeSize(data, nodeStyleOptions.size);
+  // Separated out as it cannot be done in the loop
+  if (nodeStyleOptions.size && nodeStyleOptions.size.id !== 'fixed') {
+    styleNodeSizeByProp(data, nodeStyleOptions.size);
   }
-  if (nodeStyleOptions.color) {
-    styleNodeColor(data, nodeStyleOptions.color);
-  }
-  if (nodeStyleOptions.fontSize) {
-    styleFontSize(data, nodeStyleOptions.fontSize);
-  }
-  if (nodeStyleOptions.label) {
-    styleNodeLabel(data, nodeStyleOptions.label);
+
+  // For perf reasons, batch style operations which require a single loop through nodes
+  for (const node of data.nodes) {
+    if (nodeStyleOptions.size && nodeStyleOptions.size.id === 'fixed') {
+      node.defaultStyle.size = nodeStyleOptions.size.value;
+    }
+    if (nodeStyleOptions.color) {
+      styleNodeColor(node, nodeStyleOptions.color);
+    }
+    if (nodeStyleOptions.fontSize) {
+      styleFontSize(node, nodeStyleOptions.fontSize);
+    }
+    if (nodeStyleOptions.label) {
+      styleNodeLabel(node, nodeStyleOptions.label);
+    }
   }
 };
 
@@ -63,15 +71,11 @@ export const mapNodeSize = (
  * @param {(string | undefined)} accessor
  * @param {string} option
  */
-export const styleNodeSize = (
+export const styleNodeSizeByProp = (
   data: Graph.GraphData,
   option: Graph.NodeSize,
 ) => {
-  if (option.id === 'fixed') {
-    for (const node of data.nodes) {
-      node.defaultStyle.size = option.value;
-    }
-  } else if (option.id === 'degree') {
+  if (option.id === 'degree') {
     data.nodes.forEach((node) => {
       node.degree = 0;
       data.edges.forEach((edge) => {
@@ -86,26 +90,20 @@ export const styleNodeSize = (
   }
 };
 
-export const styleNodeLabel = (data: Graph.GraphData, label: string) => {
-  for (const node of data.nodes) {
-    if (label === 'none') {
-      node.label = '';
-    } else if (label !== 'label') {
-      node.label = get(node, label, '').toString();
-    }
+export const styleNodeLabel = (node: Graph.Node, label: string) => {
+  if (label === 'none') {
+    node.label = '';
+  } else if (label !== 'label') {
+    node.label = get(node, label, '').toString();
   }
 };
 
-export const styleNodeColor = (data: Graph.GraphData, color: string) => {
-  for (const node of data.nodes) {
-    node.defaultStyle.color = color;
-  }
+export const styleNodeColor = (node: Graph.Node, color: string) => {
+  node.defaultStyle.color = color;
 };
 
-export const styleFontSize = (data: Graph.GraphData, fontSize: number) => {
-  for (const node of data.nodes) {
-    node.defaultStyle.fontSize = fontSize;
-  }
+export const styleFontSize = (node: Graph.Node, fontSize: number) => {
+  node.defaultStyle.fontSize = fontSize;
 };
 
 /**
