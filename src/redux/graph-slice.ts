@@ -224,15 +224,13 @@ const graph = createSlice({
       }
       updateAll(state, graphData, state.accessors);
     },
-    addQuery(state, action) {
-      const queryResults = action.payload;
-      state.graphList.push(queryResults);
+    addQuery(state, action: PayloadAction<Graph.GraphData>) {
+      state.graphList.push(action.payload);
     },
-    changeOptions(state, action) {
-      const { key, value, accessors } = action.payload;
-      // const { edgeTime } = accessors;
+    changeOptions(state, action: PayloadAction<{ key: string; value: any }>) {
+      const { key, value } = action.payload;
       state.styleOptions[key] = value;
-      updateVisible(state, state.selectTimeRange, accessors);
+      updateVisible(state, state.selectTimeRange, state.accessors);
     },
     changeLayout(
       state,
@@ -296,7 +294,7 @@ const graph = createSlice({
       // Filter out all relevant edges and store from & to node id
       updateVisible(state, timeRange, accessors);
     },
-    setAccessors(state, action) {
+    setAccessors(state, action: PayloadAction<Graph.Accessors>) {
       state.accessors = action.payload;
     },
     overrideStyles(state, action: PayloadAction<Graph.StyleOptions>) {

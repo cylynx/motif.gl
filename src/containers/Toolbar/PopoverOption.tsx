@@ -11,7 +11,7 @@ import {
   changeNodeStyle,
   changeEdgeStyle,
 } from '../../redux/graph-slice';
-import { getGraph, getAccessors } from '../../redux';
+import { getGraph } from '../../redux';
 import { NestedForm, genNestedForm } from '../../components/form';
 import { nodeSizeForm, edgeWidthForm } from '../SidePanel/OptionsPanel';
 
@@ -26,7 +26,6 @@ const layoutNames = [
 
 const PopoverOption = () => {
   const dispatch = useDispatch();
-  const accessors = useSelector((state) => getAccessors(state));
   const { nodeStyle, edgeStyle, resetView, groupEdges } = useSelector(
     (state) => getGraph(state).styleOptions,
   );
@@ -40,7 +39,7 @@ const PopoverOption = () => {
     key: string,
     newValue: boolean | string | number,
   ) => {
-    dispatch(changeOptions({ key, value: newValue, accessors }));
+    dispatch(changeOptions({ key, value: newValue }));
   };
 
   const updateNodeStyle = (data: any) => dispatch(changeNodeStyle(data));
