@@ -38,9 +38,9 @@ const ui = createSlice({
       state.modal.content = '';
       state.modal.isOpen = false;
     },
-    fetchError(state, action) {
+    fetchError(state, action: PayloadAction<string>) {
       state.loading = false;
-      state.modal.content = '';
+      state.modal.content = action.payload;
       state.modal.isOpen = true;
     },
     fetchDone(state) {
