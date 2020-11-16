@@ -27,8 +27,6 @@ const checkNewData = (
   return newData && !some(graphListKeys, (key) => key === newData.metadata.key);
 };
 
-const checkEdgeTime = (edgeTime: string): boolean => !isUndefined(edgeTime);
-
 const processResponse = (
   dispatch: any,
   graphList: Graph.GraphList,
@@ -89,7 +87,7 @@ export const addData = (
         processResponse(dispatch, graphList, mainAccessors, graphData);
       })
       .catch((err: Error) => {
-        dispatch(fetchError(err));
+        dispatch(fetchError(err.message));
       })
   );
 };
