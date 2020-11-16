@@ -5,18 +5,10 @@
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export type Tooltip = null | {
-  id: string;
-  x: number;
-  y: number;
-  type: 'edge' | 'node';
-};
-
 export interface UiState {
   name: string;
   loading: boolean;
   modal: { isOpen: boolean; content: 'import' | string };
-  tooltip: Tooltip;
   score: any;
 }
 
@@ -25,7 +17,6 @@ const initialState: UiState = {
   currency: '',
   loading: false,
   modal: { isOpen: true, content: 'import' },
-  tooltip: null,
   score: null,
 };
 
@@ -57,16 +48,6 @@ const ui = createSlice({
       state.modal.isOpen = true;
       state.modal.content = action.payload;
     },
-    postMessage(state, action) {
-      state.modal.isOpen = true;
-      state.modal.content = action.payload;
-    },
-    setTooltip(state, action: PayloadAction<Tooltip>) {
-      state.tooltip = action.payload;
-    },
-    setScore(state, action) {
-      state.score = action.payload;
-    },
     setName(state, action) {
       state.name = action.payload;
     },
@@ -80,8 +61,6 @@ export const {
   closeModal,
   openImportModal,
   openDataTableModal,
-  postMessage,
-  setTooltip,
   setName,
 } = ui.actions;
 
