@@ -21,7 +21,7 @@ export const layoutForm: NestedFormData = {
   dagre: [
     {
       id: 'rankSep',
-      label: 'rankSep',
+      label: 'Vertical Spacing',
       type: 'slider',
       value: LAYOUT.DAGRE_DEFAULT.rankSep,
       min: 1,
@@ -29,7 +29,7 @@ export const layoutForm: NestedFormData = {
     },
     {
       id: 'nodeSep',
-      label: 'nodeSep',
+      label: 'Horizontal Spacing',
       type: 'slider',
       value: LAYOUT.DAGRE_DEFAULT.nodeSep,
       min: 1,
@@ -39,7 +39,7 @@ export const layoutForm: NestedFormData = {
   circle: [
     {
       id: 'r',
-      label: 'radius',
+      label: 'Radius',
       type: 'slider',
       value: LAYOUT.CIRCLE_DEFAULT.r,
       min: 10,
@@ -49,35 +49,27 @@ export const layoutForm: NestedFormData = {
   concentric: [
     {
       id: 'minNodeSpacing',
-      label: 'minNodeSpacing',
+      label: 'Node Spacing',
       type: 'slider',
       value: LAYOUT.CONCENTRIC_DEFAULT.minNodeSpacing,
       min: 1,
-      max: 300,
+      max: 1000,
     },
   ],
   grid: [
     {
       id: 'nodeSep',
-      label: 'nodeSep',
+      label: 'Spacing',
       type: 'slider',
       value: LAYOUT.GRID_DEFAULT.nodeSep,
       min: 1,
-      max: 500,
-    },
-    {
-      id: 'nodeSize',
-      label: 'nodeSize',
-      type: 'slider',
-      value: LAYOUT.GRID_DEFAULT.nodeSize,
-      min: 1,
-      max: 100,
+      max: 1000,
     },
   ],
   radial: [
     {
       id: 'unitRadius',
-      label: 'radius',
+      label: 'Radius',
       type: 'slider',
       value: LAYOUT.RADIAL_DEFAULT.unitRadius,
       min: 1,
@@ -85,17 +77,11 @@ export const layoutForm: NestedFormData = {
     },
     {
       id: 'nodeSize',
-      label: 'nodeSize',
+      label: 'Node Spacing',
       type: 'slider',
       value: LAYOUT.RADIAL_DEFAULT.nodeSize,
       min: 1,
-      max: 100,
-    },
-    {
-      id: 'sortBy',
-      label: 'sortBy',
-      type: 'input',
-      value: 'shape',
+      max: 200,
     },
   ],
 };
