@@ -13,7 +13,7 @@ export const CIRCLE_DEFAULT = {
 };
 
 export const GRID_DEFAULT = {
-  nodeSep: 45,
+  nodeSep: 100,
   nodeSize: 50,
 };
 
