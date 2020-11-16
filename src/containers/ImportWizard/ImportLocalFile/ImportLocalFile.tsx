@@ -46,7 +46,6 @@ const ImportLocalFile = () => {
   });
 
   const watchDataType = watch('dataType');
-
   const onCancel = () => {
     setIsUploading(false);
   };
@@ -137,8 +136,6 @@ const ImportLocalFile = () => {
     );
   };
 
-  const onChangeDropdown = ([data]: any) => data.value;
-
   const onSubmitForm: SubmitHandler<FormValues> = (data, e) => {
     e.preventDefault();
     const { dataType, ...accessors } = data;
@@ -155,14 +152,18 @@ const ImportLocalFile = () => {
       <form onSubmit={handleSubmit(onSubmitForm)}>
         <FormControl label='Data Type'>
           <Controller
-            as={Select}
             name='dataType'
-            size='compact'
             control={control}
-            options={importOptions}
-            clearable={false}
-            onChange={onChangeDropdown}
-            placeholder='Select Import Data Type'
+            render={({ value, onChange }) => (
+              <Select
+                size='compact'
+                value={value}
+                options={importOptions}
+                clearable={false}
+                onChange={(data: any) => onChange(data.value)}
+                placeholder='Select Import Data Type'
+              />
+            )}
           />
         </FormControl>
         <FileUploader
