@@ -4,7 +4,7 @@ import { Button } from 'baseui/button';
 import { Block } from 'baseui/block';
 import { Cell } from 'baseui/layout-grid';
 import { LabelMedium, ParagraphMedium } from 'baseui/typography';
-import * as Graph from '../../../types/Graph';
+import * as Graph from '../../Graph/types';
 import * as DATA from '../../../constants/sample-data';
 import { FlushedGrid } from '../../../components/ui';
 import { addData, closeModal } from '../../../redux';

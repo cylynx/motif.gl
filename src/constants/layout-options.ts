@@ -1,6 +1,6 @@
 // https://graphin.antv.vision/en/docs/manual/main-concepts/layout
 
-import * as Graph from '../types/Graph';
+import * as Graph from '../containers/Graph/types';
 
 export const DAGRE_DEFAULT = {
   rankSep: 50,
@@ -13,7 +13,7 @@ export const CIRCLE_DEFAULT = {
 };
 
 export const GRID_DEFAULT = {
-  nodeSep: 45,
+  nodeSep: 100,
   nodeSize: 50,
 };
 

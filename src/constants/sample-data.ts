@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 // @ts-nocheck
 import mock from '../utils/mock';
-import * as Graph from '../types/Graph';
+import * as Graph from '../containers/Graph/types';
 
 export const RandomData = () => {
   const data = mock(15).random().graphin();

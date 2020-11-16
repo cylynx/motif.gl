@@ -2,9 +2,9 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
 import { StyledInner, StyledPadding } from 'baseui/popover';
-import * as Graph from '../../types/Graph';
+import * as Graph from './types';
 import { getNodeProperties, getEdgeProperties } from '../../utils/graph-utils';
-import { getGraph, getUI } from '../../redux';
+import { getGraph } from '../../redux';
 
 export type TooltipProps = null | {
   id: string;
@@ -14,10 +14,9 @@ export type TooltipProps = null | {
 };
 
 const Tooltip = ({ tooltip }: { tooltip: TooltipProps }) => {
-  // const tooltip = useSelector((state) => getUI(state).tooltip);
   const graphFlatten = useSelector((state) => getGraph(state).graphFlatten);
-  const nodeFields = useSelector((state) => getUI(state).nodeSelection);
-  const edgeFields = useSelector((state) => getUI(state).edgeSelection);
+  const nodeFields = useSelector((state) => getGraph(state).nodeSelection);
+  const edgeFields = useSelector((state) => getGraph(state).edgeSelection);
   const properties =
     tooltip.type === 'node'
       ? getNodeProperties(

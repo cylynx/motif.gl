@@ -2,26 +2,26 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect, useRef, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { useStyletron, ThemeProvider } from 'baseui';
 import { Theme } from 'baseui/theme';
 import { Block } from 'baseui/block';
 import { Modal, ModalBody, SIZE } from 'baseui/modal';
+
 import { Loader } from './components/ui';
 import DataTable from './containers/DataTable';
-import { Accessors, StyleOptions } from './types/Graph';
 import { closeModal, setName } from './redux/ui-slice';
 import { WidgetItem, defaultWidgetList } from './containers/widgets';
 import { setWidget } from './containers/widgets/widget-slice';
 import { setAccessors, overrideStyles } from './redux/graph-slice';
 import { getTabsOverride, getNodeMenuOverride } from './utils/overrides';
 import { getUI, getWidget } from './redux';
-
 import SideNavBar from './containers/SideNavBar';
 import Graph, {
   Tooltip,
   TooltipProps,
   GraphRefContext,
+  Accessors,
+  StyleOptions,
 } from './containers/Graph';
 import ImportWizard, { Tab } from './containers/ImportWizard';
 

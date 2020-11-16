@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactEchartsCore from 'echarts-for-react/lib/core';
 import * as echarts from 'echarts/lib/echarts';
-import * as Prop from '../../types/Prop';
-import * as Graph from '../../types/Graph';
+import * as Graph from './types';
 import 'echarts/lib/chart/scatter';
 import 'echarts/lib/component/legend';
 import 'echarts/lib/component/legendScroll';
@@ -27,7 +26,7 @@ const deriveLegendCategories = (data: Graph.GraphData) => {
   return legend;
 };
 
-const GraphLegend: React.FC<Prop.GraphLegend> = ({ data }) => {
+const GraphLegend = ({ data }: { data: Graph.GraphData }) => {
   const legendCategories = deriveLegendCategories(data);
   return (
     <ReactEchartsCore

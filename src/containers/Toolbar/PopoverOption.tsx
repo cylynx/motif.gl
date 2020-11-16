@@ -5,14 +5,13 @@ import { Select } from 'baseui/select';
 import { Checkbox } from 'baseui/checkbox';
 import { Block } from 'baseui/block';
 import { TriGrid } from '../../components/ui';
-import * as Prop from '../../types/Prop';
 import {
   changeOptions,
   changeLayout,
   changeNodeStyle,
   changeEdgeStyle,
 } from '../../redux/graph-slice';
-import { getGraph, getAccessors } from '../../redux';
+import { getGraph } from '../../redux';
 import { NestedForm, genNestedForm } from '../../components/form';
 import { nodeSizeForm, edgeWidthForm } from '../SidePanel/OptionsPanel';
 
@@ -27,21 +26,20 @@ const layoutNames = [
 
 const PopoverOption = () => {
   const dispatch = useDispatch();
-  const accessors = useSelector((state) => getAccessors(state));
   const { nodeStyle, edgeStyle, resetView, groupEdges } = useSelector(
     (state) => getGraph(state).styleOptions,
   );
   const layoutName = useSelector(
     (state) => getGraph(state).styleOptions.layout.name,
   );
-  const findID = (options: Prop.Layout[], id: string): Prop.Layout =>
+  const findID = (options: { label: string; id: string }[], id: string) =>
     options.find((x) => x.id === id);
 
   const onChangeOptions = (
     key: string,
     newValue: boolean | string | number,
   ) => {
-    dispatch(changeOptions({ key, value: newValue, accessors }));
+    dispatch(changeOptions({ key, value: newValue }));
   };
 
   const updateNodeStyle = (data: any) => dispatch(changeNodeStyle(data));

@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import get from 'lodash/get';
-import * as Graph from '../types/Graph';
+import * as Graph from '../containers/Graph/types';
 
 /**
  * Main function to style nodes

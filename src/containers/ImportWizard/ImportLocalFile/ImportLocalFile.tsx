@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent, Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { Button } from 'baseui/button';
@@ -12,9 +12,7 @@ import {
   OPTIONS as IMPORT_OPTIONS,
   ImportFormat,
 } from '../../../processors/import-data';
-import * as Graph from '../../../types/Graph';
-
-import * as DATA from '../../../constants/sample-data';
+import * as Graph from '../../Graph/types';
 import { addData, closeModal, fetchError } from '../../../redux';
 
 type FormValues = {
@@ -48,7 +46,6 @@ const ImportLocalFile = () => {
   });
 
   const watchDataType = watch('dataType');
-
   const onCancel = () => {
     setIsUploading(false);
   };
@@ -139,8 +136,6 @@ const ImportLocalFile = () => {
     );
   };
 
-  const onChangeDropdown = ([data]: any) => data.value;
-
   const onSubmitForm: SubmitHandler<FormValues> = (data, e) => {
     e.preventDefault();
     const { dataType, ...accessors } = data;
@@ -157,14 +152,18 @@ const ImportLocalFile = () => {
       <form onSubmit={handleSubmit(onSubmitForm)}>
         <FormControl label='Data Type'>
           <Controller
-            as={Select}
             name='dataType'
-            size='compact'
             control={control}
-            options={importOptions}
-            clearable={false}
-            onChange={onChangeDropdown}
-            placeholder='Select Import Data Type'
+            render={({ value, onChange }) => (
+              <Select
+                size='compact'
+                value={value}
+                options={importOptions}
+                clearable={false}
+                onChange={(data: any) => onChange(data.value)}
+                placeholder='Select Import Data Type'
+              />
+            )}
           />
         </FormControl>
         <FileUploader

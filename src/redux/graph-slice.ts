@@ -6,7 +6,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import isEmpty from 'lodash/isEmpty';
 import cloneDeep from 'lodash/cloneDeep';
 import * as LAYOUT from '../constants/layout-options';
-import * as Graph from '../types/Graph';
+import * as Graph from '../containers/Graph/types';
 import {
   combineProcessedData,
   deriveVisibleGraph,
@@ -14,6 +14,31 @@ import {
   chartRange,
   filterDataByTime,
 } from '../utils/graph-utils';
+
+export const updateSelections = (state: GraphState, data: Graph.GraphData) => {
+  const currentNodeFields = state.nodeSelection.map((x) => x.id);
+  const currentEdgeFields = state.edgeSelection.map((x) => x.id);
+  for (const field of data.metadata.fields.nodes) {
+    if (!currentNodeFields.includes(field.name)) {
+      state.nodeSelection.push({
+        label: field.name,
+        id: field.name,
+        type: field.type,
+        selected: false,
+      });
+    }
+  }
+  for (const field of data.metadata.fields.edges) {
+    if (!currentEdgeFields.includes(field.name)) {
+      state.edgeSelection.push({
+        label: field.name,
+        id: field.name,
+        type: field.type,
+        selected: false,
+      });
+    }
+  }
+};
 
 /**
  * Meant to be use on graph-slice state only
@@ -77,7 +102,16 @@ export const updateAll = (
     state.tsData = initialState.tsData;
     state.timeRange = initialState.timeRange;
     state.selectTimeRange = initialState.selectTimeRange;
+    state.nodeSelection = initialState.nodeSelection;
+    state.edgeSelection = initialState.edgeSelection;
   }
+};
+
+export type Selection = {
+  label: string;
+  id: string;
+  type: string;
+  selected: boolean;
 };
 
 export interface GraphState {
@@ -89,8 +123,8 @@ export interface GraphState {
   tsData: Graph.TimeSeries;
   timeRange: Graph.TimeRange | [];
   selectTimeRange: Graph.TimeRange | [];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  detailedSelection: any;
+  nodeSelection: Selection[];
+  edgeSelection: Selection[];
 }
 
 const initialState: GraphState = {
@@ -133,10 +167,12 @@ const initialState: GraphState = {
   // Set a large interval to display the data on initialize regardless of resetView
   timeRange: [-2041571596000, 2041571596000],
   selectTimeRange: [-2041571596000, 2041571596000],
-  detailedSelection: {
-    type: null,
-    data: null,
-  },
+  nodeSelection: [{ label: 'id', id: 'id', type: 'string', selected: true }],
+  edgeSelection: [
+    { label: 'id', id: 'id', type: 'string', selected: true },
+    { label: 'source', id: 'source', type: 'string', selected: true },
+    { label: 'target', id: 'target', type: 'string', selected: true },
+  ],
 };
 
 const graph = createSlice({
@@ -188,15 +224,13 @@ const graph = createSlice({
       }
       updateAll(state, graphData, state.accessors);
     },
-    addQuery(state, action) {
-      const queryResults = action.payload;
-      state.graphList.push(queryResults);
+    addQuery(state, action: PayloadAction<Graph.GraphData>) {
+      state.graphList.push(action.payload);
     },
-    changeOptions(state, action) {
-      const { key, value, accessors } = action.payload;
-      // const { edgeTime } = accessors;
+    changeOptions(state, action: PayloadAction<{ key: string; value: any }>) {
+      const { key, value } = action.payload;
       state.styleOptions[key] = value;
-      updateVisible(state, state.selectTimeRange, accessors);
+      updateVisible(state, state.selectTimeRange, state.accessors);
     },
     changeLayout(
       state,
@@ -249,6 +283,7 @@ const graph = createSlice({
       const { graphFlatten } = state;
       const graphData = combineProcessedData(data, graphFlatten);
       updateAll(state, graphData, accessors);
+      updateSelections(state, data);
     },
     setRange(state, action) {
       const selectedTimeRange = action.payload;
@@ -259,22 +294,25 @@ const graph = createSlice({
       // Filter out all relevant edges and store from & to node id
       updateVisible(state, timeRange, accessors);
     },
-    getDetails(state, action) {
-      // TODO: There might be multiple matching hash! Need to match on trace
-      const { type, hash } = action.payload;
-      const data = state.graphFlatten.edges.filter((e) => e.id === hash)[0];
-      state.detailedSelection.type = type;
-      state.detailedSelection.data = data;
-    },
-    clearDetails(state) {
-      state.detailedSelection.type = null;
-      state.detailedSelection.data = null;
-    },
-    setAccessors(state, action) {
+    setAccessors(state, action: PayloadAction<Graph.Accessors>) {
       state.accessors = action.payload;
     },
     overrideStyles(state, action: PayloadAction<Graph.StyleOptions>) {
       state.styleOptions = { ...state.styleOptions, ...action.payload };
+    },
+    updateNodeSelection(
+      state,
+      action: PayloadAction<{ index: number; status: boolean }>,
+    ) {
+      const { index, status } = action.payload;
+      state.nodeSelection[index].selected = status;
+    },
+    updateEdgeSelection(
+      state,
+      action: PayloadAction<{ index: number; status: boolean }>,
+    ) {
+      const { index, status } = action.payload;
+      state.edgeSelection[index].selected = status;
     },
   },
 });
@@ -294,10 +332,10 @@ export const {
   processGraphResponse,
   setRange,
   timeRangeChange,
-  getDetails,
-  clearDetails,
   setAccessors,
   overrideStyles,
+  updateNodeSelection,
+  updateEdgeSelection,
 } = graph.actions;
 
 export default graph.reducer;

@@ -1,7 +1,7 @@
 import some from 'lodash/some';
 import isUndefined from 'lodash/isUndefined';
-import { getGraph, getAccessors } from './combine-reducers';
-import * as Graph from '../types/Graph';
+import { getGraph } from './combine-reducers';
+import * as Graph from '../containers/Graph/types';
 
 import { fetchBegin, fetchError, fetchDone } from './ui-slice';
 import { addQuery, processGraphResponse } from './graph-slice';
@@ -26,8 +26,6 @@ const checkNewData = (
   const graphListKeys = graphList.map((graph) => graph.metadata.key);
   return newData && !some(graphListKeys, (key) => key === newData.metadata.key);
 };
-
-const checkEdgeTime = (edgeTime: string): boolean => !isUndefined(edgeTime);
 
 const processResponse = (
   dispatch: any,
@@ -61,7 +59,7 @@ type ImportAccessors = Graph.Accessors | null;
 export const addData = (
   importData: ImportFormat,
   importAccessors: ImportAccessors = null,
-) => (dispatch: any, getState: any) => {
+) => async (dispatch: any, getState: any) => {
   const { data, type } = importData;
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   // Use importAccessors if available to do initial mapping
@@ -82,12 +80,14 @@ export const addData = (
     dispatch(fetchError('Invalid data format'));
   }
 
-  newData
-    // @ts-ignore
-    .then((graphData: Graph.GraphData | Graph.GraphList) => {
-      processResponse(dispatch, graphList, mainAccessors, graphData);
-    })
-    .catch((err: Error) => {
-      dispatch(fetchError(err));
-    });
+  return (
+    newData
+      // @ts-ignore
+      .then((graphData: Graph.GraphData | Graph.GraphList) => {
+        processResponse(dispatch, graphList, mainAccessors, graphData);
+      })
+      .catch((err: Error) => {
+        dispatch(fetchError(err.message));
+      })
+  );
 };

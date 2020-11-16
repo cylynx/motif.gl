@@ -3,11 +3,7 @@
 import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
 import shortid from 'shortid';
-import * as Graph from '../types/Graph';
-import {
-  NodeStyleType,
-  EdgeStyleType,
-} from '../containers/Graph/shape/constants';
+import * as Graph from '../containers/Graph/types';
 import {
   processJson,
   processNodeEdgeCsv,
@@ -81,6 +77,9 @@ export const importEdgeListCsv = async (
 ): Promise<Graph.GraphData> => {
   const { edgeSource, edgeTarget } = accessors;
   const processedData = await processEdgeListCsv(csv, edgeSource, edgeTarget);
+  if (processedData.nodes.length < 1 || processedData.edges.length < 1) {
+    throw new Error('process Csv Data Failed: CSV is empty');
+  }
   return addRequiredFieldsJson(processedData, accessors);
 };
 
@@ -99,6 +98,9 @@ export const importNodeEdgeCsv = async (
   accessors: Graph.Accessors,
 ): Promise<Graph.GraphData> => {
   const processedData = await processNodeEdgeCsv(nodeCsv, edgeCsv);
+  if (processedData.nodes.length < 1) {
+    throw new Error('process Csv Data Failed: CSV is empty');
+  }
   return addRequiredFieldsJson(processedData, accessors);
 };
 
