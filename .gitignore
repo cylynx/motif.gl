@@ -5,7 +5,7 @@
 node_modules
 
 # example package-lock
-./example/package-lock.json
+/example/package-lock.json
 
 # builds
 build
