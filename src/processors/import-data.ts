@@ -77,6 +77,9 @@ export const importEdgeListCsv = async (
 ): Promise<Graph.GraphData> => {
   const { edgeSource, edgeTarget } = accessors;
   const processedData = await processEdgeListCsv(csv, edgeSource, edgeTarget);
+  if (processedData.nodes.length < 1 || processedData.edges.length < 1) {
+    throw new Error('process Csv Data Failed: CSV is empty');
+  }
   return addRequiredFieldsJson(processedData, accessors);
 };
 
@@ -95,6 +98,9 @@ export const importNodeEdgeCsv = async (
   accessors: Graph.Accessors,
 ): Promise<Graph.GraphData> => {
   const processedData = await processNodeEdgeCsv(nodeCsv, edgeCsv);
+  if (processedData.nodes.length < 1) {
+    throw new Error('process Csv Data Failed: CSV is empty');
+  }
   return addRequiredFieldsJson(processedData, accessors);
 };
 
