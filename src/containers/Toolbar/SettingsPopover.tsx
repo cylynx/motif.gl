@@ -24,7 +24,7 @@ const layoutNames = [
   { label: 'Circular', id: 'circle' },
 ];
 
-const PopoverOption = () => {
+const SettingsPopover = () => {
   const dispatch = useDispatch();
   const { nodeStyle, edgeStyle, resetView, groupEdges } = useSelector(
     (state) => getGraph(state).styleOptions,
@@ -92,4 +92,4 @@ const PopoverOption = () => {
     </div>
   );
 };
-export default PopoverOption;
+export default SettingsPopover;
