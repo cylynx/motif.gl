@@ -242,7 +242,7 @@ export const edgeLabelForm: SimpleFormData = {
   id: 'label',
   label: 'Label',
   type: 'select',
-  value: 'label',
-  options: [{ id: 'label', label: 'label' }],
+  value: 'none',
+  options: [{ id: 'none', label: 'None' }],
   callback: (data: any) => console.log(data),
 };
