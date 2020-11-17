@@ -46,50 +46,48 @@ const SettingsPopover = () => {
   const updateEdgeStyle = (data: any) => dispatch(changeEdgeStyle(data));
 
   return (
-    <div style={{ width: '300px' }}>
-      <Block padding='10px'>
-        <FormControl label='Graph Layout'>
-          <Select
-            options={layoutNames}
-            size='compact'
-            clearable={false}
-            value={[findID(layoutNames, layoutName)]}
-            onChange={(params) =>
-              dispatch(
-                changeLayout({ layout: { id: params.option.id as string } }),
-              )
-            }
-          />
-        </FormControl>
-        <NestedForm
-          data={genNestedForm(nodeSizeForm, nodeStyle, updateNodeStyle)}
-        />
-        <NestedForm
-          data={genNestedForm(edgeWidthForm, edgeStyle, updateEdgeStyle)}
-        />
-        <TriGrid
-          startComponent={
-            <Checkbox
-              checked={resetView}
-              onChange={() => onChangeOptions('resetView', !resetView)}
-              labelPlacement='right'
-            >
-              Reset View
-            </Checkbox>
+    <Block width='300px' padding='10px'>
+      <FormControl label='Graph Layout'>
+        <Select
+          options={layoutNames}
+          size='compact'
+          clearable={false}
+          value={[findID(layoutNames, layoutName)]}
+          onChange={(params) =>
+            dispatch(
+              changeLayout({ layout: { id: params.option.id as string } }),
+            )
           }
-          midComponent={
-            <Checkbox
-              checked={groupEdges}
-              onChange={() => onChangeOptions('groupEdges', !groupEdges)}
-              labelPlacement='right'
-            >
-              Group Edges
-            </Checkbox>
-          }
-          span={[6, 6]}
         />
-      </Block>
-    </div>
+      </FormControl>
+      <NestedForm
+        data={genNestedForm(nodeSizeForm, nodeStyle, updateNodeStyle)}
+      />
+      <NestedForm
+        data={genNestedForm(edgeWidthForm, edgeStyle, updateEdgeStyle)}
+      />
+      <TriGrid
+        startComponent={
+          <Checkbox
+            checked={resetView}
+            onChange={() => onChangeOptions('resetView', !resetView)}
+            labelPlacement='right'
+          >
+            Reset View
+          </Checkbox>
+        }
+        midComponent={
+          <Checkbox
+            checked={groupEdges}
+            onChange={() => onChangeOptions('groupEdges', !groupEdges)}
+            labelPlacement='right'
+          >
+            Group Edges
+          </Checkbox>
+        }
+        span={[6, 6]}
+      />
+    </Block>
   );
 };
 export default SettingsPopover;

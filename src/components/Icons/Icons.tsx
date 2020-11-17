@@ -25,6 +25,7 @@ import {
   BiFullscreen,
   BiUndo,
   BiRedo,
+  BiListUl,
   BiNetworkChart,
 } from 'react-icons/bi';
 import { VscSymbolKey, VscCircleOutline } from 'react-icons/vsc';
@@ -186,4 +187,10 @@ export const ZoomOut = ({ children, size = 16, ...rest }: IconBaseProps) => (
   <HiOutlineZoomOut size={size} {...rest}>
     {children}
   </HiOutlineZoomOut>
+);
+
+export const Legend = ({ children, size = 16, ...rest }: IconBaseProps) => (
+  <BiListUl size={size} {...rest}>
+    {children}
+  </BiListUl>
 );
