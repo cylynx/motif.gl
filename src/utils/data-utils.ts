@@ -201,3 +201,15 @@ export const getHistogram = (
 
   return { histogram, enlargedHistogram };
 };
+
+/**
+ * Returns a number whose value is limited to the given range
+ *
+ * @param {number} value
+ * @param {number} min
+ * @param {number} max
+ * @return {*}
+ */
+export const clamp = (value: number, min: number, max: number) => {
+  return Math.min(Math.max(value, min), max);
+};

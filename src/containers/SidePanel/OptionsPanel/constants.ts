@@ -138,18 +138,38 @@ export const nodeSizeForm: NestedFormData = {
   ],
 };
 
-export const nodeColorForm: SimpleFormData = {
+export const nodeColorForm: NestedFormData = {
   id: 'color',
   label: 'Node Color',
-  type: 'select',
-  value: 'teal',
-  options: [
-    { id: 'teal', label: 'Teal' },
-    { id: 'blue', label: 'Blue' },
-    { id: 'green', label: 'Green' },
-    { id: 'orange', label: 'Orange' },
-  ],
+  value: 'fixed',
   callback: (data: any) => console.log(data),
+  options: [
+    { id: 'fixed', label: 'Fixed' },
+    { id: 'legend', label: 'Legend' },
+  ],
+  fixed: [
+    {
+      id: 'value',
+      label: 'Value',
+      type: 'select',
+      value: 'teal',
+      options: [
+        { id: 'teal', label: 'Teal' },
+        { id: 'blue', label: 'Blue' },
+        { id: 'green', label: 'Green' },
+        { id: 'orange', label: 'Orange' },
+      ],
+    },
+  ],
+  legend: [
+    {
+      id: 'variable',
+      label: 'Variable',
+      type: 'select',
+      value: null,
+      options: [],
+    },
+  ],
 };
 
 export const nodeFontSizeForm: SimpleFormData = {
