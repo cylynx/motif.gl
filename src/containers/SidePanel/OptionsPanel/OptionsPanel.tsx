@@ -43,11 +43,11 @@ const OptionsPanel = () => {
     (state) => getGraph(state).graphFlatten.metadata.fields,
   );
 
-  let nodeLabelOptions = getFieldNames(graphFields.nodes).map((x) => {
+  const nodeOptions = getFieldNames(graphFields.nodes).map((x) => {
     return { id: x, label: x };
   });
 
-  nodeLabelOptions = [...defaultLabelOptions, ...nodeLabelOptions];
+  const nodeLabelOptions = [...defaultLabelOptions, ...nodeOptions];
 
   const numericNodeOptions = getFieldNames(graphFields.nodes, [
     'integer',
@@ -138,7 +138,7 @@ const OptionsPanel = () => {
                     nodeColorForm,
                     nodeStyle,
                     updateNodeStyle,
-                    { 'legend[0].options': nodeLabelOptions },
+                    { 'legend[0].options': nodeOptions },
                   )}
                 />
                 <SimpleForm
