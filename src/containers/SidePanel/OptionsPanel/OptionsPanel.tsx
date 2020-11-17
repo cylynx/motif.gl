@@ -31,7 +31,7 @@ import {
 } from './constants';
 
 const defaultLabelOptions = [
-  { id: 'label', label: 'label (default)' },
+  { id: 'id', label: 'id' },
   { id: 'none', label: 'None' },
 ];
 
@@ -43,11 +43,9 @@ const OptionsPanel = () => {
     (state) => getGraph(state).graphFlatten.metadata.fields,
   );
 
-  let nodeLabelOptions = getFieldNames(graphFields.nodes)
-    .map((x) => {
-      return { id: x, label: x };
-    })
-    .filter((x) => x.id !== 'label');
+  let nodeLabelOptions = getFieldNames(graphFields.nodes).map((x) => {
+    return { id: x, label: x };
+  });
 
   nodeLabelOptions = [...defaultLabelOptions, ...nodeLabelOptions];
 
@@ -58,11 +56,9 @@ const OptionsPanel = () => {
     return { id: x, label: x };
   });
 
-  let edgeLabelOptions = getFieldNames(graphFields.edges)
-    .map((x) => {
-      return { id: x, label: x };
-    })
-    .filter((x) => x.id !== 'label');
+  let edgeLabelOptions = getFieldNames(graphFields.edges).map((x) => {
+    return { id: x, label: x };
+  });
 
   edgeLabelOptions = [...defaultLabelOptions, ...edgeLabelOptions];
 
