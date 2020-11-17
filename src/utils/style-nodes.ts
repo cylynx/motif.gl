@@ -1,6 +1,9 @@
 /* eslint-disable no-param-reassign */
+import colorbrewer from 'colorbrewer';
 import get from 'lodash/get';
+import isUndefined from 'lodash/isUndefined';
 import * as Graph from '../containers/Graph/types';
+import { clamp } from './data-utils';
 
 /**
  * Main function to style nodes
@@ -16,6 +19,15 @@ export const styleNodes = (
   // Separated out as it cannot be done in the loop
   if (nodeStyleOptions.size && nodeStyleOptions.size.id !== 'fixed') {
     styleNodeSizeByProp(data, nodeStyleOptions.size);
+  }
+  // Assign default color mapping
+  if (
+    nodeStyleOptions.color &&
+    nodeStyleOptions.color.id === 'legend' &&
+    nodeStyleOptions.color.variable &&
+    isUndefined(nodeStyleOptions.color.mapping)
+  ) {
+    generateDefaultColorMap(data.nodes, nodeStyleOptions.color);
   }
 
   // For perf reasons, batch style operations which require a single loop through nodes
@@ -33,6 +45,37 @@ export const styleNodes = (
       styleNodeLabel(node, nodeStyleOptions.label);
     }
   }
+};
+
+/**
+ * Generate default nodes color map
+ *
+ * @param {Graph.Node[]} nodes
+ * @param {Graph.NodeColor} options
+ */
+export const generateDefaultColorMap = (
+  nodes: Graph.Node[],
+  options: Graph.NodeColor,
+) => {
+  const uniqueKeys = [
+    ...new Set(
+      // @ts-ignore
+      nodes.map((node) => get(node, options.variable)),
+    ),
+  ];
+  const mapping = {};
+  const colors = colorbrewer.Set2[clamp(uniqueKeys.length, 3, 8)];
+  for (const [i, value] of uniqueKeys.entries()) {
+    if (i < 8) {
+      mapping[value] = colors[i];
+    } else {
+      // 8 colors, index 7
+      // eslint-disable-next-line prefer-destructuring
+      mapping[value] = colors[7];
+    }
+  }
+  // @ts-ignore
+  options.mapping = mapping;
 };
 
 /**
@@ -98,8 +141,15 @@ export const styleNodeLabel = (node: Graph.Node, label: string) => {
   }
 };
 
-export const styleNodeColor = (node: Graph.Node, color: string) => {
-  node.defaultStyle.color = color;
+export const styleNodeColor = (node: Graph.Node, option: Graph.NodeColor) => {
+  if (option.id === 'fixed') {
+    node.defaultStyle.color = option.value;
+  } else if (option.id === 'legend') {
+    const variable = get(node, option.variable);
+    if (variable) {
+      node.defaultStyle.color = option.mapping[variable];
+    }
+  }
 };
 
 export const styleFontSize = (node: Graph.Node, fontSize: number) => {

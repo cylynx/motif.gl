@@ -63,7 +63,10 @@ export const WidgetContainer = (props: WidgetContainerProps) => {
 };
 
 const defaultNodeStyle: StyleOptions['nodeStyle'] = {
-  color: 'teal',
+  color: {
+    id: 'fixed',
+    value: 'teal',
+  },
 };
 
 const Explorer = (props: ExplorerProps) => {

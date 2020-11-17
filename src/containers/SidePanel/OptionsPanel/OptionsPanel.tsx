@@ -133,11 +133,12 @@ const OptionsPanel = () => {
                     { options: nodeLabelOptions },
                   )}
                 />
-                <SimpleForm
-                  data={genSimpleForm(
+                <NestedForm
+                  data={genNestedForm(
                     nodeColorForm,
                     nodeStyle,
                     updateNodeStyle,
+                    { 'legend[0].options': nodeLabelOptions },
                   )}
                 />
                 <SimpleForm

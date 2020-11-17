@@ -89,9 +89,24 @@ export type NodeSizeProperty = {
 
 export type NodeSize = NodeSizeFixed | NodeSizeDegree | NodeSizeProperty;
 
+export type NodeColorFixed = {
+  id: 'fixed';
+  value: string;
+};
+
+export type NodeColorLegend = {
+  id: 'legend';
+  variable: string;
+  /** Map of variable keys to color strings */
+  mapping: {
+    [key: string]: string;
+  };
+};
+
+export type NodeColor = NodeColorFixed | NodeColorLegend;
 export interface NodeStyleOptions {
   size?: NodeSize;
-  color?: string;
+  color?: NodeColor;
   fontSize?: number;
   label?: string;
 }
