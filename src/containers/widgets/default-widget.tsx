@@ -1,5 +1,4 @@
 import React from 'react';
-import { Block } from 'baseui/block';
 import { LeftLayer, BottomRightLayer, TopRightLayer } from './layer';
 import InvestigateTimeBar from '../InvestigateTimeBar';
 import Toolbar from '../Toolbar';
@@ -30,14 +29,6 @@ const defaultWidgetList: WidgetItem[] = [
         <OptionsPanel />
       </LeftLayer>
     ),
-    position: 'top',
-    active: false,
-  },
-  {
-    id: 'layer2',
-    group: 'main',
-    icon: <IconButton id='layer2' group='main' icon={<Icon.Tick />} />,
-    widget: <Block />,
     position: 'top',
     active: false,
   },
