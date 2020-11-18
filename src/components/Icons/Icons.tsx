@@ -13,6 +13,7 @@ import {
   HiOutlineCog,
   HiOutlineZoomIn,
   HiOutlineZoomOut,
+  HiOutlineCamera,
 } from 'react-icons/hi';
 import {
   BiLayer,
@@ -27,6 +28,7 @@ import {
   BiRedo,
   BiListUl,
   BiNetworkChart,
+  BiSave,
 } from 'react-icons/bi';
 import { VscSymbolKey, VscCircleOutline } from 'react-icons/vsc';
 import { IconBaseProps } from 'react-icons';
@@ -193,4 +195,16 @@ export const Legend = ({ children, size = 16, ...rest }: IconBaseProps) => (
   <BiListUl size={size} {...rest}>
     {children}
   </BiListUl>
+);
+
+export const Camera = ({ children, size = 16, ...rest }: IconBaseProps) => (
+  <HiOutlineCamera size={size} {...rest}>
+    {children}
+  </HiOutlineCamera>
+);
+
+export const Save = ({ children, size = 16, ...rest }: IconBaseProps) => (
+  <BiSave size={size} {...rest}>
+    {children}
+  </BiSave>
 );
