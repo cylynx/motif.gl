@@ -2,16 +2,17 @@ import React, { Fragment } from 'react';
 import { useStyletron } from 'baseui';
 import { useDispatch, useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
-import { LabelSmall } from 'baseui/typography';
+import { Button } from 'baseui/button';
+import { FormControl } from 'baseui/form-control';
+import { Select } from 'baseui/select';
+import { LabelSmall, ParagraphSmall } from 'baseui/typography';
 import { changeNodeStyle } from '../../redux/graph-slice';
 import { getGraph } from '../../redux';
-import { NestedForm, genNestedForm } from '../../components/form';
-import { nodeColorForm } from '../SidePanel/OptionsPanel';
 import { getFieldNames } from '../../utils/graph-utils';
 
 const MAX_LEGEND_SIZE = 8;
 
-const Legend = ({ data }: { [key: string]: string }) => {
+const Legend = ({ data }: { data: { [key: string]: string } }) => {
   const [css] = useStyletron();
   let valueArr = Object.keys(data);
   let colorArr = Object.values(data);
@@ -49,6 +50,20 @@ const LegendPopover = () => {
   const nodeStyle = useSelector(
     (state) => getGraph(state).styleOptions.nodeStyle,
   );
+
+  let selectValue: any;
+  if (
+    nodeStyle.color &&
+    nodeStyle.color.id === 'legend' &&
+    nodeStyle.color.mapping
+  ) {
+    selectValue = [
+      { id: nodeStyle.color.variable, label: nodeStyle.color.variable },
+    ];
+  } else {
+    selectValue = [];
+  }
+
   const graphFields = useSelector(
     (state) => getGraph(state).graphFlatten.metadata.fields,
   );
@@ -57,18 +72,43 @@ const LegendPopover = () => {
     return { id: x, label: x };
   });
 
-  const updateNodeStyle = (data: any) => dispatch(changeNodeStyle(data));
+  const updateNodeStyle = (data: any) => {
+    const dispatchData = { color: { id: 'legend', variable: data[0].id } };
+    dispatch(changeNodeStyle(dispatchData));
+  };
+
+  const switchToFixedColor = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const dispatchData = { color: { id: 'fixed' } };
+    dispatch(changeNodeStyle(dispatchData));
+  };
 
   return (
     <Block padding='10px' width='300px'>
-      <NestedForm
-        data={genNestedForm(nodeColorForm, nodeStyle, updateNodeStyle, {
-          'legend[0].options': nodeOptions,
-        })}
-      />
-      {nodeStyle.color.id === 'legend' && nodeStyle.color.mapping && (
-        // @ts-ignore
-        <Legend data={nodeStyle.color.mapping} />
+      <FormControl label='Legend selection'>
+        <Select
+          options={nodeOptions}
+          onChange={(params: any) => updateNodeStyle(params.value)}
+          size='compact'
+          clearable={false}
+          value={selectValue}
+        />
+      </FormControl>
+      {nodeStyle.color &&
+      nodeStyle.color.id === 'legend' &&
+      nodeStyle.color.mapping ? (
+        <Fragment>
+          <Legend data={nodeStyle.color.mapping} />
+          <Button
+            kind='tertiary'
+            size='compact'
+            onClick={(e) => switchToFixedColor(e)}
+          >
+            Switch to fixed color
+          </Button>
+        </Fragment>
+      ) : (
+        <ParagraphSmall>Select a variable to map as legend</ParagraphSmall>
       )}
     </Block>
   );
