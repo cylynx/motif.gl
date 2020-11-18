@@ -101,6 +101,7 @@ const SimpleForm = ({ data }: { data: SimpleFormData }) => {
                     value={value}
                     size='compact'
                     clearable={false}
+                    maxDropdownHeight='300px'
                     {...rest}
                   />
                 );

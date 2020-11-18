@@ -194,6 +194,7 @@ const NestedForm = ({ data = testData }: { data: NestedFormData }) => {
                 size='compact'
                 clearable={false}
                 value={value}
+                maxDropdownHeight='300px'
               />
             )}
           />
@@ -233,6 +234,7 @@ const NestedForm = ({ data = testData }: { data: NestedFormData }) => {
                           value={value}
                           size='compact'
                           clearable={false}
+                          maxDropdownHeight='300px'
                           {...rest}
                         />
                       );
