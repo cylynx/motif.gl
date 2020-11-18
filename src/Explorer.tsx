@@ -65,7 +65,7 @@ export const WidgetContainer = (props: WidgetContainerProps) => {
 const defaultNodeStyle: StyleOptions['nodeStyle'] = {
   color: {
     id: 'fixed',
-    value: 'teal',
+    value: '#66c2a5',
   },
 };
 
