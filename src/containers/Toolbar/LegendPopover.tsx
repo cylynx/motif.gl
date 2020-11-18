@@ -20,7 +20,7 @@ const Legend = ({ data }: { data: { [key: string]: string } }) => {
     valueArr = valueArr.slice(0, MAX_LEGEND_SIZE);
     valueArr.push('Others');
     colorArr = colorArr.slice(0, MAX_LEGEND_SIZE);
-    colorArr.push(colorArr[MAX_LEGEND_SIZE - 1]);
+    colorArr.push('grey');
   }
   return (
     <Fragment>
