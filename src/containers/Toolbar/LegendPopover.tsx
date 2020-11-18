@@ -99,13 +99,15 @@ const LegendPopover = () => {
       nodeStyle.color.mapping ? (
         <Fragment>
           <Legend data={nodeStyle.color.mapping} />
-          <Button
-            kind='tertiary'
-            size='compact'
-            onClick={(e) => switchToFixedColor(e)}
-          >
-            Switch to fixed color
-          </Button>
+          <Block display='flex' justifyContent='flex-end'>
+            <Button
+              kind='tertiary'
+              size='compact'
+              onClick={(e) => switchToFixedColor(e)}
+            >
+              Switch to fixed color
+            </Button>
+          </Block>
         </Fragment>
       ) : (
         <ParagraphSmall>Select a variable to map as legend</ParagraphSmall>
