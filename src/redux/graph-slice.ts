@@ -252,7 +252,7 @@ const graph = createSlice({
     changeNodeStyle(
       state,
       action: PayloadAction<{
-        key: any;
+        [key: string]: any;
       }>,
     ) {
       const { selectTimeRange, accessors } = state;
@@ -264,7 +264,7 @@ const graph = createSlice({
     changeEdgeStyle(
       state,
       action: PayloadAction<{
-        key: any;
+        [key: string]: any;
       }>,
     ) {
       const { selectTimeRange, accessors } = state;

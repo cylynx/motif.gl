@@ -6,7 +6,8 @@ import * as Icon from '../../components/Icons';
 import { GraphRefContext } from '../Graph';
 import { resetState } from '../../redux/graph-slice';
 import ToolbarButton, { ToolbarItem } from './ToolbarButton';
-import PopoverOption from './PopoverOption';
+import SettingsPopover from './SettingsPopover';
+import LegendPopover from './LegendPopover';
 
 const MIN_ZOOM = 0.1;
 const MAX_ZOOM = 10;
@@ -40,14 +41,22 @@ const Toolbar = () => {
   const menuItems: ToolbarItem[] = [
     {
       key: 1,
-      name: 'Graph Settings',
+      name: 'Settings',
       icon: <Icon.Gear size={18} />,
       isDisabled: false,
-      popoverContent: () => <PopoverOption />,
+      popoverContent: () => <SettingsPopover />,
       onClick: null,
     },
     {
       key: 2,
+      name: 'Legend',
+      icon: <Icon.Legend size={18} />,
+      isDisabled: false,
+      popoverContent: () => <LegendPopover />,
+      onClick: null,
+    },
+    {
+      key: 3,
       name: 'Full Screen',
       icon: <Icon.FullScreen size={18} />,
       isDisabled: false,
@@ -55,7 +64,7 @@ const Toolbar = () => {
       onClick: () => toggleFullScreen(),
     },
     {
-      key: 3,
+      key: 4,
       name: 'Undo',
       icon: <Icon.Undo size={22} />,
       isDisabled: false,
@@ -63,7 +72,7 @@ const Toolbar = () => {
       onClick: () => dispatch(UndoActionCreators.undo()),
     },
     {
-      key: 4,
+      key: 5,
       name: 'Redo',
       icon: <Icon.Redo size={22} />,
       isDisabled: false,
@@ -71,7 +80,7 @@ const Toolbar = () => {
       onClick: () => dispatch(UndoActionCreators.redo()),
     },
     {
-      key: 5,
+      key: 6,
       name: 'Zoom In',
       icon: <Icon.ZoomIn size={18} />,
       isDisabled: false,
@@ -79,7 +88,7 @@ const Toolbar = () => {
       onClick: () => handleGraphZoom(true),
     },
     {
-      key: 6,
+      key: 7,
       name: 'Zoom Out',
       icon: <Icon.ZoomOut size={18} />,
       isDisabled: false,
@@ -87,7 +96,7 @@ const Toolbar = () => {
       onClick: () => handleGraphZoom(false),
     },
     {
-      key: 7,
+      key: 8,
       name: 'Clear',
       icon: <Icon.X size={18} />,
       isDisabled: false,
