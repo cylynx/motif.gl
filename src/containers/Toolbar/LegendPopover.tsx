@@ -92,6 +92,7 @@ const LegendPopover = () => {
           size='compact'
           clearable={false}
           value={selectValue}
+          maxDropdownHeight='300px'
         />
       </FormControl>
       {nodeStyle.color &&
