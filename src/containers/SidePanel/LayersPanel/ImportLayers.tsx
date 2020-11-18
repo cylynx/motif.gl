@@ -141,7 +141,7 @@ const ImportLayers = () => {
   };
 
   return (
-    <Block overflow='auto' maxHeight='calc(100vh - 200px - 150px)'>
+    <Block overflow='auto'>
       <DndList
         items={importItems}
         onChangeOrder={onChangeOrder}
