@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'baseui/button';
 import { Block } from 'baseui/block';
 import { ParagraphSmall } from 'baseui/typography';
-import { Statistic, FullButton } from '../../../components/ui';
+import { Statistic } from '../../../components/ui';
 import ToggleTokens from '../../../components/ToggleTokens';
 import Accordion from '../../../components/Accordion';
 import * as Icon from '../../../components/Icons';
@@ -13,7 +13,6 @@ import {
   updateNodeSelection,
   updateEdgeSelection,
 } from '../../../redux/graph-slice';
-import ExportDataButton from '../ExportDataButton';
 import ImportLayers from './ImportLayers';
 import { getGraph } from '../../../redux';
 import Header from '../Header';
@@ -128,21 +127,7 @@ const LayersPanel = () => {
         <ImportDataButton onClick={onClickImport} />
       </Block>
       <ImportLayers />
-
-      <Block bottom='30px' position='absolute' left='20px' right='20px'>
-        <Block width='100%' display='flex' justifyContent='space-between'>
-          <FullButton
-            width='140px'
-            kind='primary'
-            size='compact'
-            onClick={clearState}
-          >
-            Clear All
-          </FullButton>
-          <ExportDataButton />
-        </Block>
-        <br />
-      </Block>
+      <Block marginBottom='scale1000' />
     </Fragment>
   );
 };
