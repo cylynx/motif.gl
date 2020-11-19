@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import html2canvas from 'html2canvas';
 import { Block } from 'baseui/block';
 import { useDispatch, useSelector } from 'react-redux';
-import { getGraph, getUI } from '../../redux';
+import { getGraphList, getUI } from '../../redux';
 import { fetchError } from '../../redux/ui-slice';
 import { resetState } from '../../redux/graph-slice';
 import * as Icon from '../../components/Icons';
@@ -11,7 +11,7 @@ import HeaderButton, { HeaderButtonProp } from './HeaderButton';
 
 const Header = () => {
   const [value, setValue] = useState(useSelector((state) => getUI(state).name));
-  const exportGraph = useSelector((state) => getGraph(state).graphList);
+  const exportGraph = useSelector((state) => getGraphList(state));
   const dispatch = useDispatch();
 
   const exportPNG = () => {
