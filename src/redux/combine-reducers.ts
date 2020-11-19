@@ -56,6 +56,8 @@ export const getGraph = (state: CombinedReducer) =>
   clientState(state).graph.present;
 export const getAccessors = (state: CombinedReducer): Graph.Accessors =>
   clientState(state).graph.present.accessors;
+export const getGraphList = (state: CombinedReducer): Graph.GraphList =>
+  clientState(state).graph.present.graphList;
 export const getGraphFlatten = (state: CombinedReducer): Graph.GraphData =>
   clientState(state).graph.present.graphFlatten;
 export const getStyleOptions = (state: CombinedReducer): Graph.StyleOptions =>

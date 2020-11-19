@@ -13,7 +13,7 @@ import { Statistic } from '../../../components/ui';
 import DndList from '../../../components/DndList';
 import { countProperty } from '../../../utils/graph-utils';
 import * as Graph from '../../Graph/types';
-import { getGraph, getGraphVisible, getAccessors } from '../../../redux';
+import { getGraphList, getGraphVisible, getAccessors } from '../../../redux';
 
 const StyledText = ({ children }: { children: React.ReactNode }) => (
   <ParagraphSmall
@@ -110,7 +110,7 @@ const LayerDetailed = ({
 
 const ImportLayers = () => {
   const dispatch = useDispatch();
-  const graphList = useSelector((state) => getGraph(state).graphList);
+  const graphList = useSelector((state) => getGraphList(state));
 
   const importItems = graphList.map((graph: Graph.GraphData, index: number) => {
     let title = `import ${index}`;
