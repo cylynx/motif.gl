@@ -22,15 +22,6 @@ export const styleNodes = (
   if (nodeStyleOptions.size && nodeStyleOptions.size.id !== 'fixed') {
     styleNodeSizeByProp(data, nodeStyleOptions.size);
   }
-  // Assign default color mapping
-  if (
-    nodeStyleOptions.color &&
-    nodeStyleOptions.color.id === 'legend' &&
-    nodeStyleOptions.color.variable &&
-    isUndefined(nodeStyleOptions.color.mapping)
-  ) {
-    generateDefaultColorMap(data.nodes, nodeStyleOptions.color);
-  }
 
   // For perf reasons, batch style operations which require a single loop through nodes
   for (const node of data.nodes) {

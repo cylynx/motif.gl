@@ -14,14 +14,14 @@ import {
   updateEdgeSelection,
 } from '../../../redux/graph-slice';
 import ImportLayers from './ImportLayers';
-import { getGraph } from '../../../redux';
+import { getGraph, getGraphVisible, getGraphFlatten } from '../../../redux';
 import Header from '../Header';
 
 const LayersPanel = () => {
   const dispatch = useDispatch();
   const graphList = useSelector((state) => getGraph(state).graphList);
-  const graphFlatten = useSelector((state) => getGraph(state).graphFlatten);
-  const graphVisible = useSelector((state) => getGraph(state).graphVisible);
+  const graphFlatten = useSelector((state) => getGraphFlatten(state));
+  const graphVisible = useSelector((state) => getGraphVisible(state));
   const nodeFields = useSelector((state) => getGraph(state).nodeSelection);
   const edgeFields = useSelector((state) => getGraph(state).edgeSelection);
   const haveData = graphFlatten && graphVisible;
