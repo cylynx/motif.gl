@@ -1,6 +1,6 @@
 import { combineReducers, createSelector } from '@reduxjs/toolkit';
 import undoable, { excludeAction, GroupByFunction } from 'redux-undo';
-import cloneDeep from 'lodash/cloneDeep';
+import produce from 'immer';
 import * as Graph from '../containers/Graph/types';
 import uiReducer from './ui-slice';
 import widgetReducer from '../containers/widgets/widget-slice';
@@ -67,6 +67,9 @@ export const getStyleOptions = (state: CombinedReducer): Graph.StyleOptions =>
 export const getGraphVisible = createSelector(
   [getGraphFlatten, getStyleOptions],
   (graphFlatten, styleOptions) => {
-    return deriveVisibleGraph(cloneDeep(graphFlatten), styleOptions);
+    const graphVisible = produce(graphFlatten, (draftState) => {
+      deriveVisibleGraph(draftState, styleOptions);
+    });
+    return graphVisible;
   },
 );
