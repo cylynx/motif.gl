@@ -4,16 +4,15 @@
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import isEmpty from 'lodash/isEmpty';
-import cloneDeep from 'lodash/cloneDeep';
+import isUndefined from 'lodash/isUndefined';
 import * as LAYOUT from '../constants/layout-options';
 import * as Graph from '../containers/Graph/types';
 import {
   combineProcessedData,
-  deriveVisibleGraph,
   datatoTS,
   chartRange,
-  filterDataByTime,
 } from '../utils/graph-utils';
+import { generateDefaultColorMap } from '../utils/style-nodes';
 
 export const updateSelections = (state: GraphState, data: Graph.GraphData) => {
   const currentNodeFields = state.nodeSelection.map((x) => x.id);
@@ -42,28 +41,6 @@ export const updateSelections = (state: GraphState, data: Graph.GraphData) => {
 
 /**
  * Meant to be use on graph-slice state only
- * Update visible graph object by re-applying filtering and styling
- * Does not affect graphList / graphFlatten
- *
- * @param {GraphState} state
- * @param {(Graph.TimeRange | [])} timeRange
- * @param {Graph.Accessors} accessors
- */
-export const updateVisible = (
-  state: GraphState,
-  timeRange: Graph.TimeRange | [],
-  accessors: Graph.Accessors,
-) => {
-  const newFilteredData = filterDataByTime(
-    state.graphFlatten,
-    timeRange,
-    accessors.edgeTime,
-  );
-  state.graphVisible = deriveVisibleGraph(newFilteredData, state.styleOptions);
-};
-
-/**
- * Meant to be use on graph-slice state only
  * Updates graphFlatten onwards
  *
  * @param {GraphState} state
@@ -84,21 +61,9 @@ export const updateAll = (
       : chartRange([tsData[0][0], tsData[tsData.length - 1][0]]);
     // Update selectTimeRange to be timeRange always
     state.selectTimeRange = state.timeRange;
-    // Filter graphFlatten based on selectTimeRange
-    const newFilteredData = filterDataByTime(
-      state.graphFlatten,
-      state.timeRange,
-      accessors.edgeTime,
-    );
-    // Clone here to avoid messing up graphFlatten
-    state.graphVisible = deriveVisibleGraph(
-      cloneDeep(newFilteredData),
-      state.styleOptions,
-    );
   } else {
     // Reset data state when all data is deleted
     state.graphFlatten = initialState.graphFlatten;
-    state.graphVisible = initialState.graphVisible;
     state.tsData = initialState.tsData;
     state.timeRange = initialState.timeRange;
     state.selectTimeRange = initialState.selectTimeRange;
@@ -119,7 +84,6 @@ export interface GraphState {
   styleOptions: Graph.StyleOptions;
   graphList: Graph.GraphList;
   graphFlatten: Graph.GraphData;
-  graphVisible: { nodes: Graph.Node[]; edges: Graph.Edge[] };
   tsData: Graph.TimeSeries;
   timeRange: Graph.TimeRange | [];
   selectTimeRange: Graph.TimeRange | [];
@@ -163,7 +127,6 @@ const initialState: GraphState = {
     edges: [],
     metadata: { fields: { nodes: [], edges: [] } },
   },
-  graphVisible: { nodes: [], edges: [] },
   tsData: [],
   // Set a large interval to display the data on initialize regardless of resetView
   timeRange: [-2041571596000, 2041571596000],
@@ -231,7 +194,6 @@ const graph = createSlice({
     changeOptions(state, action: PayloadAction<{ key: string; value: any }>) {
       const { key, value } = action.payload;
       state.styleOptions[key] = value;
-      updateVisible(state, state.selectTimeRange, state.accessors);
     },
     changeLayout(
       state,
@@ -255,11 +217,20 @@ const graph = createSlice({
         [key: string]: any;
       }>,
     ) {
-      const { selectTimeRange, accessors } = state;
       Object.entries(action.payload).forEach(([key, value]) => {
         state.styleOptions.nodeStyle[key] = value;
+        // Assign default color mapping for legend
+        if (
+          key === 'color' &&
+          value.id === 'legend' &&
+          isUndefined(value.mapping)
+        ) {
+          generateDefaultColorMap(
+            state.graphFlatten.nodes,
+            state.styleOptions.nodeStyle.color,
+          );
+        }
       });
-      updateVisible(state, selectTimeRange, accessors);
     },
     changeEdgeStyle(
       state,
@@ -267,11 +238,9 @@ const graph = createSlice({
         [key: string]: any;
       }>,
     ) {
-      const { selectTimeRange, accessors } = state;
       Object.entries(action.payload).forEach(([key, value]) => {
         state.styleOptions.edgeStyle[key] = value;
       });
-      updateVisible(state, selectTimeRange, accessors);
     },
     processGraphResponse(
       state,
@@ -290,10 +259,10 @@ const graph = createSlice({
       const selectedTimeRange = action.payload;
       state.selectTimeRange = selectedTimeRange;
     },
-    timeRangeChange(state, action) {
-      const { timeRange, accessors } = action.payload;
+    timeRangeChange(_state, _action) {
+      // const { timeRange, accessors } = action.payload;
       // Filter out all relevant edges and store from & to node id
-      updateVisible(state, timeRange, accessors);
+      // updateVisible(state, timeRange, accessors);
     },
     setAccessors(state, action: PayloadAction<Graph.Accessors>) {
       state.accessors = action.payload;

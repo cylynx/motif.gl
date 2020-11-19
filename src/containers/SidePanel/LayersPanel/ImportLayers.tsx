@@ -13,7 +13,7 @@ import { Statistic } from '../../../components/ui';
 import DndList from '../../../components/DndList';
 import { countProperty } from '../../../utils/graph-utils';
 import * as Graph from '../../Graph/types';
-import { getGraph } from '../../../redux';
+import { getGraphList, getGraphVisible, getAccessors } from '../../../redux';
 
 const StyledText = ({ children }: { children: React.ReactNode }) => (
   <ParagraphSmall
@@ -34,8 +34,8 @@ const LayerDetailed = ({
   index: number;
 }) => {
   const dispatch = useDispatch();
-  const graphVisible = useSelector((state) => getGraph(state).graphVisible);
-  const accessors = useSelector((state) => getGraph(state).accessors);
+  const graphVisible = useSelector((state) => getGraphVisible(state));
+  const accessors = useSelector((state) => getAccessors(state));
   const visibleNodeList = graphVisible.nodes.map((x) => x.id);
   const visibleEdgeList = graphVisible.edges.map((x) => x.id);
   const hiddenNodes = graph.nodes.filter(
@@ -110,7 +110,7 @@ const LayerDetailed = ({
 
 const ImportLayers = () => {
   const dispatch = useDispatch();
-  const graphList = useSelector((state) => getGraph(state).graphList);
+  const graphList = useSelector((state) => getGraphList(state));
 
   const importItems = graphList.map((graph: Graph.GraphData, index: number) => {
     let title = `import ${index}`;
@@ -141,7 +141,7 @@ const ImportLayers = () => {
   };
 
   return (
-    <Block overflow='auto' maxHeight='calc(100vh - 200px - 150px)'>
+    <Block overflow='auto'>
       <DndList
         items={importItems}
         onChangeOrder={onChangeOrder}

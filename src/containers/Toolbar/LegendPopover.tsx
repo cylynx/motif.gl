@@ -7,7 +7,7 @@ import { FormControl } from 'baseui/form-control';
 import { Select } from 'baseui/select';
 import { LabelSmall, ParagraphSmall } from 'baseui/typography';
 import { changeNodeStyle } from '../../redux/graph-slice';
-import { getGraph } from '../../redux';
+import { getStyleOptions, getGraphFlatten } from '../../redux';
 import { getFieldNames } from '../../utils/graph-utils';
 
 const MAX_LEGEND_SIZE = 8;
@@ -20,7 +20,7 @@ const Legend = ({ data }: { data: { [key: string]: string } }) => {
     valueArr = valueArr.slice(0, MAX_LEGEND_SIZE);
     valueArr.push('Others');
     colorArr = colorArr.slice(0, MAX_LEGEND_SIZE);
-    colorArr.push(colorArr[MAX_LEGEND_SIZE - 1]);
+    colorArr.push('grey');
   }
   return (
     <Fragment>
@@ -47,9 +47,7 @@ const Legend = ({ data }: { data: { [key: string]: string } }) => {
 
 const LegendPopover = () => {
   const dispatch = useDispatch();
-  const nodeStyle = useSelector(
-    (state) => getGraph(state).styleOptions.nodeStyle,
-  );
+  const nodeStyle = useSelector((state) => getStyleOptions(state).nodeStyle);
 
   let selectValue: any;
   if (
@@ -65,7 +63,7 @@ const LegendPopover = () => {
   }
 
   const graphFields = useSelector(
-    (state) => getGraph(state).graphFlatten.metadata.fields,
+    (state) => getGraphFlatten(state).metadata.fields,
   );
 
   const nodeOptions = getFieldNames(graphFields.nodes).map((x) => {
@@ -84,7 +82,13 @@ const LegendPopover = () => {
   };
 
   return (
-    <Block padding='10px' width='300px'>
+    <Block
+      width='300px'
+      paddingLeft='scale600'
+      paddingRight='scale600'
+      paddingBottom='scale600'
+      paddingTop='scale400'
+    >
       <FormControl label='Legend selection'>
         <Select
           options={nodeOptions}
@@ -92,6 +96,7 @@ const LegendPopover = () => {
           size='compact'
           clearable={false}
           value={selectValue}
+          maxDropdownHeight='300px'
         />
       </FormControl>
       {nodeStyle.color &&
@@ -99,13 +104,15 @@ const LegendPopover = () => {
       nodeStyle.color.mapping ? (
         <Fragment>
           <Legend data={nodeStyle.color.mapping} />
-          <Button
-            kind='tertiary'
-            size='compact'
-            onClick={(e) => switchToFixedColor(e)}
-          >
-            Switch to fixed color
-          </Button>
+          <Block display='flex' justifyContent='flex-end'>
+            <Button
+              kind='tertiary'
+              size='compact'
+              onClick={(e) => switchToFixedColor(e)}
+            >
+              Switch to fixed color
+            </Button>
+          </Block>
         </Fragment>
       ) : (
         <ParagraphSmall>Select a variable to map as legend</ParagraphSmall>

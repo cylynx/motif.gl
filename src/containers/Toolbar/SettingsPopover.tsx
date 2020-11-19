@@ -11,27 +11,35 @@ import {
   changeNodeStyle,
   changeEdgeStyle,
 } from '../../redux/graph-slice';
-import { getGraph } from '../../redux';
+import { getGraph, getStyleOptions } from '../../redux';
+import { getFieldNames } from '../../utils/graph-utils';
+import * as LAYOUT from '../../constants/layout-options';
 import { NestedForm, genNestedForm } from '../../components/form';
 import { nodeSizeForm, edgeWidthForm } from '../SidePanel/OptionsPanel';
 
-const layoutNames = [
-  { label: 'Concentric', id: 'concentric' },
-  { label: 'Force-Directed', id: 'force' },
-  { label: 'Radial', id: 'radial' },
-  { label: 'Grid', id: 'grid' },
-  { label: 'Dagre', id: 'dagre' },
-  { label: 'Circular', id: 'circle' },
-];
-
 const SettingsPopover = () => {
   const dispatch = useDispatch();
-  const { nodeStyle, edgeStyle, resetView, groupEdges } = useSelector(
-    (state) => getGraph(state).styleOptions,
+  const {
+    nodeStyle,
+    edgeStyle,
+    resetView,
+    groupEdges,
+    layout,
+  } = useSelector((state) => getStyleOptions(state));
+  const graphFields = useSelector(
+    (state) => getGraph(state).graphFlatten.metadata.fields,
   );
-  const layoutName = useSelector(
-    (state) => getGraph(state).styleOptions.layout.name,
-  );
+  const numericNodeOptions = getFieldNames(graphFields.nodes, [
+    'integer',
+    'real',
+  ]).map((x) => {
+    return { id: x, label: x };
+  });
+  const numericEdgeOptions =
+    getFieldNames(graphFields.edges, ['integer', 'real']).map((x) => {
+      return { id: x, label: x };
+    }) || [];
+
   const findID = (options: { label: string; id: string }[], id: string) =>
     options.find((x) => x.id === id);
 
@@ -46,13 +54,19 @@ const SettingsPopover = () => {
   const updateEdgeStyle = (data: any) => dispatch(changeEdgeStyle(data));
 
   return (
-    <Block width='300px' padding='10px'>
+    <Block
+      width='300px'
+      paddingLeft='scale600'
+      paddingRight='scale600'
+      paddingBottom='scale600'
+      paddingTop='scale400'
+    >
       <FormControl label='Graph Layout'>
         <Select
-          options={layoutNames}
+          options={LAYOUT.LAYOUT_NAMES}
           size='compact'
           clearable={false}
-          value={[findID(layoutNames, layoutName)]}
+          value={[findID(LAYOUT.LAYOUT_NAMES, layout.name)]}
           onChange={(params) =>
             dispatch(
               changeLayout({ layout: { id: params.option.id as string } }),
@@ -61,10 +75,21 @@ const SettingsPopover = () => {
         />
       </FormControl>
       <NestedForm
-        data={genNestedForm(nodeSizeForm, nodeStyle, updateNodeStyle)}
+        data={genNestedForm(nodeSizeForm, nodeStyle, updateNodeStyle, {
+          'property[0].options': numericNodeOptions,
+          'property[0].value':
+            numericNodeOptions.length > 0 ? numericNodeOptions[0].id : null,
+
+          labelPosition: 'top',
+        })}
       />
       <NestedForm
-        data={genNestedForm(edgeWidthForm, edgeStyle, updateEdgeStyle)}
+        data={genNestedForm(edgeWidthForm, edgeStyle, updateEdgeStyle, {
+          'property[0].options': numericEdgeOptions,
+          'property[0].value':
+            numericEdgeOptions.length > 0 ? numericEdgeOptions[0].id : null,
+          labelPosition: 'top',
+        })}
       />
       <TriGrid
         startComponent={

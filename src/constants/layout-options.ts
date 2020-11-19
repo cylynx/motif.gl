@@ -34,3 +34,12 @@ export const OPTIONS: Graph.Layout[] = [
   { name: 'concentric', options: CONCENTRIC_DEFAULT },
   { name: 'force' },
 ];
+
+export const LAYOUT_NAMES = [
+  { label: 'Concentric', id: 'concentric' },
+  { label: 'Force-Directed', id: 'force' },
+  { label: 'Radial', id: 'radial' },
+  { label: 'Grid', id: 'grid' },
+  { label: 'Sequential', id: 'dagre' },
+  { label: 'Circular', id: 'circle' },
+];

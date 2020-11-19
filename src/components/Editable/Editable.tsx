@@ -131,7 +131,7 @@ const Editable = ({
                 style: { paddingBottom: 0 },
               },
               Input: {
-                style: { paddingLeft: '8px' },
+                style: { paddingLeft: '8px', paddingRight: 0 },
               },
               EndEnhancer: {
                 style: {

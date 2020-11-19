@@ -1,5 +1,7 @@
-import { combineReducers } from '@reduxjs/toolkit';
+import { combineReducers, createSelector } from '@reduxjs/toolkit';
 import undoable, { excludeAction, GroupByFunction } from 'redux-undo';
+import produce from 'immer';
+import * as Graph from '../containers/Graph/types';
 import uiReducer from './ui-slice';
 import widgetReducer from '../containers/widgets/widget-slice';
 import graphReducer, {
@@ -7,6 +9,7 @@ import graphReducer, {
   GraphState,
   setAccessors,
 } from './graph-slice';
+import { deriveVisibleGraph } from '../utils/graph-utils';
 
 // History group that collapses both actions into 1 undo/redo
 const undoGroup: GroupByFunction<GraphState> = (
@@ -51,5 +54,22 @@ export const getUI = (state: CombinedReducer) => clientState(state).ui;
 export const getWidget = (state: CombinedReducer) => clientState(state).widget;
 export const getGraph = (state: CombinedReducer) =>
   clientState(state).graph.present;
-export const getAccessors = (state: CombinedReducer) =>
+export const getAccessors = (state: CombinedReducer): Graph.Accessors =>
   clientState(state).graph.present.accessors;
+export const getGraphList = (state: CombinedReducer): Graph.GraphList =>
+  clientState(state).graph.present.graphList;
+export const getGraphFlatten = (state: CombinedReducer): Graph.GraphData =>
+  clientState(state).graph.present.graphFlatten;
+export const getStyleOptions = (state: CombinedReducer): Graph.StyleOptions =>
+  clientState(state).graph.present.styleOptions;
+
+// Selector to derive visible data
+export const getGraphVisible = createSelector(
+  [getGraphFlatten, getStyleOptions],
+  (graphFlatten, styleOptions) => {
+    const graphVisible = produce(graphFlatten, (draftState) => {
+      deriveVisibleGraph(draftState, styleOptions);
+    });
+    return graphVisible;
+  },
+);

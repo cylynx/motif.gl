@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'baseui/button';
 import { Block } from 'baseui/block';
 import { ParagraphSmall } from 'baseui/typography';
-import { Statistic, FullButton } from '../../../components/ui';
+import { Statistic } from '../../../components/ui';
 import ToggleTokens from '../../../components/ToggleTokens';
 import Accordion from '../../../components/Accordion';
 import * as Icon from '../../../components/Icons';
@@ -13,16 +13,20 @@ import {
   updateNodeSelection,
   updateEdgeSelection,
 } from '../../../redux/graph-slice';
-import ExportDataButton from '../ExportDataButton';
 import ImportLayers from './ImportLayers';
-import { getGraph } from '../../../redux';
+import {
+  getGraph,
+  getGraphList,
+  getGraphVisible,
+  getGraphFlatten,
+} from '../../../redux';
 import Header from '../Header';
 
 const LayersPanel = () => {
   const dispatch = useDispatch();
-  const graphList = useSelector((state) => getGraph(state).graphList);
-  const graphFlatten = useSelector((state) => getGraph(state).graphFlatten);
-  const graphVisible = useSelector((state) => getGraph(state).graphVisible);
+  const graphList = useSelector((state) => getGraphList(state));
+  const graphFlatten = useSelector((state) => getGraphFlatten(state));
+  const graphVisible = useSelector((state) => getGraphVisible(state));
   const nodeFields = useSelector((state) => getGraph(state).nodeSelection);
   const edgeFields = useSelector((state) => getGraph(state).edgeSelection);
   const haveData = graphFlatten && graphVisible;
@@ -128,21 +132,7 @@ const LayersPanel = () => {
         <ImportDataButton onClick={onClickImport} />
       </Block>
       <ImportLayers />
-
-      <Block bottom='30px' position='absolute' left='20px' right='20px'>
-        <Block width='100%' display='flex' justifyContent='space-between'>
-          <FullButton
-            width='140px'
-            kind='primary'
-            size='compact'
-            onClick={clearState}
-          >
-            Clear All
-          </FullButton>
-          <ExportDataButton />
-        </Block>
-        <br />
-      </Block>
+      <Block marginBottom='scale1000' />
     </Fragment>
   );
 };

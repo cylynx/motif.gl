@@ -1,7 +1,8 @@
 /* eslint-disable no-shadow */
 import React, { Fragment } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { FormControl } from 'baseui/form-control';
+import { Block } from 'baseui/block';
+import { LabelSmall } from 'baseui/typography';
 import { Select } from 'baseui/select';
 import { Input } from 'baseui/input';
 import { SimpleSlider } from '../ui';
@@ -9,6 +10,7 @@ import { SimpleSlider } from '../ui';
 export type SimpleFormData = {
   id: string;
   label: string;
+  labelPosition?: 'left' | 'top';
   value: any;
   type: 'input' | 'slider' | 'select';
   callback: (data: any) => void;
@@ -61,7 +63,7 @@ const cleanGetValues = (obj: any) => {
  * @return {*}
  */
 const SimpleForm = ({ data }: { data: SimpleFormData }) => {
-  const { id, label, value, type, callback, ...rest } = data;
+  const { id, label, labelPosition, value, type, callback, ...rest } = data;
   const { control, getValues } = useForm();
 
   const handleChange = (value: any, onChange: (v: any) => void) => {
@@ -87,7 +89,21 @@ const SimpleForm = ({ data }: { data: SimpleFormData }) => {
   return (
     <Fragment>
       <form>
-        <FormControl label={label}>
+        <Block
+          display={labelPosition === 'left' ? 'flex' : 'block'}
+          marginBottom={labelPosition === 'left' ? 'scale200' : 0}
+          marginTop={labelPosition === 'left' ? 'scale200' : 0}
+          alignItems='center'
+          justifyContent='space-between'
+        >
+          <LabelSmall
+            marginBottom='scale300'
+            marginTop='scale300'
+            marginRight='scale200'
+            width='100px'
+          >
+            {label}
+          </LabelSmall>
           <Controller
             name={id}
             control={control}
@@ -101,6 +117,7 @@ const SimpleForm = ({ data }: { data: SimpleFormData }) => {
                     value={value}
                     size='compact'
                     clearable={false}
+                    maxDropdownHeight='300px'
                     {...rest}
                   />
                 );
@@ -131,7 +148,7 @@ const SimpleForm = ({ data }: { data: SimpleFormData }) => {
               return component;
             }}
           />
-        </FormControl>
+        </Block>
       </form>
     </Fragment>
   );

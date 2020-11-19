@@ -12,7 +12,7 @@ export interface UiState {
   score: any;
 }
 
-const initialState: UiState = {
+export const initialStateUi: UiState = {
   name: '',
   currency: '',
   loading: false,
@@ -22,7 +22,7 @@ const initialState: UiState = {
 
 const ui = createSlice({
   name: 'ui',
-  initialState,
+  initialState: initialStateUi,
   reducers: {
     fetchBegin(state) {
       state.loading = true;

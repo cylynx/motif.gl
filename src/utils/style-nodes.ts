@@ -5,6 +5,8 @@ import isUndefined from 'lodash/isUndefined';
 import * as Graph from '../containers/Graph/types';
 import { clamp } from './data-utils';
 
+const MAX_LEGEND_SIZE = 8;
+
 /**
  * Main function to style nodes
  *
@@ -19,15 +21,6 @@ export const styleNodes = (
   // Separated out as it cannot be done in the loop
   if (nodeStyleOptions.size && nodeStyleOptions.size.id !== 'fixed') {
     styleNodeSizeByProp(data, nodeStyleOptions.size);
-  }
-  // Assign default color mapping
-  if (
-    nodeStyleOptions.color &&
-    nodeStyleOptions.color.id === 'legend' &&
-    nodeStyleOptions.color.variable &&
-    isUndefined(nodeStyleOptions.color.mapping)
-  ) {
-    generateDefaultColorMap(data.nodes, nodeStyleOptions.color);
   }
 
   // For perf reasons, batch style operations which require a single loop through nodes
@@ -64,14 +57,17 @@ export const generateDefaultColorMap = (
     ),
   ];
   const mapping = {};
-  const colors = colorbrewer.Set2[clamp(uniqueKeys.length, 3, 8)];
+  const colors = colorbrewer.Set2[clamp(uniqueKeys.length, 3, MAX_LEGEND_SIZE)];
   for (const [i, value] of uniqueKeys.entries()) {
-    if (i < 8) {
+    // Assign undefined or others to grey
+    if (i < MAX_LEGEND_SIZE && !isUndefined(value)) {
       mapping[value] = colors[i];
+    } else if (isUndefined(value)) {
+      // eslint-disable-next-line @typescript-eslint/dot-notation
+      mapping['undefined'] = 'grey';
     } else {
-      // 8 colors, index 7
       // eslint-disable-next-line prefer-destructuring
-      mapping[value] = colors[7];
+      mapping[value] = 'grey';
     }
   }
   // @ts-ignore
@@ -148,6 +144,8 @@ export const styleNodeColor = (node: Graph.Node, option: Graph.NodeColor) => {
     const variable = get(node, option.variable);
     if (variable) {
       node.defaultStyle.color = option.mapping[variable];
+    } else {
+      node.defaultStyle.color = 'grey';
     }
   }
 };
