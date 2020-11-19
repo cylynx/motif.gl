@@ -6,6 +6,7 @@ import { DEFAULT_EDGE_STYLE, DEFAULT_NODE_STYLE } from '../../Graph';
 export const layoutForm: NestedFormData = {
   id: 'layout',
   label: 'Layout',
+  labelPosition: 'left',
   value: 'concentric',
   callback: (data: any) => console.log(data),
   options: LAYOUT.LAYOUT_NAMES,
@@ -80,11 +81,12 @@ export const layoutForm: NestedFormData = {
 export const nodeSizeForm: NestedFormData = {
   id: 'size',
   label: 'Node Size',
+  labelPosition: 'left',
   value: 'fixed',
   callback: (data: any) => console.log(data),
   options: [
     { id: 'fixed', label: 'Fixed' },
-    { id: 'degree', label: 'Degree (number of connections)' },
+    { id: 'degree', label: 'Degree (no. of connections)' },
     { id: 'property', label: 'Property (user defined)' },
   ],
   fixed: [
@@ -132,6 +134,7 @@ export const nodeSizeForm: NestedFormData = {
 export const nodeColorForm: NestedFormData = {
   id: 'color',
   label: 'Node Color',
+  labelPosition: 'left',
   value: 'fixed',
   callback: (data: any) => console.log(data),
   options: [
@@ -166,6 +169,7 @@ export const nodeColorForm: NestedFormData = {
 export const nodeFontSizeForm: SimpleFormData = {
   id: 'fontSize',
   label: 'Font Size',
+  labelPosition: 'left',
   type: 'slider',
   value: 12,
   min: 0,
@@ -176,6 +180,7 @@ export const nodeFontSizeForm: SimpleFormData = {
 export const nodeLabelForm: SimpleFormData = {
   id: 'label',
   label: 'Label',
+  labelPosition: 'left',
   type: 'select',
   value: 'label',
   options: [{ id: 'label', label: 'label' }],
@@ -185,6 +190,7 @@ export const nodeLabelForm: SimpleFormData = {
 export const edgeWidthForm: NestedFormData = {
   id: 'width',
   label: 'Edge Width',
+  labelPosition: 'left',
   value: 'fixed',
   callback: (data: any) => console.log(data),
   options: [
@@ -228,6 +234,7 @@ export const edgeWidthForm: NestedFormData = {
 export const edgePatternForm: SimpleFormData = {
   id: 'pattern',
   label: 'Edge Pattern',
+  labelPosition: 'left',
   type: 'select',
   value: 'none',
   options: [
@@ -242,6 +249,7 @@ export const edgePatternForm: SimpleFormData = {
 export const edgeFontSizeForm: SimpleFormData = {
   id: 'fontSize',
   label: 'Font Size',
+  labelPosition: 'left',
   type: 'slider',
   value: 12,
   min: 0,
@@ -252,6 +260,7 @@ export const edgeFontSizeForm: SimpleFormData = {
 export const edgeLabelForm: SimpleFormData = {
   id: 'label',
   label: 'Label',
+  labelPosition: 'left',
   type: 'select',
   value: 'none',
   options: [{ id: 'none', label: 'None' }],

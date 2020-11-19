@@ -53,10 +53,14 @@ const SettingsPopover = () => {
         />
       </FormControl>
       <NestedForm
-        data={genNestedForm(nodeSizeForm, nodeStyle, updateNodeStyle)}
+        data={genNestedForm(nodeSizeForm, nodeStyle, updateNodeStyle, {
+          labelPosition: 'top',
+        })}
       />
       <NestedForm
-        data={genNestedForm(edgeWidthForm, edgeStyle, updateEdgeStyle)}
+        data={genNestedForm(edgeWidthForm, edgeStyle, updateEdgeStyle, {
+          labelPosition: 'top',
+        })}
       />
       <TriGrid
         startComponent={
