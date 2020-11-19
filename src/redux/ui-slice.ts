@@ -12,7 +12,7 @@ export interface UiState {
   score: any;
 }
 
-const initialState: UiState = {
+export const initialState: UiState = {
   name: '',
   currency: '',
   loading: false,
