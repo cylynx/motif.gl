@@ -50,14 +50,14 @@ const Header = () => {
       onClick: () => dispatch(resetState()),
     },
     {
-      key: 1,
+      key: 2,
       name: 'Screenshot',
       icon: <Icon.Camera />,
       isDisabled: false,
       onClick: exportPNG,
     },
     {
-      key: 2,
+      key: 3,
       name: 'Save',
       icon: <Icon.Save />,
       isDisabled: false,
