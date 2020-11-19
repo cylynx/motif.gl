@@ -1,5 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import undoable, { excludeAction, GroupByFunction } from 'redux-undo';
+import * as Graph from '../containers/Graph/types';
 import uiReducer from './ui-slice';
 import widgetReducer from '../containers/widgets/widget-slice';
 import graphReducer, {
@@ -51,5 +52,9 @@ export const getUI = (state: CombinedReducer) => clientState(state).ui;
 export const getWidget = (state: CombinedReducer) => clientState(state).widget;
 export const getGraph = (state: CombinedReducer) =>
   clientState(state).graph.present;
-export const getAccessors = (state: CombinedReducer) =>
+export const getAccessors = (state: CombinedReducer): Graph.Accessors =>
   clientState(state).graph.present.accessors;
+export const getGraphFlatten = (state: CombinedReducer): Graph.GraphData =>
+  clientState(state).graph.present.graphFlatten;
+export const getStyleOptions = (state: CombinedReducer): Graph.StyleOptions =>
+  clientState(state).graph.present.styleOptions;
