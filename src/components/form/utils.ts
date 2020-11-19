@@ -1,9 +1,10 @@
+/* eslint-disable no-param-reassign */
 import set from 'lodash/set';
+import { produce } from 'immer';
 import { NestedFormData } from './NestedForm';
 import { SimpleFormData } from './SimpleForm';
 
 /**
-
  *
  * @param {NestedFormData} nestedForm
  * @param {*} currentOptions
@@ -27,27 +28,29 @@ export const genNestedForm = (
   callback: (data: any) => void,
   override?: any,
 ): NestedFormData => {
-  const option = nestedForm;
-  const details = currentOptions[nestedForm.id];
-  option.value = details?.id || nestedForm.value;
-  option.callback = callback;
+  const newForm = produce(nestedForm, (option) => {
+    const details = currentOptions[nestedForm.id];
+    option.value = details?.id || nestedForm.value;
+    option.callback = callback;
 
-  // override value for option if exist in currentOption
-  if (option[details?.id]) {
-    Object.entries(details).forEach(([key, value]: any[]) => {
-      const idx = option[details.id].findIndex((x: any) => x.id === key);
-      if (idx > -1) {
-        option[details.id][idx].value = value;
-      }
-    });
-  }
-  // manual override
-  if (override) {
-    Object.entries(override).forEach(([key, value]: any[]) => {
-      set(option, key, value);
-    });
-  }
-  return option;
+    // override value for option if exist in currentOption
+    if (option[details?.id]) {
+      Object.entries(details).forEach(([key, value]: any[]) => {
+        const idx = option[details.id].findIndex((x: any) => x.id === key);
+        if (idx > -1) {
+          option[details.id][idx].value = value;
+        }
+      });
+    }
+    // manual override
+    if (override) {
+      Object.entries(override).forEach(([key, value]: any[]) => {
+        set(option, key, value);
+      });
+    }
+  });
+
+  return newForm;
 };
 
 /**
@@ -67,14 +70,14 @@ export const genSimpleForm = (
   callback: (data: any) => void,
   override?: any,
 ): SimpleFormData => {
-  const option = simpleForm;
-  option.value = currentOptions[option.id] || simpleForm.value;
-  option.callback = callback;
-  // manual override
-  if (override) {
-    Object.entries(override).forEach(([key, value]: any[]) => {
-      set(option, key, value);
-    });
-  }
-  return option;
+  const newForm = produce(simpleForm, (option) => {
+    option.value = currentOptions[option.id] || simpleForm.value;
+    option.callback = callback;
+    if (override) {
+      Object.entries(override).forEach(([key, value]: any[]) => {
+        set(option, key, value);
+      });
+    }
+  });
+  return newForm;
 };
