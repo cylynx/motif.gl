@@ -1,6 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import { initialState as initialStateGraph } from './graph-slice';
-import { initialState as initialStateUi } from './ui-slice';
+import { initialStateUi } from './ui-slice';
 import {
   investigateReducer,
   getUI,
