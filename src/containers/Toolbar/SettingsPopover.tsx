@@ -12,17 +12,9 @@ import {
   changeEdgeStyle,
 } from '../../redux/graph-slice';
 import { getGraph } from '../../redux';
+import * as LAYOUT from '../../constants/layout-options';
 import { NestedForm, genNestedForm } from '../../components/form';
 import { nodeSizeForm, edgeWidthForm } from '../SidePanel/OptionsPanel';
-
-const layoutNames = [
-  { label: 'Concentric', id: 'concentric' },
-  { label: 'Force-Directed', id: 'force' },
-  { label: 'Radial', id: 'radial' },
-  { label: 'Grid', id: 'grid' },
-  { label: 'Dagre', id: 'dagre' },
-  { label: 'Circular', id: 'circle' },
-];
 
 const SettingsPopover = () => {
   const dispatch = useDispatch();
@@ -49,10 +41,10 @@ const SettingsPopover = () => {
     <Block width='300px' padding='10px'>
       <FormControl label='Graph Layout'>
         <Select
-          options={layoutNames}
+          options={LAYOUT.LAYOUT_NAMES}
           size='compact'
           clearable={false}
-          value={[findID(layoutNames, layoutName)]}
+          value={[findID(LAYOUT.LAYOUT_NAMES, layoutName)]}
           onChange={(params) =>
             dispatch(
               changeLayout({ layout: { id: params.option.id as string } }),
