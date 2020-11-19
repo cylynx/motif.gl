@@ -55,8 +55,6 @@ describe('graph reducer', () => {
 
     expect(results.graphFlatten.nodes).toHaveLength(JsonData.nodes.length);
     expect(results.graphFlatten.edges).toHaveLength(JsonData.edges.length);
-    expect(results.graphVisible.nodes).toHaveLength(JsonData.nodes.length);
-    expect(results.graphVisible.edges).toHaveLength(JsonData.edges.length);
   });
 
   it('processGraphResponse should contain only unique ids', async () => {
@@ -79,8 +77,6 @@ describe('graph reducer', () => {
 
     expect(results.graphFlatten.nodes).toHaveLength(3);
     expect(results.graphFlatten.edges).toHaveLength(2);
-    expect(results.graphVisible.nodes).toHaveLength(3);
-    expect(results.graphVisible.edges).toHaveLength(2);
   });
 
   it('updateGraphList should switch order of GraphList', async () => {
@@ -100,14 +96,11 @@ describe('graph reducer', () => {
     expect(results.graphList).toEqual([sampleGraphData2, sampleGraphData]);
   });
 
-  it('deleteGraphList should reset graphVisible and remove the given list', async () => {
+  it('deleteGraphList should remove the given list', async () => {
     const sampleGraphData = (await sampleGraphList)[0];
+
     const modGraphList = {
       graphList: [sampleGraphData],
-      graphVisible: {
-        nodes: [...sampleGraphData.nodes],
-        edges: [...sampleGraphData.edges],
-      },
     };
     const modState = { ...initialState, ...modGraphList };
     const results = graph(modState, {
@@ -116,18 +109,12 @@ describe('graph reducer', () => {
     });
 
     expect(results.graphList).toHaveLength(0);
-    expect(results.graphVisible.nodes).toEqual([]);
-    expect(results.graphVisible.edges).toEqual([]);
   });
 
-  it('changeVisibilityGraphList should reset graphVisible and but not delete from list', async () => {
+  it('changeVisibilityGraphList should change turn off visible but not delete from list', async () => {
     const sampleGraphData = (await sampleGraphList)[0];
     const modGraphList = {
       graphList: [sampleGraphData],
-      graphVisible: {
-        nodes: [...sampleGraphData.nodes],
-        edges: [...sampleGraphData.edges],
-      },
     };
     const modState = { ...initialState, ...modGraphList };
     const results = graph(modState, {
@@ -136,7 +123,6 @@ describe('graph reducer', () => {
     });
 
     expect(results.graphList).toHaveLength(1);
-    expect(results.graphVisible.nodes).toEqual([]);
-    expect(results.graphVisible.edges).toEqual([]);
+    expect(results.graphList[0].metadata.visible).toEqual(false);
   });
 });

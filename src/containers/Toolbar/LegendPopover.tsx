@@ -7,7 +7,7 @@ import { FormControl } from 'baseui/form-control';
 import { Select } from 'baseui/select';
 import { LabelSmall, ParagraphSmall } from 'baseui/typography';
 import { changeNodeStyle } from '../../redux/graph-slice';
-import { getGraph } from '../../redux';
+import { getStyleOptions, getGraphFlatten } from '../../redux';
 import { getFieldNames } from '../../utils/graph-utils';
 
 const MAX_LEGEND_SIZE = 8;
@@ -47,9 +47,7 @@ const Legend = ({ data }: { data: { [key: string]: string } }) => {
 
 const LegendPopover = () => {
   const dispatch = useDispatch();
-  const nodeStyle = useSelector(
-    (state) => getGraph(state).styleOptions.nodeStyle,
-  );
+  const nodeStyle = useSelector((state) => getStyleOptions(state).nodeStyle);
 
   let selectValue: any;
   if (
@@ -65,7 +63,7 @@ const LegendPopover = () => {
   }
 
   const graphFields = useSelector(
-    (state) => getGraph(state).graphFlatten.metadata.fields,
+    (state) => getGraphFlatten(state).metadata.fields,
   );
 
   const nodeOptions = getFieldNames(graphFields.nodes).map((x) => {
