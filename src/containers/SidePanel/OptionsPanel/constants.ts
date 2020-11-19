@@ -3,21 +3,12 @@ import { SimpleFormData, NestedFormData } from '../../../components/form';
 import * as LAYOUT from '../../../constants/layout-options';
 import { DEFAULT_EDGE_STYLE, DEFAULT_NODE_STYLE } from '../../Graph';
 
-export const layoutNames = [
-  { label: 'Concentric', id: 'concentric' },
-  { label: 'Force-Directed', id: 'force' },
-  { label: 'Radial', id: 'radial' },
-  { label: 'Grid', id: 'grid' },
-  { label: 'Dagre', id: 'dagre' },
-  { label: 'Circular', id: 'circle' },
-];
-
 export const layoutForm: NestedFormData = {
   id: 'layout',
   label: 'Layout',
   value: 'concentric',
   callback: (data: any) => console.log(data),
-  options: layoutNames,
+  options: LAYOUT.LAYOUT_NAMES,
   dagre: [
     {
       id: 'rankSep',
