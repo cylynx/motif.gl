@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { FormControl } from 'baseui/form-control';
+import { Block } from 'baseui/block';
+import { LabelSmall } from 'baseui/typography';
 import { Select } from 'baseui/select';
 import { Input } from 'baseui/input';
 import { SimpleSlider } from '../ui';
@@ -8,6 +9,7 @@ import { SimpleSlider } from '../ui';
 export type NestedFormData = {
   id: string;
   label: string;
+  labelPosition?: 'left' | 'top';
   value: string;
   options: {
     label: string;
@@ -146,8 +148,8 @@ const testData: NestedFormData = {
  * @param {{ data: NestedFormData }} { data = testData }
  * @return {*} 
  */
-const NestedForm = ({ data = testData }: { data: NestedFormData }) => {
-  const { callback } = data;
+const NestedForm = ({ data }: { data: NestedFormData }) => {
+  const { callback, labelPosition } = data;
   const { watch, control, getValues } = useForm();
   const watchSelection = watch(data.id, [
     data.options.find((x: any) => x.id === data.value),
@@ -180,7 +182,21 @@ const NestedForm = ({ data = testData }: { data: NestedFormData }) => {
   return (
     <Fragment>
       <form>
-        <FormControl label={data.label}>
+        <Block
+          display={labelPosition === 'left' ? 'flex' : 'block'}
+          marginBottom={labelPosition === 'left' ? 'scale100' : 0}
+          marginTop={labelPosition === 'left' ? 'scale100' : 0}
+          alignItems='center'
+          justifyContent='space-between'
+        >
+          <LabelSmall
+            marginBottom='scale300'
+            marginTop='scale300'
+            marginRight='scale200'
+            width='100px'
+          >
+            {data.label}
+          </LabelSmall>
           <Controller
             name={data.id}
             control={control}
@@ -198,7 +214,7 @@ const NestedForm = ({ data = testData }: { data: NestedFormData }) => {
               />
             )}
           />
-        </FormControl>
+        </Block>
         {data[watchSelection[0].id] &&
           data[watchSelection[0].id].map((d: any) => {
             const { id, label, type, value, ...rest } = d;
@@ -214,10 +230,22 @@ const NestedForm = ({ data = testData }: { data: NestedFormData }) => {
                 ? [value]
                 : parsedValue;
             return (
-              <FormControl
+              <Block
                 key={`${data[watchSelection[0].id]}_${id}`}
-                label={label}
+                display={labelPosition === 'left' ? 'flex' : 'block'}
+                marginBottom={labelPosition === 'left' ? 'scale200' : 0}
+                marginTop={labelPosition === 'left' ? 'scale200' : 0}
+                alignItems='center'
+                justifyContent='space-between'
               >
+                <LabelSmall
+                  marginBottom='scale300'
+                  marginTop='scale300'
+                  marginRight='scale200'
+                  width='100px'
+                >
+                  {label}
+                </LabelSmall>
                 <Controller
                   name={id}
                   control={control}
@@ -265,7 +293,7 @@ const NestedForm = ({ data = testData }: { data: NestedFormData }) => {
                     return component;
                   }}
                 />
-              </FormControl>
+              </Block>
             );
           })}
       </form>
