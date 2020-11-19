@@ -54,7 +54,13 @@ const SettingsPopover = () => {
   const updateEdgeStyle = (data: any) => dispatch(changeEdgeStyle(data));
 
   return (
-    <Block width='300px' padding='10px'>
+    <Block
+      width='300px'
+      paddingLeft='scale600'
+      paddingRight='scale600'
+      paddingBottom='scale600'
+      paddingTop='scale400'
+    >
       <FormControl label='Graph Layout'>
         <Select
           options={LAYOUT.LAYOUT_NAMES}
