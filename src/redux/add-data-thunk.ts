@@ -38,7 +38,9 @@ const processResponse = (
     // Check edges for new data as it might just be repeated
     if (checkNewData(graphList, data)) {
       dispatch(addQuery(data));
+      console.log('add data');
       dispatch(processGraphResponse({ data, accessors }));
+      console.log('processed data');
       dispatch(fetchDone());
     } else {
       dispatch(fetchDone());
@@ -75,11 +77,10 @@ export const addData = (
     };
     newData = importNodeEdgeCsv(nodeData, edgeData, accessors);
   } else if (type === IMPORT_OPTIONS.edgeListCsv.id) {
-    newData = importEdgeListCsv(data as string, mainAccessors);
+    newData = importEdgeListCsv(data as string, accessors);
   } else {
     dispatch(fetchError('Invalid data format'));
   }
-
   return (
     newData
       // @ts-ignore
