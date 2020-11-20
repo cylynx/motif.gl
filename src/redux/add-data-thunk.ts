@@ -38,9 +38,7 @@ const processResponse = (
     // Check edges for new data as it might just be repeated
     if (checkNewData(graphList, data)) {
       dispatch(addQuery(data));
-      console.log('add data');
       dispatch(processGraphResponse({ data, accessors }));
-      console.log('processed data');
       dispatch(fetchDone());
     } else {
       dispatch(fetchDone());
