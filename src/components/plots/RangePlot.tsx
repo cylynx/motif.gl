@@ -3,6 +3,8 @@
 
 import React, { useState, useCallback } from 'react';
 import { Block } from 'baseui/block';
+import { LabelSmall } from 'baseui/typography';
+import { scaleLinear } from 'd3-scale';
 import RangeBrush from './RangeBrush';
 import HistogramPlot from './HistogramPlot';
 import { SimpleSlider } from '../ui';
@@ -15,11 +17,30 @@ export type RangePlotProps = {
   onChange: ([v0, v1]: [number, number]) => void;
   onFinalChange?: ([v0, v1]: [number, number]) => void;
   step?: number;
+  numTicks?: number;
   size?: 'default' | 'compact';
   height?: number;
   width?: number;
   isRanged?: boolean;
   [key: string]: any;
+};
+
+export type Ticks = {
+  pos: number;
+  value: any;
+};
+
+const getTicks = (range: [number, number], numTicks: number) => {
+  const ticks = scaleLinear().domain(range).nice().ticks(numTicks);
+  const tickArray: Ticks[] = [];
+  tickArray.push({ pos: 0, value: range[0] });
+  ticks.forEach((x) => {
+    if (x > range[0] && x < range[1]) {
+      tickArray.push({ pos: (x - range[0]) / (range[1] - range[0]), value: x });
+    }
+  });
+  tickArray.push({ pos: 1, value: range[1] });
+  return tickArray;
 };
 
 const RangePlot = ({
@@ -29,6 +50,7 @@ const RangePlot = ({
   onChange,
   onFinalChange,
   step = 0.01,
+  numTicks = 5,
   size = 'default',
   height: inputHeight = null,
   width: inputWidth = null,
@@ -38,8 +60,9 @@ const RangePlot = ({
   const [brushing, setBrushing] = useState(false);
   const [hoveredDP, onMouseMove] = useState(null);
   const [enableChartHover, setEnableChartHover] = useState(false);
-  const height = inputHeight || size === 'default' ? 120 : 60;
+  const height = inputHeight || size === 'default' ? 110 : 60;
   const width = inputWidth || size === 'default' ? 460 : 150;
+  const ticks = getTicks(range, numTicks);
 
   const onBrushStart = useCallback(() => {
     setBrushing(true);
@@ -151,6 +174,18 @@ const RangePlot = ({
           showThumbValue={false}
           showTickBar={false}
         />
+      </Block>
+      <Block position='relative' width={`${width}px`}>
+        {ticks.map((x: Ticks) => (
+          <LabelSmall
+            position='absolute'
+            color='contentTertiary'
+            left={`${x.pos * width}px`}
+            key={x.value}
+          >
+            {x.value}
+          </LabelSmall>
+        ))}
       </Block>
     </Block>
   );

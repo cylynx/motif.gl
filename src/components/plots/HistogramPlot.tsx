@@ -67,7 +67,7 @@ const HistogramPlot = ({
           const wRatio = inRange
             ? histogramStyle.highlightW
             : histogramStyle.unHighlightedW;
-          const fillColor = inRange ? 'teal' : 'grey';
+          const fillColor = inRange ? '#66c2a5' : 'grey';
           return (
             <rect
               fill={fillColor}
