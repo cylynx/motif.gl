@@ -1,5 +1,6 @@
 // @ts-nocheck
 import React, { Fragment, useState } from 'react';
+import { styled } from 'baseui';
 import { useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
@@ -9,6 +10,18 @@ import { getGraphFlatten } from '../../redux';
 import { getFieldDomain } from '../../utils/data-utils';
 
 const validTypes = ['integer', 'real', 'timestamp', 'date'];
+
+export const PlotDiv = styled('div', ({ $theme, $expanded }) => {
+  const { animation, sizing } = $theme;
+  return {
+    paddingLeft: sizing.scale700,
+    paddingRight: sizing.scale600,
+    height: $expanded ? '150px' : 0,
+    transitionProperty: 'all',
+    transitionDuration: animation.timing400,
+    transitionTimingFunction: animation.easeInOutCurve,
+  };
+});
 
 const VariableInspector = () => {
   const [histogramProp, setHistogramProp] = useState({});
@@ -60,6 +73,7 @@ const VariableInspector = () => {
     <Fragment>
       <Block
         display='flex'
+        height='50px'
         paddingTop='scale600'
         paddingLeft='scale600'
         paddingRight='scale600'
@@ -70,8 +84,8 @@ const VariableInspector = () => {
           onChange={(obj) => onChangeSelected(obj)}
         />
       </Block>
-      {histogramProp.step && histogramProp.domain && histogramProp.histogram && (
-        <Block paddingLeft='scale700' paddingRight='scale600'>
+      <PlotDiv $expanded={histogramProp.histogram}>
+        {histogramProp.histogram && (
           <RangePlot
             value={value}
             step={histogramProp.step}
@@ -80,8 +94,8 @@ const VariableInspector = () => {
             histogram={histogramProp.histogram}
             xAxisFormat={histogramProp.format}
           />
-        </Block>
-      )}
+        )}
+      </PlotDiv>
     </Fragment>
   );
 };
