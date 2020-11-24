@@ -1,4 +1,10 @@
-import { ascending, extent, histogram as d3Histogram, ticks } from 'd3-array';
+import {
+  bisectLeft,
+  ascending,
+  extent,
+  histogram as d3Histogram,
+  ticks,
+} from 'd3-array';
 
 export type Millisecond = number;
 
@@ -146,7 +152,19 @@ export const getTimestampFieldDomain = (
   // to avoid converting string format time to epoch
   // every time we compare we store a value mapped to int in filter domain
 
-  const mappedValue = Array.isArray(data) ? data.map(valueAccessor) : [];
+  const accessedValues = data.map(valueAccessor);
+  let mappedValue: any = [];
+  if (Array.isArray(data) && Array.isArray(accessedValues[0])) {
+    // Grouped edges
+    for (const d of accessedValues) {
+      mappedValue = mappedValue.concat(d.filter((el: any) => el != null));
+    }
+  } else if (Array.isArray(data)) {
+    for (const d of accessedValues) {
+      if (d != null) mappedValue.push(d);
+    }
+  }
+
   const domain = getLinearDomain(mappedValue);
   let step = 0.01;
 
@@ -213,3 +231,110 @@ export const getHistogram = (
 export const clamp = (value: number, min: number, max: number) => {
   return Math.min(Math.max(value, min), max);
 };
+
+/**
+ * round number with exact number of decimals
+ * return as a string
+ */
+export function preciseRound(num: number, decimals: number) {
+  const t = 10 ** decimals;
+  return (
+    Math.round(
+      num * t +
+        (decimals > 0 ? 1 : 0) * (Math.sign(num) * (10 / 100 ** decimals)),
+    ) / t
+  ).toFixed(decimals);
+}
+
+/**
+ * get number of decimals to round to for slider from step
+ * @param {number} step
+ * @returns {number} - number of decimal
+ */
+export function getRoundingDecimalFromStep(step: number) {
+  // eslint-disable-next-line no-restricted-globals
+  if (isNaN(step)) {
+    console.warn('step is not a number');
+  }
+
+  const splitZero = step.toString().split('.');
+  if (splitZero.length === 1) {
+    return 0;
+  }
+  return splitZero[1].length;
+}
+
+/**
+ * Use in slider, given a number and an array of numbers, return the nears number from the array
+ *
+ * @param value
+ * @param marks
+ */
+export function snapToMarks(value: number, marks: number[]) {
+  // always use bin x0
+  const i = bisectLeft(marks, value);
+  if (i === 0) {
+    return marks[i];
+  }
+  if (i === marks.length) {
+    return marks[i - 1];
+  }
+  const idx = marks[i] - value < value - marks[i - 1] ? i : i - 1;
+  return marks[idx];
+}
+
+/**
+ * If marks is provided, snap to marks, if not normalize to step
+ * @type {typeof import('./data-utils').normalizeSliderValue}
+ * @param val
+ * @param minValue
+ * @param step
+ * @param marks
+ */
+export function normalizeSliderValue(
+  val: number,
+  minValue: number,
+  step: number,
+  marks?: number[],
+) {
+  if (marks && marks.length) {
+    return snapToMarks(val, marks);
+  }
+
+  return roundValToStep(minValue, step, val);
+}
+
+/**
+ * round the value to step for the slider
+ * @type {typeof import('./data-utils').roundValToStep}
+ * @param minValue
+ * @param step
+ * @param val
+ * @returns - rounded number
+ */
+export function roundValToStep(minValue: number, step: number, val: number) {
+  if (!Number.isFinite(step) || !Number.isFinite(minValue)) {
+    return val;
+  }
+
+  const decimal = getRoundingDecimalFromStep(step);
+  const steps = Math.floor((val - minValue) / step);
+  let remain = val - (steps * step + minValue);
+
+  // has to round because javascript turns 0.1 into 0.9999999999999987
+  remain = Number(preciseRound(remain, 8));
+
+  let closest;
+  if (remain === 0) {
+    closest = val;
+  } else if (remain < step / 2) {
+    closest = steps * step + minValue;
+  } else {
+    closest = (steps + 1) * step + minValue;
+  }
+
+  // precise round return a string rounded to the defined decimal
+  const rounded = preciseRound(closest, decimal);
+
+  return Number(rounded);
+}
