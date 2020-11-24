@@ -1,10 +1,10 @@
 /* eslint-disable no-shadow */
 // Adapted from: https://github.com/keplergl/kepler.gl/blob/master/src/components/common/range-plot.js
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Block } from 'baseui/block';
-import { LabelSmall } from 'baseui/typography';
-import { scaleLinear } from 'd3-scale';
+import { LabelXSmall } from 'baseui/typography';
+import { scaleLinear, scaleUtc } from 'd3-scale';
 import RangeBrush from './RangeBrush';
 import HistogramPlot from './HistogramPlot';
 import { SimpleSlider } from '../ui';
@@ -16,6 +16,7 @@ export type RangePlotProps = {
   histogram: HistogramBin[];
   onChange: ([v0, v1]: [number, number]) => void;
   onFinalChange?: ([v0, v1]: [number, number]) => void;
+  xAxisFormat?: string;
   step?: number;
   numTicks?: number;
   size?: 'default' | 'compact';
@@ -30,16 +31,47 @@ export type Ticks = {
   value: any;
 };
 
-const getTicks = (range: [number, number], numTicks: number) => {
-  const ticks = scaleLinear().domain(range).nice().ticks(numTicks);
+const getTicks = (
+  range: [number, number],
+  numTicks: number,
+  xAxisFormat: string,
+) => {
+  // xAxisFormat if date / time field
+  const scale = xAxisFormat
+    ? scaleUtc().domain(range).nice()
+    : scaleLinear().domain(range).nice();
   const tickArray: Ticks[] = [];
-  tickArray.push({ pos: 0, value: range[0] });
-  ticks.forEach((x) => {
-    if (x > range[0] && x < range[1]) {
-      tickArray.push({ pos: (x - range[0]) / (range[1] - range[0]), value: x });
-    }
-  });
-  tickArray.push({ pos: 1, value: range[1] });
+  if (range[1] - range[0] === 2 && xAxisFormat) {
+    return [{ pos: 0.4, value: new Date(range[0]).toISOString() }];
+  }
+  if (!xAxisFormat) {
+    tickArray.push({
+      pos: 0,
+      value: range[0],
+    });
+    tickArray.push({
+      pos: 1,
+      value: range[1],
+    });
+    scale.ticks(numTicks).forEach((x: any) => {
+      if (x > range[0] && x < range[1]) {
+        tickArray.push({
+          pos: (x - range[0]) / (range[1] - range[0]),
+          value: x,
+        });
+      }
+    });
+  } else {
+    // @ts-ignore
+    const formattedTime = scale.ticks(numTicks).map(scale.tickFormat());
+    scale.ticks(numTicks).forEach((x: any, index: number) => {
+      tickArray.push({
+        pos: (x - range[0]) / (range[1] - range[0]),
+        value: formattedTime[index],
+      });
+    });
+  }
+
   return tickArray;
 };
 
@@ -49,8 +81,9 @@ const RangePlot = ({
   histogram,
   onChange,
   onFinalChange,
+  xAxisFormat,
   step = 0.01,
-  numTicks = 5,
+  numTicks,
   size = 'default',
   height: inputHeight = null,
   width: inputWidth = null,
@@ -60,9 +93,16 @@ const RangePlot = ({
   const [brushing, setBrushing] = useState(false);
   const [hoveredDP, onMouseMove] = useState(null);
   const [enableChartHover, setEnableChartHover] = useState(false);
-  const height = inputHeight || size === 'default' ? 110 : 60;
-  const width = inputWidth || size === 'default' ? 460 : 150;
-  const ticks = getTicks(range, numTicks);
+  // +- 1 if same domain to avoid slider errors
+  const domain: [number, number] =
+    range[0] === range[1] ? [range[0] - 1, range[1] + 1] : range;
+
+  const height = inputHeight || size === 'default' ? 100 : 60;
+  const width = inputWidth || size === 'default' ? 420 : 150;
+  const ticks = useMemo(
+    () => getTicks(domain, numTicks || Math.floor(width / 80), xAxisFormat),
+    [domain, numTicks, xAxisFormat],
+  );
 
   const onBrushStart = useCallback(() => {
     setBrushing(true);
@@ -130,7 +170,7 @@ const RangePlot = ({
       onBrush={onBrush}
       onBrushStart={onBrushStart}
       onBrushEnd={onBrushEnd}
-      range={range}
+      range={domain}
       value={value}
       step={step}
       width={width}
@@ -147,6 +187,7 @@ const RangePlot = ({
     width,
     value,
     height,
+    domain,
     brushComponent,
     brushing,
     enableChartHover,
@@ -157,35 +198,37 @@ const RangePlot = ({
   };
 
   return (
-    <Block height={`${height}px`} width={`${width}px`}>
-      <HistogramPlot histogram={histogram} {...commonProps} />
-      <Block marginTop='-15px'>
-        <SimpleSlider
-          value={value}
-          min={range[0]}
-          max={range[1]}
-          step={step}
-          onChange={({ value }: { value: [number, number] }) =>
-            onChangeSlider(value)
-          }
-          onFinalChange={({ value }: { value: [number, number] }) =>
-            onFinalChangeSlider(value)
-          }
-          showThumbValue={false}
-          showTickBar={false}
-        />
-      </Block>
-      <Block position='relative' width={`${width}px`}>
-        {ticks.map((x: Ticks) => (
-          <LabelSmall
-            position='absolute'
-            color='contentTertiary'
-            left={`${x.pos * width}px`}
-            key={x.value}
-          >
-            {x.value}
-          </LabelSmall>
-        ))}
+    <Block display='flex' justifyContent='center'>
+      <Block height={`${height}px`} width={`${width}px`}>
+        <HistogramPlot histogram={histogram} {...commonProps} />
+        <Block marginTop='-15px'>
+          <SimpleSlider
+            value={value}
+            min={domain[0]}
+            max={domain[1]}
+            step={step}
+            onChange={({ value }: { value: [number, number] }) =>
+              onChangeSlider(value)
+            }
+            onFinalChange={({ value }: { value: [number, number] }) =>
+              onFinalChangeSlider(value)
+            }
+            showThumbValue={false}
+            showTickBar={false}
+          />
+        </Block>
+        <Block position='relative' width={`${width}px`}>
+          {ticks.map((x: Ticks) => (
+            <LabelXSmall
+              position='absolute'
+              color='contentTertiary'
+              left={`${x.pos * width}px`}
+              key={`${x.value}`}
+            >
+              {x.value}
+            </LabelXSmall>
+          ))}
+        </Block>
       </Block>
     </Block>
   );

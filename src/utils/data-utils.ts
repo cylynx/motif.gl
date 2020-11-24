@@ -5,6 +5,13 @@ import {
   histogram as d3Histogram,
   ticks,
 } from 'd3-array';
+import { parseISO } from 'date-fns';
+
+export const ONE_SECOND = 1000;
+export const ONE_MINUTE = ONE_SECOND * 60;
+export const ONE_HOUR = ONE_MINUTE * 60;
+export const ONE_DAY = ONE_HOUR * 24;
+export const ONE_YEAR = ONE_DAY * 365;
 
 export type Millisecond = number;
 
@@ -145,9 +152,10 @@ export type TimeRangeFieldDomain = {
  * @param {Accessor} [valueAccessor] function to access data
  * @returns {TimeRangeFieldDomain} Object with domain, step, mappedValue, histogram and enlargedHistogram
  */
-export const getTimestampFieldDomain = (
+export const getFieldDomain = (
   data: any[],
   valueAccessor?: Accessor,
+  type?: string,
 ): TimeRangeFieldDomain => {
   // to avoid converting string format time to epoch
   // every time we compare we store a value mapped to int in filter domain
@@ -165,6 +173,14 @@ export const getTimestampFieldDomain = (
     }
   }
 
+  if (type === 'DATETIME' || type === 'DATE') {
+    mappedValue = mappedValue.map((dt: string) => parseISO(dt).getTime());
+  } else if (type === 'TIME') {
+    mappedValue = mappedValue.map((dt: string) =>
+      parseISO(`${new Date().toISOString().slice(0, 10)} ${dt}`).getTime(),
+    );
+  }
+
   const domain = getLinearDomain(mappedValue);
   let step = 0.01;
 
@@ -176,7 +192,6 @@ export const getTimestampFieldDomain = (
 
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   const { histogram, enlargedHistogram } = getHistogram(domain, mappedValue);
-
   return { domain, step, mappedValue, histogram, enlargedHistogram };
 };
 

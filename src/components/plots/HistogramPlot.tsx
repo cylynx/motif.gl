@@ -2,7 +2,7 @@
 
 import React, { useMemo } from 'react';
 import { styled } from 'baseui';
-import { scaleLinear } from 'd3-scale';
+import { scaleLinear, scaleUtc } from 'd3-scale';
 import { max } from 'd3-array';
 import { HistogramBin } from '../../utils/data-utils';
 
@@ -10,6 +10,7 @@ export type HistogramPlotProps = {
   width: number;
   height: number;
   isRanged: boolean;
+  domain: [number, number];
   histogram: HistogramBin[];
   value: [number, number];
   brushComponent: any;
@@ -33,21 +34,16 @@ const HistogramPlot = ({
   height,
   isRanged,
   histogram,
+  domain,
   value,
   brushComponent,
 }: HistogramPlotProps) => {
-  const domain = useMemo(
-    () => [histogram[0].x0, histogram[histogram.length - 1].x1],
-    [histogram],
-  );
-
   // value taken from count field
   const getValue = useMemo(() => (d: HistogramBin) => d.count, []);
 
-  const x = useMemo(() => scaleLinear().domain(domain).range([0, width]), [
-    domain,
-    width,
-  ]);
+  const x = useMemo(() => {
+    return scaleLinear().domain(domain).range([0, width]);
+  }, [domain, width]);
 
   const y = useMemo(
     () =>
