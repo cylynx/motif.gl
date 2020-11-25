@@ -188,6 +188,7 @@ const RangePlot = ({
     value,
     height,
     domain,
+    step,
     brushComponent,
     brushing,
     enableChartHover,

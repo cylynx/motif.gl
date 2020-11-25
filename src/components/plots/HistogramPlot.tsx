@@ -11,6 +11,7 @@ export type HistogramPlotProps = {
   width: number;
   height: number;
   isRanged: boolean;
+  step: number;
   domain: [number, number];
   histogram: HistogramBin[];
   value: [number, number];
@@ -34,6 +35,7 @@ const HistogramPlot = ({
   width,
   height,
   isRanged,
+  step,
   histogram,
   domain,
   value,
@@ -60,7 +62,7 @@ const HistogramPlot = ({
     <StyledSvg width={width} height={height}>
       <g className='histogram-bars'>
         {histogram.map((bar: HistogramBin) => {
-          const inRange = bar.x1 <= value[1] + 1 && bar.x0 >= value[0];
+          const inRange = bar.x1 <= value[1] + step && bar.x0 >= value[0];
           const wRatio = inRange
             ? histogramStyle.highlightW
             : histogramStyle.unHighlightedW;
