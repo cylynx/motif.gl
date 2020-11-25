@@ -2,9 +2,10 @@
 
 import React, { useMemo } from 'react';
 import { styled } from 'baseui';
-import { scaleLinear, scaleUtc } from 'd3-scale';
+import { scaleLinear } from 'd3-scale';
 import { max } from 'd3-array';
 import { HistogramBin } from '../../utils/data-utils';
+import { PRIMARY_COLOR, DARK_GREY } from '../../constants/colors';
 
 export type HistogramPlotProps = {
   width: number;
@@ -63,7 +64,7 @@ const HistogramPlot = ({
           const wRatio = inRange
             ? histogramStyle.highlightW
             : histogramStyle.unHighlightedW;
-          const fillColor = inRange ? '#66c2a5' : 'grey';
+          const fillColor = inRange ? PRIMARY_COLOR : DARK_GREY;
           return (
             <rect
               fill={fillColor}

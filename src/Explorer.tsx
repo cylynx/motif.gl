@@ -7,6 +7,7 @@ import { Theme } from 'baseui/theme';
 import { Block } from 'baseui/block';
 import { Modal, ModalBody, SIZE } from 'baseui/modal';
 
+import { PRIMARY_COLOR } from './constants/colors';
 import { Loader } from './components/ui';
 import DataTable from './containers/DataTable';
 import { closeModal, setName } from './redux/ui-slice';
@@ -65,7 +66,7 @@ export const WidgetContainer = (props: WidgetContainerProps) => {
 const defaultNodeStyle: StyleOptions['nodeStyle'] = {
   color: {
     id: 'fixed',
-    value: '#66c2a5',
+    value: PRIMARY_COLOR,
   },
 };
 

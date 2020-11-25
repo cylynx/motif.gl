@@ -9,8 +9,9 @@ import { LabelSmall, ParagraphSmall } from 'baseui/typography';
 import { changeNodeStyle } from '../../redux/graph-slice';
 import { getStyleOptions, getGraphFlatten } from '../../redux';
 import { getFieldNames } from '../../utils/graph-utils';
+import { CATEGORICAL_COLOR } from '../../constants/colors';
 
-const MAX_LEGEND_SIZE = 8;
+const MAX_LEGEND_SIZE = CATEGORICAL_COLOR.length;
 
 const Legend = ({ data }: { data: { [key: string]: string } }) => {
   const [css] = useStyletron();
@@ -20,7 +21,7 @@ const Legend = ({ data }: { data: { [key: string]: string } }) => {
     valueArr = valueArr.slice(0, MAX_LEGEND_SIZE);
     valueArr.push('Others');
     colorArr = colorArr.slice(0, MAX_LEGEND_SIZE);
-    colorArr.push('grey');
+    colorArr.push(CATEGORICAL_COLOR[MAX_LEGEND_SIZE - 1]);
   }
   return (
     <Fragment>
