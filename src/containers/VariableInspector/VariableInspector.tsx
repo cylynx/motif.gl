@@ -1,12 +1,14 @@
 // @ts-nocheck
-import React, { Fragment, useState } from 'react';
+import React, { useContext, useState, Fragment } from 'react';
 import { styled } from 'baseui';
+import get from 'lodash/get';
 import { useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
+import { GraphRefContext } from '../Graph';
 import SelectVariable from '../../components/SelectVariable';
 import { RangePlot } from '../../components/plots';
-import { getGraphFlatten } from '../../redux';
+import { getGraphFlatten, getGraphVisible } from '../../redux';
 import { getFieldDomain } from '../../utils/data-utils';
 
 const validTypes = ['integer', 'real', 'timestamp', 'date'];
@@ -24,9 +26,12 @@ export const PlotDiv = styled('div', ({ $theme, $expanded }) => {
 });
 
 const VariableInspector = () => {
+  const graphRef = useContext(GraphRefContext);
+  const [selection, setSelection] = useState([]);
   const [histogramProp, setHistogramProp] = useState({});
   const [value, setValue] = useState(false);
   const graphFlatten = useSelector((state) => getGraphFlatten(state));
+  const graphVisible = useSelector((state) => getGraphVisible(state));
   const graphFields = graphFlatten.metadata.fields;
 
   const nodeOptions = graphFields.nodes
@@ -54,6 +59,21 @@ const VariableInspector = () => {
       };
     });
 
+  const onChangeRange = (val) => {
+    setValue(val);
+    const { graph } = graphRef;
+    for (const obj of graphVisible[selection[0].from]) {
+      if (
+        val[0] <= get(obj, selection[0].id) &&
+        get(obj, selection[0].id) <= val[1]
+      ) {
+        graph.setItemState(obj.id, 'highlight.dark', false);
+      } else {
+        graph.setItemState(obj.id, 'highlight.dark', true);
+      }
+    }
+  };
+
   const onChangeSelected = (obj) => {
     if (obj?.id) {
       const { domain, step, histogram } = getFieldDomain(
@@ -61,9 +81,11 @@ const VariableInspector = () => {
         (x) => x[obj.id],
         obj.analyzerType,
       );
+      setSelection([obj]);
       setHistogramProp({ domain, step, histogram, format: obj.format });
       setValue(domain);
     } else {
+      setSelection([]);
       setHistogramProp({});
       setValue(false);
     }
@@ -80,6 +102,7 @@ const VariableInspector = () => {
       >
         <LabelSmall width='100px'>Variable Inspector</LabelSmall>
         <SelectVariable
+          value={selection}
           options={{ Nodes: nodeOptions, Edges: edgeOptions }}
           onChange={(obj) => onChangeSelected(obj)}
         />
@@ -89,7 +112,7 @@ const VariableInspector = () => {
           <RangePlot
             value={value}
             step={histogramProp.step}
-            onChange={(val) => setValue(val)}
+            onChange={onChangeRange}
             range={histogramProp.domain}
             histogram={histogramProp.histogram}
             xAxisFormat={histogramProp.format}
