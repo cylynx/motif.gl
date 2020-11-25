@@ -8,7 +8,11 @@ import { scaleLinear, scaleUtc } from 'd3-scale';
 import RangeBrush from './RangeBrush';
 import HistogramPlot from './HistogramPlot';
 import { Slider } from '../ui';
-import { HistogramBin } from '../../utils/data-utils';
+import {
+  HistogramBin,
+  preciseRound,
+  getRoundingDecimalFromStep,
+} from '../../utils/data-utils';
 
 export type RangePlotProps = {
   range: [number, number];
@@ -34,6 +38,7 @@ export type Ticks = {
 const getTicks = (
   range: [number, number],
   numTicks: number,
+  step: number,
   xAxisFormat: string,
 ) => {
   // xAxisFormat if date / time field
@@ -45,19 +50,20 @@ const getTicks = (
     return [{ pos: 0.4, value: new Date(range[0]).toISOString() }];
   }
   if (!xAxisFormat) {
+    const decimals = getRoundingDecimalFromStep(step);
     tickArray.push({
       pos: 0,
-      value: range[0],
+      value: preciseRound(range[0], decimals),
     });
     tickArray.push({
       pos: 1,
-      value: range[1],
+      value: preciseRound(range[1], decimals),
     });
     scale.ticks(numTicks).forEach((x: any) => {
       if (x > range[0] && x < range[1]) {
         tickArray.push({
           pos: (x - range[0]) / (range[1] - range[0]),
-          value: x,
+          value: preciseRound(x, decimals),
         });
       }
     });
@@ -100,7 +106,8 @@ const RangePlot = ({
   const height = inputHeight || size === 'default' ? 100 : 60;
   const width = inputWidth || size === 'default' ? 420 : 150;
   const ticks = useMemo(
-    () => getTicks(domain, numTicks || Math.floor(width / 80), xAxisFormat),
+    () =>
+      getTicks(domain, numTicks || Math.floor(width / 80), step, xAxisFormat),
     [domain, numTicks, xAxisFormat],
   );
 
