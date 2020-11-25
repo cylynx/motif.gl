@@ -64,7 +64,14 @@ export interface Accessors {
 }
 
 export interface Layout {
-  name: 'concentric' | 'force' | 'radial' | 'grid' | 'dagre' | 'circle';
+  name:
+    | 'concentric'
+    | 'force'
+    | 'radial'
+    | 'grid'
+    | 'dagre'
+    | 'circle'
+    | 'none';
   options?: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
