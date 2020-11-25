@@ -7,7 +7,7 @@ import { LabelXSmall } from 'baseui/typography';
 import { scaleLinear, scaleUtc } from 'd3-scale';
 import RangeBrush from './RangeBrush';
 import HistogramPlot from './HistogramPlot';
-import { SimpleSlider } from '../ui';
+import { Slider } from '../ui';
 import { HistogramBin } from '../../utils/data-utils';
 
 export type RangePlotProps = {
@@ -202,7 +202,7 @@ const RangePlot = ({
       <Block height={`${height}px`} width={`${width}px`}>
         <HistogramPlot histogram={histogram} {...commonProps} />
         <Block marginTop='-15px'>
-          <SimpleSlider
+          <Slider
             value={value}
             min={domain[0]}
             max={domain[1]}
