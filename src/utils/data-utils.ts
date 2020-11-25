@@ -146,6 +146,30 @@ export type TimeRangeFieldDomain = {
 };
 
 /**
+ * Helper function to parse string date and convert to unix millisecond.
+ * parsing is done using date-fns parseISO
+ *
+ * @param {string} str
+ * @param {('DATETIME' | 'DATE' | 'TIME')} type
+ * @return {*}
+ */
+export const unixTimeConverter = (
+  str: string,
+  type: 'DATETIME' | 'DATE' | 'TIME',
+) => {
+  if (type === 'DATETIME' || type === 'DATE') {
+    return parseISO(str).getTime();
+  }
+  if (type === 'TIME') {
+    return parseISO(
+      `${new Date().toISOString().slice(0, 10)} ${str}`,
+    ).getTime();
+  }
+  console.warn('invalid type');
+  return null;
+};
+
+/**
  * Calculate timestamp domain and suitable step
  *
  * @param {any[]} data
@@ -173,12 +197,8 @@ export const getFieldDomain = (
     }
   }
 
-  if (type === 'DATETIME' || type === 'DATE') {
-    mappedValue = mappedValue.map((dt: string) => parseISO(dt).getTime());
-  } else if (type === 'TIME') {
-    mappedValue = mappedValue.map((dt: string) =>
-      parseISO(`${new Date().toISOString().slice(0, 10)} ${dt}`).getTime(),
-    );
+  if (type === 'DATETIME' || type === 'DATE' || type === 'TIME') {
+    mappedValue = mappedValue.map((dt: string) => unixTimeConverter(dt, type));
   }
 
   const domain = getLinearDomain(mappedValue);

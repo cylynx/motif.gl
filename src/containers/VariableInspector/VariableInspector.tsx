@@ -15,8 +15,9 @@ import { GraphRefContext } from '../Graph';
 import SelectVariable from '../../components/SelectVariable';
 import { RangePlot } from '../../components/plots';
 import { getGraphFlatten, getGraphVisible } from '../../redux';
-import { getFieldDomain } from '../../utils/data-utils';
+import { getFieldDomain, unixTimeConverter } from '../../utils/data-utils';
 
+const dateTimeAnalyzerTypes = ['DATETIME', 'DATE', 'TIME'];
 const validTypes = ['integer', 'real', 'timestamp', 'date'];
 
 export const PlotDiv = styled('div', ({ $theme, $expanded }) => {
@@ -78,14 +79,42 @@ const VariableInspector = () => {
     (val) => {
       setValue(val);
       const { graph } = graphRef;
-      for (const obj of graphVisible[selection[0].from]) {
-        if (
-          val[0] <= get(obj, selection[0].id) &&
-          get(obj, selection[0].id) <= val[1]
-        ) {
-          graph.setItemState(obj.id, 'highlight.dark', false);
-        } else {
-          graph.setItemState(obj.id, 'highlight.dark', true);
+      const { from, id, analyzerType } = selection[0];
+      const isDateTime = dateTimeAnalyzerTypes.includes(analyzerType);
+      if (from === 'nodes') {
+        for (const obj of graphVisible.nodes) {
+          let prop = get(obj, id);
+          if (isDateTime) {
+            prop = unixTimeConverter(prop, analyzerType);
+          }
+          if (val[0] <= prop && prop <= val[1]) {
+            graph.setItemState(obj.id, 'highlight.dark', false);
+          } else {
+            graph.setItemState(obj.id, 'highlight.dark', true);
+          }
+        }
+      } else {
+        for (const obj of graphVisible.edges) {
+          let prop = get(obj, id);
+          if (isDateTime) {
+            // eslint-disable-next-line no-loop-func
+            prop = prop.map((el: string) =>
+              unixTimeConverter(el, analyzerType),
+            );
+          }
+          let condition = true;
+          if (Array.isArray(prop)) {
+            condition = prop.some((el: any) => {
+              return val[0] <= el && el <= val[1];
+            });
+          } else {
+            condition = val[0] <= prop && prop <= val[1];
+          }
+          if (condition) {
+            graph.setItemState(obj.id, 'highlight.dark', false);
+          } else {
+            graph.setItemState(obj.id, 'highlight.dark', true);
+          }
         }
       }
     },
