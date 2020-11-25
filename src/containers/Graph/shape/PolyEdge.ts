@@ -170,8 +170,10 @@ export default (g6: any) => {
       }
       return key;
     },
-    setState(name: EnumNodeAndEdgeStatus, value: string, edge: IEdge) {
+    setState(name: EnumNodeAndEdgeStatus, _value: string, edge: IEdge) {
       if (!name) return;
+      // eslint-disable-next-line no-underscore-dangle
+      const { states } = edge._cfg;
       const data: G6Edge = edge.get('model');
       const { style, defaultStyle } = data;
       const mainShape = edge
@@ -227,7 +229,7 @@ export default (g6: any) => {
         fill: labelFontColor.dark,
       };
 
-      if (name === EnumNodeAndEdgeStatus.HOVERED && value) {
+      if (states.includes(EnumNodeAndEdgeStatus.HOVERED)) {
         const deltaD = d + 1;
         targetAttrs.main = {
           lineWidth: basicLineWidth + 1,
@@ -240,8 +242,8 @@ export default (g6: any) => {
         };
       }
       if (
-        (name === EnumNodeAndEdgeStatus.SELECTED && value) ||
-        (name === EnumNodeAndEdgeStatus.LIGHT && value)
+        states.includes(EnumNodeAndEdgeStatus.SELECTED) ||
+        states.includes(EnumNodeAndEdgeStatus.LIGHT)
       ) {
         const deltaD = d + 1;
         targetAttrs.main = {
@@ -257,7 +259,10 @@ export default (g6: any) => {
           lineWidth: basicLineWidth + 3,
         };
       }
-      if (name === EnumNodeAndEdgeStatus.DARK && value) {
+      if (
+        states.includes(EnumNodeAndEdgeStatus.DARK) ||
+        states.includes(EnumNodeAndEdgeStatus.FILTERED)
+      ) {
         targetAttrs.main = {
           stroke: GREY.dark,
           lineWidth: 1,

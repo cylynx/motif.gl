@@ -10,9 +10,8 @@ export const BottomRightLayer = ({
     position='fixed'
     bottom='10px'
     right='10px'
-    height='135px'
     width='500px'
-    backgroundColor='backgroundPrimary'
+    backgroundColor='backgroundTertiary'
   >
     {children}
   </Block>

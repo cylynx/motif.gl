@@ -169,8 +169,10 @@ export default (g6: typeof G6) => {
       });
       return keyShape;
     },
-    setState(name: EnumNodeAndEdgeStatus, value: string, node: INode) {
+    setState(name: EnumNodeAndEdgeStatus, _value: string, node: INode) {
       if (!name) return;
+      // eslint-disable-next-line no-underscore-dangle
+      const { states } = node._cfg;
       const data: G6Node = node.get('model');
       const { defaultStyle, style } = data;
       const container = node.getContainer();
@@ -237,16 +239,19 @@ export default (g6: typeof G6) => {
         },
       };
 
-      if (name === EnumNodeAndEdgeStatus.SELECTED && value) {
+      if (states.includes(EnumNodeAndEdgeStatus.SELECTED)) {
         targetAttrs.inner.lineWidth = innerSize > 10 ? 4 : 2;
         targetAttrs.selected.r = outerSize / 2 + adjustment;
       }
 
-      if (name === EnumNodeAndEdgeStatus.LIGHT && value) {
+      if (states.includes(EnumNodeAndEdgeStatus.LIGHT)) {
         targetAttrs.selected.r = outerSize / 2 + adjustment;
       }
 
-      if (name === EnumNodeAndEdgeStatus.DARK && value) {
+      if (
+        states.includes(EnumNodeAndEdgeStatus.DARK) ||
+        states.includes(EnumNodeAndEdgeStatus.FILTERED)
+      ) {
         targetAttrs.inner.stroke = GREY.dark;
         targetAttrs.inner.fill = GREY.dark;
         targetAttrs.icon.fill = '#8D93B0';

@@ -17,7 +17,16 @@ export enum EnumNodeAndEdgeStatus {
   LIGHT = 'highlight.light',
   DARK = 'highlight.dark',
   HOVERED = 'hovered',
+  FILTERED = 'filtered',
 }
+
+export const interactionStates = [
+  EnumNodeAndEdgeStatus.NORMAL,
+  EnumNodeAndEdgeStatus.SELECTED,
+  EnumNodeAndEdgeStatus.LIGHT,
+  EnumNodeAndEdgeStatus.DARK,
+  EnumNodeAndEdgeStatus.HOVERED,
+];
 
 /* Additions */
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { LeftLayer, BottomRightLayer, TopRightLayer } from './layer';
-import InvestigateTimeBar from '../InvestigateTimeBar';
+import VariableInspector from '../VariableInspector';
 import Toolbar from '../Toolbar';
 import { LayersPanel, OptionsPanel } from '../SidePanel';
 import IconButton from './IconButton';
@@ -47,12 +47,14 @@ const defaultWidgetList: WidgetItem[] = [
     active: true,
   },
   {
-    id: 'filter',
-    group: 'filter',
-    icon: <IconButton id='filter' group='filter' icon={<Icon.BarChart />} />,
+    id: 'inspector',
+    group: 'inspector',
+    icon: (
+      <IconButton id='inspector' group='inspector' icon={<Icon.BarChart />} />
+    ),
     widget: (
       <BottomRightLayer>
-        <InvestigateTimeBar />
+        <VariableInspector />
       </BottomRightLayer>
     ),
     position: 'bottom',

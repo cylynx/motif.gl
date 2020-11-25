@@ -11,6 +11,7 @@ import RegisterCircleNode from './shape/CircleNode';
 import RegisterPolyEdge from './shape/PolyEdge';
 import RegisterLineEdge from './shape/LineEdge';
 import RegisterLoopEdge from './shape/LoopEdge';
+import { interactionStates } from './shape/constants';
 import { getStyleOptions, getGraphVisible } from '../../redux';
 import { TooltipProps } from './Tooltip';
 import './graphin.css';
@@ -43,7 +44,7 @@ const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
     const onNodeClick = (e: IG6GraphEvent) => {
       const { item } = e;
       // Avoid inconsistent styling between highlight.light and selected by giving priority to selected
-      graph.clearItemStates(item);
+      graph.clearItemStates(item, interactionStates);
       graph.setItemState(item, 'selected', true);
       // Ctrl event is for multiple select so don't display tooltip
       if (!e.originalEvent.ctrlKey && !e.originalEvent.shiftKey) {
@@ -62,7 +63,7 @@ const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
     const onEdgeClick = (e: IG6GraphEvent) => {
       const { item } = e;
       // Avoid inconsistent styling between highlight.light and selected by giving priority to selected
-      graph.clearItemStates(item);
+      graph.clearItemStates(item, interactionStates);
       graph.setItemState(item, 'selected', true);
       // Ctrl event is for multiple select so don't display tooltip
       if (!e.originalEvent.ctrlKey && !e.originalEvent.shiftKey) {

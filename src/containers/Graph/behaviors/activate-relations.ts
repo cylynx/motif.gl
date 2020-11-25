@@ -2,6 +2,7 @@
 import G6 from '@antv/g6';
 import { G6Event, IG6GraphEvent } from '@antv/g6/lib/types';
 import { Node, Edge } from '@antv/graphin';
+import { interactionStates } from '../shape/constants';
 
 export default (g6: typeof G6) => {
   g6.registerBehavior('activate-relations', {
@@ -27,7 +28,7 @@ export default (g6: typeof G6) => {
       graph.setAutoPaint(false);
       graph.getNodes().forEach((node: Node) => {
         if (!node.hasState('selected')) {
-          graph.clearItemStates(node);
+          graph.clearItemStates(node, interactionStates);
           graph.setItemState(node, 'highlight.dark', true);
         }
       });
@@ -68,12 +69,12 @@ export default (g6: typeof G6) => {
       graph.setAutoPaint(false);
       graph.getNodes().forEach((node: Node) => {
         if (!node.hasState('selected')) {
-          graph.clearItemStates(node);
+          graph.clearItemStates(node, interactionStates);
         }
       });
       graph.getEdges().forEach((edge: Edge) => {
         if (!edge.hasState('selected')) {
-          graph.clearItemStates(edge);
+          graph.clearItemStates(edge, interactionStates);
         }
       });
       graph.paint();
