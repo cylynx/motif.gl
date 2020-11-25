@@ -11,7 +11,8 @@ import get from 'lodash/get';
 import { useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
-import { GraphRefContext } from '../Graph';
+import { Node, Edge } from '@antv/graphin';
+import { GraphRefContext, EnumNodeAndEdgeStatus } from '../Graph';
 import SelectVariable from '../../components/SelectVariable';
 import { RangePlot } from '../../components/plots';
 import { getGraphFlatten, getGraphVisible } from '../../redux';
@@ -81,6 +82,7 @@ const VariableInspector = () => {
       const { graph } = graphRef;
       const { from, id, analyzerType } = selection[0];
       const isDateTime = dateTimeAnalyzerTypes.includes(analyzerType);
+      graph.setAutoPaint(false);
       if (from === 'nodes') {
         for (const obj of graphVisible.nodes) {
           let prop = get(obj, id);
@@ -88,9 +90,9 @@ const VariableInspector = () => {
             prop = unixTimeConverter(prop, analyzerType);
           }
           if (val[0] <= prop && prop <= val[1]) {
-            graph.setItemState(obj.id, 'highlight.dark', false);
+            graph.setItemState(obj.id, EnumNodeAndEdgeStatus.FILTERED, false);
           } else {
-            graph.setItemState(obj.id, 'highlight.dark', true);
+            graph.setItemState(obj.id, EnumNodeAndEdgeStatus.FILTERED, true);
           }
         }
       } else {
@@ -111,12 +113,14 @@ const VariableInspector = () => {
             condition = val[0] <= prop && prop <= val[1];
           }
           if (condition) {
-            graph.setItemState(obj.id, 'highlight.dark', false);
+            graph.setItemState(obj.id, EnumNodeAndEdgeStatus.FILTERED, false);
           } else {
-            graph.setItemState(obj.id, 'highlight.dark', true);
+            graph.setItemState(obj.id, EnumNodeAndEdgeStatus.FILTERED, true);
           }
         }
       }
+      graph.paint();
+      graph.setAutoPaint(true);
     },
     [setValue, graphRef, selection, graphVisible],
   );
@@ -133,12 +137,22 @@ const VariableInspector = () => {
         setHistogramProp({ domain, step, histogram, format: obj.format });
         setValue(domain);
       } else {
+        const { graph } = graphRef;
+        graph.setAutoPaint(false);
+        graph.getNodes().forEach((node: Node) => {
+          graph.clearItemStates(node, EnumNodeAndEdgeStatus.FILTERED);
+        });
+        graph.getEdges().forEach((edge: Edge) => {
+          graph.clearItemStates(edge, EnumNodeAndEdgeStatus.FILTERED);
+        });
+        graph.paint();
+        graph.setAutoPaint(true);
         setSelection([]);
         setHistogramProp({});
         setValue(false);
       }
     },
-    [setSelection, setHistogramProp, setValue, graphFlatten],
+    [graphRef, setSelection, setHistogramProp, setValue, graphFlatten],
   );
 
   return (
