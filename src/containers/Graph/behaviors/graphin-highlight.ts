@@ -1,9 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import G6 from '@antv/g6';
-import { G6KeyboardEvent, EdgeData, NodeData, Node, Edge } from '@antv/graphin';
+import { G6KeyboardEvent, Node, Edge } from '@antv/graphin';
 import { IG6GraphEvent } from '@antv/g6/lib/types';
 import { IGraph } from '@antv/g6/lib/interface/graph';
 import { INode, IEdge } from '@antv/g6/lib/interface/item';
+import { interactionStates } from '../shape/constants';
 
 // TODO: sort out behaviours especialyl for clearstate
 
@@ -30,10 +31,10 @@ export default (g6: typeof G6) => {
       const { graph } = this as any;
       graph.setAutoPaint(false);
       graph.getNodes().forEach((node: Node) => {
-        graph.clearItemStates(node);
+        graph.clearItemStates(node, interactionStates);
       });
       graph.getEdges().forEach((edge: Edge) => {
-        graph.clearItemStates(edge);
+        graph.clearItemStates(edge, interactionStates);
       });
       graph.paint();
       graph.setAutoPaint(true);

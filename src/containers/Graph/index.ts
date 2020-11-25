@@ -3,7 +3,11 @@ import GraphRefContext, { withGraphRef } from './context';
 import Tooltip from './Tooltip';
 
 export { GraphRefContext, withGraphRef, Tooltip };
-export { DEFAULT_EDGE_STYLE, DEFAULT_NODE_STYLE } from './shape/constants';
+export {
+  EnumNodeAndEdgeStatus,
+  DEFAULT_EDGE_STYLE,
+  DEFAULT_NODE_STYLE,
+} from './shape/constants';
 export default Graph;
 
 export type {
