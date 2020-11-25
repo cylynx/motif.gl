@@ -1,5 +1,11 @@
 // @ts-nocheck
-import React, { useContext, useState, Fragment } from 'react';
+import React, {
+  useContext,
+  useState,
+  useCallback,
+  useMemo,
+  Fragment,
+} from 'react';
 import { styled } from 'baseui';
 import get from 'lodash/get';
 import { useSelector } from 'react-redux';
@@ -34,62 +40,77 @@ const VariableInspector = () => {
   const graphVisible = useSelector((state) => getGraphVisible(state));
   const graphFields = graphFlatten.metadata.fields;
 
-  const nodeOptions = graphFields.nodes
-    .filter((f) => validTypes.includes(f.type))
-    .map((f) => {
-      return {
-        id: f.name,
-        label: f.name,
-        type: f.type,
-        analyzerType: f.analyzerType,
-        format: f.format,
-        from: 'nodes',
-      };
-    });
-  const edgeOptions = graphFields.edges
-    .filter((f) => validTypes.includes(f.type))
-    .map((f) => {
-      return {
-        id: f.name,
-        label: f.name,
-        type: f.type,
-        analyzerType: f.analyzerType,
-        format: f.format,
-        from: 'edges',
-      };
-    });
+  const nodeOptions = useMemo(
+    () =>
+      graphFields.nodes
+        .filter((f) => validTypes.includes(f.type))
+        .map((f) => {
+          return {
+            id: f.name,
+            label: f.name,
+            type: f.type,
+            analyzerType: f.analyzerType,
+            format: f.format,
+            from: 'nodes',
+          };
+        }),
+    [graphFields],
+  );
 
-  const onChangeRange = (val) => {
-    setValue(val);
-    const { graph } = graphRef;
-    for (const obj of graphVisible[selection[0].from]) {
-      if (
-        val[0] <= get(obj, selection[0].id) &&
-        get(obj, selection[0].id) <= val[1]
-      ) {
-        graph.setItemState(obj.id, 'highlight.dark', false);
-      } else {
-        graph.setItemState(obj.id, 'highlight.dark', true);
+  const edgeOptions = useMemo(
+    () =>
+      graphFields.edges
+        .filter((f) => validTypes.includes(f.type))
+        .map((f) => {
+          return {
+            id: f.name,
+            label: f.name,
+            type: f.type,
+            analyzerType: f.analyzerType,
+            format: f.format,
+            from: 'edges',
+          };
+        }),
+    [graphFields],
+  );
+
+  const onChangeRange = useCallback(
+    (val) => {
+      setValue(val);
+      const { graph } = graphRef;
+      for (const obj of graphVisible[selection[0].from]) {
+        if (
+          val[0] <= get(obj, selection[0].id) &&
+          get(obj, selection[0].id) <= val[1]
+        ) {
+          graph.setItemState(obj.id, 'highlight.dark', false);
+        } else {
+          graph.setItemState(obj.id, 'highlight.dark', true);
+        }
       }
-    }
-  };
+    },
+    [setValue, graphRef, selection, graphVisible],
+  );
 
-  const onChangeSelected = (obj) => {
-    if (obj?.id) {
-      const { domain, step, histogram } = getFieldDomain(
-        graphFlatten[obj.from],
-        (x) => x[obj.id],
-        obj.analyzerType,
-      );
-      setSelection([obj]);
-      setHistogramProp({ domain, step, histogram, format: obj.format });
-      setValue(domain);
-    } else {
-      setSelection([]);
-      setHistogramProp({});
-      setValue(false);
-    }
-  };
+  const onChangeSelected = useCallback(
+    (obj) => {
+      if (obj?.id) {
+        const { domain, step, histogram } = getFieldDomain(
+          graphFlatten[obj.from],
+          (x) => x[obj.id],
+          obj.analyzerType,
+        );
+        setSelection([obj]);
+        setHistogramProp({ domain, step, histogram, format: obj.format });
+        setValue(domain);
+      } else {
+        setSelection([]);
+        setHistogramProp({});
+        setValue(false);
+      }
+    },
+    [setSelection, setHistogramProp, setValue, graphFlatten],
+  );
 
   return (
     <Fragment>
