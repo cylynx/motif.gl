@@ -15,6 +15,10 @@ import { Node, Edge } from '@antv/graphin';
 import { GraphRefContext, EnumNodeAndEdgeStatus } from '../Graph';
 import SelectVariable from '../../components/SelectVariable';
 import { RangePlot } from '../../components/plots';
+import {
+  AnimationController,
+  PlaybackControls,
+} from '../../components/animation-controller';
 import { getGraphFlatten, getGraphVisible } from '../../redux';
 import { getFieldDomain, unixTimeConverter } from '../../utils/data-utils';
 
@@ -38,9 +42,33 @@ const VariableInspector = () => {
   const [selection, setSelection] = useState([]);
   const [histogramProp, setHistogramProp] = useState({});
   const [value, setValue] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [speed, setSpeed] = useState(1);
   const graphFlatten = useSelector((state) => getGraphFlatten(state));
   const graphVisible = useSelector((state) => getGraphVisible(state));
   const graphFields = graphFlatten.metadata.fields;
+
+  const onPlay = () => {
+    setIsAnimating(true);
+  };
+
+  const onPause = () => {
+    setIsAnimating(false);
+  };
+
+  const onChangeSpeed = () => {
+    if (speed === 1) {
+      setSpeed(2);
+    } else if (speed === 2) {
+      setSpeed(4);
+    } else if (speed === 4) {
+      setSpeed(8);
+    } else if (speed === 8) {
+      setSpeed(16);
+    } else if (speed === 16) {
+      setSpeed(1);
+    }
+  };
 
   const nodeOptions = useMemo(
     () =>
@@ -99,10 +127,14 @@ const VariableInspector = () => {
         for (const obj of graphVisible.edges) {
           let prop = get(obj, id);
           if (isDateTime) {
-            // eslint-disable-next-line no-loop-func
-            prop = prop.map((el: string) =>
-              unixTimeConverter(el, analyzerType),
-            );
+            if (Array.isArray(prop)) {
+              // eslint-disable-next-line no-loop-func
+              prop = prop.map((el: string) =>
+                unixTimeConverter(el, analyzerType),
+              );
+            } else {
+              prop = unixTimeConverter(prop, analyzerType);
+            }
           }
           let condition = true;
           if (Array.isArray(prop)) {
@@ -170,6 +202,28 @@ const VariableInspector = () => {
           options={{ Nodes: nodeOptions, Edges: edgeOptions }}
           onChange={(obj) => onChangeSelected(obj)}
         />
+        {histogramProp.histogram && (
+          <AnimationController
+            value={value}
+            domain={histogramProp.domain}
+            speed={speed}
+            startAnimation={onPlay}
+            pauseAnimation={onPause}
+            updateAnimation={(newValue) => {
+              onChangeRange(newValue);
+            }}
+          >
+            {(animating, start, pause, reset) => (
+              <PlaybackControls
+                isAnimating={animating}
+                onPlay={start}
+                onPause={pause}
+                onReset={reset}
+                onChangeSpeed={onChangeSpeed}
+              />
+            )}
+          </AnimationController>
+        )}
       </Block>
       <PlotDiv $expanded={histogramProp.histogram}>
         {histogramProp.histogram && (
