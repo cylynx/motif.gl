@@ -12,7 +12,7 @@ interface SliderProps extends BaseSliderProps {
   showTickBar?: boolean;
 }
 
-const SimpleSlider = (props: SliderProps) => {
+const Slider = (props: SliderProps) => {
   const { showThumbValue = true, showTickBar = true, ...rest } = props;
   const [css, theme] = useStyletron();
   return (
@@ -132,4 +132,4 @@ const SimpleSlider = (props: SliderProps) => {
   );
 };
 
-export default SimpleSlider;
+export default Slider;

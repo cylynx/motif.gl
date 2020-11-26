@@ -2,14 +2,16 @@
 
 import React, { useMemo } from 'react';
 import { styled } from 'baseui';
-import { scaleLinear, scaleUtc } from 'd3-scale';
+import { scaleLinear } from 'd3-scale';
 import { max } from 'd3-array';
 import { HistogramBin } from '../../utils/data-utils';
+import { PRIMARY_COLOR, DARK_GREY } from '../../constants/colors';
 
 export type HistogramPlotProps = {
   width: number;
   height: number;
   isRanged: boolean;
+  step: number;
   domain: [number, number];
   histogram: HistogramBin[];
   value: [number, number];
@@ -33,6 +35,7 @@ const HistogramPlot = ({
   width,
   height,
   isRanged,
+  step,
   histogram,
   domain,
   value,
@@ -59,11 +62,11 @@ const HistogramPlot = ({
     <StyledSvg width={width} height={height}>
       <g className='histogram-bars'>
         {histogram.map((bar: HistogramBin) => {
-          const inRange = bar.x1 <= value[1] + 1 && bar.x0 >= value[0];
+          const inRange = bar.x1 <= value[1] + step && bar.x0 >= value[0];
           const wRatio = inRange
             ? histogramStyle.highlightW
             : histogramStyle.unHighlightedW;
-          const fillColor = inRange ? '#66c2a5' : 'grey';
+          const fillColor = inRange ? PRIMARY_COLOR : DARK_GREY;
           return (
             <rect
               fill={fillColor}

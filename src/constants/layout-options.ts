@@ -33,6 +33,7 @@ export const OPTIONS: Graph.Layout[] = [
   { name: 'radial', options: RADIAL_DEFAULT },
   { name: 'concentric', options: CONCENTRIC_DEFAULT },
   { name: 'force' },
+  { name: 'none' },
 ];
 
 export const LAYOUT_NAMES = [
@@ -42,4 +43,5 @@ export const LAYOUT_NAMES = [
   { label: 'Grid', id: 'grid' },
   { label: 'Sequential', id: 'dagre' },
   { label: 'Circular', id: 'circle' },
+  { label: 'x y coordinates', id: 'none' },
 ];

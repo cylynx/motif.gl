@@ -15,7 +15,10 @@ export const ONE_YEAR = ONE_DAY * 365;
 
 export type Millisecond = number;
 
-export const TimestampStepMap = [
+export const StepMap = [
+  { max: 0.001, step: 0.00005 },
+  { max: 0.01, step: 0.0005 },
+  { max: 0.1, step: 0.005 },
   { max: 1, step: 0.05 },
   { max: 10, step: 0.1 },
   { max: 100, step: 1 },
@@ -205,7 +208,7 @@ export const getFieldDomain = (
   let step = 0.01;
 
   const diff = domain[1] - domain[0];
-  const entry = TimestampStepMap.find((f) => f.max >= diff);
+  const entry = StepMap.find((f) => f.max >= diff);
   if (entry) {
     step = entry.step;
   }

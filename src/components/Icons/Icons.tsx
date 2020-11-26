@@ -29,6 +29,10 @@ import {
   BiListUl,
   BiNetworkChart,
   BiSave,
+  BiPlay,
+  BiPause,
+  BiReset,
+  BiRocket,
 } from 'react-icons/bi';
 import { VscSymbolKey, VscCircleOutline } from 'react-icons/vsc';
 import { IconBaseProps } from 'react-icons';
@@ -207,4 +211,28 @@ export const Save = ({ children, size = 16, ...rest }: IconBaseProps) => (
   <BiSave size={size} {...rest}>
     {children}
   </BiSave>
+);
+
+export const Play = ({ children, size = 16, ...rest }: IconBaseProps) => (
+  <BiPlay size={size} {...rest}>
+    {children}
+  </BiPlay>
+);
+
+export const Pause = ({ children, size = 16, ...rest }: IconBaseProps) => (
+  <BiPause size={size} {...rest}>
+    {children}
+  </BiPause>
+);
+
+export const Reset = ({ children, size = 16, ...rest }: IconBaseProps) => (
+  <BiReset size={size} {...rest}>
+    {children}
+  </BiReset>
+);
+
+export const Rocket = ({ children, size = 16, ...rest }: IconBaseProps) => (
+  <BiRocket size={size} {...rest}>
+    {children}
+  </BiRocket>
 );

@@ -1,11 +1,12 @@
+import { PRIMARY_COLOR } from '../../../constants/colors';
 import { EdgePattern } from './utils';
 
-export const GREY = 'rgba(204,204,204,1)';
+export { GREY } from '../../../constants/colors';
 export const EDGE_DEFAULT_COLOR = 'rgba(105, 123, 140,1)';
 export const EDGE_LABEL_DEFAULT_COLOR = 'rgba(59, 59, 59,1)';
 export const HIDDEN_LABEL_COLOR = 'rgba(238, 238, 238,1)';
 export const HIDDEN_LINE_COLOR = 'rgba(238, 238, 238,1)';
-export const PRIMARY_NODE_COLOR = 'rgba(102, 194, 165, 1)';
+export const PRIMARY_NODE_COLOR = PRIMARY_COLOR;
 
 export const DEFAULT_ICON_FONT_FAMILY = `-apple-system, system-ui, BlinkMacSystemFont, 
 'Segoe UI', Roboto, 'Helvetica Neue', 

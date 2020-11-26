@@ -5,7 +5,7 @@ import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
 import { Select } from 'baseui/select';
 import { Input } from 'baseui/input';
-import { SimpleSlider } from '../ui';
+import { Slider } from '../ui';
 
 export type SimpleFormData = {
   id: string;
@@ -136,7 +136,7 @@ const SimpleForm = ({ data }: { data: SimpleFormData }) => {
               }
               if (type === 'slider') {
                 component = (
-                  <SimpleSlider
+                  <Slider
                     // eslint-disable-next-line no-shadow
                     onChange={({ value }) => value && onChange(value)}
                     onFinalChange={handleFinalChange}

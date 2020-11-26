@@ -6,6 +6,7 @@ import { Cell } from 'baseui/layout-grid';
 import { LabelMedium, ParagraphMedium } from 'baseui/typography';
 import * as Graph from '../../Graph/types';
 import * as DATA from '../../../constants/sample-data';
+import { changeLayout } from '../../../redux/graph-slice';
 import { FlushedGrid } from '../../../components/ui';
 import { addData, closeModal } from '../../../redux';
 
@@ -84,6 +85,13 @@ const StyledItem = ({ item }: { item: SampleDataItem }) => {
   ) => {
     e.preventDefault();
     dispatch(closeModal());
+    // These two datasets come with x-y coordinates
+    if (
+      item.title === 'Network Dataset' ||
+      item.title === 'Perf Test Dataset'
+    ) {
+      dispatch(changeLayout({ layout: { id: 'none' } }));
+    }
     Promise.resolve(item.data()).then((d) => {
       // @ts-ignore
       dispatch(addData({ data: d, type: item.type }, defaultAccessors));

@@ -1,11 +1,8 @@
 /* eslint-disable no-param-reassign */
-import colorbrewer from 'colorbrewer';
 import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
 import * as Graph from '../containers/Graph/types';
-import { clamp } from './data-utils';
-
-const MAX_LEGEND_SIZE = 8;
+import { CATEGORICAL_COLOR, DARK_GREY } from '../constants/colors';
 
 /**
  * Main function to style nodes
@@ -57,17 +54,17 @@ export const generateDefaultColorMap = (
     ),
   ];
   const mapping = {};
-  const colors = colorbrewer.Set2[clamp(uniqueKeys.length, 3, MAX_LEGEND_SIZE)];
+  const MAX_LEGEND_SIZE = CATEGORICAL_COLOR.length;
   for (const [i, value] of uniqueKeys.entries()) {
-    // Assign undefined or others to grey
+    // Assign undefined to grey and all others to last of colors
     if (i < MAX_LEGEND_SIZE && !isUndefined(value)) {
-      mapping[value] = colors[i];
+      mapping[value] = CATEGORICAL_COLOR[i];
     } else if (isUndefined(value)) {
       // eslint-disable-next-line @typescript-eslint/dot-notation
-      mapping['undefined'] = 'grey';
+      mapping['undefined'] = DARK_GREY;
     } else {
       // eslint-disable-next-line prefer-destructuring
-      mapping[value] = 'grey';
+      mapping[value] = CATEGORICAL_COLOR[MAX_LEGEND_SIZE - 1];
     }
   }
   // @ts-ignore
