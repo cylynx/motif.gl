@@ -11,6 +11,9 @@ import { Show, Hide } from 'baseui/icon';
 import {
   OPTIONS as IMPORT_OPTIONS,
   ImportFormat,
+  EdgeListCsv,
+  JsonImport,
+  NodeEdgeCsv,
 } from '../../../processors/import-data';
 import * as Graph from '../../Graph/types';
 import { addData, closeModal, fetchError } from '../../../redux';
@@ -36,7 +39,7 @@ const ImportLocalFile = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [fileNames, setFileNames] = useState<string[]>(null);
-  const [files, setFiles] = useState<ImportFormat>(null);
+  const [files, setFiles] = useState<ImportFormat[]>(null);
   const { register, watch, control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       dataType: [importOptions[0]],
@@ -56,7 +59,7 @@ const ImportLocalFile = () => {
 
   const onDropAccepted = (acceptedFiles: File[]) => {
     setIsUploading(true);
-    const acceptedFileNames = acceptedFiles.map((f) => f.name);
+    const ACCEPTED_FILE_NAMES: string[] = acceptedFiles.map((f) => f.name);
     const fileExts = acceptedFiles.map((f) => f.name.split('.').pop());
     const promises = [];
     for (const file of acceptedFiles) {
@@ -71,49 +74,74 @@ const ImportLocalFile = () => {
     Promise.all(promises)
       .then((fileContents) => {
         if (fileExts[0] === 'json' && watchDataType[0].id === 'json') {
-          const fileList = fileContents.map((content) =>
-            JSON.parse(content as string),
+          const JSON_FILE_CONTENTS: JsonImport[] = fileContents.map(
+            (content: string) => {
+              const jsonGraphList: Graph.GraphList = JSON.parse(content);
+              return {
+                data: jsonGraphList,
+                type: 'json',
+              };
+            },
           );
-          for (const file of fileList) {
-            setFiles({ data: file as Graph.GraphList, type: 'json' });
-            setFileNames(acceptedFileNames);
-          }
+
+          setFiles(JSON_FILE_CONTENTS);
+          setFileNames(ACCEPTED_FILE_NAMES);
         } else if (
           fileExts[0] === 'csv' &&
           watchDataType[0].id === 'edgeListCsv'
         ) {
-          for (const file of fileContents) {
-            const cleanedFile = cleanInput(file as string);
-            setFiles({ data: cleanedFile, type: 'edgeListCsv' });
-            setFileNames(acceptedFileNames);
-          }
+          const CSV_FILE_CONTENTS: EdgeListCsv[] = fileContents.map(
+            (file: string) => {
+              const cleanedFile: string = cleanInput(file);
+              return {
+                data: cleanedFile,
+                type: 'edgeListCsv',
+              };
+            },
+          );
+
+          setFiles(CSV_FILE_CONTENTS);
+          setFileNames(ACCEPTED_FILE_NAMES);
         } else if (
           fileExts[0] === 'csv' &&
           fileExts.length === 2 &&
           watchDataType[0].id === 'nodeEdgeCsv'
         ) {
+          const [
+            FIRST_FILE_NAME,
+            SECOND_FILE_NAME,
+          ]: string[] = ACCEPTED_FILE_NAMES;
+
           if (
-            acceptedFileNames[0].includes('node') &&
-            acceptedFileNames[1].includes('edge')
+            FIRST_FILE_NAME.includes('node') &&
+            SECOND_FILE_NAME.includes('edge')
           ) {
-            const nodeFile = cleanInput(fileContents[0] as string);
-            const edgeFile = cleanInput(fileContents[1] as string);
-            setFiles({
-              data: { nodeData: nodeFile, edgeData: edgeFile },
+            const NODE_DATA: string = cleanInput(fileContents[0] as string);
+            const EDGE_DATA: string = cleanInput(fileContents[1] as string);
+            const NODE_EDGE_CONTENT: NodeEdgeCsv = {
+              data: {
+                nodeData: NODE_DATA,
+                edgeData: EDGE_DATA,
+              },
               type: 'nodeEdgeCsv',
-            });
-            setFileNames(acceptedFileNames);
+            };
+            setFiles([NODE_EDGE_CONTENT]);
+            setFileNames(ACCEPTED_FILE_NAMES);
           } else if (
-            acceptedFileNames[1].includes('node') &&
-            acceptedFileNames[0].includes('edge')
+            SECOND_FILE_NAME.includes('edge') &&
+            FIRST_FILE_NAME.includes('node')
           ) {
-            const nodeFile = cleanInput(fileContents[1] as string);
-            const edgeFile = cleanInput(fileContents[0] as string);
-            setFiles({
-              data: { nodeData: nodeFile, edgeData: edgeFile },
+            const NODE_DATA: string = cleanInput(fileContents[1] as string);
+            const EDGE_DATA: string = cleanInput(fileContents[0] as string);
+            const NODE_EDGE_CONTENT: NodeEdgeCsv = {
+              data: {
+                nodeData: NODE_DATA,
+                edgeData: EDGE_DATA,
+              },
               type: 'nodeEdgeCsv',
-            });
-            setFileNames(acceptedFileNames);
+            };
+            setFiles([NODE_EDGE_CONTENT]);
+            setFileNames(ACCEPTED_FILE_NAMES);
           } else {
             setErrorMessage(
               `Please ensure the node file includes 'node' and edge file 'edge'`,
@@ -143,7 +171,7 @@ const ImportLocalFile = () => {
     Object.keys(accessors)
       .filter((k) => accessors[k] === '')
       .map((k) => delete accessors[k]);
-    dispatch(addData(files, accessors as Graph.Accessors));
+    // dispatch(addData(files, accessors as Graph.Accessors));
     dispatch(closeModal());
   };
 
