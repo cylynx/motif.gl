@@ -13,14 +13,20 @@ import {
 
 export type ImportFormat = JsonImport | EdgeListCsv | NodeEdgeCsv;
 
+export enum ImportType {
+  JSON = 'json',
+  EDGE_LIST_CSV = 'edgeListCsv',
+  NODE_EDGE_CSV = 'nodeEdgeCsv',
+}
+
 export type JsonImport = {
   data: Graph.GraphData | Graph.GraphList;
-  type: 'json';
+  type: ImportType.JSON;
 };
 
 export type EdgeListCsv = {
   data: string;
-  type: 'edgeListCsv';
+  type: ImportType.EDGE_LIST_CSV;
 };
 
 export type NodeEdgeCsv = {
@@ -28,7 +34,7 @@ export type NodeEdgeCsv = {
     nodeData: string;
     edgeData: string;
   };
-  type: 'nodeEdgeCsv';
+  type: ImportType.NODE_EDGE_CSV;
 };
 
 export const OPTIONS = {
