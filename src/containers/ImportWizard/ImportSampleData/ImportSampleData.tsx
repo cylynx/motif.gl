@@ -6,9 +6,9 @@ import { Cell } from 'baseui/layout-grid';
 import { LabelMedium, ParagraphMedium } from 'baseui/typography';
 import * as Graph from '../../Graph/types';
 import * as DATA from '../../../constants/sample-data';
-import { changeLayout } from '../../../redux/graph-slice';
 import { FlushedGrid } from '../../../components/ui';
-import { addData, closeModal } from '../../../redux';
+import { closeModal, changeLayout } from '../../../redux';
+import { addData } from '../../../redux/add-data-thunk';
 
 export type SampleDataItem = {
   data: () => void;
