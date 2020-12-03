@@ -147,6 +147,9 @@ export const processNodeEdgeCsv = async (
 ): Promise<Graph.GraphData> => {
   const { fields: nodeFields, json: nodeJson } = await processCsvData(nodeCsv);
   const { fields: edgeFields, json: edgeJson } = await processCsvData(edgeCsv);
+  console.log(nodeCsv);
+  console.log(nodeFields);
+  console.log(nodeJson);
   const graphMetadata: Graph.Metadata = {
     fields: { nodes: nodeFields, edges: edgeFields },
     key,

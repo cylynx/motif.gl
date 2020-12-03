@@ -12,6 +12,7 @@ import {
   importEdgeListCsv,
   importNodeEdgeCsv,
   importJson,
+  NodeEdgeDataType,
 } from '../processors/import-data';
 
 const checkNewData = (
@@ -75,7 +76,6 @@ export const importEdgeListData = (
       processResponse(dispatch, graphList, mainAccessors, graphData);
     })
     .catch((err: Error) => {
-      console.warn(err);
       dispatch(fetchError(err.message));
     });
 };
@@ -106,7 +106,25 @@ export const importJsonData = (
       processResponse(dispatch, graphList, mainAccessors, graphData);
     })
     .catch((err: Error) => {
-      console.warn(err);
+      dispatch(fetchError(err.message));
+    });
+};
+
+export const importNodeEdgeData = (
+  importData: ImportFormat,
+  importAccessors: ImportAccessors = null,
+) => async (dispatch: any, getState: any) => {
+  const { data } = importData;
+  const { graphList, accessors: mainAccessors } = getGraph(getState());
+  const accessors = { ...mainAccessors, ...importAccessors };
+
+  const { nodeData, edgeData } = data as NodeEdgeDataType;
+
+  importNodeEdgeCsv(nodeData, edgeData, accessors)
+    .then((graphData: Graph.GraphData) => {
+      processResponse(dispatch, graphList, mainAccessors, graphData);
+    })
+    .catch((err: Error) => {
       dispatch(fetchError(err.message));
     });
 };
@@ -146,7 +164,6 @@ export const addData = (
     newData
       // @ts-ignore
       .then((graphData: Graph.GraphData | Graph.GraphList) => {
-        console.log(graphData);
         processResponse(dispatch, graphList, mainAccessors, graphData);
       })
       .catch((err: Error) => {

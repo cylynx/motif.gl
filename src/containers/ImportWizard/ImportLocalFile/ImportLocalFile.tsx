@@ -14,14 +14,19 @@ import {
   ImportType,
   JsonImport,
   NodeEdgeCsv,
+  NodeEdgeDataType,
   OPTIONS as IMPORT_OPTIONS,
 } from '../../../processors/import-data';
+
 import * as Graph from '../../Graph/types';
-import { addData, closeModal, fetchError } from '../../../redux';
+
 import {
   importEdgeListData,
   importJsonData,
+  importNodeEdgeData,
 } from '../../../redux/add-data-thunk';
+
+import { closeModal, fetchError } from '../../../redux';
 
 type FormValues = {
   dataType: { label: string; id: string }[];
@@ -157,16 +162,13 @@ const ImportLocalFile = () => {
           }
 
           if (
-            secondFileName.includes('edge') &&
-            firstFileName.includes('node')
+            secondFileName.includes('node') &&
+            firstFileName.includes('edge')
           ) {
             const nodeData: string = cleanInput(fileContents[1] as string);
             const edgeData: string = cleanInput(fileContents[0] as string);
             const nodeEdgeContent: NodeEdgeCsv = {
-              data: {
-                nodeData,
-                edgeData,
-              },
+              data: { nodeData, edgeData } as NodeEdgeDataType,
               type: ImportType.NODE_EDGE_CSV,
             };
 
@@ -201,25 +203,21 @@ const ImportLocalFile = () => {
     const { dataType, ...accessors } = data;
 
     // remove accessor keys with empty string
-    Object.keys(accessors)
+    Object.keys(accessors as Graph.Accessors)
       .filter((k) => accessors[k] === '')
       .map((k) => delete accessors[k]);
 
     const selectedDataType: string = watchDataType[0].id;
     if (selectedDataType === ImportType.NODE_EDGE_CSV) {
-      console.log(singleFileRef.current);
+      dispatch(importNodeEdgeData(singleFileRef.current, accessors));
     }
 
     if (selectedDataType === ImportType.EDGE_LIST_CSV) {
-      dispatch(
-        importEdgeListData(batchFileRef.current, accessors as Graph.Accessors),
-      );
+      dispatch(importEdgeListData(batchFileRef.current, accessors));
     }
 
     if (selectedDataType === ImportType.JSON) {
-      dispatch(
-        importJsonData(batchFileRef.current, accessors as Graph.Accessors),
-      );
+      dispatch(importJsonData(batchFileRef.current, accessors));
     }
 
     dispatch(closeModal());

@@ -20,6 +20,11 @@ export enum ImportType {
   NODE_EDGE_CSV = 'nodeEdgeCsv',
 }
 
+export type NodeEdgeDataType = {
+  nodeData: string;
+  edgeData: string;
+};
+
 export type JsonImport = {
   data: Graph.GraphData | Graph.GraphList;
   type: ImportType.JSON;
@@ -31,10 +36,7 @@ export type EdgeListCsv = {
 };
 
 export type NodeEdgeCsv = {
-  data: {
-    nodeData: string;
-    edgeData: string;
-  };
+  data: NodeEdgeDataType;
   type: ImportType.NODE_EDGE_CSV;
 };
 
