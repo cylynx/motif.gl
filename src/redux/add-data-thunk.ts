@@ -11,6 +11,7 @@ import {
   importEdgeListCsv,
   importNodeEdgeCsv,
   importJson,
+  NodeEdgeCsv,
 } from '../processors/import-data';
 
 const checkNewData = (
@@ -38,9 +39,7 @@ const processResponse = (
     // Check edges for new data as it might just be repeated
     if (checkNewData(graphList, data)) {
       dispatch(addQuery(data));
-      console.log('add data');
       dispatch(processGraphResponse({ data, accessors }));
-      console.log('processed data');
       dispatch(fetchDone());
     } else {
       dispatch(fetchDone());
@@ -50,6 +49,28 @@ const processResponse = (
 };
 
 type ImportAccessors = Graph.Accessors | null;
+
+export const addEdgeList = (
+  importData: ImportFormat[],
+  importAccessors: ImportAccessors = null,
+) => async (dispatch: any, getState: any) => {
+  const { graphList, accessors: mainAccessors } = getGraph(getState());
+  const accessors = { ...mainAccessors, ...importAccessors };
+
+  const batchDataPromise = importData.map((graphData: ImportFormat) => {
+    const { data } = graphData;
+    return importEdgeListCsv(data as string, accessors);
+  });
+
+  Promise.all(batchDataPromise)
+    .then((graphData: Graph.GraphList) => {
+      processResponse(dispatch, graphList, mainAccessors, graphData);
+    })
+    .catch((err: Error) => {
+      console.warn(err);
+      dispatch(fetchError(err.message));
+    });
+};
 
 /**
  * Thunk to add data to graph - processes JSON / CSV and add to graphList

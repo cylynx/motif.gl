@@ -18,6 +18,7 @@ import {
 } from '../../../processors/import-data';
 import * as Graph from '../../Graph/types';
 import { closeModal, fetchError } from '../../../redux';
+import { addEdgeList } from '../../../redux/add-data-thunk';
 
 type FormValues = {
   dataType: { label: string; id: string }[];
@@ -202,7 +203,17 @@ const ImportLocalFile = () => {
     // dispatch(addData(files, accessors as Graph.Accessors));
 
     const selectedDataType: string = watchDataType[0].id;
-    console.log(selectedDataType);
+    if (selectedDataType === ImportType.NODE_EDGE_CSV) {
+      console.log(singleFileRef.current);
+    }
+
+    if (selectedDataType === ImportType.EDGE_LIST_CSV) {
+      dispatch(addEdgeList(batchFileRef.current, accessors as Graph.Accessors));
+    }
+
+    if (selectedDataType === ImportType.JSON) {
+      console.log(batchFileRef.current);
+    }
 
     dispatch(closeModal());
   };
