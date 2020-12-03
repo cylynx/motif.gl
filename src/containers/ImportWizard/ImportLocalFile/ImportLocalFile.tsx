@@ -17,8 +17,11 @@ import {
   OPTIONS as IMPORT_OPTIONS,
 } from '../../../processors/import-data';
 import * as Graph from '../../Graph/types';
-import { closeModal, fetchError } from '../../../redux';
-import { addEdgeList } from '../../../redux/add-data-thunk';
+import { addData, closeModal, fetchError } from '../../../redux';
+import {
+  importEdgeListData,
+  importJsonData,
+} from '../../../redux/add-data-thunk';
 
 type FormValues = {
   dataType: { label: string; id: string }[];
@@ -196,11 +199,11 @@ const ImportLocalFile = () => {
   const onSubmitForm: SubmitHandler<FormValues> = (data, e) => {
     e.preventDefault();
     const { dataType, ...accessors } = data;
+
     // remove accessor keys with empty string
     Object.keys(accessors)
       .filter((k) => accessors[k] === '')
       .map((k) => delete accessors[k]);
-    // dispatch(addData(files, accessors as Graph.Accessors));
 
     const selectedDataType: string = watchDataType[0].id;
     if (selectedDataType === ImportType.NODE_EDGE_CSV) {
@@ -208,11 +211,15 @@ const ImportLocalFile = () => {
     }
 
     if (selectedDataType === ImportType.EDGE_LIST_CSV) {
-      dispatch(addEdgeList(batchFileRef.current, accessors as Graph.Accessors));
+      dispatch(
+        importEdgeListData(batchFileRef.current, accessors as Graph.Accessors),
+      );
     }
 
     if (selectedDataType === ImportType.JSON) {
-      console.log(batchFileRef.current);
+      dispatch(
+        importJsonData(batchFileRef.current, accessors as Graph.Accessors),
+      );
     }
 
     dispatch(closeModal());

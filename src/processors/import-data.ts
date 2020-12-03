@@ -10,6 +10,7 @@ import {
   processEdgeListCsv,
   validateMotifJson,
 } from './data-processors';
+import { GraphData, GraphList, Accessors } from '../containers/Graph';
 
 export type ImportFormat = JsonImport | EdgeListCsv | NodeEdgeCsv;
 
@@ -47,14 +48,14 @@ export const OPTIONS = {
  * Initial function to process json object with node, edge fields or motif json to required format
  * Parse and generates metadata fields
  *
- * @param {Graph.GraphData} data
- * @param {Graph.Accessors} accessors
- * @return {*} {Promise<Graph.GraphList>}
+ * @param {GraphList|GraphData} json
+ * @param {Accessors} accessors
+ * @return {Promise<GraphList>}
  */
 export const importJson = async (
-  json: Graph.GraphData | Graph.GraphList,
-  accessors: Graph.Accessors,
-): Promise<Graph.GraphList> => {
+  json: GraphList | GraphData,
+  accessors: Accessors,
+): Promise<GraphList> => {
   const results = [];
   const jsonArray = Array.isArray(json) ? json : [json];
   for (const data of jsonArray) {

@@ -1,5 +1,6 @@
 import some from 'lodash/some';
 import isUndefined from 'lodash/isUndefined';
+import flatten from 'lodash/flatten';
 import { getGraph } from './combine-reducers';
 import * as Graph from '../containers/Graph/types';
 
@@ -11,7 +12,6 @@ import {
   importEdgeListCsv,
   importNodeEdgeCsv,
   importJson,
-  NodeEdgeCsv,
 } from '../processors/import-data';
 
 const checkNewData = (
@@ -50,20 +50,59 @@ const processResponse = (
 
 type ImportAccessors = Graph.Accessors | null;
 
-export const addEdgeList = (
+/**
+ * Thunk to add data to graph - processes CSV and add to graphList
+ *
+ * @param {ImportFormat[]} importData
+ * @param {ImportAccessors} importAccessors = null
+ *
+ * @return void
+ */
+export const importEdgeListData = (
   importData: ImportFormat[],
   importAccessors: ImportAccessors = null,
 ) => async (dispatch: any, getState: any) => {
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
 
-  const batchDataPromise = importData.map((graphData: ImportFormat) => {
+  const batchDataPromises = importData.map((graphData: ImportFormat) => {
     const { data } = graphData;
     return importEdgeListCsv(data as string, accessors);
   });
 
-  Promise.all(batchDataPromise)
+  Promise.all(batchDataPromises)
     .then((graphData: Graph.GraphList) => {
+      processResponse(dispatch, graphList, mainAccessors, graphData);
+    })
+    .catch((err: Error) => {
+      console.warn(err);
+      dispatch(fetchError(err.message));
+    });
+};
+
+/**
+ * Thunk to add data to graph - processes JSON and add to graphList
+ *
+ * @param importData
+ * @param importAccessors
+ *
+ * @return void
+ */
+export const importJsonData = (
+  importData: ImportFormat[],
+  importAccessors: ImportAccessors = null,
+) => async (dispatch: any, getState: any) => {
+  const { graphList, accessors: mainAccessors } = getGraph(getState());
+  const accessors = { ...mainAccessors, ...importAccessors };
+
+  const batchDataPromises = importData.map((graphData: ImportFormat) => {
+    const { data } = graphData;
+    return importJson(data as Graph.GraphList, accessors);
+  });
+
+  Promise.all(batchDataPromises)
+    .then((graphDataArr: Graph.GraphList[]) => {
+      const graphData: Graph.GraphList = flatten(graphDataArr);
       processResponse(dispatch, graphList, mainAccessors, graphData);
     })
     .catch((err: Error) => {
@@ -102,10 +141,12 @@ export const addData = (
   } else {
     dispatch(fetchError('Invalid data format'));
   }
+
   return (
     newData
       // @ts-ignore
       .then((graphData: Graph.GraphData | Graph.GraphList) => {
+        console.log(graphData);
         processResponse(dispatch, graphList, mainAccessors, graphData);
       })
       .catch((err: Error) => {
