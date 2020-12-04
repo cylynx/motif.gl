@@ -83,8 +83,8 @@ export const importEdgeListData = (
 /**
  * Thunk to add data to graph - processes JSON and add to graphList
  *
- * @param importData
- * @param importAccessors
+ * @param {ImportFormat} importData
+ * @param {ImportAccessors} importAccessors [importAccessors=null] to customize node Id / edge Id / edge source or target
  *
  * @return void
  */
@@ -110,6 +110,15 @@ export const importJsonData = (
     });
 };
 
+/**
+ * Thunk to add data to graph - processed CSV with node and edge and add to graph List
+ * Input must be single graph object
+ *
+ * @param {ImportFormat} importData
+ * @param {ImportAccessors} importAccessors [importAccessors=null] to customize node Id / edge Id / edge source or target
+ *
+ * @return void
+ */
 export const importNodeEdgeData = (
   importData: ImportFormat,
   importAccessors: ImportAccessors = null,
