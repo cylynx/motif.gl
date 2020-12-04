@@ -122,19 +122,19 @@ export const importJsonData = (
  * @param {ImportFormat} importData - single graphData object
  * @param {ImportAccessors} importAccessors [importAccessors=null] - to customize node Id / edge Id / edge source or target
  *
- * @return void
+ * @return {Promise<GraphData>}
  */
 export const importNodeEdgeData = (
   importData: ImportFormat,
   importAccessors: ImportAccessors = null,
-) => async (dispatch: any, getState: any) => {
+) => (dispatch: any, getState: any) => {
   const { data } = importData;
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
 
   const { nodeData, edgeData } = data as NodeEdgeDataType;
 
-  importNodeEdgeCsv(nodeData, edgeData, accessors)
+  return importNodeEdgeCsv(nodeData, edgeData, accessors)
     .then((graphData: Graph.GraphData) => {
       processResponse(dispatch, graphList, mainAccessors, graphData);
     })

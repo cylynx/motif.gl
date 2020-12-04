@@ -2,10 +2,15 @@ import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import cloneDeep from 'lodash/cloneDeep';
 import flatten from 'lodash/flatten';
-import { importJsonData } from './add-data-thunk';
+import { importJsonData, importNodeEdgeData } from './add-data-thunk';
 import { initialState, addQuery, processGraphResponse } from './graph-slice';
-import { importJson, ImportType } from '../processors/import-data';
+import {
+  importJson,
+  importNodeEdgeCsv,
+  ImportType,
+} from '../processors/import-data';
 import { fetchBegin, fetchDone } from './ui-slice';
+import { getGraph, getGraphFlatten } from './combine-reducers';
 
 const mockStore = configureStore([thunk]);
 const getStore = () => {
@@ -23,9 +28,9 @@ const getStore = () => {
 };
 
 describe('add-data-thunk.test.js', () => {
-  const store = mockStore(getStore());
-
   describe('importJsonData', () => {
+    const store = mockStore(getStore());
+
     const jsonDataOne = {
       data: {
         nodes: [{ id: 'node-1' }, { id: 'node-2' }],
@@ -60,7 +65,7 @@ describe('add-data-thunk.test.js', () => {
       const graphDataArr = await Promise.all(batchDataPromises);
       const [firstGraphData, secondGraphData] = flatten(graphDataArr);
 
-      // results
+      // expected results
       const expectedActions = [
         fetchBegin(),
         addQuery(firstGraphData),
@@ -88,7 +93,37 @@ describe('add-data-thunk.test.js', () => {
   });
 
   describe('importNodeEdgeData', () => {
-    it('should receives importData as object and process graph responses accurately', async () => {});
+    const sampleNodeEdgeData = {
+      data: {
+        edgeData:
+          'id,relation,source,target\ntxn1,hello,a,b\ntxn2,works,b,c\ntxn3,abc,c,a',
+        nodeData: 'id,value,score\na,20,80\nb,40,100\nc,60,123',
+        metadata: {
+          key: 123,
+        },
+      },
+      type: ImportType.NODE_EDGE_CSV,
+    };
+
+    it('should receives importData as object and process graph responses accurately', async () => {
+      const store = mockStore(getStore());
+      const { nodeData, edgeData } = sampleNodeEdgeData.data;
+      const { accessors } = initialState;
+      const data = await importNodeEdgeCsv(nodeData, edgeData, accessors);
+
+      const expectedActions = [
+        fetchBegin(),
+        addQuery(data),
+        processGraphResponse({
+          data,
+          accessors,
+        }),
+        fetchDone(),
+      ];
+
+      await store.dispatch(importNodeEdgeData(sampleNodeEdgeData));
+      expect(store.getActions()).toEqual(expectedActions);
+    });
     it('should throw errors if importData parameter is array', async () => {});
   });
 });
