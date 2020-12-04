@@ -7,15 +7,25 @@ import { LabelMedium, ParagraphMedium } from 'baseui/typography';
 import * as Graph from '../../Graph/types';
 import * as DATA from '../../../constants/sample-data';
 import { FlushedGrid } from '../../../components/ui';
-import { closeModal, changeLayout } from '../../../redux';
-import { addData } from '../../../redux/add-data-thunk';
+import { changeLayout, closeModal } from '../../../redux';
+import { importSingleJsonData } from '../../../redux/add-data-thunk';
+import { ImportType, JsonImport } from '../../../processors/import-data';
+
+export enum SampleData {
+  SIMPLE_GRAPH,
+  CIRCLE_GRAPH,
+  RANDOM_GRAPH,
+  NETWORK,
+  PERF_TEST,
+}
 
 export type SampleDataItem = {
   data: () => void;
   title: string;
   description: string;
+  key: SampleData;
   src: string;
-  type: 'json' | 'edgeListCsv' | 'nodeEdgeCsv';
+  type: ImportType.JSON | ImportType.EDGE_LIST_CSV | ImportType.NODE_EDGE_CSV;
 };
 
 const sampleData: SampleDataItem[] = [
@@ -23,35 +33,40 @@ const sampleData: SampleDataItem[] = [
     data: DATA.TwoDataArray,
     title: 'Simple Graph Dataset',
     description: 'Demo graph dataset with multiple nodes and edges',
-    type: 'json',
+    key: SampleData.SIMPLE_GRAPH,
+    type: ImportType.JSON,
     src: '/images/sample.png',
   },
   {
     data: DATA.CircleData,
     title: 'Circle Graph Dataset',
     description: 'Demo graph dataset with multiple nodes and edges',
-    type: 'json',
+    key: SampleData.CIRCLE_GRAPH,
+    type: ImportType.JSON,
     src: '/images/sample.png',
   },
   {
     data: DATA.RandomData,
     title: 'Random Graph Dataset',
     description: 'Demo graph dataset with multiple nodes and edges',
-    type: 'json',
+    key: SampleData.RANDOM_GRAPH,
+    type: ImportType.JSON,
     src: '/images/sample.png',
   },
   {
     data: DATA.NetworkData,
     title: 'Network Dataset',
     description: '1.5k Nodes, 2.7k edges',
-    type: 'json',
+    key: SampleData.NETWORK,
+    type: ImportType.JSON,
     src: '/images/sample.png',
   },
   {
     data: DATA.NetworkData2,
     title: 'Perf Test Dataset',
     description: '7.1k Nodes, 5.4k edges',
-    type: 'json',
+    type: ImportType.JSON,
+    key: SampleData.PERF_TEST,
     src: '/images/sample.png',
   },
 ];
@@ -85,16 +100,15 @@ const StyledItem = ({ item }: { item: SampleDataItem }) => {
   ) => {
     e.preventDefault();
     dispatch(closeModal());
+
     // These two datasets come with x-y coordinates
-    if (
-      item.title === 'Network Dataset' ||
-      item.title === 'Perf Test Dataset'
-    ) {
+    if (item.key === SampleData.PERF_TEST || item.key === SampleData.NETWORK) {
       dispatch(changeLayout({ layout: { id: 'none' } }));
     }
-    Promise.resolve(item.data()).then((d) => {
-      // @ts-ignore
-      dispatch(addData({ data: d, type: item.type }, defaultAccessors));
+
+    Promise.resolve(item.data()).then((d: void) => {
+      const sampleDataset: JsonImport = { data: d, type: ImportType.JSON };
+      dispatch(importSingleJsonData(sampleDataset, defaultAccessors));
     });
   };
 

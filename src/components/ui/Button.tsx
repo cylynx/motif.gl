@@ -25,7 +25,7 @@ const FullButton = React.forwardRef<Ref, FullButtonProps>(
     >
       {children}
     </Button>
-  )
+  ),
 );
 
 export default FullButton;

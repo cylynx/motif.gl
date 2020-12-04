@@ -13,7 +13,9 @@ import {
   importNodeEdgeCsv,
   importJson,
   NodeEdgeDataType,
+  JsonImport,
 } from '../processors/import-data';
+import { GraphData, GraphList } from '../containers/Graph';
 
 const checkNewData = (
   graphList: Graph.GraphList,
@@ -54,7 +56,7 @@ type ImportAccessors = Graph.Accessors | null;
 /**
  * Thunk to add data to graph - processes CSV and add to graphList
  *
- * @param {ImportFormat[]} importData
+ * @param {ImportFormat[]} importData - array of graphData objects
  * @param {ImportAccessors} importAccessors = null
  *
  * @return void
@@ -81,9 +83,10 @@ export const importEdgeListData = (
 };
 
 /**
+ *
  * Thunk to add data to graph - processes JSON and add to graphList
  *
- * @param {ImportFormat} importData
+ * @param {ImportFormat[]} importData - array of graphData objects
  * @param {ImportAccessors} importAccessors [importAccessors=null] to customize node Id / edge Id / edge source or target
  *
  * @return void
@@ -112,10 +115,9 @@ export const importJsonData = (
 
 /**
  * Thunk to add data to graph - processed CSV with node and edge and add to graph List
- * Input must be single graph object
  *
- * @param {ImportFormat} importData
- * @param {ImportAccessors} importAccessors [importAccessors=null] to customize node Id / edge Id / edge source or target
+ * @param {ImportFormat} importData - single graphData object
+ * @param {ImportAccessors} importAccessors [importAccessors=null] - to customize node Id / edge Id / edge source or target
  *
  * @return void
  */
@@ -131,6 +133,25 @@ export const importNodeEdgeData = (
 
   importNodeEdgeCsv(nodeData, edgeData, accessors)
     .then((graphData: Graph.GraphData) => {
+      processResponse(dispatch, graphList, mainAccessors, graphData);
+    })
+    .catch((err: Error) => {
+      dispatch(fetchError(err.message));
+    });
+};
+
+export const importSingleJsonData = (
+  importData: JsonImport,
+  importAccessors: ImportAccessors = null,
+) => async (dispatch: any, getState: any) => {
+  const { data } = importData;
+  const { graphList, accessors: mainAccessors } = getGraph(getState());
+  const accessors = { ...mainAccessors, ...importAccessors };
+
+  const newData: Promise<GraphList> = importJson(data as GraphData, accessors);
+
+  newData
+    .then((graphData: GraphList) => {
       processResponse(dispatch, graphList, mainAccessors, graphData);
     })
     .catch((err: Error) => {

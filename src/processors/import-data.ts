@@ -25,7 +25,7 @@ export type NodeEdgeDataType = {
 };
 
 export type JsonImport = {
-  data: GraphData | GraphList;
+  data: GraphData | GraphList | void;
   type: ImportType.JSON;
 };
 
