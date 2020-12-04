@@ -1,11 +1,11 @@
 // @ts-nocheck
 import React from 'react';
 import has from 'lodash/has';
-import * as Prop from '../types/Prop';
+import { NodeMenu, ImportWizard } from '../types/Prop';
 
 export const getTabsOverride = (
-  overrides: Prop.Overrides,
-  Component: React.ComponentType<Prop.ImportWizard>
+  overrides: Overrides,
+  Component: React.ComponentType<ImportWizard>,
 ): React.ComponentType<any> => {
   if (overrides.Tabs) {
     const tabsObj = overrides.Tabs;
@@ -27,9 +27,9 @@ export const getTabsOverride = (
 };
 
 export const getNodeMenuOverride = (
-  overrides: Prop.Overrides,
-  Component: React.ComponentType<Prop.NodeMenu>
-): React.ComponentType<Prop.NodeMenu> => {
+  overrides: Overrides,
+  Component: ({ tooltip }: { tooltip: TooltipProps }) => JSX.Element,
+): React.ComponentType<NodeMenu> => {
   if (overrides.NodeMenu) {
     return overrides.NodeMenu;
   }

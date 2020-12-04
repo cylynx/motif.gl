@@ -7,7 +7,6 @@ import * as Graph from '../containers/Graph/types';
 import { fetchBegin, fetchError, fetchDone } from './ui-slice';
 import { addQuery, processGraphResponse } from './graph-slice';
 import {
-  OPTIONS as IMPORT_OPTIONS,
   ImportFormat,
   importEdgeListCsv,
   importNodeEdgeCsv,
@@ -89,12 +88,16 @@ export const importEdgeListData = (
  * @param {ImportFormat[]} importData - array of graphData objects
  * @param {ImportAccessors} importAccessors [importAccessors=null] to customize node Id / edge Id / edge source or target
  *
- * @return void
+ * @return Promise
  */
 export const importJsonData = (
   importData: ImportFormat[],
   importAccessors: ImportAccessors = null,
-) => async (dispatch: any, getState: any) => {
+) => (dispatch: any, getState: any) => {
+  if (Array.isArray(importData) === false) {
+    throw new Error('Provided import data is not an array');
+  }
+
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
 
@@ -103,7 +106,7 @@ export const importJsonData = (
     return importJson(data as Graph.GraphList, accessors);
   });
 
-  Promise.all(batchDataPromises)
+  return Promise.all(batchDataPromises)
     .then((graphDataArr: Graph.GraphList[]) => {
       const graphData: Graph.GraphList = flatten(graphDataArr);
       processResponse(dispatch, graphList, mainAccessors, graphData);
@@ -140,6 +143,12 @@ export const importNodeEdgeData = (
     });
 };
 
+/**
+ * Thunk to add single json data into graph
+ *
+ * @param {JsonImport} importData
+ * @param {ImportAccessors} importAccessors [importAccessors=null] - to customize node Id / edge Id / edge source or target
+ */
 export const importSingleJsonData = (
   importData: JsonImport,
   importAccessors: ImportAccessors = null,
@@ -157,47 +166,4 @@ export const importSingleJsonData = (
     .catch((err: Error) => {
       dispatch(fetchError(err.message));
     });
-};
-
-/**
- * Thunk to add data to graph - processes JSON / CSV and add to graphList
- * Input can either be a single GraphData object or an array of GraphData
- *
- * @param {ImportFormat} importData
- * @param {ImportAccessors} [importAccessors=null] to customize node Id / edge Id / edge source or target
- */
-export const addData = (
-  importData: ImportFormat,
-  importAccessors: ImportAccessors = null,
-) => async (dispatch: any, getState: any) => {
-  const { data, type } = importData;
-  const { graphList, accessors: mainAccessors } = getGraph(getState());
-  // Use importAccessors if available to do initial mapping
-  const accessors = { ...mainAccessors, ...importAccessors };
-  let newData: Promise<Graph.GraphData> | Promise<Graph.GraphList>;
-
-  if (type === IMPORT_OPTIONS.json.id) {
-    newData = importJson(data as Graph.GraphData | Graph.GraphList, accessors);
-  } else if (type === IMPORT_OPTIONS.nodeEdgeCsv.id) {
-    const { nodeData, edgeData } = data as {
-      nodeData: string;
-      edgeData: string;
-    };
-    newData = importNodeEdgeCsv(nodeData, edgeData, accessors);
-  } else if (type === IMPORT_OPTIONS.edgeListCsv.id) {
-    newData = importEdgeListCsv(data as string, accessors);
-  } else {
-    dispatch(fetchError('Invalid data format'));
-  }
-
-  return (
-    newData
-      // @ts-ignore
-      .then((graphData: Graph.GraphData | Graph.GraphList) => {
-        processResponse(dispatch, graphList, mainAccessors, graphData);
-      })
-      .catch((err: Error) => {
-        dispatch(fetchError(err.message));
-      })
-  );
 };
