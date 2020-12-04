@@ -29,7 +29,7 @@ export const getTabsOverride = (
 export const getNodeMenuOverride = (
   overrides: Overrides,
   Component: ({ tooltip }: { tooltip: TooltipProps }) => JSX.Element,
-): React.ComponentType<NodeMenu> => {
+): React.ComponentType<any> => {
   if (overrides.NodeMenu) {
     return overrides.NodeMenu;
   }
