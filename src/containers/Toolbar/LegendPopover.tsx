@@ -39,7 +39,9 @@ const Legend = ({ data }: { data: { [key: string]: string } }) => {
               borderRadius: '50%',
             })}
           />
-          <LabelSmall>{value}</LabelSmall>
+          <LabelSmall width='250px' marginBottom='8px'>
+            {value}
+          </LabelSmall>
         </Block>
       ))}
     </Fragment>
