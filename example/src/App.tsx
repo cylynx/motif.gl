@@ -27,17 +27,16 @@ const App = () => {
               edgeSource: 'from',
               edgeTarget: 'to',
             }}
-            overrides={
-              {
-                // Tabs: {
-                //   Hash: <QueryHash />,
-                //   Neighbours: <QueryNeighbours />,
-                //   Path: <QueryPath />,
-                // },
-                // NodeMenu,
-                // score,
-              }
-            }
+            // overrides={
+            //   {
+            // Tabs: {
+            //   Hash: <QueryHash />,
+            //   Neighbours: <QueryNeighbours />,
+            //   Path: <QueryPath />,
+            // },
+            // Tooltip,
+            //   }
+            // }
           />
         </Provider>
       </BaseProvider>
