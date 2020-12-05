@@ -38,7 +38,7 @@ const mapNodeSize = (nodes, propertyName, visualRange) => {
   const rangepLength = maxp - minp;
   const rangevLength = visualRange[1] - visualRange[0];
   nodes.forEach((node) => {
-    node.style.size =
+    node.defaultStyle.size =
       ((node[propertyName] - minp) / rangepLength) * rangevLength +
       visualRange[0];
   });
@@ -145,8 +145,8 @@ export const NetworkData = () =>
       data.nodes.forEach((node) => {
         node.label = node.olabel;
         node.degree = 0;
-        node.style = {};
-        node.style.fontSize = 6;
+        node.defaultStyle = {};
+        node.defaultStyle.fontSize = 6;
         data.edges.forEach((edge) => {
           if (edge.source === node.id || edge.target === node.id) {
             node.degree++;
@@ -169,8 +169,8 @@ export const NetworkData2 = () =>
       data.nodes.forEach((node) => {
         node.label = node.olabel;
         node.degree = 0;
-        node.style = {};
-        node.style.fontSize = 1.3;
+        node.defaultStyle = {};
+        node.defaultStyle.fontSize = 1.3;
         data.edges.forEach((edge) => {
           if (edge.source === node.id || edge.target === node.id) {
             node.degree++;
