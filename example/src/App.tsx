@@ -29,11 +29,7 @@ const App = () => {
             }}
             // overrides={
             //   {
-            // Tabs: {
-            //   Hash: <QueryHash />,
-            //   Neighbours: <QueryNeighbours />,
-            //   Path: <QueryPath />,
-            // },
+            // Tabs: [{ title: 'Test', key: 'test', component: <div>hi</div> }],
             // Tooltip,
             //   }
             // }

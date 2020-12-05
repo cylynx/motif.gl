@@ -28,7 +28,7 @@ import Graph, {
   Accessors,
   StyleOptions,
 } from './containers/Graph';
-import ImportWizard from './containers/ImportWizard';
+import ImportWizard, { defaultImportTabs } from './containers/ImportWizard';
 
 export interface WidgetContainerProps {
   children: React.ReactNode;
@@ -85,8 +85,8 @@ const Explorer = (props: ExplorerProps) => {
   const widgetStateIds = useSelector((state) =>
     Object.values(getWidget(state)),
   );
-  const UserImportWizard = getTabsOverride(overrides, ImportWizard);
   const UserTooltip = getTooltipOverride(overrides, Tooltip);
+  const userImportTabs = getTabsOverride(overrides, defaultImportTabs);
   const widgetList = getWidgetOverride(overrides, defaultWidgetList);
   const activeWidgetList =
     widgetList.filter((x) => widgetStateIds.includes(x.id)) || [];
@@ -126,7 +126,7 @@ const Explorer = (props: ExplorerProps) => {
       >
         <ModalBody>
           {modal.isOpen && modal.content === 'import' ? (
-            <UserImportWizard />
+            <ImportWizard tabs={userImportTabs} />
           ) : modal.isOpen && modal.content.startsWith('table') ? (
             <DataTable dataKey={modal.content} />
           ) : (
