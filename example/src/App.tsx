@@ -16,7 +16,7 @@ const App = () => {
       <BaseProvider theme={MotifLightTheme}>
         <Provider store={store}>
           <Motif
-            name='Blocklynx'
+            name='Motif'
             currency='ETH'
             secondaryTheme={MotifDarkTheme}
             accessors={{

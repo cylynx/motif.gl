@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import html2canvas from 'html2canvas';
 import { Block } from 'baseui/block';
 import { useDispatch, useSelector } from 'react-redux';
 import { getGraphList, getUI } from '../../redux';
-import { fetchError } from '../../redux/ui-slice';
+import { fetchError, setName } from '../../redux/ui-slice';
 import { resetState } from '../../redux/graph-slice';
 import * as Icon from '../../components/Icons';
 import Editable from '../../components/Editable';
 import HeaderButton, { HeaderButtonProp } from './HeaderButton';
 
 const Header = () => {
-  const [value, setValue] = useState(useSelector((state) => getUI(state).name));
+  const name = useSelector((state) => getUI(state).name);
   const exportGraph = useSelector((state) => getGraphList(state));
   const dispatch = useDispatch();
+
+  const onChangeName = (text: string) => dispatch(setName(text));
 
   const exportPNG = () => {
     const graph = document.getElementById('graphin-container');
@@ -74,7 +76,7 @@ const Header = () => {
       marginBottom='scale800'
     >
       <Block>
-        <Editable text={value} onChange={(text) => setValue(text)} />
+        <Editable text={name} onChange={onChangeName} />
       </Block>
       <Block>
         {headerButtons.map((item) => (
