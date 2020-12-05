@@ -3,15 +3,10 @@
 /* eslint-disable no-param-reassign */
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
 import * as LAYOUT from '../constants/layout-options';
 import * as Graph from '../containers/Graph/types';
-import {
-  combineProcessedData,
-  datatoTS,
-  chartRange,
-} from '../utils/graph-utils';
+import { combineProcessedData } from '../utils/graph-utils';
 import { generateDefaultColorMap } from '../utils/style-nodes';
 
 export const updateSelections = (state: GraphState, data: Graph.GraphData) => {
@@ -45,21 +40,13 @@ export const updateSelections = (state: GraphState, data: Graph.GraphData) => {
  *
  * @param {GraphState} state
  * @param {Graph.GraphData} graphData
- * @param {Graph.Accessors} accessors
  */
-export const updateAll = (
-  state: GraphState,
-  graphData: Graph.GraphData,
-  accessors: Graph.Accessors,
-) => {
+export const updateAll = (state: GraphState, graphData: Graph.GraphData) => {
   if (graphData) {
     state.graphFlatten = graphData;
-    const tsData = datatoTS(state.graphFlatten, accessors.edgeTime);
-    state.tsData = tsData;
   } else {
     // Reset data state when all data is deleted
     state.graphFlatten = initialState.graphFlatten;
-    state.tsData = initialState.tsData;
     state.nodeSelection = initialState.nodeSelection;
     state.edgeSelection = initialState.edgeSelection;
   }
@@ -77,7 +64,6 @@ export interface GraphState {
   styleOptions: Graph.StyleOptions;
   graphList: Graph.GraphList;
   graphFlatten: Graph.GraphData;
-  tsData: Graph.TimeSeries;
   nodeSelection: Selection[];
   edgeSelection: Selection[];
 }
@@ -118,7 +104,6 @@ const initialState: GraphState = {
     edges: [],
     metadata: { fields: { nodes: [], edges: [] } },
   },
-  tsData: [],
   nodeSelection: [{ label: 'id', id: 'id', type: 'string', selected: true }],
   edgeSelection: [
     { label: 'id', id: 'id', type: 'string', selected: true },
@@ -159,7 +144,7 @@ const graph = createSlice({
           graphData = combineProcessedData(data, graphData);
         }
       }
-      updateAll(state, graphData, state.accessors);
+      updateAll(state, graphData);
     },
     changeVisibilityGraphList(
       state,
@@ -174,7 +159,7 @@ const graph = createSlice({
           graphData = combineProcessedData(data, graphData);
         }
       }
-      updateAll(state, graphData, state.accessors);
+      updateAll(state, graphData);
     },
     addQuery(state, action: PayloadAction<Graph.GraphData>) {
       state.graphList.push(action.payload);
@@ -240,7 +225,7 @@ const graph = createSlice({
       const { data, accessors } = action.payload;
       const { graphFlatten } = state;
       const graphData = combineProcessedData(data, graphFlatten);
-      updateAll(state, graphData, accessors);
+      updateAll(state, graphData);
       updateSelections(state, data);
     },
     setAccessors(state, action: PayloadAction<Graph.Accessors>) {
