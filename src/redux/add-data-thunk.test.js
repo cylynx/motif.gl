@@ -3,14 +3,18 @@ import thunk from 'redux-thunk';
 import cloneDeep from 'lodash/cloneDeep';
 import flatten from 'lodash/flatten';
 import { importJsonData, importNodeEdgeData } from './add-data-thunk';
-import { initialState, addQuery, processGraphResponse } from './graph-slice';
+import graphReducer, { initialState, addQuery, processGraphResponse } from './graph-slice';
 import {
+  addRequiredFieldsJson,
   importJson,
   importNodeEdgeCsv,
   ImportType,
 } from '../processors/import-data';
 import { fetchBegin, fetchDone } from './ui-slice';
 import { getGraph, getGraphFlatten } from './combine-reducers';
+
+
+import { processNodeEdgeCsv } from '../processors/data-processors';
 
 const mockStore = configureStore([thunk]);
 const getStore = () => {
@@ -109,7 +113,14 @@ describe('add-data-thunk.test.js', () => {
       const store = mockStore(getStore());
       const { nodeData, edgeData } = sampleNodeEdgeData.data;
       const { accessors } = initialState;
-      const data = await importNodeEdgeCsv(nodeData, edgeData, accessors);
+      const metadataKey = '123';
+
+      const data = await importNodeEdgeCsv(
+        nodeData,
+        edgeData,
+        accessors,
+        metadataKey,
+      );
 
       const expectedActions = [
         fetchBegin(),
@@ -121,7 +132,9 @@ describe('add-data-thunk.test.js', () => {
         fetchDone(),
       ];
 
-      await store.dispatch(importNodeEdgeData(sampleNodeEdgeData));
+      await store.dispatch(
+        importNodeEdgeData(sampleNodeEdgeData, accessors, metadataKey),
+      );
       expect(store.getActions()).toEqual(expectedActions);
     });
     it('should throw errors if importData parameter is array', async () => {});

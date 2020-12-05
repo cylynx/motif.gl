@@ -121,20 +121,27 @@ export const importJsonData = (
  *
  * @param {ImportFormat} importData - single graphData object
  * @param {ImportAccessors} importAccessors [importAccessors=null] - to customize node Id / edge Id / edge source or target
- *
+ * @param {number} metadataKey [metadataKey=null]
  * @return {Promise<GraphData>}
  */
 export const importNodeEdgeData = (
   importData: ImportFormat,
   importAccessors: ImportAccessors = null,
+  metadataKey: string = null,
 ) => (dispatch: any, getState: any) => {
   const { data } = importData;
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
 
   const { nodeData, edgeData } = data as NodeEdgeDataType;
+  const newData: Promise<GraphData> = importNodeEdgeCsv(
+    nodeData,
+    edgeData,
+    accessors,
+    metadataKey,
+  );
 
-  return importNodeEdgeCsv(nodeData, edgeData, accessors)
+  return newData
     .then((graphData: Graph.GraphData) => {
       processResponse(dispatch, graphList, mainAccessors, graphData);
     })

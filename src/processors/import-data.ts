@@ -98,14 +98,17 @@ export const importEdgeListCsv = async (
  * @param {string} nodeCsv
  * @param {string} edgeCsv
  * @param {Accessors} accessors
+ * @param {string} metadataKey [metadataKey=null]
+ *
  * @return {*}  {Promise<GraphData>}
  */
 export const importNodeEdgeCsv = async (
   nodeCsv: string,
   edgeCsv: string,
   accessors: Accessors,
+  metadataKey: string = null,
 ): Promise<GraphData> => {
-  const processedData = await processNodeEdgeCsv(nodeCsv, edgeCsv);
+  const processedData = await processNodeEdgeCsv(nodeCsv, edgeCsv, metadataKey);
   if (processedData.nodes.length < 1) {
     throw new Error('process Csv Data Failed: CSV is empty');
   }
