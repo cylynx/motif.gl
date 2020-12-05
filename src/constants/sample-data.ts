@@ -9,6 +9,10 @@ export const RandomData = () => {
   data.nodes.forEach((n) => {
     n.numeric = Math.floor(Math.random() * 100 + 1);
   });
+
+  data.metadata = {
+    title: 'Random Data',
+  };
   return data;
 };
 export const CircleData = () => {
@@ -16,6 +20,10 @@ export const CircleData = () => {
   data.edges.forEach((e) => {
     e.numeric = Math.floor(Math.random() * 10 + 1);
   });
+
+  data.metadata = {
+    title: 'Circle Data',
+  };
   return data;
 };
 
@@ -146,6 +154,9 @@ export const NetworkData = () =>
         });
       });
       mapNodeSize(data.nodes, 'degree', [1, 10]);
+      data.metadata = {
+        title: 'Network Data',
+      };
       return data;
     });
 
@@ -167,6 +178,9 @@ export const NetworkData2 = () =>
         });
       });
       mapNodeSize(data.nodes, 'degree', [1, 15]);
+      data.metadata = {
+        title: 'Large Data',
+      };
       return data;
     });
 
