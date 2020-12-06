@@ -96,7 +96,7 @@ const initialState: GraphState = {
       label: 'none',
     },
     resetView: true,
-    groupEdges: true,
+    groupEdges: false,
   },
   graphList: [],
   graphFlatten: {
