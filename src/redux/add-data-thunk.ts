@@ -57,22 +57,24 @@ type ImportAccessors = Graph.Accessors | null;
  *
  * @param {ImportFormat[]} importData - array of graphData objects
  * @param {ImportAccessors} importAccessors = null
+ * @param {string} metadataKey = null
  *
  * @return void
  */
 export const importEdgeListData = (
   importData: ImportFormat[],
   importAccessors: ImportAccessors = null,
-) => async (dispatch: any, getState: any) => {
+  metadataKey: string = null,
+) => (dispatch: any, getState: any) => {
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
 
   const batchDataPromises = importData.map((graphData: ImportFormat) => {
     const { data } = graphData;
-    return importEdgeListCsv(data as string, accessors);
+    return importEdgeListCsv(data as string, accessors, metadataKey);
   });
 
-  Promise.all(batchDataPromises)
+  return Promise.all(batchDataPromises)
     .then((graphData: Graph.GraphList) => {
       processResponse(dispatch, graphList, mainAccessors, graphData);
     })
@@ -129,6 +131,10 @@ export const importNodeEdgeData = (
   importAccessors: ImportAccessors = null,
   metadataKey: string = null,
 ) => (dispatch: any, getState: any) => {
+  if (Array.isArray(importData)) {
+    throw new Error('importData parameter must not be an array');
+  }
+
   const { data } = importData;
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
