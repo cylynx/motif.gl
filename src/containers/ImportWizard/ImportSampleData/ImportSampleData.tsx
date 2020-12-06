@@ -24,7 +24,8 @@ const sampleData: SampleDataItem[] = [
     title: 'Random Graph',
     description: 'A small random dataset to get started.',
     type: 'json',
-    src: '/images/sample.png',
+    src:
+      'https://storage.googleapis.com/cylynx-landing-content/random-data.png',
   },
   {
     data: DATA.CircleData,
@@ -32,14 +33,16 @@ const sampleData: SampleDataItem[] = [
     description:
       'Try displaying the data as a circle using one of the layout options.',
     type: 'json',
-    src: '/images/sample.png',
+    src:
+      'https://storage.googleapis.com/cylynx-landing-content/circle-data.png',
   },
   {
     data: DATA.TwoDataArray,
     title: 'Random + Circle',
     description: 'Import multiple data as in this example.',
     type: 'json',
-    src: '/images/sample.png',
+    src:
+      'https://storage.googleapis.com/cylynx-landing-content/circle-random-data.png',
   },
   {
     data: DATA.MiserablesData,
@@ -47,7 +50,8 @@ const sampleData: SampleDataItem[] = [
     description:
       'Character co-occurence in Les Misérables. Try coloring the grouping and displaying the data using a force-directed plot.',
     type: 'json',
-    src: '/images/sample.png',
+    src:
+      'https://storage.googleapis.com/cylynx-landing-content/miserables-data.png',
   },
   {
     data: DATA.NetworkData,
@@ -55,7 +59,8 @@ const sampleData: SampleDataItem[] = [
     description:
       'Co-authorship network of scientists working on network theory. 1.5k nodes and 2.7k edges.',
     type: 'json',
-    src: '/images/sample.png',
+    src:
+      'https://storage.googleapis.com/cylynx-landing-content/network-data.png',
   },
   {
     data: DATA.AAData,
@@ -63,7 +68,7 @@ const sampleData: SampleDataItem[] = [
     description:
       'Aggregated arrival and departure flights laid out as a U.S. map.',
     type: 'json',
-    src: '/images/sample.png',
+    src: 'https://storage.googleapis.com/cylynx-landing-content/aa-data.png',
   },
 ];
 
@@ -109,11 +114,11 @@ const StyledItem = ({ item }: { item: SampleDataItem }) => {
   return (
     <Button onClick={(e) => trySampleData(item, e)} kind='minimal'>
       <Block width='200px'>
-        <img src={item.src} height='100px' width='150px' alt={item.title} />
-        <LabelMedium marginTop='12px' marginBottom='0'>
+        <img src={item.src} height='120px' width='180px' alt={item.title} />
+        <LabelMedium marginTop='6px' marginBottom='0'>
           {item.title}
         </LabelMedium>
-        <ParagraphSmall marginTop='12px' marginBottom='12px'>
+        <ParagraphSmall marginTop='6px' marginBottom='6px'>
           {item.description}
         </ParagraphSmall>
       </Block>
