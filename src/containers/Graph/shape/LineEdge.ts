@@ -220,7 +220,7 @@ export default (g6: any) => {
           },
         };
         targetAttrs.text = {
-          fill: '#8D93B0',
+          fill: GREY.dark,
         };
       }
 
