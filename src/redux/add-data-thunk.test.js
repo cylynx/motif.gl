@@ -6,6 +6,7 @@ import {
   importEdgeListData,
   importJsonData,
   importNodeEdgeData,
+  importSingleJsonData,
 } from './add-data-thunk';
 import { initialState, addQuery, processGraphResponse } from './graph-slice';
 import {
@@ -15,6 +16,7 @@ import {
   ImportType,
 } from '../processors/import-data';
 import { fetchBegin, fetchDone } from './ui-slice';
+import { SimpleEdge } from '../constants/sample-data';
 
 const mockStore = configureStore([thunk]);
 const getStore = () => {
@@ -192,6 +194,45 @@ describe('add-data-thunk.test.js', () => {
         importEdgeListData(importDataArr, initialState.accessors),
       );
       expect(store.getActions()).toEqual(expectedActions);
+    });
+
+    it('should throw errors if importData parameter is not array', async () => {
+      await expect(importEdgeListData(firstEdgeListCsv)).toThrow(Error);
+    });
+  });
+
+  describe('importSingleJsonData', () => {
+    const store = mockStore(getStore());
+
+    it('should receive importData as object and process graph accurately', async () => {
+      // input
+      const data = SimpleEdge();
+      const importData = { data, type: ImportType.JSON };
+
+      // processes
+      const processedJsonData = await importJson(data, initialState.accessors);
+      const [objectData] = processedJsonData;
+
+      // expected results
+      const expectedActions = [
+        fetchBegin(),
+        addQuery(objectData),
+        processGraphResponse({
+          data: objectData,
+          accessors: initialState.accessors,
+        }),
+        fetchDone(),
+      ];
+
+      await store.dispatch(importSingleJsonData(importData));
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+
+    it('should throw errors if importData parameter is an array', async () => {
+      const data = SimpleEdge();
+      const importData = { data, type: ImportType.JSON };
+
+      await expect(importSingleJsonData([importData])).toThrow(Error);
     });
   });
 });

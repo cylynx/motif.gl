@@ -66,6 +66,10 @@ export const importEdgeListData = (
   importAccessors: ImportAccessors = null,
   metadataKey: string = null,
 ) => (dispatch: any, getState: any) => {
+  if (Array.isArray(importData) === false) {
+    throw new Error('importData parameter must be array');
+  }
+
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
 
@@ -165,14 +169,18 @@ export const importNodeEdgeData = (
 export const importSingleJsonData = (
   importData: JsonImport,
   importAccessors: ImportAccessors = null,
-) => async (dispatch: any, getState: any) => {
+) => (dispatch: any, getState: any) => {
+  if (Array.isArray(importData)) {
+    throw new Error('importData parameter must be an object');
+  }
+
   const { data } = importData;
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
 
   const newData: Promise<GraphList> = importJson(data as GraphData, accessors);
 
-  newData
+  return newData
     .then((graphData: GraphList) => {
       processResponse(dispatch, graphList, mainAccessors, graphData);
     })
