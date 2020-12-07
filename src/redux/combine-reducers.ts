@@ -4,11 +4,7 @@ import produce from 'immer';
 import * as Graph from '../containers/Graph/types';
 import uiReducer from './ui-slice';
 import widgetReducer from '../containers/widgets/widget-slice';
-import graphReducer, {
-  setRange,
-  GraphState,
-  setAccessors,
-} from './graph-slice';
+import graphReducer, { GraphState, setAccessors } from './graph-slice';
 import { deriveVisibleGraph } from '../utils/graph-utils';
 
 // History group that collapses both actions into 1 undo/redo
@@ -32,7 +28,7 @@ const undoGroup: GroupByFunction<GraphState> = (
 
 // Enhanced graph reducer
 const graphReducerHistory = undoable(graphReducer, {
-  filter: excludeAction([setRange.type, setAccessors.type]),
+  filter: excludeAction([setAccessors.type]),
   groupBy: undoGroup,
 });
 

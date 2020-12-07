@@ -13,7 +13,7 @@ export interface UiState {
 }
 
 export const initialStateUi: UiState = {
-  name: '',
+  name: 'Motif',
   currency: '',
   loading: false,
   modal: { isOpen: true, content: 'import' },

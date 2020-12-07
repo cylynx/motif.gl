@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Button } from 'baseui/button';
 import { Block } from 'baseui/block';
 import { Cell } from 'baseui/layout-grid';
-import { LabelMedium, ParagraphMedium } from 'baseui/typography';
+import { LabelMedium, ParagraphSmall } from 'baseui/typography';
 import * as Graph from '../../Graph/types';
 import * as DATA from '../../../constants/sample-data';
 import { changeLayout } from '../../../redux/graph-slice';
@@ -20,39 +20,55 @@ export type SampleDataItem = {
 
 const sampleData: SampleDataItem[] = [
   {
-    data: DATA.TwoDataArray,
-    title: 'Simple Graph Dataset',
-    description: 'Demo graph dataset with multiple nodes and edges',
+    data: DATA.RandomData,
+    title: 'Random Graph',
+    description: 'A small random dataset to get started.',
     type: 'json',
-    src: '/images/sample.png',
+    src:
+      'https://storage.googleapis.com/cylynx-landing-content/random-data.png',
   },
   {
     data: DATA.CircleData,
-    title: 'Circle Graph Dataset',
-    description: 'Demo graph dataset with multiple nodes and edges',
+    title: 'Circle Graph',
+    description:
+      'Try displaying the data as a circle using one of the layout options.',
     type: 'json',
-    src: '/images/sample.png',
+    src:
+      'https://storage.googleapis.com/cylynx-landing-content/circle-data.png',
   },
   {
-    data: DATA.RandomData,
-    title: 'Random Graph Dataset',
-    description: 'Demo graph dataset with multiple nodes and edges',
+    data: DATA.TwoDataArray,
+    title: 'Random + Circle',
+    description: 'Import multiple data as in this example.',
     type: 'json',
-    src: '/images/sample.png',
+    src:
+      'https://storage.googleapis.com/cylynx-landing-content/circle-random-data.png',
+  },
+  {
+    data: DATA.MiserablesData,
+    title: 'Les Misérables',
+    description:
+      'Character co-occurence in Les Misérables. Try coloring the grouping and displaying the data using a force-directed plot.',
+    type: 'json',
+    src:
+      'https://storage.googleapis.com/cylynx-landing-content/miserables-data.png',
   },
   {
     data: DATA.NetworkData,
-    title: 'Network Dataset',
-    description: '1.5k Nodes, 2.7k edges',
+    title: 'Authorship',
+    description:
+      'Co-authorship network of scientists working on network theory. 1.5k nodes and 2.7k edges.',
     type: 'json',
-    src: '/images/sample.png',
+    src:
+      'https://storage.googleapis.com/cylynx-landing-content/network-data.png',
   },
   {
-    data: DATA.NetworkData2,
-    title: 'Perf Test Dataset',
-    description: '7.1k Nodes, 5.4k edges',
+    data: DATA.AAData,
+    title: 'American Airlines',
+    description:
+      'Aggregated arrival and departure flights laid out as a U.S. map.',
     type: 'json',
-    src: '/images/sample.png',
+    src: 'https://storage.googleapis.com/cylynx-landing-content/aa-data.png',
   },
 ];
 
@@ -64,7 +80,7 @@ const defaultAccessors: Graph.Accessors = {
 
 const ImportSampleData = () => {
   return (
-    <FlushedGrid>
+    <FlushedGrid gridGutters={0}>
       {sampleData &&
         sampleData.map((item) => (
           <Cell key={item.title} span={4}>
@@ -86,10 +102,7 @@ const StyledItem = ({ item }: { item: SampleDataItem }) => {
     e.preventDefault();
     dispatch(closeModal());
     // These two datasets come with x-y coordinates
-    if (
-      item.title === 'Network Dataset' ||
-      item.title === 'Perf Test Dataset'
-    ) {
+    if (item.title === 'Authorship' || item.title === 'American Airlines') {
       dispatch(changeLayout({ layout: { id: 'none' } }));
     }
     Promise.resolve(item.data()).then((d) => {
@@ -100,14 +113,14 @@ const StyledItem = ({ item }: { item: SampleDataItem }) => {
 
   return (
     <Button onClick={(e) => trySampleData(item, e)} kind='minimal'>
-      <Block>
-        <img src={item.src} height='100px' width='150px' alt={item.title} />
-        <LabelMedium marginTop='12px' marginBottom='0'>
+      <Block width='200px'>
+        <img src={item.src} height='120px' width='180px' alt={item.title} />
+        <LabelMedium marginTop='6px' marginBottom='0'>
           {item.title}
         </LabelMedium>
-        <ParagraphMedium marginTop='12px' marginBottom='12px'>
+        <ParagraphSmall marginTop='6px' marginBottom='6px'>
           {item.description}
-        </ParagraphMedium>
+        </ParagraphSmall>
       </Block>
     </Button>
   );

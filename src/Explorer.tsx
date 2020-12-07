@@ -11,32 +11,29 @@ import { PRIMARY_COLOR } from './constants/colors';
 import { Loader } from './components/ui';
 import DataTable from './containers/DataTable';
 import { closeModal, setName } from './redux/ui-slice';
-import { WidgetItem, defaultWidgetList } from './containers/widgets';
+import { defaultWidgetList } from './containers/widgets';
 import { setWidget } from './containers/widgets/widget-slice';
 import { setAccessors, overrideStyles } from './redux/graph-slice';
-import { getTabsOverride, getNodeMenuOverride } from './utils/overrides';
+import {
+  Overrides,
+  getTabsOverride,
+  getTooltipOverride,
+  getWidgetOverride,
+} from './utils/overrides';
 import { getUI, getWidget } from './redux';
 import SideNavBar from './containers/SideNavBar';
 import Graph, {
   Tooltip,
-  TooltipProps,
   GraphRefContext,
   Accessors,
   StyleOptions,
 } from './containers/Graph';
-import ImportWizard, { Tab } from './containers/ImportWizard';
+import ImportWizard, { defaultImportTabs } from './containers/ImportWizard';
 
 export interface WidgetContainerProps {
   children: React.ReactNode;
   graphRef: React.MutableRefObject<HTMLDivElement | null>;
   theme: Theme;
-}
-
-export interface Overrides {
-  Tabs: Tab[];
-  NodeMenu: TooltipProps | null;
-  widgetList: WidgetItem[];
-  score: number[];
 }
 
 export interface ExplorerProps {
@@ -83,18 +80,14 @@ const Explorer = (props: ExplorerProps) => {
 
   const [, theme] = useStyletron();
   const dispatch = useDispatch();
-
-  // const tooltip = useSelector((state) => getUI(state).tooltip);
   const modal = useSelector((state) => getUI(state).modal);
   const loading = useSelector((state) => getUI(state).loading);
-  // const timeLock = useSelector((state) => getUI(state).timeLock);
-
   const widgetStateIds = useSelector((state) =>
     Object.values(getWidget(state)),
   );
-  const UserImportWizard = getTabsOverride(overrides, ImportWizard);
-  const UserTooltip = getNodeMenuOverride(overrides, Tooltip);
-  const widgetList = overrides.widgetList || defaultWidgetList;
+  const UserTooltip = getTooltipOverride(overrides, Tooltip);
+  const userImportTabs = getTabsOverride(overrides, defaultImportTabs);
+  const widgetList = getWidgetOverride(overrides, defaultWidgetList);
   const activeWidgetList =
     widgetList.filter((x) => widgetStateIds.includes(x.id)) || [];
 
@@ -116,7 +109,7 @@ const Explorer = (props: ExplorerProps) => {
     }
     dispatch(setWidget(widgetProp));
     dispatch(overrideStyles(styleOptions));
-  }, [accessors, overrides.widgetList, name]);
+  }, [accessors, overrides?.widgetList, name]);
 
   // UI Functions
   const onCloseModal = () => {
@@ -133,7 +126,7 @@ const Explorer = (props: ExplorerProps) => {
       >
         <ModalBody>
           {modal.isOpen && modal.content === 'import' ? (
-            <UserImportWizard />
+            <ImportWizard tabs={userImportTabs} />
           ) : modal.isOpen && modal.content.startsWith('table') ? (
             <DataTable dataKey={modal.content} />
           ) : (

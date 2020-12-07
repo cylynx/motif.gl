@@ -194,6 +194,7 @@ const testJson = {
   nodes: 'a',
   edges: 'b',
   metadata: {
+    customField: 'hello',
     key: 10,
     fields: {
       nodes: 'a',
@@ -209,6 +210,11 @@ describe('Process json data', () => {
   it('should return the exact object if all the main keys are there', async () => {
     const results = await processJson(testJson);
     expect(results).toMatchObject(testJson);
+  });
+  it('should retain custom metadata field', async () => {
+    const results = await processJson(testJson);
+    expect(results.metadata).toHaveProperty('customField');
+    expect(results.metadata.customField).toEqual('hello');
   });
   it('should return the json object parsed, with the added metadata', async () => {
     const results = await processJson(TriangleJSON()[0]);

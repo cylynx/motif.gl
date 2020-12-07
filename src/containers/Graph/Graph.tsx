@@ -104,6 +104,9 @@ const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
         keyShapeZoom: 0.6,
         autoPolyEdge: true,
         autoLoopEdge: true,
+        // If using combo in the future, might have to set to false
+        // https://g6.antv.vision/en/docs/api/Graph/#graphoptionsgroupbytypes
+        groupByTypes: true,
         modes: {
           default: [
             {

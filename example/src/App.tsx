@@ -16,7 +16,7 @@ const App = () => {
       <BaseProvider theme={MotifLightTheme}>
         <Provider store={store}>
           <Motif
-            name='Blocklynx'
+            name='Motif'
             currency='ETH'
             secondaryTheme={MotifDarkTheme}
             accessors={{
@@ -27,17 +27,12 @@ const App = () => {
               edgeSource: 'from',
               edgeTarget: 'to',
             }}
-            overrides={
-              {
-                // Tabs: {
-                //   Hash: <QueryHash />,
-                //   Neighbours: <QueryNeighbours />,
-                //   Path: <QueryPath />,
-                // },
-                // NodeMenu,
-                // score,
-              }
-            }
+            // overrides={
+            //   {
+            // Tabs: [{ title: 'Test', key: 'test', component: <div>hi</div> }],
+            // Tooltip,
+            //   }
+            // }
           />
         </Provider>
       </BaseProvider>

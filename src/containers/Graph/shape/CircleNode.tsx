@@ -107,7 +107,7 @@ export default (g6: typeof G6) => {
           textAlign: 'center',
           textBaseline: 'middle',
           fontFamily: 'Material Icons',
-          fill: style?.dark ? '#8D93B0' : '#FFFFFF',
+          fill: style?.dark ? GREY.dark : '#FFFFFF',
         },
         draggable: true,
         name: 'circle-icon',
@@ -122,7 +122,7 @@ export default (g6: typeof G6) => {
             text: cfg.label,
             textAlign: 'center',
             fontFamily: labelFontFamily,
-            fill: style?.dark ? '#8D93B0' : '#3B3B3B',
+            fill: style?.dark ? GREY.dark : '#3B3B3B',
           },
           draggable: true,
           name: 'circle-label',
@@ -162,7 +162,7 @@ export default (g6: typeof G6) => {
           fontSize: 10,
           textAlign: 'center',
           textBaseline: 'middle',
-          fill: style?.dark ? '#8D93B0' : '#FFFFFF',
+          fill: style?.dark ? GREY.dark : '#FFFFFF',
         },
         draggable: true,
         name: 'circle-children-icon',
@@ -226,16 +226,16 @@ export default (g6: typeof G6) => {
           lineWidth: innerSize > 10 ? 2 : 1,
         },
         icon: {
-          fill: style?.dark ? '#8D93B0' : '#FFFFFF',
+          fill: style?.dark ? GREY.dark : '#FFFFFF',
         },
         label: {
-          fill: style?.dark ? '#8D93B0' : '#3B3B3B',
+          fill: style?.dark ? GREY.dark : '#3B3B3B',
         },
         children: {
           fill: color.normal,
         },
         childrenIcon: {
-          fill: style?.dark ? '#8D93B0' : '#FFFFFF',
+          fill: style?.dark ? GREY.dark : '#FFFFFF',
         },
       };
 
@@ -254,10 +254,10 @@ export default (g6: typeof G6) => {
       ) {
         targetAttrs.inner.stroke = GREY.dark;
         targetAttrs.inner.fill = GREY.dark;
-        targetAttrs.icon.fill = '#8D93B0';
-        targetAttrs.label.fill = '#8D93B0';
+        targetAttrs.icon.fill = GREY.dark;
+        targetAttrs.label.fill = GREY.dark;
         targetAttrs.children.fill = GREY.normal;
-        targetAttrs.childrenIcon.fill = '#8D93B0';
+        targetAttrs.childrenIcon.fill = GREY.dark;
       }
 
       // circleBorder.attr(targetAttrs.border);

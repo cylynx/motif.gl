@@ -3,7 +3,6 @@ import React, { Fragment } from 'react';
 import { Button } from 'baseui/button';
 import { StatefulPopover, PLACEMENT, TRIGGER_TYPE } from 'baseui/popover';
 import { LabelSmall } from 'baseui/typography';
-import { Block } from 'baseui/block';
 
 export type HeaderButtonProp = {
   key: number;

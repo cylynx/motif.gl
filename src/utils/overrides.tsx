@@ -1,37 +1,32 @@
 // @ts-nocheck
 import React from 'react';
-import has from 'lodash/has';
-import * as Prop from '../types/Prop';
+import { TooltipProps } from '../containers/Graph';
+import { WidgetItem } from '../containers/widgets';
+import { Tab } from '../containers/ImportWizard';
+
+export interface Overrides {
+  Tabs?: Tab[];
+  Tooltip?: React.ComponentType<{ tooltip: TooltipProps }>;
+  widgetList?: WidgetItem[];
+}
 
 export const getTabsOverride = (
-  overrides: Prop.Overrides,
-  Component: React.ComponentType<Prop.ImportWizard>
-): React.ComponentType<any> => {
-  if (overrides.Tabs) {
-    const tabsObj = overrides.Tabs;
-    const tabs = [];
-    for (const title in tabsObj) {
-      if (has(tabsObj, title)) {
-        tabs.push({
-          title,
-          idx: tabs.length + 1,
-          component: tabsObj[title],
-        });
-      }
-    }
-    return React.forwardRef<any, any>((props, ref) => (
-      <Component ref={ref} tabs={tabs} {...props} />
-    ));
-  }
-  return Component;
+  overrides: Overrides,
+  defaultTabs: Tab[],
+): Tab[] => {
+  return overrides?.Tabs || defaultTabs;
 };
 
-export const getNodeMenuOverride = (
-  overrides: Prop.Overrides,
-  Component: React.ComponentType<Prop.NodeMenu>
-): React.ComponentType<Prop.NodeMenu> => {
-  if (overrides.NodeMenu) {
-    return overrides.NodeMenu;
-  }
-  return Component;
+export const getTooltipOverride = (
+  overrides: Overrides,
+  defaultTooltip: React.ComponentType<{ tooltip: TooltipProps }>,
+): React.ComponentType<{ tooltip: TooltipProps }> => {
+  return overrides?.Tooltip || defaultTooltip;
+};
+
+export const getWidgetOverride = (
+  overrides: Overrides,
+  defaultWidgetList: WidgetItem[],
+): WidgetItem[] => {
+  return overrides?.widgetList || defaultWidgetList;
 };
