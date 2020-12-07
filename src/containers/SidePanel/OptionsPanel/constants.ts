@@ -266,3 +266,16 @@ export const edgeLabelForm: SimpleFormData = {
   options: [{ id: 'none', label: 'None' }],
   callback: (data: any) => console.log(data),
 };
+
+export const edgeArrowForm: SimpleFormData = {
+  id: 'arrow',
+  label: 'Arrow',
+  labelPosition: 'left',
+  type: 'select',
+  value: 'none',
+  options: [
+    { id: 'none', label: 'None' },
+    { id: 'display', label: 'Display' },
+  ],
+  callback: (data: any) => console.log(data),
+};

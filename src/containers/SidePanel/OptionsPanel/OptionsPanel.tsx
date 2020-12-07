@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 
 import { Block } from 'baseui/block';
 import { useDispatch, useSelector } from 'react-redux';
-import { getGraph, getUI } from '../../../redux';
+import { getGraph , changeLayout, changeNodeStyle, changeEdgeStyle } from '../../../redux';
 import Header from '../Header';
 import Accordion from '../../../components/Accordion';
 import {
@@ -11,11 +11,7 @@ import {
   genNestedForm,
   genSimpleForm,
 } from '../../../components/form';
-import {
-  changeLayout,
-  changeNodeStyle,
-  changeEdgeStyle,
-} from '../../../redux/graph-slice';
+
 import { getFieldNames } from '../../../utils/graph-utils';
 import * as Icon from '../../../components/Icons';
 import {
@@ -28,6 +24,7 @@ import {
   edgePatternForm,
   edgeFontSizeForm,
   edgeLabelForm,
+  edgeArrowForm,
 } from './constants';
 
 const defaultLabelOptions = [
@@ -199,6 +196,13 @@ const OptionsPanel = () => {
                 <SimpleForm
                   data={genSimpleForm(
                     edgeFontSizeForm,
+                    edgeStyle,
+                    updateEdgeStyle,
+                  )}
+                />
+                <SimpleForm
+                  data={genSimpleForm(
+                    edgeArrowForm,
                     edgeStyle,
                     updateEdgeStyle,
                   )}
