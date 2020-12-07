@@ -10,8 +10,8 @@ import {
   changeLayout,
   changeNodeStyle,
   changeEdgeStyle,
-} from '../../redux/graph-slice';
-import { getGraph, getStyleOptions } from '../../redux';
+ getGraph, getStyleOptions } from '../../redux';
+
 import { getFieldNames } from '../../utils/graph-utils';
 import * as LAYOUT from '../../constants/layout-options';
 import { NestedForm, genNestedForm } from '../../components/form';

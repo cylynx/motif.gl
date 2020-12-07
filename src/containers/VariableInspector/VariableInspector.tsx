@@ -48,27 +48,31 @@ const VariableInspector = () => {
   const graphVisible = useSelector((state) => getGraphVisible(state));
   const graphFields = graphFlatten.metadata.fields;
 
-  const onPlay = () => {
+  const onPlay = useCallback(() => {
     setIsAnimating(true);
-  };
+  }, [setIsAnimating]);
 
-  const onPause = () => {
+  const onPause = useCallback(() => {
     setIsAnimating(false);
-  };
+  }, [setIsAnimating]);
 
-  const onChangeSpeed = () => {
-    if (speed === 1) {
-      setSpeed(2);
-    } else if (speed === 2) {
-      setSpeed(4);
-    } else if (speed === 4) {
-      setSpeed(8);
-    } else if (speed === 8) {
-      setSpeed(16);
-    } else if (speed === 16) {
-      setSpeed(1);
-    }
-  };
+  const onChangeSpeed = useCallback(
+    // eslint-disable-next-line no-shadow
+    () => {
+      if (speed === 1) {
+        setSpeed(2);
+      } else if (speed === 2) {
+        setSpeed(4);
+      } else if (speed === 4) {
+        setSpeed(8);
+      } else if (speed === 8) {
+        setSpeed(16);
+      } else if (speed === 16) {
+        setSpeed(1);
+      }
+    },
+    [speed, setSpeed],
+  );
 
   const nodeOptions = useMemo(
     () =>

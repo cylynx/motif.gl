@@ -122,6 +122,7 @@ export const processJson = async (
       edgeCsv as string,
     );
     const graphMetadata = {
+      ...json?.metadata,
       fields: { nodes: nodeFields, edges: edgeFields },
       key: get(json, key, key),
     };
