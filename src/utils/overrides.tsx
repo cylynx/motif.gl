@@ -1,11 +1,11 @@
 // @ts-nocheck
 import React from 'react';
 import has from 'lodash/has';
-import { NodeMenu, ImportWizard } from '../types/Prop';
+import { ImportWizardProps } from '../containers/ImportWizard';
 
 export const getTabsOverride = (
   overrides: Overrides,
-  Component: React.ComponentType<ImportWizard>,
+  Component: React.ComponentType<ImportWizardProps>,
 ): React.ComponentType<any> => {
   if (overrides.Tabs) {
     const tabsObj = overrides.Tabs;
