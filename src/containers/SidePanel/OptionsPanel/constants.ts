@@ -272,7 +272,7 @@ export const edgeArrowForm: SimpleFormData = {
   label: 'Arrow',
   labelPosition: 'left',
   type: 'select',
-  value: 'none',
+  value: 'display',
   options: [
     { id: 'none', label: 'None' },
     { id: 'display', label: 'Display' },
