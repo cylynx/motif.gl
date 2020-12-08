@@ -123,8 +123,11 @@ export default (g6: any) => {
       if (!name) return;
       // eslint-disable-next-line no-underscore-dangle
       const { states } = edge._cfg;
+
       const data: G6Edge = edge.get('model');
       const { style, defaultStyle } = data;
+      console.log(defaultStyle);
+
       const mainShape = edge
         .getContainer()
         .get('children')

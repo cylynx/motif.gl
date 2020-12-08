@@ -32,6 +32,9 @@ export const styleEdges = (
     if (edgeStyleOptions.label) {
       styleEdgeLabel(edge, edgeStyleOptions.label);
     }
+    if (edgeStyleOptions.arrow) {
+      styleEdgeArrow(edge, edgeStyleOptions.arrow);
+    }
   }
 };
 
@@ -91,6 +94,10 @@ export const styleEdgePattern = (edge: Graph.Edge, pattern: string) => {
 
 export const styleEdgeFontSize = (edge: Graph.Edge, fontSize: number) => {
   edge.defaultStyle.fontSize = fontSize;
+};
+
+export const styleEdgeArrow = (edge: Graph.Edge, arrow: string) => {
+  edge.defaultStyle.arrow = arrow;
 };
 
 type MinMax = {

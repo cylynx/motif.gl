@@ -321,7 +321,7 @@ export const getNodeProperties = (
     (k) => k !== 'id' && !k.includes('style.') && !k.includes('defaultStyle.'),
   );
   const styleKeys = Object.keys(flattenInfo).filter(
-    (k) => k !== 'id' && (k.includes('style.') || k.includes('deafultStyle.')),
+    (k) => k !== 'id' && (k.includes('style.') || k.includes('defaultStyle.')),
   );
   const newObj = {};
   // @ts-ignore

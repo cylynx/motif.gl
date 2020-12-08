@@ -136,6 +136,7 @@ export interface EdgeStyleOptions {
   pattern?: 'none' | 'dot' | 'dash' | 'dash-dot';
   fontSize?: number;
   label?: string;
+  arrow?: 'none' | 'display';
 }
 
 export interface StyleOptions {
