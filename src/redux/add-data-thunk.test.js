@@ -58,7 +58,7 @@ describe('add-data-thunk.test.js', () => {
   describe('importJsonData', () => {
     const store = mockStore(getStore());
 
-    it('should receives array of importData and process graph responses accurate', async () => {
+    it('should receive array of importData and process graph responses accurately', async () => {
       // input
       const importDataArr = [jsonDataOne, jsonDataTwo];
 
@@ -92,7 +92,7 @@ describe('add-data-thunk.test.js', () => {
       await store.dispatch(importJsonData(importDataArr));
       expect(store.getActions()).toEqual(expectedActions);
     });
-    it('should throw errors if importData parameter is not array', async () => {
+    it('should throw error if importData parameter is not array', async () => {
       // assertions
       await expect(importJsonData(jsonDataOne)).toThrow(Error);
     });
@@ -111,7 +111,7 @@ describe('add-data-thunk.test.js', () => {
       type: ImportType.NODE_EDGE_CSV,
     };
 
-    it('should receives importData as object and process graph responses accurately', async () => {
+    it('should receive importData as object and process graph responses accurately', async () => {
       const store = mockStore(getStore());
       const { nodeData, edgeData } = sampleNodeEdgeData.data;
       const { accessors } = initialState;
@@ -228,7 +228,7 @@ describe('add-data-thunk.test.js', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
 
-    it('should throw errors if importData parameter is an array', async () => {
+    it('should throw error if importData parameter is an array', async () => {
       const data = SimpleEdge();
       const importData = { data, type: ImportType.JSON };
 
