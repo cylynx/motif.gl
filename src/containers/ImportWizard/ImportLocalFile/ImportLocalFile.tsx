@@ -11,7 +11,6 @@ import { Hide, Show } from 'baseui/icon';
 import {
   EdgeListCsv,
   ImportFormat,
-  ImportType,
   JsonImport,
   NodeEdgeCsv,
   NodeEdgeDataType,
@@ -100,13 +99,13 @@ const ImportLocalFile = () => {
         const selectedDataType: string = watchDataType[0].id;
         const [fileExtension]: string[] = fileExts;
 
-        if (fileExtension === 'json' && selectedDataType === ImportType.JSON) {
+        if (fileExtension === 'json' && selectedDataType === 'json') {
           const jsonFileContents: JsonImport[] = fileContents.map(
             (content: string) => {
               const jsonGraphList: Graph.GraphList = JSON.parse(content);
               return {
                 data: jsonGraphList,
-                type: ImportType.JSON,
+                type: 'json',
               };
             },
           );
@@ -116,16 +115,13 @@ const ImportLocalFile = () => {
           return;
         }
 
-        if (
-          fileExtension === 'csv' &&
-          selectedDataType === ImportType.EDGE_LIST_CSV
-        ) {
+        if (fileExtension === 'csv' && selectedDataType === 'edgeListCsv') {
           const csvFileContents: EdgeListCsv[] = fileContents.map(
             (file: string) => {
               const cleanedFile: string = cleanInput(file);
               return {
                 data: cleanedFile,
-                type: ImportType.EDGE_LIST_CSV,
+                type: 'edgeListCsv',
               };
             },
           );
@@ -153,7 +149,7 @@ const ImportLocalFile = () => {
                 nodeData,
                 edgeData,
               },
-              type: ImportType.NODE_EDGE_CSV,
+              type: 'nodeEdgeCsv',
             };
 
             singleFileRef.current = nodeEdgeContent;
@@ -169,7 +165,7 @@ const ImportLocalFile = () => {
             const edgeData: string = cleanInput(fileContents[0] as string);
             const nodeEdgeContent: NodeEdgeCsv = {
               data: { nodeData, edgeData } as NodeEdgeDataType,
-              type: ImportType.NODE_EDGE_CSV,
+              type: 'nodeEdgeCsv',
             };
 
             singleFileRef.current = nodeEdgeContent;
@@ -208,15 +204,15 @@ const ImportLocalFile = () => {
       .map((k) => delete accessors[k]);
 
     const selectedDataType: string = watchDataType[0].id;
-    if (selectedDataType === ImportType.NODE_EDGE_CSV) {
+    if (selectedDataType === 'nodeEdgeCsv') {
       dispatch(importNodeEdgeData(singleFileRef.current, accessors));
     }
 
-    if (selectedDataType === ImportType.EDGE_LIST_CSV) {
+    if (selectedDataType === 'edgeListCsv') {
       dispatch(importEdgeListData(batchFileRef.current, accessors));
     }
 
-    if (selectedDataType === ImportType.JSON) {
+    if (selectedDataType === 'json') {
       dispatch(importJsonData(batchFileRef.current, accessors));
     }
 

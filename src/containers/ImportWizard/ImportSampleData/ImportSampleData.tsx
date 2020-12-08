@@ -8,7 +8,7 @@ import * as Graph from '../../Graph/types';
 import * as DATA from '../../../constants/sample-data';
 import { FlushedGrid } from '../../../components/ui';
 import { closeModal, changeLayout } from '../../../redux';
-import { ImportType, JsonImport } from '../../../processors/import-data';
+import { JsonImport } from '../../../processors/import-data';
 import { importSingleJsonData } from '../../../redux/add-data-thunk';
 
 export enum SampleData {
@@ -26,7 +26,7 @@ export type SampleDataItem = {
   description: string;
   key: SampleData;
   src: string;
-  type: ImportType.JSON | ImportType.EDGE_LIST_CSV | ImportType.NODE_EDGE_CSV;
+  type: 'json' | 'edgeListCsv' | 'nodeEdgeCsv';
 };
 
 const sampleData: SampleDataItem[] = [
@@ -35,7 +35,7 @@ const sampleData: SampleDataItem[] = [
     title: 'Random Graph',
     description: 'A small random dataset to get started.',
     key: SampleData.RANDOM_GRAPH,
-    type: ImportType.JSON,
+    type: 'json',
     src:
       'https://storage.googleapis.com/cylynx-landing-content/random-data.png',
   },
@@ -45,7 +45,7 @@ const sampleData: SampleDataItem[] = [
     description:
       'Try displaying the data as a circle using one of the layout options.',
     key: SampleData.CIRCLE_GRAPH,
-    type: ImportType.JSON,
+    type: 'json',
     src:
       'https://storage.googleapis.com/cylynx-landing-content/circle-data.png',
   },
@@ -54,7 +54,7 @@ const sampleData: SampleDataItem[] = [
     title: 'Random + Circle',
     description: 'Import multiple data as in this example.',
     key: SampleData.SIMPLE_GRAPH,
-    type: ImportType.JSON,
+    type: 'json',
     src:
       'https://storage.googleapis.com/cylynx-landing-content/circle-random-data.png',
   },
@@ -63,7 +63,7 @@ const sampleData: SampleDataItem[] = [
     title: 'Les Misérables',
     description:
       'Character co-occurence in Les Misérables. Try coloring the grouping and displaying the data using a force-directed plot.',
-    type: ImportType.JSON,
+    type: 'json',
     key: SampleData.MISERABLE,
     src:
       'https://storage.googleapis.com/cylynx-landing-content/miserables-data.png',
@@ -73,7 +73,7 @@ const sampleData: SampleDataItem[] = [
     title: 'Authorship',
     description:
       'Co-authorship network of scientists working on network theory. 1.5k nodes and 2.7k edges.',
-    type: ImportType.JSON,
+    type: 'json',
     key: SampleData.NETWORK,
     src:
       'https://storage.googleapis.com/cylynx-landing-content/network-data.png',
@@ -83,7 +83,7 @@ const sampleData: SampleDataItem[] = [
     title: 'American Airlines',
     description:
       'Aggregated arrival and departure flights laid out as a U.S. map.',
-    type: ImportType.JSON,
+    type: 'json',
     key: SampleData.AA,
     src: 'https://storage.googleapis.com/cylynx-landing-content/aa-data.png',
   },
@@ -125,7 +125,7 @@ const StyledItem = ({ item }: { item: SampleDataItem }) => {
     }
 
     Promise.resolve(item.data()).then((d: void) => {
-      const sampleDataset: JsonImport = { data: d, type: ImportType.JSON };
+      const sampleDataset: JsonImport = { data: d, type: 'json' };
       dispatch(importSingleJsonData(sampleDataset, defaultAccessors));
     });
   };
