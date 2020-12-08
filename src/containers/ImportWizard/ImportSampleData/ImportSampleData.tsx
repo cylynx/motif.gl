@@ -6,16 +6,27 @@ import { Cell } from 'baseui/layout-grid';
 import { LabelMedium, ParagraphSmall } from 'baseui/typography';
 import * as Graph from '../../Graph/types';
 import * as DATA from '../../../constants/sample-data';
-import { changeLayout } from '../../../redux/graph-slice';
 import { FlushedGrid } from '../../../components/ui';
-import { addData, closeModal } from '../../../redux';
+import { closeModal, changeLayout } from '../../../redux';
+import { ImportType, JsonImport } from '../../../processors/import-data';
+import { importSingleJsonData } from '../../../redux/add-data-thunk';
+
+export enum SampleData {
+  SIMPLE_GRAPH,
+  CIRCLE_GRAPH,
+  RANDOM_GRAPH,
+  NETWORK,
+  MISERABLE,
+  AA,
+}
 
 export type SampleDataItem = {
   data: () => void;
   title: string;
   description: string;
+  key: SampleData;
   src: string;
-  type: 'json' | 'edgeListCsv' | 'nodeEdgeCsv';
+  type: ImportType.JSON | ImportType.EDGE_LIST_CSV | ImportType.NODE_EDGE_CSV;
 };
 
 const sampleData: SampleDataItem[] = [
@@ -23,7 +34,8 @@ const sampleData: SampleDataItem[] = [
     data: DATA.RandomData,
     title: 'Random Graph',
     description: 'A small random dataset to get started.',
-    type: 'json',
+    key: SampleData.RANDOM_GRAPH,
+    type: ImportType.JSON,
     src:
       'https://storage.googleapis.com/cylynx-landing-content/random-data.png',
   },
@@ -32,7 +44,8 @@ const sampleData: SampleDataItem[] = [
     title: 'Circle Graph',
     description:
       'Try displaying the data as a circle using one of the layout options.',
-    type: 'json',
+    key: SampleData.CIRCLE_GRAPH,
+    type: ImportType.JSON,
     src:
       'https://storage.googleapis.com/cylynx-landing-content/circle-data.png',
   },
@@ -40,7 +53,8 @@ const sampleData: SampleDataItem[] = [
     data: DATA.TwoDataArray,
     title: 'Random + Circle',
     description: 'Import multiple data as in this example.',
-    type: 'json',
+    key: SampleData.SIMPLE_GRAPH,
+    type: ImportType.JSON,
     src:
       'https://storage.googleapis.com/cylynx-landing-content/circle-random-data.png',
   },
@@ -49,7 +63,8 @@ const sampleData: SampleDataItem[] = [
     title: 'Les Misérables',
     description:
       'Character co-occurence in Les Misérables. Try coloring the grouping and displaying the data using a force-directed plot.',
-    type: 'json',
+    type: ImportType.JSON,
+    key: SampleData.MISERABLE,
     src:
       'https://storage.googleapis.com/cylynx-landing-content/miserables-data.png',
   },
@@ -58,7 +73,8 @@ const sampleData: SampleDataItem[] = [
     title: 'Authorship',
     description:
       'Co-authorship network of scientists working on network theory. 1.5k nodes and 2.7k edges.',
-    type: 'json',
+    type: ImportType.JSON,
+    key: SampleData.NETWORK,
     src:
       'https://storage.googleapis.com/cylynx-landing-content/network-data.png',
   },
@@ -67,7 +83,8 @@ const sampleData: SampleDataItem[] = [
     title: 'American Airlines',
     description:
       'Aggregated arrival and departure flights laid out as a U.S. map.',
-    type: 'json',
+    type: ImportType.JSON,
+    key: SampleData.AA,
     src: 'https://storage.googleapis.com/cylynx-landing-content/aa-data.png',
   },
 ];
@@ -101,13 +118,15 @@ const StyledItem = ({ item }: { item: SampleDataItem }) => {
   ) => {
     e.preventDefault();
     dispatch(closeModal());
+
     // These two datasets come with x-y coordinates
-    if (item.title === 'Authorship' || item.title === 'American Airlines') {
+    if (item.key === SampleData.AA || item.key === SampleData.NETWORK) {
       dispatch(changeLayout({ layout: { id: 'none' } }));
     }
-    Promise.resolve(item.data()).then((d) => {
-      // @ts-ignore
-      dispatch(addData({ data: d, type: item.type }, defaultAccessors));
+
+    Promise.resolve(item.data()).then((d: void) => {
+      const sampleDataset: JsonImport = { data: d, type: ImportType.JSON };
+      dispatch(importSingleJsonData(sampleDataset, defaultAccessors));
     });
   };
 

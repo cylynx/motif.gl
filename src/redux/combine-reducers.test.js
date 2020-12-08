@@ -10,27 +10,6 @@ import {
   getGraphFlatten,
   getGraphVisible,
 } from './combine-reducers';
-import { importJson } from '../processors/import-data';
-
-const JsonData = {
-  nodes: [{ id: 'node-1' }, { id: 'node-2' }],
-  edges: [{ id: 'edge-1', source: 'node-1', target: 'node-2' }],
-  metadata: {
-    key: 123,
-  },
-};
-
-const JsonData2 = {
-  nodes: [{ id: 'node-2' }, { id: 'node-3' }],
-  edges: [{ id: 'edge-2', source: 'node-2', target: 'node-3' }],
-  metadata: {
-    key: 234,
-  },
-};
-
-const sampleGraphList = importJson(JsonData, initialStateGraph.accessors);
-
-const sampleGraphList2 = importJson(JsonData2, initialStateGraph.accessors);
 
 const clientReducer = combineReducers({
   investigate: investigateReducer,

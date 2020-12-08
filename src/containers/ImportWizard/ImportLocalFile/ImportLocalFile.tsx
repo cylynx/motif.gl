@@ -1,19 +1,32 @@
-import React, { useState, Fragment } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Button } from 'baseui/button';
 import { Input } from 'baseui/input';
 import { Block } from 'baseui/block';
 import { FileUploader } from 'baseui/file-uploader';
 import { FormControl } from 'baseui/form-control';
 import { Select } from 'baseui/select';
-import { Show, Hide } from 'baseui/icon';
+import { Hide, Show } from 'baseui/icon';
 import {
-  OPTIONS as IMPORT_OPTIONS,
+  EdgeListCsv,
   ImportFormat,
+  ImportType,
+  JsonImport,
+  NodeEdgeCsv,
+  NodeEdgeDataType,
+  OPTIONS as IMPORT_OPTIONS,
 } from '../../../processors/import-data';
+
 import * as Graph from '../../Graph/types';
-import { addData, closeModal, fetchError } from '../../../redux';
+
+import {
+  importEdgeListData,
+  importJsonData,
+  importNodeEdgeData,
+} from '../../../redux/add-data-thunk';
+
+import { closeModal, fetchError } from '../../../redux';
 
 type FormValues = {
   dataType: { label: string; id: string }[];
@@ -32,11 +45,12 @@ const cleanInput = (file: string) => file.replace(/\r/g, '').trim();
 
 const ImportLocalFile = () => {
   const dispatch = useDispatch();
+  const batchFileRef = useRef<ImportFormat[]>(null);
+  const singleFileRef = useRef<ImportFormat>(null);
 
   const [isUploading, setIsUploading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [fileNames, setFileNames] = useState<string[]>(null);
-  const [files, setFiles] = useState<ImportFormat>(null);
   const { register, watch, control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       dataType: [importOptions[0]],
@@ -46,6 +60,18 @@ const ImportLocalFile = () => {
   });
 
   const watchDataType = watch('dataType');
+  const isButtonDisabled =
+    batchFileRef.current === null && singleFileRef.current === null;
+
+  /**
+   * Reset the file content when data type selection changes
+   */
+  useEffect(() => {
+    batchFileRef.current = null;
+    singleFileRef.current = null;
+    setFileNames(null);
+  }, [watchDataType]);
+
   const onCancel = () => {
     setIsUploading(false);
   };
@@ -56,74 +82,110 @@ const ImportLocalFile = () => {
 
   const onDropAccepted = (acceptedFiles: File[]) => {
     setIsUploading(true);
-    const acceptedFileNames = acceptedFiles.map((f) => f.name);
+    const acceptedFileNames: string[] = acceptedFiles.map((f) => f.name);
     const fileExts = acceptedFiles.map((f) => f.name.split('.').pop());
-    const promises = [];
-    for (const file of acceptedFiles) {
-      // eslint-disable-next-line no-loop-func
+
+    const fileReaderPromises = acceptedFiles.map((file: File) => {
       const filePromise = new Promise((resolve) => {
-        const reader = new FileReader();
+        const reader: FileReader = new FileReader();
         reader.readAsText(file);
         reader.onload = () => resolve(reader.result);
       });
-      promises.push(filePromise);
-    }
-    Promise.all(promises)
+
+      return filePromise;
+    });
+
+    Promise.all(fileReaderPromises)
       .then((fileContents) => {
-        if (fileExts[0] === 'json' && watchDataType[0].id === 'json') {
-          const fileList = fileContents.map((content) =>
-            JSON.parse(content as string),
+        const selectedDataType: string = watchDataType[0].id;
+        const [fileExtension]: string[] = fileExts;
+
+        if (fileExtension === 'json' && selectedDataType === ImportType.JSON) {
+          const jsonFileContents: JsonImport[] = fileContents.map(
+            (content: string) => {
+              const jsonGraphList: Graph.GraphList = JSON.parse(content);
+              return {
+                data: jsonGraphList,
+                type: ImportType.JSON,
+              };
+            },
           );
-          for (const file of fileList) {
-            setFiles({ data: file as Graph.GraphList, type: 'json' });
-            setFileNames(acceptedFileNames);
-          }
-        } else if (
-          fileExts[0] === 'csv' &&
-          watchDataType[0].id === 'edgeListCsv'
-        ) {
-          for (const file of fileContents) {
-            const cleanedFile = cleanInput(file as string);
-            setFiles({ data: cleanedFile, type: 'edgeListCsv' });
-            setFileNames(acceptedFileNames);
-          }
-        } else if (
-          fileExts[0] === 'csv' &&
-          fileExts.length === 2 &&
-          watchDataType[0].id === 'nodeEdgeCsv'
-        ) {
-          if (
-            acceptedFileNames[0].includes('node') &&
-            acceptedFileNames[1].includes('edge')
-          ) {
-            const nodeFile = cleanInput(fileContents[0] as string);
-            const edgeFile = cleanInput(fileContents[1] as string);
-            setFiles({
-              data: { nodeData: nodeFile, edgeData: edgeFile },
-              type: 'nodeEdgeCsv',
-            });
-            setFileNames(acceptedFileNames);
-          } else if (
-            acceptedFileNames[1].includes('node') &&
-            acceptedFileNames[0].includes('edge')
-          ) {
-            const nodeFile = cleanInput(fileContents[1] as string);
-            const edgeFile = cleanInput(fileContents[0] as string);
-            setFiles({
-              data: { nodeData: nodeFile, edgeData: edgeFile },
-              type: 'nodeEdgeCsv',
-            });
-            setFileNames(acceptedFileNames);
-          } else {
-            setErrorMessage(
-              `Please ensure the node file includes 'node' and edge file 'edge'`,
-            );
-          }
-        } else {
-          setErrorMessage(
-            'Please ensure the correct number of files are uploaded and correctly labelled',
-          );
+
+          batchFileRef.current = jsonFileContents;
+          setFileNames(acceptedFileNames);
+          return;
         }
+
+        if (
+          fileExtension === 'csv' &&
+          selectedDataType === ImportType.EDGE_LIST_CSV
+        ) {
+          const csvFileContents: EdgeListCsv[] = fileContents.map(
+            (file: string) => {
+              const cleanedFile: string = cleanInput(file);
+              return {
+                data: cleanedFile,
+                type: ImportType.EDGE_LIST_CSV,
+              };
+            },
+          );
+
+          batchFileRef.current = csvFileContents;
+          setFileNames(acceptedFileNames);
+          return;
+        }
+
+        if (
+          fileExtension === 'csv' &&
+          acceptedFiles.length === 2 &&
+          selectedDataType === 'nodeEdgeCsv'
+        ) {
+          const [firstFileName, secondFileName]: string[] = acceptedFileNames;
+
+          if (
+            firstFileName.includes('node') &&
+            secondFileName.includes('edge')
+          ) {
+            const nodeData: string = cleanInput(fileContents[0] as string);
+            const edgeData: string = cleanInput(fileContents[1] as string);
+            const nodeEdgeContent: NodeEdgeCsv = {
+              data: {
+                nodeData,
+                edgeData,
+              },
+              type: ImportType.NODE_EDGE_CSV,
+            };
+
+            singleFileRef.current = nodeEdgeContent;
+            setFileNames(acceptedFileNames);
+            return;
+          }
+
+          if (
+            secondFileName.includes('node') &&
+            firstFileName.includes('edge')
+          ) {
+            const nodeData: string = cleanInput(fileContents[1] as string);
+            const edgeData: string = cleanInput(fileContents[0] as string);
+            const nodeEdgeContent: NodeEdgeCsv = {
+              data: { nodeData, edgeData } as NodeEdgeDataType,
+              type: ImportType.NODE_EDGE_CSV,
+            };
+
+            singleFileRef.current = nodeEdgeContent;
+            setFileNames(acceptedFileNames);
+            return;
+          }
+
+          setErrorMessage(
+            `Please ensure the node file includes 'node' and edge file 'edge'`,
+          );
+          return;
+        }
+
+        setErrorMessage(
+          'Please ensure the correct number of files are uploaded and correctly labelled',
+        );
       })
       .catch((err) => dispatch(fetchError(err)));
     setIsUploading(false);
@@ -139,11 +201,25 @@ const ImportLocalFile = () => {
   const onSubmitForm: SubmitHandler<FormValues> = (data, e) => {
     e.preventDefault();
     const { dataType, ...accessors } = data;
+
     // remove accessor keys with empty string
-    Object.keys(accessors)
+    Object.keys(accessors as Graph.Accessors)
       .filter((k) => accessors[k] === '')
       .map((k) => delete accessors[k]);
-    dispatch(addData(files, accessors as Graph.Accessors));
+
+    const selectedDataType: string = watchDataType[0].id;
+    if (selectedDataType === ImportType.NODE_EDGE_CSV) {
+      dispatch(importNodeEdgeData(singleFileRef.current, accessors));
+    }
+
+    if (selectedDataType === ImportType.EDGE_LIST_CSV) {
+      dispatch(importEdgeListData(batchFileRef.current, accessors));
+    }
+
+    if (selectedDataType === ImportType.JSON) {
+      dispatch(importJsonData(batchFileRef.current, accessors));
+    }
+
     dispatch(closeModal());
   };
 
@@ -183,7 +259,7 @@ const ImportLocalFile = () => {
 
         <AdditionalOptions register={register} />
         <Block marginTop='10px' display='flex' justifyContent='flex-end'>
-          <Button type='submit' disabled={!files}>
+          <Button type='submit' disabled={isButtonDisabled}>
             Import Data
           </Button>
         </Block>
