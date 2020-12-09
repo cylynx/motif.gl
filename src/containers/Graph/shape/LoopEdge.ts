@@ -2,13 +2,14 @@
 import { Group, Shape } from '@antv/g-canvas';
 import { INode } from '@antv/g6/lib/interface/item';
 import { G6Edge, G6Node } from '@antv/graphin';
-import { normalizeColor, mapEdgePattern } from './utils';
+import { normalizeColor, mapEdgePattern, isArrowDisplay } from './utils';
 import {
   DEFAULT_EDGE_STYLE,
   HIDDEN_LABEL_COLOR as HIDDEN_LABEL_COLOR_RGB,
   GREY as GREY_RGB,
   EnumNodeAndEdgeStatus,
 } from './constants';
+import { ArrowOptions } from '../types';
 
 const HIDDEN_LABEL_COLOR = normalizeColor(HIDDEN_LABEL_COLOR_RGB);
 const GREY = normalizeColor(GREY_RGB);
@@ -96,6 +97,12 @@ export default (g6: any) => {
         name: 'selected',
       });
 
+      const arrowOptions: ArrowOptions | boolean = defaultStyle?.arrow || true;
+      const endArrow = isArrowDisplay(arrowOptions, {
+        d: -d / 2,
+        path: `M 0,0 L ${d},${d / 2} L ${d},-${d / 2} Z`,
+      });
+
       const key = group.addShape('path', {
         attrs: {
           id: 'main',
@@ -104,10 +111,7 @@ export default (g6: any) => {
           stroke: lineColor.dark,
           lineWidth: basicLineWidth,
           lineDash: linePattern,
-          endArrow: {
-            d: -d / 2,
-            path: `M 0,0 L ${d},${d / 2} L ${d},-${d / 2} Z`,
-          },
+          endArrow,
           draggable: true,
           name: 'path',
         },
@@ -170,6 +174,8 @@ export default (g6: any) => {
       const basicLineWidth =
         style?.width || defaultStyle?.width || DEFAULT_EDGE_STYLE.width;
 
+      const arrowOptions: ArrowOptions | boolean = defaultStyle?.arrow || true;
+
       const d = basicLineWidth + 1;
 
       const labelFontColor = data.style?.dark
@@ -189,10 +195,10 @@ export default (g6: any) => {
       targetAttrs.main = {
         stroke: lineColor.dark,
         lineWidth: basicLineWidth,
-        endArrow: {
+        endArrow: isArrowDisplay(arrowOptions, {
           d: -d / 2,
           path: `M 0,0 L ${d},${d / 2} L ${d},-${d / 2} Z`,
-        },
+        }),
       };
       targetAttrs.selected = {
         lineWidth: 0,
@@ -205,43 +211,43 @@ export default (g6: any) => {
         const deltaD = d + 1;
         targetAttrs.main = {
           lineWidth: basicLineWidth + 1,
-          endArrow: {
+          endArrow: isArrowDisplay(arrowOptions, {
             d: -deltaD / 2,
             path: `M 0,0 L ${deltaD},${deltaD / 2} L ${deltaD},-${
               deltaD / 2
             } Z`,
-          },
-        };
-      }
-      if (
-        states.includes(EnumNodeAndEdgeStatus.SELECTED) ||
-        states.includes(EnumNodeAndEdgeStatus.LIGHT)
-      ) {
-        const deltaD = d + 1;
-        targetAttrs.main = {
-          lineWidth: basicLineWidth + 1,
-          endArrow: {
-            d: -deltaD / 2,
-            path: `M 0,0 L ${deltaD},${deltaD / 2} L ${deltaD},-${
-              deltaD / 2
-            } Z`,
-          },
-        };
-        targetAttrs.selected = {
-          lineWidth: basicLineWidth + 3,
+          }),
         };
       }
       if (
         states.includes(EnumNodeAndEdgeStatus.DARK) ||
         states.includes(EnumNodeAndEdgeStatus.FILTERED)
       ) {
+        if (
+          states.includes(EnumNodeAndEdgeStatus.SELECTED) ||
+          states.includes(EnumNodeAndEdgeStatus.LIGHT)
+        ) {
+          const deltaD = d + 1;
+          targetAttrs.main = {
+            lineWidth: basicLineWidth + 1,
+            endArrow: isArrowDisplay(arrowOptions, {
+              d: -deltaD / 2,
+              path: `M 0,0 L ${deltaD},${deltaD / 2} L ${deltaD},-${
+                deltaD / 2
+              } Z`,
+            }),
+          };
+          targetAttrs.selected = {
+            lineWidth: basicLineWidth + 3,
+          };
+        }
         targetAttrs.main = {
           stroke: GREY.dark,
           lineWidth: 1,
-          endArrow: {
+          endArrow: isArrowDisplay(arrowOptions, {
             d: -1,
             path: 'M 0,0 L 2,1 L 2,-1 Z',
-          },
+          }),
         };
         targetAttrs.text = {
           fill: GREY.dark,

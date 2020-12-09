@@ -74,7 +74,7 @@ export default (g6: any) => {
         name: 'selected',
       });
 
-      const arrowOptions: ArrowOptions | boolean = defaultStyle?.arrow || false;
+      const arrowOptions: ArrowOptions | boolean = defaultStyle?.arrow || true;
       const endArrow = isArrowDisplay(arrowOptions, {
         d: -d / 2,
         path: `M 0,0 L ${d},${d / 2} L ${d},-${d / 2} Z`,
@@ -163,7 +163,7 @@ export default (g6: any) => {
               DEFAULT_EDGE_STYLE.fontColor,
           );
 
-      const arrowOptions: ArrowOptions | boolean = defaultStyle?.arrow || false;
+      const arrowOptions: ArrowOptions | boolean = defaultStyle?.arrow || true;
 
       const targetAttrs = {
         main: {},
@@ -185,8 +185,6 @@ export default (g6: any) => {
       targetAttrs.text = {
         fill: labelFontColor.dark,
       };
-
-      console.log(arrowOptions);
 
       if (states.includes(EnumNodeAndEdgeStatus.HOVERED)) {
         const deltaD = d + 1;

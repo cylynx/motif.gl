@@ -11,7 +11,7 @@ export interface NormalizedColor {
 
 export interface EndArrow {
   d: number;
-  type: string;
+  path: string;
 }
 
 export const normalizeColor = (
