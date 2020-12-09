@@ -2,7 +2,12 @@
 import { Group, Shape } from '@antv/g-canvas';
 import { INode } from '@antv/g6/lib/interface/item';
 import { G6Edge, G6Node } from '@antv/graphin';
-import { normalizeColor, mapEdgePattern, isArrowDisplay } from './utils';
+import {
+  normalizeColor,
+  mapEdgePattern,
+  isArrowDisplay,
+  processArrowOption,
+} from './utils';
 import {
   DEFAULT_EDGE_STYLE,
   HIDDEN_LABEL_COLOR as HIDDEN_LABEL_COLOR_RGB,
@@ -97,7 +102,10 @@ export default (g6: any) => {
         name: 'selected',
       });
 
-      const arrowOptions: ArrowOptions | boolean = defaultStyle?.arrow || true;
+      const arrowOptions: ArrowOptions = processArrowOption(
+        defaultStyle?.arrow,
+      );
+
       const endArrow = isArrowDisplay(arrowOptions, {
         d: -d / 2,
         path: `M 0,0 L ${d},${d / 2} L ${d},-${d / 2} Z`,
@@ -174,7 +182,9 @@ export default (g6: any) => {
       const basicLineWidth =
         style?.width || defaultStyle?.width || DEFAULT_EDGE_STYLE.width;
 
-      const arrowOptions: ArrowOptions | boolean = defaultStyle?.arrow || true;
+      const arrowOptions: ArrowOptions = processArrowOption(
+        defaultStyle?.arrow,
+      );
 
       const d = basicLineWidth + 1;
 

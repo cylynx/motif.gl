@@ -54,7 +54,15 @@ export const mapEdgePattern = (str: EdgePattern) => {
   return result;
 };
 
-export const processArrowOption = () => {};
+/**
+ * Process arrow options attributes with given data from `defaultStyle` in Edges.
+ * - the end arrow will always be display on default unless user choose to hide
+ *
+ * @param {undefined|ArrowOptions} arrowOption
+ */
+export const processArrowOption = (arrowOption: undefined | ArrowOptions) => {
+  return arrowOption || 'display';
+};
 
 /**
  * Determine whether graph should display edge's arrow.

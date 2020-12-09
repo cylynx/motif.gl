@@ -4,7 +4,12 @@ import Group from '@antv/g-canvas/lib/group';
 import { IShape } from '@antv/g-canvas/lib/interfaces';
 import { IEdge } from '@antv/g6/lib/interface/item';
 import { G6Edge } from '@antv/graphin';
-import { normalizeColor, mapEdgePattern, isArrowDisplay } from './utils';
+import {
+  normalizeColor,
+  mapEdgePattern,
+  isArrowDisplay,
+  processArrowOption,
+} from './utils';
 import {
   DEFAULT_EDGE_STYLE,
   HIDDEN_LABEL_COLOR as HIDDEN_LABEL_COLOR_RGB,
@@ -124,7 +129,9 @@ export default (g6: any) => {
         },
       });
 
-      const arrowOptions: ArrowOptions | boolean = defaultStyle?.arrow || true;
+      const arrowOptions: ArrowOptions = processArrowOption(
+        defaultStyle?.arrow,
+      );
       const key = group.addShape('path', {
         attrs: {
           id: 'main',
@@ -216,7 +223,9 @@ export default (g6: any) => {
         text: {},
       };
 
-      const arrowOptions: ArrowOptions | boolean = defaultStyle?.arrow || true;
+      const arrowOptions: ArrowOptions = processArrowOption(
+        defaultStyle?.arrow,
+      );
 
       targetAttrs.main = {
         stroke: lineColor.dark,
