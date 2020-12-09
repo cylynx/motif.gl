@@ -1,11 +1,17 @@
 /* https://github.com/antvis/Graphin/blob/master/packages/graphin/src/shape/graph-studio/utils.ts */
 /* eslint-disable import/prefer-default-export */
 import { transparentize, lighten, desaturate } from 'polished';
+import { ArrowOptions } from '../types';
 
 export interface NormalizedColor {
   dark: string;
   normal: string;
   reflect: string;
+}
+
+export interface EndArrow {
+  d: number;
+  type: string;
 }
 
 export const normalizeColor = (
@@ -46,4 +52,21 @@ export const mapEdgePattern = (str: EdgePattern) => {
     console.warn(`Edge pattern ${str} not supported`);
   }
   return result;
+};
+
+/**
+ * Determine whether graph should display edge's arrow.
+ *
+ * @param {ArrowOptions|boolean} arrowOptions - obtain arrow configuration from option panels
+ * @param {EndArrow} endArrow - end arrow styling
+ */
+export const isArrowDisplay = (
+  arrowOptions: ArrowOptions | boolean,
+  endArrow: EndArrow,
+) => {
+  if (arrowOptions === false || arrowOptions === 'none') {
+    return false;
+  }
+
+  return endArrow;
 };
