@@ -54,6 +54,8 @@ export const mapEdgePattern = (str: EdgePattern) => {
   return result;
 };
 
+export const processArrowOption = () => {};
+
 /**
  * Determine whether graph should display edge's arrow.
  *
@@ -64,8 +66,12 @@ export const isArrowDisplay = (
   arrowOptions: ArrowOptions | boolean,
   endArrow: EndArrow,
 ) => {
-  if (arrowOptions === false || arrowOptions === 'none') {
+  if (arrowOptions === 'none') {
     return false;
+  }
+
+  if (arrowOptions === true || arrowOptions === 'display') {
+    return endArrow;
   }
 
   return endArrow;

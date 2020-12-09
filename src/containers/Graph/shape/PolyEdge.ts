@@ -4,13 +4,14 @@ import Group from '@antv/g-canvas/lib/group';
 import { IShape } from '@antv/g-canvas/lib/interfaces';
 import { IEdge } from '@antv/g6/lib/interface/item';
 import { G6Edge } from '@antv/graphin';
-import { normalizeColor, mapEdgePattern } from './utils';
+import { normalizeColor, mapEdgePattern, isArrowDisplay } from './utils';
 import {
   DEFAULT_EDGE_STYLE,
   HIDDEN_LABEL_COLOR as HIDDEN_LABEL_COLOR_RGB,
   GREY as GREY_RGB,
   EnumNodeAndEdgeStatus,
 } from './constants';
+import { ArrowOptions } from '../types';
 
 const HIDDEN_LABEL_COLOR = normalizeColor(HIDDEN_LABEL_COLOR_RGB);
 const GREY = normalizeColor(GREY_RGB);
@@ -123,6 +124,7 @@ export default (g6: any) => {
         },
       });
 
+      const arrowOptions: ArrowOptions | boolean = defaultStyle?.arrow || true;
       const key = group.addShape('path', {
         attrs: {
           id: 'main',
@@ -131,10 +133,10 @@ export default (g6: any) => {
           stroke: lineColor.dark,
           lineWidth: basicLineWidth,
           lineDash: linePattern,
-          endArrow: {
+          endArrow: isArrowDisplay(arrowOptions, {
             d: -d / 2,
             path: `M 0,0 L ${d},${d / 2} L ${d},-${d / 2} Z`,
-          },
+          }),
         },
       });
 
@@ -214,13 +216,15 @@ export default (g6: any) => {
         text: {},
       };
 
+      const arrowOptions: ArrowOptions | boolean = defaultStyle?.arrow || true;
+
       targetAttrs.main = {
         stroke: lineColor.dark,
         lineWidth: basicLineWidth,
-        endArrow: {
+        endArrow: isArrowDisplay(arrowOptions, {
           d: -d / 2,
           path: `M 0,0 L ${d},${d / 2} L ${d},-${d / 2} Z`,
-        },
+        }),
       };
       targetAttrs.selected = {
         lineWidth: 0,
@@ -233,12 +237,12 @@ export default (g6: any) => {
         const deltaD = d + 1;
         targetAttrs.main = {
           lineWidth: basicLineWidth + 1,
-          endArrow: {
+          endArrow: isArrowDisplay(arrowOptions, {
             d: -deltaD / 2,
             path: `M 0,0 L ${deltaD},${deltaD / 2} L ${deltaD},-${
               deltaD / 2
             } Z`,
-          },
+          }),
         };
       }
       if (
@@ -248,12 +252,12 @@ export default (g6: any) => {
         const deltaD = d + 1;
         targetAttrs.main = {
           lineWidth: basicLineWidth + 1,
-          endArrow: {
+          endArrow: isArrowDisplay(arrowOptions, {
             d: -deltaD / 2,
             path: `M 0,0 L ${deltaD},${deltaD / 2} L ${deltaD},-${
               deltaD / 2
             } Z`,
-          },
+          }),
         };
         targetAttrs.selected = {
           lineWidth: basicLineWidth + 3,
@@ -266,10 +270,10 @@ export default (g6: any) => {
         targetAttrs.main = {
           stroke: GREY.dark,
           lineWidth: 1,
-          endArrow: {
+          endArrow: isArrowDisplay(arrowOptions, {
             d: -1,
             path: 'M 0,0 L 2,1 L 2,-1 Z',
-          },
+          }),
         };
         targetAttrs.text = {
           fill: GREY.dark,
