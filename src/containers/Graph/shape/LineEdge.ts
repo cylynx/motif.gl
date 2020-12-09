@@ -10,6 +10,7 @@ import {
   GREY as GREY_RGB,
   EnumNodeAndEdgeStatus,
 } from './constants';
+import { ArrowOptions } from '../types';
 
 const HIDDEN_LABEL_COLOR = normalizeColor(HIDDEN_LABEL_COLOR_RGB);
 const GREY = normalizeColor(GREY_RGB);
@@ -73,6 +74,15 @@ export default (g6: any) => {
         name: 'selected',
       });
 
+      const arrowOptions: ArrowOptions | boolean = defaultStyle?.arrow || false;
+      const endArrow =
+        arrowOptions === false || arrowOptions === 'none'
+          ? false
+          : {
+              d: -d / 2,
+              path: `M 0,0 L ${d},${d / 2} L ${d},-${d / 2} Z`,
+            };
+
       const key = group.addShape('path', {
         attrs: {
           id: 'main',
@@ -81,10 +91,7 @@ export default (g6: any) => {
           stroke: lineColor.dark,
           lineWidth: basicLineWidth,
           lineDash: linePattern,
-          endArrow: {
-            d: -d / 2,
-            path: `M 0,0 L ${d},${d / 2} L ${d},-${d / 2} Z`,
-          },
+          endArrow,
         },
         draggable: true,
         name: 'main',
@@ -126,7 +133,6 @@ export default (g6: any) => {
 
       const data: G6Edge = edge.get('model');
       const { style, defaultStyle } = data;
-      console.log(defaultStyle);
 
       const mainShape = edge
         .getContainer()

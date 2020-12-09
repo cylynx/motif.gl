@@ -1,8 +1,4 @@
-import {
-  Node as GraphinNode,
-  Edge as GraphinEdge,
-  InnerEdgeStyle,
-} from '@antv/graphin/';
+import { Node as GraphinNode, Edge as GraphinEdge } from '@antv/graphin/';
 
 export interface Edge extends Omit<GraphinEdge, 'style'> {
   style?:
@@ -130,13 +126,14 @@ export type EdgeWidthProperty = {
 };
 
 export type EdgeWidth = EdgeWidthFixed | EdgeWidthProperty;
+export type ArrowOptions = 'none' | 'display';
 
 export interface EdgeStyleOptions {
   width?: EdgeWidth;
   pattern?: 'none' | 'dot' | 'dash' | 'dash-dot';
   fontSize?: number;
   label?: string;
-  arrow?: 'none' | 'display';
+  arrow?: ArrowOptions;
 }
 
 export interface StyleOptions {
