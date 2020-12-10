@@ -229,28 +229,30 @@ export default (g6: any) => {
           }),
         };
       }
+
+      if (
+        states.includes(EnumNodeAndEdgeStatus.SELECTED) ||
+        states.includes(EnumNodeAndEdgeStatus.LIGHT)
+      ) {
+        const deltaD = d + 1;
+        targetAttrs.main = {
+          lineWidth: basicLineWidth + 1,
+          endArrow: isArrowDisplay(arrowOptions, {
+            d: -deltaD / 2,
+            path: `M 0,0 L ${deltaD},${deltaD / 2} L ${deltaD},-${
+              deltaD / 2
+            } Z`,
+          }),
+        };
+        targetAttrs.selected = {
+          lineWidth: basicLineWidth + 3,
+        };
+      }
+
       if (
         states.includes(EnumNodeAndEdgeStatus.DARK) ||
         states.includes(EnumNodeAndEdgeStatus.FILTERED)
       ) {
-        if (
-          states.includes(EnumNodeAndEdgeStatus.SELECTED) ||
-          states.includes(EnumNodeAndEdgeStatus.LIGHT)
-        ) {
-          const deltaD = d + 1;
-          targetAttrs.main = {
-            lineWidth: basicLineWidth + 1,
-            endArrow: isArrowDisplay(arrowOptions, {
-              d: -deltaD / 2,
-              path: `M 0,0 L ${deltaD},${deltaD / 2} L ${deltaD},-${
-                deltaD / 2
-              } Z`,
-            }),
-          };
-          targetAttrs.selected = {
-            lineWidth: basicLineWidth + 3,
-          };
-        }
         targetAttrs.main = {
           stroke: GREY.dark,
           lineWidth: 1,
