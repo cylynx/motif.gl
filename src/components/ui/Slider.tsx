@@ -20,21 +20,11 @@ const Slider = (props: SliderProps) => {
       {...rest}
       overrides={{
         Thumb: {
-          style: ({ $theme, $value, $thumbIndex }) => {
-            let isLeft = $value.length === 2 && $thumbIndex === 0;
-            let isRight = $value.length === 2 && $thumbIndex === 1;
-
-            if ($theme.direction === 'rtl' && (isRight || isLeft)) {
-              isLeft = !isLeft;
-              isRight = !isRight;
-            }
+          style: ({ $theme }) => {
             return {
               height: '12px',
               width: '12px',
-              borderTopLeftRadius: 0,
-              borderTopRightRadius: 0,
-              borderBottomLeftRadius: 0,
-              borderBottomRightRadius: 0,
+              borderRadius: 0,
               backgroundColor: $theme.colors.primary,
               color: $theme.colors.contentPrimary,
               display: 'flex',
@@ -57,14 +47,8 @@ const Slider = (props: SliderProps) => {
               top: `-${$theme.sizing.scale700}`,
               ...$theme.typography.font200,
               color: $theme.colors.contentPrimary,
-              paddingLeft: 0,
-              paddingRight: 0,
-              paddingTop: 0,
-              paddingBottom: 0,
-              borderBottomLeftRadius: 0,
-              borderBottomRightRadius: 0,
-              borderTopLeftRadius: 0,
-              borderTopRightRadius: 0,
+              padding: 0,
+              borderRadius: 0,
             };
           },
         },

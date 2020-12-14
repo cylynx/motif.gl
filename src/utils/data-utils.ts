@@ -177,6 +177,7 @@ export const unixTimeConverter = (
  *
  * @param {any[]} data
  * @param {Accessor} [valueAccessor] function to access data
+ * @param {string} type
  * @returns {TimeRangeFieldDomain} Object with domain, step, mappedValue, histogram and enlargedHistogram
  */
 export const getFieldDomain = (
