@@ -1,53 +1,28 @@
-import React, { Fragment, MouseEvent } from 'react';
+import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button } from 'baseui/button';
 import { Block } from 'baseui/block';
 import { ParagraphSmall } from 'baseui/typography';
 import { Statistic } from '../../../components/ui';
 import ToggleTokens from '../../../components/ToggleTokens';
 import Accordion from '../../../components/Accordion';
 import * as Icon from '../../../components/Icons';
-import { openImportModal } from '../../../redux/ui-slice';
+import ImportLayers from './ImportLayers';
+import {
+  ImportDataButton,
+  ClearDataButton,
+  ToggleAllButton,
+} from './LayersPanelButtons';
 import {
   updateNodeSelection,
   updateAllNodeSelection,
   updateEdgeSelection,
   updateAllEdgeSelection,
-  resetState,
-} from '../../../redux/graph-slice';
-import ImportLayers from './ImportLayers';
-import {
   getGraph,
   getGraphList,
   getGraphVisible,
   getGraphFlatten,
 } from '../../../redux';
 import Header from '../Header';
-
-const ToggleAllButton = ({
-  selected,
-  onClick,
-}: {
-  selected: boolean;
-  onClick: () => void;
-}) => {
-  return (
-    <Block width='120px'>
-      <ToggleTokens
-        options={[
-          {
-            label: 'Select All',
-            id: 'edge',
-            type: null,
-            selected,
-          },
-        ]}
-        onClick={onClick}
-        shape='default'
-      />
-    </Block>
-  );
-};
 
 const LayersPanel = () => {
   const dispatch = useDispatch();
@@ -76,16 +51,6 @@ const LayersPanel = () => {
 
   const onSelectAllEdgeToken = () => {
     dispatch(updateAllEdgeSelection({ status: !isAllEdgeSelected }));
-  };
-
-  const onClickImport = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    dispatch(openImportModal());
-  };
-
-  const onClickClearAll = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    dispatch(resetState());
   };
 
   return (
@@ -175,44 +140,13 @@ const LayersPanel = () => {
       <br />
       <hr />
       <Block width='100%' display='flex' justifyContent='space-between'>
-        <ClearDataButton onClick={onClickClearAll} />
-        <ImportDataButton onClick={onClickImport} />
+        <ClearDataButton />
+        <ImportDataButton />
       </Block>
       <ImportLayers />
       <Block marginBottom='scale1000' />
     </Fragment>
   );
 };
-
-const ImportDataButton = ({ onClick }: { onClick: (e: MouseEvent) => any }) => (
-  <Button
-    kind='tertiary'
-    size='compact'
-    startEnhancer={() => <Icon.Plus size={18} />}
-    onClick={onClick}
-  >
-    Import Data
-  </Button>
-);
-
-const ClearDataButton = ({ onClick }: { onClick: (e: MouseEvent) => any }) => (
-  <Button
-    kind='tertiary'
-    size='compact'
-    startEnhancer={() => <Icon.Trash size={18} />}
-    onClick={onClick}
-    overrides={{
-      BaseButton: {
-        style: ({ $theme }) => ({
-          ':hover': {
-            backgroundColor: $theme.colors.backgroundNegative,
-          },
-        }),
-      },
-    }}
-  >
-    Clear All
-  </Button>
-);
 
 export default LayersPanel;
