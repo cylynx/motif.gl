@@ -78,6 +78,15 @@ export const DeleteButton = ({
         kind='minimal'
         $as='div'
         onClick={toggleDelete}
+        overrides={{
+          BaseButton: {
+            style: ({ $theme }) => ({
+              ':hover': {
+                color: $theme.colors.negative400,
+              },
+            }),
+          },
+        }}
         {...rest}
       >
         <Icon.Trash />
