@@ -15,12 +15,12 @@ export const ToggleAllButton = ({
   onClick: () => void;
 }) => {
   return (
-    <Block width='120px'>
+    <Block width='150px'>
       <ToggleTokens
         options={[
           {
-            label: 'Select All',
-            id: 'edge',
+            label: selected ? 'Unselect All' : 'Select All',
+            id: 'select',
             type: null,
             selected,
           },
