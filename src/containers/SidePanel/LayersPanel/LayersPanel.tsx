@@ -13,6 +13,7 @@ import {
   updateAllNodeSelection,
   updateEdgeSelection,
   updateAllEdgeSelection,
+  resetState,
 } from '../../../redux/graph-slice';
 import ImportLayers from './ImportLayers';
 import {
@@ -80,6 +81,11 @@ const LayersPanel = () => {
   const onClickImport = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(openImportModal());
+  };
+
+  const onClickClearAll = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    dispatch(resetState());
   };
 
   return (
@@ -169,6 +175,7 @@ const LayersPanel = () => {
       <br />
       <hr />
       <Block width='100%' display='flex' justifyContent='space-between'>
+        <ClearDataButton onClick={onClickClearAll} />
         <ImportDataButton onClick={onClickImport} />
       </Block>
       <ImportLayers />
@@ -181,10 +188,30 @@ const ImportDataButton = ({ onClick }: { onClick: (e: MouseEvent) => any }) => (
   <Button
     kind='tertiary'
     size='compact'
-    startEnhancer={() => <Icon.Plus size={20} />}
+    startEnhancer={() => <Icon.Plus size={18} />}
     onClick={onClick}
   >
     Import Data
+  </Button>
+);
+
+const ClearDataButton = ({ onClick }: { onClick: (e: MouseEvent) => any }) => (
+  <Button
+    kind='tertiary'
+    size='compact'
+    startEnhancer={() => <Icon.Trash size={18} />}
+    onClick={onClick}
+    overrides={{
+      BaseButton: {
+        style: ({ $theme }) => ({
+          ':hover': {
+            backgroundColor: $theme.colors.backgroundNegative,
+          },
+        }),
+      },
+    }}
+  >
+    Clear All
   </Button>
 );
 
