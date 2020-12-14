@@ -1,4 +1,4 @@
-import React, { MouseEvent, Fragment } from 'react';
+import React, { Fragment, MouseEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'baseui/button';
 import { Block } from 'baseui/block';
@@ -7,11 +7,12 @@ import { Statistic } from '../../../components/ui';
 import ToggleTokens from '../../../components/ToggleTokens';
 import Accordion from '../../../components/Accordion';
 import * as Icon from '../../../components/Icons';
-import { openImportModal, fetchDone } from '../../../redux/ui-slice';
+import { openImportModal } from '../../../redux/ui-slice';
 import {
-  resetState,
   updateNodeSelection,
+  updateAllNodeSelection,
   updateEdgeSelection,
+  updateAllEdgeSelection,
 } from '../../../redux/graph-slice';
 import ImportLayers from './ImportLayers';
 import {
@@ -22,6 +23,31 @@ import {
 } from '../../../redux';
 import Header from '../Header';
 
+const ToggleAllButton = ({
+  selected,
+  onClick,
+}: {
+  selected: boolean;
+  onClick: () => void;
+}) => {
+  return (
+    <Block width='120px'>
+      <ToggleTokens
+        options={[
+          {
+            label: 'Select All',
+            id: 'edge',
+            type: null,
+            selected,
+          },
+        ]}
+        onClick={onClick}
+        shape='default'
+      />
+    </Block>
+  );
+};
+
 const LayersPanel = () => {
   const dispatch = useDispatch();
   const graphList = useSelector((state) => getGraphList(state));
@@ -30,6 +56,8 @@ const LayersPanel = () => {
   const nodeFields = useSelector((state) => getGraph(state).nodeSelection);
   const edgeFields = useSelector((state) => getGraph(state).edgeSelection);
   const haveData = graphFlatten && graphVisible;
+  const isAllNodeSelected = nodeFields.every((f) => f.selected === true);
+  const isAllEdgeSelected = edgeFields.every((f) => f.selected === true);
   const hiddenNodes = graphFlatten.nodes.length - graphVisible.nodes.length;
   const hiddenEdges = graphFlatten.edges.length - graphVisible.edges.length;
 
@@ -37,19 +65,21 @@ const LayersPanel = () => {
     dispatch(updateNodeSelection({ index, status }));
   };
 
+  const onSelectAllNodeToken = () => {
+    dispatch(updateAllNodeSelection({ status: !isAllNodeSelected }));
+  };
+
   const onClickEdgeToken = (index: number, status: boolean) => {
     dispatch(updateEdgeSelection({ index, status }));
+  };
+
+  const onSelectAllEdgeToken = () => {
+    dispatch(updateAllEdgeSelection({ status: !isAllEdgeSelected }));
   };
 
   const onClickImport = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(openImportModal());
-  };
-
-  const clearState = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    dispatch(resetState());
-    dispatch(fetchDone());
   };
 
   return (
@@ -85,10 +115,15 @@ const LayersPanel = () => {
               key: 'node properties',
               content: (
                 <Fragment>
-                  <ParagraphSmall marginTop={0}>
-                    Hint: Customize node tooltip by selecting the attributes to
-                    include
-                  </ParagraphSmall>
+                  <Block display='flex'>
+                    <ParagraphSmall marginTop={0}>
+                      Hint: Select node properties to display in tooltip
+                    </ParagraphSmall>
+                    <ToggleAllButton
+                      selected={isAllNodeSelected}
+                      onClick={onSelectAllNodeToken}
+                    />
+                  </Block>
                   <ToggleTokens
                     options={graphList.length > 0 ? nodeFields : []}
                     onClick={onClickNodeToken}
@@ -112,10 +147,15 @@ const LayersPanel = () => {
               key: 'edge properties',
               content: (
                 <Fragment>
-                  <ParagraphSmall marginTop={0}>
-                    Hint: Customize edge tooltip by selecting the attributes to
-                    include
-                  </ParagraphSmall>
+                  <Block display='flex'>
+                    <ParagraphSmall marginTop={0}>
+                      Hint: Select edge properties to display in tooltip
+                    </ParagraphSmall>
+                    <ToggleAllButton
+                      selected={isAllEdgeSelected}
+                      onClick={onSelectAllEdgeToken}
+                    />
+                  </Block>
                   <ToggleTokens
                     options={graphList.length > 0 ? edgeFields : []}
                     onClick={onClickEdgeToken}
