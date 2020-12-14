@@ -13,12 +13,6 @@ import { GraphData, GraphList, Accessors } from '../containers/Graph';
 
 export type ImportFormat = JsonImport | EdgeListCsv | NodeEdgeCsv;
 
-export enum ImportType {
-  JSON = 'json',
-  EDGE_LIST_CSV = 'edgeListCsv',
-  NODE_EDGE_CSV = 'nodeEdgeCsv',
-}
-
 export type NodeEdgeDataType = {
   nodeData: string;
   edgeData: string;
@@ -26,17 +20,17 @@ export type NodeEdgeDataType = {
 
 export type JsonImport = {
   data: GraphData | GraphList | void;
-  type: ImportType.JSON;
+  type: 'json';
 };
 
 export type EdgeListCsv = {
   data: string;
-  type: ImportType.EDGE_LIST_CSV;
+  type: 'edgeListCsv';
 };
 
 export type NodeEdgeCsv = {
   data: NodeEdgeDataType;
-  type: ImportType.NODE_EDGE_CSV;
+  type: 'nodeEdgeCsv';
 };
 
 export const OPTIONS = {

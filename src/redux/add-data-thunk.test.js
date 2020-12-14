@@ -13,7 +13,6 @@ import {
   importJson,
   importNodeEdgeCsv,
   importEdgeListCsv,
-  ImportType,
 } from '../processors/import-data';
 import { fetchBegin, fetchDone } from './ui-slice';
 import { SimpleEdge } from '../constants/sample-data';
@@ -42,7 +41,7 @@ describe('add-data-thunk.test.js', () => {
         key: 123,
       },
     },
-    type: ImportType.JSON,
+    type: 'json',
   };
   const jsonDataTwo = {
     data: {
@@ -52,7 +51,7 @@ describe('add-data-thunk.test.js', () => {
         key: 234,
       },
     },
-    type: ImportType.JSON,
+    type: 'json',
   };
 
   describe('importJsonData', () => {
@@ -108,7 +107,7 @@ describe('add-data-thunk.test.js', () => {
           key: 123,
         },
       },
-      type: ImportType.NODE_EDGE_CSV,
+      type: 'nodeEdgeCsv',
     };
 
     it('should receive importData as object and process graph responses accurately', async () => {
@@ -151,12 +150,12 @@ describe('add-data-thunk.test.js', () => {
     const firstEdgeListCsv = {
       data:
         'id,relation,source,target\ntxn1,works,jason,cylynx\ntxn3,abc,cylynx,timothy\ntxn4,says hi to,swan,cylynx',
-      type: ImportType.EDGE_LIST_CSV,
+      type: 'edgeListCsv',
     };
 
     const secondEdgeListCsv = {
       data: 'id,source,target\n123,x,y\n456,y,z\n789,z,x',
-      type: ImportType.EDGE_LIST_CSV,
+      type: 'edgeListCsv',
     };
 
     it('should receive importData as array and process graph responses accurately', async () => {
@@ -207,7 +206,7 @@ describe('add-data-thunk.test.js', () => {
     it('should receive importData as object and process graph accurately', async () => {
       // input
       const data = SimpleEdge();
-      const importData = { data, type: ImportType.JSON };
+      const importData = { data, type: 'json' };
 
       // processes
       const processedJsonData = await importJson(data, initialState.accessors);
@@ -230,7 +229,7 @@ describe('add-data-thunk.test.js', () => {
 
     it('should throw error if importData parameter is an array', async () => {
       const data = SimpleEdge();
-      const importData = { data, type: ImportType.JSON };
+      const importData = { data, type: 'json' };
 
       await expect(importSingleJsonData([importData])).toThrow(Error);
     });
