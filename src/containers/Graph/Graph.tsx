@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 // @ts-nocheck
 import React, { useLayoutEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useStyletron } from 'baseui';
 import Graphin from '@antv/graphin';
 import { IG6GraphEvent } from '@antv/g6/lib/types';
@@ -25,7 +25,6 @@ export type GraphProps = {
 
 const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
   const { setTooltip } = props;
-  const dispatch = useDispatch();
   const [, theme] = useStyletron();
   const graphVisible = useSelector((state) => getGraphVisible(state));
   const layout = useSelector((state) => getStyleOptions(state).layout);
@@ -92,7 +91,7 @@ const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
       graph.off('canvas:click', onResetClick);
       graph.off('canvas:dragstart', onResetClick);
     };
-  }, [dispatch, setTooltip]);
+  }, [setTooltip]);
 
   return (
     <Graphin

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
 import { StyledInner, StyledPadding } from 'baseui/popover';
@@ -17,18 +17,21 @@ const Tooltip = ({ tooltip }: { tooltip: TooltipProps }) => {
   const graphFlatten = useSelector((state) => getGraph(state).graphFlatten);
   const nodeFields = useSelector((state) => getGraph(state).nodeSelection);
   const edgeFields = useSelector((state) => getGraph(state).edgeSelection);
-  const properties =
-    tooltip.type === 'node'
-      ? getNodeProperties(
-          graphFlatten.nodes.find((x: Graph.Node) => x.id === tooltip.id),
-          'data',
-          nodeFields.filter((x) => !x.selected).map((x) => x.id),
-        )
-      : getEdgeProperties(
-          graphFlatten.edges.find((x: Graph.Edge) => x.id === tooltip.id),
-          'data',
-          edgeFields.filter((x) => !x.selected).map((x) => x.id),
-        );
+  const properties = useMemo(
+    () =>
+      tooltip.type === 'node'
+        ? getNodeProperties(
+            graphFlatten.nodes.find((x: Graph.Node) => x.id === tooltip.id),
+            'data',
+            nodeFields.filter((x) => !x.selected).map((x) => x.id),
+          )
+        : getEdgeProperties(
+            graphFlatten.edges.find((x: Graph.Edge) => x.id === tooltip.id),
+            'data',
+            edgeFields.filter((x) => !x.selected).map((x) => x.id),
+          ),
+    [graphFlatten, edgeFields, nodeFields],
+  );
 
   const contents = Object.entries(properties).map(([key, value]) => (
     <Block key={key} display='flex' flexWrap marginTop='8px' marginBottom='8px'>
