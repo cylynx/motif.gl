@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { styled } from 'baseui';
 import { Block } from 'baseui/block';
-import { StyledInner, StyledPadding } from 'baseui/popover';
 import * as Graph from './types';
 import { getNodeProperties, getEdgeProperties } from '../../utils/graph-utils';
 import { getGraph } from '../../redux';
@@ -12,6 +12,18 @@ export type TooltipProps = null | {
   y: number;
   type: 'edge' | 'node';
 };
+
+export const StyledInner = styled('div', ({ $theme }) => ({
+  width: '250px',
+  backgroundColor: $theme.colors.backgroundTertiary,
+  color: $theme.colors.contentPrimary,
+  opacity: 0.9,
+  paddingTop: $theme.sizing.scale400,
+  paddingBottom: $theme.sizing.scale400,
+  paddingRight: $theme.sizing.scale600,
+  paddingLeft: $theme.sizing.scale600,
+  borderRadius: $theme.borders.radius200,
+}));
 
 const Tooltip = ({ tooltip }: { tooltip: TooltipProps }) => {
   const graphFlatten = useSelector((state) => getGraph(state).graphFlatten);
@@ -45,18 +57,15 @@ const Tooltip = ({ tooltip }: { tooltip: TooltipProps }) => {
   ));
 
   return (
-    <div
+    <StyledInner
       style={{
         position: 'absolute',
         left: tooltip.x,
         top: tooltip.y,
-        width: '250px',
       }}
     >
-      <StyledInner $style={{ opacity: 0.9 }}>
-        <StyledPadding>{contents}</StyledPadding>
-      </StyledInner>
-    </div>
+      {contents}
+    </StyledInner>
   );
 };
 
