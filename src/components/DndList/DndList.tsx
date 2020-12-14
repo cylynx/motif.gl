@@ -82,7 +82,7 @@ export const DeleteButton = ({
           BaseButton: {
             style: ({ $theme }) => ({
               ':hover': {
-                color: $theme.colors.negative400,
+                backgroundColor: $theme.colors.backgroundNegative,
               },
             }),
           },
