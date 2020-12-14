@@ -42,19 +42,10 @@ const VariableInspector = () => {
   const [selection, setSelection] = useState([]);
   const [histogramProp, setHistogramProp] = useState({});
   const [value, setValue] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
   const [speed, setSpeed] = useState(1);
   const graphFlatten = useSelector((state) => getGraphFlatten(state));
   const graphVisible = useSelector((state) => getGraphVisible(state));
   const graphFields = graphFlatten.metadata.fields;
-
-  const onPlay = useCallback(() => {
-    setIsAnimating(true);
-  }, [setIsAnimating]);
-
-  const onPause = useCallback(() => {
-    setIsAnimating(false);
-  }, [setIsAnimating]);
 
   const onChangeSpeed = useCallback(
     // eslint-disable-next-line no-shadow
@@ -211,8 +202,6 @@ const VariableInspector = () => {
             value={value}
             domain={histogramProp.domain}
             speed={speed}
-            startAnimation={onPlay}
-            pauseAnimation={onPause}
             updateAnimation={(newValue) => {
               onChangeRange(newValue);
             }}
