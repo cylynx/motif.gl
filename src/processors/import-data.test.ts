@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as DATA from '../constants/sample-data';
 import {
   importJson,

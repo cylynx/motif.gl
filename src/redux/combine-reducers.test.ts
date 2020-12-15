@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { combineReducers } from '@reduxjs/toolkit';
 import { initialState as initialStateGraph } from './graph-slice';
 import { initialStateUi } from './ui-slice';

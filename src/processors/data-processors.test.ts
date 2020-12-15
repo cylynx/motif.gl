@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { TriangleJSON } from '../constants/sample-data';
 import {
   json2csv,

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import cloneDeep from 'lodash/cloneDeep';

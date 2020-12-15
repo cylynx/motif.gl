@@ -4,3 +4,4 @@ node_modules/
 .snapshots/
 *.min.js
 commitlint.config.js
+tsdx.config.js
