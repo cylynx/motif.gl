@@ -241,12 +241,24 @@ const graph = createSlice({
       const { index, status } = action.payload;
       state.nodeSelection[index].selected = status;
     },
+    updateAllNodeSelection(state, action: PayloadAction<{ status: boolean }>) {
+      const { status } = action.payload;
+      state.nodeSelection.forEach((item) => {
+        item.selected = status;
+      });
+    },
     updateEdgeSelection(
       state,
       action: PayloadAction<{ index: number; status: boolean }>,
     ) {
       const { index, status } = action.payload;
       state.edgeSelection[index].selected = status;
+    },
+    updateAllEdgeSelection(state, action: PayloadAction<{ status: boolean }>) {
+      const { status } = action.payload;
+      state.edgeSelection.forEach((item) => {
+        item.selected = status;
+      });
     },
   },
 });
@@ -267,7 +279,9 @@ export const {
   setAccessors,
   overrideStyles,
   updateNodeSelection,
+  updateAllNodeSelection,
   updateEdgeSelection,
+  updateAllEdgeSelection,
 } = graph.actions;
 
 export default graph.reducer;

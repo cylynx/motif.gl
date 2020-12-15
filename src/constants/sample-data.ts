@@ -146,6 +146,9 @@ export const MiserablesData = () =>
       const newData = {
         nodes,
         edges: links,
+        metadata: {
+          title: 'Les Miserables',
+        },
       };
       return newData;
     });
@@ -206,7 +209,7 @@ export const AAData = () => {
       });
       mapNodeSize(nodes, 'degree', [2, 20]);
       data.metadata = {
-        title: 'Trade Data',
+        title: "Airline's Data",
       };
       return data;
     });
