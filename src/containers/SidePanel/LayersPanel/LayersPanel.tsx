@@ -1,20 +1,22 @@
-import React, { MouseEvent, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button } from 'baseui/button';
 import { Block } from 'baseui/block';
 import { ParagraphSmall } from 'baseui/typography';
 import { Statistic } from '../../../components/ui';
 import ToggleTokens from '../../../components/ToggleTokens';
 import Accordion from '../../../components/Accordion';
 import * as Icon from '../../../components/Icons';
-import { openImportModal, fetchDone } from '../../../redux/ui-slice';
-import {
-  resetState,
-  updateNodeSelection,
-  updateEdgeSelection,
-} from '../../../redux/graph-slice';
 import ImportLayers from './ImportLayers';
 import {
+  ImportDataButton,
+  ClearDataButton,
+  ToggleAllButton,
+} from './LayersPanelButtons';
+import {
+  updateNodeSelection,
+  updateAllNodeSelection,
+  updateEdgeSelection,
+  updateAllEdgeSelection,
   getGraph,
   getGraphList,
   getGraphVisible,
@@ -30,6 +32,8 @@ const LayersPanel = () => {
   const nodeFields = useSelector((state) => getGraph(state).nodeSelection);
   const edgeFields = useSelector((state) => getGraph(state).edgeSelection);
   const haveData = graphFlatten && graphVisible;
+  const isAllNodeSelected = nodeFields.every((f) => f.selected === true);
+  const isAllEdgeSelected = edgeFields.every((f) => f.selected === true);
   const hiddenNodes = graphFlatten.nodes.length - graphVisible.nodes.length;
   const hiddenEdges = graphFlatten.edges.length - graphVisible.edges.length;
 
@@ -37,19 +41,16 @@ const LayersPanel = () => {
     dispatch(updateNodeSelection({ index, status }));
   };
 
+  const onSelectAllNodeToken = () => {
+    dispatch(updateAllNodeSelection({ status: !isAllNodeSelected }));
+  };
+
   const onClickEdgeToken = (index: number, status: boolean) => {
     dispatch(updateEdgeSelection({ index, status }));
   };
 
-  const onClickImport = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    dispatch(openImportModal());
-  };
-
-  const clearState = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    dispatch(resetState());
-    dispatch(fetchDone());
+  const onSelectAllEdgeToken = () => {
+    dispatch(updateAllEdgeSelection({ status: !isAllEdgeSelected }));
   };
 
   return (
@@ -85,10 +86,15 @@ const LayersPanel = () => {
               key: 'node properties',
               content: (
                 <Fragment>
-                  <ParagraphSmall marginTop={0}>
-                    Hint: Customize node tooltip by selecting the attributes to
-                    include
-                  </ParagraphSmall>
+                  <Block display='flex'>
+                    <ParagraphSmall marginTop={0}>
+                      Hint: Select node properties to display in tooltip
+                    </ParagraphSmall>
+                    <ToggleAllButton
+                      selected={isAllNodeSelected}
+                      onClick={onSelectAllNodeToken}
+                    />
+                  </Block>
                   <ToggleTokens
                     options={graphList.length > 0 ? nodeFields : []}
                     onClick={onClickNodeToken}
@@ -112,10 +118,15 @@ const LayersPanel = () => {
               key: 'edge properties',
               content: (
                 <Fragment>
-                  <ParagraphSmall marginTop={0}>
-                    Hint: Customize edge tooltip by selecting the attributes to
-                    include
-                  </ParagraphSmall>
+                  <Block display='flex'>
+                    <ParagraphSmall marginTop={0}>
+                      Hint: Select edge properties to display in tooltip
+                    </ParagraphSmall>
+                    <ToggleAllButton
+                      selected={isAllEdgeSelected}
+                      onClick={onSelectAllEdgeToken}
+                    />
+                  </Block>
                   <ToggleTokens
                     options={graphList.length > 0 ? edgeFields : []}
                     onClick={onClickEdgeToken}
@@ -129,23 +140,13 @@ const LayersPanel = () => {
       <br />
       <hr />
       <Block width='100%' display='flex' justifyContent='space-between'>
-        <ImportDataButton onClick={onClickImport} />
+        <ClearDataButton />
+        <ImportDataButton />
       </Block>
       <ImportLayers />
       <Block marginBottom='scale1000' />
     </Fragment>
   );
 };
-
-const ImportDataButton = ({ onClick }: { onClick: (e: MouseEvent) => any }) => (
-  <Button
-    kind='tertiary'
-    size='compact'
-    startEnhancer={() => <Icon.Plus size={20} />}
-    onClick={onClick}
-  >
-    Import Data
-  </Button>
-);
 
 export default LayersPanel;

@@ -12,6 +12,7 @@ export type ToggleTokensProps = {
     selected: boolean;
   }[];
   onClick: (index: number, status: boolean) => void;
+  shape?: keyof typeof SHAPE;
 };
 
 /**
@@ -28,11 +29,15 @@ export type ToggleTokensProps = {
  * @param {ToggleTokensProps} { options, onClick }
  * @return {*} 
  */
-const ToggleTokens = ({ options, onClick }: ToggleTokensProps) => {
+const ToggleTokens = ({
+  options,
+  onClick,
+  shape = SHAPE.pill,
+}: ToggleTokensProps) => {
   return (
     <ButtonGroup
       mode={MODE.checkbox}
-      shape={SHAPE.pill}
+      shape={shape}
       size={SIZE.mini}
       selected={
         options
@@ -78,7 +83,7 @@ const ToggleTokens = ({ options, onClick }: ToggleTokensProps) => {
           }}
         >
           <Block display='flex' alignItems='center'>
-            {getIcon(o.type)}
+            {o.type && getIcon(o.type)}
             {o.label}
           </Block>
         </Button>
