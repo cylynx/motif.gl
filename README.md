@@ -14,7 +14,7 @@ Features:
 
 ## Setup
 
-Made with create-react-library
+Bundled with [tsdx](https://github.com/formium/tsdx)
 
 [![NPM](https://img.shields.io/npm/v/motif.gl.svg)](https://www.npmjs.com/package/motif.gl) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
