@@ -1,11 +1,15 @@
 import React, { FC, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { scaleLinear } from 'd3-scale';
+import { NumberValue, scaleLinear } from 'd3-scale';
 import { axisBottom } from 'd3-axis';
 import { select } from 'd3-selection';
 import { format } from 'd3-format';
 
-import { DomainType, generateNumericTicks } from '../../utils/data-utils';
+import {
+  DomainType,
+  generateNumericTicks,
+  INumericTicks,
+} from '../../utils/data-utils';
 
 const MINIMUM_WIDTH = 300;
 const MINIMUM_HEIGHT = 100;
@@ -32,20 +36,36 @@ const NumericAxis: FC<NumericAxisProps> = ({
 }) => {
   const axis = useRef<AxisRef>(null);
 
+  /**
+   * @tutorial
+   * https://github.com/d3/d3-format/blob/master/README.md#format
+   */
   useEffect(() => {
     const renderAxis = () => {
       if (axis.current === null) return;
 
       const scale = scaleLinear().domain(domain).range([0, width]);
-      const { tickValues, decimalPrecision } = generateNumericTicks(
-        domain,
-        scale,
-      );
+      const {
+        tickValues,
+        type,
+        decimalPrecision,
+      }: INumericTicks = generateNumericTicks(domain, scale);
+
       const xAxisGenerator = axisBottom(scale)
-        .tickValues(tickValues)
-        .tickFormat(format(`.${decimalPrecision}f`))
         .tickSize(0)
-        .tickPadding(6);
+        .tickPadding(6)
+        .tickValues(tickValues);
+
+      if (type === 'integer') {
+        const formatValue = format('~s');
+        xAxisGenerator.tickFormat((d: NumberValue) =>
+          formatValue(d).replace('k', 'K').replace('m', 'M').replace('G', 'B'),
+        );
+      }
+
+      if (type === 'float') {
+        xAxisGenerator.tickFormat(format(`.${decimalPrecision}f`));
+      }
 
       select(axis.current).call(xAxisGenerator);
     };

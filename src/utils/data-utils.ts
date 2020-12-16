@@ -10,10 +10,15 @@ export const ONE_DAY = ONE_HOUR * 24;
 export const ONE_YEAR = ONE_DAY * 365;
 
 export type Millisecond = number;
-
 export type DomainType = [number, number];
 export interface TickRules {
   [key: string]: number;
+}
+
+export interface INumericTicks {
+  tickValues: number[];
+  type: string;
+  decimalPrecision?: number;
 }
 
 export const StepMap = [
@@ -398,18 +403,23 @@ export const generateNumericTicks = (
 ) => {
   const [minTick, maxTick] = domain;
 
-  const minDecimalPrecision: number = getDecimalPrecisionCount(minTick) + 1;
-  const maxDecimalPrecision: number = getDecimalPrecisionCount(maxTick) + 1;
-  const decimalPrecision: number = Math.max(
-    minDecimalPrecision,
-    maxDecimalPrecision,
-  );
+  const minDecimalPrecision: number = getDecimalPrecisionCount(minTick);
+  const maxDecimalPrecision: number = getDecimalPrecisionCount(maxTick);
+  const decimalPrecision: number =
+    -Math.min(minDecimalPrecision, maxDecimalPrecision) + 1;
 
-  const ticksCount: number = getTickCounts(decimalPrecision);
-  const scaleTicks = scale
-    .ticks(ticksCount)
-    .map((tick: number) => parseFloat(tick.toFixed(decimalPrecision)));
+  // either minTick or maxTick is float.
+  if (decimalPrecision > 0) {
+    const ticksCount: number = getTickCounts(decimalPrecision);
+    const tickValues = scale
+      .ticks(ticksCount)
+      .map((tick: number) => parseFloat(preciseRound(tick, 8)));
+    return { tickValues, type: 'float', decimalPrecision };
+  }
 
-  const tickValues: number[] = [minTick, ...scaleTicks, maxTick];
-  return { tickValues, decimalPrecision };
+  // both minTick and maxTick are integer
+  const tickCounts = 5;
+  const tickValues = scale.ticks(tickCounts);
+
+  return { tickValues, type: 'integer', decimalPrecision: 0 } as INumericTicks;
 };
