@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef } from 'react';
-import styled from 'styled-components';
+import { styled } from 'baseui';
 import { NumberValue, scaleLinear } from 'd3-scale';
 import { axisBottom } from 'd3-axis';
 import { select } from 'd3-selection';
@@ -23,10 +23,11 @@ type NumericAxisProps = {
   tickCounts?: number;
 };
 
-const StyledSvg = styled.svg`
-  pointer-events: none;
-  overflow: visible;
-`;
+const StyledSvg = styled('svg', ({ $theme }) => ({
+  pointerEvents: 'none',
+  overflow: 'visible',
+  color: $theme.colors.contentTertiary,
+}));
 
 const NumericAxis: FC<NumericAxisProps> = ({
   domain,
@@ -53,7 +54,7 @@ const NumericAxis: FC<NumericAxisProps> = ({
 
       const xAxisGenerator = axisBottom(scale)
         .tickSize(0)
-        .tickPadding(6)
+        .tickPadding(3)
         .tickValues(tickValues);
 
       if (type === 'integer') {
@@ -67,7 +68,11 @@ const NumericAxis: FC<NumericAxisProps> = ({
         xAxisGenerator.tickFormat(format(`.${decimalPrecision}f`));
       }
 
-      select(axis.current).call(xAxisGenerator);
+      select(axis.current)
+        .call(xAxisGenerator)
+        .style('stroke-width', 0)
+        .style('font-size', 12)
+        .style('font-weight', 500);
     };
 
     renderAxis();

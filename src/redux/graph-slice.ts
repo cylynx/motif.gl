@@ -222,7 +222,7 @@ const graph = createSlice({
         accessors: Graph.Accessors;
       }>,
     ) {
-      const { data, accessors } = action.payload;
+      const { data } = action.payload;
       const { graphFlatten } = state;
       const graphData = combineProcessedData(data, graphFlatten);
       updateAll(state, graphData);

@@ -13,11 +13,13 @@ import {
   preciseRound,
   getRoundingDecimalFromStep,
 } from '../../utils/data-utils';
+import NumericAxis from './NumericAxis';
 
 export type RangePlotProps = {
   range: [number, number];
   value: [number, number];
   histogram: HistogramBin[];
+  dataType: string;
   onChange: ([v0, v1]: [number, number]) => void;
   onFinalChange?: ([v0, v1]: [number, number]) => void;
   xAxisFormat?: string;
@@ -94,6 +96,7 @@ const RangePlot = ({
   height: inputHeight = null,
   width: inputWidth = null,
   isRanged = true,
+  dataType,
   ...chartProps
 }: RangePlotProps) => {
   const [brushing, setBrushing] = useState(false);
@@ -226,16 +229,20 @@ const RangePlot = ({
           />
         </Block>
         <Block position='relative' width={`${width}px`}>
-          {ticks.map((x: Ticks) => (
-            <LabelXSmall
-              position='absolute'
-              color='contentTertiary'
-              left={`${x.pos * width}px`}
-              key={`${x.value}`}
-            >
-              {x.value}
-            </LabelXSmall>
-          ))}
+          {dataType === 'integer' && (
+            <NumericAxis domain={domain} width={width} />
+          )}
+          {dataType !== 'integer' &&
+            ticks.map((x: Ticks) => (
+              <LabelXSmall
+                position='absolute'
+                color='contentTertiary'
+                left={`${x.pos * width}px`}
+                key={`${x.value}`}
+              >
+                {x.value}
+              </LabelXSmall>
+            ))}
         </Block>
       </Block>
     </Block>

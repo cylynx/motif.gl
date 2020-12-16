@@ -161,7 +161,13 @@ const VariableInspector = () => {
           obj.analyzerType,
         );
         setSelection([obj]);
-        setHistogramProp({ domain, step, histogram, format: obj.format });
+        setHistogramProp({
+          domain,
+          step,
+          histogram,
+          format: obj.format,
+          type: obj.type,
+        });
         setValue(domain);
       } else {
         const { graph } = graphRef;
@@ -227,6 +233,7 @@ const VariableInspector = () => {
             range={histogramProp.domain}
             histogram={histogramProp.histogram}
             xAxisFormat={histogramProp.format}
+            dataType={histogramProp.type}
           />
         )}
       </PlotDiv>

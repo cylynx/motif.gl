@@ -380,7 +380,7 @@ export function roundValToStep(minValue: number, step: number, val: number) {
 
 export const getDecimalPrecisionCount = (float: number) => {
   const decimal = new Decimal(float);
-  return -decimal.e;
+  return decimal.e;
 };
 
 export const getTickCounts = (decimalPrecision: number) => {
