@@ -1,11 +1,7 @@
-import {
-  bisectLeft,
-  ascending,
-  extent,
-  histogram as d3Histogram,
-  ticks,
-} from 'd3-array';
+import { bisectLeft, extent, histogram as d3Histogram, ticks } from 'd3-array';
+import Decimal from 'decimal.js';
 import { parseISO } from 'date-fns';
+import { ScaleLinear } from 'd3-scale';
 
 export const ONE_SECOND = 1000;
 export const ONE_MINUTE = ONE_SECOND * 60;
@@ -14,6 +10,11 @@ export const ONE_DAY = ONE_HOUR * 24;
 export const ONE_YEAR = ONE_DAY * 365;
 
 export type Millisecond = number;
+
+export type DomainType = [number, number];
+export interface TickRules {
+  [key: string]: number;
+}
 
 export const StepMap = [
   { max: 0.001, step: 0.00005 },
@@ -168,7 +169,6 @@ export const unixTimeConverter = (
       `${new Date().toISOString().slice(0, 10)} ${str}`,
     ).getTime();
   }
-  console.warn('invalid type');
   return null;
 };
 
@@ -291,11 +291,6 @@ export function preciseRound(num: number, decimals: number) {
  * @returns {number} - number of decimal
  */
 export function getRoundingDecimalFromStep(step: number) {
-  // eslint-disable-next-line no-restricted-globals
-  if (isNaN(step)) {
-    console.warn('step is not a number');
-  }
-
   const splitZero = step.toString().split('.');
   if (splitZero.length === 1) {
     return 0;
@@ -377,3 +372,44 @@ export function roundValToStep(minValue: number, step: number, val: number) {
 
   return Number(rounded);
 }
+
+export const getDecimalPrecisionCount = (float: number) => {
+  const decimal = new Decimal(float);
+  return -decimal.e;
+};
+
+export const getTickCounts = (decimalPrecision: number) => {
+  const DEFAULT_TICK_COUNTS = 6;
+  const tickRules: TickRules = {
+    '3': 5,
+    '4': 5,
+    '5': 4,
+    '6': 4,
+    '7': 3,
+    '8': 3,
+  };
+
+  return tickRules[decimalPrecision.toString()] || DEFAULT_TICK_COUNTS;
+};
+
+export const generateNumericTicks = (
+  domain: DomainType,
+  scale: ScaleLinear<number, number>,
+) => {
+  const [minTick, maxTick] = domain;
+
+  const minDecimalPrecision: number = getDecimalPrecisionCount(minTick) + 1;
+  const maxDecimalPrecision: number = getDecimalPrecisionCount(maxTick) + 1;
+  const decimalPrecision: number = Math.max(
+    minDecimalPrecision,
+    maxDecimalPrecision,
+  );
+
+  const ticksCount: number = getTickCounts(decimalPrecision);
+  const scaleTicks = scale
+    .ticks(ticksCount)
+    .map((tick: number) => parseFloat(tick.toFixed(decimalPrecision)));
+
+  const tickValues: number[] = [minTick, ...scaleTicks, maxTick];
+  return { tickValues, decimalPrecision };
+};
