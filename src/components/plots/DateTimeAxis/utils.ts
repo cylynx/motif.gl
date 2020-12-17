@@ -21,17 +21,17 @@ import {
  * 7. years - format in (2020)
  *
  * @param {any} date
- * @return {timeFormat(specifier:string) => string}
+ * @return
  */
 export const dateTimeMultiFormat = (date: any) => {
   const formatMillisecond = timeFormat(':%Lms');
-    const formatSecond = timeFormat(':%Ss');
-    const formatMinute = timeFormat('%I:%M %p');
-    const formatHour = timeFormat('%I:%M %p');
-    const formatDay = timeFormat('%d/%m/%y');
-    const formatWeek = timeFormat('%d/%m/%y');
-    const formatMonth = timeFormat('%m/%y');
-    const formatYear = timeFormat('%Y');
+  const formatSecond = timeFormat(':%Ss');
+  const formatMinute = timeFormat('%I:%M %p');
+  const formatHour = timeFormat('%I:%M %p');
+  const formatDay = timeFormat('%d/%m/%y');
+  const formatWeek = timeFormat('%d/%m/%y');
+  const formatMonth = timeFormat('%m/%y');
+  const formatYear = timeFormat('%Y');
 
   if (timeSecond(date) < date) {
     return formatMillisecond(date);
@@ -66,7 +66,15 @@ export const dateTimeMultiFormat = (date: any) => {
   return formatYear(date);
 };
 
-export const generateDateTimeTicks = (scale: ScaleTime<number, number>) => {
+/**
+ * Generate date time ticks randomly dedicated for DateTime and Date data types.
+ *
+ * @param {ScaleTime<number,number>} scale
+ * @return {Date[]} tickValues
+ */
+export const generateDateTimeTicks = (
+  scale: ScaleTime<number, number>,
+): Date[] => {
   const tickCounts = 4;
   const ticksValues = scale.ticks(tickCounts);
 

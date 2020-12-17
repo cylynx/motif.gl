@@ -9,7 +9,6 @@ import { DomainType, generateNumericTicks, INumericTicks } from './utils';
 
 const MINIMUM_WIDTH = 300;
 const MINIMUM_HEIGHT = 100;
-const TICK_COUNTS = 5;
 
 type AxisRef = SVGSVGElement | null;
 type NumericAxisProps = {

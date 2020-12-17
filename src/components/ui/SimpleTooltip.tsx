@@ -12,6 +12,15 @@ type SimpleTooltipProps = {
   placement?: PopoverPlacementT;
 };
 
+/*
+ * @see
+ * https://popper.js.org/docs/v1/#modifiers..hide.enabled
+ * https://baseweb.design/components/tooltip#tooltip-stateful-example
+ *
+ * Remove warnings in console
+ * 1. Enabled popper modifier
+ * 2. Enabled prevent overflow configurations
+ */
 const SimpleTooltip = ({
   title,
   tooltip,
@@ -25,6 +34,16 @@ const SimpleTooltip = ({
       triggerType={TRIGGER_TYPE.hover}
       showArrow
       ignoreBoundary
+      popperOptions={{
+        modifiers: {
+          preventOverflow: {
+            enabled: true,
+          },
+          hide: {
+            enabled: true,
+          },
+        },
+      }}
     >
       {title || children}
     </StatefulPopover>

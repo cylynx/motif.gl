@@ -51,8 +51,12 @@ const Slider = (props: SliderProps) => {
               top: `-${$theme.sizing.scale700}`,
               ...$theme.typography.font200,
               color: $theme.colors.contentPrimary,
-              padding: 0,
-              // modify to border: 0 will breaks atomic rendering
+
+              // simplify to padding:0, border:0 will break atomic rendering
+              paddingLeft: 0,
+              paddingRight: 0,
+              paddingTop: 0,
+              paddingBottom: 0,
               borderBottomLeftRadius: 0,
               borderBottomRightRadius: 0,
               borderTopLeftRadius: 0,

@@ -122,6 +122,8 @@ const Explorer = (props: ExplorerProps) => {
         isOpen={modal.isOpen}
         onClose={onCloseModal}
         closeable
+        // remove warnings in the console.
+        unstable_ModalBackdropScroll
         size={SIZE.auto}
       >
         <ModalBody>
