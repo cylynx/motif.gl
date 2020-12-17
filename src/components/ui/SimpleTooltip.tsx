@@ -18,8 +18,7 @@ type SimpleTooltipProps = {
  * https://baseweb.design/components/tooltip#tooltip-stateful-example
  *
  * Remove warnings in console
- * 1. Enabled popper modifier
- * 2. Enabled prevent overflow configurations
+ * 1. Configure enabled to false in popper modifier
  */
 const SimpleTooltip = ({
   title,
@@ -36,11 +35,8 @@ const SimpleTooltip = ({
       ignoreBoundary
       popperOptions={{
         modifiers: {
-          preventOverflow: {
-            enabled: true,
-          },
           hide: {
-            enabled: true,
+            enabled: false,
           },
         },
       }}
