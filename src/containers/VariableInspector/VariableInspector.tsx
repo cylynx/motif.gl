@@ -184,7 +184,7 @@ const VariableInspector = () => {
           step,
           histogram,
           format: obj.format,
-          type: obj.type,
+          analyzerType: obj.analyzerType,
         });
         setValue(domain);
       } else {
@@ -263,7 +263,7 @@ const VariableInspector = () => {
             range={histogramProp.domain}
             histogram={histogramProp.histogram}
             xAxisFormat={histogramProp.format}
-            dataType={histogramProp.type}
+            dataType={histogramProp.analyzerType}
           />
         )}
       </PlotDiv>

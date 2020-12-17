@@ -3,12 +3,12 @@ import { styled } from 'baseui';
 import { scaleUtc } from 'd3-scale';
 import { axisBottom } from 'd3-axis';
 import { select } from 'd3-selection';
-import { generateDateTimeTicks, dateTimeMultiFormat } from './utils';
+import { convertToHms, generateTimeTicks } from './utils';
 
 const MINIMUM_WIDTH = 300;
 const MINIMUM_HEIGHT = 100;
 type AxisRef = SVGSVGElement | null;
-type DateTimeAxisProps = {
+type TimeAxisProps = {
   width?: number;
   height?: number;
   domain: [number, number];
@@ -20,7 +20,7 @@ const StyledSvg = styled('svg', ({ $theme }) => ({
   color: $theme.colors.contentTertiary,
 }));
 
-const DateTimeAxis: FC<DateTimeAxisProps> = ({
+const TimeAxis: FC<TimeAxisProps> = ({
   domain,
   width = MINIMUM_WIDTH,
   height = MINIMUM_HEIGHT,
@@ -32,12 +32,12 @@ const DateTimeAxis: FC<DateTimeAxisProps> = ({
       if (axis.current === null) return;
 
       const scale = scaleUtc().domain(domain).range([0, width]).nice();
-      const tickValues = generateDateTimeTicks(scale);
+      const tickValues = generateTimeTicks(scale);
       const xAxisGenerator = axisBottom(scale)
         .tickValues(tickValues)
         .tickSize(0)
         .tickPadding(3)
-        .tickFormat((d) => dateTimeMultiFormat(d));
+        .tickFormat((d) => convertToHms(d));
 
       select(axis.current)
         .call(xAxisGenerator)
@@ -56,5 +56,5 @@ const DateTimeAxis: FC<DateTimeAxisProps> = ({
   );
 };
 
-export type { DateTimeAxisProps };
-export default DateTimeAxis;
+export type { TimeAxisProps };
+export default TimeAxis;

@@ -9,6 +9,7 @@ import { Slider } from '../ui';
 import { HistogramBin } from '../../utils/data-utils';
 import NumericAxis from './NumericAxis';
 import DateTimeAxis from './DateTimeAxis';
+import TimeAxis from './TimeAxis';
 
 export type RangePlotProps = {
   range: [number, number];
@@ -167,11 +168,16 @@ const RangePlot = ({
   const XAxisMemo = useMemo(
     () => (
       <Block position='relative' width={`${width}px`}>
-        {(dataType === 'integer' || dataType === 'real') && (
+        {(dataType === 'INT' ||
+          dataType === 'FLOAT' ||
+          dataType === 'NUMBER') && (
           <NumericAxis domain={domain} width={width} height={height} />
         )}
-        {(dataType === 'timestamp' || dataType === 'date') && (
+        {(dataType === 'DATETIME' || dataType === 'DATE') && (
           <DateTimeAxis domain={domain} width={width} height={height} />
+        )}
+        {dataType === 'TIME' && (
+          <TimeAxis domain={domain} width={width} height={height} />
         )}
       </Block>
     ),
