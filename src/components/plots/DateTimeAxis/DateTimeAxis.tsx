@@ -3,9 +3,10 @@ import { styled } from 'baseui';
 import { scaleTime } from 'd3-scale';
 import { axisBottom } from 'd3-axis';
 import { select } from 'd3-selection';
+import { generateDateTimeTicks, dateTimeMultiFormat } from './utils';
 
 const MINIMUM_WIDTH = 300;
-const MINIMUM_HEIGHT = 100;
+  const MINIMUM_HEIGHT = 100;
 type AxisRef = SVGSVGElement | null;
 type DateTimeAxisProps = {
   width?: number;
@@ -13,15 +14,16 @@ type DateTimeAxisProps = {
   domain: [number, number];
 };
 
-const StyledSvg = styled('svg', () => ({
-  overflow: 'visible',
+const StyledSvg = styled('svg', ({ $theme }) => ({
   pointerEvents: 'none',
+  overflow: 'visible',
+  color: $theme.colors.contentTertiary,
 }));
 
 const DateTimeAxis: FC<DateTimeAxisProps> = ({
+  domain,
   width = MINIMUM_WIDTH,
   height = MINIMUM_HEIGHT,
-  domain,
 }) => {
   const axis = useRef<AxisRef>(null);
 
@@ -30,13 +32,18 @@ const DateTimeAxis: FC<DateTimeAxisProps> = ({
       if (axis.current === null) return;
 
       const scale = scaleTime().domain(domain).range([0, width]).nice();
+      const tickValues = generateDateTimeTicks(scale);
       const xAxisGenerator = axisBottom(scale)
-        // .tickFormat(timeFormat('%Y'))
-        .ticks(6)
+        .tickValues(tickValues)
         .tickSize(0)
-        .tickPadding(8);
+        .tickPadding(3)
+        .tickFormat((d) => dateTimeMultiFormat(d));
 
-      select(axis.current).call(xAxisGenerator);
+      select(axis.current)
+        .call(xAxisGenerator)
+        .style('stroke-width', 0)
+        .style('font-size', 12)
+        .style('font-weight', 500);
     };
 
     renderAxis();

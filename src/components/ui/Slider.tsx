@@ -24,7 +24,11 @@ const Slider = (props: SliderProps) => {
             return {
               height: '12px',
               width: '12px',
-              borderRadius: 0,
+              // modify to border: 0 will breaks atomic rendering
+              borderTopLeftRadius: 0,
+              borderTopRightRadius: 0,
+              borderBottomLeftRadius: 0,
+              borderBottomRightRadius: 0,
               backgroundColor: $theme.colors.primary,
               color: $theme.colors.contentPrimary,
               display: 'flex',
@@ -48,7 +52,11 @@ const Slider = (props: SliderProps) => {
               ...$theme.typography.font200,
               color: $theme.colors.contentPrimary,
               padding: 0,
-              borderRadius: 0,
+              // modify to border: 0 will breaks atomic rendering
+              borderBottomLeftRadius: 0,
+              borderBottomRightRadius: 0,
+              borderTopLeftRadius: 0,
+              borderTopRightRadius: 0,
             };
           },
         },

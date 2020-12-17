@@ -3,17 +3,13 @@
 
 import React, { useState, useCallback, useMemo } from 'react';
 import { Block } from 'baseui/block';
-import { LabelXSmall } from 'baseui/typography';
-import { scaleLinear, scaleUtc } from 'd3-scale';
 import RangeBrush from './RangeBrush';
 import HistogramPlot from './HistogramPlot';
 import { Slider } from '../ui';
-import {
-  HistogramBin,
-  preciseRound,
-  getRoundingDecimalFromStep,
-} from '../../utils/data-utils';
+import { HistogramBin } from '../../utils/data-utils';
 import NumericAxis from './NumericAxis';
+import DateTimeAxis from './DateTimeAxis';
+import { DomainType } from './NumericAxis/utils';
 
 export type RangePlotProps = {
   range: [number, number];
@@ -37,52 +33,6 @@ export type Ticks = {
   value: any;
 };
 
-const getTicks = (
-  range: [number, number],
-  numTicks: number,
-  step: number,
-  xAxisFormat: string,
-) => {
-  // xAxisFormat if date / time field
-  const scale = xAxisFormat
-    ? scaleUtc().domain(range).nice()
-    : scaleLinear().domain(range).nice();
-  const tickArray: Ticks[] = [];
-  if (range[1] - range[0] === 2 && xAxisFormat) {
-    return [{ pos: 0.4, value: new Date(range[0]).toISOString() }];
-  }
-  if (!xAxisFormat) {
-    const decimals = getRoundingDecimalFromStep(step);
-    tickArray.push({
-      pos: 0,
-      value: preciseRound(range[0], decimals),
-    });
-    tickArray.push({
-      pos: 1,
-      value: preciseRound(range[1], decimals),
-    });
-    scale.ticks(numTicks).forEach((x: any) => {
-      if (x > range[0] && x < range[1]) {
-        tickArray.push({
-          pos: (x - range[0]) / (range[1] - range[0]),
-          value: preciseRound(x, decimals),
-        });
-      }
-    });
-  } else {
-    // @ts-ignore
-    const formattedTime = scale.ticks(numTicks).map(scale.tickFormat());
-    scale.ticks(numTicks).forEach((x: any, index: number) => {
-      tickArray.push({
-        pos: (x - range[0]) / (range[1] - range[0]),
-        value: formattedTime[index],
-      });
-    });
-  }
-
-  return tickArray;
-};
-
 const RangePlot = ({
   range,
   value,
@@ -102,17 +52,44 @@ const RangePlot = ({
   const [brushing, setBrushing] = useState(false);
   const [hoveredDP, onMouseMove] = useState(null);
   const [enableChartHover, setEnableChartHover] = useState(false);
-  // +- 1 if same domain to avoid slider errors
+
   const domain: [number, number] =
     range[0] === range[1] ? [range[0] - 1, range[1] + 1] : range;
 
-  const height = inputHeight || size === 'default' ? 100 : 60;
-  const width = inputWidth || size === 'default' ? 420 : 150;
-  const ticks = useMemo(
-    () =>
-      getTicks(domain, numTicks || Math.floor(width / 80), step, xAxisFormat),
-    [domain, numTicks, xAxisFormat],
-  );
+  /**
+   * Decrement the lower boundary and increment upper boundary to prevent overlap
+   * 1. "integer" | "real" dataType perform modification with one integer
+   * 2. "timestamp" | "date" dataType perform modificatin with one day
+   */
+  // const domain: [number, number] = useMemo(() => {
+  //   const [minRange, maxRange] = range;
+  //   if (minRange === maxRange) {
+  //     if (dataType === 'integer' || dataType === 'real') {
+  //       return [minRange - 1, maxRange + 1];
+  //     }
+
+  //     // dataType === "timestamp" || dataType === "date"
+  //     // second in millis * minutes * hours * 24
+  //     const DAY: number = 24 * 60 * 60 * 1000;
+  //     return [minRange - DAY, maxRange + DAY];
+  //   }
+
+  //   return range;
+  // }, [range]);
+
+  const height: number = useMemo(() => {
+    if (inputHeight) return inputHeight;
+    if (size === 'default') return 100;
+
+    return 60;
+  }, [inputHeight, size]);
+
+  const width: number = useMemo(() => {
+    if (inputWidth) return inputWidth;
+    if (size === 'default') return 420;
+
+    return 150;
+  }, [inputHeight, size]);
 
   const onBrushStart = useCallback(() => {
     setBrushing(true);
@@ -229,20 +206,12 @@ const RangePlot = ({
           />
         </Block>
         <Block position='relative' width={`${width}px`}>
-          {dataType === 'integer' && (
-            <NumericAxis domain={domain} width={width} />
+          {(dataType === 'integer' || dataType === 'real') && (
+            <NumericAxis domain={domain} width={width} height={height} />
           )}
-          {dataType !== 'integer' &&
-            ticks.map((x: Ticks) => (
-              <LabelXSmall
-                position='absolute'
-                color='contentTertiary'
-                left={`${x.pos * width}px`}
-                key={`${x.value}`}
-              >
-                {x.value}
-              </LabelXSmall>
-            ))}
+          {(dataType === 'timestamp' || dataType === 'date') && (
+            <DateTimeAxis domain={domain} width={width} height={height} />
+          )}
         </Block>
       </Block>
     </Block>

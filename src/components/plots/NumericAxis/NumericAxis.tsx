@@ -5,11 +5,7 @@ import { axisBottom } from 'd3-axis';
 import { select } from 'd3-selection';
 import { format } from 'd3-format';
 
-import {
-  DomainType,
-  generateNumericTicks,
-  INumericTicks,
-} from '../../utils/data-utils';
+import { DomainType, generateNumericTicks, INumericTicks } from './utils';
 
 const MINIMUM_WIDTH = 300;
 const MINIMUM_HEIGHT = 100;
