@@ -21,18 +21,23 @@ export interface INumericTicks {
  * @param {number} decimalPrecision - decimal precision of a number
  * @return {number} - number of ticks for the axis
  */
-export const getTickCounts = (decimalPrecision: number) => {
+export const getTickCounts = (decimalPrecision: number): number => {
   const DEFAULT_TICK_COUNTS = 6;
-  const tickRules: TickRules = {
-    '3': 5,
-    '4': 5,
-    '5': 4,
-    '6': 4,
-    '7': 3,
-    '8': 3,
-  };
 
-  return tickRules[decimalPrecision.toString()] || DEFAULT_TICK_COUNTS;
+  if (decimalPrecision < 2) {
+    return DEFAULT_TICK_COUNTS;
+  }
+
+  if (decimalPrecision >= 2 && decimalPrecision <= 4) {
+    return 5;
+  }
+
+  if (decimalPrecision >= 5 && decimalPrecision <= 6) {
+    return 4;
+  }
+
+  // decimalPrecision >= 7
+  return 3;
 };
 
 /**

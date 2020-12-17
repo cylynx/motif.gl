@@ -53,10 +53,6 @@ const RangePlot = ({
   const [hoveredDP, onMouseMove] = useState(null);
   const [enableChartHover, setEnableChartHover] = useState(false);
 
-  const domain: [number, number] = useMemo(() => {
-    return range[0] === range[1] ? [range[0] - 1, range[1] + 1] : range;
-  }, [range]);
-
   const height: number = useMemo(() => {
     if (inputHeight) return inputHeight;
     if (size === 'default') return 100;
@@ -137,7 +133,7 @@ const RangePlot = ({
       onBrush={onBrush}
       onBrushStart={onBrushStart}
       onBrushEnd={onBrushEnd}
-      range={domain}
+      range={range}
       value={value}
       step={step}
       width={width}
@@ -154,7 +150,7 @@ const RangePlot = ({
     width,
     value,
     height,
-    domain,
+    domain: range,
     step,
     brushComponent,
     brushing,
@@ -171,17 +167,17 @@ const RangePlot = ({
         {(dataType === 'INT' ||
           dataType === 'FLOAT' ||
           dataType === 'NUMBER') && (
-          <NumericAxis domain={domain} width={width} height={height} />
+          <NumericAxis domain={range} width={width} height={height} />
         )}
         {(dataType === 'DATETIME' || dataType === 'DATE') && (
-          <DateTimeAxis domain={domain} width={width} height={height} />
+          <DateTimeAxis domain={range} width={width} height={height} />
         )}
         {dataType === 'TIME' && (
-          <TimeAxis domain={domain} width={width} height={height} />
+          <TimeAxis domain={range} width={width} height={height} />
         )}
       </Block>
     ),
-    [domain, dataType],
+    [range, dataType],
   );
 
   return (
@@ -191,8 +187,8 @@ const RangePlot = ({
         <Block marginTop='-15px'>
           <Slider
             value={value}
-            min={domain[0]}
-            max={domain[1]}
+            min={range[0]}
+            max={range[1]}
             step={step}
             onChange={({ value }: { value: [number, number] }) =>
               onChangeSlider(value)

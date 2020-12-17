@@ -199,13 +199,29 @@ export const getFieldDomain = (
     mappedValue = mappedValue.map((dt: string) => unixTimeConverter(dt, type));
   }
 
-  const domain = getLinearDomain(mappedValue);
+  let domain = getLinearDomain(mappedValue);
+  const [minRange, maxRange] = domain;
   let step = 0.01;
 
-  const diff = domain[1] - domain[0];
+  const diff = maxRange - minRange;
   const entry = StepMap.find((f) => f.max >= diff);
   if (entry) {
     step = entry.step;
+  }
+
+  // if minRange and maxRange are equals, modify the boundaries
+  if (minRange === maxRange) {
+    if (type === 'INT' || type === 'FLOAT' || type === 'NUMBER') {
+      domain = [minRange - 1, maxRange + 1];
+    }
+
+    if (type === 'DATETIME' || type === 'DATE' || type === 'TIME') {
+      const HOURS_IN_MILLISECONDS: number = 60 * 60 * 1000;
+      const newMinRange: number = minRange - HOURS_IN_MILLISECONDS;
+      const newMaxRange: number = maxRange + HOURS_IN_MILLISECONDS;
+      step = newMaxRange - newMinRange;
+      domain = [newMinRange, newMaxRange];
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
