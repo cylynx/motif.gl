@@ -49,7 +49,15 @@ const VariableInspector = () => {
   const graphFields = graphFlatten.metadata.fields;
 
   /**
-   * Any modification on the data list shall reset variable inspector to prevent inconsistency.
+   * Any modification on the data list shall reset variable inspector.
+   * - Prevent misleading use-case. (inspector values remain when no data in canvas)
+   * - Prevent incosistencies during time-series analysis.
+   * - Old selection, histogram and x-axis remains
+   *   - does not update when new data had imported.
+   *   - when specific data layer is hidden.
+   *
+   * @see
+   * https://github.com/cylynx/motif.gl/issues/17
    */
   useEffect(() => {
     setSelection([]);
