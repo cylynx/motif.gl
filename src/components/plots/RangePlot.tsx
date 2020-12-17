@@ -52,8 +52,9 @@ const RangePlot = ({
   const [hoveredDP, onMouseMove] = useState(null);
   const [enableChartHover, setEnableChartHover] = useState(false);
 
-  const domain: [number, number] =
-    range[0] === range[1] ? [range[0] - 1, range[1] + 1] : range;
+  const domain: [number, number] = useMemo(() => {
+    return range[0] === range[1] ? [range[0] - 1, range[1] + 1] : range;
+  }, [range]);
 
   const height: number = useMemo(() => {
     if (inputHeight) return inputHeight;
@@ -163,6 +164,20 @@ const RangePlot = ({
     ...chartProps,
   };
 
+  const XAxisMemo = useMemo(
+    () => (
+      <Block position='relative' width={`${width}px`}>
+        {(dataType === 'integer' || dataType === 'real') && (
+          <NumericAxis domain={domain} width={width} height={height} />
+        )}
+        {(dataType === 'timestamp' || dataType === 'date') && (
+          <DateTimeAxis domain={domain} width={width} height={height} />
+        )}
+      </Block>
+    ),
+    [domain, dataType],
+  );
+
   return (
     <Block display='flex' justifyContent='center'>
       <Block height={`${height}px`} width={`${width}px`}>
@@ -183,14 +198,7 @@ const RangePlot = ({
             showTickBar={false}
           />
         </Block>
-        <Block position='relative' width={`${width}px`}>
-          {(dataType === 'integer' || dataType === 'real') && (
-            <NumericAxis domain={domain} width={width} height={height} />
-          )}
-          {(dataType === 'timestamp' || dataType === 'date') && (
-            <DateTimeAxis domain={domain} width={width} height={height} />
-          )}
-        </Block>
+        {XAxisMemo}
       </Block>
     </Block>
   );

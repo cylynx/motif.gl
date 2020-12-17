@@ -206,6 +206,22 @@ const VariableInspector = () => {
     [graphRef, setSelection, setHistogramProp, setValue, graphFlatten],
   );
 
+  const LabelSmallMemo = useMemo(
+    () => <LabelSmall width='100px'>Variable Inspector</LabelSmall>,
+    [],
+  );
+
+  const SelectVariableMemo = useMemo(
+    () => (
+      <SelectVariable
+        value={selection}
+        options={{ Nodes: nodeOptions, Edges: edgeOptions }}
+        onChange={(obj) => onChangeSelected(obj)}
+      />
+    ),
+    [selection, nodeOptions, edgeOptions],
+  );
+
   return (
     <Fragment>
       <Block
@@ -215,12 +231,8 @@ const VariableInspector = () => {
         paddingLeft='scale600'
         paddingRight='scale600'
       >
-        <LabelSmall width='100px'>Variable Inspector</LabelSmall>
-        <SelectVariable
-          value={selection}
-          options={{ Nodes: nodeOptions, Edges: edgeOptions }}
-          onChange={(obj) => onChangeSelected(obj)}
-        />
+        {LabelSmallMemo}
+        {SelectVariableMemo}
         {histogramProp.histogram && (
           <AnimationController
             value={value}

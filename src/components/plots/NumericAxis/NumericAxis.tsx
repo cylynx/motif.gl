@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef } from 'react';
+import React, { FC, useEffect, useMemo, useRef } from 'react';
 import { styled } from 'baseui';
 import { NumberValue, scaleLinear } from 'd3-scale';
 import { axisBottom } from 'd3-axis';
@@ -16,7 +16,6 @@ type NumericAxisProps = {
   domain: DomainType;
   width?: number;
   height?: number;
-  tickCounts?: number;
 };
 
 const StyledSvg = styled('svg', ({ $theme }) => ({
@@ -29,7 +28,6 @@ const NumericAxis: FC<NumericAxisProps> = ({
   domain,
   width = MINIMUM_WIDTH,
   height = MINIMUM_HEIGHT,
-  tickCounts = TICK_COUNTS,
 }) => {
   const axis = useRef<AxisRef>(null);
 
@@ -72,12 +70,15 @@ const NumericAxis: FC<NumericAxisProps> = ({
     };
 
     renderAxis();
-  }, [width, domain, tickCounts]);
+  }, [width, domain]);
 
-  return (
-    <StyledSvg width={width} height={height}>
-      <g ref={axis} transform='translate(0,0)' />
-    </StyledSvg>
+  return useMemo(
+    () => (
+      <StyledSvg width={width} height={height}>
+        <g ref={axis} transform='translate(0,0)' />
+      </StyledSvg>
+    ),
+    [],
   );
 };
 

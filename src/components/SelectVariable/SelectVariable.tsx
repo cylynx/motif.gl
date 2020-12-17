@@ -1,5 +1,5 @@
 /* eslint-disable no-shadow */
-import * as React from 'react';
+import React, { useMemo } from 'react';
 import { Select } from 'baseui/select';
 import { Block } from 'baseui/block';
 import { getIcon, TypeProps } from '../TagData';
@@ -51,18 +51,21 @@ const SelectVariable = ({
     return value;
   };
 
-  return (
-    // @ts-ignore
-    <Select
-      options={options}
-      value={value}
-      size='compact'
-      placeholder='Select variable'
-      onChange={({ value }) => onChangeSelection(value)}
-      getOptionLabel={getLabel}
-      getValueLabel={getLabel}
-      maxDropdownHeight='300px'
-    />
+  return useMemo(
+    () => (
+      // @ts-ignore
+      <Select
+        options={options}
+        value={value}
+        size='compact'
+        placeholder='Select variable'
+        onChange={({ value }) => onChangeSelection(value)}
+        getOptionLabel={getLabel}
+        getValueLabel={getLabel}
+        maxDropdownHeight='300px'
+      />
+    ),
+    [options, value],
   );
 };
 
