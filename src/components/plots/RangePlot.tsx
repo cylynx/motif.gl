@@ -9,7 +9,6 @@ import { Slider } from '../ui';
 import { HistogramBin } from '../../utils/data-utils';
 import NumericAxis from './NumericAxis';
 import DateTimeAxis from './DateTimeAxis';
-import { DomainType } from './NumericAxis/utils';
 
 export type RangePlotProps = {
   range: [number, number];
@@ -53,29 +52,34 @@ const RangePlot = ({
   const [hoveredDP, onMouseMove] = useState(null);
   const [enableChartHover, setEnableChartHover] = useState(false);
 
-  const domain: [number, number] =
-    range[0] === range[1] ? [range[0] - 1, range[1] + 1] : range;
+  // const domain: [number, number] = useMemo(() => {
+  //   if (range[0] === range[1]) {
+  //     return [range[0] - 1, range[1] + 1];
+  //   }
+
+  //   return range;
+  // }, [range]);
 
   /**
    * Decrement the lower boundary and increment upper boundary to prevent overlap
    * 1. "integer" | "real" dataType perform modification with one integer
    * 2. "timestamp" | "date" dataType perform modificatin with one day
    */
-  // const domain: [number, number] = useMemo(() => {
-  //   const [minRange, maxRange] = range;
-  //   if (minRange === maxRange) {
-  //     if (dataType === 'integer' || dataType === 'real') {
-  //       return [minRange - 1, maxRange + 1];
-  //     }
+  const domain: [number, number] = useMemo(() => {
+    const [minRange, maxRange] = range;
+    if (minRange === maxRange) {
+      if (dataType === 'integer' || dataType === 'real') {
+        return [minRange - 1, maxRange + 1];
+      }
 
-  //     // dataType === "timestamp" || dataType === "date"
-  //     // second in millis * minutes * hours * 24
-  //     const DAY: number = 24 * 60 * 60 * 1000;
-  //     return [minRange - DAY, maxRange + DAY];
-  //   }
+      // dataType === "timestamp" || dataType === "date"
+      // second in millis * minutes * hours * 24
+      const DAY: number = 24 * 60 * 60 * 1000;
+      return [minRange - DAY, maxRange + DAY];
+    }
 
-  //   return range;
-  // }, [range]);
+    return range;
+  }, [range]);
 
   const height: number = useMemo(() => {
     if (inputHeight) return inputHeight;

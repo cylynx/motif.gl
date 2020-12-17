@@ -3,6 +3,7 @@ import React, {
   useContext,
   useState,
   useCallback,
+  useEffect,
   useMemo,
   Fragment,
 } from 'react';
@@ -46,6 +47,15 @@ const VariableInspector = () => {
   const graphFlatten = useSelector((state) => getGraphFlatten(state));
   const graphVisible = useSelector((state) => getGraphVisible(state));
   const graphFields = graphFlatten.metadata.fields;
+
+  /**
+   * Any modification on the data list shall reset variable inspector to prevent inconsistency.
+   */
+  useEffect(() => {
+    setSelection([]);
+    setHistogramProp({});
+    setValue([]);
+  }, [graphFlatten]);
 
   const onChangeSpeed = useCallback(
     // eslint-disable-next-line no-shadow
