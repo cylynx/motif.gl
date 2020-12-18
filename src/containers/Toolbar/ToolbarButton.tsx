@@ -1,16 +1,15 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { Fragment } from 'react';
 import { Button } from 'baseui/button';
-import { StatefulPopover, PLACEMENT, TRIGGER_TYPE } from 'baseui/popover';
-import { Label3 } from 'baseui/typography';
+import { PLACEMENT } from 'baseui/popover';
 import { Block } from 'baseui/block';
+import { SimpleTooltip } from '../../components/ui';
 
 export type ToolbarItem = {
   key: number;
   name: string;
   icon: React.ReactNode;
   isDisabled: boolean;
-  popoverContent: null | (() => any);
   onClick: null | (() => any);
 };
 
@@ -20,16 +19,11 @@ export type ToolbarButtonProp = {
 };
 
 const ToolbarButton = (props: ToolbarButtonProp) => {
-  const { name, icon, isDisabled, popoverContent, onClick } = props.item;
+  const { name, icon, isDisabled, onClick } = props.item;
 
   return (
     <Fragment>
-      <StatefulPopover
-        content={popoverContent || <Label3 padding='scale300'>{name}</Label3>}
-        placement={PLACEMENT.left}
-        showArrow
-        triggerType={TRIGGER_TYPE.hover}
-      >
+      <SimpleTooltip tooltip={name} placement={PLACEMENT.left}>
         <Button
           $as='div'
           onClick={onClick}
@@ -39,7 +33,7 @@ const ToolbarButton = (props: ToolbarButtonProp) => {
         >
           {icon}
         </Button>
-      </StatefulPopover>
+      </SimpleTooltip>
       <Block paddingTop='5px' />
     </Fragment>
   );
