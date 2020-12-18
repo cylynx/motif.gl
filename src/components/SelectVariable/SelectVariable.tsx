@@ -65,7 +65,7 @@ const SelectVariable = ({
         maxDropdownHeight='300px'
       />
     ),
-    [options, value],
+    [options, value, onChangeSelection],
   );
 };
 

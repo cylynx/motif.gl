@@ -16,9 +16,11 @@ type SimpleTooltipProps = {
  * @see
  * https://popper.js.org/docs/v1/#modifiers..hide.enabled
  * https://baseweb.design/components/tooltip#tooltip-stateful-example
+ * https://popper.js.org/docs/v1/#modifiers..preventOverflow.boundariesElement
  *
  * Remove warnings in console
- * 1. Configure enabled to false in popper modifier
+ * 1. Configure preventOverflow to true in popper modifier as it is required by hide.
+ * 2. Configure boundariesElement to "viewport" to support popper's placement.
  */
 const SimpleTooltip = ({
   title,
@@ -35,6 +37,10 @@ const SimpleTooltip = ({
       ignoreBoundary
       popperOptions={{
         modifiers: {
+          preventOverflow: {
+            enabled: true,
+            boundariesElement: 'viewport',
+          },
           hide: {
             enabled: false,
           },
