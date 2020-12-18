@@ -219,7 +219,7 @@ const VariableInspector = () => {
         onChange={(obj) => onChangeSelected(obj)}
       />
     ),
-    [selection, nodeOptions, edgeOptions],
+    [selection, nodeOptions, edgeOptions, onChangeSelected],
   );
 
   return (
