@@ -51,21 +51,18 @@ const SelectVariable = ({
     return value;
   };
 
-  return useMemo(
-    () => (
-      // @ts-ignore
-      <Select
-        options={options}
-        value={value}
-        size='compact'
-        placeholder='Select variable'
-        onChange={({ value }) => onChangeSelection(value)}
-        getOptionLabel={getLabel}
-        getValueLabel={getLabel}
-        maxDropdownHeight='300px'
-      />
-    ),
-    [options, value, onChangeSelection],
+  return (
+    // @ts-ignore
+    <Select
+      options={options}
+      value={value}
+      size='compact'
+      placeholder='Select variable'
+      onChange={({ value }) => onChangeSelection(value)}
+      getOptionLabel={getLabel}
+      getValueLabel={getLabel}
+      maxDropdownHeight='300px'
+    />
   );
 };
 
