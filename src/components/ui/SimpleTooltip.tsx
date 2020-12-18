@@ -6,7 +6,7 @@ import { StatefulPopover, PLACEMENT, TRIGGER_TYPE } from 'baseui/popover';
 import { PopoverPlacementT } from 'baseui/popover/types';
 
 type SimpleTooltipProps = {
-  tooltip: string;
+  tooltip: React.ReactNode;
   title?: string;
   children?: React.ReactNode;
   placement?: PopoverPlacementT;
@@ -30,7 +30,13 @@ const SimpleTooltip = ({
 }: SimpleTooltipProps) => {
   return (
     <StatefulPopover
-      content={<LabelSmall padding='scale300'>{tooltip}</LabelSmall>}
+      content={
+        typeof tooltip === 'string' ? (
+          <LabelSmall padding='scale300'>{tooltip}</LabelSmall>
+        ) : (
+          tooltip
+        )
+      }
       placement={placement}
       triggerType={TRIGGER_TYPE.hover}
       showArrow

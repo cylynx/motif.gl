@@ -10,6 +10,7 @@ export type ToolbarItem = {
   name: string;
   icon: React.ReactNode;
   isDisabled: boolean;
+  popoverContent: null | (() => any);
   onClick: null | (() => any);
 };
 
@@ -19,11 +20,14 @@ export type ToolbarButtonProp = {
 };
 
 const ToolbarButton = (props: ToolbarButtonProp) => {
-  const { name, icon, isDisabled, onClick } = props.item;
+  const { name, icon, isDisabled, popoverContent, onClick } = props.item;
 
   return (
     <Fragment>
-      <SimpleTooltip tooltip={name} placement={PLACEMENT.left}>
+      <SimpleTooltip
+        tooltip={popoverContent || name}
+        placement={PLACEMENT.left}
+      >
         <Button
           $as='div'
           onClick={onClick}
