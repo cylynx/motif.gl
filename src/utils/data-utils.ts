@@ -284,8 +284,13 @@ export const clamp = (value: number, min: number, max: number) => {
 /**
  * round number with exact number of decimals
  * return as a string
+ *
+ * @param {number} num
+ * @param {number} decimals
+ *
+ * @return {string}
  */
-export function preciseRound(num: number, decimals: number) {
+export function preciseRound(num: number, decimals: number): string {
   const t = 10 ** decimals;
   return (
     Math.round(
@@ -383,7 +388,13 @@ export function roundValToStep(minValue: number, step: number, val: number) {
   return Number(rounded);
 }
 
-export const getDecimalPrecisionCount = (float: number) => {
+/**
+ * Obtain the decimal precision of given numeric values
+ *
+ * @param float - provided interger
+ * @return {number}
+ */
+export const getDecimalPrecisionCount = (float: number): number => {
   const decimal = new Decimal(float);
   return decimal.e;
 };
