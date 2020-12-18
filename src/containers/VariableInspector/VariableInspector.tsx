@@ -224,13 +224,7 @@ const VariableInspector = () => {
 
   return (
     <Fragment>
-      <Block
-        display='flex'
-        height='50px'
-        paddingTop='scale600'
-        paddingLeft='scale600'
-        paddingRight='scale600'
-      >
+      <Block display='flex' height='50px'>
         {LabelSmallMemo}
         {SelectVariableMemo}
         {histogramProp.histogram && (
