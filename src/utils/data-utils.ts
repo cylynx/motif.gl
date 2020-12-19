@@ -1,10 +1,5 @@
-import {
-  bisectLeft,
-  ascending,
-  extent,
-  histogram as d3Histogram,
-  ticks,
-} from 'd3-array';
+import { bisectLeft, extent, histogram as d3Histogram, ticks } from 'd3-array';
+import Decimal from 'decimal.js';
 import { parseISO } from 'date-fns';
 
 export const ONE_SECOND = 1000;
@@ -168,7 +163,6 @@ export const unixTimeConverter = (
       `${new Date().toISOString().slice(0, 10)} ${str}`,
     ).getTime();
   }
-  console.warn('invalid type');
   return null;
 };
 
@@ -177,6 +171,7 @@ export const unixTimeConverter = (
  *
  * @param {any[]} data
  * @param {Accessor} [valueAccessor] function to access data
+ * @param {string} type
  * @returns {TimeRangeFieldDomain} Object with domain, step, mappedValue, histogram and enlargedHistogram
  */
 export const getFieldDomain = (
@@ -204,13 +199,29 @@ export const getFieldDomain = (
     mappedValue = mappedValue.map((dt: string) => unixTimeConverter(dt, type));
   }
 
-  const domain = getLinearDomain(mappedValue);
+  let domain = getLinearDomain(mappedValue);
+  const [minRange, maxRange] = domain;
   let step = 0.01;
 
-  const diff = domain[1] - domain[0];
+  const diff = maxRange - minRange;
   const entry = StepMap.find((f) => f.max >= diff);
   if (entry) {
     step = entry.step;
+  }
+
+  // if minRange and maxRange are equals, modify the boundaries
+  if (minRange === maxRange) {
+    if (type === 'INT' || type === 'FLOAT' || type === 'NUMBER') {
+      domain = [minRange - 1, maxRange + 1];
+    }
+
+    if (type === 'DATETIME' || type === 'DATE' || type === 'TIME') {
+      const HOURS_IN_MILLISECONDS: number = 60 * 60 * 1000;
+      const newMinRange: number = minRange - HOURS_IN_MILLISECONDS;
+      const newMaxRange: number = maxRange + HOURS_IN_MILLISECONDS;
+      step = newMaxRange - newMinRange;
+      domain = [newMinRange, newMaxRange];
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -273,8 +284,13 @@ export const clamp = (value: number, min: number, max: number) => {
 /**
  * round number with exact number of decimals
  * return as a string
+ *
+ * @param {number} num
+ * @param {number} decimals
+ *
+ * @return {string}
  */
-export function preciseRound(num: number, decimals: number) {
+export function preciseRound(num: number, decimals: number): string {
   const t = 10 ** decimals;
   return (
     Math.round(
@@ -290,11 +306,6 @@ export function preciseRound(num: number, decimals: number) {
  * @returns {number} - number of decimal
  */
 export function getRoundingDecimalFromStep(step: number) {
-  // eslint-disable-next-line no-restricted-globals
-  if (isNaN(step)) {
-    console.warn('step is not a number');
-  }
-
   const splitZero = step.toString().split('.');
   if (splitZero.length === 1) {
     return 0;
@@ -376,3 +387,14 @@ export function roundValToStep(minValue: number, step: number, val: number) {
 
   return Number(rounded);
 }
+
+/**
+ * Obtain the decimal precision of given numeric values
+ *
+ * @param float - provided interger
+ * @return {number}
+ */
+export const getDecimalPrecisionCount = (float: number): number => {
+  const decimal = new Decimal(float);
+  return decimal.e;
+};

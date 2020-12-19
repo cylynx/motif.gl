@@ -20,17 +20,11 @@ const Slider = (props: SliderProps) => {
       {...rest}
       overrides={{
         Thumb: {
-          style: ({ $theme, $value, $thumbIndex }) => {
-            let isLeft = $value.length === 2 && $thumbIndex === 0;
-            let isRight = $value.length === 2 && $thumbIndex === 1;
-
-            if ($theme.direction === 'rtl' && (isRight || isLeft)) {
-              isLeft = !isLeft;
-              isRight = !isRight;
-            }
+          style: ({ $theme }) => {
             return {
               height: '12px',
               width: '12px',
+              // modify to border: 0 will breaks atomic rendering
               borderTopLeftRadius: 0,
               borderTopRightRadius: 0,
               borderBottomLeftRadius: 0,
@@ -57,6 +51,8 @@ const Slider = (props: SliderProps) => {
               top: `-${$theme.sizing.scale700}`,
               ...$theme.typography.font200,
               color: $theme.colors.contentPrimary,
+
+              // simplify to padding:0, border:0 will break atomic rendering
               paddingLeft: 0,
               paddingRight: 0,
               paddingTop: 0,

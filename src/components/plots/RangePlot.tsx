@@ -1,23 +1,21 @@
 /* eslint-disable no-shadow */
 // Adapted from: https://github.com/keplergl/kepler.gl/blob/master/src/components/common/range-plot.js
 
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useRef } from 'react';
 import { Block } from 'baseui/block';
-import { LabelXSmall } from 'baseui/typography';
-import { scaleLinear, scaleUtc } from 'd3-scale';
 import RangeBrush from './RangeBrush';
 import HistogramPlot from './HistogramPlot';
 import { Slider } from '../ui';
-import {
-  HistogramBin,
-  preciseRound,
-  getRoundingDecimalFromStep,
-} from '../../utils/data-utils';
+import { HistogramBin } from '../../utils/data-utils';
+import NumericAxis from './NumericAxis';
+import DateTimeAxis from './DateTimeAxis';
+import TimeAxis from './TimeAxis';
 
 export type RangePlotProps = {
   range: [number, number];
   value: [number, number];
   histogram: HistogramBin[];
+  dataType: string;
   onChange: ([v0, v1]: [number, number]) => void;
   onFinalChange?: ([v0, v1]: [number, number]) => void;
   xAxisFormat?: string;
@@ -35,52 +33,6 @@ export type Ticks = {
   value: any;
 };
 
-const getTicks = (
-  range: [number, number],
-  numTicks: number,
-  step: number,
-  xAxisFormat: string,
-) => {
-  // xAxisFormat if date / time field
-  const scale = xAxisFormat
-    ? scaleUtc().domain(range).nice()
-    : scaleLinear().domain(range).nice();
-  const tickArray: Ticks[] = [];
-  if (range[1] - range[0] === 2 && xAxisFormat) {
-    return [{ pos: 0.4, value: new Date(range[0]).toISOString() }];
-  }
-  if (!xAxisFormat) {
-    const decimals = getRoundingDecimalFromStep(step);
-    tickArray.push({
-      pos: 0,
-      value: preciseRound(range[0], decimals),
-    });
-    tickArray.push({
-      pos: 1,
-      value: preciseRound(range[1], decimals),
-    });
-    scale.ticks(numTicks).forEach((x: any) => {
-      if (x > range[0] && x < range[1]) {
-        tickArray.push({
-          pos: (x - range[0]) / (range[1] - range[0]),
-          value: preciseRound(x, decimals),
-        });
-      }
-    });
-  } else {
-    // @ts-ignore
-    const formattedTime = scale.ticks(numTicks).map(scale.tickFormat());
-    scale.ticks(numTicks).forEach((x: any, index: number) => {
-      tickArray.push({
-        pos: (x - range[0]) / (range[1] - range[0]),
-        value: formattedTime[index],
-      });
-    });
-  }
-
-  return tickArray;
-};
-
 const RangePlot = ({
   range,
   value,
@@ -94,22 +46,26 @@ const RangePlot = ({
   height: inputHeight = null,
   width: inputWidth = null,
   isRanged = true,
+  dataType,
   ...chartProps
 }: RangePlotProps) => {
   const [brushing, setBrushing] = useState(false);
   const [hoveredDP, onMouseMove] = useState(null);
   const [enableChartHover, setEnableChartHover] = useState(false);
-  // +- 1 if same domain to avoid slider errors
-  const domain: [number, number] =
-    range[0] === range[1] ? [range[0] - 1, range[1] + 1] : range;
 
-  const height = inputHeight || size === 'default' ? 100 : 60;
-  const width = inputWidth || size === 'default' ? 420 : 150;
-  const ticks = useMemo(
-    () =>
-      getTicks(domain, numTicks || Math.floor(width / 80), step, xAxisFormat),
-    [domain, numTicks, xAxisFormat],
-  );
+  const height: number = useMemo(() => {
+    if (inputHeight) return inputHeight;
+    if (size === 'default') return 100;
+
+    return 60;
+  }, [inputHeight, size]);
+
+  const width: number = useMemo(() => {
+    if (inputWidth) return inputWidth;
+    if (size === 'default') return 420;
+
+    return 150;
+  }, [inputHeight, size]);
 
   const onBrushStart = useCallback(() => {
     setBrushing(true);
@@ -177,7 +133,7 @@ const RangePlot = ({
       onBrush={onBrush}
       onBrushStart={onBrushStart}
       onBrushEnd={onBrushEnd}
-      range={domain}
+      range={range}
       value={value}
       step={step}
       width={width}
@@ -194,7 +150,7 @@ const RangePlot = ({
     width,
     value,
     height,
-    domain,
+    domain: range,
     step,
     brushComponent,
     brushing,
@@ -205,6 +161,25 @@ const RangePlot = ({
     ...chartProps,
   };
 
+  const XAxisMemo = useMemo(
+    () => (
+      <Block position='relative' width={`${width}px`}>
+        {(dataType === 'INT' ||
+          dataType === 'FLOAT' ||
+          dataType === 'NUMBER') && (
+          <NumericAxis domain={range} width={width} height={height} />
+        )}
+        {(dataType === 'DATETIME' || dataType === 'DATE') && (
+          <DateTimeAxis domain={range} width={width} height={height} />
+        )}
+        {dataType === 'TIME' && (
+          <TimeAxis domain={range} width={width} height={height} />
+        )}
+      </Block>
+    ),
+    [range, dataType],
+  );
+
   return (
     <Block display='flex' justifyContent='center'>
       <Block height={`${height}px`} width={`${width}px`}>
@@ -212,8 +187,8 @@ const RangePlot = ({
         <Block marginTop='-15px'>
           <Slider
             value={value}
-            min={domain[0]}
-            max={domain[1]}
+            min={range[0]}
+            max={range[1]}
             step={step}
             onChange={({ value }: { value: [number, number] }) =>
               onChangeSlider(value)
@@ -225,18 +200,7 @@ const RangePlot = ({
             showTickBar={false}
           />
         </Block>
-        <Block position='relative' width={`${width}px`}>
-          {ticks.map((x: Ticks) => (
-            <LabelXSmall
-              position='absolute'
-              color='contentTertiary'
-              left={`${x.pos * width}px`}
-              key={`${x.value}`}
-            >
-              {x.value}
-            </LabelXSmall>
-          ))}
-        </Block>
+        {XAxisMemo}
       </Block>
     </Block>
   );

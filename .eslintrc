@@ -5,8 +5,6 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
     "plugin:prettier/recommended",
-    "prettier",
-    "prettier/react",
     "prettier/@typescript-eslint"
   ],
   "env": {
@@ -50,7 +48,6 @@
     "react/jsx-props-no-spreading": 0,
     "arrow-parens": 1,
     "comma-dangle": 1,
-    "prettier/prettier": 0,
     "max-len": [
       "warn",
       {

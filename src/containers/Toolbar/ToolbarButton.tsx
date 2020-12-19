@@ -1,9 +1,9 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { Fragment } from 'react';
 import { Button } from 'baseui/button';
-import { StatefulPopover, PLACEMENT, TRIGGER_TYPE } from 'baseui/popover';
-import { Label3 } from 'baseui/typography';
+import { PLACEMENT } from 'baseui/popover';
 import { Block } from 'baseui/block';
+import { SimpleTooltip } from '../../components/ui';
 
 export type ToolbarItem = {
   key: number;
@@ -24,11 +24,9 @@ const ToolbarButton = (props: ToolbarButtonProp) => {
 
   return (
     <Fragment>
-      <StatefulPopover
-        content={popoverContent || <Label3 padding='scale300'>{name}</Label3>}
+      <SimpleTooltip
+        tooltip={popoverContent || name}
         placement={PLACEMENT.left}
-        showArrow
-        triggerType={TRIGGER_TYPE.hover}
       >
         <Button
           $as='div'
@@ -39,7 +37,7 @@ const ToolbarButton = (props: ToolbarButtonProp) => {
         >
           {icon}
         </Button>
-      </StatefulPopover>
+      </SimpleTooltip>
       <Block paddingTop='5px' />
     </Fragment>
   );

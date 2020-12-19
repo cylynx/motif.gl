@@ -3,6 +3,7 @@ import React, {
   useContext,
   useState,
   useCallback,
+  useEffect,
   useMemo,
   Fragment,
 } from 'react';
@@ -42,19 +43,27 @@ const VariableInspector = () => {
   const [selection, setSelection] = useState([]);
   const [histogramProp, setHistogramProp] = useState({});
   const [value, setValue] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
   const [speed, setSpeed] = useState(1);
   const graphFlatten = useSelector((state) => getGraphFlatten(state));
   const graphVisible = useSelector((state) => getGraphVisible(state));
   const graphFields = graphFlatten.metadata.fields;
 
-  const onPlay = useCallback(() => {
-    setIsAnimating(true);
-  }, [setIsAnimating]);
-
-  const onPause = useCallback(() => {
-    setIsAnimating(false);
-  }, [setIsAnimating]);
+  /**
+   * Any modification on the data list shall reset variable inspector.
+   * - Prevent misleading use-case. (inspector values remain when no data in canvas)
+   * - Prevent incosistencies during time-series analysis.
+   * - Old selection, histogram and x-axis remains
+   *   - does not update when new data had imported.
+   *   - when specific data layer is hidden.
+   *
+   * @see
+   * https://github.com/cylynx/motif.gl/issues/17
+   */
+  useEffect(() => {
+    setSelection([]);
+    setHistogramProp({});
+    setValue([]);
+  }, [graphFlatten]);
 
   const onChangeSpeed = useCallback(
     // eslint-disable-next-line no-shadow
@@ -170,7 +179,13 @@ const VariableInspector = () => {
           obj.analyzerType,
         );
         setSelection([obj]);
-        setHistogramProp({ domain, step, histogram, format: obj.format });
+        setHistogramProp({
+          domain,
+          step,
+          histogram,
+          format: obj.format,
+          analyzerType: obj.analyzerType,
+        });
         setValue(domain);
       } else {
         const { graph } = graphRef;
@@ -191,28 +206,32 @@ const VariableInspector = () => {
     [graphRef, setSelection, setHistogramProp, setValue, graphFlatten],
   );
 
+  const LabelSmallMemo = useMemo(
+    () => <LabelSmall>Variable Inspector</LabelSmall>,
+    [],
+  );
+
+  const SelectVariableMemo = useMemo(
+    () => (
+      <SelectVariable
+        value={selection}
+        options={{ Nodes: nodeOptions, Edges: edgeOptions }}
+        onChange={(obj) => onChangeSelected(obj)}
+      />
+    ),
+    [selection, nodeOptions, edgeOptions, onChangeSelected],
+  );
+
   return (
     <Fragment>
-      <Block
-        display='flex'
-        height='50px'
-        paddingTop='scale600'
-        paddingLeft='scale600'
-        paddingRight='scale600'
-      >
-        <LabelSmall width='100px'>Variable Inspector</LabelSmall>
-        <SelectVariable
-          value={selection}
-          options={{ Nodes: nodeOptions, Edges: edgeOptions }}
-          onChange={(obj) => onChangeSelected(obj)}
-        />
+      <Block display='flex' height='50px'>
+        {LabelSmallMemo}
+        {SelectVariableMemo}
         {histogramProp.histogram && (
           <AnimationController
             value={value}
             domain={histogramProp.domain}
             speed={speed}
-            startAnimation={onPlay}
-            pauseAnimation={onPause}
             updateAnimation={(newValue) => {
               onChangeRange(newValue);
             }}
@@ -238,6 +257,7 @@ const VariableInspector = () => {
             range={histogramProp.domain}
             histogram={histogramProp.histogram}
             xAxisFormat={histogramProp.format}
+            dataType={histogramProp.analyzerType}
           />
         )}
       </PlotDiv>

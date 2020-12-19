@@ -12,6 +12,9 @@ export const BottomRightLayer = ({
     right='10px'
     width='500px'
     backgroundColor='backgroundTertiary'
+    paddingTop='scale600'
+    paddingLeft='scale600'
+    paddingRight='scale600'
   >
     {children}
   </Block>

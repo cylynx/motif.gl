@@ -1,5 +1,5 @@
 /* eslint-disable no-shadow */
-import * as React from 'react';
+import React, { useMemo } from 'react';
 import { Select } from 'baseui/select';
 import { Block } from 'baseui/block';
 import { getIcon, TypeProps } from '../TagData';
