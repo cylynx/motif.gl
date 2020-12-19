@@ -85,13 +85,7 @@ const LegendPopover = () => {
   };
 
   return (
-    <Block
-      width='300px'
-      paddingLeft='scale600'
-      paddingRight='scale600'
-      paddingBottom='scale600'
-      paddingTop='scale400'
-    >
+    <Block width='300px'>
       <FormControl label='Legend selection'>
         <Select
           options={nodeOptions}

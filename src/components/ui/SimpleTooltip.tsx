@@ -1,7 +1,5 @@
 import React from 'react';
-
-import { LabelSmall } from 'baseui/typography';
-import { StatefulPopover, PLACEMENT, TRIGGER_TYPE } from 'baseui/popover';
+import { StatefulTooltip, PLACEMENT, TRIGGER_TYPE } from 'baseui/tooltip';
 // @ts-ignore
 import { PopoverPlacementT } from 'baseui/popover/types';
 
@@ -29,14 +27,8 @@ const SimpleTooltip = ({
   children,
 }: SimpleTooltipProps) => {
   return (
-    <StatefulPopover
-      content={
-        typeof tooltip === 'string' ? (
-          <LabelSmall padding='scale300'>{tooltip}</LabelSmall>
-        ) : (
-          tooltip
-        )
-      }
+    <StatefulTooltip
+      content={tooltip}
       placement={placement}
       triggerType={TRIGGER_TYPE.hover}
       showArrow
@@ -52,9 +44,21 @@ const SimpleTooltip = ({
           },
         },
       }}
+      overrides={{
+        Inner: {
+          style: ({ $theme }) => ({
+            backgroundColor: $theme.colors.backgroundTertiary,
+          }),
+        },
+        Arrow: {
+          style: ({ $theme }) => ({
+            backgroundColor: $theme.colors.backgroundTertiary,
+          }),
+        },
+      }}
     >
       {title || children}
-    </StatefulPopover>
+    </StatefulTooltip>
   );
 };
 

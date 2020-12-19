@@ -1,8 +1,8 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { Fragment } from 'react';
 import { Button } from 'baseui/button';
-import { StatefulPopover, PLACEMENT, TRIGGER_TYPE } from 'baseui/popover';
-import { LabelSmall } from 'baseui/typography';
+import { PLACEMENT } from 'baseui/popover';
+import { SimpleTooltip } from '../../components/ui';
 
 export type HeaderButtonProp = {
   key: number;
@@ -17,12 +17,7 @@ const HeaderButton = (props: HeaderButtonProp) => {
 
   return (
     <Fragment>
-      <StatefulPopover
-        content={<LabelSmall padding='scale200'>{name}</LabelSmall>}
-        placement={PLACEMENT.bottom}
-        showArrow
-        triggerType={TRIGGER_TYPE.hover}
-      >
+      <SimpleTooltip tooltip={name} placement={PLACEMENT.bottom}>
         <Button
           $as='div'
           onClick={onClick}
@@ -32,7 +27,7 @@ const HeaderButton = (props: HeaderButtonProp) => {
         >
           {icon}
         </Button>
-      </StatefulPopover>
+      </SimpleTooltip>
     </Fragment>
   );
 };
