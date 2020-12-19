@@ -130,6 +130,7 @@
     "@types/styletron-react": "^5.0.2",
     "@types/styletron-standard": "^2.0.0",
     "baseui": "^9.103.0",
+    "husky": "^4.2.1",
     "eslint-config-airbnb-typescript": "^8.0.2",
     "eslint-plugin-baseui": "^9.103.0",
     "lint-staged": "^10.0.3",
