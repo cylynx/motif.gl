@@ -35,16 +35,6 @@
       "prettier --write"
     ]
   },
-  "prettier": {
-    "printWidth": 80,
-    "trailingComma": "all",
-    "singleQuote": true,
-    "jsxSingleQuote": true,
-    "tabWidth": 2,
-    "bracketSpacing": true,
-    "jsxBracketSameLine": false,
-    "arrowParens": "always"
-  },
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
     "@antv/graphin": "^1.5.0",
