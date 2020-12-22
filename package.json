@@ -21,7 +21,8 @@
     "size": "size-limit",
     "analyze": "size-limit --why",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "cypress:react": "@cypress/react init"
   },
   "husky": {
     "hooks": {

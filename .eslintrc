@@ -64,6 +64,12 @@
         "ignoreTemplateLiterals": true,
         "ignoreRegExpLiterals": true
       }
-    ]
+    ],
+    "import/no-extraneous-dependencies": ["error", {
+      "devDependencies": [
+        "cypress",
+        "**/*.test.ts"
+      ]
+    }]
   }
 }
