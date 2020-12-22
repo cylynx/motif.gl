@@ -1,3 +1,5 @@
+import Cypress from 'cypress';
+
 /**
  * @type {Cypress.PluginConfig}
  */

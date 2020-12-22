@@ -125,6 +125,7 @@
     "@types/styletron-standard": "^2.0.0",
     "baseui": "^9.103.0",
     "cypress": "^6.2.0",
+    "cypress-react-selector": "^2.2.2",
     "eslint-config-airbnb-typescript": "^8.0.2",
     "eslint-plugin-baseui": "^9.103.0",
     "eslint-plugin-import": "2.22.1",
