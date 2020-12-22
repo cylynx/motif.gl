@@ -26,6 +26,6 @@
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": ["src"],
+  "include": ["src", "cypress"],
   "exclude": ["node_modules", "dist", "example"]
 }

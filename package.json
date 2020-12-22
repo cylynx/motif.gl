@@ -19,7 +19,9 @@
     "test": "tsdx test",
     "test:coverage": "tsdx test --coverage --watchAll=false",
     "size": "size-limit",
-    "analyze": "size-limit --why"
+    "analyze": "size-limit --why",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "husky": {
     "hooks": {
@@ -95,6 +97,7 @@
   "devDependencies": {
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
+    "@cypress/react": "^4.16.1",
     "@rollup/plugin-url": "^6.0.0",
     "@size-limit/preset-small-lib": "4.4.0",
     "@svgr/rollup": "^5.5.0",
@@ -120,6 +123,7 @@
     "@types/styletron-react": "^5.0.2",
     "@types/styletron-standard": "^2.0.0",
     "baseui": "^9.103.0",
+    "cypress": "^6.2.0",
     "eslint-config-airbnb-typescript": "^8.0.2",
     "eslint-plugin-baseui": "^9.103.0",
     "eslint-plugin-import": "2.22.1",
