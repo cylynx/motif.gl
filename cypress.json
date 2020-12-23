@@ -1,6 +1,8 @@
 {
   "pluginsFile": "cypress/plugins/index.ts",
   "supportFile": "cypress/support/index.ts",
-  "watchForFileChanges": false,
-  "baseUrl": "http://localhost:3000"
+  "watchForFileChanges": true,
+  "baseUrl": "http://localhost:3000",
+  "viewportWidth": 1400,
+  "viewportHeight": 794
 }

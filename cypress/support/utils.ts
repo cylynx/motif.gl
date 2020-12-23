@@ -1,11 +1,13 @@
 /**
  * Find the `testid` of specific element
- * @param strings
- * @param values
+ * @param {string} strings
+ * @param {any[]} values
  *
  * @return {string}
  */
-export const testid = (strings: string, ...values): string => {
-  const id = strings.map((str, index) => str + (values[index] || '')).join('');
+export const testid = (strings: string[], ...values: any[]): string => {
+  const id = strings
+    .map((str: string, index: number) => str + (values[index] || ''))
+    .join('');
   return `[data-testid="${id}"]`;
 };

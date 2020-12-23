@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "esnext",
+    "isolatedModules": false,
+    "types": ["cypress"]
+  },
+  "include": ["./**/*.ts", "../node_modules/cypress"]
+}
