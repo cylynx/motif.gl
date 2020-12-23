@@ -21,6 +21,12 @@ describe('Navigation', () => {
       .should('eq', 'sample-data');
   });
 
+  it('should display six categories of sample data', () => {
+    cy.react('FlushedGrid')
+      .react('Cell')
+      .should('have.length', 6);
+  });
+
   const switchSampleDataTabs = (tabActiveKey: string) => {
     cy.react('Tabs')
       .react('InternalTab', {
