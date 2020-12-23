@@ -60,8 +60,8 @@ describe('Import Random Graph', () => {
   });
 
   it('should display one row for data list', () => {
-    cy.react('ImportLayers')
-      .getReact('DndList')
+    cy.getReact('DndList')
+      .getProps('items')
       .should('have.length', 1);
   });
 
