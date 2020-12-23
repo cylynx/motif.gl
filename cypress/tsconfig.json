@@ -4,7 +4,7 @@
     "module": "commonjs",
     "target": "esnext",
     "isolatedModules": false,
-    "types": ["cypress"]
+    "types": ["cypress", "node"]
   },
-  "include": ["./**/*.ts", "../node_modules/cypress"]
+  "include": ["./**/*.ts"]
 }

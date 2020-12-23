@@ -1,6 +1,5 @@
 /// <reference types="cypress" />
 import 'cypress-react-selector';
-import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
 
 describe('Navigation', () => {
   before(() => {
@@ -20,14 +19,6 @@ describe('Navigation', () => {
     cy.getReact('Tabs')
       .getProps('activeKey')
       .should('eq', 'sample-data');
-  });
-
-  it('should import Random Graph successfully', () => {
-    cy.react('Cell', {
-      props: { 'data-testid': SampleData.RANDOM_GRAPH },
-    })
-      .find('Button')
-      .click();
   });
 
   const switchSampleDataTabs = (tabActiveKey: string) => {

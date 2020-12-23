@@ -9,7 +9,12 @@ describe('Navigation', () => {
   });
 
   it('should import Random Graph successfully', () => {
-    cy.switchTab('sample-data');
+    cy.react('Tabs')
+      .react('InternalTab', {
+        props: { childKey: 'sample-data' },
+      })
+      .click();
+
     cy.react('Cell', {
       props: { 'data-testid': SampleData.RANDOM_GRAPH },
     })
