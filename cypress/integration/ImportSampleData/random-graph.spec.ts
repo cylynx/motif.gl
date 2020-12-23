@@ -55,4 +55,22 @@ describe('Import Random Graph', () => {
         expect(isRandomDataExist.isVisible).to.be.true;
       });
   });
+
+  it('should display layout in Concentric', () => {
+    cy.getReact('Graph')
+      .getProps('layout.name')
+      .should('deep.eq', 'concentric');
+  });
+
+  it('should render 7 edges in Graphin', () => {
+    cy.getReact('Graph')
+      .getProps('data.edges')
+      .should('have.length', 7);
+  });
+
+  it('should render 15 nodes in Graphin', () => {
+    cy.getReact('Graph')
+      .getProps('data.nodes')
+      .should('have.length', 15);
+  });
 });
