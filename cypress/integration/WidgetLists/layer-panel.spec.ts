@@ -1,7 +1,5 @@
 /// <reference types="cypress" />
 import 'cypress-react-selector';
-import { Block } from 'baseui/block';
-import React from 'react';
 
 describe('Layer Panel', () => {
   before(() => {
