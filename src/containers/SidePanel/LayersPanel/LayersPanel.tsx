@@ -77,6 +77,7 @@ const LayersPanel = () => {
       </Block>
       <Block marginTop='scale800'>
         <Accordion
+          data-testid='node-properties-accordion'
           items={[
             {
               title: (
@@ -109,6 +110,7 @@ const LayersPanel = () => {
       </Block>
       <Block marginTop='scale400'>
         <Accordion
+          data-testid='edge-properties-accordion'
           items={[
             {
               title: (
