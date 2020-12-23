@@ -4,7 +4,7 @@ import { ActionCreators as UndoActionCreators } from 'redux-undo';
 import fscreen from 'fscreen';
 import * as Icon from '../../components/Icons';
 import { GraphRefContext } from '../Graph';
-import { resetState } from '../../redux/graph-slice';
+import { resetState } from '../../redux';
 import ToolbarButton, { ToolbarItem } from './ToolbarButton';
 import SettingsPopover from './SettingsPopover';
 import LegendPopover from './LegendPopover';

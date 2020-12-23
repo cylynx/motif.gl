@@ -1,11 +1,13 @@
 /// <reference types="cypress" />
 import 'cypress-react-selector';
-import Cypress from 'cypress';
 
 describe('Left Navigation Bar', () => {
   before(() => {
     cy.visit('/');
     cy.waitForReact();
+
+    // close modal
+    cy.get('button[aria-label="Close"]').click();
   });
 
   it('should render successfully', () => {
