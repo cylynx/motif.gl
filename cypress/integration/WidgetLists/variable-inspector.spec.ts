@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 import 'cypress-react-selector';
 
-describe('Select Variable', () => {
+describe('Variable Inspector', () => {
   before(() => {
     cy.visit('/');
     cy.waitForReact();
