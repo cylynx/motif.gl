@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "rootDir": "src",
     "outDir": "dist",
     "module": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -26,5 +27,6 @@
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": ["src", "cypress"]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "example"]
 }
