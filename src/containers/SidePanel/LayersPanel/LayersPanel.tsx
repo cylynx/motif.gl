@@ -66,11 +66,13 @@ const LayersPanel = () => {
           value={haveData ? graphVisible.nodes.length : 0}
           label='Nodes:'
           subtitle={`${hiddenNodes} hidden`}
+          data-testid='nodes-count'
         />
         <Statistic
           value={haveData ? graphVisible.edges.length : 0}
           label='Edges:'
           subtitle={`${hiddenEdges} hidden`}
+          data-testid='edges-count'
         />
       </Block>
       <Block marginTop='scale800'>

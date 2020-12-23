@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "rootDir": "src",
     "outDir": "dist",
     "module": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
