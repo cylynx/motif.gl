@@ -128,6 +128,8 @@ const ImportLayers = () => {
     };
   });
 
+  console.log(importItems);
+
   const onChangeOrder = (oldIndex: number, newIndex: number) => {
     dispatch(updateGraphList({ from: oldIndex, to: newIndex }));
   };

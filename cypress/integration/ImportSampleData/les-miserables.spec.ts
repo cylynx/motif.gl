@@ -24,7 +24,6 @@ describe('Import Les Misérables', () => {
       .find('Button')
       .click();
 
-    // wait for 2 seconds as the dataset is large.
     cy.wait(2000);
   });
 
