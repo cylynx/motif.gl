@@ -25,6 +25,24 @@ describe('Import Random Graph', () => {
       .click();
   });
 
+  it('should display layout in Concentric', () => {
+    cy.getReact('Graph')
+      .getProps('layout.name')
+      .should('deep.eq', 'concentric');
+  });
+
+  it('should render 7 edges in Graphin', () => {
+    cy.getReact('Graph')
+      .getProps('data.edges')
+      .should('have.length', 7);
+  });
+
+  it('should render 15 nodes in Graphin', () => {
+    cy.getReact('Graph')
+      .getProps('data.nodes')
+      .should('have.length', 15);
+  });
+
   it('should display 15 nodes count in Nodes label', () => {
     cy.getReact('Statistic', {
       props: { 'data-testid': 'nodes-count' },
@@ -54,23 +72,5 @@ describe('Import Random Graph', () => {
         const isRandomDataExist = $els.find((el) => el.title === 'Random Data');
         expect(isRandomDataExist.isVisible).to.be.true;
       });
-  });
-
-  it('should display layout in Concentric', () => {
-    cy.getReact('Graph')
-      .getProps('layout.name')
-      .should('deep.eq', 'concentric');
-  });
-
-  it('should render 7 edges in Graphin', () => {
-    cy.getReact('Graph')
-      .getProps('data.edges')
-      .should('have.length', 7);
-  });
-
-  it('should render 15 nodes in Graphin', () => {
-    cy.getReact('Graph')
-      .getProps('data.nodes')
-      .should('have.length', 15);
   });
 });
