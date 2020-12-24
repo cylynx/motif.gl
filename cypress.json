@@ -4,5 +4,8 @@
   "watchForFileChanges": true,
   "baseUrl": "http://localhost:3000",
   "viewportWidth": 1400,
-  "viewportHeight": 794
+  "viewportHeight": 794,
+  "video": false,
+  "videoCompression": false,
+  "screenshotOnRunFailure": false
 }

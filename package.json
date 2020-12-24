@@ -21,8 +21,7 @@
     "size": "size-limit",
     "analyze": "size-limit --why",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run",
-    "cypress:react": "@cypress/react init"
+    "cypress:test": "cypress run"
   },
   "husky": {
     "hooks": {
@@ -36,6 +35,11 @@
     ],
     "*.+(js|jsx|ts|tsx|json|css|md)": [
       "prettier --write"
+    ]
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "cypress"
     ]
   },
   "dependencies": {

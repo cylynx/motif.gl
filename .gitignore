@@ -31,3 +31,7 @@ yarn-error.log*
 # jest code coverage reports
 coverage/
 
+# cypress miscellaneous
+cypress/screenshots
+cypress/videos
+
