@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 import 'cypress-react-selector';
 
-describe('Option Panel', () => {
+describe('Option Panels', () => {
   before(() => {
     cy.visit('/');
     cy.waitForReact();
