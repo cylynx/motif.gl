@@ -9,7 +9,7 @@ describe('Option Panel', () => {
     // close modal
     cy.get('button[aria-label="Close"]').click();
 
-    // open option panel by clicking sidebar
+    // open option panels by clicking sidebar
     cy.react('Block', {
       props: {
         'data-testid': 'options',
