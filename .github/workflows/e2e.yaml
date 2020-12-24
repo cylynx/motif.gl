@@ -25,9 +25,9 @@ jobs:
         working-directory: ./example
         run: npm install
 
-      - name: Start React Application in Example
-        working-directory: ./example
-        run: npm start
-
       - name: Cypress run
         uses: cypress-io/github-action@v2
+        with:
+          working-directory: ./example
+          start: npm start
+          wait-on: 'http://localhost:3000'
