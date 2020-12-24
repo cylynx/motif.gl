@@ -19,11 +19,11 @@ jobs:
           node-version: 12
 
       - name: Install NPM Dependencies
-        run: npm install
+        run: npm ci
 
       - name: Install NPM Dependencies in Example
         working-directory: ./example
-        run: npm install
+        run: npm ci
 
       - name: Install Serve Module globally
         run: npm install -g serve
