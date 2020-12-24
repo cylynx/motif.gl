@@ -1,0 +1,30 @@
+name: End-to-End Test
+on:
+  pull_request:
+    branches:
+      - master
+      - develop
+
+jobs:
+  unit:
+    name: Cypress
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout to Current Branch
+        uses: actions/checkout@v2
+
+      - name: Use Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install NPM Dependencies
+        run: npm install
+
+      - name: Start React Application in Example
+        working-directory: ./example
+        run: npm install
+        run: npm start
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
