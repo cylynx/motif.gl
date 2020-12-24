@@ -3,7 +3,7 @@ import 'cypress-react-selector';
 import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
 import { DndItem } from '../../../src/components/DndList';
 
-describe('Import Random Graph', () => {
+describe('Import Random Graphs', () => {
   before(() => {
     cy.visit('/');
     cy.waitForReact();
