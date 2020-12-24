@@ -18,12 +18,12 @@ jobs:
         with:
           node-version: 12
 
-      - name: Install NPM Dependencies
-        run: npm ci
+      # - name: Install NPM Dependencies
+      #   run: npm ci
 
-      - name: Install NPM Dependencies in Example
-        working-directory: ./example
-        run: npm install
+      # - name: Install NPM Dependencies in Example
+      #   working-directory: ./example
+      #   run: npm install
 
       - name: Cypress run
         uses: cypress-io/github-action@v2
