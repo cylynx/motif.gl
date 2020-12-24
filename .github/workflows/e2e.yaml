@@ -32,9 +32,9 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           start: |
-            cd ./example 
+            cd example 
             serve build -l 3000
           build: |
-            cd ./example 
+            cd example 
             npm run build
           wait-on: 'http://localhost:3000'
