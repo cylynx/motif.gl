@@ -25,9 +25,6 @@ jobs:
         working-directory: ./example
         run: npm install
 
-      - name: Install Serve Module globally
-        run: npm install -g serve
-
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
