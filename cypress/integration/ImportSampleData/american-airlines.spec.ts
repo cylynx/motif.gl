@@ -2,7 +2,7 @@
 import 'cypress-react-selector';
 import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
 
-describe('Import American Airline', () => {
+describe('Import American Airlines', () => {
   before(() => {
     cy.visit('/');
     cy.waitForReact();
