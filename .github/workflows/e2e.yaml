@@ -23,7 +23,7 @@ jobs:
 
       - name: Install NPM Dependencies in Example
         working-directory: ./example
-        run: npm ci
+        run: npm install
 
       - name: Install Serve Module globally
         run: npm install -g serve
