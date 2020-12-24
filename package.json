@@ -13,6 +13,7 @@
   },
   "scripts": {
     "start": "tsdx watch --target node",
+    "start:example": "cd ./example && npm run start",
     "build": "tsdx build --target node",
     "prepare": "tsdx build --target node",
     "lint": "tsdx lint",
