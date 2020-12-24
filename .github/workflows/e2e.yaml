@@ -21,12 +21,19 @@ jobs:
       - name: Install NPM Dependencies
         run: npm install
 
-      - name: Install and Run Application in Example
+      - name: Install NPM Dependencies in Example
         working-directory: ./example
         run: npm install
+
+      - name: Install Serve Module globally
 
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          start: npm run start:example
+          start: |
+            cd ./example 
+            serve build -l 3000
+          build: |
+            cd ./example 
+            npm run build
           wait-on: 'http://localhost:3000'
