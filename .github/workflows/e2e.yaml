@@ -31,10 +31,6 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          start: |
-            cd example 
-            serve build -l 3000
-          build: |
-            cd example 
-            npm run build
+          start: 'cd example && serve build -l 3000'
+          build: 'cd example && npm run build'
           wait-on: 'http://localhost:3000'
