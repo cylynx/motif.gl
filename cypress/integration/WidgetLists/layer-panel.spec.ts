@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 import 'cypress-react-selector';
 
-describe('Layer Panel', () => {
+describe('Layer Panels', () => {
   before(() => {
     cy.visit('/');
     cy.waitForReact();
