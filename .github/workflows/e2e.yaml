@@ -29,6 +29,5 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           start: 'npm run start:example'
-          build: 'npm run build:example'
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 120
