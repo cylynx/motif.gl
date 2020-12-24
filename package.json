@@ -13,7 +13,9 @@
   },
   "scripts": {
     "start": "tsdx watch --target node",
+    "start:example": "cd ./example && serve build -l 3000",
     "build": "tsdx build --target node",
+    "build:example": "cd ./example && npm run build",
     "prepare": "tsdx build --target node",
     "lint": "tsdx lint",
     "test": "tsdx test",
