@@ -1,5 +1,5 @@
 {
-  "pluginsFile": "cypress/plugins/index.ts",
+  "pluginsFile": false,
   "supportFile": "cypress/support/index.ts",
   "watchForFileChanges": true,
   "baseUrl": "http://localhost:3000",

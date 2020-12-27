@@ -11,11 +11,7 @@ describe('Import Random Graph', () => {
 
   it('should import Random Graph successfully', () => {
     // switch tabs to sample data
-    cy.react('Tabs')
-      .react('InternalTab', {
-        props: { childKey: 'sample-data' },
-      })
-      .click();
+    cy.switchTab('sample-data');
 
     // import sample data by clicking random graph
     cy.react('Cell', {
@@ -69,7 +65,9 @@ describe('Import Random Graph', () => {
     cy.getReact('DndList')
       .getProps('items')
       .should(($els: DndItem[]) => {
-        const isRandomDataExist = $els.find((el) => el.title === 'Random Data');
+        const isRandomDataExist = $els.find(
+          (el: DndItem) => el.title === 'Random Data',
+        );
         expect(isRandomDataExist.isVisible).to.be.true;
       });
   });

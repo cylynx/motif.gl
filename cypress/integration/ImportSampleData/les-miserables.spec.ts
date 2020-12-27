@@ -11,11 +11,7 @@ describe('Import Les Misérables', () => {
 
   it('should import Les Misérables successfully', () => {
     // switch tabs to sample data
-    cy.react('Tabs')
-      .react('InternalTab', {
-        props: { childKey: 'sample-data' },
-      })
-      .click();
+    cy.switchTab('sample-data');
 
     // import sample data by clicking random graph
     cy.react('Cell', {

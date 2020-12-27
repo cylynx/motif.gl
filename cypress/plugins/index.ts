@@ -3,8 +3,6 @@ import Cypress from 'cypress';
 /**
  * @type {Cypress.PluginConfig}
  */
-export default (on: any, config: any) => {
-  require('@cypress/react/plugins/react-scripts')(on, config);
-
+export default (_: any, config: any) => {
   return config;
 };
