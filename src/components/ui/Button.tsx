@@ -4,7 +4,7 @@ import { Button, ButtonProps } from 'baseui/button';
 
 type FullButtonProps = ButtonProps & {
   children: React.ReactNode;
-  width?: string | number | string;
+  width?: string | number;
 };
 
 type Ref = HTMLButtonElement;

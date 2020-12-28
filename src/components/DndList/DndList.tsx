@@ -61,6 +61,9 @@ export const VisibilityButton = ({
 
 export const DeleteButton = ({
   onClick: onClickDelete,
+  shape,
+  tooltip,
+  padding,
   ...rest
 }: ActionButton) => {
   const toggleDelete = (e: MouseEvent<HTMLButtonElement>) => {
@@ -71,16 +74,17 @@ export const DeleteButton = ({
   };
 
   return (
-    <SimpleTooltip tooltip='Delete Layer'>
+    <SimpleTooltip tooltip={tooltip}>
       <Button
         size='mini'
-        shape='round'
+        shape={shape}
         kind='minimal'
         $as='div'
         onClick={toggleDelete}
         overrides={{
           BaseButton: {
             style: ({ $theme }) => ({
+              padding,
               ':hover': {
                 backgroundColor: $theme.colors.backgroundNegative,
               },
@@ -125,7 +129,11 @@ export const DndContainer = ({
         isVisible={isVisible}
         onClick={() => onChangeVisibility(key, !isVisible)}
       />
-      <DeleteButton onClick={() => onDelete(key)} />
+      <DeleteButton
+        onClick={() => onDelete(key)}
+        tooltip='Delete Layer'
+        shape='round'
+      />
       <ShowMoreButton onClick={() => toggleActive(key)} />
     </Block>
   );

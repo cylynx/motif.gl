@@ -11,12 +11,13 @@ export type SelectVariableOption = {
 };
 
 export type SelectVariableProps = {
-  value: [];
+  value: SelectVariableOption[];
   options: {
     Nodes: SelectVariableOption[];
     Edges: SelectVariableOption[];
   };
   onChange?: (obj: { [key: string]: string }) => void;
+  placeholder?: string;
 };
 
 const testOptions = {
@@ -43,6 +44,7 @@ const SelectVariable = ({
   value = [],
   options = testOptions,
   onChange: onChangeProps,
+  placeholder = 'Select Variable',
 }: SelectVariableProps) => {
   const onChangeSelection = (value: any) => {
     if (onChangeProps) {
@@ -57,7 +59,7 @@ const SelectVariable = ({
       options={options}
       value={value}
       size='compact'
-      placeholder='Select variable'
+      placeholder={placeholder}
       onChange={({ value }) => onChangeSelection(value)}
       getOptionLabel={getLabel}
       getValueLabel={getLabel}
