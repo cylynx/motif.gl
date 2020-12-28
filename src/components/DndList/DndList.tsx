@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent } from 'react';
+import React, { useState, MouseEvent, FC } from 'react';
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
 import * as Icon from '../Icons';
@@ -31,11 +31,11 @@ export type ActionButton = {
   [x: string]: any;
 };
 
-export const VisibilityButton = ({
+export const VisibilityButton: FC<ActionButton> = ({
   onClick: onClickVisibility,
   isVisible,
   ...rest
-}: ActionButton) => {
+}) => {
   const toggleVisibility = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (onClickVisibility) {
@@ -59,14 +59,14 @@ export const VisibilityButton = ({
   );
 };
 
-export const DeleteButton = ({
+export const DeleteButton: FC<ActionButton> = ({
   onClick: onClickDelete,
   shape,
   tooltip,
   padding,
   ...rest
-}: ActionButton) => {
-  const toggleDelete = (e: MouseEvent<HTMLButtonElement>) => {
+}) => {
+  const toggleDelete = (e: MouseEvent<HTMLButtonElement>): void => {
     e.stopPropagation();
     if (onClickDelete) {
       onClickDelete();
@@ -84,7 +84,6 @@ export const DeleteButton = ({
         overrides={{
           BaseButton: {
             style: ({ $theme }) => ({
-              padding,
               ':hover': {
                 backgroundColor: $theme.colors.backgroundNegative,
               },

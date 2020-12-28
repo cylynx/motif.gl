@@ -1,5 +1,5 @@
 /* eslint-disable no-shadow */
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Select } from 'baseui/select';
 import { Block } from 'baseui/block';
 import { getIcon, TypeProps } from '../TagData';
@@ -10,12 +10,14 @@ export type SelectVariableOption = {
   type: TypeProps;
 };
 
+export type SelectOptions = {
+  Nodes: SelectVariableOption[];
+  Edges: SelectVariableOption[];
+};
+
 export type SelectVariableProps = {
   value: SelectVariableOption[];
-  options: {
-    Nodes: SelectVariableOption[];
-    Edges: SelectVariableOption[];
-  };
+  options: SelectOptions;
   onChange?: (obj: { [key: string]: string }) => void;
   placeholder?: string;
 };
