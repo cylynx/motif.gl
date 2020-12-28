@@ -123,8 +123,11 @@ const FilterPanel: FC = () => {
                   backgroundColor: colors.green500,
                   textTransform: 'capitalize',
                   color: $theme.colors.inputPlaceholder,
-                  borderRadius: $theme.sizing.scale200,
-                  width: '130px',
+                  borderTopLeftRadius: $theme.sizing.scale200,
+                  borderTopRightRadius: $theme.sizing.scale200,
+                  borderBottomLeftRadius: $theme.sizing.scale200,
+                  borderBottomRightRadius: $theme.sizing.scale200,
+                  width: '120px',
                   marginTop: $theme.sizing.scale300,
                   ':hover': {
                     backgroundColor: colors.green400,
