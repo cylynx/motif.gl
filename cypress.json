@@ -1,0 +1,11 @@
+{
+  "pluginsFile": "cypress/plugins/index.ts",
+  "supportFile": "cypress/support/index.ts",
+  "watchForFileChanges": true,
+  "baseUrl": "http://localhost:3000",
+  "viewportWidth": 1400,
+  "viewportHeight": 794,
+  "video": false,
+  "videoCompression": false,
+  "screenshotOnRunFailure": false
+}

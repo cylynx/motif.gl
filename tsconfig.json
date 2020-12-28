@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "outDir": "dist",
     "module": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],

@@ -4,7 +4,7 @@ const postcss = require('rollup-plugin-postcss');
 const path = require('path');
 
 module.exports = {
-  rollup(config, options) {
+  rollup(config) {
     config.plugins = [
       postcss({
         extract: path.resolve('dist/index.css'),

@@ -100,7 +100,7 @@ const ImportSampleData = () => {
     <FlushedGrid gridGutters={0}>
       {sampleData &&
         sampleData.map((item) => (
-          <Cell key={item.title} span={4}>
+          <Cell key={item.key} span={4} data-testid={item.key}>
             <StyledItem item={item} />
           </Cell>
         ))}
