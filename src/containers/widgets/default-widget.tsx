@@ -6,6 +6,7 @@ import { LayersPanel, OptionsPanel } from '../SidePanel';
 import IconButton from './IconButton';
 import * as Icon from '../../components/Icons';
 import { WidgetItem } from './widget-slice';
+import FilterPanel from '../SidePanel/FilterPanel';
 
 const defaultWidgetList: WidgetItem[] = [
   {
@@ -27,6 +28,18 @@ const defaultWidgetList: WidgetItem[] = [
     widget: (
       <LeftLayer>
         <OptionsPanel />
+      </LeftLayer>
+    ),
+    position: 'top',
+    active: false,
+  },
+  {
+    id: 'filters',
+    group: 'main',
+    icon: <IconButton icon={<Icon.Filter />} id='filters' group='main' />,
+    widget: (
+      <LeftLayer>
+        <FilterPanel />
       </LeftLayer>
     ),
     position: 'top',

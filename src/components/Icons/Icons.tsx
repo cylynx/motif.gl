@@ -14,6 +14,7 @@ import {
   HiOutlineZoomIn,
   HiOutlineZoomOut,
   HiOutlineCamera,
+  HiOutlineFilter,
 } from 'react-icons/hi';
 import {
   BiLayer,
@@ -193,6 +194,12 @@ export const ZoomOut = ({ children, size = 16, ...rest }: IconBaseProps) => (
   <HiOutlineZoomOut size={size} {...rest}>
     {children}
   </HiOutlineZoomOut>
+);
+
+export const Filter = ({ children, size = 16, ...rest }: IconBaseProps) => (
+  <HiOutlineFilter size={size} {...rest}>
+    {children}
+  </HiOutlineFilter>
 );
 
 export const Legend = ({ children, size = 16, ...rest }: IconBaseProps) => (
