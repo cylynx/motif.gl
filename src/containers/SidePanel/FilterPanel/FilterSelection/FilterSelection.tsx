@@ -1,6 +1,7 @@
-import React, { FC, useCallback, useState, Fragment } from 'react';
-import { OnChangeParams, Value } from 'baseui/select';
+import React, { FC, useCallback, useState } from 'react';
+import { Value } from 'baseui/select';
 import { useSelector } from 'react-redux';
+import { Block } from 'baseui/block';
 import Header from './Header';
 import RangePlot from './RangePlot';
 import StringSelect from './StringSelect';
@@ -89,14 +90,14 @@ const FilterSelection: FC<FilterSelectionProps> = ({ selectOptions }) => {
   };
 
   return (
-    <Fragment>
+    <Block marginBottom='scale400'>
       <Header
         selectOptions={selectOptions}
         onSelectChange={onSelectChange}
         selection={selection}
       />
       {histogramProp !== null && renderBody(histogramProp.dataType)}
-    </Fragment>
+    </Block>
   );
 };
 

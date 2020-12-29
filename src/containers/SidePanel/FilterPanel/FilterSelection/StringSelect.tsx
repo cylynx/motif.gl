@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { Value } from 'baseui/select';
 import { Block } from 'baseui/block';
-import { styled } from 'baseui';
 import { LabelXSmall } from 'baseui/typography';
 import MultiStringSelect from '../../../../components/MultiStringSelect';
 

@@ -1,18 +1,25 @@
-import React, { FC, Fragment, useMemo } from 'react';
+import React, { FC, Fragment, useMemo, useState, MouseEvent } from 'react';
+import shortid from 'shortid';
 import { Block } from 'baseui/block';
-import { Button, SIZE } from 'baseui/button';
-import { colors } from 'baseui/tokens';
 import { useSelector } from 'react-redux';
 import Header from '../Header';
-import * as Icon from '../../../components/Icons';
+import FilterSelection from './FilterSelection';
+import AddFilterButton from './AddFilterButton';
+
 import { getGraphFlatten } from '../../../redux';
 import { Field, GraphFields } from '../../Graph';
 import { SelectOptions } from '../../../components/SelectVariable/SelectVariable';
-import FilterSelection from './FilterSelection';
+
+type FilterSelectionsType = {
+  [key: string]: any;
+};
 
 const FilterPanel: FC = () => {
   const graphFlatten = useSelector((state) => getGraphFlatten(state));
   const graphFields: GraphFields = graphFlatten.metadata.fields;
+  const [filterSelections, setFilterSelections] = useState<
+    FilterSelectionsType
+  >({});
 
   const nodeOptions = useMemo(
     () =>
@@ -51,35 +58,25 @@ const FilterPanel: FC = () => {
     };
   }, [edgeOptions, nodeOptions]);
 
+  const addFilter = (_: MouseEvent<HTMLButtonElement>) => {
+    const filterSelectionKey: string = shortid.generate();
+    setFilterSelections((filterSelection: FilterSelectionsType) => ({
+      ...filterSelection,
+      [filterSelectionKey]: {},
+    }));
+  };
+
+  const FilterSelections = Object.entries(filterSelections).map((entry) => {
+    const [key] = entry;
+    return <FilterSelection selectOptions={selectOptions} key={key} />;
+  });
+
   return (
     <Fragment>
       <Header />
       <Block display='flex' justifyContent='start' flexDirection='column'>
-        <FilterSelection selectOptions={selectOptions} />
-        <Button
-          startEnhancer={<Icon.Plus />}
-          onClick={() => alert('click')}
-          size={SIZE.compact}
-          overrides={{
-            BaseButton: {
-              style: ({ $theme }) => {
-                return {
-                  backgroundColor: colors.green400,
-                  textTransform: 'capitalize',
-                  color: $theme.colors.inputPlaceholder,
-                  width: '120px',
-                  marginTop: $theme.sizing.scale300,
-                  ':hover': {
-                    backgroundColor: colors.green300,
-                    color: $theme.colors.backgroundInversePrimary,
-                  },
-                };
-              },
-            },
-          }}
-        >
-          add filter
-        </Button>
+        {FilterSelections}
+        <AddFilterButton onClick={addFilter} />
       </Block>
     </Fragment>
   );
