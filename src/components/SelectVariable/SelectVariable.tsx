@@ -7,6 +7,10 @@ import { getIcon, TypeProps } from '../TagData';
 export type SelectVariableOption = {
   id: string;
   label: string;
+  from?: string;
+  format?: string;
+  analyzerType?: string;
+  __optgroup?: string;
   type: TypeProps;
 };
 
@@ -20,6 +24,7 @@ export type SelectVariableProps = {
   options: SelectOptions;
   onChange?: (obj: { [key: string]: string }) => void;
   placeholder?: string;
+  [x: string]: any;
 };
 
 const testOptions = {
@@ -47,6 +52,7 @@ const SelectVariable = ({
   options = testOptions,
   onChange: onChangeProps,
   placeholder = 'Select Variable',
+  ...rest
 }: SelectVariableProps) => {
   const onChangeSelection = (value: any) => {
     if (onChangeProps) {
@@ -67,6 +73,7 @@ const SelectVariable = ({
       getValueLabel={getLabel}
       maxDropdownHeight='300px'
       data-testid='select-variable'
+      {...rest}
     />
   );
 };

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { Block } from 'baseui/block';
 import { ButtonGroup } from 'baseui/button-group';
 import { Button } from 'baseui/button';
@@ -7,17 +7,20 @@ import { Theme } from 'baseui/theme';
 import * as Icon from '../../../../components/Icons';
 import SelectVariable, {
   SelectOptions,
+  SelectVariableOption,
 } from '../../../../components/SelectVariable/SelectVariable';
 
 type FilterSelectionHeaderProps = {
   selectOptions: SelectOptions;
+  selection: SelectVariableOption[];
+  onSelectChange: (obj: SelectVariableOption) => void;
 };
 
 const FilterSelectionHeader: FC<FilterSelectionHeaderProps> = ({
   selectOptions,
+  onSelectChange,
+  selection,
 }) => {
-  const [selection, setSelection] = useState([]);
-
   return (
     <Block
       backgroundColor='backgroundTertiary'
@@ -28,7 +31,7 @@ const FilterSelectionHeader: FC<FilterSelectionHeaderProps> = ({
       <SelectVariable
         value={selection}
         options={selectOptions}
-        onChange={(obj) => setSelection([obj])}
+        onChange={onSelectChange}
         placeholder='Select a field'
       />
       <Block paddingLeft='scale100'>
@@ -45,7 +48,7 @@ const FilterSelectionHeader: FC<FilterSelectionHeaderProps> = ({
                   paddingBottom: $theme.sizing.scale400,
                   paddingLeft: $theme.sizing.scale400,
                   ':hover': {
-                    backgroundColor: colors.yellow600,
+                    backgroundColor: colors.red500,
                   },
                 }),
               },

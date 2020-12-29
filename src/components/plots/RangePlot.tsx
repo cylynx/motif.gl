@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 // Adapted from: https://github.com/keplergl/kepler.gl/blob/master/src/components/common/range-plot.js
 
-import React, { useState, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Block } from 'baseui/block';
 import RangeBrush from './RangeBrush';
 import HistogramPlot from './HistogramPlot';
@@ -65,7 +65,7 @@ const RangePlot = ({
     if (size === 'default') return 420;
 
     return 150;
-  }, [inputHeight, size]);
+  }, [inputWidth, size]);
 
   const onBrushStart = useCallback(() => {
     setBrushing(true);
