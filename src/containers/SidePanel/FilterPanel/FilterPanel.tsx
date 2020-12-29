@@ -66,9 +66,23 @@ const FilterPanel: FC = () => {
     }));
   };
 
+  const deleteFilter = (idx: string) => {
+    setFilterSelections((filterSelection: FilterSelectionsType) => {
+      const { [idx]: value, ...res } = filterSelection;
+      return res;
+    });
+  };
+
   const FilterSelections = Object.entries(filterSelections).map((entry) => {
     const [key] = entry;
-    return <FilterSelection selectOptions={selectOptions} key={key} />;
+    return (
+      <FilterSelection
+        selectOptions={selectOptions}
+        key={key}
+        idx={key}
+        onDeleteBtnClick={deleteFilter}
+      />
+    );
   });
 
   return (

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, MouseEvent } from 'react';
 import { Block } from 'baseui/block';
 import { ButtonGroup } from 'baseui/button-group';
 import { Button } from 'baseui/button';
@@ -14,12 +14,14 @@ type FilterSelectionHeaderProps = {
   selectOptions: SelectOptions;
   selection: SelectVariableOption[];
   onSelectChange: (obj: SelectVariableOption) => void;
+  onDeleteBtnClick: (event: MouseEvent<HTMLButtonElement>) => void;
 };
 
 const Header: FC<FilterSelectionHeaderProps> = ({
   selectOptions,
   onSelectChange,
   selection,
+  onDeleteBtnClick,
 }) => {
   return (
     <Block
@@ -40,6 +42,7 @@ const Header: FC<FilterSelectionHeaderProps> = ({
             size='mini'
             kind='minimal'
             $as='div'
+            onClick={onDeleteBtnClick}
             overrides={{
               BaseButton: {
                 style: ({ $theme }: { $theme: Theme }) => ({

@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useState, MouseEvent } from 'react';
 import { Value } from 'baseui/select';
 import { useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
@@ -15,9 +15,15 @@ import { getGraphFlatten } from '../../../../redux';
 
 export type FilterSelectionProps = {
   selectOptions: SelectOptions;
+  idx: string;
+  onDeleteBtnClick: (idx: string) => void;
 };
 
-const FilterSelection: FC<FilterSelectionProps> = ({ selectOptions }) => {
+const FilterSelection: FC<FilterSelectionProps> = ({
+  selectOptions,
+  idx,
+  onDeleteBtnClick,
+}) => {
   const [histogramProp, setHistogramProp] = useState(null);
 
   const [selection, setSelection] = useState([]);
@@ -65,6 +71,10 @@ const FilterSelection: FC<FilterSelectionProps> = ({ selectOptions }) => {
     setStringVariable(values);
   };
 
+  const onDeleteClick = (_: MouseEvent<HTMLButtonElement>): void => {
+    onDeleteBtnClick(idx);
+  };
+
   const renderBody = (dataType: string): JSX.Element => {
     if (dataType !== 'STRING') {
       return (
@@ -95,6 +105,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({ selectOptions }) => {
         selectOptions={selectOptions}
         onSelectChange={onSelectChange}
         selection={selection}
+        onDeleteBtnClick={onDeleteClick}
       />
       {histogramProp !== null && renderBody(histogramProp.dataType)}
     </Block>
