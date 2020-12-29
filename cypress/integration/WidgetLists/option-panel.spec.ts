@@ -47,10 +47,8 @@ describe('Option Panel', () => {
       .should('exist');
   });
 
-  it('should render FilterSelectionHeader component', () => {
-    cy.getReact('OptionsPanel')
-      .getReact('FilterSelectionHeader')
-      .should('exist');
+  it('should render Header component', () => {
+    cy.getReact('OptionsPanel').getReact('Header').should('exist');
   });
 
   it('should render Layout Options accordion', () => {

@@ -1,11 +1,14 @@
 import React, { FC, useCallback, useState, Fragment } from 'react';
+import { OnChangeParams, Value } from 'baseui/select';
 import { useSelector } from 'react-redux';
+import Header from './Header';
+import RangePlot from './RangePlot';
+import StringSelect from './StringSelect';
+
 import {
   SelectOptions,
   SelectVariableOption,
 } from '../../../../components/SelectVariable/SelectVariable';
-import FilterSelectionHeader from './FilterSelectionHeader';
-import FilterSelectionRangePlot from './FilterSelectionRangePlot';
 import { getFieldDomain } from '../../../../utils/data-utils';
 import { getGraphFlatten } from '../../../../redux';
 
@@ -14,8 +17,10 @@ export type FilterSelectionProps = {
 };
 
 const FilterSelection: FC<FilterSelectionProps> = ({ selectOptions }) => {
-  const [selection, setSelection] = useState([]);
   const [histogramProp, setHistogramProp] = useState(null);
+
+  const [selection, setSelection] = useState([]);
+  const [stringVariable, setStringVariable] = useState<Value>([]);
   const graphFlatten = useSelector((state) => getGraphFlatten(state));
 
   const onSelectChange = useCallback(
@@ -55,19 +60,42 @@ const FilterSelection: FC<FilterSelectionProps> = ({ selectOptions }) => {
     [selection],
   );
 
+  const onStringSelect = (values: Value): void => {
+    setStringVariable(values);
+  };
+
+  const renderBody = (dataType: string): JSX.Element => {
+    if (dataType !== 'STRING') {
+      return (
+        <RangePlot histogram={histogramProp} onChangeRange={onChangeRange} />
+      );
+    }
+
+    return (
+      <StringSelect
+        value={stringVariable}
+        options={[
+          { id: 'Portland', label: 'Portland' },
+          { id: 'NYC', label: 'New York City' },
+          { id: 'LosAngeles', label: 'Los Angeles' },
+          { id: 'Boston', label: 'Boston' },
+          { id: 'Atlanta', label: 'Atlanta' },
+          { id: 'SanFrancisco', label: 'San Francisco' },
+        ]}
+        placeholder='Enter a value'
+        onChange={onStringSelect}
+      />
+    );
+  };
+
   return (
     <Fragment>
-      <FilterSelectionHeader
+      <Header
         selectOptions={selectOptions}
         onSelectChange={onSelectChange}
         selection={selection}
       />
-      {histogramProp !== null && (
-        <FilterSelectionRangePlot
-          histogram={histogramProp}
-          onChangeRange={onChangeRange}
-        />
-      )}
+      {histogramProp !== null && renderBody(histogramProp.dataType)}
     </Fragment>
   );
 };

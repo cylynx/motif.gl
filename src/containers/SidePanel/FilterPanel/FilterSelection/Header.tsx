@@ -16,7 +16,7 @@ type FilterSelectionHeaderProps = {
   onSelectChange: (obj: SelectVariableOption) => void;
 };
 
-const FilterSelectionHeader: FC<FilterSelectionHeaderProps> = ({
+const Header: FC<FilterSelectionHeaderProps> = ({
   selectOptions,
   onSelectChange,
   selection,
@@ -56,30 +56,10 @@ const FilterSelectionHeader: FC<FilterSelectionHeaderProps> = ({
           >
             <Icon.Trash />
           </Button>
-          {/*<Button*/}
-          {/*  size='mini'*/}
-          {/*  kind='minimal'*/}
-          {/*  $as='div'*/}
-          {/*  overrides={{*/}
-          {/*    BaseButton: {*/}
-          {/*      style: ({ $theme }: { $theme: Theme }) => ({*/}
-          {/*        paddingTop: $theme.sizing.scale400,*/}
-          {/*        paddingRight: $theme.sizing.scale400,*/}
-          {/*        paddingBottom: $theme.sizing.scale400,*/}
-          {/*        paddingLeft: $theme.sizing.scale400,*/}
-          {/*        ':hover': {*/}
-          {/*          backgroundColor: colors.yellow600,*/}
-          {/*        },*/}
-          {/*      }),*/}
-          {/*    },*/}
-          {/*  }}*/}
-          {/*>*/}
-          {/*  <Icon.Time />*/}
-          {/*</Button>*/}
         </ButtonGroup>
       </Block>
     </Block>
   );
 };
 
-export default FilterSelectionHeader;
+export default Header;

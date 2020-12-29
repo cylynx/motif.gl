@@ -35,10 +35,8 @@ describe('Layer Panels', () => {
       .should('exist');
   });
 
-  it('should has FilterSelectionHeader component', () => {
-    cy.getReact('LayersPanel')
-      .getReact('FilterSelectionHeader')
-      .should('exist');
+  it('should has Header component', () => {
+    cy.getReact('LayersPanel').getReact('Header').should('exist');
   });
 
   it('should has node and edge statistics', () => {
@@ -98,24 +96,16 @@ describe('Layer Panels', () => {
   });
 
   it('should render Clear Data button', () => {
-    cy.getReact('LayersPanel')
-      .getReact('ClearDataButton')
-      .should('exist');
+    cy.getReact('LayersPanel').getReact('ClearDataButton').should('exist');
   });
 
   it('should render Import Data button', () => {
-    cy.getReact('LayersPanel')
-      .getReact('ImportDataButton')
-      .should('exist');
+    cy.getReact('LayersPanel').getReact('ImportDataButton').should('exist');
   });
 
   it('should render Import Layers with zero data list on initialisation', () => {
-    cy.getReact('LayersPanel')
-      .getReact('ImportLayers')
-      .should('exist');
+    cy.getReact('LayersPanel').getReact('ImportLayers').should('exist');
 
-    cy.getReact('DndList')
-      .getProps('items')
-      .should('have.length', 0);
+    cy.getReact('DndList').getProps('items').should('have.length', 0);
   });
 });
