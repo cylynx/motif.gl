@@ -8,7 +8,6 @@ const layout = (graphin: Graphin, props: GraphinProps) => {
       desc: 'random layout',
       icon: 'home',
       layout: (data: Data): { data: Data } => {
-        console.log(data);
         const nodes = data.nodes.map((node) => {
           return {
             ...node,

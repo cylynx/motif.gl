@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "lib": ["es5", "dom"],
+    "isolatedModules": false,
+    "noEmit": false,
+    "types": ["cypress", "node"]
+  },
+  "include": ["./**/*.ts"]
+}

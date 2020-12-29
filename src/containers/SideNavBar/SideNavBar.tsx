@@ -6,7 +6,7 @@ import { defaultWidgetList } from '../widgets';
 const SideLayer = () => {
   return (
     <Wrapper>
-      <Logo width='26px' />
+      <Logo width='26px' data-testid='side-navbar:logo' />
       <Block
         display='flex'
         flexDirection='column'
@@ -17,14 +17,18 @@ const SideLayer = () => {
           {defaultWidgetList
             .filter((w) => w.position === 'top')
             .map((w) => (
-              <Block key={w.id}>{w.icon}</Block>
+              <Block key={w.id} data-testid={w.id}>
+                {w.icon}
+              </Block>
             ))}
         </Block>
         <Block marginBottom='32px'>
           {defaultWidgetList
             .filter((w) => w.position === 'bottom')
             .map((w) => (
-              <Block key={w.id}>{w.icon}</Block>
+              <Block key={w.id} data-testid={w.id}>
+                {w.icon}
+              </Block>
             ))}
         </Block>
       </Block>
@@ -44,6 +48,7 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => (
     height='100%'
     paddingBottom='20px'
     backgroundColor='backgroundSecondary'
+    data-testid='side-navbar'
   >
     {children}
   </Block>

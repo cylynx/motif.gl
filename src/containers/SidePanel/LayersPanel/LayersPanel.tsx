@@ -66,15 +66,18 @@ const LayersPanel = () => {
           value={haveData ? graphVisible.nodes.length : 0}
           label='Nodes:'
           subtitle={`${hiddenNodes} hidden`}
+          data-testid='nodes-count'
         />
         <Statistic
           value={haveData ? graphVisible.edges.length : 0}
           label='Edges:'
           subtitle={`${hiddenEdges} hidden`}
+          data-testid='edges-count'
         />
       </Block>
       <Block marginTop='scale800'>
         <Accordion
+          data-testid='node-properties-accordion'
           items={[
             {
               title: (
@@ -107,6 +110,7 @@ const LayersPanel = () => {
       </Block>
       <Block marginTop='scale400'>
         <Accordion
+          data-testid='edge-properties-accordion'
           items={[
             {
               title: (

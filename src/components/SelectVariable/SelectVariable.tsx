@@ -66,6 +66,7 @@ const SelectVariable = ({
       getOptionLabel={getLabel}
       getValueLabel={getLabel}
       maxDropdownHeight='300px'
+      data-testid='select-variable'
     />
   );
 };

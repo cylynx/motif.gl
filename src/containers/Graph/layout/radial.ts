@@ -15,7 +15,6 @@ export interface RadialLayoutOption extends LayoutOptionBase {
 }
 
 const radialLayout = (data: Data, options: RadialLayoutOption) => {
-  console.log(options);
   const source = cloneDeep(data);
   // eslint-disable-next-line new-cap
   const layout = new G6.Layout.radial({
@@ -52,7 +51,6 @@ const layout = (graphin: Graphin, props: GraphinProps) => {
           /** 每层的半径 */
           unitRadius: 150,
         };
-        console.log(options);
         return {
           data: radialLayout(data, {
             ...defaultOptions,

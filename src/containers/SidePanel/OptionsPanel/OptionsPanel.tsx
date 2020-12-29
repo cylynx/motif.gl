@@ -2,7 +2,12 @@ import React, { Fragment } from 'react';
 
 import { Block } from 'baseui/block';
 import { useDispatch, useSelector } from 'react-redux';
-import { getGraph , changeLayout, changeNodeStyle, changeEdgeStyle } from '../../../redux';
+import {
+  getGraph,
+  changeLayout,
+  changeNodeStyle,
+  changeEdgeStyle,
+} from '../../../redux';
 import Header from '../Header';
 import Accordion from '../../../components/Accordion';
 import {
@@ -75,6 +80,7 @@ const OptionsPanel = () => {
     <Fragment>
       <Header />
       <Accordion
+        data-testid='options-panel:layout-options'
         items={[
           {
             title: (
@@ -97,6 +103,7 @@ const OptionsPanel = () => {
       />
       <Block marginTop='scale800' />
       <Accordion
+        data-testid='options-panel:node-styles'
         items={[
           {
             title: (
@@ -153,6 +160,7 @@ const OptionsPanel = () => {
       />
       <Block marginTop='scale800' />
       <Accordion
+        data-testid='options-panel:edge-styles'
         items={[
           {
             title: (
