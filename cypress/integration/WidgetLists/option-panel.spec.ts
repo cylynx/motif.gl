@@ -47,9 +47,9 @@ describe('Option Panel', () => {
       .should('exist');
   });
 
-  it('should render Header component', () => {
+  it('should render FilterSelectionHeader component', () => {
     cy.getReact('OptionsPanel')
-      .getReact('Header')
+      .getReact('FilterSelectionHeader')
       .should('exist');
   });
 

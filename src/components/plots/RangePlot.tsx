@@ -167,14 +167,12 @@ const RangePlot = ({
         {(dataType === 'INT' ||
           dataType === 'FLOAT' ||
           dataType === 'NUMBER') && (
-          <NumericAxis domain={range} width={width} height={height} />
+          <NumericAxis domain={range} width={width} />
         )}
         {(dataType === 'DATETIME' || dataType === 'DATE') && (
-          <DateTimeAxis domain={range} width={width} height={height} />
+          <DateTimeAxis domain={range} width={width} />
         )}
-        {dataType === 'TIME' && (
-          <TimeAxis domain={range} width={width} height={height} />
-        )}
+        {dataType === 'TIME' && <TimeAxis domain={range} width={width} />}
       </Block>
     ),
     [range, dataType],

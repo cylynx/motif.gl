@@ -1,11 +1,11 @@
-import React, { FC, useCallback, useState, useRef, Fragment } from 'react';
+import React, { FC, useCallback, useState, Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import {
   SelectOptions,
   SelectVariableOption,
 } from '../../../../components/SelectVariable/SelectVariable';
 import FilterSelectionHeader from './FilterSelectionHeader';
-import FilterSelectionContent from './FilterSelectionContent';
+import FilterSelectionRangePlot from './FilterSelectionRangePlot';
 import { getFieldDomain } from '../../../../utils/data-utils';
 import { getGraphFlatten } from '../../../../redux';
 
@@ -22,6 +22,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({ selectOptions }) => {
     (obj: SelectVariableOption) => {
       if (obj === undefined) {
         setSelection([]);
+        setHistogramProp(null);
         return;
       }
 
@@ -62,7 +63,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({ selectOptions }) => {
         selection={selection}
       />
       {histogramProp !== null && (
-        <FilterSelectionContent
+        <FilterSelectionRangePlot
           histogram={histogramProp}
           onChangeRange={onChangeRange}
         />

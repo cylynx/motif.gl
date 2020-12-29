@@ -35,9 +35,9 @@ describe('Layer Panels', () => {
       .should('exist');
   });
 
-  it('should has Header component', () => {
+  it('should has FilterSelectionHeader component', () => {
     cy.getReact('LayersPanel')
-      .getReact('Header')
+      .getReact('FilterSelectionHeader')
       .should('exist');
   });
 

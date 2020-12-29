@@ -15,7 +15,7 @@ type FilterSelectionContentProps = {
   onChangeRange: ([v0, v1]: [number, number]) => void;
 };
 
-const FilterSelectionContent: FC<FilterSelectionContentProps> = ({
+const FilterSelectionRangePlot: FC<FilterSelectionContentProps> = ({
   histogram,
   onChangeRange,
 }) => {
@@ -33,11 +33,11 @@ const FilterSelectionContent: FC<FilterSelectionContentProps> = ({
         histogram={data}
         dataType={dataType}
         onChange={onChangeRange}
-        width={280}
+        width={275}
         height={90}
       />
     </Block>
   );
 };
 
-export default FilterSelectionContent;
+export default FilterSelectionRangePlot;

@@ -7,8 +7,8 @@ import { format } from 'd3-format';
 
 import { DomainType, generateNumericTicks, INumericTicks } from './utils';
 
-const MINIMUM_WIDTH = 300;
-const MINIMUM_HEIGHT = 100;
+const MINIMUM_WIDTH: number = 300;
+const MINIMUM_HEIGHT: number = 20;
 
 type AxisRef = SVGSVGElement | null;
 type NumericAxisProps = {

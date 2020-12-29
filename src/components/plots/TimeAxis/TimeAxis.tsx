@@ -6,7 +6,7 @@ import { select } from 'd3-selection';
 import { convertToHms, generateTimeTicks } from './utils';
 
 const MINIMUM_WIDTH = 300;
-const MINIMUM_HEIGHT = 100;
+const MINIMUM_HEIGHT = 20;
 type AxisRef = SVGSVGElement | null;
 type TimeAxisProps = {
   width?: number;
