@@ -289,7 +289,10 @@ export const processCsvData = async (rawCsv: string): Promise<ProcessedCsv> => {
     parsedJson = await csv2json(rawCsv);
   }
 
-  const headerRow = rawCsv.replace(/\r/g, '').split('\n')[0].split(',');
+  const headerRow = rawCsv
+    .replace(/\r/g, '')
+    .split('\n')[0]
+    .split(',');
 
   if (!parsedJson || !headerRow) {
     throw new Error('invalid input passed to process Csv data');

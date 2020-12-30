@@ -60,9 +60,18 @@ const FilterPanel: FC = () => {
     };
   }, [edgeOptions, nodeOptions]);
 
-  const onAddFilterClick = useCallback((_: MouseEvent<HTMLButtonElement>) => {
-    addFilter();
-  }, []);
+  const onAddFilterClick = useCallback(
+    (_: MouseEvent<HTMLButtonElement>) => {
+      const { edges, nodes } = graphFields;
+
+      if (edges.length === 0 && nodes.length === 0) {
+        return;
+      }
+
+      addFilter();
+    },
+    [graphFields],
+  );
 
   const FilterSelections = Object.entries(filterOptions).map((entry) => {
     const [key] = entry;

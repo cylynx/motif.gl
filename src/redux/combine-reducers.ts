@@ -6,7 +6,7 @@ import uiReducer from './ui-slice';
 import widgetReducer from '../containers/widgets/widget-slice';
 import graphReducer, { GraphState, setAccessors } from './graph-slice';
 import { deriveVisibleGraph, filterGraph } from '../utils/graph-utils';
-import { FilterOptions, GraphData } from '../containers/Graph/types';
+import { FilterOptions, GraphData } from '../containers/Graph';
 
 // History group that collapses both actions into 1 undo/redo
 const undoGroup: GroupByFunction<GraphState> = (
@@ -65,23 +65,21 @@ export const getFilterOptions = (state: CombinedReducer): Graph.FilterOptions =>
 export const getGraphFiltered = createSelector(
   [getGraphFlatten, getFilterOptions],
   (graphFlatten: GraphData, filterOptions: FilterOptions) => {
-    const graphFiltered = produce(graphFlatten, (_) => {
-      filterGraph(graphFlatten, filterOptions);
+    const graphFiltered = produce(graphFlatten, (draftState) => {
+      filterGraph(draftState, filterOptions);
     });
 
-    return graphFlatten;
+    return graphFiltered;
   },
 );
 
 // Selector to derive visible data
 export const getGraphVisible = createSelector(
-  [getGraphFlatten, getStyleOptions],
-  (graphFlatten, styleOptions) => {
-    const graphVisible = produce(graphFlatten, (draftState) => {
+  [getGraphFiltered, getStyleOptions],
+  (graphFiltered: GraphData, styleOptions) => {
+    const graphVisible = produce(graphFiltered, (draftState) => {
       deriveVisibleGraph(draftState, styleOptions);
     });
     return graphVisible;
   },
 );
-
-// Selector to obtain filter options

@@ -444,41 +444,64 @@ export const filterGraph = (
   }
 
   const filtersArray: FilterArray[] = Object.entries(filterOptions);
-  const isNodeHasFilter = filtersArray.find((value: FilterArray) => {
+  const hasNodeFilters = filtersArray.find((value: FilterArray) => {
     const { 1: criteria } = value;
     const { from } = criteria as Graph.FilterCriteria;
     return from === 'nodes';
   });
 
-  if (isNodeHasFilter) {
+  const hasEdgeFilters = filtersArray.find((value: FilterArray) => {
+    const { 1: criteria } = value;
+    const { from } = criteria as Graph.FilterCriteria;
+    return from === 'edges';
+  });
+
+  if (hasNodeFilters) {
     const { nodes } = graphFlatten;
-    const filteredNodes: Graph.Node[] = filterGraphNodes(nodes, filtersArray);
-    console.log(filteredNodes);
+    const filteredNodes: Graph.Node[] = filterGraphEdgeNodes(
+      nodes,
+      filtersArray,
+    );
+
+    Object.assign(graphFlatten, {
+      nodes: filteredNodes,
+      edges: [],
+    });
   }
 
+  if (hasEdgeFilters) {
+    const { edges } = graphFlatten;
+    const filteredEdges: Graph.Edge[] = filterGraphEdgeNodes(
+      edges,
+      filtersArray,
+    );
+
+    Object.assign(graphFlatten, {
+      edges: filteredEdges,
+    });
+  }
   return graphFlatten;
 };
 
 /**
- * 1. Filter Nodes
- *  - String values (exact) [array]
- *  - Non String values (range) [min, max]
+ * @param {Graph.EdgeNode[]} nodes
+ * @param {FilterArray[]} filtersArray
+ *
+ * @return {Graph.Node[]}
  */
-const filterGraphNodes = (
-  nodes: Graph.Node[],
+const filterGraphEdgeNodes = (
+  nodes: Graph.EdgeNode[],
   filtersArray: FilterArray[],
-): Graph.Node[] => {
-  const filterWithValue = (value: FilterArray) => {
-    const { 1: criteria } = value;
-    const { range, caseSearch } = criteria as Graph.FilterCriteria;
-    return range || caseSearch;
-  };
-
+): Graph.EdgeNode[] => {
   const dynamicFilters: any[] = [];
 
   // construct filter objects
   filtersArray
-    .filter(filterWithValue)
+    .filter((value: FilterArray) => {
+      const { 1: criteria } = value;
+      const { range, caseSearch } = criteria as Graph.FilterCriteria;
+      return range || caseSearch;
+    })
     .reduce((accFilter: any[], value: FilterArray) => {
       const { 1: criteria } = value;
       const {
@@ -493,19 +516,22 @@ const filterGraphNodes = (
           (option: Option) => option.id,
         );
 
-        accFilter.push((node: Node) => get(node, id).includes(stringCases));
+        accFilter.push((node: Graph.EdgeNode) =>
+          get(node, id).includes(stringCases),
+        );
         return accFilter;
       }
 
       const [min, max] = range;
       accFilter.push(
-        (node: Node) => min <= get(node, id) && max >= get(node, id),
+        (node: Graph.EdgeNode) => min <= get(node, id) && max >= get(node, id),
       );
       return accFilter;
     }, dynamicFilters);
 
-  const filteredGraphNodes: Graph.Node[] = nodes.filter((node: Node) =>
-    dynamicFilters.every((f) => f(node)),
+  // perform filtering with dynamic node options.
+  const filteredGraphNodes: Graph.EdgeNode[] = nodes.filter(
+    (node: Graph.EdgeNode) => dynamicFilters.every((f) => f(node)),
   );
 
   return filteredGraphNodes;

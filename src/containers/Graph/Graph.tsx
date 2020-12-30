@@ -33,6 +33,7 @@ const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
   const graphVisible = useSelector((state) => getGraphVisible(state));
   const layout = useSelector((state) => getStyleOptions(state).layout);
   const graphFiltered = useSelector((state) => getGraphFiltered(state));
+  console.log(graphVisible);
 
   useLayoutEffect(() => {
     // Imperatively set the color by theme
