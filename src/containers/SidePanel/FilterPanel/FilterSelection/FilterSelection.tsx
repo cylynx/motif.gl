@@ -2,7 +2,7 @@ import React, { FC, useCallback, useState, useRef } from 'react';
 import { Value } from 'baseui/select';
 import { Block } from 'baseui/block';
 import Header from './Header';
-import RangePlot from './RangePlot';
+import RangePlot, { HistogramProp } from './RangePlot';
 import StringSelect from './StringSelect';
 
 import {
@@ -25,19 +25,15 @@ const FilterSelection: FC<FilterSelectionProps> = ({
   graphFlatten,
   idx,
 }) => {
-  const [histogramProp, setHistogramProp] = useState(null);
   const [
     ,
     { getStringOptions, deleteFilter, updateFilterCriteria, getFilterCriteria },
   ] = useGraphFilter(graphFlatten);
   const filterAttribute: FilterCriteria = getFilterCriteria(idx) ?? {};
-  const stringSelectionRef = useRef<Value>([]);
 
   const onSelectChange = useCallback(
     (obj: SelectVariableOption) => {
       if (obj === undefined) {
-        stringSelectionRef.current = [];
-        setHistogramProp(null);
         updateFilterCriteria(idx, {});
         return;
       }
@@ -57,23 +53,23 @@ const FilterSelection: FC<FilterSelectionProps> = ({
           from as GraphAttribute,
           id,
         );
-        stringSelectionRef.current = stringOptions;
+        filterCriteria.stringOptions = stringOptions;
       }
 
       if (analyzerType !== 'STRING') {
-        const { domain, step, histogram } = getFieldDomain(
+        const { domain, histogram } = getFieldDomain(
           graphFlatten[from],
           (x) => x[id],
           analyzerType,
         );
-        setHistogramProp({
-          step,
+
+        const histogramProp: HistogramProp = {
           domain,
-          format,
-          value: domain,
           data: histogram,
           dataType: analyzerType,
-        });
+        };
+
+        filterCriteria.histogram = histogramProp;
         filterCriteria.range = domain;
       }
 
@@ -82,12 +78,13 @@ const FilterSelection: FC<FilterSelectionProps> = ({
     [selectOptions],
   );
 
-  const onChangeRange = useCallback((value: [number, number]) => {
-    setHistogramProp((histogram: any) => ({
-      ...histogram,
-      value,
-    }));
-  }, []);
+  const onChangeRange = (value: [number, number]) => {
+    const filterCriteria: FilterCriteria = {
+      ...filterAttribute,
+      range: value,
+    };
+    updateFilterCriteria(idx, filterCriteria);
+  };
 
   const onStringSelect = (value: Value): void => {
     const filterCriteria: FilterCriteria = {
@@ -104,14 +101,18 @@ const FilterSelection: FC<FilterSelectionProps> = ({
   const renderBody = (dataType: string): JSX.Element => {
     if (dataType !== 'STRING') {
       return (
-        <RangePlot histogram={histogramProp} onChangeRange={onChangeRange} />
+        <RangePlot
+          histogram={filterAttribute.histogram}
+          value={filterAttribute.range}
+          onChangeRange={onChangeRange}
+        />
       );
     }
 
     return (
       <StringSelect
         value={filterAttribute.caseSearch}
-        options={stringSelectionRef.current}
+        options={filterAttribute.stringOptions ?? []}
         placeholder='Enter a value'
         onChange={onStringSelect}
       />

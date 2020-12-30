@@ -18,10 +18,6 @@ import { Field, GraphFields } from '../../Graph';
 import { SelectOptions } from '../../../components/SelectVariable/SelectVariable';
 import useGraphFilter from './hooks/UseGraphFilter';
 
-type FilterSelectionsType = {
-  [key: string]: any;
-};
-
 const FilterPanel: FC = () => {
   const graphFlatten = useSelector((state) => getGraphFlatten(state));
   const graphFields: GraphFields = graphFlatten.metadata.fields;

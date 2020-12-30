@@ -3,23 +3,24 @@ import { Block } from 'baseui/block';
 import { RangePlot } from '../../../../components/plots';
 import { HistogramBin } from '../../../../utils/data-utils';
 
+export type HistogramProp = {
+  domain: [number, number];
+  data: HistogramBin[];
+  dataType: string;
+};
+
 type FilterSelectionContentProps = {
-  histogram: {
-    domain: [number, number];
-    step: string;
-    data: HistogramBin[];
-    dataType: string;
-    xAxisFormat?: string;
-    value: [number, number];
-  };
+  histogram: HistogramProp;
+  value: [number, number];
   onChangeRange: ([v0, v1]: [number, number]) => void;
 };
 
 const FilterSelectionRangePlot: FC<FilterSelectionContentProps> = ({
   histogram,
   onChangeRange,
+  value,
 }) => {
-  const { domain, value, data, dataType } = histogram;
+  const { domain, data, dataType } = histogram;
   return (
     <Block
       padding='scale200'

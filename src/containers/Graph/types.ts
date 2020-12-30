@@ -1,6 +1,7 @@
 import { Node as GraphinNode, Edge as GraphinEdge } from '@antv/graphin/';
 import { Value } from 'baseui/select';
 import { SelectVariableOption } from '../../components/SelectVariable/SelectVariable';
+import { HistogramProp } from '../SidePanel/FilterPanel/FilterSelection/RangePlot';
 
 export interface Edge extends Omit<GraphinEdge, 'style'> {
   style?:
@@ -158,6 +159,8 @@ export type FilterCriteria = {
   caseSearch?: Value;
   analyzerType?: string;
   selection?: SelectVariableOption[];
+  stringOptions?: Value;
+  histogram?: HistogramProp;
 };
 
 export interface FilterOptions {
