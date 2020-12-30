@@ -7,9 +7,7 @@ import * as Graph from '../containers/Graph/types';
 import { flattenObject, ALL_FIELD_TYPES } from '../processors/data-processors';
 import { styleEdges } from './style-edges';
 import { styleNodes } from './style-nodes';
-import { Option, Value } from 'baseui/select';
-import { SelectVariableOption } from 'src/components/SelectVariable/SelectVariable';
-import { FilterCriteria } from '../containers/Graph/types';
+import { Option } from 'baseui/select';
 
 type MinMax = {
   min: number;
@@ -436,9 +434,6 @@ export const getFieldNames = (
   fields.filter((f) => typeArray.includes(f.type)).map((f) => f.name);
 
 type FilterArray = [string, Graph.FilterCriteria];
-type FilterObject = {
-  [key: string]: (string | number)[];
-};
 
 export const filterGraph = (
   graphFlatten: Graph.GraphData,
@@ -448,19 +443,43 @@ export const filterGraph = (
     return graphFlatten;
   }
 
-  const filterObject: FilterObject = {};
+  const filtersArray: FilterArray[] = Object.entries(filterOptions);
+  const isNodeHasFilter = filtersArray.find((value: FilterArray) => {
+    const { 1: criteria } = value;
+    const { from } = criteria as Graph.FilterCriteria;
+    return from === 'nodes';
+  });
 
+  if (isNodeHasFilter) {
+    const { nodes } = graphFlatten;
+    const filteredNodes: Graph.Node[] = filterGraphNodes(nodes, filtersArray);
+    console.log(filteredNodes);
+  }
+
+  return graphFlatten;
+};
+
+/**
+ * 1. Filter Nodes
+ *  - String values (exact) [array]
+ *  - Non String values (range) [min, max]
+ */
+const filterGraphNodes = (
+  nodes: Graph.Node[],
+  filtersArray: FilterArray[],
+): Graph.Node[] => {
   const filterWithValue = (value: FilterArray) => {
     const { 1: criteria } = value;
     const { range, caseSearch } = criteria as Graph.FilterCriteria;
     return range || caseSearch;
   };
 
-  // filter nodes
-  const filtersArray: FilterArray[] = Object.entries(filterOptions);
+  const dynamicFilters: any[] = [];
+
+  // construct filter objects
   filtersArray
     .filter(filterWithValue)
-    .reduce((accObj: FilterObject, value: FilterArray) => {
+    .reduce((accFilter: any[], value: FilterArray) => {
       const { 1: criteria } = value;
       const {
         id,
@@ -474,27 +493,20 @@ export const filterGraph = (
           (option: Option) => option.id,
         );
 
-        Object.assign(accObj, {
-          [id]: stringCases,
-        });
-        return accObj;
+        accFilter.push((node: Node) => get(node, id).includes(stringCases));
+        return accFilter;
       }
 
-      Object.assign(accObj, {
-        [id]: range,
-      });
+      const [min, max] = range;
+      accFilter.push(
+        (node: Node) => min <= get(node, id) && max >= get(node, id),
+      );
+      return accFilter;
+    }, dynamicFilters);
 
-      return accObj;
-    }, filterObject);
+  const filteredGraphNodes: Graph.Node[] = nodes.filter((node: Node) =>
+    dynamicFilters.every((f) => f(node)),
+  );
 
-  console.log(filterObject);
-
-  return graphFlatten;
+  return filteredGraphNodes;
 };
-
-/**
- * 1. Filter Nodes
- *  - String values (exact) [array]
- *  - Non String values (range) [min, max]
- */
-const filterNodes = () => {};

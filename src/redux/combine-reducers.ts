@@ -65,8 +65,8 @@ export const getFilterOptions = (state: CombinedReducer): Graph.FilterOptions =>
 export const getGraphFiltered = createSelector(
   [getGraphFlatten, getFilterOptions],
   (graphFlatten: GraphData, filterOptions: FilterOptions) => {
-    const graphFiltered = produce(graphFlatten, (draftState) => {
-      filterGraph(draftState, filterOptions);
+    const graphFiltered = produce(graphFlatten, (_) => {
+      filterGraph(graphFlatten, filterOptions);
     });
 
     return graphFlatten;
