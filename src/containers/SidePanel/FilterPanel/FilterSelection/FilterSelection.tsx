@@ -1,6 +1,12 @@
-import React, { FC, useCallback, useState, MouseEvent } from 'react';
+import React, {
+  FC,
+  useCallback,
+  useState,
+  MouseEvent,
+  useEffect,
+  useRef,
+} from 'react';
 import { Value } from 'baseui/select';
-import { useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
 import Header from './Header';
 import RangePlot from './RangePlot';
@@ -11,34 +17,48 @@ import {
   SelectVariableOption,
 } from '../../../../components/SelectVariable/SelectVariable';
 import { getFieldDomain } from '../../../../utils/data-utils';
-import { getGraphFlatten } from '../../../../redux';
+import { GraphData } from '../../../Graph';
+import useGraphFilter from '../hooks/UseGraphFilter';
+import { GraphAttribute } from '../hooks/UseGraphFilter/types';
 
 export type FilterSelectionProps = {
   selectOptions: SelectOptions;
   idx: string;
   onDeleteBtnClick: (idx: string) => void;
+  graphFlatten: GraphData;
 };
 
 const FilterSelection: FC<FilterSelectionProps> = ({
   selectOptions,
   idx,
   onDeleteBtnClick,
+  graphFlatten,
 }) => {
   const [histogramProp, setHistogramProp] = useState(null);
-
   const [selection, setSelection] = useState([]);
   const [stringVariable, setStringVariable] = useState<Value>([]);
-  const graphFlatten = useSelector((state) => getGraphFlatten(state));
+  const { getStringOptions } = useGraphFilter(graphFlatten);
+  const stringSelectionRef = useRef<Value>([]);
 
   const onSelectChange = useCallback(
     (obj: SelectVariableOption) => {
       if (obj === undefined) {
+        stringSelectionRef.current = [];
         setSelection([]);
         setHistogramProp(null);
         return;
       }
 
       const { id, from, analyzerType, format } = obj;
+
+      if (analyzerType === 'STRING') {
+        const stringOptions: Value = getStringOptions(
+          from as GraphAttribute,
+          id,
+        );
+        stringSelectionRef.current = stringOptions;
+      }
+
       const { domain, step, histogram } = getFieldDomain(
         graphFlatten[from],
         (x) => x[id],
@@ -85,14 +105,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
     return (
       <StringSelect
         value={stringVariable}
-        options={[
-          { id: 'Portland', label: 'Portland' },
-          { id: 'NYC', label: 'New York City' },
-          { id: 'LosAngeles', label: 'Los Angeles' },
-          { id: 'Boston', label: 'Boston' },
-          { id: 'Atlanta', label: 'Atlanta' },
-          { id: 'SanFrancisco', label: 'San Francisco' },
-        ]}
+        options={stringSelectionRef.current}
         placeholder='Enter a value'
         onChange={onStringSelect}
       />

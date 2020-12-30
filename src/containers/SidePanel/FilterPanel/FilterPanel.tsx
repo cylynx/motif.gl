@@ -77,6 +77,7 @@ const FilterPanel: FC = () => {
     const [key] = entry;
     return (
       <FilterSelection
+        graphFlatten={graphFlatten}
         selectOptions={selectOptions}
         key={key}
         idx={key}
