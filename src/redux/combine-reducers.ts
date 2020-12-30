@@ -5,7 +5,8 @@ import * as Graph from '../containers/Graph/types';
 import uiReducer from './ui-slice';
 import widgetReducer from '../containers/widgets/widget-slice';
 import graphReducer, { GraphState, setAccessors } from './graph-slice';
-import { deriveVisibleGraph } from '../utils/graph-utils';
+import { deriveVisibleGraph, filterGraph } from '../utils/graph-utils';
+import { FilterOptions, GraphData } from '../containers/Graph/types';
 
 // History group that collapses both actions into 1 undo/redo
 const undoGroup: GroupByFunction<GraphState> = (
@@ -58,6 +59,19 @@ export const getGraphFlatten = (state: CombinedReducer): Graph.GraphData =>
   clientState(state).graph.present.graphFlatten;
 export const getStyleOptions = (state: CombinedReducer): Graph.StyleOptions =>
   clientState(state).graph.present.styleOptions;
+export const getFilterOptions = (state: CombinedReducer): Graph.FilterOptions =>
+  clientState(state).graph.present.filterOptions;
+
+export const getGraphFiltered = createSelector(
+  [getGraphFlatten, getFilterOptions],
+  (graphFlatten: GraphData, filterOptions: FilterOptions) => {
+    const graphFiltered = produce(graphFlatten, (draftState) => {
+      filterGraph(draftState, filterOptions);
+    });
+
+    return graphFlatten;
+  },
+);
 
 // Selector to derive visible data
 export const getGraphVisible = createSelector(
@@ -71,5 +85,3 @@ export const getGraphVisible = createSelector(
 );
 
 // Selector to obtain filter options
-export const getFilterOptions = (state: CombinedReducer): Graph.FilterOptions =>
-  clientState(state).graph.present.filterOptions;

@@ -12,7 +12,11 @@ import RegisterPolyEdge from './shape/PolyEdge';
 import RegisterLineEdge from './shape/LineEdge';
 import RegisterLoopEdge from './shape/LoopEdge';
 import { interactionStates } from './shape/constants';
-import { getStyleOptions, getGraphVisible } from '../../redux';
+import {
+  getStyleOptions,
+  getGraphVisible,
+  getGraphFiltered,
+} from '../../redux';
 import { TooltipProps } from './Tooltip';
 import './graphin.css';
 // import '@antv/graphin/dist/index.css';
@@ -28,6 +32,7 @@ const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
   const [, theme] = useStyletron();
   const graphVisible = useSelector((state) => getGraphVisible(state));
   const layout = useSelector((state) => getStyleOptions(state).layout);
+  const graphFiltered = useSelector((state) => getGraphFiltered(state));
 
   useLayoutEffect(() => {
     // Imperatively set the color by theme

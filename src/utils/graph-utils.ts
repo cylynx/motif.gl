@@ -7,6 +7,9 @@ import * as Graph from '../containers/Graph/types';
 import { flattenObject, ALL_FIELD_TYPES } from '../processors/data-processors';
 import { styleEdges } from './style-edges';
 import { styleNodes } from './style-nodes';
+import { Option, Value } from 'baseui/select';
+import { SelectVariableOption } from 'src/components/SelectVariable/SelectVariable';
+import { FilterCriteria } from '../containers/Graph/types';
 
 type MinMax = {
   min: number;
@@ -431,3 +434,67 @@ export const getFieldNames = (
 ) =>
   // @ts-ignore
   fields.filter((f) => typeArray.includes(f.type)).map((f) => f.name);
+
+type FilterArray = [string, Graph.FilterCriteria];
+type FilterObject = {
+  [key: string]: (string | number)[];
+};
+
+export const filterGraph = (
+  graphFlatten: Graph.GraphData,
+  filterOptions: Graph.FilterOptions,
+): Graph.GraphData => {
+  if (Object.keys(filterOptions).length === 0) {
+    return graphFlatten;
+  }
+
+  const filterObject: FilterObject = {};
+
+  const filterWithValue = (value: FilterArray) => {
+    const { 1: criteria } = value;
+    const { range, caseSearch } = criteria as Graph.FilterCriteria;
+    return range || caseSearch;
+  };
+
+  // filter nodes
+  const filtersArray: FilterArray[] = Object.entries(filterOptions);
+  filtersArray
+    .filter(filterWithValue)
+    .reduce((accObj: FilterObject, value: FilterArray) => {
+      const { 1: criteria } = value;
+      const {
+        id,
+        caseSearch,
+        analyzerType,
+        range,
+      } = criteria as Graph.FilterCriteria;
+
+      if (analyzerType === 'STRING') {
+        const stringCases: (string | number)[] = caseSearch.map(
+          (option: Option) => option.id,
+        );
+
+        Object.assign(accObj, {
+          [id]: stringCases,
+        });
+        return accObj;
+      }
+
+      Object.assign(accObj, {
+        [id]: range,
+      });
+
+      return accObj;
+    }, filterObject);
+
+  console.log(filterObject);
+
+  return graphFlatten;
+};
+
+/**
+ * 1. Filter Nodes
+ *  - String values (exact) [array]
+ *  - Non String values (range) [min, max]
+ */
+const filterNodes = () => {};
