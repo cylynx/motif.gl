@@ -52,6 +52,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
       const { id, from, analyzerType, format } = obj;
 
       if (analyzerType === 'STRING') {
+        setStringVariable([]);
         const stringOptions: Value = getStringOptions(
           from as GraphAttribute,
           id,
