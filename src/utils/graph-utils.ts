@@ -465,7 +465,6 @@ export const filterGraph = (
 
     Object.assign(graphFlatten, {
       nodes: filteredNodes,
-      edges: [],
     });
   }
 
