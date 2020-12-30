@@ -1,11 +1,4 @@
-import React, {
-  FC,
-  useCallback,
-  useState,
-  MouseEvent,
-  useEffect,
-  useRef,
-} from 'react';
+import React, { FC, useCallback, useState, useRef } from 'react';
 import { Value } from 'baseui/select';
 import { Block } from 'baseui/block';
 import Header from './Header';
@@ -17,7 +10,7 @@ import {
   SelectVariableOption,
 } from '../../../../components/SelectVariable/SelectVariable';
 import { getFieldDomain } from '../../../../utils/data-utils';
-import { GraphData } from '../../../Graph';
+import { FilterCriteria, GraphData } from '../../../Graph';
 import useGraphFilter from '../hooks/UseGraphFilter';
 import { GraphAttribute } from '../hooks/UseGraphFilter/types';
 
@@ -33,24 +26,33 @@ const FilterSelection: FC<FilterSelectionProps> = ({
   idx,
 }) => {
   const [histogramProp, setHistogramProp] = useState(null);
-  const [selection, setSelection] = useState([]);
-  const [stringVariable, setStringVariable] = useState<Value>([]);
-  const [_, { getStringOptions, deleteFilter }] = useGraphFilter(graphFlatten);
+  const [
+    ,
+    { getStringOptions, deleteFilter, updateFilterCriteria, getFilterCriteria },
+  ] = useGraphFilter(graphFlatten);
+  const filterAttribute: FilterCriteria = getFilterCriteria(idx) ?? {};
   const stringSelectionRef = useRef<Value>([]);
 
   const onSelectChange = useCallback(
     (obj: SelectVariableOption) => {
       if (obj === undefined) {
         stringSelectionRef.current = [];
-        setSelection([]);
         setHistogramProp(null);
+        updateFilterCriteria(idx, {});
         return;
       }
 
       const { id, from, analyzerType, format } = obj;
 
+      // update redux filter options
+      const filterCriteria: FilterCriteria = {
+        id,
+        from,
+        selection: [obj],
+        analyzerType,
+      };
+
       if (analyzerType === 'STRING') {
-        setStringVariable([]);
         const stringOptions: Value = getStringOptions(
           from as GraphAttribute,
           id,
@@ -58,36 +60,41 @@ const FilterSelection: FC<FilterSelectionProps> = ({
         stringSelectionRef.current = stringOptions;
       }
 
-      const { domain, step, histogram } = getFieldDomain(
-        graphFlatten[from],
-        (x) => x[id],
-        analyzerType,
-      );
-      setSelection([obj]);
-      setHistogramProp({
-        step,
-        domain,
-        format,
-        value: domain,
-        data: histogram,
-        dataType: analyzerType,
-      });
+      if (analyzerType !== 'STRING') {
+        const { domain, step, histogram } = getFieldDomain(
+          graphFlatten[from],
+          (x) => x[id],
+          analyzerType,
+        );
+        setHistogramProp({
+          step,
+          domain,
+          format,
+          value: domain,
+          data: histogram,
+          dataType: analyzerType,
+        });
+        filterCriteria.range = domain;
+      }
+
+      updateFilterCriteria(idx, filterCriteria);
     },
     [selectOptions],
   );
 
-  const onChangeRange = useCallback(
-    (value: [number, number]) => {
-      setHistogramProp((histogram: any) => ({
-        ...histogram,
-        value,
-      }));
-    },
-    [selection],
-  );
+  const onChangeRange = useCallback((value: [number, number]) => {
+    setHistogramProp((histogram: any) => ({
+      ...histogram,
+      value,
+    }));
+  }, []);
 
-  const onStringSelect = (values: Value): void => {
-    setStringVariable(values);
+  const onStringSelect = (value: Value): void => {
+    const filterCriteria: FilterCriteria = {
+      ...filterAttribute,
+      caseSearch: value,
+    };
+    updateFilterCriteria(idx, filterCriteria);
   };
 
   const onDeleteBtnClick = useCallback(() => {
@@ -103,7 +110,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
 
     return (
       <StringSelect
-        value={stringVariable}
+        value={filterAttribute.caseSearch}
         options={stringSelectionRef.current}
         placeholder='Enter a value'
         onChange={onStringSelect}
@@ -116,10 +123,11 @@ const FilterSelection: FC<FilterSelectionProps> = ({
       <Header
         selectOptions={selectOptions}
         onSelectChange={onSelectChange}
-        selection={selection}
+        selection={filterAttribute.selection}
         onDeleteBtnClick={onDeleteBtnClick}
       />
-      {histogramProp !== null && renderBody(histogramProp.dataType)}
+      {Object.keys(filterAttribute).length !== 0 &&
+        renderBody(filterAttribute.analyzerType)}
     </Block>
   );
 };

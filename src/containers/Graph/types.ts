@@ -1,4 +1,6 @@
 import { Node as GraphinNode, Edge as GraphinEdge } from '@antv/graphin/';
+import { Value } from 'baseui/select';
+import { SelectVariableOption } from '../../components/SelectVariable/SelectVariable';
 
 export interface Edge extends Omit<GraphinEdge, 'style'> {
   style?:
@@ -153,7 +155,9 @@ export type FilterCriteria = {
   id?: string;
   from?: string;
   range?: [number, number];
-  caseSearch?: string;
+  caseSearch?: Value;
+  analyzerType?: string;
+  selection?: SelectVariableOption[];
 };
 
 export interface FilterOptions {

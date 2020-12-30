@@ -1,4 +1,11 @@
-import React, { FC, Fragment, useMemo, useState, MouseEvent } from 'react';
+import React, {
+  FC,
+  Fragment,
+  useMemo,
+  useState,
+  MouseEvent,
+  useCallback,
+} from 'react';
 import shortid from 'shortid';
 import { Block } from 'baseui/block';
 import { useSelector } from 'react-redux';
@@ -18,7 +25,6 @@ type FilterSelectionsType = {
 const FilterPanel: FC = () => {
   const graphFlatten = useSelector((state) => getGraphFlatten(state));
   const graphFields: GraphFields = graphFlatten.metadata.fields;
-
   const [filterOptions, { addFilter }] = useGraphFilter(graphFlatten);
 
   const nodeOptions = useMemo(
@@ -58,9 +64,9 @@ const FilterPanel: FC = () => {
     };
   }, [edgeOptions, nodeOptions]);
 
-  const onAddFilterClick = (_: MouseEvent<HTMLButtonElement>) => {
+  const onAddFilterClick = useCallback((_: MouseEvent<HTMLButtonElement>) => {
     addFilter();
-  };
+  }, []);
 
   const FilterSelections = Object.entries(filterOptions).map((entry) => {
     const [key] = entry;

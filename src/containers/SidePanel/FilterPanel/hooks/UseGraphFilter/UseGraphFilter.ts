@@ -2,6 +2,7 @@ import get from 'lodash/get';
 import shortid from 'shortid';
 
 import { Value } from 'baseui/select';
+import { useDispatch, useSelector } from 'react-redux';
 import { GraphFilterAction, GraphAttribute } from './types';
 import {
   Node,
@@ -11,7 +12,6 @@ import {
   FilterOptions,
 } from '../../../../Graph';
 
-import { useDispatch, useSelector } from 'react-redux';
 import {
   updateFilterAttributes,
   removeFilterAttributes,
@@ -53,9 +53,26 @@ const useGraphFilter = (graphFlatten: GraphData): GraphFilterAction => {
     dispatch(removeFilterAttributes({ key }));
   };
 
+  const getFilterCriteria = (key: string): FilterCriteria => {
+    return filterOptions[key] ?? {};
+  };
+
+  const updateFilterCriteria = (
+    key: string,
+    criteria: FilterCriteria,
+  ): void => {
+    dispatch(updateFilterAttributes({ key, criteria }));
+  };
+
   return [
     filterOptions,
-    { getStringOptions, addFilter, deleteFilter },
+    {
+      getStringOptions,
+      getFilterCriteria,
+      addFilter,
+      deleteFilter,
+      updateFilterCriteria,
+    },
   ] as GraphFilterAction;
 };
 
