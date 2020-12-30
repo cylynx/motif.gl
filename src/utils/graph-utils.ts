@@ -446,14 +446,14 @@ export const filterGraph = (
   const filtersArray: FilterArray[] = Object.entries(filterOptions);
   const hasNodeFilters = filtersArray.find((value: FilterArray) => {
     const { 1: criteria } = value;
-    const { from } = criteria as Graph.FilterCriteria;
-    return from === 'nodes';
+    const { from, range, caseSearch } = criteria as Graph.FilterCriteria;
+    return from === 'nodes' && (range || caseSearch);
   });
 
   const hasEdgeFilters = filtersArray.find((value: FilterArray) => {
     const { 1: criteria } = value;
-    const { from } = criteria as Graph.FilterCriteria;
-    return from === 'edges';
+    const { from, range, caseSearch } = criteria as Graph.FilterCriteria;
+    return from === 'edges' && (range || caseSearch);
   });
 
   if (hasNodeFilters) {
@@ -517,7 +517,7 @@ const filterGraphEdgeNodes = (
         );
 
         accFilter.push((node: Graph.EdgeNode) =>
-          get(node, id).includes(stringCases),
+          stringCases.includes(get(node, id)),
         );
         return accFilter;
       }

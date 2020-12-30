@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState, useRef } from 'react';
+import React, { FC, useCallback } from 'react';
 import { Value } from 'baseui/select';
 import { Block } from 'baseui/block';
 import Header from './Header';
@@ -38,7 +38,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
         return;
       }
 
-      const { id, from, analyzerType, format } = obj;
+      const { id, from, analyzerType } = obj;
 
       // update redux filter options
       const filterCriteria: FilterCriteria = {
@@ -87,6 +87,11 @@ const FilterSelection: FC<FilterSelectionProps> = ({
   };
 
   const onStringSelect = (value: Value): void => {
+    if (value.length === 0) {
+      updateFilterCriteria(idx, {});
+      return;
+    }
+
     const filterCriteria: FilterCriteria = {
       ...filterAttribute,
       caseSearch: value,
