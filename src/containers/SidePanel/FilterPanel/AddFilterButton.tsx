@@ -18,13 +18,13 @@ const AddFilterButton: FC<AddFilterButtonType> = ({ onClick }) => {
           BaseButton: {
             style: ({ $theme }) => {
               return {
-                backgroundColor: colors.green600,
+                backgroundColor: colors.green500,
                 textTransform: 'capitalize',
                 color: $theme.colors.inputPlaceholder,
                 width: '120px',
                 marginTop: $theme.sizing.scale300,
                 ':hover': {
-                  backgroundColor: colors.green500,
+                  backgroundColor: colors.green400,
                   color: $theme.colors.backgroundInversePrimary,
                 },
               };

@@ -9,6 +9,7 @@ import AddFilterButton from './AddFilterButton';
 import { getGraphFlatten } from '../../../redux';
 import { Field, GraphFields } from '../../Graph';
 import { SelectOptions } from '../../../components/SelectVariable/SelectVariable';
+import useGraphFilter from './hooks/UseGraphFilter';
 
 type FilterSelectionsType = {
   [key: string]: any;
@@ -17,9 +18,8 @@ type FilterSelectionsType = {
 const FilterPanel: FC = () => {
   const graphFlatten = useSelector((state) => getGraphFlatten(state));
   const graphFields: GraphFields = graphFlatten.metadata.fields;
-  const [filterSelections, setFilterSelections] = useState<
-    FilterSelectionsType
-  >({});
+
+  const [filterOptions, { addFilter }] = useGraphFilter(graphFlatten);
 
   const nodeOptions = useMemo(
     () =>
@@ -58,22 +58,11 @@ const FilterPanel: FC = () => {
     };
   }, [edgeOptions, nodeOptions]);
 
-  const addFilter = (_: MouseEvent<HTMLButtonElement>) => {
-    const filterSelectionKey: string = shortid.generate();
-    setFilterSelections((filterSelection: FilterSelectionsType) => ({
-      ...filterSelection,
-      [filterSelectionKey]: {},
-    }));
+  const onAddFilterClick = (_: MouseEvent<HTMLButtonElement>) => {
+    addFilter();
   };
 
-  const deleteFilter = (idx: string) => {
-    setFilterSelections((filterSelection: FilterSelectionsType) => {
-      const { [idx]: value, ...res } = filterSelection;
-      return res;
-    });
-  };
-
-  const FilterSelections = Object.entries(filterSelections).map((entry) => {
+  const FilterSelections = Object.entries(filterOptions).map((entry) => {
     const [key] = entry;
     return (
       <FilterSelection
@@ -81,7 +70,6 @@ const FilterPanel: FC = () => {
         selectOptions={selectOptions}
         key={key}
         idx={key}
-        onDeleteBtnClick={deleteFilter}
       />
     );
   });
@@ -91,7 +79,7 @@ const FilterPanel: FC = () => {
       <Header />
       <Block display='flex' justifyContent='start' flexDirection='column'>
         {FilterSelections}
-        <AddFilterButton onClick={addFilter} />
+        <AddFilterButton onClick={onAddFilterClick} />
       </Block>
     </Fragment>
   );

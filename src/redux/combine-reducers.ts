@@ -69,3 +69,7 @@ export const getGraphVisible = createSelector(
     return graphVisible;
   },
 );
+
+// Selector to obtain filter options
+export const getFilterOptions = (state: CombinedReducer): Graph.FilterOptions =>
+  clientState(state).graph.present.filterOptions;

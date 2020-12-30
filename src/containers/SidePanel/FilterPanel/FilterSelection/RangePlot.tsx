@@ -25,7 +25,7 @@ const FilterSelectionRangePlot: FC<FilterSelectionContentProps> = ({
       padding='scale200'
       width='auto'
       height='130px'
-      backgroundColor='backgroundSecondary'
+      backgroundColor='backgroundTertiary'
     >
       <RangePlot
         range={domain}

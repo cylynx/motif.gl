@@ -24,20 +24,18 @@ import { GraphAttribute } from '../hooks/UseGraphFilter/types';
 export type FilterSelectionProps = {
   selectOptions: SelectOptions;
   idx: string;
-  onDeleteBtnClick: (idx: string) => void;
   graphFlatten: GraphData;
 };
 
 const FilterSelection: FC<FilterSelectionProps> = ({
   selectOptions,
-  idx,
-  onDeleteBtnClick,
   graphFlatten,
+  idx,
 }) => {
   const [histogramProp, setHistogramProp] = useState(null);
   const [selection, setSelection] = useState([]);
   const [stringVariable, setStringVariable] = useState<Value>([]);
-  const { getStringOptions } = useGraphFilter(graphFlatten);
+  const [_, { getStringOptions, deleteFilter }] = useGraphFilter(graphFlatten);
   const stringSelectionRef = useRef<Value>([]);
 
   const onSelectChange = useCallback(
@@ -92,9 +90,9 @@ const FilterSelection: FC<FilterSelectionProps> = ({
     setStringVariable(values);
   };
 
-  const onDeleteClick = (_: MouseEvent<HTMLButtonElement>): void => {
-    onDeleteBtnClick(idx);
-  };
+  const onDeleteBtnClick = useCallback(() => {
+    deleteFilter(idx);
+  }, [selectOptions, graphFlatten]);
 
   const renderBody = (dataType: string): JSX.Element => {
     if (dataType !== 'STRING') {
@@ -119,7 +117,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
         selectOptions={selectOptions}
         onSelectChange={onSelectChange}
         selection={selection}
-        onDeleteBtnClick={onDeleteClick}
+        onDeleteBtnClick={onDeleteBtnClick}
       />
       {histogramProp !== null && renderBody(histogramProp.dataType)}
     </Block>

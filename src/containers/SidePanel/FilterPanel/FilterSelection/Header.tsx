@@ -25,7 +25,7 @@ const Header: FC<FilterSelectionHeaderProps> = ({
 }) => {
   return (
     <Block
-      backgroundColor='backgroundTertiary'
+      backgroundColor='backgroundSecondary'
       padding='scale300'
       width='auto'
       display='flex'
@@ -50,6 +50,7 @@ const Header: FC<FilterSelectionHeaderProps> = ({
                   paddingRight: $theme.sizing.scale400,
                   paddingBottom: $theme.sizing.scale400,
                   paddingLeft: $theme.sizing.scale400,
+                  backgroundColor: $theme.colors.backgroundSecondary,
                   ':hover': {
                     backgroundColor: colors.red500,
                   },

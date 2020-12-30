@@ -1,9 +1,29 @@
 import get from 'lodash/get';
-import { Value } from 'baseui/select';
-import { GraphAttribute } from './types';
-import { Node, Edge, GraphData } from '../../../../Graph';
+import shortid from 'shortid';
 
-const useGraphFilter = (graphFlatten: GraphData) => {
+import { Value } from 'baseui/select';
+import { GraphFilterAction, GraphAttribute } from './types';
+import {
+  Node,
+  Edge,
+  GraphData,
+  FilterCriteria,
+  FilterOptions,
+} from '../../../../Graph';
+
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  updateFilterAttributes,
+  removeFilterAttributes,
+  getFilterOptions,
+} from '../../../../../redux';
+
+const useGraphFilter = (graphFlatten: GraphData): GraphFilterAction => {
+  const dispatch = useDispatch();
+  const filterOptions: FilterOptions = useSelector((state) =>
+    getFilterOptions(state),
+  );
+
   const getStringOptions = (
     attribute: GraphAttribute,
     criteria: string,
@@ -23,7 +43,20 @@ const useGraphFilter = (graphFlatten: GraphData) => {
     return options;
   };
 
-  return { getStringOptions };
+  const addFilter = (): void => {
+    const key: string = shortid.generate();
+    const criteria: FilterCriteria = {};
+    dispatch(updateFilterAttributes({ key, criteria }));
+  };
+
+  const deleteFilter = (key: string): void => {
+    dispatch(removeFilterAttributes({ key }));
+  };
+
+  return [
+    filterOptions,
+    { getStringOptions, addFilter, deleteFilter },
+  ] as GraphFilterAction;
 };
 
 export default useGraphFilter;

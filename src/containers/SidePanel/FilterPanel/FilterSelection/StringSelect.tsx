@@ -18,11 +18,7 @@ const StringSelect: FC<StringSelectType> = ({
   placeholder,
 }) => {
   return (
-    <Block
-      padding='scale400'
-      width='auto'
-      backgroundColor='backgroundSecondary'
-    >
+    <Block padding='scale400' width='auto' backgroundColor='backgroundTertiary'>
       <LabelXSmall
         marginBottom='scale100'
         overrides={{

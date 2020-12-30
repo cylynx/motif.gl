@@ -8,6 +8,7 @@ import * as LAYOUT from '../constants/layout-options';
 import * as Graph from '../containers/Graph/types';
 import { combineProcessedData } from '../utils/graph-utils';
 import { generateDefaultColorMap } from '../utils/style-nodes';
+import { FilterCriteria } from '../containers/Graph';
 
 export const updateSelections = (state: GraphState, data: Graph.GraphData) => {
   const currentNodeFields = state.nodeSelection.map((x) => x.id);
@@ -62,6 +63,7 @@ export type Selection = {
 export interface GraphState {
   accessors: Graph.Accessors;
   styleOptions: Graph.StyleOptions;
+  filterOptions: Graph.FilterOptions;
   graphList: Graph.GraphList;
   graphFlatten: Graph.GraphData;
   nodeSelection: Selection[];
@@ -98,6 +100,7 @@ const initialState: GraphState = {
     resetView: true,
     groupEdges: false,
   },
+  filterOptions: {},
   graphList: [],
   graphFlatten: {
     nodes: [],
@@ -260,6 +263,20 @@ const graph = createSlice({
         item.selected = status;
       });
     },
+    updateFilterAttributes(
+      state,
+      action: PayloadAction<{ key: string; criteria: FilterCriteria }>,
+    ) {
+      const { key, criteria } = action.payload;
+      Object.assign(state.filterOptions, {
+        [key]: criteria,
+      });
+    },
+    removeFilterAttributes(state, action: PayloadAction<{ key: string }>) {
+      const { key } = action.payload;
+      const { [key]: value, ...res } = state.filterOptions;
+      state.filterOptions = res;
+    },
   },
 });
 
@@ -282,6 +299,8 @@ export const {
   updateAllNodeSelection,
   updateEdgeSelection,
   updateAllEdgeSelection,
+  updateFilterAttributes,
+  removeFilterAttributes,
 } = graph.actions;
 
 export default graph.reducer;

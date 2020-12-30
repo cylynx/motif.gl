@@ -148,3 +148,14 @@ export interface ChartData {
   name: string;
   value: number;
 }
+
+export type FilterCriteria = {
+  id?: string;
+  from?: string;
+  range?: [number, number];
+  caseSearch?: string;
+};
+
+export interface FilterOptions {
+  [key: string]: FilterCriteria;
+}
