@@ -3,12 +3,12 @@ import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
 import set from 'lodash/set';
 
-import { Option, Value } from 'baseui/select';
+import { Option } from 'baseui/select';
 import * as Graph from '../containers/Graph/types';
 import { flattenObject, ALL_FIELD_TYPES } from '../processors/data-processors';
 import { styleEdges } from './style-edges';
 import { styleNodes } from './style-nodes';
-import { Node, Edge } from '../containers/Graph/types';
+import { Node, Edge } from '../containers/Graph';
 import { GraphAttribute } from '../containers/SidePanel/FilterPanel/hooks/UseGraphFilter/types';
 
 type MinMax = {
@@ -437,6 +437,14 @@ export const getFieldNames = (
 
 type FilterArray = [string, Graph.FilterCriteria];
 
+/**
+ * Filter graph with given dynamic options on graph data
+ *
+ * @param {GraphData} graphFlatten
+ * @param {FilterOptions} filterOptions
+ *
+ * @return {GraphData}
+ */
 export const filterGraph = (
   graphFlatten: Graph.GraphData,
   filterOptions: Graph.FilterOptions,
@@ -519,16 +527,20 @@ export const filterGraph = (
 
 const hasGraphFilters = (value: FilterArray, type: GraphAttribute) => {
   const { 1: criteria } = value;
-  const { from, range, caseSearch } = criteria as Graph.FilterCriteria;
-  return from === type && (range || caseSearch);
+  const { isFilterReady, from } = criteria as Graph.FilterCriteria;
+  return from === type && isFilterReady;
 };
 
 /**
- * @param {Graph.EdgeNode[]} nodes
- * @param {FilterArray[]} filtersArray
- * @param type
+ * Filter Edges and Nodes in graph with given dynamic filters
+ *  1. construct filter objects
+ *  2. preform filtering with dynamic options in OR conditions
  *
- * @return {Graph.Node[]}
+ * @param {EdgeNode[]} nodes
+ * @param {FilterArray[]} filtersArray
+ * @param {GraphAttribute} type
+ *
+ * @return {Node[]}
  */
 const filterGraphEdgeNodes = (
   nodes: Graph.EdgeNode[],
@@ -537,7 +549,7 @@ const filterGraphEdgeNodes = (
 ): Graph.EdgeNode[] => {
   const dynamicFilters: any[] = [];
 
-  // construct filter objects
+  // 1. construct filter objects
   filtersArray
     .filter((value: FilterArray) => hasGraphFilters(value, type))
     .reduce((accFilter: any[], value: FilterArray) => {
@@ -567,7 +579,7 @@ const filterGraphEdgeNodes = (
       return accFilter;
     }, dynamicFilters);
 
-  // perform filtering with dynamic options (OR conditions)
+  // 2. perform filtering with dynamic options in OR conditions
   const filteredGraphNodes: Graph.EdgeNode[] = nodes.filter(
     (node: Graph.EdgeNode) => dynamicFilters.some((f) => f(node)),
   );
@@ -575,6 +587,15 @@ const filterGraphEdgeNodes = (
   return filteredGraphNodes;
 };
 
+/**
+ * Connect edges on the filtered nodes to establish relationships
+ * 1. perform nothing if nodes is empty
+ * 2. find edges if source and target are presents
+ *
+ * @param {Node[]} filteredNodes
+ * @param {Edge[]} edges
+ * @return {Edge[]}
+ */
 const connectEdges = (
   filteredNodes: Graph.Node[],
   edges: Graph.Edge[],
@@ -591,6 +612,15 @@ const connectEdges = (
   return associatedEdges;
 };
 
+/**
+ * Obtain the associated nodes with the given edges.
+ * 1. obtain nodes based on source and targets
+ *
+ * @param {Edge[]} filteredEdges
+ * @param {Node[]} nodes
+ *
+ * @return {Node[]}
+ */
 const connectNodes = (
   filteredEdges: Graph.Edge[],
   nodes: Graph.Node[],

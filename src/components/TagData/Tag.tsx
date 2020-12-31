@@ -18,6 +18,8 @@ export type TypeProps =
   | 'string'
   | 'timestamp'
   | 'array'
+  | 'nodes'
+  | 'edges'
   | string;
 
 export type TagDataProps = {
@@ -89,6 +91,10 @@ export const getIcon = (type: TypeProps) => {
           style={{ paddingRight: '8px' }}
         />
       );
+    case 'nodes':
+      return <Icon.Node size={12} style={{ paddingRight: '8px' }} />;
+    case 'edges':
+      return <Icon.Edge size={12} style={{ paddingRight: '8px' }} />;
     default:
       return <Icon.Bracket color={colors.gray600} size={0} />;
   }

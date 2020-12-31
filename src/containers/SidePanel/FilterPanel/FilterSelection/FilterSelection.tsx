@@ -46,6 +46,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
         from,
         selection: [obj],
         analyzerType,
+        isFilterReady: false,
       };
 
       if (analyzerType === 'STRING') {
@@ -72,6 +73,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
 
         filterCriteria.histogram = histogramProp;
         filterCriteria.range = domain;
+        filterCriteria.isFilterReady = true;
       }
 
       updateFilterCriteria(idx, filterCriteria);
@@ -90,6 +92,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
   const onStringSelect = (value: Value): void => {
     if (value.length === 0) {
       const { ['caseSearch']: removedValue, ...res } = filterAttribute;
+      res.isFilterReady = false;
       updateFilterCriteria(idx, res);
       return;
     }
@@ -97,6 +100,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
     const filterCriteria: FilterCriteria = {
       ...filterAttribute,
       caseSearch: value,
+      isFilterReady: true,
     };
     updateFilterCriteria(idx, filterCriteria);
   };

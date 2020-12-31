@@ -196,7 +196,14 @@ const DndList = ({
     }
   };
 
-  const onDeleteItem = (key: number) => {
+  /**
+   * Delete a data layer
+   *  - reset filter options
+   *
+   * @param {number} key
+   * @return {void}
+   */
+  const onDeleteItem = (key: number): void => {
     resetFilter();
     onDelete(key);
     setExpanded(expanded.filter((x) => x !== key));

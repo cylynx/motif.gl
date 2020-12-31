@@ -62,6 +62,7 @@ export const getStyleOptions = (state: CombinedReducer): Graph.StyleOptions =>
 export const getFilterOptions = (state: CombinedReducer): Graph.FilterOptions =>
   clientState(state).graph.present.filterOptions;
 
+// Selector to perform filter on graph data
 export const getGraphFiltered = createSelector(
   [getGraphFlatten, getFilterOptions],
   (graphFlatten: GraphData, filterOptions: FilterOptions) => {

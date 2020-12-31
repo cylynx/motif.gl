@@ -163,6 +163,7 @@ export type FilterCriteria = {
   selection?: SelectVariableOption[];
   stringOptions?: Value;
   histogram?: HistogramProp;
+  isFilterReady?: boolean;
 };
 
 export interface FilterOptions {

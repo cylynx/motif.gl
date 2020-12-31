@@ -3,6 +3,7 @@ import React from 'react';
 import { Select } from 'baseui/select';
 import { Block } from 'baseui/block';
 import { getIcon, TypeProps } from '../TagData';
+import { Theme } from 'baseui/theme';
 
 export type SelectVariableOption = {
   id: string;
@@ -38,7 +39,19 @@ const testOptions = {
   ],
 };
 
-const getLabel = ({ option }: { option: any }) => {
+const getValueLabel = ({ option }: { option: SelectVariableOption }) => {
+  return (
+    <Block display='flex' alignItems='center'>
+      <Block as='span' paddingTop='scale100'>
+        {getIcon(option.from)}
+      </Block>
+      {getIcon(option.type)}
+      {option.label}
+    </Block>
+  );
+};
+
+const getOptionLabel = ({ option }: { option: SelectVariableOption }) => {
   return (
     <Block display='flex' alignItems='center'>
       {getIcon(option.type)}
@@ -69,8 +82,8 @@ const SelectVariable = ({
       size='compact'
       placeholder={placeholder}
       onChange={({ value }) => onChangeSelection(value)}
-      getOptionLabel={getLabel}
-      getValueLabel={getLabel}
+      getOptionLabel={getOptionLabel}
+      getValueLabel={getValueLabel}
       maxDropdownHeight='300px'
       data-testid='select-variable'
       {...rest}
