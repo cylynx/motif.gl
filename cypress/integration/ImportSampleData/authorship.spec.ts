@@ -18,26 +18,18 @@ describe('Import Authorship', () => {
     })
       .find('Button')
       .click();
-
-    cy.wait(4000);
   });
 
   it('should display layout as x y coordinate', () => {
-    cy.getReact('Graph')
-      .getProps('layout.name')
-      .should('deep.eq', 'none');
+    cy.getReact('Graph').getProps('layout.name').should('deep.eq', 'none');
   });
 
   it('should render 2742 edges in Graphin', () => {
-    cy.getReact('Graph')
-      .getProps('data.edges')
-      .should('have.length', 2742);
+    cy.getReact('Graph').getProps('data.edges').should('have.length', 2742);
   });
 
   it('should render 1589 nodes in Graphin', () => {
-    cy.getReact('Graph')
-      .getProps('data.nodes')
-      .should('have.length', 1589);
+    cy.getReact('Graph').getProps('data.nodes').should('have.length', 1589);
   });
 
   it('should display 1589 nodes count in Nodes label', () => {
