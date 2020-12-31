@@ -3,11 +3,12 @@ import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
 import set from 'lodash/set';
 
-import { Option } from 'baseui/select';
+import { Option, Value } from 'baseui/select';
 import * as Graph from '../containers/Graph/types';
 import { flattenObject, ALL_FIELD_TYPES } from '../processors/data-processors';
 import { styleEdges } from './style-edges';
 import { styleNodes } from './style-nodes';
+import { Node, Edge } from '../containers/Graph/types';
 
 type MinMax = {
   min: number;
@@ -444,66 +445,107 @@ export const filterGraph = (
   }
 
   const filtersArray: FilterArray[] = Object.entries(filterOptions);
-  const hasNodeFilters = filtersArray.find((value: FilterArray) => {
-    const { 1: criteria } = value;
-    const { from, range, caseSearch } = criteria as Graph.FilterCriteria;
-    return from === 'nodes' && (range || caseSearch);
-  });
+  const filteredGraph: Graph.GraphData = {
+    nodes: [],
+    edges: [],
+    metadata: graphFlatten.metadata,
+    key: graphFlatten.key,
+  };
 
-  const hasEdgeFilters = filtersArray.find((value: FilterArray) => {
-    const { 1: criteria } = value;
-    const { from, range, caseSearch } = criteria as Graph.FilterCriteria;
-    return from === 'edges' && (range || caseSearch);
-  });
+  const hasNodeFilters:
+    | FilterArray
+    | undefined = filtersArray.find((value: FilterArray) =>
+    hasGraphFilters(value, 'nodes'),
+  );
+
+  const hasEdgeFilters:
+    | FilterArray
+    | undefined = filtersArray.find((value: FilterArray) =>
+    hasGraphFilters(value, 'edges'),
+  );
+
+  if (hasNodeFilters === undefined && hasEdgeFilters === undefined) {
+    return graphFlatten;
+  }
 
   if (hasNodeFilters) {
     const { nodes, edges } = graphFlatten;
     const filteredNodes: Graph.Node[] = filterGraphEdgeNodes(
       nodes,
       filtersArray,
+      'nodes',
     );
 
     const connectedEdges: Graph.Edge[] = connectEdges(filteredNodes, edges);
 
-    Object.assign(graphFlatten, {
+    Object.assign(filteredGraph, {
       nodes: filteredNodes,
       edges: connectedEdges,
     });
   }
 
-  // if (hasEdgeFilters) {
-  //   const { edges } = graphFlatten;
-  //   const filteredEdges: Graph.Edge[] = filterGraphEdgeNodes(
-  //     edges,
-  //     filtersArray,
-  //   );
-  //
-  //   Object.assign(graphFlatten, {
-  //     edges: filteredEdges,
-  //   });
-  // }
-  return graphFlatten;
+  if (hasEdgeFilters) {
+    const { nodes, edges } = graphFlatten;
+    const filteredEdges: Graph.Edge[] = filterGraphEdgeNodes(
+      edges,
+      filtersArray,
+      'edges',
+    );
+
+    const connectedNodes: Graph.Node[] = connectNodes(filteredEdges, nodes);
+    const combinedNodes: Graph.Node[] = removeDuplicates(
+      [...filteredGraph.nodes, ...connectedNodes],
+      'id',
+    );
+    const combinedEdges: Graph.Edge[] = removeDuplicates(
+      [...filteredGraph.edges, ...filteredEdges],
+      'id',
+    );
+
+    Object.assign(filteredGraph, {
+      nodes: combinedNodes,
+      edges: combinedEdges,
+    });
+  }
+
+  Object.assign(graphFlatten, {
+    nodes: filteredGraph.nodes,
+    edges: filteredGraph.edges,
+  });
+
+  return filteredGraph;
+};
+
+type GraphFilters = (
+  value: FilterArray,
+  type: 'edges' | 'nodes',
+) => [number, number] | Value;
+const hasGraphFilters: GraphFilters = (
+  value: FilterArray,
+  type: 'edges' | 'nodes',
+) => {
+  const { 1: criteria } = value;
+  const { from, range, caseSearch } = criteria as Graph.FilterCriteria;
+  return from === type && (range || caseSearch);
 };
 
 /**
  * @param {Graph.EdgeNode[]} nodes
  * @param {FilterArray[]} filtersArray
+ * @param type
  *
  * @return {Graph.Node[]}
  */
 const filterGraphEdgeNodes = (
   nodes: Graph.EdgeNode[],
   filtersArray: FilterArray[],
+  type: 'edges' | 'nodes',
 ): Graph.EdgeNode[] => {
   const dynamicFilters: any[] = [];
 
   // construct filter objects
   filtersArray
-    .filter((value: FilterArray) => {
-      const { 1: criteria } = value;
-      const { range, caseSearch } = criteria as Graph.FilterCriteria;
-      return range || caseSearch;
-    })
+    .filter((value: FilterArray) => hasGraphFilters(value, type))
     .reduce((accFilter: any[], value: FilterArray) => {
       const { 1: criteria } = value;
       const {
@@ -553,4 +595,30 @@ const connectEdges = (
   });
 
   return associatedEdges;
+};
+
+const connectNodes = (
+  filteredEdges: Graph.Edge[],
+  nodes: Graph.Node[],
+): Graph.Node[] => {
+  if (filteredEdges.length === 0) return [];
+
+  const sourceTargetIds: Set<string> = new Set();
+
+  filteredEdges.reduce((acc: Set<string>, edge: Graph.Edge) => {
+    const { source, target } = edge;
+
+    if (acc.has(source) === false) acc.add(source);
+
+    if (acc.has(target) === false) acc.add(target);
+
+    return acc;
+  }, sourceTargetIds);
+
+  const sourceTargetIdArr: string[] = [...sourceTargetIds];
+
+  const associatedNodes = nodes.filter((node: Graph.Node) =>
+    sourceTargetIdArr.includes(node.id),
+  );
+  return associatedNodes;
 };

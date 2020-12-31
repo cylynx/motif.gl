@@ -88,7 +88,8 @@ const FilterSelection: FC<FilterSelectionProps> = ({
 
   const onStringSelect = (value: Value): void => {
     if (value.length === 0) {
-      updateFilterCriteria(idx, {});
+      const { ['caseSearch']: removedValue, ...res } = filterAttribute;
+      updateFilterCriteria(idx, res);
       return;
     }
 
