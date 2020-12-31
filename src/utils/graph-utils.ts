@@ -9,6 +9,7 @@ import { flattenObject, ALL_FIELD_TYPES } from '../processors/data-processors';
 import { styleEdges } from './style-edges';
 import { styleNodes } from './style-nodes';
 import { Node, Edge } from '../containers/Graph/types';
+import { GraphAttribute } from '../containers/SidePanel/FilterPanel/hooks/UseGraphFilter/types';
 
 type MinMax = {
   min: number;
@@ -516,14 +517,7 @@ export const filterGraph = (
   return filteredGraph;
 };
 
-type GraphFilters = (
-  value: FilterArray,
-  type: 'edges' | 'nodes',
-) => [number, number] | Value;
-const hasGraphFilters: GraphFilters = (
-  value: FilterArray,
-  type: 'edges' | 'nodes',
-) => {
+const hasGraphFilters = (value: FilterArray, type: GraphAttribute) => {
   const { 1: criteria } = value;
   const { from, range, caseSearch } = criteria as Graph.FilterCriteria;
   return from === type && (range || caseSearch);
@@ -539,7 +533,7 @@ const hasGraphFilters: GraphFilters = (
 const filterGraphEdgeNodes = (
   nodes: Graph.EdgeNode[],
   filtersArray: FilterArray[],
-  type: 'edges' | 'nodes',
+  type: GraphAttribute,
 ): Graph.EdgeNode[] => {
   const dynamicFilters: any[] = [];
 

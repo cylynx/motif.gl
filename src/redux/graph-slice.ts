@@ -51,6 +51,8 @@ export const updateAll = (state: GraphState, graphData: Graph.GraphData) => {
     state.nodeSelection = initialState.nodeSelection;
     state.edgeSelection = initialState.edgeSelection;
   }
+
+  state.filterOptions = {};
 };
 
 export type Selection = {
