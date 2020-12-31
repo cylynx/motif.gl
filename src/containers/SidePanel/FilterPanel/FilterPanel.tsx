@@ -1,12 +1,4 @@
-import React, {
-  FC,
-  Fragment,
-  useMemo,
-  useState,
-  MouseEvent,
-  useCallback,
-} from 'react';
-import shortid from 'shortid';
+import React, { FC, Fragment, useMemo, MouseEvent, useCallback } from 'react';
 import { Block } from 'baseui/block';
 import { useSelector } from 'react-redux';
 import Header from '../Header';

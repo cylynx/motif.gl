@@ -567,9 +567,9 @@ const filterGraphEdgeNodes = (
       return accFilter;
     }, dynamicFilters);
 
-  // perform filtering with dynamic node options.
+  // perform filtering with dynamic options (OR conditions)
   const filteredGraphNodes: Graph.EdgeNode[] = nodes.filter(
-    (node: Graph.EdgeNode) => dynamicFilters.every((f) => f(node)),
+    (node: Graph.EdgeNode) => dynamicFilters.some((f) => f(node)),
   );
 
   return filteredGraphNodes;
