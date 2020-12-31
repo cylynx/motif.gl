@@ -3,11 +3,11 @@ import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
 import set from 'lodash/set';
 
+import { Option } from 'baseui/select';
 import * as Graph from '../containers/Graph/types';
 import { flattenObject, ALL_FIELD_TYPES } from '../processors/data-processors';
 import { styleEdges } from './style-edges';
 import { styleNodes } from './style-nodes';
-import { Option } from 'baseui/select';
 
 type MinMax = {
   min: number;
@@ -457,28 +457,31 @@ export const filterGraph = (
   });
 
   if (hasNodeFilters) {
-    const { nodes } = graphFlatten;
+    const { nodes, edges } = graphFlatten;
     const filteredNodes: Graph.Node[] = filterGraphEdgeNodes(
       nodes,
       filtersArray,
     );
 
+    const connectedEdges: Graph.Edge[] = connectEdges(filteredNodes, edges);
+
     Object.assign(graphFlatten, {
       nodes: filteredNodes,
+      edges: connectedEdges,
     });
   }
 
-  if (hasEdgeFilters) {
-    const { edges } = graphFlatten;
-    const filteredEdges: Graph.Edge[] = filterGraphEdgeNodes(
-      edges,
-      filtersArray,
-    );
-
-    Object.assign(graphFlatten, {
-      edges: filteredEdges,
-    });
-  }
+  // if (hasEdgeFilters) {
+  //   const { edges } = graphFlatten;
+  //   const filteredEdges: Graph.Edge[] = filterGraphEdgeNodes(
+  //     edges,
+  //     filtersArray,
+  //   );
+  //
+  //   Object.assign(graphFlatten, {
+  //     edges: filteredEdges,
+  //   });
+  // }
   return graphFlatten;
 };
 
@@ -534,4 +537,20 @@ const filterGraphEdgeNodes = (
   );
 
   return filteredGraphNodes;
+};
+
+const connectEdges = (
+  filteredNodes: Graph.Node[],
+  edges: Graph.Edge[],
+): Graph.Edge[] => {
+  if (filteredNodes.length === 0) return [];
+
+  const idsArr: string[] = filteredNodes.map((nodes: Graph.Node) => nodes.id);
+
+  const associatedEdges: Graph.Edge[] = edges.filter((edge: Graph.Edge) => {
+    const { source, target } = edge;
+    return idsArr.includes(source) && idsArr.includes(target);
+  });
+
+  return associatedEdges;
 };
