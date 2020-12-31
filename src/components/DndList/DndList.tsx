@@ -4,6 +4,7 @@ import { Button } from 'baseui/button';
 import * as Icon from '../Icons';
 import { SimpleTooltip } from '../ui';
 import DndAccordian from './DndAccordian';
+import useGraphFilter from '../../containers/SidePanel/FilterPanel/hooks/UseGraphFilter';
 
 export type DndItem = {
   key: number;
@@ -174,6 +175,7 @@ const DndList = ({
   onDelete,
 }: DndListProps) => {
   const [expanded, setExpanded] = useState([]);
+  const [, { resetFilter }] = useGraphFilter();
 
   const onChange = ({
     oldIndex,
@@ -195,6 +197,7 @@ const DndList = ({
   };
 
   const onDeleteItem = (key: number) => {
+    resetFilter();
     onDelete(key);
     setExpanded(expanded.filter((x) => x !== key));
   };

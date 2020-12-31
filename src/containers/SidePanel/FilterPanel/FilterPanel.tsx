@@ -21,7 +21,7 @@ import useGraphFilter from './hooks/UseGraphFilter';
 const FilterPanel: FC = () => {
   const graphFlatten = useSelector((state) => getGraphFlatten(state));
   const graphFields: GraphFields = graphFlatten.metadata.fields;
-  const [filterOptions, { addFilter }] = useGraphFilter(graphFlatten);
+  const [filterOptions, { addFilter }] = useGraphFilter();
 
   const nodeOptions = useMemo(
     () =>
@@ -60,17 +60,20 @@ const FilterPanel: FC = () => {
     };
   }, [edgeOptions, nodeOptions]);
 
+  const isEnableAddFilter = useMemo(() => {
+    const { edges, nodes } = graphFlatten;
+    return edges.length !== 0 && nodes.length !== 0;
+  }, [graphFlatten]);
+
   const onAddFilterClick = useCallback(
     (_: MouseEvent<HTMLButtonElement>) => {
-      const { edges, nodes } = graphFields;
-
-      if (edges.length === 0 && nodes.length === 0) {
+      if (isEnableAddFilter === false) {
         return;
       }
 
       addFilter();
     },
-    [graphFields],
+    [isEnableAddFilter],
   );
 
   const FilterSelections = Object.entries(filterOptions).map((entry) => {
@@ -90,7 +93,10 @@ const FilterPanel: FC = () => {
       <Header />
       <Block display='flex' justifyContent='start' flexDirection='column'>
         {FilterSelections}
-        <AddFilterButton onClick={onAddFilterClick} />
+        <AddFilterButton
+          onClick={onAddFilterClick}
+          disabled={!isEnableAddFilter}
+        />
       </Block>
     </Fragment>
   );

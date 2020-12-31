@@ -28,7 +28,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
   const [
     ,
     { getStringOptions, deleteFilter, updateFilterCriteria, getFilterCriteria },
-  ] = useGraphFilter(graphFlatten);
+  ] = useGraphFilter();
   const filterAttribute: FilterCriteria = getFilterCriteria(idx) ?? {};
 
   const onSelectChange = useCallback(
@@ -51,6 +51,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
       if (analyzerType === 'STRING') {
         const stringOptions: Value = getStringOptions(
           from as GraphAttribute,
+          graphFlatten,
           id,
         );
         filterCriteria.stringOptions = stringOptions;

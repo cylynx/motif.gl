@@ -15,10 +15,11 @@ import {
 import {
   updateFilterAttributes,
   removeFilterAttributes,
+  resetFilters,
   getFilterOptions,
 } from '../../../../../redux';
 
-const useGraphFilter = (graphFlatten: GraphData): GraphFilterAction => {
+const useGraphFilter = (): GraphFilterAction => {
   const dispatch = useDispatch();
   const filterOptions: FilterOptions = useSelector((state) =>
     getFilterOptions(state),
@@ -26,6 +27,7 @@ const useGraphFilter = (graphFlatten: GraphData): GraphFilterAction => {
 
   const getStringOptions = (
     attribute: GraphAttribute,
+    graphFlatten: GraphData,
     criteria: string,
   ): Value => {
     const properties: (Node | Edge)[] = graphFlatten[attribute];
@@ -53,6 +55,10 @@ const useGraphFilter = (graphFlatten: GraphData): GraphFilterAction => {
     dispatch(removeFilterAttributes({ key }));
   };
 
+  const resetFilter = (): void => {
+    dispatch(resetFilters());
+  };
+
   const getFilterCriteria = (key: string): FilterCriteria => {
     return filterOptions[key] ?? {};
   };
@@ -72,6 +78,7 @@ const useGraphFilter = (graphFlatten: GraphData): GraphFilterAction => {
       addFilter,
       deleteFilter,
       updateFilterCriteria,
+      resetFilter,
     },
   ] as GraphFilterAction;
 };

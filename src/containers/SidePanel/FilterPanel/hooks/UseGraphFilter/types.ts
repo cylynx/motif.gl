@@ -1,12 +1,17 @@
 import { Value } from 'baseui/select';
-import { FilterCriteria, FilterOptions } from '../../../../Graph';
+import { FilterCriteria, FilterOptions, GraphData } from '../../../../Graph';
 
 export type GraphAttribute = 'nodes' | 'edges';
 
 interface GraphFilterActions {
-  getStringOptions: (attribute: GraphAttribute, criteria: string) => Value;
   addFilter: () => void;
   deleteFilter: (key: string) => void;
+  resetFilter: () => void;
+  getStringOptions: (
+    attribute: GraphAttribute,
+    graphFlatten: GraphData,
+    criteria: string,
+  ) => Value;
   updateFilterCriteria: (key: string, criteria: FilterCriteria) => void;
   getFilterCriteria: (key: string) => FilterCriteria;
 }

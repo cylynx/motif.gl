@@ -50,9 +50,8 @@ export const updateAll = (state: GraphState, graphData: Graph.GraphData) => {
     state.graphFlatten = initialState.graphFlatten;
     state.nodeSelection = initialState.nodeSelection;
     state.edgeSelection = initialState.edgeSelection;
+    state.filterOptions = initialState.filterOptions;
   }
-
-  state.filterOptions = {};
 };
 
 export type Selection = {
@@ -265,6 +264,9 @@ const graph = createSlice({
         item.selected = status;
       });
     },
+    resetFilters(state) {
+      state.filterOptions = {};
+    },
     updateFilterAttributes(
       state,
       action: PayloadAction<{ key: string; criteria: FilterCriteria }>,
@@ -303,6 +305,7 @@ export const {
   updateAllEdgeSelection,
   updateFilterAttributes,
   removeFilterAttributes,
+  resetFilters,
 } = graph.actions;
 
 export default graph.reducer;
