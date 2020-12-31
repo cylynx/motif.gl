@@ -19,6 +19,8 @@ describe('Import Les Misérables', () => {
     })
       .find('Button')
       .click();
+
+    cy.wait(3000);
   });
 
   it('should display layout in Concentric', () => {

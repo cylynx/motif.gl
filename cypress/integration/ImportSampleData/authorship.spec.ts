@@ -18,6 +18,8 @@ describe('Import Authorship', () => {
     })
       .find('Button')
       .click();
+
+    cy.wait(3000);
   });
 
   it('should display layout as x y coordinate', () => {

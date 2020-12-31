@@ -91,7 +91,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
 
   const onStringSelect = (value: Value): void => {
     if (value.length === 0) {
-      const { ['caseSearch']: removedValue, ...res } = filterAttribute;
+      const { caseSearch: removedValue, ...res } = filterAttribute;
       res.isFilterReady = false;
       updateFilterCriteria(idx, res);
       return;
@@ -131,7 +131,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
   };
 
   return (
-    <Block marginBottom='scale400'>
+    <Block marginBottom='scale500'>
       <Header
         selectOptions={selectOptions}
         onSelectChange={onSelectChange}
