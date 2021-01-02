@@ -64,23 +64,26 @@ const Header = () => {
     [dispatch, exportPNG, exportJSON, exportGraph],
   );
 
-  return (
-    <Block
-      display='flex'
-      justifyContent='space-between'
-      alignItems='center'
-      marginTop='scale300'
-      marginBottom='scale800'
-    >
-      <Block>
-        <Editable text={name} onChange={onChangeName} />
+  return useMemo(
+    () => (
+      <Block
+        display='flex'
+        justifyContent='space-between'
+        alignItems='center'
+        marginTop='scale300'
+        marginBottom='scale800'
+      >
+        <Block>
+          <Editable text={name} onChange={onChangeName} />
+        </Block>
+        <Block>
+          {headerButtons.map((item) => (
+            <HeaderButton key={item.key} {...item} />
+          ))}
+        </Block>
       </Block>
-      <Block>
-        {headerButtons.map((item) => (
-          <HeaderButton key={item.key} {...item} />
-        ))}
-      </Block>
-    </Block>
+    ),
+    [name, onChangeName],
   );
 };
 

@@ -89,21 +89,24 @@ const FilterSelection: FC<FilterSelectionProps> = ({
     updateFilterCriteria(idx, filterCriteria);
   };
 
-  const onStringSelect = (value: Value): void => {
-    if (value.length === 0) {
-      const { caseSearch: removedValue, ...res } = filterAttribute;
-      res.isFilterReady = false;
-      updateFilterCriteria(idx, res);
-      return;
-    }
+  const onStringSelect = useCallback(
+    (value: Value): void => {
+      if (value.length === 0) {
+        const { caseSearch: removedValue, ...res } = filterAttribute;
+        res.isFilterReady = false;
+        updateFilterCriteria(idx, res);
+        return;
+      }
 
-    const filterCriteria: FilterCriteria = {
-      ...filterAttribute,
-      caseSearch: value,
-      isFilterReady: true,
-    };
-    updateFilterCriteria(idx, filterCriteria);
-  };
+      const filterCriteria: FilterCriteria = {
+        ...filterAttribute,
+        caseSearch: value,
+        isFilterReady: true,
+      };
+      updateFilterCriteria(idx, filterCriteria);
+    },
+    [filterAttribute, idx, updateFilterCriteria],
+  );
 
   const onDeleteBtnClick = useCallback(() => {
     deleteFilter(idx);

@@ -80,15 +80,21 @@ const FilterPanel: FC = () => {
     );
   });
 
+  const AddFilterButtonMemo = useMemo(() => {
+    return (
+      <AddFilterButton
+        onClick={onAddFilterClick}
+        disabled={!isEnableAddFilter}
+      />
+    );
+  }, [onAddFilterClick, isEnableAddFilter]);
+
   return (
     <Fragment>
       <Header />
       <Block display='flex' justifyContent='start' flexDirection='column'>
         {FilterSelections}
-        <AddFilterButton
-          onClick={onAddFilterClick}
-          disabled={!isEnableAddFilter}
-        />
+        {AddFilterButtonMemo}
       </Block>
     </Fragment>
   );

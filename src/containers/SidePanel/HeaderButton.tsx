@@ -1,5 +1,5 @@
 /* eslint-disable react/destructuring-assignment */
-import React, { Fragment } from 'react';
+import React, { Fragment, useMemo } from 'react';
 import { Button } from 'baseui/button';
 import { PLACEMENT } from 'baseui/popover';
 import { SimpleTooltip } from '../../components/ui';
@@ -15,20 +15,23 @@ export type HeaderButtonProp = {
 const HeaderButton = (props: HeaderButtonProp) => {
   const { name, icon, isDisabled, onClick } = props;
 
-  return (
-    <Fragment>
-      <SimpleTooltip tooltip={name} placement={PLACEMENT.bottom}>
-        <Button
-          $as='div'
-          onClick={onClick}
-          disabled={isDisabled}
-          kind='tertiary'
-          size='mini'
-        >
-          {icon}
-        </Button>
-      </SimpleTooltip>
-    </Fragment>
+  return useMemo(
+    () => (
+      <Fragment>
+        <SimpleTooltip tooltip={name} placement={PLACEMENT.bottom}>
+          <Button
+            $as='div'
+            onClick={onClick}
+            disabled={isDisabled}
+            kind='tertiary'
+            size='mini'
+          >
+            {icon}
+          </Button>
+        </SimpleTooltip>
+      </Fragment>
+    ),
+    [name, icon, isDisabled, onClick],
   );
 };
 
