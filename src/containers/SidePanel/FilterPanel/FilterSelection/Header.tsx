@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent } from 'react';
+import React, { FC, MouseEvent, useMemo } from 'react';
 import { Block } from 'baseui/block';
 import { ButtonGroup } from 'baseui/button-group';
 import { Button } from 'baseui/button';
@@ -23,19 +23,8 @@ const Header: FC<FilterSelectionHeaderProps> = ({
   selection,
   onDeleteBtnClick,
 }) => {
-  return (
-    <Block
-      backgroundColor='backgroundTertiary'
-      padding='scale300'
-      width='auto'
-      display='flex'
-    >
-      <SelectVariable
-        value={selection}
-        options={selectOptions}
-        onChange={onSelectChange}
-        placeholder='Select a field'
-      />
+  const ButtonGroupMemo = useMemo(
+    (): JSX.Element => (
       <Block paddingLeft='scale100'>
         <ButtonGroup>
           <Button
@@ -62,6 +51,24 @@ const Header: FC<FilterSelectionHeaderProps> = ({
           </Button>
         </ButtonGroup>
       </Block>
+    ),
+    [onDeleteBtnClick],
+  );
+
+  return (
+    <Block
+      backgroundColor='backgroundTertiary'
+      padding='scale300'
+      width='auto'
+      display='flex'
+    >
+      <SelectVariable
+        value={selection}
+        options={selectOptions}
+        onChange={onSelectChange}
+        placeholder='Select a field'
+      />
+      {ButtonGroupMemo}
     </Block>
   );
 };
