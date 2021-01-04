@@ -32,11 +32,11 @@ export type ActionButton = {
   [x: string]: any;
 };
 
-export const VisibilityButton: FC<ActionButton> = ({
+export const VisibilityButton = ({
   onClick: onClickVisibility,
   isVisible,
   ...rest
-}) => {
+}: ActionButton) => {
   const toggleVisibility = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (onClickVisibility) {
@@ -60,13 +60,13 @@ export const VisibilityButton: FC<ActionButton> = ({
   );
 };
 
-export const DeleteButton: FC<ActionButton> = ({
+export const DeleteButton = ({
   onClick: onClickDelete,
   shape,
   tooltip,
   padding,
   ...rest
-}) => {
+}: ActionButton) => {
   const toggleDelete = (e: MouseEvent<HTMLButtonElement>): void => {
     e.stopPropagation();
     if (onClickDelete) {
