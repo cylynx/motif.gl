@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { OnChangeParams, Select, Value } from 'baseui/select';
+import { OnChangeParams, Select, Value, TYPE } from 'baseui/select';
 
 type MultiStringSelectType = {
   placeholder: string;
@@ -21,7 +21,8 @@ const MultiStringSelect: FC<MultiStringSelectType> = ({
       onChange={(params: OnChangeParams) => onChange(params.value)}
       value={value}
       maxDropdownHeight='300px'
-      size='compact'
+      size='mini'
+      type={TYPE.select}
       backspaceRemoves
       clearable
       closeOnSelect
