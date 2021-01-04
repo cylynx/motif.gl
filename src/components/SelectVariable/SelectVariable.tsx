@@ -2,8 +2,8 @@
 import React from 'react';
 import { Select } from 'baseui/select';
 import { Block } from 'baseui/block';
-import { getIcon, TypeProps } from '../TagData';
 import { Theme } from 'baseui/theme';
+import { getIcon, TypeProps } from '../TagData';
 
 export type SelectVariableOption = {
   id: string;
@@ -42,7 +42,7 @@ const testOptions = {
 const getValueLabel = ({ option }: { option: SelectVariableOption }) => {
   return (
     <Block display='flex' alignItems='center'>
-      <Block as='span' paddingTop='scale100'>
+      <Block as='span' position='relative' top='1px'>
         {getIcon(option.from)}
       </Block>
       {getIcon(option.type)}
