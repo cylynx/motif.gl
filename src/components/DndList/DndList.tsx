@@ -1,10 +1,9 @@
-import React, { useState, MouseEvent, FC } from 'react';
+import React, { useState, MouseEvent } from 'react';
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
 import * as Icon from '../Icons';
 import { SimpleTooltip } from '../ui';
 import DndAccordian from './DndAccordian';
-import useGraphFilter from '../../containers/SidePanel/FilterPanel/hooks/UseGraphFilter';
 
 export type DndItem = {
   key: number;
@@ -175,7 +174,6 @@ const DndList = ({
   onDelete,
 }: DndListProps) => {
   const [expanded, setExpanded] = useState([]);
-  const [, { resetFilter }] = useGraphFilter();
 
   const onChange = ({
     oldIndex,
@@ -204,7 +202,6 @@ const DndList = ({
    * @return {void}
    */
   const onDeleteItem = (key: number): void => {
-    resetFilter();
     onDelete(key);
     setExpanded(expanded.filter((x) => x !== key));
   };

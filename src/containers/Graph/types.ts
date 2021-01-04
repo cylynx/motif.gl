@@ -18,6 +18,7 @@ export interface Node extends Omit<GraphinNode, 'data'> {
 }
 
 export type EdgeNode = Edge | Node;
+export type GraphAttribute = 'nodes' | 'edges';
 
 export type Field = {
   analyzerType: string;

@@ -4,15 +4,14 @@ import { Block } from 'baseui/block';
 import Header from './Header';
 import RangePlot, { HistogramProp } from './RangePlot';
 import StringSelect from './StringSelect';
+import useGraphFilter from '../hooks/UseGraphFilter';
 
 import {
   SelectOptions,
   SelectVariableOption,
 } from '../../../../components/SelectVariable/SelectVariable';
 import { getFieldDomain } from '../../../../utils/data-utils';
-import { FilterCriteria, GraphData } from '../../../Graph';
-import useGraphFilter from '../hooks/UseGraphFilter';
-import { GraphAttribute } from '../hooks/UseGraphFilter/types';
+import { FilterCriteria, GraphData, GraphAttribute } from '../../../Graph';
 
 export type FilterSelectionProps = {
   selectOptions: SelectOptions;
@@ -25,10 +24,12 @@ const FilterSelection: FC<FilterSelectionProps> = ({
   graphFlatten,
   idx,
 }) => {
-  const [
-    ,
-    { getStringOptions, deleteFilter, updateFilterCriteria, getFilterCriteria },
-  ] = useGraphFilter();
+  const {
+    getStringOptions,
+    deleteFilter,
+    updateFilterCriteria,
+    getFilterCriteria,
+  } = useGraphFilter();
   const filterAttribute: FilterCriteria = getFilterCriteria(idx) ?? {};
 
   const onSelectChange = useCallback(

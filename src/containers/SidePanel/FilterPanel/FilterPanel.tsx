@@ -4,16 +4,16 @@ import { useSelector } from 'react-redux';
 import Header from '../Header';
 import FilterSelection from './FilterSelection';
 import AddFilterButton from './AddFilterButton';
+import useGraphFilter from './hooks/UseGraphFilter';
 
 import { getGraphFlatten } from '../../../redux';
 import { Field, GraphFields } from '../../Graph';
 import { SelectOptions } from '../../../components/SelectVariable/SelectVariable';
-import useGraphFilter from './hooks/UseGraphFilter';
 
 const FilterPanel: FC = () => {
   const graphFlatten = useSelector((state) => getGraphFlatten(state));
   const graphFields: GraphFields = graphFlatten.metadata.fields;
-  const [filterOptions, { addFilter }] = useGraphFilter();
+  const { filterOptions, addFilter } = useGraphFilter();
 
   const nodeOptions = useMemo(
     () =>

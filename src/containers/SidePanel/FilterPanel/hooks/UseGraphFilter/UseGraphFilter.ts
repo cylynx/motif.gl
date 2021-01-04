@@ -3,8 +3,9 @@ import shortid from 'shortid';
 
 import { Value } from 'baseui/select';
 import { useDispatch, useSelector } from 'react-redux';
-import { GraphFilterAction, GraphAttribute } from './types';
+import { GraphFilterActions } from './types';
 import {
+  GraphAttribute,
   Node,
   Edge,
   GraphData,
@@ -19,7 +20,7 @@ import {
   getFilterOptions,
 } from '../../../../../redux';
 
-const useGraphFilter = (): GraphFilterAction => {
+const useGraphFilter = (): GraphFilterActions => {
   const dispatch = useDispatch();
   const filterOptions: FilterOptions = useSelector((state) =>
     getFilterOptions(state),
@@ -70,17 +71,15 @@ const useGraphFilter = (): GraphFilterAction => {
     dispatch(updateFilterAttributes({ key, criteria }));
   };
 
-  return [
+  return {
     filterOptions,
-    {
-      getStringOptions,
-      getFilterCriteria,
-      addFilter,
-      deleteFilter,
-      updateFilterCriteria,
-      resetFilter,
-    },
-  ] as GraphFilterAction;
+    getStringOptions,
+    getFilterCriteria,
+    addFilter,
+    deleteFilter,
+    updateFilterCriteria,
+    resetFilter,
+  } as GraphFilterActions;
 };
 
 export default useGraphFilter;

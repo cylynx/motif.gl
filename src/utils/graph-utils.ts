@@ -8,8 +8,6 @@ import * as Graph from '../containers/Graph/types';
 import { flattenObject, ALL_FIELD_TYPES } from '../processors/data-processors';
 import { styleEdges } from './style-edges';
 import { styleNodes } from './style-nodes';
-import { Node, Edge } from '../containers/Graph';
-import { GraphAttribute } from '../containers/SidePanel/FilterPanel/hooks/UseGraphFilter/types';
 
 type MinMax = {
   min: number;
@@ -525,7 +523,7 @@ export const filterGraph = (
   return filteredGraph;
 };
 
-const hasGraphFilters = (value: FilterArray, type: GraphAttribute) => {
+const hasGraphFilters = (value: FilterArray, type: Graph.GraphAttribute) => {
   const { 1: criteria } = value;
   const { isFilterReady, from } = criteria as Graph.FilterCriteria;
   return from === type && isFilterReady;
@@ -538,14 +536,14 @@ const hasGraphFilters = (value: FilterArray, type: GraphAttribute) => {
  *
  * @param {EdgeNode[]} nodes
  * @param {FilterArray[]} filtersArray
- * @param {GraphAttribute} type
+ * @param {Graph.GraphAttribute} type
  *
  * @return {Node[]}
  */
 const filterGraphEdgeNodes = (
   nodes: Graph.EdgeNode[],
   filtersArray: FilterArray[],
-  type: GraphAttribute,
+  type: Graph.GraphAttribute,
 ): Graph.EdgeNode[] => {
   const dynamicFilters: any[] = [];
 
@@ -616,10 +614,10 @@ const connectEdges = (
  * Obtain the associated nodes with the given edges.
  * 1. obtain nodes based on source and targets
  *
- * @param {Edge[]} filteredEdges
- * @param {Node[]} nodes
+ * @param {Graph.Edge[]} filteredEdges
+ * @param {Graph.Node[]} nodes
  *
- * @return {Node[]}
+ * @return {Graph.Node[]}
  */
 const connectNodes = (
   filteredEdges: Graph.Edge[],

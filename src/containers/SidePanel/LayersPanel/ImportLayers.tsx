@@ -1,8 +1,11 @@
 import React, { Fragment } from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
 import { LabelSmall, ParagraphSmall } from 'baseui/typography';
+import useGraphFilter from '../FilterPanel/hooks/UseGraphFilter';
+import DndList from '../../../components/DndList';
 import {
   updateGraphList,
   deleteGraphList,
@@ -10,7 +13,6 @@ import {
 } from '../../../redux/graph-slice';
 import { openDataTableModal } from '../../../redux/ui-slice';
 import { Statistic } from '../../../components/ui';
-import DndList from '../../../components/DndList';
 import { countProperty } from '../../../utils/graph-utils';
 import * as Graph from '../../Graph/types';
 import { getGraphList, getGraphVisible, getAccessors } from '../../../redux';
@@ -111,6 +113,7 @@ const LayerDetailed = ({
 const ImportLayers = () => {
   const dispatch = useDispatch();
   const graphList = useSelector((state) => getGraphList(state));
+  const { resetFilter } = useGraphFilter();
 
   const importItems = graphList.map((graph: Graph.GraphData, index: number) => {
     let title = `import ${index}`;
@@ -133,6 +136,7 @@ const ImportLayers = () => {
   };
 
   const onDelete = (index: number) => {
+    resetFilter();
     dispatch(deleteGraphList(index));
   };
 
