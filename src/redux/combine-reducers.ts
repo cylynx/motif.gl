@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { combineReducers, createSelector } from '@reduxjs/toolkit';
 import undoable, { excludeAction, GroupByFunction } from 'redux-undo';
 import produce from 'immer';
@@ -62,7 +63,7 @@ export const getStyleOptions = (state: CombinedReducer): Graph.StyleOptions =>
 export const getFilterOptions = (state: CombinedReducer): Graph.FilterOptions =>
   clientState(state).graph.present.filterOptions;
 
-// Selector to perform filter on graph data
+// Selector to perform filter on graph datas
 export const getGraphFiltered = createSelector(
   [getGraphFlatten, getFilterOptions],
   (graphFlatten: GraphData, filterOptions: FilterOptions) => {
