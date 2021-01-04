@@ -8,7 +8,6 @@ import * as LAYOUT from '../constants/layout-options';
 import * as Graph from '../containers/Graph/types';
 import { combineProcessedData } from '../utils/graph-utils';
 import { generateDefaultColorMap } from '../utils/style-nodes';
-import { FilterCriteria } from '../containers/Graph';
 
 export const updateSelections = (state: GraphState, data: Graph.GraphData) => {
   const currentNodeFields = state.nodeSelection.map((x) => x.id);
@@ -269,7 +268,7 @@ const graph = createSlice({
     },
     updateFilterAttributes(
       state,
-      action: PayloadAction<{ key: string; criteria: FilterCriteria }>,
+      action: PayloadAction<{ key: string; criteria: Graph.FilterCriteria }>,
     ) {
       const { key, criteria } = action.payload;
       Object.assign(state.filterOptions, {
