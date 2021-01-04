@@ -4,10 +4,12 @@ import get from 'lodash/get';
 import set from 'lodash/set';
 
 import { Option } from 'baseui/select';
+import { isWithinInterval } from 'date-fns';
 import * as Graph from '../containers/Graph/types';
 import { flattenObject, ALL_FIELD_TYPES } from '../processors/data-processors';
 import { styleEdges } from './style-edges';
 import { styleNodes } from './style-nodes';
+import { unixTimeConverter } from './data-utils';
 
 type MinMax = {
   min: number;
@@ -570,10 +572,52 @@ const filterGraphEdgeNodes = (
         return accFilter;
       }
 
-      const [min, max] = range;
-      accFilter.push(
-        (node: Graph.EdgeNode) => min <= get(node, id) && max >= get(node, id),
-      );
+      if (analyzerType === 'DATETIME' || analyzerType === 'DATE') {
+        const isDateTimeWithinRange = (node: Graph.EdgeNode): boolean => {
+          const [startDate, endDate] = range;
+          const dateTime: Date = new Date(get(node, id));
+          const startInterval: Date = new Date(startDate);
+          const endInterval: Date = new Date(endDate);
+          const isWithinRange: boolean = isWithinInterval(dateTime, {
+            start: startInterval,
+            end: endInterval,
+          });
+
+          return isWithinRange;
+        };
+        accFilter.push(isDateTimeWithinRange);
+        return accFilter;
+      }
+
+      if (analyzerType === 'TIME') {
+        const isTimeWithinRange = (node: Graph.EdgeNode): boolean => {
+          const [startDate, endDate] = range;
+          const timeInUnix: number = unixTimeConverter(
+            get(node, id),
+            analyzerType,
+          );
+          const dateTime: Date = new Date(timeInUnix);
+          const startInterval: Date = new Date(startDate);
+          const endInterval: Date = new Date(endDate);
+
+          const isWithinRange: boolean = isWithinInterval(dateTime, {
+            start: startInterval,
+            end: endInterval,
+          });
+
+          return isWithinRange;
+        };
+
+        accFilter.push(isTimeWithinRange);
+        return accFilter;
+      }
+
+      // analyzerType ("INT", "FLOAT", "NUMBER")
+      const isNumericWithinRange = (node: Graph.EdgeNode): boolean => {
+        const [min, max] = range;
+        return min <= get(node, id) && max >= get(node, id);
+      };
+      accFilter.push(isNumericWithinRange);
       return accFilter;
     }, dynamicFilters);
 

@@ -6,6 +6,7 @@ import { HistogramBin } from '../../../../utils/data-utils';
 export type HistogramProp = {
   domain: [number, number];
   data: HistogramBin[];
+  step: number;
   dataType: string;
 };
 
@@ -20,7 +21,7 @@ const FilterSelectionRangePlot: FC<FilterSelectionContentProps> = ({
   onChangeRange,
   value,
 }) => {
-  const { domain, data, dataType } = histogram;
+  const { domain, data, dataType, step } = histogram;
   return (
     <Block
       padding='scale200'
@@ -30,9 +31,10 @@ const FilterSelectionRangePlot: FC<FilterSelectionContentProps> = ({
     >
       <RangePlot
         range={domain}
-        value={value}
         histogram={data}
+        step={step}
         dataType={dataType}
+        value={value}
         onChange={onChangeRange}
         width={275}
         height={90}

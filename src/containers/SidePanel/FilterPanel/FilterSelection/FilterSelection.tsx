@@ -60,7 +60,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
       }
 
       if (analyzerType !== 'STRING') {
-        const { domain, histogram } = getFieldDomain(
+        const { domain, step, histogram } = getFieldDomain(
           graphFlatten[from],
           (x) => x[id],
           analyzerType,
@@ -68,6 +68,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
 
         const histogramProp: HistogramProp = {
           domain,
+          step,
           data: histogram,
           dataType: analyzerType,
         };
