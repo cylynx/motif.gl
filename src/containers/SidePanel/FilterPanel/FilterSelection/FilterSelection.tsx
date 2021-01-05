@@ -40,6 +40,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
       }
 
       const { id, from, analyzerType } = obj;
+      console.log(id, from);
 
       // update redux filter options
       const filterCriteria: FilterCriteria = {

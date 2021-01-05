@@ -2,7 +2,6 @@
 import React from 'react';
 import { Select } from 'baseui/select';
 import { Block } from 'baseui/block';
-import { Theme } from 'baseui/theme';
 import { getIcon, TypeProps } from '../TagData';
 
 export type SelectVariableOption = {
@@ -13,6 +12,7 @@ export type SelectVariableOption = {
   analyzerType?: string;
   __optgroup?: string;
   type: TypeProps;
+  optionKey?: string;
 };
 
 export type SelectOptions = {

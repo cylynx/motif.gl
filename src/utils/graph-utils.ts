@@ -477,6 +477,30 @@ export const filterGraph = (
     return graphFlatten;
   }
 
+  if (hasEdgeFilters) {
+    const { nodes, edges } = graphFlatten;
+    const filteredEdges: Graph.Edge[] = filterGraphEdgeNodes(
+      edges,
+      filtersArray,
+      'edges',
+    );
+
+    const connectedNodes: Graph.Node[] = connectNodes(filteredEdges, nodes);
+    // const combinedNodes: Graph.Node[] = removeDuplicates(
+    //   [...graphFlatten.nodes, ...connectedNodes],
+    //   'id',
+    // );
+    // const combinedEdges: Graph.Edge[] = removeDuplicates(
+    //   [...graphFlatten.edges, ...filteredEdges],
+    //   'id',
+    // );
+
+    Object.assign(graphFlatten, {
+      nodes: connectedNodes,
+      edges: filteredEdges,
+    });
+  }
+
   if (hasNodeFilters) {
     const { nodes, edges } = graphFlatten;
     const filteredNodes: Graph.Node[] = filterGraphEdgeNodes(
@@ -487,40 +511,16 @@ export const filterGraph = (
 
     const connectedEdges: Graph.Edge[] = connectEdges(filteredNodes, edges);
 
-    Object.assign(filteredGraph, {
+    Object.assign(graphFlatten, {
       nodes: filteredNodes,
       edges: connectedEdges,
     });
   }
 
-  if (hasEdgeFilters) {
-    const { nodes, edges } = graphFlatten;
-    const filteredEdges: Graph.Edge[] = filterGraphEdgeNodes(
-      edges,
-      filtersArray,
-      'edges',
-    );
-
-    const connectedNodes: Graph.Node[] = connectNodes(filteredEdges, nodes);
-    const combinedNodes: Graph.Node[] = removeDuplicates(
-      [...filteredGraph.nodes, ...connectedNodes],
-      'id',
-    );
-    const combinedEdges: Graph.Edge[] = removeDuplicates(
-      [...filteredGraph.edges, ...filteredEdges],
-      'id',
-    );
-
-    Object.assign(filteredGraph, {
-      nodes: combinedNodes,
-      edges: combinedEdges,
-    });
-  }
-
-  Object.assign(graphFlatten, {
-    nodes: filteredGraph.nodes,
-    edges: filteredGraph.edges,
-  });
+  // Object.assign(graphFlatten, {
+  //   nodes: filteredGraph.nodes,
+  //   edges: filteredGraph.edges,
+  // });
 
   return filteredGraph;
 };

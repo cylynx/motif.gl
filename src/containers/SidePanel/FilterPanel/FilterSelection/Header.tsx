@@ -67,6 +67,7 @@ const Header: FC<FilterSelectionHeaderProps> = ({
         options={selectOptions}
         onChange={onSelectChange}
         placeholder='Select a field'
+        valueKey='optionKey'
       />
       {ButtonGroupMemo}
     </Block>

@@ -18,6 +18,7 @@ const FilterPanel: FC = () => {
   const nodeOptions = useMemo(
     () =>
       (graphFields.nodes as Field[]).map((f: Field) => {
+        const optionKey = `nodes-${f.name}`;
         return {
           id: f.name,
           label: f.name,
@@ -25,6 +26,7 @@ const FilterPanel: FC = () => {
           analyzerType: f.analyzerType,
           format: f.format,
           from: 'nodes',
+          optionKey,
         };
       }),
     [graphFields],
@@ -33,6 +35,7 @@ const FilterPanel: FC = () => {
   const edgeOptions = useMemo(
     () =>
       (graphFields.edges as Field[]).map((f: Field) => {
+        const optionKey = `edges-${f.name}`;
         return {
           id: f.name,
           label: f.name,
@@ -40,6 +43,7 @@ const FilterPanel: FC = () => {
           analyzerType: f.analyzerType,
           format: f.format,
           from: 'edges',
+          optionKey,
         };
       }),
     [graphFields],
