@@ -454,12 +454,6 @@ export const filterGraph = (
   }
 
   const filtersArray: FilterArray[] = Object.entries(filterOptions);
-  const filteredGraph: Graph.GraphData = {
-    nodes: [],
-    edges: [],
-    metadata: graphFlatten.metadata,
-    key: graphFlatten.key,
-  };
 
   const hasNodeFilters:
     | FilterArray
@@ -486,14 +480,6 @@ export const filterGraph = (
     );
 
     const connectedNodes: Graph.Node[] = connectNodes(filteredEdges, nodes);
-    // const combinedNodes: Graph.Node[] = removeDuplicates(
-    //   [...graphFlatten.nodes, ...connectedNodes],
-    //   'id',
-    // );
-    // const combinedEdges: Graph.Edge[] = removeDuplicates(
-    //   [...graphFlatten.edges, ...filteredEdges],
-    //   'id',
-    // );
 
     Object.assign(graphFlatten, {
       nodes: connectedNodes,
@@ -517,12 +503,7 @@ export const filterGraph = (
     });
   }
 
-  // Object.assign(graphFlatten, {
-  //   nodes: filteredGraph.nodes,
-  //   edges: filteredGraph.edges,
-  // });
-
-  return filteredGraph;
+  return graphFlatten;
 };
 
 const hasGraphFilters = (value: FilterArray, type: Graph.GraphAttribute) => {
