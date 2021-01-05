@@ -63,7 +63,7 @@ const VariableInspector = () => {
     setSelection([]);
     setHistogramProp({});
     setValue([]);
-  }, [graphFlatten]);
+  }, [graphVisible]);
 
   const onChangeSpeed = useCallback(
     // eslint-disable-next-line no-shadow
@@ -178,7 +178,7 @@ const VariableInspector = () => {
     (obj) => {
       if (obj?.id) {
         const { domain, step, histogram } = getFieldDomain(
-          graphFlatten[obj.from],
+          graphVisible[obj.from],
           (x) => x[obj.id],
           obj.analyzerType,
         );
@@ -207,7 +207,7 @@ const VariableInspector = () => {
         setValue(false);
       }
     },
-    [graphRef, setSelection, setHistogramProp, setValue, graphFlatten],
+    [graphRef, setSelection, setHistogramProp, setValue, graphVisible],
   );
 
   const LabelSmallMemo = useMemo(
