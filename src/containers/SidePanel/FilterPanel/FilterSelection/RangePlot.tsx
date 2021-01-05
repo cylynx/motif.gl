@@ -21,7 +21,7 @@ const FilterSelectionRangePlot: FC<FilterSelectionContentProps> = ({
   onChangeRange,
   value,
 }) => {
-  const { domain, data, dataType, step } = histogram;
+  const { domain, data, dataType, step = 0.01 } = histogram;
   return (
     <Block
       padding='scale200'

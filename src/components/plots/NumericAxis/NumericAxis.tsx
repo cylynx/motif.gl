@@ -5,7 +5,7 @@ import { axisBottom } from 'd3-axis';
 import { select } from 'd3-selection';
 import { format } from 'd3-format';
 
-import { DomainType, generateNumericTicks, INumericTicks } from './utils';
+import { DomainType, generateNumericTicks, NumericTicks } from './utils';
 
 const MINIMUM_WIDTH: number = 300;
 const MINIMUM_HEIGHT: number = 20;
@@ -43,7 +43,7 @@ const NumericAxis: FC<NumericAxisProps> = ({
         tickValues,
         type,
         decimalPrecision,
-      }: INumericTicks = generateNumericTicks(domain, scale);
+      }: NumericTicks = generateNumericTicks(domain, scale);
 
       const xAxisGenerator = axisBottom(scale)
         .tickSize(0)
