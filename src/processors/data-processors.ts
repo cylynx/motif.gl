@@ -4,7 +4,7 @@ import { range } from 'd3-array';
 import shortid from 'shortid';
 import get from 'lodash/get';
 // @ts-ignore
-import { Analyzer, DATA_TYPES as AnalyzerDATA_TYPES } from 'type-analyzer';
+import { Analyzer, DATA_TYPES as AnalyzerDatatypes } from 'type-analyzer';
 import * as Graph from '../containers/Graph/types';
 import { notNullorUndefined } from '../utils/data-utils';
 
@@ -31,18 +31,16 @@ export const DATASET_FORMATS = {
   csv: 'csv',
 };
 
-export const RESTRICTED_FIELDS = ['id', 'source', 'target'];
-
 export const ACCEPTED_ANALYZER_TYPES = [
-  AnalyzerDATA_TYPES.DATE,
-  AnalyzerDATA_TYPES.TIME,
-  AnalyzerDATA_TYPES.DATETIME,
-  AnalyzerDATA_TYPES.NUMBER,
-  AnalyzerDATA_TYPES.INT,
-  AnalyzerDATA_TYPES.FLOAT,
-  AnalyzerDATA_TYPES.BOOLEAN,
-  AnalyzerDATA_TYPES.STRING,
-  AnalyzerDATA_TYPES.ARRAY,
+  AnalyzerDatatypes.DATE,
+  AnalyzerDatatypes.TIME,
+  AnalyzerDatatypes.DATETIME,
+  AnalyzerDatatypes.NUMBER,
+  AnalyzerDatatypes.INT,
+  AnalyzerDatatypes.FLOAT,
+  AnalyzerDatatypes.BOOLEAN,
+  AnalyzerDatatypes.STRING,
+  AnalyzerDatatypes.ARRAY,
 ];
 
 // if any of these value occurs in csv, parse it to null;
@@ -50,7 +48,7 @@ export const ACCEPTED_ANALYZER_TYPES = [
 // matches empty string
 export const CSV_NULLS = /^(null|NULL|Null|NaN|\/N||)$/;
 
-export const IGNORE_DATA_TYPES = Object.keys(AnalyzerDATA_TYPES).filter(
+export const IGNORE_DATA_TYPES = Object.keys(AnalyzerDatatypes).filter(
   (type) => !ACCEPTED_ANALYZER_TYPES.includes(type),
 );
 
@@ -438,7 +436,6 @@ export const getFieldsFromData = (
     const fieldMeta = metadata.find((m: any) => m.key === field);
     // Excludes undefiend type, restricted fields and style / defaultStyle fields
     if (
-      !RESTRICTED_FIELDS.includes(name) &&
       typeof fieldMeta !== 'undefined' &&
       !name.includes('style.') &&
       !name.includes('defaultStyle.')
@@ -530,7 +527,7 @@ export const analyzerTypeToFieldType = (aType: string): string => {
     ZIPCODE,
     ARRAY,
     OBJECT,
-  } = AnalyzerDATA_TYPES;
+  } = AnalyzerDatatypes;
 
   // unrecognized types
   // CURRENCY PERCENT NONE

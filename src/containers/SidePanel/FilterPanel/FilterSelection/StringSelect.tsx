@@ -12,12 +12,12 @@ type StringSelectType = {
   placeholder?: string;
 };
 
-const StringSelect: FC<StringSelectType> = ({
+const StringSelect = ({
   options,
   value,
   onChange,
   placeholder,
-}) => {
+}: StringSelectType) => {
   return (
     <Block padding='scale400' width='auto' backgroundColor='backgroundTertiary'>
       <LabelXSmall
