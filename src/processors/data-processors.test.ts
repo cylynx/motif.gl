@@ -73,8 +73,8 @@ describe('Parsing csv to json', () => {
   it('should return a GraphData object with valid metadata', async () => {
     const output = await processNodeEdgeCsv(nodeCsv, testCsv);
     expect(output).toHaveProperty('nodes', 'edges', 'metadata');
-    expect(output.metadata.fields.nodes).toHaveLength(1);
-    expect(output.metadata.fields.edges).toHaveLength(2);
+    expect(output.metadata.fields.nodes).toHaveLength(2);
+    expect(output.metadata.fields.edges).toHaveLength(5);
   });
   it('should return distinct nodes in an edgelist csv format', async () => {
     const output = await processEdgeListCsv(testCsv);
@@ -131,8 +131,11 @@ describe('Process csv data to required json format', () => {
     const sample = getSampleForTypeAnalyze(headerRow, edgeJson);
     const fields = getFieldsFromData(sample, headerRow);
     expect(fields.map((x) => x.name)).toMatchObject([
+      'id',
       'data.value',
       'data.blk_ts_unix',
+      'source',
+      'target',
     ]);
   });
   it('should parse timestamps and array correctly', async () => {
@@ -142,10 +145,13 @@ describe('Process csv data to required json format', () => {
     const sample = getSampleForTypeAnalyze(headerRow, edgeJson);
     const fields = getFieldsFromData(sample, headerRow);
     expect(fields.map((x) => x.type)).toMatchObject([
+      'string',
       'date',
       'timestamp',
       'timestamp',
       'array<integer>',
+      'string',
+      'string',
     ]);
   });
   it('should parse simple arrays correctly', async () => {
@@ -155,6 +161,9 @@ describe('Process csv data to required json format', () => {
     const sample = getSampleForTypeAnalyze(headerRow, edgeJson);
     const fields = getFieldsFromData(sample, headerRow);
     expect(fields.map((x) => x.type)).toMatchObject([
+      'string',
+      'string',
+      'string',
       'array<string>',
       'array<string>',
     ]);
@@ -226,8 +235,8 @@ describe('Process json data', () => {
   it('should return metadata with the correct number of fields for nodes and edges', async () => {
     const results = await processJson(TriangleJSON()[0]);
     const { nodes: nodeFields, edges: edgeFields } = results.metadata.fields;
-    expect(nodeFields).toHaveLength(3);
-    expect(edgeFields).toHaveLength(2);
+    expect(nodeFields).toHaveLength(4);
+    expect(edgeFields).toHaveLength(5);
   });
   it('should not parse undefined fields', async () => {
     const results = await processJson(SimpleEdge);
