@@ -8,7 +8,7 @@ export type DomainType = [number, number];
 export interface TickRules {
   [key: string]: number;
 }
-export interface INumericTicks {
+export interface NumericTicks {
   tickValues: number[];
   type: string;
   decimalPrecision?: number;
@@ -22,22 +22,22 @@ export interface INumericTicks {
  * @return {number} - number of ticks for the axis
  */
 export const getTickCounts = (decimalPrecision: number): number => {
-  const DEFAULT_TICK_COUNTS = 6;
+  const DEFAULT_TICK_COUNTS = 5;
 
   if (decimalPrecision < 2) {
     return DEFAULT_TICK_COUNTS;
   }
 
   if (decimalPrecision >= 2 && decimalPrecision <= 4) {
-    return 5;
-  }
-
-  if (decimalPrecision >= 5 && decimalPrecision <= 6) {
     return 4;
   }
 
+  if (decimalPrecision >= 5 && decimalPrecision <= 6) {
+    return 3;
+  }
+
   // decimalPrecision >= 7
-  return 3;
+  return 2;
 };
 
 /**
@@ -77,5 +77,5 @@ export const generateNumericTicks = (
   const tickCounts = 5;
   const tickValues: number[] = scale.ticks(tickCounts);
 
-  return { tickValues, type: 'integer', decimalPrecision: 0 } as INumericTicks;
+  return { tickValues, type: 'integer', decimalPrecision: 0 } as NumericTicks;
 };

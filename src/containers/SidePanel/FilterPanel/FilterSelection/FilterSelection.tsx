@@ -130,7 +130,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
       return (
         <RangePlot
           histogram={filterAttribute.histogram}
-          value={range}
+          value={range ?? filterAttribute.range}
           onChangeRange={onChangeRange}
         />
       );
