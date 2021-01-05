@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { Value } from 'baseui/select';
 import { Block } from 'baseui/block';
 import debounce from 'lodash/debounce';
@@ -32,6 +32,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
     getFilterCriteria,
   } = useGraphFilter();
   const filterAttribute: FilterCriteria = getFilterCriteria(idx) ?? {};
+  const [range, setRange] = useState<[number, number]>(null);
 
   const onSelectChange = useCallback(
     (obj: SelectVariableOption) => {
@@ -77,6 +78,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
         filterCriteria.histogram = histogramProp;
         filterCriteria.range = domain;
         filterCriteria.isFilterReady = true;
+        setRange(domain);
       }
 
       updateFilterCriteria(idx, filterCriteria);
@@ -84,16 +86,21 @@ const FilterSelection: FC<FilterSelectionProps> = ({
     [selectOptions],
   );
 
-  const onChangeRange = useCallback(
+  const onChangeRangeDebounce = useCallback(
     debounce((value: [number, number]) => {
       const filterCriteria: FilterCriteria = {
         ...filterAttribute,
         range: value,
       };
       updateFilterCriteria(idx, filterCriteria);
-    }, 250),
+    }, 150),
     [idx, filterAttribute],
   );
+
+  const onChangeRange = (newRange: [number, number]): void => {
+    setRange(newRange);
+    onChangeRangeDebounce(newRange);
+  };
 
   const onStringSelect = useCallback(
     (value: Value): void => {
@@ -123,7 +130,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
       return (
         <RangePlot
           histogram={filterAttribute.histogram}
-          value={filterAttribute.range}
+          value={range}
           onChangeRange={onChangeRange}
         />
       );
