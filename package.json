@@ -18,7 +18,7 @@
     "prepare": "tsdx build --target node",
     "lint": "tsdx lint",
     "test": "tsdx test",
-    "test:watch": "tsdx test --watch",
+    "test:watch": "tsdx test --watchAll --coverage",
     "test:coverage": "tsdx test --coverage --watchAll=false",
     "size": "size-limit",
     "analyze": "size-limit --why",

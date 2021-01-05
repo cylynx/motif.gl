@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { FilterCriteria } from 'src/containers/Graph';
 import graph, {
   initialState,
   addQuery,
@@ -6,6 +7,11 @@ import graph, {
   updateGraphList,
   deleteGraphList,
   changeVisibilityGraphList,
+  resetState,
+  updateFilterAttributes,
+  GraphState,
+  resetFilters,
+  removeFilterAttributes,
 } from './graph-slice';
 import { importJson } from '../processors/import-data';
 
@@ -30,6 +36,16 @@ const sampleGraphList = importJson(JsonData, initialState.accessors);
 const sampleGraphList2 = importJson(JsonData2, initialState.accessors);
 
 describe('graph reducer', () => {
+  afterEach(() => {
+    graph(undefined, {
+      type: resetState.type,
+    });
+
+    graph(undefined, {
+      type: resetFilters.type,
+    });
+  });
+
   it('should handle initial state', () => {
     expect(graph(undefined, {})).toEqual(initialState);
   });
@@ -125,5 +141,103 @@ describe('graph reducer', () => {
 
     expect(results.graphList).toHaveLength(1);
     expect(results.graphList[0].metadata.visible).toEqual(false);
+  });
+
+  it('updateFilterAttributes should accept a filter attribute', () => {
+    const key = 'randomKey';
+    const criteria: FilterCriteria = {
+      id: 'id',
+      from: 'nodes',
+      selection: [
+        {
+          id: 'id',
+          label: 'id',
+          type: 'string',
+          analyzerType: 'STRING',
+          format: '',
+          from: 'nodes',
+          optionKey: 'nodes-id',
+          __optgroup: 'Nodes',
+        },
+      ],
+      analyzerType: 'STRING',
+      isFilterReady: false,
+      stringOptions: [
+        {
+          id: 'node-1',
+          label: 'node-1',
+        },
+        {
+          id: 'node-2',
+          label: 'node-2',
+        },
+      ],
+    };
+
+    const action: { key: string; criteria: FilterCriteria } = {
+      key,
+      criteria,
+    };
+
+    const results: GraphState = graph(initialState, {
+      type: updateFilterAttributes.type,
+      payload: action,
+    });
+
+    const { filterOptions } = results;
+    expect(filterOptions[key]).toStrictEqual(criteria);
+  });
+
+  it('removeFilterAttributes should delete a filter attribute', () => {
+    const key = 'randomKey';
+    const criteria: FilterCriteria = {
+      id: 'id',
+      from: 'nodes',
+      selection: [
+        {
+          id: 'id',
+          label: 'id',
+          type: 'string',
+          analyzerType: 'STRING',
+          format: '',
+          from: 'nodes',
+          optionKey: 'nodes-id',
+          __optgroup: 'Nodes',
+        },
+      ],
+      analyzerType: 'STRING',
+      isFilterReady: false,
+      stringOptions: [
+        {
+          id: 'node-1',
+          label: 'node-1',
+        },
+        {
+          id: 'node-2',
+          label: 'node-2',
+        },
+      ],
+    };
+
+    const action: { key: string; criteria: FilterCriteria } = {
+      key,
+      criteria,
+    };
+
+    const updateResults: GraphState = graph(initialState, {
+      type: updateFilterAttributes.type,
+      payload: action,
+    });
+
+    const deleteResults: GraphState = graph(updateResults, {
+      type: removeFilterAttributes.type,
+      payload: {
+        key,
+      },
+    });
+
+    const { filterOptions } = deleteResults;
+    expect(filterOptions).toEqual({});
+    expect(filterOptions[key]).toEqual(undefined);
   });
 });
