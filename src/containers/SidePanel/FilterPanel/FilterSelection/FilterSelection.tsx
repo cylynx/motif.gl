@@ -93,7 +93,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
         range: value,
       };
       updateFilterCriteria(idx, filterCriteria);
-    }, 150),
+    }, 250),
     [idx, filterAttribute],
   );
 
