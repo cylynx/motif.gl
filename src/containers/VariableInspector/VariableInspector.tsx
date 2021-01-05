@@ -88,6 +88,7 @@ const VariableInspector = () => {
       graphFields.nodes
         .filter((f) => validTypes.includes(f.type))
         .map((f) => {
+          const optionKey = `nodes-${f.name}`;
           return {
             id: f.name,
             label: f.name,
@@ -95,6 +96,7 @@ const VariableInspector = () => {
             analyzerType: f.analyzerType,
             format: f.format,
             from: 'nodes',
+            optionKey,
           };
         }),
     [graphFields],
@@ -105,6 +107,7 @@ const VariableInspector = () => {
       graphFields.edges
         .filter((f) => validTypes.includes(f.type))
         .map((f) => {
+          const optionKey = `edges-${f.name}`;
           return {
             id: f.name,
             label: f.name,
@@ -112,6 +115,7 @@ const VariableInspector = () => {
             analyzerType: f.analyzerType,
             format: f.format,
             from: 'edges',
+            optionKey,
           };
         }),
     [graphFields],
@@ -217,6 +221,7 @@ const VariableInspector = () => {
         value={selection}
         options={{ Nodes: nodeOptions, Edges: edgeOptions }}
         onChange={(obj) => onChangeSelected(obj)}
+        valueKey='optionKey'
       />
     ),
     [selection, nodeOptions, edgeOptions, onChangeSelected],
