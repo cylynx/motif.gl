@@ -1,6 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { Value } from 'baseui/select';
 import { Block } from 'baseui/block';
+import debounce from 'lodash/debounce';
 import Header from './Header';
 import RangePlot, { HistogramProp } from './RangePlot';
 import StringSelect from './StringSelect';
@@ -40,7 +41,6 @@ const FilterSelection: FC<FilterSelectionProps> = ({
       }
 
       const { id, from, analyzerType } = obj;
-      console.log(id, from);
 
       // update redux filter options
       const filterCriteria: FilterCriteria = {
@@ -84,13 +84,16 @@ const FilterSelection: FC<FilterSelectionProps> = ({
     [selectOptions],
   );
 
-  const onChangeRange = (value: [number, number]) => {
-    const filterCriteria: FilterCriteria = {
-      ...filterAttribute,
-      range: value,
-    };
-    updateFilterCriteria(idx, filterCriteria);
-  };
+  const onChangeRange = useCallback(
+    debounce((value: [number, number]) => {
+      const filterCriteria: FilterCriteria = {
+        ...filterAttribute,
+        range: value,
+      };
+      updateFilterCriteria(idx, filterCriteria);
+    }, 250),
+    [idx, filterAttribute],
+  );
 
   const onStringSelect = useCallback(
     (value: Value): void => {
