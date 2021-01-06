@@ -1,7 +1,6 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { Value } from 'baseui/select';
 import { Block } from 'baseui/block';
-import { Theme } from 'baseui/theme';
 import { LabelXSmall } from 'baseui/typography';
 import MultiStringSelect from '../../../../components/MultiStringSelect';
 
@@ -37,19 +36,6 @@ const StringSelect = ({
         value={value}
         options={options}
         onChange={onChange}
-        overrides={{
-          Tag: {
-            props: {
-              overrides: {
-                Text: {
-                  style: ({ $theme }: { $theme: Theme }) => ({
-                    fontSize: $theme.sizing.scale500,
-                  }),
-                },
-              },
-            },
-          },
-        }}
       />
     </Block>
   );
