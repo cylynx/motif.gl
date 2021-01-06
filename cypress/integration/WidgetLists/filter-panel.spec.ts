@@ -131,7 +131,7 @@ describe('Filter Panel', () => {
         .getReact('Header')
         .getReact('Button', {
           props: {
-            'data-testid': 'filter-selection:delete',
+            'data-testid': 'filter-selection-header:delete',
           },
         })
         .should('exist');

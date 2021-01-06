@@ -141,6 +141,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
         value={filterAttribute.caseSearch}
         options={filterAttribute.stringOptions ?? []}
         placeholder='Enter a value'
+        data-testid='filter-selection:string-select'
         onChange={onStringSelect}
       />
     );

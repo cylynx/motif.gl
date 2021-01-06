@@ -28,7 +28,7 @@ const Header: FC<FilterSelectionHeaderProps> = ({
       <Block paddingLeft='scale100'>
         <ButtonGroup>
           <Button
-            data-testid='filter-selection:delete'
+            data-testid='filter-selection-header:delete'
             size='mini'
             kind='minimal'
             $as='div'
@@ -64,6 +64,7 @@ const Header: FC<FilterSelectionHeaderProps> = ({
       display='flex'
     >
       <SelectVariable
+        data-testid='filter-selection-header:select-variable'
         value={selection}
         options={selectOptions}
         onChange={onSelectChange}
