@@ -76,8 +76,9 @@ export const combineEdges = (
           // count underlying edges
           edgeCount: 0,
         };
-        // combine edge properties to array
+        // combine edge properties to array exclude id, source and target
         fields
+          .filter((field) => !['id', 'source', 'target'].includes(field.name))
           .map((field) => field.name)
           .forEach((field) => {
             if (isUndefined(get(item, field))) set(item, field, []);
