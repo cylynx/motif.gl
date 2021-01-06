@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
 import { LabelSmall, ParagraphSmall } from 'baseui/typography';
-import useGraphFilter from '../FilterPanel/hooks/UseGraphFilter';
 import DndList from '../../../components/DndList';
 import {
   updateGraphList,
@@ -113,7 +112,6 @@ const LayerDetailed = ({
 const ImportLayers = () => {
   const dispatch = useDispatch();
   const graphList = useSelector((state) => getGraphList(state));
-  const { resetFilter } = useGraphFilter();
 
   const importItems = graphList.map((graph: Graph.GraphData, index: number) => {
     let title = `import ${index}`;
@@ -136,7 +134,6 @@ const ImportLayers = () => {
   };
 
   const onDelete = (index: number) => {
-    resetFilter();
     dispatch(deleteGraphList(index));
   };
 

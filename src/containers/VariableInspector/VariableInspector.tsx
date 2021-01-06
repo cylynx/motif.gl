@@ -46,6 +46,7 @@ const VariableInspector = () => {
   const [speed, setSpeed] = useState(1);
   const graphFlatten = useSelector((state) => getGraphFlatten(state));
   const graphVisible = useSelector((state) => getGraphVisible(state));
+  console.log(graphVisible);
   const graphFields = graphFlatten.metadata.fields;
 
   /**
