@@ -46,11 +46,10 @@ const VariableInspector = () => {
   const [speed, setSpeed] = useState(1);
   const graphFlatten = useSelector((state) => getGraphFlatten(state));
   const graphVisible = useSelector((state) => getGraphVisible(state));
-  console.log(graphVisible);
   const graphFields = graphFlatten.metadata.fields;
 
   /**
-   * Any modification on the data list shall reset variable inspector.
+   * Any modification on the graph visible shall reset variable inspector.
    * - Prevent misleading use-case. (inspector values remain when no data in canvas)
    * - Prevent incosistencies during time-series analysis.
    * - Old selection, histogram and x-axis remains
