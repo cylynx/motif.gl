@@ -35,6 +35,7 @@ import {
   BiReset,
   BiRocket,
 } from 'react-icons/bi';
+import { BsSlash } from 'react-icons/bs';
 import { VscSymbolKey, VscCircleOutline } from 'react-icons/vsc';
 import { IconBaseProps } from 'react-icons';
 
@@ -242,4 +243,10 @@ export const Rocket = ({ children, size = 16, ...rest }: IconBaseProps) => (
   <BiRocket size={size} {...rest}>
     {children}
   </BiRocket>
+);
+
+export const Slash = ({ children, size = 16, ...rest }: IconBaseProps) => (
+  <BsSlash size={size} {...rest}>
+    {children}
+  </BsSlash>
 );

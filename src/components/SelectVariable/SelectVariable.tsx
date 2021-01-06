@@ -41,7 +41,7 @@ const testOptions = {
 const getValueLabel = ({ option }: { option: SelectVariableOption }) => {
   return (
     <Block display='flex' alignItems='center'>
-      <Block as='span' position='relative' top='1px'>
+      <Block as='span' position='relative' top='3px'>
         {getIcon(option.from)}
       </Block>
       {getIcon(option.type)}
