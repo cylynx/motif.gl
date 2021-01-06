@@ -10,7 +10,6 @@ export type SelectVariableOption = {
   from?: string;
   format?: string;
   analyzerType?: string;
-  __optgroup?: string;
   type: TypeProps;
   optionKey?: string;
 };
