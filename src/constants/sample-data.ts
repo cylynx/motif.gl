@@ -5,7 +5,9 @@ import mock from '../utils/mock';
 import * as Graph from '../containers/Graph/types';
 
 export const RandomData = () => {
-  const data = mock(15).random().graphin();
+  const data = mock(15)
+    .random()
+    .graphin();
   data.nodes.forEach((n) => {
     n.numeric = Math.floor(Math.random() * 100 + 1);
   });
@@ -16,7 +18,9 @@ export const RandomData = () => {
   return data;
 };
 export const CircleData = () => {
-  const data = mock(10).circle().graphin();
+  const data = mock(10)
+    .circle()
+    .graphin();
   data.edges.forEach((e) => {
     e.numeric = Math.floor(Math.random() * 10 + 1);
   });
@@ -135,6 +139,15 @@ export const TriangleJSON = (): Graph.GraphList => [
     },
   },
 ];
+
+export const BankData = () =>
+  fetch(
+    'https://storage.googleapis.com/cylynx-landing-content/banking-connections-demo.json',
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      return data;
+    });
 
 export const MiserablesData = () =>
   fetch(

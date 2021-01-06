@@ -3,19 +3,19 @@ import 'cypress-react-selector';
 import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
 import { DndItem } from '../../../src/components/DndList';
 
-describe('Import Random Graph', () => {
+describe('Import Bank Connections', () => {
   before(() => {
     cy.visit('/');
     cy.waitForReact();
   });
 
-  it('should import Random Graph successfully', () => {
+  it('should import Bank connections successfully', () => {
     // switch tabs to sample data
     cy.switchTab('sample-data');
 
     // import sample data by clicking random graph
     cy.react('Cell', {
-      props: { 'data-testid': SampleData.RANDOM_GRAPH },
+      props: { 'data-testid': SampleData.BANK },
     })
       .find('Button')
       .click();
@@ -27,32 +27,32 @@ describe('Import Random Graph', () => {
       .should('deep.eq', 'concentric');
   });
 
-  it('should render 7 edges in Graphin', () => {
+  it('should render 23 edges in Graphin', () => {
     cy.getReact('Graph')
       .getProps('data.edges')
-      .should('have.length', 7);
+      .should('have.length', 23);
   });
 
-  it('should render 15 nodes in Graphin', () => {
+  it('should render 17 nodes in Graphin', () => {
     cy.getReact('Graph')
       .getProps('data.nodes')
-      .should('have.length', 15);
+      .should('have.length', 17);
   });
 
-  it('should display 15 nodes count in Nodes label', () => {
+  it('should display 17 nodes count in Nodes label', () => {
     cy.getReact('Statistic', {
       props: { 'data-testid': 'nodes-count' },
     })
       .getProps('value')
-      .should('deep.eq', 15);
+      .should('deep.eq', 17);
   });
 
-  it('should display 7 edges count in Edges label', () => {
+  it('should display 23 edges count in Edges label', () => {
     cy.getReact('Statistic', {
       props: { 'data-testid': 'edges-count' },
     })
       .getProps('value')
-      .should('deep.eq', 7);
+      .should('deep.eq', 23);
   });
 
   it('should display one row for data list', () => {
@@ -61,12 +61,12 @@ describe('Import Random Graph', () => {
       .should('have.length', 1);
   });
 
-  it('should display data list name [Random Data]', () => {
+  it('should display data list name [banking-connections]', () => {
     cy.getReact('DndList')
       .getProps('items')
       .should(($els: DndItem[]) => {
         const isRandomDataExist = $els.find(
-          (el: DndItem) => el.title === 'Random Data',
+          (el: DndItem) => el.title === 'banking-connections',
         );
         expect(isRandomDataExist.isVisible).to.be.true;
       });

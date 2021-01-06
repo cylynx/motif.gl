@@ -15,6 +15,7 @@ export enum SampleData {
   SIMPLE_GRAPH,
   CIRCLE_GRAPH,
   RANDOM_GRAPH,
+  BANK,
   NETWORK,
   MISERABLE,
   AA,
@@ -30,15 +31,6 @@ export type SampleDataItem = {
 };
 
 const sampleData: SampleDataItem[] = [
-  {
-    data: DATA.RandomData,
-    title: 'Random Graph',
-    description: 'A small random dataset to get started.',
-    key: SampleData.RANDOM_GRAPH,
-    type: 'json',
-    src:
-      'https://storage.googleapis.com/cylynx-landing-content/random-data.png',
-  },
   {
     data: DATA.CircleData,
     title: 'Circle Graph',
@@ -57,6 +49,16 @@ const sampleData: SampleDataItem[] = [
     type: 'json',
     src:
       'https://storage.googleapis.com/cylynx-landing-content/circle-random-data.png',
+  },
+  {
+    data: DATA.BankData,
+    title: 'Banking Connections',
+    description:
+      'Sample banking data with transfer, ownership, payments connections and rich data types. Use a sequential layout and try out the time-series filters and playback.',
+    key: SampleData.BANK,
+    type: 'json',
+    src:
+      'https://storage.googleapis.com/cylynx-landing-content/bank-connections.png',
   },
   {
     data: DATA.MiserablesData,
