@@ -19,6 +19,8 @@ describe('Import Bank Connections', () => {
     })
       .find('Button')
       .click();
+
+    cy.wait(500);
   });
 
   it('should display layout in Concentric', () => {
@@ -28,15 +30,11 @@ describe('Import Bank Connections', () => {
   });
 
   it('should render 23 edges in Graphin', () => {
-    cy.getReact('Graph')
-      .getProps('data.edges')
-      .should('have.length', 23);
+    cy.getReact('Graph').getProps('data.edges').should('have.length', 23);
   });
 
   it('should render 17 nodes in Graphin', () => {
-    cy.getReact('Graph')
-      .getProps('data.nodes')
-      .should('have.length', 17);
+    cy.getReact('Graph').getProps('data.nodes').should('have.length', 17);
   });
 
   it('should display 17 nodes count in Nodes label', () => {
@@ -56,9 +54,7 @@ describe('Import Bank Connections', () => {
   });
 
   it('should display one row for data list', () => {
-    cy.getReact('DndList')
-      .getProps('items')
-      .should('have.length', 1);
+    cy.getReact('DndList').getProps('items').should('have.length', 1);
   });
 
   it('should display data list name [banking-connections]', () => {
