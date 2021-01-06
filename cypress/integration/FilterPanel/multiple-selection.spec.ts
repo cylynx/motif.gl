@@ -226,7 +226,7 @@ describe('Multiple Selection', () => {
   describe('Numeric and String filter', () => {
     beforeEach(() => {
       // switch to filter panel
-      cy.switchPanel('layers');
+      cy.switchPanel('filters');
 
       cy.react('AddFilterButton').click();
     });

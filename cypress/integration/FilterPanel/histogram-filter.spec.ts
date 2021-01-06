@@ -18,16 +18,7 @@ describe('Histogram Filters', () => {
       .click();
 
     // switch to filter panel
-    cy.react('Block', {
-      props: {
-        'data-testid': 'filters',
-      },
-      exact: true,
-    })
-      .react('IconButton', {
-        props: { id: 'filters', group: 'main' },
-      })
-      .click();
+    cy.switchPanel('filters');
 
     cy.react('AddFilterButton').click();
   });
@@ -37,28 +28,11 @@ describe('Histogram Filters', () => {
   });
 
   it('should filter with Numeric Variable', () => {
-    // type risk score as numeric variable
-    cy.react('FilterSelection')
-      .react('Header')
-      .react('SelectVariable', {
-        props: {
-          'data-testid': 'filter-selection-header:select-variable',
-        },
-      })
-      .first()
-      .type('risk_score{enter}');
+    // perform selection
+    cy.selectFilterSelection('risk_score{enter}', 'first');
 
     // switch to layer panel
-    cy.react('Block', {
-      props: {
-        'data-testid': 'layers',
-      },
-      exact: true,
-    })
-      .react('IconButton', {
-        props: { id: 'layers', group: 'main' },
-      })
-      .click();
+    cy.switchPanel('layers');
 
     // results
     cy.getReact('Graph').getProps('data.nodes').should('have.length', 7);
@@ -66,28 +40,11 @@ describe('Histogram Filters', () => {
   });
 
   it('should filter with DateTime Variable', () => {
-    // select variable
-    cy.react('FilterSelection')
-      .react('Header')
-      .react('SelectVariable', {
-        props: {
-          'data-testid': 'filter-selection-header:select-variable',
-        },
-      })
-      .first()
-      .type('create_date{enter}');
+    // perform selection
+    cy.selectFilterSelection('create_date{enter}', 'first');
 
     // switch to layer panel
-    cy.react('Block', {
-      props: {
-        'data-testid': 'layers',
-      },
-      exact: true,
-    })
-      .react('IconButton', {
-        props: { id: 'layers', group: 'main' },
-      })
-      .click();
+    cy.switchPanel('layers');
 
     // results
     cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
@@ -95,28 +52,11 @@ describe('Histogram Filters', () => {
   });
 
   it('should filter with Date Variable', () => {
-    // select variable
-    cy.react('FilterSelection')
-      .react('Header')
-      .react('SelectVariable', {
-        props: {
-          'data-testid': 'filter-selection-header:select-variable',
-        },
-      })
-      .first()
-      .type('date{enter}');
+    // perform selection
+    cy.selectFilterSelection('date{enter}', 'first');
 
     // switch to layer panel
-    cy.react('Block', {
-      props: {
-        'data-testid': 'layers',
-      },
-      exact: true,
-    })
-      .react('IconButton', {
-        props: { id: 'layers', group: 'main' },
-      })
-      .click();
+    cy.switchPanel('layers');
 
     // results
     cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
@@ -124,28 +64,11 @@ describe('Histogram Filters', () => {
   });
 
   it('should filter with Time Variable', () => {
-    // select variable
-    cy.react('FilterSelection')
-      .react('Header')
-      .react('SelectVariable', {
-        props: {
-          'data-testid': 'filter-selection-header:select-variable',
-        },
-      })
-      .first()
-      .type('time{enter}');
+    // perform selection
+    cy.selectFilterSelection('time{enter}', 'first');
 
     // switch to layer panel
-    cy.react('Block', {
-      props: {
-        'data-testid': 'layers',
-      },
-      exact: true,
-    })
-      .react('IconButton', {
-        props: { id: 'layers', group: 'main' },
-      })
-      .click();
+    cy.switchPanel('layers');
 
     // results
     cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
