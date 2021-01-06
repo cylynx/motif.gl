@@ -472,22 +472,6 @@ export const filterGraph = (
     return graphFlatten;
   }
 
-  if (hasEdgeFilters) {
-    const { nodes, edges } = graphFlatten;
-    const filteredEdges: Graph.Edge[] = filterGraphEdgeNodes(
-      edges,
-      filtersArray,
-      'edges',
-    );
-
-    const connectedNodes: Graph.Node[] = connectNodes(filteredEdges, nodes);
-
-    Object.assign(graphFlatten, {
-      nodes: connectedNodes,
-      edges: filteredEdges,
-    });
-  }
-
   if (hasNodeFilters) {
     const { nodes, edges } = graphFlatten;
     const filteredNodes: Graph.Node[] = filterGraphEdgeNodes(
@@ -501,6 +485,22 @@ export const filterGraph = (
     Object.assign(graphFlatten, {
       nodes: filteredNodes,
       edges: connectedEdges,
+    });
+  }
+
+  if (hasEdgeFilters) {
+    const { nodes, edges } = graphFlatten;
+    const filteredEdges: Graph.Edge[] = filterGraphEdgeNodes(
+      edges,
+      filtersArray,
+      'edges',
+    );
+
+    const connectedNodes: Graph.Node[] = connectNodes(filteredEdges, nodes);
+
+    Object.assign(graphFlatten, {
+      nodes: connectedNodes,
+      edges: filteredEdges,
     });
   }
 
