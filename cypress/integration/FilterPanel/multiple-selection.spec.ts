@@ -5,7 +5,7 @@ import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleDat
 describe('Multiple Selection', () => {
   beforeEach(() => {
     cy.visit('/');
-    cy.waitForReact();
+    cy.waitForReact(5000);
 
     // switch tabs to sample data
     cy.switchTab('sample-data');
@@ -579,55 +579,458 @@ describe('Multiple Selection', () => {
     });
   });
 
-  it('Numeric - Single String combination', () => {
-    // perform first selection
-    cy.react('FilterSelection')
-      .react('Header')
-      .react('SelectVariable', {
+  describe('Numeric and String filter', () => {
+    beforeEach(() => {
+      // switch to filter panel
+      cy.react('Block', {
         props: {
-          'data-testid': 'filter-selection-header:select-variable',
+          'data-testid': 'filters',
         },
+        exact: true,
       })
-      .first()
-      .type('risk_score{enter}');
+        .react('IconButton', {
+          props: { id: 'filters', group: 'main' },
+        })
+        .click();
 
-    // perform second selection
-    cy.react('AddFilterButton').click();
-    cy.react('FilterSelection')
-      .react('Header')
-      .react('SelectVariable', {
+      cy.react('AddFilterButton').click();
+    });
+
+    afterEach(() => {
+      cy.react('ClearDataButton').click();
+    });
+
+    it('Numeric - Single String combination', () => {
+      // perform first selection
+      cy.react('FilterSelection')
+        .react('Header')
+        .react('SelectVariable', {
+          props: {
+            'data-testid': 'filter-selection-header:select-variable',
+          },
+        })
+        .first()
+        .type('risk_score{enter}');
+
+      // perform second selection
+      cy.react('AddFilterButton').click();
+      cy.react('FilterSelection')
+        .react('Header')
+        .react('SelectVariable', {
+          props: {
+            'data-testid': 'filter-selection-header:select-variable',
+          },
+        })
+        .last()
+        .type('id{enter}');
+
+      cy.react('FilterSelection')
+        .react('StringSelect', {
+          props: {
+            'data-testid': 'filter-selection:string-select',
+          },
+        })
+        .react('MultiStringSelect')
+        .last()
+        .type('customer_901{enter}');
+
+      // switch to layer panel
+      cy.react('Block', {
         props: {
-          'data-testid': 'filter-selection-header:select-variable',
+          'data-testid': 'layers',
         },
+        exact: true,
       })
-      .last()
-      .type('id{enter}');
+        .react('IconButton', {
+          props: { id: 'layers', group: 'main' },
+        })
+        .click();
 
-    cy.react('FilterSelection')
-      .react('StringSelect', {
+      // results
+      cy.getReact('Graph').getProps('data.nodes').should('have.length', 1);
+
+      cy.getReact('Graph').getProps('data.edges').should('have.length', 0);
+    });
+  });
+
+  describe('String and DateTime filter', () => {
+    beforeEach(() => {
+      // switch to filter panel
+      cy.react('Block', {
         props: {
-          'data-testid': 'filter-selection:string-select',
+          'data-testid': 'filters',
         },
+        exact: true,
       })
-      .react('MultiStringSelect')
-      .last()
-      .type('customer_901{enter}');
+        .react('IconButton', {
+          props: { id: 'filters', group: 'main' },
+        })
+        .click();
 
-    // switch to layer panel
-    cy.react('Block', {
-      props: {
-        'data-testid': 'layers',
-      },
-      exact: true,
-    })
-      .react('IconButton', {
-        props: { id: 'layers', group: 'main' },
+      cy.react('AddFilterButton').click();
+    });
+
+    afterEach(() => {
+      cy.react('ClearDataButton').click();
+    });
+
+    it('Single String - DateTime combination', () => {
+      // perform first selection
+      cy.react('FilterSelection')
+        .react('Header')
+        .react('SelectVariable', {
+          props: {
+            'data-testid': 'filter-selection-header:select-variable',
+          },
+        })
+        .first()
+        .type('create_date{enter}');
+
+      // perform second selection
+      cy.react('AddFilterButton').click();
+      cy.react('FilterSelection')
+        .react('Header')
+        .react('SelectVariable', {
+          props: {
+            'data-testid': 'filter-selection-header:select-variable',
+          },
+        })
+        .last()
+        .type('icon{enter}');
+
+      cy.react('FilterSelection')
+        .react('StringSelect', {
+          props: {
+            'data-testid': 'filter-selection:string-select',
+          },
+        })
+        .react('MultiStringSelect')
+        .last()
+        .type('account_balance{enter}');
+
+      // switch to layer panel
+      cy.react('Block', {
+        props: {
+          'data-testid': 'layers',
+        },
+        exact: true,
       })
-      .click();
+        .react('IconButton', {
+          props: { id: 'layers', group: 'main' },
+        })
+        .click();
 
-    // results
-    cy.getReact('Graph').getProps('data.nodes').should('have.length', 1);
+      // results
+      cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
 
-    cy.getReact('Graph').getProps('data.edges').should('have.length', 0);
+      cy.getReact('Graph').getProps('data.edges').should('have.length', 14);
+    });
+
+    it('Multi String - DateTime combination', () => {
+      // perform first selection
+      cy.react('FilterSelection')
+        .react('Header')
+        .react('SelectVariable', {
+          props: {
+            'data-testid': 'filter-selection-header:select-variable',
+          },
+        })
+        .first()
+        .type('create_date{enter}');
+
+      // perform second selection
+      cy.react('AddFilterButton').click();
+      cy.react('FilterSelection')
+        .react('Header')
+        .react('SelectVariable', {
+          props: {
+            'data-testid': 'filter-selection-header:select-variable',
+          },
+        })
+        .last()
+        .type('icon{enter}');
+
+      cy.react('FilterSelection')
+        .react('StringSelect', {
+          props: {
+            'data-testid': 'filter-selection:string-select',
+          },
+        })
+        .react('MultiStringSelect')
+        .last()
+        .type('account_box{enter}')
+        .type('-{enter}');
+
+      // switch to layer panel
+      cy.react('Block', {
+        props: {
+          'data-testid': 'layers',
+        },
+        exact: true,
+      })
+        .react('IconButton', {
+          props: { id: 'layers', group: 'main' },
+        })
+        .click();
+
+      // results
+      cy.getReact('Graph').getProps('data.nodes').should('have.length', 0);
+
+      cy.getReact('Graph').getProps('data.edges').should('have.length', 0);
+    });
+  });
+
+  describe('String and Time filter', () => {
+    beforeEach(() => {
+      // switch to filter panel
+      cy.react('Block', {
+        props: {
+          'data-testid': 'filters',
+        },
+        exact: true,
+      })
+        .react('IconButton', {
+          props: { id: 'filters', group: 'main' },
+        })
+        .click();
+
+      cy.react('AddFilterButton').click();
+    });
+
+    afterEach(() => {
+      cy.react('ClearDataButton').click();
+    });
+
+    it('Single String - Time combination', () => {
+      // perform first selection
+      cy.react('FilterSelection')
+        .react('Header')
+        .react('SelectVariable', {
+          props: {
+            'data-testid': 'filter-selection-header:select-variable',
+          },
+        })
+        .first()
+        .type('time{enter}');
+
+      // perform second selection
+      cy.react('AddFilterButton').click();
+      cy.react('FilterSelection')
+        .react('Header')
+        .react('SelectVariable', {
+          props: {
+            'data-testid': 'filter-selection-header:select-variable',
+          },
+        })
+        .last()
+        .type('icon{enter}');
+
+      cy.react('FilterSelection')
+        .react('StringSelect', {
+          props: {
+            'data-testid': 'filter-selection:string-select',
+          },
+        })
+        .react('MultiStringSelect')
+        .last()
+        .type('account_balance{enter}');
+
+      // switch to layer panel
+      cy.react('Block', {
+        props: {
+          'data-testid': 'layers',
+        },
+        exact: true,
+      })
+        .react('IconButton', {
+          props: { id: 'layers', group: 'main' },
+        })
+        .click();
+
+      // results
+      cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
+
+      cy.getReact('Graph').getProps('data.edges').should('have.length', 14);
+    });
+
+    it('Multi String - Time combination', () => {
+      // perform first selection
+      cy.react('FilterSelection')
+        .react('Header')
+        .react('SelectVariable', {
+          props: {
+            'data-testid': 'filter-selection-header:select-variable',
+          },
+        })
+        .first()
+        .type('create_date{enter}');
+
+      // perform second selection
+      cy.react('AddFilterButton').click();
+      cy.react('FilterSelection')
+        .react('Header')
+        .react('SelectVariable', {
+          props: {
+            'data-testid': 'filter-selection-header:select-variable',
+          },
+        })
+        .last()
+        .type('icon{enter}');
+
+      cy.react('FilterSelection')
+        .react('StringSelect', {
+          props: {
+            'data-testid': 'filter-selection:string-select',
+          },
+        })
+        .react('MultiStringSelect')
+        .last()
+        .type('account_balance{enter}')
+        .type('-{enter}');
+
+      // switch to layer panel
+      cy.react('Block', {
+        props: {
+          'data-testid': 'layers',
+        },
+        exact: true,
+      })
+        .react('IconButton', {
+          props: { id: 'layers', group: 'main' },
+        })
+        .click();
+
+      // results
+      cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
+
+      cy.getReact('Graph').getProps('data.edges').should('have.length', 14);
+    });
+  });
+
+  describe('String and Date filter', () => {
+    beforeEach(() => {
+      // switch to filter panel
+      cy.react('Block', {
+        props: {
+          'data-testid': 'filters',
+        },
+        exact: true,
+      })
+        .react('IconButton', {
+          props: { id: 'filters', group: 'main' },
+        })
+        .click();
+
+      cy.react('AddFilterButton').click();
+    });
+
+    afterEach(() => {
+      cy.react('ClearDataButton').click();
+    });
+
+    it('Single String - Date combination', () => {
+      // perform first selection
+      cy.react('FilterSelection')
+        .react('Header')
+        .react('SelectVariable', {
+          props: {
+            'data-testid': 'filter-selection-header:select-variable',
+          },
+        })
+        .first()
+        .type('date{enter}');
+
+      // perform second selection
+      cy.react('AddFilterButton').click();
+      cy.react('FilterSelection')
+        .react('Header')
+        .react('SelectVariable', {
+          props: {
+            'data-testid': 'filter-selection-header:select-variable',
+          },
+        })
+        .last()
+        .type('icon{enter}');
+
+      cy.react('FilterSelection')
+        .react('StringSelect', {
+          props: {
+            'data-testid': 'filter-selection:string-select',
+          },
+        })
+        .react('MultiStringSelect')
+        .last()
+        .type('account_balance{enter}');
+
+      // switch to layer panel
+      cy.react('Block', {
+        props: {
+          'data-testid': 'layers',
+        },
+        exact: true,
+      })
+        .react('IconButton', {
+          props: { id: 'layers', group: 'main' },
+        })
+        .click();
+
+      // results
+      cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
+
+      cy.getReact('Graph').getProps('data.edges').should('have.length', 14);
+    });
+
+    it('Multi String - Date combination', () => {
+      // perform first selection
+      cy.react('FilterSelection')
+        .react('Header')
+        .react('SelectVariable', {
+          props: {
+            'data-testid': 'filter-selection-header:select-variable',
+          },
+        })
+        .first()
+        .type('date{enter}');
+
+      // perform second selection
+      cy.react('AddFilterButton').click();
+      cy.react('FilterSelection')
+        .react('Header')
+        .react('SelectVariable', {
+          props: {
+            'data-testid': 'filter-selection-header:select-variable',
+          },
+        })
+        .last()
+        .type('icon{enter}');
+
+      cy.react('FilterSelection')
+        .react('StringSelect', {
+          props: {
+            'data-testid': 'filter-selection:string-select',
+          },
+        })
+        .react('MultiStringSelect')
+        .last()
+        .type('account_balance{enter}')
+        .type('-{enter}');
+
+      // switch to layer panel
+      cy.react('Block', {
+        props: {
+          'data-testid': 'layers',
+        },
+        exact: true,
+      })
+        .react('IconButton', {
+          props: { id: 'layers', group: 'main' },
+        })
+        .click();
+
+      // results
+      cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
+
+      cy.getReact('Graph').getProps('data.edges').should('have.length', 14);
+    });
   });
 });

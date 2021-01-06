@@ -202,8 +202,7 @@ describe('String Filters', () => {
           },
         })
         .react('MultiStringSelect')
-        .type('node-1{enter}')
-        .type('node-0{enter}');
+        .type('node-1{enter}node-0{enter}');
 
       // switch to layer panel
       cy.react('Block', {
