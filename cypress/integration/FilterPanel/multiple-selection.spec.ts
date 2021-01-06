@@ -21,17 +21,7 @@ describe('Multiple Selection', () => {
   describe('Double Strings filter', () => {
     beforeEach(() => {
       // switch to filter panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'filters',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'filters', group: 'main' },
-        })
-        .click();
-
+      cy.switchPanel('filters');
       cy.react('AddFilterButton').click();
     });
 
@@ -41,58 +31,16 @@ describe('Multiple Selection', () => {
 
     it('Single - Single combination', () => {
       // perform first selection
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .first()
-        .type('icon{enter}');
-
-      cy.react('FilterSelection')
-        .react('StringSelect', {
-          props: {
-            'data-testid': 'filter-selection:string-select',
-          },
-        })
-        .react('MultiStringSelect')
-        .type('account_box{enter}');
+      cy.selectFilterSelection('icon{enter}', 'first');
+      cy.filterMultiString('account_box{enter}');
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .last()
-        .type('id{enter}');
-
-      cy.react('FilterSelection')
-        .react('StringSelect', {
-          props: {
-            'data-testid': 'filter-selection:string-select',
-          },
-        })
-        .react('MultiStringSelect')
-        .last()
-        .type('customer_81{enter}');
+      cy.selectFilterSelection('id{enter}', 'last');
+      cy.filterMultiString('customer_81{enter}', 'last');
 
       // switch to layer panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'layers',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'layers', group: 'main' },
-        })
-        .click();
+      cy.switchPanel('layers');
 
       // results
       cy.getReact('Graph').getProps('data.nodes').should('have.length', 1);
@@ -102,59 +50,16 @@ describe('Multiple Selection', () => {
 
     it('Multiple - Single combination', () => {
       // perform first selection
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .first()
-        .type('icon{enter}');
-
-      cy.react('FilterSelection')
-        .react('StringSelect', {
-          props: {
-            'data-testid': 'filter-selection:string-select',
-          },
-        })
-        .react('MultiStringSelect')
-        .type('account_box{enter}');
+      cy.selectFilterSelection('icon{enter}', 'first');
+      cy.filterMultiString('account_box{enter}');
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .last()
-        .type('id{enter}');
-
-      cy.react('FilterSelection')
-        .react('StringSelect', {
-          props: {
-            'data-testid': 'filter-selection:string-select',
-          },
-        })
-        .react('MultiStringSelect')
-        .last()
-        .type('customer_81{enter}')
-        .type('customer_55{enter}');
+      cy.selectFilterSelection('id{enter}', 'last');
+      cy.filterMultiString('customer_81{enter}customer_55{enter}', 'last');
 
       // switch to layer panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'layers',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'layers', group: 'main' },
-        })
-        .click();
+      cy.switchPanel('layers');
 
       // results
       cy.getReact('Graph').getProps('data.nodes').should('have.length', 2);
@@ -164,60 +69,16 @@ describe('Multiple Selection', () => {
 
     it('Multiple - Multiple combination', () => {
       // perform first selection
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .first()
-        .type('customer_type{enter}');
-
-      cy.react('FilterSelection')
-        .react('StringSelect', {
-          props: {
-            'data-testid': 'filter-selection:string-select',
-          },
-        })
-        .react('MultiStringSelect')
-        .type('retail{enter}')
-        .type('-{enter}');
+      cy.selectFilterSelection('customer_type{enter}', 'first');
+      cy.filterMultiString('retail{enter}-{enter}');
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .last()
-        .type('id{enter}');
-
-      cy.react('FilterSelection')
-        .react('StringSelect', {
-          props: {
-            'data-testid': 'filter-selection:string-select',
-          },
-        })
-        .react('MultiStringSelect')
-        .last()
-        .type('customer_81{enter}')
-        .type('customer_55{enter}');
+      cy.selectFilterSelection('id{enter}', 'last');
+      cy.filterMultiString('customer_81{enter}customer_55{enter}', 'last');
 
       // switch to layer panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'layers',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'layers', group: 'main' },
-        })
-        .click();
+      cy.switchPanel('layers');
 
       // results
       cy.getReact('Graph').getProps('data.nodes').should('have.length', 2);
@@ -229,17 +90,7 @@ describe('Multiple Selection', () => {
   describe('Triple Strings filter', () => {
     beforeEach(() => {
       // switch to filter panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'filters',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'filters', group: 'main' },
-        })
-        .click();
-
+      cy.switchPanel('filters');
       cy.react('AddFilterButton').click();
     });
 
@@ -249,83 +100,21 @@ describe('Multiple Selection', () => {
 
     it('Double - Double - Double combination', () => {
       // perform first selection
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .first()
-        .type('customer_type{enter}');
-
-      cy.react('FilterSelection')
-        .react('StringSelect', {
-          props: {
-            'data-testid': 'filter-selection:string-select',
-          },
-        })
-        .react('MultiStringSelect')
-        .type('retail{enter}')
-        .type('-{enter}');
+      cy.selectFilterSelection('customer_type{enter}', 'first');
+      cy.filterMultiString('retail{enter}-{enter}');
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .last()
-        .type('id{enter}');
-
-      cy.react('FilterSelection')
-        .react('StringSelect', {
-          props: {
-            'data-testid': 'filter-selection:string-select',
-          },
-        })
-        .react('MultiStringSelect')
-        .last()
-        .type('customer_81{enter}')
-        .type('customer_55{enter}');
+      cy.selectFilterSelection('id{enter}', 'last');
+      cy.filterMultiString('customer_81{enter}customer_55{enter}', 'last');
 
       // perform third selection
       cy.react('AddFilterButton').click();
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .last()
-        .type('icon{enter}');
-
-      cy.react('FilterSelection')
-        .react('StringSelect', {
-          props: {
-            'data-testid': 'filter-selection:string-select',
-          },
-        })
-        .react('MultiStringSelect')
-        .last()
-        .type('account_box{enter}')
-        .type('-{enter}');
+      cy.selectFilterSelection('icon{enter}', 'last');
+      cy.filterMultiString('account_box{enter}-{enter}', 'last');
 
       // switch to layer panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'layers',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'layers', group: 'main' },
-        })
-        .click();
+      cy.switchPanel('layers');
 
       // results
       cy.getReact('Graph').getProps('data.nodes').should('have.length', 2);
@@ -337,16 +126,7 @@ describe('Multiple Selection', () => {
   describe('Numeric and String filter', () => {
     beforeEach(() => {
       // switch to filter panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'filters',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'filters', group: 'main' },
-        })
-        .click();
+      cy.switchPanel('filters');
 
       cy.react('AddFilterButton').click();
     });
@@ -357,49 +137,15 @@ describe('Multiple Selection', () => {
 
     it('Numeric - Single String combination', () => {
       // perform first selection
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .first()
-        .type('risk_score{enter}');
+      cy.selectFilterSelection('risk_score{enter}', 'first');
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .last()
-        .type('id{enter}');
-
-      cy.react('FilterSelection')
-        .react('StringSelect', {
-          props: {
-            'data-testid': 'filter-selection:string-select',
-          },
-        })
-        .react('MultiStringSelect')
-        .last()
-        .type('customer_901{enter}');
+      cy.selectFilterSelection('id{enter}', 'last');
+      cy.filterMultiString('customer_901{enter}', 'last');
 
       // switch to layer panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'layers',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'layers', group: 'main' },
-        })
-        .click();
+      cy.switchPanel('layers');
 
       // results
       cy.getReact('Graph').getProps('data.nodes').should('have.length', 1);
@@ -409,50 +155,15 @@ describe('Multiple Selection', () => {
 
     it('Numeric - Double String combination', () => {
       // perform first selection
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .first()
-        .type('risk_score{enter}');
+      cy.selectFilterSelection('risk_score{enter}', 'first');
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .last()
-        .type('id{enter}');
-
-      cy.react('FilterSelection')
-        .react('StringSelect', {
-          props: {
-            'data-testid': 'filter-selection:string-select',
-          },
-        })
-        .react('MultiStringSelect')
-        .last()
-        .type('customer_901{enter}')
-        .type('customer_902{enter}');
+      cy.selectFilterSelection('id{enter}', 'last');
+      cy.filterMultiString('customer_901{enter}customer_902{enter}', 'last');
 
       // switch to layer panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'layers',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'layers', group: 'main' },
-        })
-        .click();
+      cy.switchPanel('layers');
 
       // results
       cy.getReact('Graph').getProps('data.nodes').should('have.length', 2);
@@ -464,16 +175,7 @@ describe('Multiple Selection', () => {
   describe('Numeric and Numeric filter', () => {
     beforeEach(() => {
       // switch to filter panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'filters',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'filters', group: 'main' },
-        })
-        .click();
+      cy.switchPanel('filters');
 
       cy.react('AddFilterButton').click();
     });
@@ -484,39 +186,14 @@ describe('Multiple Selection', () => {
 
     it('Double Numeric combination', () => {
       // perform first selection
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .first()
-        .type('amount{enter}');
+      cy.selectFilterSelection('amount{enter}', 'first');
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .last()
-        .type('is_different_bank{enter}');
+      cy.selectFilterSelection('is_different_bank{enter}', 'last');
 
       // switch to layer panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'layers',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'layers', group: 'main' },
-        })
-        .click();
+      cy.switchPanel('layers');
 
       // results
       cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
@@ -526,51 +203,18 @@ describe('Multiple Selection', () => {
 
     it('Triple Numeric combination', () => {
       // perform first selection
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .first()
-        .type('amount{enter}');
+      cy.selectFilterSelection('amount{enter}', 'first');
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .last()
-        .type('is_different_bank{enter}');
+      cy.selectFilterSelection('is_different_bank{enter}', 'last');
 
-      // perform last selection
+      // perform third selection
       cy.react('AddFilterButton').click();
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .last()
-        .type('risk_score{enter}');
+      cy.selectFilterSelection('risk_score{enter}', 'last');
 
       // switch to layer panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'layers',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'layers', group: 'main' },
-        })
-        .click();
+      cy.switchPanel('layers');
 
       // results
       cy.getReact('Graph').getProps('data.nodes').should('have.length', 0);
@@ -582,16 +226,7 @@ describe('Multiple Selection', () => {
   describe('Numeric and String filter', () => {
     beforeEach(() => {
       // switch to filter panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'filters',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'filters', group: 'main' },
-        })
-        .click();
+      cy.switchPanel('layers');
 
       cy.react('AddFilterButton').click();
     });
@@ -602,49 +237,15 @@ describe('Multiple Selection', () => {
 
     it('Numeric - Single String combination', () => {
       // perform first selection
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .first()
-        .type('risk_score{enter}');
+      cy.selectFilterSelection('risk_score{enter}', 'first');
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .last()
-        .type('id{enter}');
-
-      cy.react('FilterSelection')
-        .react('StringSelect', {
-          props: {
-            'data-testid': 'filter-selection:string-select',
-          },
-        })
-        .react('MultiStringSelect')
-        .last()
-        .type('customer_901{enter}');
+      cy.selectFilterSelection('id{enter}', 'last');
+      cy.filterMultiString('customer_901{enter}', 'last');
 
       // switch to layer panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'layers',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'layers', group: 'main' },
-        })
-        .click();
+      cy.switchPanel('layers');
 
       // results
       cy.getReact('Graph').getProps('data.nodes').should('have.length', 1);
@@ -656,17 +257,7 @@ describe('Multiple Selection', () => {
   describe('String and DateTime filter', () => {
     beforeEach(() => {
       // switch to filter panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'filters',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'filters', group: 'main' },
-        })
-        .click();
-
+      cy.switchPanel('filters');
       cy.react('AddFilterButton').click();
     });
 
@@ -676,49 +267,15 @@ describe('Multiple Selection', () => {
 
     it('Single String - DateTime combination', () => {
       // perform first selection
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .first()
-        .type('create_date{enter}');
+      cy.selectFilterSelection('create_date{enter}', 'first');
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .last()
-        .type('icon{enter}');
-
-      cy.react('FilterSelection')
-        .react('StringSelect', {
-          props: {
-            'data-testid': 'filter-selection:string-select',
-          },
-        })
-        .react('MultiStringSelect')
-        .last()
-        .type('account_balance{enter}');
+      cy.selectFilterSelection('icon{enter}', 'last');
+      cy.filterMultiString('account_balance{enter}', 'last');
 
       // switch to layer panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'layers',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'layers', group: 'main' },
-        })
-        .click();
+      cy.switchPanel('layers');
 
       // results
       cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
@@ -728,50 +285,15 @@ describe('Multiple Selection', () => {
 
     it('Multi String - DateTime combination', () => {
       // perform first selection
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .first()
-        .type('create_date{enter}');
+      cy.selectFilterSelection('create_date{enter}', 'first');
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .last()
-        .type('icon{enter}');
-
-      cy.react('FilterSelection')
-        .react('StringSelect', {
-          props: {
-            'data-testid': 'filter-selection:string-select',
-          },
-        })
-        .react('MultiStringSelect')
-        .last()
-        .type('account_box{enter}')
-        .type('-{enter}');
+      cy.selectFilterSelection('icon{enter}', 'last');
+      cy.filterMultiString('account_box{enter}-{enter}', 'last');
 
       // switch to layer panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'layers',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'layers', group: 'main' },
-        })
-        .click();
+      cy.switchPanel('layers');
 
       // results
       cy.getReact('Graph').getProps('data.nodes').should('have.length', 0);
@@ -783,16 +305,7 @@ describe('Multiple Selection', () => {
   describe('String and Time filter', () => {
     beforeEach(() => {
       // switch to filter panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'filters',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'filters', group: 'main' },
-        })
-        .click();
+      cy.switchPanel('filters');
 
       cy.react('AddFilterButton').click();
     });
@@ -803,49 +316,15 @@ describe('Multiple Selection', () => {
 
     it('Single String - Time combination', () => {
       // perform first selection
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .first()
-        .type('time{enter}');
+      cy.selectFilterSelection('time{enter}', 'first');
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .last()
-        .type('icon{enter}');
-
-      cy.react('FilterSelection')
-        .react('StringSelect', {
-          props: {
-            'data-testid': 'filter-selection:string-select',
-          },
-        })
-        .react('MultiStringSelect')
-        .last()
-        .type('account_balance{enter}');
+      cy.selectFilterSelection('icon{enter}', 'last');
+      cy.filterMultiString('account_balance{enter}', 'last');
 
       // switch to layer panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'layers',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'layers', group: 'main' },
-        })
-        .click();
+      cy.switchPanel('layers');
 
       // results
       cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
@@ -855,50 +334,15 @@ describe('Multiple Selection', () => {
 
     it('Multi String - Time combination', () => {
       // perform first selection
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .first()
-        .type('create_date{enter}');
+      cy.selectFilterSelection('create_date{enter}', 'first');
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .last()
-        .type('icon{enter}');
-
-      cy.react('FilterSelection')
-        .react('StringSelect', {
-          props: {
-            'data-testid': 'filter-selection:string-select',
-          },
-        })
-        .react('MultiStringSelect')
-        .last()
-        .type('account_balance{enter}')
-        .type('-{enter}');
+      cy.selectFilterSelection('icon{enter}', 'last');
+      cy.filterMultiString('account_balance{enter}-{enter}', 'last');
 
       // switch to layer panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'layers',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'layers', group: 'main' },
-        })
-        .click();
+      cy.switchPanel('layers');
 
       // results
       cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
@@ -910,17 +354,7 @@ describe('Multiple Selection', () => {
   describe('String and Date filter', () => {
     beforeEach(() => {
       // switch to filter panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'filters',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'filters', group: 'main' },
-        })
-        .click();
-
+      cy.switchPanel('filters');
       cy.react('AddFilterButton').click();
     });
 
@@ -930,49 +364,15 @@ describe('Multiple Selection', () => {
 
     it('Single String - Date combination', () => {
       // perform first selection
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .first()
-        .type('date{enter}');
+      cy.selectFilterSelection('date{enter}', 'first');
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .last()
-        .type('icon{enter}');
-
-      cy.react('FilterSelection')
-        .react('StringSelect', {
-          props: {
-            'data-testid': 'filter-selection:string-select',
-          },
-        })
-        .react('MultiStringSelect')
-        .last()
-        .type('account_balance{enter}');
+      cy.selectFilterSelection('icon{enter}', 'last');
+      cy.filterMultiString('account_balance{enter}', 'last');
 
       // switch to layer panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'layers',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'layers', group: 'main' },
-        })
-        .click();
+      cy.switchPanel('layers');
 
       // results
       cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
@@ -982,50 +382,15 @@ describe('Multiple Selection', () => {
 
     it('Multi String - Date combination', () => {
       // perform first selection
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .first()
-        .type('date{enter}');
+      cy.selectFilterSelection('date{enter}', 'first');
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.react('FilterSelection')
-        .react('Header')
-        .react('SelectVariable', {
-          props: {
-            'data-testid': 'filter-selection-header:select-variable',
-          },
-        })
-        .last()
-        .type('icon{enter}');
-
-      cy.react('FilterSelection')
-        .react('StringSelect', {
-          props: {
-            'data-testid': 'filter-selection:string-select',
-          },
-        })
-        .react('MultiStringSelect')
-        .last()
-        .type('account_balance{enter}')
-        .type('-{enter}');
+      cy.selectFilterSelection('icon{enter}', 'last');
+      cy.filterMultiString('account_balance{enter}-{enter}', 'last');
 
       // switch to layer panel
-      cy.react('Block', {
-        props: {
-          'data-testid': 'layers',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'layers', group: 'main' },
-        })
-        .click();
+      cy.switchPanel('layers');
 
       // results
       cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
