@@ -78,6 +78,7 @@ const FilterPanel: FC = () => {
       <FilterSelection
         graphFlatten={graphFlatten}
         selectOptions={selectOptions}
+        data-testid='filter-panel:filter-selection'
         key={key}
         idx={key}
       />

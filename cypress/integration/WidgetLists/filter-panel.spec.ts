@@ -54,4 +54,15 @@ describe('Filter Panel', () => {
   it('should render AddFilterButton component', () => {
     cy.getReact('FilterPanel').getReact('AddFilterButton').should('exist');
   });
+
+  it('AddFilterButton should be disabled when no data is present', () => {
+    cy.getReact('FilterPanel')
+      .getReact('AddFilterButton')
+      .getProps('disabled')
+      .should('deep.eq', true);
+  });
+
+  it('FilterSelection should not be render when no data is present', () => {
+    cy.get('[data-testid="filter-panel:filter-selection"]').should('not.exist');
+  });
 });
