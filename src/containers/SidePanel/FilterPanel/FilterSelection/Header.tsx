@@ -28,6 +28,7 @@ const Header: FC<FilterSelectionHeaderProps> = ({
       <Block paddingLeft='scale100'>
         <ButtonGroup>
           <Button
+            data-testid='filter-selection:delete'
             size='mini'
             kind='minimal'
             $as='div'
