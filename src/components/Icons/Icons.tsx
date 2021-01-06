@@ -46,9 +46,9 @@ export const Node = ({ children, size = 16, ...rest }: IconBaseProps) => (
 );
 
 export const Edge = ({ children, size = 16, ...rest }: IconBaseProps) => (
-  <HiOutlineShare size={size} {...rest}>
+  <BsSlash strokeWidth='1' size={size} {...rest}>
     {children}
-  </HiOutlineShare>
+  </BsSlash>
 );
 
 export const Network = ({ children, size = 16, ...rest }: IconBaseProps) => (
@@ -243,10 +243,4 @@ export const Rocket = ({ children, size = 16, ...rest }: IconBaseProps) => (
   <BiRocket size={size} {...rest}>
     {children}
   </BiRocket>
-);
-
-export const Slash = ({ children, size = 16, ...rest }: IconBaseProps) => (
-  <BsSlash size={size} {...rest}>
-    {children}
-  </BsSlash>
 );

@@ -94,7 +94,7 @@ export const getIcon = (type: TypeProps) => {
     case 'nodes':
       return <Icon.Node size={16} style={{ paddingRight: '4px' }} />;
     case 'edges':
-      return <Icon.Slash size={16} style={{ paddingRight: '4px' }} />;
+      return <Icon.Edge size={16} style={{ paddingRight: '4px' }} />;
     default:
       return <Icon.Bracket color={colors.gray600} size={0} />;
   }
