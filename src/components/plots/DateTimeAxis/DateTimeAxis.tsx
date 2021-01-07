@@ -3,7 +3,8 @@ import { styled } from 'baseui';
 import { scaleUtc } from 'd3-scale';
 import { axisBottom } from 'd3-axis';
 import { select } from 'd3-selection';
-import { generateDateTimeTicks, dateTimeMultiFormat } from './utils';
+import { format } from "date-fns"; 
+import { generateDateTimeTicks, dateTimeFormatDeterminer } from './utils';
 
 const MINIMUM_WIDTH = 300;
 const MINIMUM_HEIGHT = 20;
@@ -32,12 +33,14 @@ const DateTimeAxis: FC<DateTimeAxisProps> = ({
       if (axis.current === null) return;
 
       const scale = scaleUtc().domain(domain).range([0, width]).nice();
-      const tickValues = generateDateTimeTicks(scale);
+      const tickValues: Date[] = generateDateTimeTicks(scale);
+      const dateTimeFormat: string = dateTimeFormatDeterminer(tickValues);
+
       const xAxisGenerator = axisBottom(scale)
         .tickValues(tickValues)
         .tickSize(0)
         .tickPadding(3)
-        .tickFormat((d) => dateTimeMultiFormat(d));
+        .tickFormat((d: Date) => format(d, dateTimeFormat));
 
       select(axis.current)
         .call(xAxisGenerator)
