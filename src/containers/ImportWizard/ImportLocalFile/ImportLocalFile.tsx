@@ -25,7 +25,7 @@ import {
   importNodeEdgeData,
 } from '../../../redux/add-data-thunk';
 
-import { closeModal, fetchError } from '../../../redux';
+import { closeModal, showToast } from '../../../redux';
 
 type FormValues = {
   dataType: { label: string; id: string }[];
@@ -183,7 +183,14 @@ const ImportLocalFile = () => {
           'Please ensure the correct number of files are uploaded and correctly labelled',
         );
       })
-      .catch((err) => dispatch(fetchError(err)));
+      .catch(() =>
+        dispatch(
+          showToast({
+            message: 'The file provided is not readable',
+            kind: 'negative',
+          }),
+        ),
+      );
     setIsUploading(false);
   };
 

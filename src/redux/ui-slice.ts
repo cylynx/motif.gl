@@ -37,11 +37,6 @@ const ui = createSlice({
       state.modal.content = '';
       state.modal.isOpen = false;
     },
-    fetchError(state, action: PayloadAction<string>) {
-      state.loading = false;
-      state.modal.content = action.payload;
-      state.modal.isOpen = true;
-    },
     fetchDone(state) {
       state.loading = false;
     },
@@ -90,7 +85,6 @@ const ui = createSlice({
 
 export const {
   fetchBegin,
-  fetchError,
   fetchDone,
   closeModal,
   openImportModal,

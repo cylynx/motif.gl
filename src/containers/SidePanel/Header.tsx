@@ -3,7 +3,7 @@ import html2canvas from 'html2canvas';
 import { Block } from 'baseui/block';
 import { useDispatch, useSelector } from 'react-redux';
 import { getGraphList, getUI } from '../../redux';
-import { fetchError, setName } from '../../redux/ui-slice';
+import { showToast, setName } from '../../redux/ui-slice';
 import * as Icon from '../../components/Icons';
 import Editable from '../../components/Editable';
 import HeaderButton, { HeaderButtonProp } from './HeaderButton';
@@ -20,7 +20,7 @@ const exportPNG = () => {
       document.body.removeChild(file);
     });
   } else {
-    fetchError('No graph detected');
+    showToast({ message: 'No graph detected', kind: 'negative' });
   }
 };
 
