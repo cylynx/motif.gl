@@ -4,12 +4,19 @@
 /* eslint-disable no-param-reassign */
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ReactNode, ToastProps, toaster } from 'baseui/toast';
+import { NullableReactText } from './types';
 
 export interface UiState {
   name: string;
   loading: boolean;
   modal: { isOpen: boolean; content: 'import' | string };
   score: any;
+  toast: {
+    key?: NullableReactText;
+    message?: ReactNode;
+    props?: ToastProps;
+  };
 }
 
 export const initialStateUi: UiState = {
@@ -18,6 +25,7 @@ export const initialStateUi: UiState = {
   loading: false,
   modal: { isOpen: true, content: 'import' },
   score: null,
+  toast: {},
 };
 
 const ui = createSlice({
@@ -51,6 +59,12 @@ const ui = createSlice({
     setName(state, action) {
       state.name = action.payload;
     },
+    showToast(state, action: PayloadAction<{ message: string }>) {
+      const { message } = action.payload;
+      state.toast.key = toaster.info(message, {
+        autoHideDuration: 3500,
+      });
+    },
   },
 });
 
@@ -62,6 +76,7 @@ export const {
   openImportModal,
   openDataTableModal,
   setName,
+  showToast,
 } = ui.actions;
 
 export default ui.reducer;

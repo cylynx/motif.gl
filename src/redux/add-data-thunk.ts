@@ -4,7 +4,7 @@ import flatten from 'lodash/flatten';
 import { getGraph } from './combine-reducers';
 import * as Graph from '../containers/Graph/types';
 
-import { fetchBegin, fetchError, fetchDone } from './ui-slice';
+import { fetchBegin, fetchError, fetchDone, showToast } from './ui-slice';
 import { addQuery, processGraphResponse } from './graph-slice';
 import {
   ImportFormat,
@@ -185,6 +185,7 @@ export const importSingleJsonData = (
       processResponse(dispatch, graphList, mainAccessors, graphData);
     })
     .catch((err: Error) => {
-      dispatch(fetchError(err.message));
+      dispatch(showToast({ message: err.message }));
+      // dispatch(fetchError(err.message));
     });
 };
