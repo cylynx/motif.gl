@@ -185,7 +185,7 @@ export const importSingleJsonData = (
       processResponse(dispatch, graphList, mainAccessors, graphData);
     })
     .catch((err: Error) => {
-      dispatch(showToast({ message: err.message }));
-      // dispatch(fetchError(err.message));
+      const { message } = err;
+      dispatch(showToast({ message, kind: 'negative' }));
     });
 };

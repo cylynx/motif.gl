@@ -4,20 +4,20 @@
 /* eslint-disable no-param-reassign */
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ReactNode, ToastProps, toaster } from 'baseui/toast';
-import { NullableReactText } from './types';
+import { toaster, ToastProps } from 'baseui/toast';
+import { ModalState, ShowToastAction, ToastState } from './types';
 
 export interface UiState {
   name: string;
   loading: boolean;
-  modal: { isOpen: boolean; content: 'import' | string };
+  modal: ModalState;
   score: any;
-  toast: {
-    key?: NullableReactText;
-    message?: ReactNode;
-    props?: ToastProps;
-  };
+  toast: ToastState;
 }
+
+const DEFAULT_TOAST_PROPS: ToastProps = {
+  autoHideDuration: 3500,
+};
 
 export const initialStateUi: UiState = {
   name: 'Motif',
@@ -59,11 +59,31 @@ const ui = createSlice({
     setName(state, action) {
       state.name = action.payload;
     },
-    showToast(state, action: PayloadAction<{ message: string }>) {
-      const { message } = action.payload;
-      state.toast.key = toaster.info(message, {
-        autoHideDuration: 3500,
-      });
+    showToast(state, action: PayloadAction<ShowToastAction>) {
+      const { message, kind, props = DEFAULT_TOAST_PROPS } = action.payload;
+      switch (kind) {
+        case 'info':
+          state.toast.key = toaster.info(message, props);
+          break;
+        case 'negative':
+          state.toast.key = toaster.negative(message, props);
+          break;
+        case 'positive':
+          state.toast.key = toaster.positive(message, props);
+          break;
+        case 'warning':
+          state.toast.key = toaster.warning(message, props);
+          break;
+        default:
+          state.toast.key = toaster.info(message, props);
+          break;
+      }
+    },
+    closeToast(state, action) {
+      if (state.toast.key) {
+        toaster.clear(state.toast.key);
+        state.toast = {};
+      }
     },
   },
 });
@@ -77,6 +97,7 @@ export const {
   openDataTableModal,
   setName,
   showToast,
+  closeToast,
 } = ui.actions;
 
 export default ui.reducer;
