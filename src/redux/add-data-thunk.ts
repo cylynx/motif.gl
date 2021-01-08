@@ -1,10 +1,11 @@
 import some from 'lodash/some';
 import isUndefined from 'lodash/isUndefined';
 import flatten from 'lodash/flatten';
-import { getGraph } from './combine-reducers';
+import isEmpty from 'lodash/isEmpty';
+import { getFilterOptions, getGraph } from './combine-reducers';
 import * as Graph from '../containers/Graph/types';
 
-import { fetchBegin, fetchError, fetchDone, showToast } from './ui-slice';
+import { fetchBegin, fetchDone, showToast } from './ui-slice';
 import { addQuery, processGraphResponse } from './graph-slice';
 import {
   ImportFormat,
@@ -14,7 +15,8 @@ import {
   NodeEdgeDataType,
   JsonImport,
 } from '../processors/import-data';
-import { GraphData, GraphList } from '../containers/Graph';
+
+type ImportAccessors = Graph.Accessors | null;
 
 const checkNewData = (
   graphList: Graph.GraphList,
@@ -51,7 +53,38 @@ const processResponse = (
   }
 };
 
-type ImportAccessors = Graph.Accessors | null;
+/**
+ * Display Toast Notification based on Filter Options' presence.
+ *  1. Filter Option is not empty, display warning toast.
+ *  2. Filter Option is empty, display success toast.
+ *
+ * @param {any} dispatch
+ * @param {Graph.FilterOptions} filterOptions
+ *
+ * @return {void}
+ */
+const showImportDataToast = (
+  dispatch: any,
+  filterOptions: Graph.FilterOptions,
+): void => {
+  const isFilterEmpty: boolean = isEmpty(filterOptions);
+  if (isFilterEmpty) {
+    dispatch(
+      showToast({
+        message: 'Data imported succesfully.',
+        kind: 'positive',
+      }),
+    );
+    return;
+  }
+
+  dispatch(
+    showToast({
+      message: 'Data imported with filters applied',
+      kind: 'warning',
+    }),
+  );
+};
 
 /**
  * Thunk to add data to graph - processes CSV and add to graphList
@@ -73,6 +106,7 @@ export const importEdgeListData = (
 
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
+  const filterOptions: Graph.FilterOptions = getFilterOptions(getState());
 
   const batchDataPromises = importData.map((graphData: ImportFormat) => {
     const { data } = graphData;
@@ -82,6 +116,7 @@ export const importEdgeListData = (
   return Promise.all(batchDataPromises)
     .then((graphData: Graph.GraphList) => {
       processResponse(dispatch, graphList, mainAccessors, graphData);
+      showImportDataToast(dispatch, filterOptions);
     })
     .catch((err: Error) => {
       const { message } = err;
@@ -108,6 +143,7 @@ export const importJsonData = (
 
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
+  const filterOptions: Graph.FilterOptions = getFilterOptions(getState());
 
   const batchDataPromises = importData.map((graphData: ImportFormat) => {
     const { data } = graphData;
@@ -118,6 +154,7 @@ export const importJsonData = (
     .then((graphDataArr: Graph.GraphList[]) => {
       const graphData: Graph.GraphList = flatten(graphDataArr);
       processResponse(dispatch, graphList, mainAccessors, graphData);
+      showImportDataToast(dispatch, filterOptions);
     })
     .catch((err: Error) => {
       const { message } = err;
@@ -145,9 +182,10 @@ export const importNodeEdgeData = (
   const { data } = importData;
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
+  const filterOptions: Graph.FilterOptions = getFilterOptions(getState());
 
   const { nodeData, edgeData } = data as NodeEdgeDataType;
-  const newData: Promise<GraphData> = importNodeEdgeCsv(
+  const newData: Promise<Graph.GraphData> = importNodeEdgeCsv(
     nodeData,
     edgeData,
     accessors,
@@ -157,6 +195,7 @@ export const importNodeEdgeData = (
   return newData
     .then((graphData: Graph.GraphData) => {
       processResponse(dispatch, graphList, mainAccessors, graphData);
+      showImportDataToast(dispatch, filterOptions);
     })
     .catch((err: Error) => {
       const { message } = err;
@@ -181,12 +220,17 @@ export const importSingleJsonData = (
   const { data } = importData;
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
+  const filterOptions: Graph.FilterOptions = getFilterOptions(getState());
 
-  const newData: Promise<GraphList> = importJson(data as GraphData, accessors);
+  const newData: Promise<Graph.GraphList> = importJson(
+    data as Graph.GraphData,
+    accessors,
+  );
 
   return newData
-    .then((graphData: GraphList) => {
+    .then((graphData: Graph.GraphList) => {
       processResponse(dispatch, graphList, mainAccessors, graphData);
+      showImportDataToast(dispatch, filterOptions);
     })
     .catch((err: Error) => {
       const { message } = err;
