@@ -45,7 +45,8 @@ const processResponse = (
       dispatch(fetchDone());
     } else {
       dispatch(fetchDone());
-      throw new Error('Data has already been imported');
+      const message = 'Data has already been imported';
+      dispatch(showToast({ message, kind: 'negative' }));
     }
   }
 };
@@ -83,7 +84,8 @@ export const importEdgeListData = (
       processResponse(dispatch, graphList, mainAccessors, graphData);
     })
     .catch((err: Error) => {
-      dispatch(fetchError(err.message));
+      const { message } = err;
+      dispatch(showToast({ message, kind: 'negative' }));
     });
 };
 
@@ -118,7 +120,8 @@ export const importJsonData = (
       processResponse(dispatch, graphList, mainAccessors, graphData);
     })
     .catch((err: Error) => {
-      dispatch(fetchError(err.message));
+      const { message } = err;
+      dispatch(showToast({ message, kind: 'negative' }));
     });
 };
 
@@ -156,7 +159,8 @@ export const importNodeEdgeData = (
       processResponse(dispatch, graphList, mainAccessors, graphData);
     })
     .catch((err: Error) => {
-      dispatch(fetchError(err.message));
+      const { message } = err;
+      dispatch(showToast({ message, kind: 'negative' }));
     });
 };
 
