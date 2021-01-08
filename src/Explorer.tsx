@@ -7,6 +7,7 @@ import { Theme } from 'baseui/theme';
 import { Block } from 'baseui/block';
 import { Modal, ModalBody, SIZE } from 'baseui/modal';
 
+import { ToasterContainer, PLACEMENT } from 'baseui/toast';
 import { PRIMARY_COLOR } from './constants/colors';
 import { Loader } from './components/ui';
 import DataTable from './containers/DataTable';
@@ -51,9 +52,11 @@ export const WidgetContainer = (props: WidgetContainerProps) => {
   if (graphRef && graphRef.current && graphRef.current.graph) {
     return (
       <ThemeProvider theme={theme}>
-        <GraphRefContext.Provider value={graphRef.current}>
-          {children}
-        </GraphRefContext.Provider>
+        <ToasterContainer placement={PLACEMENT.top}>
+          <GraphRefContext.Provider value={graphRef.current}>
+            {children}
+          </GraphRefContext.Provider>
+        </ToasterContainer>
       </ThemeProvider>
     );
   }
