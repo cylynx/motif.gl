@@ -5,7 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 import { getFilterOptions, getGraph } from './combine-reducers';
 import * as Graph from '../containers/Graph/types';
 
-import { fetchBegin, fetchDone, showToast } from './ui-slice';
+import { fetchBegin, fetchDone } from './ui-slice';
 import { addQuery, processGraphResponse } from './graph-slice';
 import {
   ImportFormat,
@@ -15,6 +15,7 @@ import {
   NodeEdgeDataType,
   JsonImport,
 } from '../processors/import-data';
+import { ToastAction } from './actions/Toast';
 
 type ImportAccessors = Graph.Accessors | null;
 
@@ -47,8 +48,7 @@ const processResponse = (
       dispatch(fetchDone());
     } else {
       dispatch(fetchDone());
-      const message = 'Data has already been imported';
-      dispatch(showToast({ message, kind: 'negative' }));
+      throw new Error('Data has already imported');
     }
   }
 };
@@ -69,21 +69,11 @@ const showImportDataToast = (
 ): void => {
   const isFilterEmpty: boolean = isEmpty(filterOptions);
   if (isFilterEmpty) {
-    dispatch(
-      showToast({
-        message: 'Data imported succesfully.',
-        kind: 'positive',
-      }),
-    );
+    dispatch(ToastAction.show('Data imported successfully', 'positive'));
     return;
   }
 
-  dispatch(
-    showToast({
-      message: 'Data imported with filters applied',
-      kind: 'warning',
-    }),
-  );
+  dispatch(ToastAction.show('Data imported with filters applied', 'warning'));
 };
 
 /**
@@ -120,7 +110,7 @@ export const importEdgeListData = (
     })
     .catch((err: Error) => {
       const { message } = err;
-      dispatch(showToast({ message, kind: 'negative' }));
+      dispatch(ToastAction.show(message, 'negative'));
     });
 };
 
@@ -158,7 +148,7 @@ export const importJsonData = (
     })
     .catch((err: Error) => {
       const { message } = err;
-      dispatch(showToast({ message, kind: 'negative' }));
+      dispatch(ToastAction.show(message, 'negative'));
     });
 };
 
@@ -199,7 +189,7 @@ export const importNodeEdgeData = (
     })
     .catch((err: Error) => {
       const { message } = err;
-      dispatch(showToast({ message, kind: 'negative' }));
+      dispatch(ToastAction.show(message, 'negative'));
     });
 };
 
@@ -234,6 +224,6 @@ export const importSingleJsonData = (
     })
     .catch((err: Error) => {
       const { message } = err;
-      dispatch(showToast({ message, kind: 'negative' }));
+      dispatch(ToastAction.show(message, 'negative'));
     });
 };

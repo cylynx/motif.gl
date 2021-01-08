@@ -54,31 +54,11 @@ const ui = createSlice({
     setName(state, action) {
       state.name = action.payload;
     },
-    showToast(state, action: PayloadAction<ShowToastAction>) {
-      const { message, kind, props = DEFAULT_TOAST_PROPS } = action.payload;
-      switch (kind) {
-        case 'info':
-          state.toast.key = toaster.info(message, props);
-          break;
-        case 'negative':
-          state.toast.key = toaster.negative(message, props);
-          break;
-        case 'positive':
-          state.toast.key = toaster.positive(message, props);
-          break;
-        case 'warning':
-          state.toast.key = toaster.warning(message, props);
-          break;
-        default:
-          state.toast.key = toaster.info(message, props);
-          break;
-      }
+    updateToast(state, action: PayloadAction<ShowToastAction>) {
+      state.toast = action.payload;
     },
-    closeToast(state, action) {
-      if (state.toast.key) {
-        toaster.clear(state.toast.key);
-        state.toast = {};
-      }
+    removeToast(state, action) {
+      state.toast = null;
     },
   },
 });
@@ -90,8 +70,8 @@ export const {
   openImportModal,
   openDataTableModal,
   setName,
-  showToast,
-  closeToast,
+  updateToast,
+  removeToast,
 } = ui.actions;
 
 export default ui.reducer;

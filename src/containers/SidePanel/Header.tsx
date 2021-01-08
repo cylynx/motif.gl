@@ -3,10 +3,11 @@ import html2canvas from 'html2canvas';
 import { Block } from 'baseui/block';
 import { useDispatch, useSelector } from 'react-redux';
 import { getGraphList, getUI } from '../../redux';
-import { showToast, setName } from '../../redux/ui-slice';
+import { setName } from '../../redux/ui-slice';
 import * as Icon from '../../components/Icons';
 import Editable from '../../components/Editable';
 import HeaderButton, { HeaderButtonProp } from './HeaderButton';
+import { ToastAction } from '../../redux/actions/Toast';
 
 const exportPNG = () => {
   const graph = document.getElementById('graphin-container');
@@ -20,7 +21,7 @@ const exportPNG = () => {
       document.body.removeChild(file);
     });
   } else {
-    showToast({ message: 'No graph detected', kind: 'negative' });
+    ToastAction.show('No graph detected', 'negative');
   }
 };
 
