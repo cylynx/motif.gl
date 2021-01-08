@@ -1,8 +1,11 @@
 // @ts-nocheck
+import React from 'react';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import cloneDeep from 'lodash/cloneDeep';
 import flatten from 'lodash/flatten';
+import { render } from '@testing-library/react';
+import { ToasterContainer } from 'baseui/toast';
 import {
   importEdgeListData,
   importJsonData,
@@ -15,7 +18,7 @@ import {
   importNodeEdgeCsv,
   importEdgeListCsv,
 } from '../processors/import-data';
-import { fetchBegin, fetchDone } from './ui-slice';
+import { fetchBegin, fetchDone, updateToast } from './ui-slice';
 import { SimpleEdge } from '../constants/sample-data';
 
 const mockStore = configureStore([thunk]);
@@ -55,6 +58,10 @@ describe('add-data-thunk.test.js', () => {
     type: 'json',
   };
 
+  beforeEach(() => {
+    render(<ToasterContainer />);
+  });
+
   describe('importJsonData', () => {
     const store = mockStore(getStore());
 
@@ -86,6 +93,7 @@ describe('add-data-thunk.test.js', () => {
           accessors: initialState.accessors,
         }),
         fetchDone(),
+        updateToast('toast-0'),
       ];
 
       // assertions
@@ -132,6 +140,7 @@ describe('add-data-thunk.test.js', () => {
           accessors,
         }),
         fetchDone(),
+        updateToast('toast-0'),
       ];
 
       await store.dispatch(
@@ -187,6 +196,7 @@ describe('add-data-thunk.test.js', () => {
           accessors: initialState.accessors,
         }),
         fetchDone(),
+        updateToast('toast-0'),
       ];
 
       // assertions
@@ -222,6 +232,7 @@ describe('add-data-thunk.test.js', () => {
           accessors: initialState.accessors,
         }),
         fetchDone(),
+        updateToast('toast-0'),
       ];
 
       await store.dispatch(importSingleJsonData(importData));

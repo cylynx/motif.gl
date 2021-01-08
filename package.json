@@ -108,6 +108,8 @@
     "@rollup/plugin-url": "^6.0.0",
     "@size-limit/preset-small-lib": "4.4.0",
     "@svgr/rollup": "^5.5.0",
+    "@testing-library/jest-dom": "^5.11.8",
+    "@testing-library/react": "^11.2.3",
     "@types/d3-array": "^2.0.0",
     "@types/d3-axis": "^2.0.0",
     "@types/d3-brush": "^2.1.0",
