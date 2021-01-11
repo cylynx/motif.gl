@@ -1,0 +1,24 @@
+{
+  "name": "Cylynx Motif",
+  "organization": "Cylynx",
+  "description": "Cylynx Motif",
+  "logoUrl": "https://www.cylynx.io/cylynx-logo.png",
+  "organizationUrl": "https://www.cylynx.io/",
+  "supportUrl": "https://url",
+  "privacyPolicyUrl": "https://url",
+  "termsOfServiceUrl": "https://url",
+  "packageUrl": "https://url",
+  "devMode": "DEVMODE_BOOL",
+  "components": [
+    {
+      "name": "Cylynx Motif",
+      "description": "Cylynx Motif",
+      "iconUrl": "https://www.cylynx.io/cylynx-logo.png",
+      "resource": {
+        "js": "YOUR_GCS_BUCKET/index.js",
+        "config": "YOUR_GCS_BUCKET/index.json",
+        "css": "YOUR_GCS_BUCKET/index.css"
+      }
+    }
+  ]
+}

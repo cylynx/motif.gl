@@ -1,0 +1,25 @@
+{
+  "dsccViz": {
+    "gcsDevBucket": "gs://lynx-community-viz/cylynx-motif-dev",
+    "gcsProdBucket": "gs://lynx-community-viz/cylynx-motif",
+    "jsFile": "index.js",
+    "jsonFile": "index.json",
+    "cssFile": "index.css"
+  },
+  "scripts": {
+    "build:dev": "dscc-scripts viz build -d dev",
+    "build:prod": "dscc-scripts viz build -d prod",
+    "push:dev": "dscc-scripts viz push -d dev",
+    "push:prod": "dscc-scripts viz push -d prod",
+    "update_message": "dscc-scripts viz update_message -f object",
+    "start": "dscc-scripts viz start"
+  },
+  "devDependencies": {
+    "@google/dscc": "^0.3.17",
+    "@google/dscc-scripts": "^1.0.17",
+    "copy-webpack-plugin": "^4.6.0"
+  },
+  "dependencies": {
+    "motif.gl": "file:.."
+  }
+}

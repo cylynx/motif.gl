@@ -1,0 +1,92 @@
+{
+  "data": [
+    {
+      "id": "concepts",
+      "label": "Concepts",
+      "elements": [
+        {
+          "id": "dimensions",
+          "label": "Source and Target",
+          "type": "DIMENSION",
+          "options": {
+            "min": 2,
+            "max": 2,
+            "supportedTypes": ["DEFAULT"]
+          }
+        },
+        {
+          "id": "metric",
+          "label": "Metric",
+          "type": "METRIC",
+          "options": {
+            "min": 1,
+            "max": 1
+          }
+        }
+      ]
+    }
+  ],
+  "style": [
+    {
+      "id": "colors",
+      "label": "Colors",
+      "elements": [
+        {
+          "id": "node_color",
+          "label": "Node Color",
+          "type": "FILL_COLOR",
+          "defaultValue": {
+            "color": "#000000"
+          }
+        },
+        {
+          "id": "hover_color",
+          "label": "Hover Color",
+          "type": "FILL_COLOR",
+          "defaultValue": {
+            "color": "#FF6200"
+          }
+        },
+        {
+          "id": "link_color",
+          "label": "Link color",
+          "type": "BORDER_COLOR",
+          "defaultValue": {
+            "color": "#000000"
+          }
+        },
+        {
+          "id": "link_opacity",
+          "label": "Link opacity",
+          "type": "OPACITY",
+          "defaultValue": "0.2"
+        }
+      ]
+    },
+    {
+      "id": "labels",
+      "label": "Node labels",
+      "elements": [
+        {
+          "id": "show_labels",
+          "label": "Show node labels?",
+          "type": "CHECKBOX"
+        },
+        {
+          "id": "node_font_size",
+          "label": "Node label font size",
+          "type": "FONT_SIZE",
+          "defaultValue": "20"
+        },
+        {
+          "id": "node_font_color",
+          "label": "Node label color",
+          "type": "FONT_COLOR",
+          "defaultValue": {
+            "color": "#000000"
+          }
+        }
+      ]
+    }
+  ]
+}
