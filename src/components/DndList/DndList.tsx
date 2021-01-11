@@ -1,9 +1,9 @@
 import React, { useState, MouseEvent } from 'react';
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
+import { Theme } from 'baseui/theme';
 import * as Icon from '../Icons';
 import { SimpleTooltip } from '../ui';
-import { Theme } from 'baseui/theme';
 
 import DndAccordian from './DndAccordian';
 
@@ -125,7 +125,8 @@ export const DndContainer = ({
 }: DndContainerProps) => {
   const { key, isVisible, title } = item;
   const ButtonGroup = () => (
-    <Block>
+    // applied a fixed width to allow button group align horizontally without affected by long title
+    <Block width='84px'>
       <VisibilityButton
         isVisible={isVisible}
         onClick={() => onChangeVisibility(key, !isVisible)}
@@ -152,6 +153,7 @@ export const DndContainer = ({
               paddingTop: '0',
               paddingBottom: '0',
               paddingRight: '0',
+              paddingLeft: $theme.sizing.scale300,
               justifyContent: 'space-between',
               ':hover': {
                 backgroundColor: $theme.colors.backgroundPrimary,
@@ -220,7 +222,8 @@ const DndList = ({
         DragHandle: {
           style: ({ $theme }: { $theme: Theme }) => {
             return {
-              marginRight: $theme.sizing.scale400,
+              marginRight: $theme.sizing.scale0,
+              paddingBottom: $theme.sizing.scale200,
             };
           },
         },

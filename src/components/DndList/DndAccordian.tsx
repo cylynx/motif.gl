@@ -31,10 +31,10 @@ export const Content = styled('div', (props) => {
     ...typography.font200,
     backgroundColor: colors.listBodyFill,
     color: colors.contentPrimary,
-    paddingTop: $expanded ? sizing.scale600 : 0,
-    paddingBottom: $expanded ? sizing.scale600 : 0,
-    paddingLeft: sizing.scale600,
-    paddingRight: sizing.scale600,
+    paddingTop: $expanded ? sizing.scale550 : 0,
+    paddingBottom: $expanded ? sizing.scale550 : 0,
+    paddingLeft: sizing.scale500,
+    paddingRight: sizing.scale500,
     marginTop: 0,
     marginBottom: 0,
     marginLeft: 0,
@@ -169,8 +169,8 @@ class DndAccordian extends React.Component<
                 >
                   <Block
                     display='flex'
-                    paddingLeft='scale600'
-                    paddingRight='scale600'
+                    paddingLeft='scale200'
+                    paddingRight='scale200'
                   >
                     <DragHandle {...sharedProps} {...dragHandleProps}>
                       <Grab size={20} color='#CCC' />

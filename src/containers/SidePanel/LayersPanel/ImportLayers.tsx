@@ -91,7 +91,7 @@ const LayerDetailed = ({
             Object.entries(edgeTypeMap).map(([key, value]) => (
               <StyledText key={key}>{`${value} x ${key}`}</StyledText>
             ))}
-          {!edgeTypeMap && <StyledText>No edge types...</StyledText>}
+          {!edgeTypeMap && <StyledText>No edge types.</StyledText>}
           <Block marginTop='scale600' />
           <Button
             kind='primary'
@@ -104,7 +104,6 @@ const LayerDetailed = ({
           </Button>
         </Block>
       </Block>
-      <br />
     </Fragment>
   );
 };
