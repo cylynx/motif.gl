@@ -102,7 +102,7 @@ describe('add-data-thunk.test.js', () => {
     });
     it('should throw error if importData parameter is not array', async () => {
       // assertions
-      await expect(importJsonData(jsonDataOne)).toThrow(Error);
+      expect(importJsonData(jsonDataOne)).toThrow(Error);
     });
   });
 

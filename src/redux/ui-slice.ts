@@ -4,7 +4,6 @@
 /* eslint-disable no-param-reassign */
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { toaster, ToastProps } from 'baseui/toast';
 import { ModalState, ShowToastAction, ToastState } from './types';
 
 export interface UiState {
@@ -14,10 +13,6 @@ export interface UiState {
   score: any;
   toast: ToastState;
 }
-
-const DEFAULT_TOAST_PROPS: ToastProps = {
-  autoHideDuration: 3500,
-};
 
 export const initialStateUi: UiState = {
   name: 'Motif',
@@ -57,7 +52,7 @@ const ui = createSlice({
     updateToast(state, action: PayloadAction<ShowToastAction>) {
       state.toast = action.payload;
     },
-    removeToast(state, action) {
+    removeToast(state) {
       state.toast = null;
     },
   },
