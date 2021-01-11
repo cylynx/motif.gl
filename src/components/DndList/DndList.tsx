@@ -3,6 +3,8 @@ import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
 import * as Icon from '../Icons';
 import { SimpleTooltip } from '../ui';
+import { Theme } from 'baseui/theme';
+
 import DndAccordian from './DndAccordian';
 
 export type DndItem = {
@@ -194,13 +196,6 @@ const DndList = ({
     }
   };
 
-  /**
-   * Delete a data layer
-   *  - reset filter options
-   *
-   * @param {number} key
-   * @return {void}
-   */
   const onDeleteItem = (key: number): void => {
     onDelete(key);
     setExpanded(expanded.filter((x) => x !== key));
@@ -213,7 +208,7 @@ const DndList = ({
       onChange={onChange}
       overrides={{
         Item: {
-          style: ({ $theme }: { $theme: any }) => {
+          style: ({ $theme }: { $theme: Theme }) => {
             return {
               paddingTop: $theme.sizing.scale200,
               paddingBottom: 0,
@@ -223,7 +218,7 @@ const DndList = ({
           },
         },
         DragHandle: {
-          style: ({ $theme }: { $theme: any }) => {
+          style: ({ $theme }: { $theme: Theme }) => {
             return {
               marginRight: $theme.sizing.scale400,
             };

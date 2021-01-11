@@ -140,12 +140,15 @@ export const TriangleJSON = (): Graph.GraphList => [
   },
 ];
 
-export const BankData = () =>
+export const BankData = (): Promise<Graph.GraphData> =>
   fetch(
     'https://storage.googleapis.com/cylynx-landing-content/banking-connections-demo.json',
   )
     .then((res) => res.json())
-    .then((data) => {
+    .then((data: Graph.GraphData) => {
+      Object.assign(data[0].metadata, {
+        title: 'Banking Connections',
+      });
       return data;
     });
 
@@ -154,9 +157,9 @@ export const MiserablesData = () =>
     'https://gist.githubusercontent.com/emanueles/1dc73efc65b830f111723e7b877efdd5/raw/2c7a42b5d27789d74c8708e13ed327dc52802ec6/lesmiserables.json',
   )
     .then((res) => res.json())
-    .then((data) => {
+    .then((data: Graph.GraphData) => {
       const { nodes, links } = data;
-      const newData = {
+      const newData: Graph.GraphData = {
         nodes,
         edges: links,
         metadata: {
