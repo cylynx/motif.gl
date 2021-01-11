@@ -14,7 +14,6 @@ Fix issue by editing `cylynx-datastudio/webpack.config.js`:
 
 ```js
 --- const {getBuildableComponents} = require('@google/dscc-scripts/build/viz/util');
-+++ const {cssFile       , jsFile} = require('@google/dscc-scripts/build/viz/util');
 
 --- const components = getBuildableComponents();
 --- const componentIndexToBuild = Number(process.env.WORKING_COMPONENT_INDEX) || 0;
@@ -24,8 +23,8 @@ Fix issue by editing `cylynx-datastudio/webpack.config.js`:
 
 --- const cssFilePath = path.resolve(__dirname, 'src', component.cssFile || '');
 --- const jsFilePath  = path.resolve(__dirname, 'src', component.jsFile  || '');
-+++ const cssFilePath = path.resolve(__dirname, 'src',           cssFile || '');
-+++ const jsFilePath  = path.resolve(__dirname, 'src',           jsFile  || '');
++++ const cssFilePath = path.resolve(__dirname, 'src', process.env.npm_package_dsccViz_cssFile || '');
++++ const jsFilePath  = path.resolve(__dirname, 'src', process.env.npm_package_dsccViz_jsFile  || '');
 ```
 
 `npm run start` should work now and host a server at http://localhost:8080 , which has the
