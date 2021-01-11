@@ -108,7 +108,7 @@ const LayersPanel = () => {
           ]}
         />
       </Block>
-      <Block marginTop='scale400'>
+      <Block marginTop='scale300'>
         <Accordion
           data-testid='edge-properties-accordion'
           items={[

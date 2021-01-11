@@ -155,11 +155,12 @@ export const DndContainer = ({
               paddingRight: '0',
               paddingLeft: $theme.sizing.scale300,
               justifyContent: 'space-between',
+              textAlign: 'left',
               ':hover': {
-                backgroundColor: $theme.colors.backgroundPrimary,
+                backgroundColor: $theme.colors.backgroundSecondary,
               },
               ':active': {
-                backgroundColor: $theme.colors.backgroundPrimary,
+                backgroundColor: $theme.colors.backgroundSecondary,
               },
             };
           },
@@ -212,10 +213,12 @@ const DndList = ({
         Item: {
           style: ({ $theme }: { $theme: Theme }) => {
             return {
-              paddingTop: $theme.sizing.scale200,
+              backgroundColor: $theme.colors.backgroundSecondary,
+              paddingTop: $theme.sizing.scale100,
               paddingBottom: 0,
               paddingLeft: 0,
               paddingRight: 0,
+              marginBottom: $theme.sizing.scale300,
             };
           },
         },
@@ -223,14 +226,14 @@ const DndList = ({
           style: ({ $theme }: { $theme: Theme }) => {
             return {
               marginRight: $theme.sizing.scale0,
-              paddingBottom: $theme.sizing.scale200,
+              paddingBottom: $theme.sizing.scale100,
             };
           },
         },
         Label: {
           component: ({ $value }: { $value: any }) => {
             return (
-              <Block width='100%' paddingBottom='scale200'>
+              <Block width='100%' paddingBottom='scale100'>
                 <DndContainer
                   item={$value}
                   onDelete={onDeleteItem}

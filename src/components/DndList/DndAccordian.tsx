@@ -31,7 +31,7 @@ export const Content = styled('div', (props) => {
     ...typography.font200,
     backgroundColor: colors.listBodyFill,
     color: colors.contentPrimary,
-    paddingTop: $expanded ? sizing.scale550 : 0,
+    paddingTop: $expanded ? sizing.scale400 : 0,
     paddingBottom: $expanded ? sizing.scale550 : 0,
     paddingLeft: sizing.scale500,
     paddingRight: sizing.scale500,
