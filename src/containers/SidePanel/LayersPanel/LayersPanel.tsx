@@ -22,7 +22,7 @@ import {
   getGraphVisible,
   getGraphFlatten,
 } from '../../../redux';
-import Header from '../Header/Header';
+import Header from '../Header';
 
 const LayersPanel = () => {
   const dispatch = useDispatch();

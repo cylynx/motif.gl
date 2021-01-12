@@ -8,7 +8,7 @@ import {
   changeNodeStyle,
   changeEdgeStyle,
 } from '../../../redux';
-import Header from '../Header/Header';
+import Header from '../Header';
 import Accordion from '../../../components/Accordion';
 import {
   SimpleForm,
