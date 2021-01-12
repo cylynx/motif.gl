@@ -15,7 +15,25 @@ export const getTabsOverride = (
   overrides: Overrides,
   defaultTabs: Tab[],
 ): Tab[] => {
-  return overrides?.Tabs || defaultTabs;
+  if (overrides?.Tabs) {
+    const allTabs: Tab[] = [];
+    overrides.Tabs.forEach((overrideTab) => {
+      // if overrideTab only contains key without intention to override title / component...
+      const defaultTab = defaultTabs.filter(
+        (t) =>
+          t.key === overrideTab.key &&
+          !overrideTab.component &&
+          !overrideTab.title,
+      );
+      if (defaultTab.length) {
+        allTabs.push(defaultTab[0]);
+      } else {
+        allTabs.push(overrideTab);
+      }
+    });
+    return allTabs;
+  }
+  return defaultTabs;
 };
 
 export const getTooltipOverride = (

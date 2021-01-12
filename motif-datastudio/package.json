@@ -22,5 +22,8 @@
   },
   "dependencies": {
     "motif.gl": "file:.."
+  },
+  "eslintConfig": {
+    "extends": "react-app"
   }
 }

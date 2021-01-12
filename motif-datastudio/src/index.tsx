@@ -18,10 +18,16 @@ if (DSCC_IS_LOCAL) {
   dscc.subscribeToData(drawViz, { transform: dscc.objectTransform });
 }
 */
+
+// render Motif
 import '../../example/src/index.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from 'motif.gl/example/src/App';
+import App from './App';
 
 ReactDOM.render(<App />, document.getElementsByTagName('body')[0]);
+
+// pipe data from datastudio into Motif
+const local = require('./localMessage.js');
+console.log(Object.keys(local.message));

@@ -3,7 +3,11 @@
     "isolatedModules": false,
     "esModuleInterop": true,
     "jsx": "react",
-    "noEmit": false
+    "noEmit": false,
+    "target": "es5",
+    "downlevelIteration": true,
+    "resolveJsonModule": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["node_modules", "build"]
 }

@@ -7,6 +7,7 @@ import { Motif, MotifLightTheme, MotifDarkTheme } from 'motif.gl';
 import { Provider } from 'react-redux';
 import store from './redux-store';
 import 'motif.gl/dist/index.css';
+import ImportDataStudio from './ImportDataStudio';
 
 const engine = new Styletron();
 
@@ -26,12 +27,18 @@ const App = () => {
               edgeSource: 'from',
               edgeTarget: 'to',
             }}
-            // overrides={
-            //   {
-            // Tabs: [{ title: 'Test', key: 'test', component: <div>hi</div> }],
-            // Tooltip,
-            //   }
-            // }
+            overrides={{
+              Tabs: [
+                {
+                  key: 'datastudio',
+                  title: 'Google Data Studio',
+                  component: <ImportDataStudio />,
+                },
+                { key: 'file' },
+                { key: 'sample-data' },
+              ],
+              // Tooltip,
+            }}
           />
         </Provider>
       </BaseProvider>

@@ -6,4 +6,3 @@ node_modules/
 *.min.js
 commitlint.config.js
 tsdx.config.js
-motif-datastudio/
