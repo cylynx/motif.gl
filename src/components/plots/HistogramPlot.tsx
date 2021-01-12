@@ -4,6 +4,7 @@ import React, { useMemo } from 'react';
 import { styled } from 'baseui';
 import { scaleLinear } from 'd3-scale';
 import { max } from 'd3-array';
+import { Theme } from 'baseui/theme';
 import { HistogramBin } from '../../utils/data-utils';
 import { PRIMARY_COLOR, DARK_GREY } from '../../constants/colors';
 
@@ -18,17 +19,22 @@ export type HistogramPlotProps = {
   brushComponent: any;
 };
 
+type StyledSvgType = {
+  $theme?: Theme;
+  width: number;
+  height: number;
+};
+
 const histogramStyle = {
   highlightW: 0.7,
   unHighlightedW: 0.6,
 };
 
-// @ts-ignore
-const StyledSvg = styled('svg', ({ $theme, width, height }) => ({
+const StyledSvg = styled('svg', ({ $theme, width, height }: StyledSvgType) => ({
   overflow: 'visible',
   width,
   height,
-  marginTop: '8px',
+  marginTop: $theme.sizing.scale300,
 }));
 
 const HistogramPlot = ({
@@ -63,7 +69,7 @@ const HistogramPlot = ({
     <StyledSvg width={width} height={height}>
       <g className='histogram-bars'>
         {histogram.map((bar: HistogramBin) => {
-          const median = (bar.x1 + bar.x0) / 2;
+          const median: number = (bar.x1 + bar.x0) / 2;
           const inRange: boolean = median <= value[1] && median >= value[0];
           const wRatio: number = inRange
             ? histogramStyle.highlightW
