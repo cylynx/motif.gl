@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "isolatedModules": false,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "noEmit": false
+  },
+  "include": ["src"]
+}

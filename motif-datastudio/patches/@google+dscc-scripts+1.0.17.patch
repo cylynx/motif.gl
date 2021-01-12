@@ -1,0 +1,15 @@
+diff --git a/node_modules/@google/dscc-scripts/build/viz/build.js b/node_modules/@google/dscc-scripts/build/viz/build.js
+index ae741c5..657c401 100644
+--- a/node_modules/@google/dscc-scripts/build/viz/build.js
++++ b/node_modules/@google/dscc-scripts/build/viz/build.js
+@@ -85,6 +85,10 @@ const buildOptions = (buildValues) => {
+                         use: 'ts-loader',
+                         exclude: /node_modules/,
+                     },
++                    {
++                        test: /\.css$/i,
++                        use: ['style-loader', 'css-loader'],
++                    }
+                 ],
+             },
+             resolve: {

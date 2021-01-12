@@ -15,7 +15,7 @@
       "description": "Cylynx Motif",
       "iconUrl": "https://www.cylynx.io/cylynx-logo.png",
       "resource": {
-        "js": "YOUR_GCS_BUCKET/index.js",
+        "js": "YOUR_GCS_BUCKET/index.jsx",
         "config": "YOUR_GCS_BUCKET/index.json",
         "css": "YOUR_GCS_BUCKET/index.css"
       }

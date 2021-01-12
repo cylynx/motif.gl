@@ -38,6 +38,19 @@ module.exports = [
   {
     mode: 'development',
     entry: jsFilePath,
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          use: 'ts-loader',
+          exclude: /node_modules/,
+        },
+        {
+          test: /\.css$/i,
+          use: ['style-loader', 'css-loader'],
+        },
+      ],
+    },
     devServer: {
       contentBase: './dist',
     },
@@ -46,5 +59,8 @@ module.exports = [
       path: path.resolve(__dirname, 'dist'),
     },
     plugins: plugins,
+    resolve: {
+      extensions: ['.ts', '.tsx', '.js'],
+    },
   },
 ];

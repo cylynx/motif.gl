@@ -2,7 +2,7 @@
   "dsccViz": {
     "gcsDevBucket": "gs://lynx-community-viz/cylynx-motif-dev",
     "gcsProdBucket": "gs://lynx-community-viz/cylynx-motif",
-    "jsFile": "index.js",
+    "tsFile": "index.tsx",
     "jsonFile": "index.json",
     "cssFile": "index.css"
   },
@@ -12,7 +12,8 @@
     "push:dev": "dscc-scripts viz push -d dev",
     "push:prod": "dscc-scripts viz push -d prod",
     "update_message": "dscc-scripts viz update_message -f object",
-    "start": "dscc-scripts viz start"
+    "start": "dscc-scripts viz start",
+    "postinstall": "npx patch-package"
   },
   "devDependencies": {
     "@google/dscc": "^0.3.17",
