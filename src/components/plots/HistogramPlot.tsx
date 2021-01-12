@@ -20,7 +20,7 @@ export type HistogramPlotProps = {
 
 const histogramStyle = {
   highlightW: 0.7,
-  unHighlightedW: 0.4,
+  unHighlightedW: 0.6,
 };
 
 // @ts-ignore
@@ -35,7 +35,6 @@ const HistogramPlot = ({
   width,
   height,
   isRanged,
-  step,
   histogram,
   domain,
   value,
@@ -45,7 +44,9 @@ const HistogramPlot = ({
   const getValue = useMemo(() => (d: HistogramBin) => d.count, []);
 
   const x = useMemo(() => {
-    return scaleLinear().domain(domain).range([0, width]);
+    return scaleLinear()
+      .domain(domain)
+      .range([0, width]);
   }, [domain, width]);
 
   const y = useMemo(
@@ -62,7 +63,7 @@ const HistogramPlot = ({
     <StyledSvg width={width} height={height}>
       <g className='histogram-bars'>
         {histogram.map((bar: HistogramBin) => {
-          const inRange = bar.x1 <= value[1] + step && bar.x0 >= value[0];
+          const inRange = bar.x1 <= value[1] && bar.x0 >= value[0];
           const wRatio = inRange
             ? histogramStyle.highlightW
             : histogramStyle.unHighlightedW;
