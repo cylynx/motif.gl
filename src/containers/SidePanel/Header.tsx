@@ -1,17 +1,31 @@
 import React, { useCallback, useMemo } from 'react';
 import html2canvas from 'html2canvas';
+
 import { Block } from 'baseui/block';
 import { useDispatch, useSelector } from 'react-redux';
-import { getGraphList, getUI } from '../../redux';
-import { setName } from '../../redux/ui-slice';
+import { AnyAction, Dispatch } from 'redux';
+import { GraphList } from '../Graph';
+import { getGraphList, getUI, setName } from '../../redux';
 import * as Icon from '../../components/Icons';
 import Editable from '../../components/Editable';
 import HeaderButton, { HeaderButtonProp } from './HeaderButton';
-import { ToastAction } from '../../redux/actions/Toast';
 
-const exportPNG = () => {
-  const graph = document.getElementById('graphin-container');
-  if (graph !== null) {
+const Header = () => {
+  const name: string = useSelector((state) => getUI(state).name);
+  const exportGraph: GraphList = useSelector((state) => getGraphList(state));
+  const dispatch = useDispatch();
+
+  const onChangeName = useCallback((text: string) => dispatch(setName(text)), [
+    dispatch,
+  ]);
+
+  const isCanvasHasGraph: boolean = useMemo(() => {
+    return exportGraph.length > 0;
+  }, [exportGraph.length]);
+
+  const exportPNG = useCallback(() => {
+    const graph = document.getElementById('graphin-container');
+
     html2canvas(graph).then((canvas) => {
       const file = document.createElement('a');
       file.download = 'graph.png';
@@ -20,30 +34,21 @@ const exportPNG = () => {
       file.click();
       document.body.removeChild(file);
     });
-  } else {
-    ToastAction.show('No graph detected', 'negative');
-  }
-};
+  }, [isCanvasHasGraph]);
 
-const exportJSON = (json: any) => {
-  const contentType = 'application/json;charset=utf-8;';
-  const jsonInfo = JSON.stringify(json);
-  const file = document.createElement('a');
-  file.download = 'graph.json';
-  file.href = `data:${contentType},${encodeURIComponent(jsonInfo)}`;
-  document.body.appendChild(file);
-  file.click();
-  document.body.removeChild(file);
-};
-
-const Header = () => {
-  const name = useSelector((state) => getUI(state).name);
-  const exportGraph = useSelector((state) => getGraphList(state));
-  const dispatch = useDispatch();
-
-  const onChangeName = useCallback((text: string) => dispatch(setName(text)), [
-    dispatch,
-  ]);
+  const exportJSON = useCallback(
+    (json: GraphList) => {
+      const contentType = 'application/json;charset=utf-8;';
+      const jsonInfo: string = JSON.stringify(json);
+      const file: HTMLAnchorElement = document.createElement('a');
+      file.download = 'graph.json';
+      file.href = `data:${contentType},${encodeURIComponent(jsonInfo)}`;
+      document.body.appendChild(file);
+      file.click();
+      document.body.removeChild(file);
+    },
+    [exportGraph],
+  );
 
   const headerButtons: HeaderButtonProp[] = useMemo(
     () => [
@@ -78,13 +83,14 @@ const Header = () => {
           <Editable text={name} onChange={onChangeName} />
         </Block>
         <Block>
-          {headerButtons.map((item) => (
-            <HeaderButton key={item.key} {...item} />
-          ))}
+          {isCanvasHasGraph &&
+            headerButtons.map((item) => (
+              <HeaderButton key={item.key} {...item} />
+            ))}
         </Block>
       </Block>
     ),
-    [name, onChangeName],
+    [name, onChangeName, isCanvasHasGraph],
   );
 };
 
