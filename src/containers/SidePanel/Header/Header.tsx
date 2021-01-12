@@ -4,10 +4,10 @@ import html2canvas from 'html2canvas';
 import { Block } from 'baseui/block';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnyAction, Dispatch } from 'redux';
-import { GraphList } from '../Graph';
-import { getGraphList, getUI, setName } from '../../redux';
-import * as Icon from '../../components/Icons';
-import Editable from '../../components/Editable';
+import { GraphList } from '../../Graph';
+import { getGraphList, getUI, setName } from '../../../redux';
+import * as Icon from '../../../components/Icons';
+import Editable from '../../../components/Editable';
 import HeaderButton, { HeaderButtonProp } from './HeaderButton';
 
 const Header = () => {

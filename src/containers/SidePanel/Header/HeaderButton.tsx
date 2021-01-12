@@ -2,7 +2,7 @@
 import React, { Fragment, useMemo } from 'react';
 import { Button } from 'baseui/button';
 import { PLACEMENT } from 'baseui/popover';
-import { SimpleTooltip } from '../../components/ui';
+import { SimpleTooltip } from '../../../components/ui';
 
 export type HeaderButtonProp = {
   key: number;

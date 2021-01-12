@@ -1,7 +1,7 @@
 import React, { FC, Fragment, useMemo, MouseEvent, useCallback } from 'react';
 import { Block } from 'baseui/block';
 import { useSelector } from 'react-redux';
-import Header from '../Header';
+import Header from '../Header/Header';
 import FilterSelection from './FilterSelection';
 import AddFilterButton from './AddFilterButton';
 import useGraphFilter from './hooks/UseGraphFilter';
