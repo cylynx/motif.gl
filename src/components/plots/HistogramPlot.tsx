@@ -63,11 +63,12 @@ const HistogramPlot = ({
     <StyledSvg width={width} height={height}>
       <g className='histogram-bars'>
         {histogram.map((bar: HistogramBin) => {
-          const inRange = bar.x1 <= value[1] && bar.x0 >= value[0];
-          const wRatio = inRange
+          const median = (bar.x1 + bar.x0) / 2;
+          const inRange: boolean = median <= value[1] && median >= value[0];
+          const wRatio: number = inRange
             ? histogramStyle.highlightW
             : histogramStyle.unHighlightedW;
-          const fillColor = inRange ? PRIMARY_COLOR : DARK_GREY;
+          const fillColor: string = inRange ? PRIMARY_COLOR : DARK_GREY;
           return (
             <rect
               fill={fillColor}
