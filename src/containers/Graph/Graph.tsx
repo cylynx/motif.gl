@@ -1,4 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable import/no-cycle */
 // @ts-nocheck
 import React, { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -12,10 +13,9 @@ import RegisterPolyEdge from './shape/PolyEdge';
 import RegisterLineEdge from './shape/LineEdge';
 import RegisterLoopEdge from './shape/LoopEdge';
 import { interactionStates } from './shape/constants';
-import { getStyleOptions, getGraphVisible } from '../../redux';
+import { getStyleOptions, getGraphVisible } from '../../redux/combine-reducers';
 import { TooltipProps } from './Tooltip';
 import './graphin.css';
-// import '@antv/graphin/dist/index.css';
 
 const INTERACTION_LIMIT = 500;
 
@@ -36,7 +36,7 @@ const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
 
     const { graph } = ref.current;
 
-    const onResetClick = () => {
+    const onResetClick = (e: IG6GraphEvent) => {
       setTooltip(null);
     };
 
