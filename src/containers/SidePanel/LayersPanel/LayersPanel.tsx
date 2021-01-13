@@ -89,17 +89,21 @@ const LayersPanel = () => {
               key: 'node properties',
               content: (
                 <Fragment>
-                  <Block display='flex'>
+                  {graphVisible.nodes.length > 0 ? (
+                    <Block display='flex'>
+                      <ParagraphSmall marginTop={0}>
+                        Hint: Select node properties to display in tooltip{' '}
+                      </ParagraphSmall>
+                      <ToggleAllButton
+                        selected={isAllNodeSelected}
+                        onClick={onSelectAllNodeToken}
+                      />
+                    </Block>
+                  ) : (
                     <ParagraphSmall marginTop={0}>
-                      {graphVisible.nodes.length > 0
-                        ? `Hint: Select node properties to display in tooltip`
-                        : `Import data to get started.`}
+                      Import data to get started.
                     </ParagraphSmall>
-                    <ToggleAllButton
-                      selected={isAllNodeSelected}
-                      onClick={onSelectAllNodeToken}
-                    />
-                  </Block>
+                  )}
                   <ToggleTokens
                     options={graphList.length > 0 ? nodeFields : []}
                     onClick={onClickNodeToken}
@@ -124,17 +128,21 @@ const LayersPanel = () => {
               key: 'edge properties',
               content: (
                 <Fragment>
-                  <Block display='flex'>
+                  {graphVisible.edges.length > 0 ? (
+                    <Block display='flex'>
+                      <ParagraphSmall marginTop={0}>
+                        Hint: Select node properties to display in tooltip{' '}
+                      </ParagraphSmall>
+                      <ToggleAllButton
+                        selected={isAllEdgeSelected}
+                        onClick={onSelectAllEdgeToken}
+                      />
+                    </Block>
+                  ) : (
                     <ParagraphSmall marginTop={0}>
-                      {graphVisible.edges.length > 0
-                        ? `Hint: Select node properties to display in tooltip`
-                        : `Import data to get started.`}
+                      Import data to get started.
                     </ParagraphSmall>
-                    <ToggleAllButton
-                      selected={isAllEdgeSelected}
-                      onClick={onSelectAllEdgeToken}
-                    />
-                  </Block>
+                  )}{' '}
                   <ToggleTokens
                     options={graphList.length > 0 ? edgeFields : []}
                     onClick={onClickEdgeToken}
