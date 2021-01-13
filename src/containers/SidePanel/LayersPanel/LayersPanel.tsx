@@ -89,7 +89,7 @@ const LayersPanel = () => {
               key: 'node properties',
               content: (
                 <Fragment>
-                  {graphVisible.nodes.length > 0 ? (
+                  {graphList.length > 0 ? (
                     <Block display='flex'>
                       <ParagraphSmall marginTop={0}>
                         Hint: Select node properties to display in tooltip{' '}
@@ -128,7 +128,7 @@ const LayersPanel = () => {
               key: 'edge properties',
               content: (
                 <Fragment>
-                  {graphVisible.edges.length > 0 ? (
+                  {graphList.length > 0 ? (
                     <Block display='flex'>
                       <ParagraphSmall marginTop={0}>
                         Hint: Select node properties to display in tooltip{' '}
