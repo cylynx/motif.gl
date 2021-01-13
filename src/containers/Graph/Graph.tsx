@@ -13,7 +13,7 @@ import RegisterPolyEdge from './shape/PolyEdge';
 import RegisterLineEdge from './shape/LineEdge';
 import RegisterLoopEdge from './shape/LoopEdge';
 import { interactionStates } from './shape/constants';
-import { getStyleOptions, getGraphVisible } from '../../redux/combine-reducers';
+import { getStyleOptions, getGraphVisible } from '../../redux';
 import { TooltipProps } from './Tooltip';
 import './graphin.css';
 
