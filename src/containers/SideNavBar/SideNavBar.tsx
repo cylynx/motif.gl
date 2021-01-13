@@ -2,8 +2,7 @@ import React, { useMemo } from 'react';
 import { Block } from 'baseui/block';
 import { ReactComponent as Logo } from '../../assets/logo.svg';
 import { defaultWidgetList } from '../widgets';
-
-export const SIDE_NAVBAR_WIDTH = '50px';
+import { SIDE_NAVBAR_WIDTH } from '../../constants/widget-units';
 
 const SideLayer = () => {
   return useMemo(

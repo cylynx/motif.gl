@@ -1,5 +1,9 @@
 import React from 'react';
 import { Block } from 'baseui/block';
+import {
+  SIDE_NAVBAR_WIDTH,
+  LEFT_LAYER_WIDTH,
+} from '../../constants/widget-units';
 
 export const BottomRightLayer = ({
   children,
@@ -24,11 +28,11 @@ export const LeftLayer = ({ children }: { children: React.ReactNode }) => {
   return (
     <Block
       position='fixed'
-      top='10px'
-      bottom='10px'
-      left='60px'
-      width='310px'
-      paddingTop='scale200'
+      top='0px'
+      bottom='0px'
+      left={SIDE_NAVBAR_WIDTH}
+      width={LEFT_LAYER_WIDTH}
+      paddingTop='scale600'
       paddingBottom='scale200'
       paddingLeft='scale550'
       paddingRight='scale550'
