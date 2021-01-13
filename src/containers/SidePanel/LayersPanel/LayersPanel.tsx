@@ -91,7 +91,9 @@ const LayersPanel = () => {
                 <Fragment>
                   <Block display='flex'>
                     <ParagraphSmall marginTop={0}>
-                      Hint: Select node properties to display in tooltip
+                      {graphVisible.nodes.length > 0
+                        ? `Hint: Select node properties to display in tooltip`
+                        : `Import data to get started.`}
                     </ParagraphSmall>
                     <ToggleAllButton
                       selected={isAllNodeSelected}
@@ -124,7 +126,9 @@ const LayersPanel = () => {
                 <Fragment>
                   <Block display='flex'>
                     <ParagraphSmall marginTop={0}>
-                      Hint: Select edge properties to display in tooltip
+                      {graphVisible.edges.length > 0
+                        ? `Hint: Select node properties to display in tooltip`
+                        : `Import data to get started.`}
                     </ParagraphSmall>
                     <ToggleAllButton
                       selected={isAllEdgeSelected}
