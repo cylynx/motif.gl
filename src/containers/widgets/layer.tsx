@@ -31,7 +31,7 @@ export const LeftLayer = ({ children }: { children: React.ReactNode }) => {
       top='0px'
       bottom='0px'
       left={SIDE_NAVBAR_WIDTH}
-      width={LEFT_LAYER_WIDTH}
+      width='310px'
       paddingTop='scale600'
       paddingBottom='scale200'
       paddingLeft='scale550'

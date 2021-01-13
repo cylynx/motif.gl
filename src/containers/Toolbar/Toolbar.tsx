@@ -37,10 +37,10 @@ const Toolbar = () => {
     const newZoom = getNextZoom(currentZoom, isZoomIn);
 
     // obtain the center point of canvas and zoom to center point
-    const { width: clientWidth, height: clientHeight } = graph.cfg.canvas.cfg;
+    // const { width: clientWidth, height: clientHeight } = graph.cfg.canvas.cfg;
     const centerPoint = {
-      x: clientWidth / 2,
-      y: clientHeight / 2,
+      x: graph.getWidth() / 2,
+      y: graph.getHeight() / 2,
     };
     graph.zoomTo(newZoom, centerPoint);
   };
