@@ -36,8 +36,7 @@ const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
 
     const { graph } = ref.current;
 
-    const onResetClick = (e: IG6GraphEvent) => {
-      console.log(`canvas: ${e.canvasX}`, e.canvasY);
+    const onResetClick = () => {
       setTooltip(null);
     };
 
