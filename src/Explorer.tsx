@@ -30,7 +30,8 @@ import Graph, {
   StyleOptions,
 } from './containers/Graph';
 import ImportWizard, { defaultImportTabs } from './containers/ImportWizard';
-import { LEFT_LAYER_WIDTH, SIDE_NAVBAR_WIDTH } from './constants/widget-units';
+import { LEFT_LAYER_WIDTH } from './constants/widget-units';
+import { GraphLayer } from './containers/widgets/layer';
 
 export interface WidgetContainerProps {
   children: React.ReactNode;
@@ -105,26 +106,12 @@ const Explorer = (props: ExplorerProps) => {
   }, [widgetState.main]);
 
   useEffect(() => {
-    const { graph } = graphRef.current;
-    const graphWidth: number = graph.getWidth();
-    const graphHeight: number = graph.getHeight();
-    const leftLayerWidthPx = 338; // width (310) + padding (14 * 2)
-
-    graph.setAutoPaint(false);
     if (isMainWidgetExpanded) {
-      console.log('expanded');
       setLeftLayerWidth(LEFT_LAYER_WIDTH);
-      graph.changeSize(graphWidth - leftLayerWidthPx, graphHeight);
-      graph.paint();
-      graph.setAutoPaint(true);
       return;
     }
 
     setLeftLayerWidth('0px');
-    graph.changeSize(graphWidth + leftLayerWidthPx, graphHeight);
-    console.log('not expanded');
-    graph.paint();
-    graph.setAutoPaint(true);
   }, [isMainWidgetExpanded]);
 
   useEffect(() => {
@@ -172,14 +159,13 @@ const Explorer = (props: ExplorerProps) => {
           )}
         </ModalBody>
       </Modal>
-      <Block
-        position='absolute'
-        width={`calc(100% - ${SIDE_NAVBAR_WIDTH} - ${leftLayerWidth})`}
-        height='100%'
-        left={`calc(${SIDE_NAVBAR_WIDTH} + ${leftLayerWidth})`}
+      <GraphLayer
+        isMainWidgetExpanded={isMainWidgetExpanded}
+        leftLayerWidth={leftLayerWidth}
+        graphRef={graphRef}
       >
         <Graph ref={graphRef} setTooltip={setTooltip} />
-      </Block>
+      </GraphLayer>
       <WidgetContainer graphRef={graphRef} theme={secondaryTheme || theme}>
         <SideNavBars />
         {loading && <Loader />}
