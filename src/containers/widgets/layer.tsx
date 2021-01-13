@@ -1,4 +1,6 @@
-import React, { PureComponent, ReactNode, createRef } from 'react';
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable  react/no-did-update-set-state */
+import React, { Component, ReactNode, createRef } from 'react';
 import { Block } from 'baseui/block';
 import { SIDE_NAVBAR_WIDTH } from '../../constants/widget-units';
 
@@ -62,8 +64,22 @@ type GraphLayerProps = {
   graphRef: any;
 };
 
-export class GraphLayer extends PureComponent<GraphLayerProps> {
+type GraphLayerState = {
+  width: string;
+  left: string;
+};
+
+export class GraphLayer extends Component<GraphLayerProps, GraphLayerState> {
   private blockRef = createRef<HTMLDivElement>();
+
+  constructor(props: GraphLayerProps) {
+    super(props);
+
+    this.state = {
+      width: `calc(100% - (${SIDE_NAVBAR_WIDTH} + ${this.props.leftLayerWidth}))`,
+      left: `calc(${SIDE_NAVBAR_WIDTH} + ${this.props.leftLayerWidth})`,
+    };
+  }
 
   componentDidMount() {
     const { graphRef } = this.props;
@@ -72,11 +88,24 @@ export class GraphLayer extends PureComponent<GraphLayerProps> {
     graph.changeSize(innerWidth, innerHeight);
   }
 
+  shouldComponentUpdate(
+    nextProps: GraphLayerProps,
+    nextState: GraphLayerState,
+  ): boolean {
+    if (this.props.isMainWidgetExpanded !== nextProps.isMainWidgetExpanded) {
+      return true;
+    }
+
+    if (this.state.width !== nextState.width) {
+      return true;
+    }
+
+    return false;
+  }
+
   componentDidUpdate(prevProps: GraphLayerProps) {
-    const { isMainWidgetExpanded } = this.props;
-    const { isMainWidgetExpanded: prevMainWidgetExpanded } = prevProps;
-    if (isMainWidgetExpanded !== prevMainWidgetExpanded) {
-      const { graphRef } = this.props;
+    if (this.props.isMainWidgetExpanded !== prevProps.isMainWidgetExpanded) {
+      const { graphRef, isMainWidgetExpanded } = this.props;
 
       const { graph } = graphRef.current;
 
@@ -88,9 +117,17 @@ export class GraphLayer extends PureComponent<GraphLayerProps> {
       if (isMainWidgetExpanded) {
         const deductedInnerWidth: number = innerWidth - leftLayerWidthPx;
         graph.changeSize(deductedInnerWidth, innerHeight);
+        this.setState({
+          width: `${deductedInnerWidth}px`,
+          left: `calc(${SIDE_NAVBAR_WIDTH} + ${leftLayerWidthPx}px)`,
+        });
       } else {
         const addedInnerWidth: number = innerWidth + leftLayerWidthPx;
         graph.changeSize(addedInnerWidth, innerHeight);
+        this.setState({
+          width: `${addedInnerWidth}px`,
+          left: SIDE_NAVBAR_WIDTH,
+        });
       }
 
       this.centerView();
@@ -131,15 +168,16 @@ export class GraphLayer extends PureComponent<GraphLayerProps> {
   };
 
   render() {
-    const { leftLayerWidth, children } = this.props;
+    const { children } = this.props;
+    const { width, left } = this.state;
 
     return (
       <Block
         ref={this.blockRef}
         position='absolute'
-        width={`calc(100% - (${SIDE_NAVBAR_WIDTH} + ${leftLayerWidth}))`}
+        width={width}
         height='100%'
-        left={`calc(${SIDE_NAVBAR_WIDTH} + ${leftLayerWidth})`}
+        left={left}
         overrides={{
           Block: {
             style: {
