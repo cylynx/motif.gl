@@ -22,7 +22,7 @@ import {
   getWidgetOverride,
 } from './utils/overrides';
 import { getUI, getWidget } from './redux';
-import SideNavBar from './containers/SideNavBar';
+import SideNavBar, { SIDE_NAVBAR_WIDTH } from './containers/SideNavBar';
 import Graph, {
   Tooltip,
   GraphRefContext,
@@ -139,7 +139,12 @@ const Explorer = (props: ExplorerProps) => {
           )}
         </ModalBody>
       </Modal>
-      <Block position='absolute' width='100%' height='100%'>
+      <Block
+        position='absolute'
+        width={`calc(100% - ${SIDE_NAVBAR_WIDTH})`}
+        height='100%'
+        left={SIDE_NAVBAR_WIDTH}
+      >
         <Graph ref={graphRef} setTooltip={setTooltip} />
       </Block>
       <WidgetContainer graphRef={graphRef} theme={secondaryTheme || theme}>

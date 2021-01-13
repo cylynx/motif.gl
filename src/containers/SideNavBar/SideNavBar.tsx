@@ -3,6 +3,8 @@ import { Block } from 'baseui/block';
 import { ReactComponent as Logo } from '../../assets/logo.svg';
 import { defaultWidgetList } from '../widgets';
 
+export const SIDE_NAVBAR_WIDTH = '50px';
+
 const SideLayer = () => {
   return useMemo(
     () => (
@@ -47,7 +49,7 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => (
     position='fixed'
     top='0%'
     left='0%'
-    width='50px'
+    width={SIDE_NAVBAR_WIDTH}
     height='100%'
     paddingBottom='20px'
     backgroundColor='backgroundSecondary'
