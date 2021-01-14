@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 import 'cypress-react-selector';
+import { SIDE_NAVBAR_WIDTH } from '../../../src/constants/widget-units';
 
 describe('Layer Panels', () => {
   before(() => {
@@ -18,11 +19,11 @@ describe('Layer Panels', () => {
     cy.react('Block', {
       props: {
         position: 'fixed',
-        top: '10px',
-        bottom: '10px',
-        left: '60px',
+        top: '0px',
+        bottom: '0px',
+        left: SIDE_NAVBAR_WIDTH,
         width: '310px',
-        paddingTop: 'scale200',
+        paddingTop: 'scale600',
         paddingBottom: 'scale200',
         paddingLeft: 'scale550',
         paddingRight: 'scale550',
@@ -36,7 +37,9 @@ describe('Layer Panels', () => {
   });
 
   it('should has Header component', () => {
-    cy.getReact('LayersPanel').getReact('Header').should('exist');
+    cy.getReact('LayersPanel')
+      .getReact('Header')
+      .should('exist');
   });
 
   it('should has node and edge statistics', () => {
@@ -96,16 +99,24 @@ describe('Layer Panels', () => {
   });
 
   it('should render Clear Data button', () => {
-    cy.getReact('LayersPanel').getReact('ClearDataButton').should('exist');
+    cy.getReact('LayersPanel')
+      .getReact('ClearDataButton')
+      .should('exist');
   });
 
   it('should render Import Data button', () => {
-    cy.getReact('LayersPanel').getReact('ImportDataButton').should('exist');
+    cy.getReact('LayersPanel')
+      .getReact('ImportDataButton')
+      .should('exist');
   });
 
   it('should render Import Layers with zero data list on initialisation', () => {
-    cy.getReact('LayersPanel').getReact('ImportLayers').should('exist');
+    cy.getReact('LayersPanel')
+      .getReact('ImportLayers')
+      .should('exist');
 
-    cy.getReact('DndList').getProps('items').should('have.length', 0);
+    cy.getReact('DndList')
+      .getProps('items')
+      .should('have.length', 0);
   });
 });

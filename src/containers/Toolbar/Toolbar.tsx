@@ -35,7 +35,13 @@ const Toolbar = () => {
   const handleGraphZoom = (isZoomIn: boolean) => {
     const currentZoom: number = graph?.getZoom();
     const newZoom = getNextZoom(currentZoom, isZoomIn);
-    graph.zoomTo(newZoom);
+
+    // obtain the center point of canvas and zoom to center point
+    const centerPoint = {
+      x: graph.getWidth() / 2,
+      y: graph.getHeight() / 2,
+    };
+    graph.zoomTo(newZoom, centerPoint);
   };
 
   const menuItems: ToolbarItem[] = [

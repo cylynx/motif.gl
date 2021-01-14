@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-nested-ternary */
-import React, { useState, useEffect, useRef, Fragment } from 'react';
+import React, { useState, useEffect, useRef, Fragment, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useStyletron, ThemeProvider } from 'baseui';
 import { Theme } from 'baseui/theme';
@@ -12,7 +12,7 @@ import { PRIMARY_COLOR } from './constants/colors';
 import { Loader } from './components/ui';
 import DataTable from './containers/DataTable';
 import { closeModal, setName } from './redux/ui-slice';
-import { defaultWidgetList } from './containers/widgets';
+import { defaultWidgetList, WidgetItem } from './containers/widgets';
 import { setWidget } from './containers/widgets/widget-slice';
 import { setAccessors, overrideStyles } from './redux/graph-slice';
 import {
@@ -22,7 +22,7 @@ import {
   getWidgetOverride,
 } from './utils/overrides';
 import { getUI, getWidget } from './redux';
-import SideNavBar from './containers/SideNavBar';
+import SideNavBars from './containers/SideNavBar';
 import Graph, {
   Tooltip,
   GraphRefContext,
@@ -30,6 +30,8 @@ import Graph, {
   StyleOptions,
 } from './containers/Graph';
 import ImportWizard, { defaultImportTabs } from './containers/ImportWizard';
+import { LEFT_LAYER_WIDTH } from './constants/widget-units';
+import { GraphLayer } from './containers/widgets/layer';
 
 export interface WidgetContainerProps {
   children: React.ReactNode;
@@ -80,19 +82,37 @@ const Explorer = (props: ExplorerProps) => {
   } = props;
   const graphRef = useRef(null);
   const [tooltip, setTooltip] = useState(null);
+  const [leftLayerWidth, setLeftLayerWidth] = useState<string>(
+    LEFT_LAYER_WIDTH,
+  );
 
   const [, theme] = useStyletron();
   const dispatch = useDispatch();
   const modal = useSelector((state) => getUI(state).modal);
   const loading = useSelector((state) => getUI(state).loading);
-  const widgetStateIds = useSelector((state) =>
-    Object.values(getWidget(state)),
-  );
+  const widgetState = useSelector((state) => getWidget(state));
+  const widgetStateIds = useMemo(() => {
+    return Object.values(widgetState);
+  }, [widgetState]);
+
   const UserTooltip = getTooltipOverride(overrides, Tooltip);
   const userImportTabs = getTabsOverride(overrides, defaultImportTabs);
   const widgetList = getWidgetOverride(overrides, defaultWidgetList);
-  const activeWidgetList =
-    widgetList.filter((x) => widgetStateIds.includes(x.id)) || [];
+  const activeWidgetList: WidgetItem[] =
+    widgetList.filter((x: WidgetItem) => widgetStateIds.includes(x.id)) || [];
+
+  const isMainWidgetExpanded: boolean = useMemo(() => {
+    return widgetState.main !== null;
+  }, [widgetState.main]);
+
+  useEffect(() => {
+    if (isMainWidgetExpanded) {
+      setLeftLayerWidth(LEFT_LAYER_WIDTH);
+      return;
+    }
+
+    setLeftLayerWidth('0px');
+  }, [isMainWidgetExpanded]);
 
   useEffect(() => {
     // Filter out components
@@ -139,11 +159,15 @@ const Explorer = (props: ExplorerProps) => {
           )}
         </ModalBody>
       </Modal>
-      <Block position='absolute' width='100%' height='100%'>
+      <GraphLayer
+        isMainWidgetExpanded={isMainWidgetExpanded}
+        leftLayerWidth={leftLayerWidth}
+        graphRef={graphRef}
+      >
         <Graph ref={graphRef} setTooltip={setTooltip} />
-      </Block>
+      </GraphLayer>
       <WidgetContainer graphRef={graphRef} theme={secondaryTheme || theme}>
-        <SideNavBar />
+        <SideNavBars />
         {loading && <Loader />}
         {tooltip && <UserTooltip tooltip={tooltip} />}
         {activeWidgetList.length > 0 &&

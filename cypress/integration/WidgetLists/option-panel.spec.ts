@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 import 'cypress-react-selector';
+import { SIDE_NAVBAR_WIDTH } from '../../../src/constants/widget-units';
 
 describe('Option Panel', () => {
   before(() => {
@@ -30,11 +31,11 @@ describe('Option Panel', () => {
     cy.react('Block', {
       props: {
         position: 'fixed',
-        top: '10px',
-        bottom: '10px',
-        left: '60px',
+        top: '0px',
+        bottom: '0px',
+        left: SIDE_NAVBAR_WIDTH,
         width: '310px',
-        paddingTop: 'scale200',
+        paddingTop: 'scale600',
         paddingBottom: 'scale200',
         paddingLeft: 'scale550',
         paddingRight: 'scale550',
@@ -48,7 +49,9 @@ describe('Option Panel', () => {
   });
 
   it('should render Header component', () => {
-    cy.getReact('OptionsPanel').getReact('Header').should('exist');
+    cy.getReact('OptionsPanel')
+      .getReact('Header')
+      .should('exist');
   });
 
   it('should render Layout Options accordion', () => {

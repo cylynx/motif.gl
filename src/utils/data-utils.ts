@@ -1,6 +1,7 @@
 import { bisectLeft, extent, histogram as d3Histogram, ticks } from 'd3-array';
 import Decimal from 'decimal.js';
 import { parseISO } from 'date-fns';
+import { LEFT_LAYER_WIDTH } from '../constants/widget-units';
 
 export const ONE_SECOND = 1000;
 export const ONE_MINUTE = ONE_SECOND * 60;
@@ -91,7 +92,9 @@ export const getOrdinalDomain = (
   const values =
     typeof valueAccessor === 'function' ? data.map(valueAccessor) : data;
 
-  return unique(values).filter(notNullorUndefined).sort();
+  return unique(values)
+    .filter(notNullorUndefined)
+    .sort();
 };
 
 /**
@@ -397,4 +400,18 @@ export function roundValToStep(minValue: number, step: number, val: number) {
 export const getDecimalPrecisionCount = (float: number): number => {
   const decimal = new Decimal(float);
   return decimal.e;
+};
+
+/**
+ * Eliminate alphabet in string and remain integer
+ * - Specific radix in 10 as we want to convert string begins with other value to number.
+ *
+ * @reference
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt#description
+ *
+ * @param {string} value
+ * @return {number}
+ */
+export const extractIntegerFromString = (value: string): number => {
+  return parseInt(value.replace(/\D/g, ''), 10);
 };

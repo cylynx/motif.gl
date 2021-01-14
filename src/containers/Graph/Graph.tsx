@@ -1,4 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable import/no-cycle */
 // @ts-nocheck
 import React, { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -15,7 +16,6 @@ import { interactionStates } from './shape/constants';
 import { getStyleOptions, getGraphVisible } from '../../redux';
 import { TooltipProps } from './Tooltip';
 import './graphin.css';
-// import '@antv/graphin/dist/index.css';
 
 const INTERACTION_LIMIT = 500;
 

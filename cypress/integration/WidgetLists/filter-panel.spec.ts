@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 import 'cypress-react-selector';
 import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
+import { SIDE_NAVBAR_WIDTH } from '../../../src/constants/widget-units';
 
 describe('Filter Panel', () => {
   before(() => {
@@ -31,11 +32,11 @@ describe('Filter Panel', () => {
     cy.react('Block', {
       props: {
         position: 'fixed',
-        top: '10px',
-        bottom: '10px',
-        left: '60px',
+        top: '0px',
+        bottom: '0px',
+        left: SIDE_NAVBAR_WIDTH,
         width: '310px',
-        paddingTop: 'scale200',
+        paddingTop: 'scale600',
         paddingBottom: 'scale200',
         paddingLeft: 'scale550',
         paddingRight: 'scale550',
@@ -49,7 +50,9 @@ describe('Filter Panel', () => {
   });
 
   it('should render Header component', () => {
-    cy.getReact('FilterPanel').getReact('Header').should('exist');
+    cy.getReact('FilterPanel')
+      .getReact('Header')
+      .should('exist');
   });
 
   it('FilterSelection should not be render when no data is present', () => {
@@ -58,7 +61,9 @@ describe('Filter Panel', () => {
 
   describe('AddFilterButton', () => {
     it('should render successfully', () => {
-      cy.getReact('FilterPanel').getReact('AddFilterButton').should('exist');
+      cy.getReact('FilterPanel')
+        .getReact('AddFilterButton')
+        .should('exist');
     });
 
     it('should be disabled when no data is present', () => {
@@ -81,7 +86,9 @@ describe('Filter Panel', () => {
         })
         .click();
 
-      cy.react('LayersPanel').react('ImportDataButton').click();
+      cy.react('LayersPanel')
+        .react('ImportDataButton')
+        .click();
 
       cy.switchTab('sample-data');
 
