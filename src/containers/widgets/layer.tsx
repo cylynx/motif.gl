@@ -2,7 +2,11 @@
 /* eslint-disable  react/no-did-update-set-state */
 import React, { Component, ReactNode, createRef } from 'react';
 import { Block } from 'baseui/block';
-import { SIDE_NAVBAR_WIDTH } from '../../constants/widget-units';
+import {
+  SIDE_NAVBAR_WIDTH,
+  LEFT_LAYER_WIDTH,
+} from '../../constants/widget-units';
+import { extractIntegerFromString } from '../../utils/data-utils';
 
 export const BottomRightLayer = ({
   children,
@@ -76,8 +80,8 @@ export class GraphLayer extends Component<GraphLayerProps, GraphLayerState> {
     super(props);
 
     this.state = {
-      width: `calc(100% - (${SIDE_NAVBAR_WIDTH} + ${this.props.leftLayerWidth}))`,
-      left: `calc(${SIDE_NAVBAR_WIDTH} + ${this.props.leftLayerWidth})`,
+      width: `calc(100% - (${SIDE_NAVBAR_WIDTH} + ${props.leftLayerWidth}))`,
+      left: `calc(${SIDE_NAVBAR_WIDTH} + ${props.leftLayerWidth})`,
     };
   }
 
@@ -109,8 +113,10 @@ export class GraphLayer extends Component<GraphLayerProps, GraphLayerState> {
 
       const { graph } = graphRef.current;
 
-      // width (310) + padding (14 * 2)
-      const leftLayerWidthPx = 338;
+      // convert the value from px into integer
+      const leftLayerWidthPx: number = extractIntegerFromString(
+        LEFT_LAYER_WIDTH,
+      );
 
       const { innerWidth, innerHeight } = this.getInnerDimension();
 
