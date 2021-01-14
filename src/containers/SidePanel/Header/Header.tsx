@@ -77,6 +77,7 @@ const Header = () => {
         alignItems='center'
         marginTop='scale300'
         marginBottom='scale800'
+        height='scale950'
       >
         <Block>
           <Editable text={name} onChange={onChangeName} />

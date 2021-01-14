@@ -22,6 +22,13 @@ const StyledText = ({ children }: { children: React.ReactNode }) => (
     marginBottom={0}
     marginTop='scale200'
     color='contentSecondary'
+    overrides={{
+      Block: {
+        style: {
+          textTransform: 'capitalize',
+        },
+      },
+    }}
   >
     {children}
   </ParagraphSmall>
@@ -67,7 +74,7 @@ const LayerDetailed = ({
             Object.entries(nodeTypeMap).map(([key, value]) => (
               <StyledText key={key}>{`${value} x ${key}`}</StyledText>
             ))}
-          {!nodeTypeMap && <StyledText>No node types...</StyledText>}
+          {!nodeTypeMap && <StyledText>No Node Types.</StyledText>}
           <Block marginTop='scale600' />
           <Button
             kind='primary'
@@ -91,7 +98,7 @@ const LayerDetailed = ({
             Object.entries(edgeTypeMap).map(([key, value]) => (
               <StyledText key={key}>{`${value} x ${key}`}</StyledText>
             ))}
-          {!edgeTypeMap && <StyledText>No edge types.</StyledText>}
+          {!edgeTypeMap && <StyledText>No Edge Types.</StyledText>}
           <Block marginTop='scale600' />
           <Button
             kind='primary'
