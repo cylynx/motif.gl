@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React from 'react';
+import React, { useMemo } from 'react';
 import get from 'lodash/get';
 import { useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
@@ -138,25 +138,27 @@ export const graphData2Columns = (fields: Graph.Field[]) => {
 };
 
 const DataTable = ({ dataKey }: { dataKey: string }) => {
-  const [, key, index, types] = dataKey.split('_'); // e.g. table_graphList_1_nodes
-  const graphData = useSelector((state) =>
-    key === 'graphList'
-      ? getGraph(state).graphList[Number(index)]
-      : getGraph(state)[key],
-  );
-  // Need to do a mapping as the mapDataToValue function gets from row.data
-  let data;
-  let graphColumns;
-  if (types === 'nodes') {
-    data = graphData.nodes.map((r) => ({ id: r.id, data: r }));
-    graphColumns = graphData2Columns(graphData.metadata.fields.nodes);
-  } else if (types === 'edges') {
-    data = graphData.edges.map((r) => ({ id: r.id, data: r }));
-    graphColumns = graphData2Columns(graphData.metadata.fields.edges);
-  }
+  // e.g. table_graphList_1_nodes
+  const [, key, index, types] = dataKey.split('_');
+
+  const graphData: Graph.GraphData = useSelector((state) => {
+    if (key === 'graphList') {
+      return getGraph(state).graphList[Number(index)];
+    }
+
+    return getGraph(state)[key];
+  });
+
+  const rows = graphData[types].map((r: Graph.EdgeNode) => ({
+    id: r.id,
+    data: r,
+  }));
+
+  const columns = graphData2Columns(graphData.metadata.fields[types]);
+
   return (
     <Block height='600px' width='800px' paddingBottom='18px'>
-      <StatefulDataTable columns={graphColumns} rows={data} />
+      <StatefulDataTable columns={columns} rows={rows} />
     </Block>
   );
 };
