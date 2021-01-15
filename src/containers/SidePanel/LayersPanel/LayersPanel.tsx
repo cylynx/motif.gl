@@ -36,6 +36,7 @@ const LayersPanel = () => {
   const isAllEdgeSelected = edgeFields.every((f) => f.selected === true);
   const hiddenNodes = graphFlatten.nodes.length - graphVisible.nodes.length;
   const hiddenEdges = graphFlatten.edges.length - graphVisible.edges.length;
+  const isGraphListHaveData: boolean = graphList.length > 0;
 
   const onClickNodeToken = (index: number, status: boolean) => {
     dispatch(updateNodeSelection({ index, status }));
@@ -89,17 +90,23 @@ const LayersPanel = () => {
               key: 'node properties',
               content: (
                 <Fragment>
-                  <Block display='flex'>
+                  {isGraphListHaveData ? (
+                    <Block display='flex'>
+                      <ParagraphSmall marginTop={0}>
+                        Hint: Select node properties to display in tooltip
+                      </ParagraphSmall>
+                      <ToggleAllButton
+                        selected={isAllNodeSelected}
+                        onClick={onSelectAllNodeToken}
+                      />
+                    </Block>
+                  ) : (
                     <ParagraphSmall marginTop={0}>
-                      Hint: Select node properties to display in tooltip
+                      Import data to get started.
                     </ParagraphSmall>
-                    <ToggleAllButton
-                      selected={isAllNodeSelected}
-                      onClick={onSelectAllNodeToken}
-                    />
-                  </Block>
+                  )}
                   <ToggleTokens
-                    options={graphList.length > 0 ? nodeFields : []}
+                    options={isGraphListHaveData ? nodeFields : []}
                     onClick={onClickNodeToken}
                   />
                 </Fragment>
@@ -122,17 +129,23 @@ const LayersPanel = () => {
               key: 'edge properties',
               content: (
                 <Fragment>
-                  <Block display='flex'>
+                  {isGraphListHaveData ? (
+                    <Block display='flex'>
+                      <ParagraphSmall marginTop={0}>
+                        Hint: Select node properties to display in tooltip
+                      </ParagraphSmall>
+                      <ToggleAllButton
+                        selected={isAllEdgeSelected}
+                        onClick={onSelectAllEdgeToken}
+                      />
+                    </Block>
+                  ) : (
                     <ParagraphSmall marginTop={0}>
-                      Hint: Select edge properties to display in tooltip
+                      Import data to get started.
                     </ParagraphSmall>
-                    <ToggleAllButton
-                      selected={isAllEdgeSelected}
-                      onClick={onSelectAllEdgeToken}
-                    />
-                  </Block>
+                  )}{' '}
                   <ToggleTokens
-                    options={graphList.length > 0 ? edgeFields : []}
+                    options={isGraphListHaveData ? edgeFields : []}
                     onClick={onClickEdgeToken}
                   />
                 </Fragment>
