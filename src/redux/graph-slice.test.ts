@@ -128,21 +128,6 @@ describe('graph reducer', () => {
     expect(results.graphList).toHaveLength(0);
   });
 
-  it('changeVisibilityGraphList should change turn off visible but not delete from list', async () => {
-    const sampleGraphData = (await sampleGraphList)[0];
-    const modGraphList = {
-      graphList: [sampleGraphData],
-    };
-    const modState = { ...initialState, ...modGraphList };
-    const results = graph(modState, {
-      type: changeVisibilityGraphList.type,
-      payload: { index: 0, isVisible: false },
-    });
-
-    expect(results.graphList).toHaveLength(1);
-    expect(results.graphList[0].metadata.visible).toEqual(false);
-  });
-
   it('updateFilterAttributes should accept a filter attribute', () => {
     const key = 'randomKey';
     const criteria: FilterCriteria = {
@@ -237,5 +222,71 @@ describe('graph reducer', () => {
     const { filterOptions } = deleteResults;
     expect(filterOptions).toEqual({});
     expect(filterOptions[key]).toEqual(undefined);
+  });
+
+  describe('changeVisibiltyGraphList', () => {
+    let importedResults;
+    beforeEach(async () => {
+      // add sample data
+      const sampleJson = {
+        nodes: [
+          { id: 'node-2', custom: '123' },
+          { id: 'node-3', custom: '234' },
+        ],
+        edges: [
+          { id: 'edge-2', source: 'node-2', target: 'node-3', custom: '123' },
+        ],
+        metadata: {
+          key: 234,
+        },
+      };
+
+      const sampleData = importJson(sampleJson, initialState.accessors);
+      const sampleGraphData = (await sampleData)[0];
+
+      const addQueryResults = graph(initialState, {
+        type: addQuery.type,
+        payload: sampleGraphData,
+      });
+
+      importedResults = graph(addQueryResults, {
+        type: processGraphResponse.type,
+        payload: {
+          data: sampleGraphData,
+          accessors: initialState.accessors,
+        },
+      });
+    });
+
+    it('should not affect nodes and edges selection', async () => {
+      const hiddenResults = graph(importedResults, {
+        type: changeVisibilityGraphList.type,
+        payload: {
+          index: 0,
+          isVisible: false,
+        },
+      });
+
+      expect(importedResults.nodeSelection).toStrictEqual(
+        hiddenResults.nodeSelection,
+      );
+      expect(importedResults.edgeSelection).toStrictEqual(
+        hiddenResults.edgeSelection,
+      );
+    });
+
+    it('should change turn off visible but not delete from list', async () => {
+      const results = graph(importedResults, {
+        type: changeVisibilityGraphList.type,
+        payload: { index: 0, isVisible: false },
+      });
+
+      expect(results.graphList).toHaveLength(1);
+      expect(results.graphList[0].metadata.visible).toEqual(false);
+    });
+
+    afterEach(() => {
+      importedResults = initialState;
+    });
   });
 });
