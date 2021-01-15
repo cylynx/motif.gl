@@ -12,8 +12,6 @@ type RowData = {
   [key: string]: any;
 }[];
 
-type ProcessorResult = { fields: Graph.Field[]; rows: any[][] } | null;
-
 // Type analyzer adapted from https://github.com/keplergl/kepler.gl/blob/master/src/processors/data-processor.js
 
 export const ALL_FIELD_TYPES = {
