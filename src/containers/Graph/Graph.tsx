@@ -47,13 +47,12 @@ const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
       graph.setItemState(item, 'selected', true);
       // Ctrl event is for multiple select so don't display tooltip
       if (!e.originalEvent.ctrlKey && !e.originalEvent.shiftKey) {
-        const { centerX, centerY } = item.getBBox();
-        const canvasXY = graph.getCanvasByPoint(centerX, centerY);
         const node = item.get('model');
+        const { clientX, clientY } = e;
         setTooltip({
           id: node.id,
-          x: canvasXY.x,
-          y: canvasXY.y,
+          x: clientX,
+          y: clientY,
           type: 'node',
         });
       }
@@ -66,12 +65,12 @@ const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
       graph.setItemState(item, 'selected', true);
       // Ctrl event is for multiple select so don't display tooltip
       if (!e.originalEvent.ctrlKey && !e.originalEvent.shiftKey) {
-        const { canvasX, canvasY } = e;
+        const { clientX, clientY } = e;
         const edge = item.get('model');
         setTooltip({
           id: edge.id,
-          x: canvasX,
-          y: canvasY,
+          x: clientX,
+          y: clientY,
           type: 'edge',
         });
       }
