@@ -36,6 +36,7 @@ const LayersPanel = () => {
   const isAllEdgeSelected = edgeFields.every((f) => f.selected === true);
   const hiddenNodes = graphFlatten.nodes.length - graphVisible.nodes.length;
   const hiddenEdges = graphFlatten.edges.length - graphVisible.edges.length;
+  const isGraphListHaveData: boolean = graphList.length > 0;
 
   const onClickNodeToken = (index: number, status: boolean) => {
     dispatch(updateNodeSelection({ index, status }));
@@ -89,10 +90,10 @@ const LayersPanel = () => {
               key: 'node properties',
               content: (
                 <Fragment>
-                  {graphList.length > 0 ? (
+                  {isGraphListHaveData ? (
                     <Block display='flex'>
                       <ParagraphSmall marginTop={0}>
-                        Hint: Select node properties to display in tooltip{' '}
+                        Hint: Select node properties to display in tooltip
                       </ParagraphSmall>
                       <ToggleAllButton
                         selected={isAllNodeSelected}
@@ -105,7 +106,7 @@ const LayersPanel = () => {
                     </ParagraphSmall>
                   )}
                   <ToggleTokens
-                    options={graphList.length > 0 ? nodeFields : []}
+                    options={isGraphListHaveData ? nodeFields : []}
                     onClick={onClickNodeToken}
                   />
                 </Fragment>
@@ -128,10 +129,10 @@ const LayersPanel = () => {
               key: 'edge properties',
               content: (
                 <Fragment>
-                  {graphList.length > 0 ? (
+                  {isGraphListHaveData ? (
                     <Block display='flex'>
                       <ParagraphSmall marginTop={0}>
-                        Hint: Select node properties to display in tooltip{' '}
+                        Hint: Select node properties to display in tooltip
                       </ParagraphSmall>
                       <ToggleAllButton
                         selected={isAllEdgeSelected}
@@ -144,7 +145,7 @@ const LayersPanel = () => {
                     </ParagraphSmall>
                   )}{' '}
                   <ToggleTokens
-                    options={graphList.length > 0 ? edgeFields : []}
+                    options={isGraphListHaveData ? edgeFields : []}
                     onClick={onClickEdgeToken}
                   />
                 </Fragment>
