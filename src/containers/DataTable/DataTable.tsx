@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useMemo } from 'react';
+import React from 'react';
 import get from 'lodash/get';
 import { useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
