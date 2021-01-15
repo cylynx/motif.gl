@@ -162,7 +162,10 @@ const graph = createSlice({
           graphData = combineProcessedData(data, graphData);
         }
       }
-      updateAll(state, graphData);
+
+      Object.assign(state, {
+        graphFlatten: graphData ?? initialState.graphFlatten,
+      });
     },
     addQuery(state, action: PayloadAction<Graph.GraphData>) {
       state.graphList.push(action.payload);
