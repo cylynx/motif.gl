@@ -285,6 +285,15 @@ describe('graph reducer', () => {
       expect(results.graphList[0].metadata.visible).toEqual(false);
     });
 
+    it('should reset graph data when all graph list are hidden', async () => {
+      const results = graph(importedResults, {
+        type: changeVisibilityGraphList.type,
+        payload: { index: 0, isVisible: false },
+      });
+
+      expect(results.graphFlatten).toStrictEqual(initialState.graphFlatten);
+    });
+
     afterEach(() => {
       importedResults = initialState;
     });
