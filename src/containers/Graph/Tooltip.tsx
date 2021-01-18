@@ -5,7 +5,7 @@ import { styled } from 'baseui';
 import { Block } from 'baseui/block';
 import * as Graph from './types';
 import { getNodeProperties, getEdgeProperties } from '../../utils/graph-utils';
-import { GraphSelectors } from '../../redux/graph';
+import { GraphSelectors, Selection } from '../../redux/graph';
 
 export type TooltipProps = null | {
   id: string;
@@ -30,10 +30,10 @@ const Tooltip = ({ tooltip }: { tooltip: TooltipProps }) => {
   const graphFlatten = useSelector(
     (state) => GraphSelectors.getGraph(state).graphFlatten,
   );
-  const nodeFields = useSelector(
+  const nodeFields: Selection[] = useSelector(
     (state) => GraphSelectors.getGraph(state).nodeSelection,
   );
-  const edgeFields = useSelector(
+  const edgeFields: Selection[] = useSelector(
     (state) => GraphSelectors.getGraph(state).edgeSelection,
   );
   const properties = useMemo(
@@ -42,12 +42,12 @@ const Tooltip = ({ tooltip }: { tooltip: TooltipProps }) => {
         ? getNodeProperties(
             graphFlatten.nodes.find((x: Graph.Node) => x.id === tooltip.id),
             'data',
-            nodeFields.filter((x) => !x.selected).map((x) => x.id),
+            nodeFields.filter((x: Selection) => !x.selected).map((x) => x.id),
           )
         : getEdgeProperties(
             graphFlatten.edges.find((x: Graph.Edge) => x.id === tooltip.id),
             'data',
-            edgeFields.filter((x) => !x.selected).map((x) => x.id),
+            edgeFields.filter((x: Selection) => !x.selected).map((x) => x.id),
           ),
     [graphFlatten, edgeFields, nodeFields, tooltip.id],
   );

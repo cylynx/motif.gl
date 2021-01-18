@@ -13,7 +13,7 @@ import {
   ToggleAllButton,
 } from './LayersPanelButtons';
 
-import { GraphSelectors, GraphSlices } from '../../../redux/graph';
+import { GraphSelectors, GraphSlices, Selection } from '../../../redux/graph';
 import Header from '../Header';
 
 const LayersPanel = () => {
@@ -25,15 +25,19 @@ const LayersPanel = () => {
   const graphVisible = useSelector((state) =>
     GraphSelectors.getGraphVisible(state),
   );
-  const nodeFields = useSelector(
+  const nodeFields: Selection[] = useSelector(
     (state) => GraphSelectors.getGraph(state).nodeSelection,
   );
-  const edgeFields = useSelector(
+  const edgeFields: Selection[] = useSelector(
     (state) => GraphSelectors.getGraph(state).edgeSelection,
   );
   const haveData = graphFlatten && graphVisible;
-  const isAllNodeSelected = nodeFields.every((f) => f.selected === true);
-  const isAllEdgeSelected = edgeFields.every((f) => f.selected === true);
+  const isAllNodeSelected = nodeFields.every(
+    (f: Selection) => f.selected === true,
+  );
+  const isAllEdgeSelected = edgeFields.every(
+    (f: Selection) => f.selected === true,
+  );
   const hiddenNodes = graphFlatten.nodes.length - graphVisible.nodes.length;
   const hiddenEdges = graphFlatten.edges.length - graphVisible.edges.length;
   const isGraphListHaveData: boolean = graphList.length > 0;
