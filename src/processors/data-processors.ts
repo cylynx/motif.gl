@@ -196,6 +196,7 @@ export const json2csv = async (json: any): Promise<string | void> => {
   const csv = converter
     .json2csvAsync(json)
     .then()
+    // eslint-disable-next-line no-console
     .catch((err) => console.log(`ERROR: ${err.message}`));
   return csv;
 };
@@ -211,6 +212,7 @@ export const csv2json = async (csv: string) => {
   const json = converter
     .csv2jsonAsync(csv)
     .then()
+    // eslint-disable-next-line no-console
     .catch((err) => console.log(`ERROR: ${err.message}`));
   return json;
 };

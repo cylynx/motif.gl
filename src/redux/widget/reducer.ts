@@ -11,7 +11,7 @@ const widget = createSlice({
   name: 'widget',
   initialState,
   reducers: {
-    setWidget(_state, action: PayloadAction<WidgetProp[]>) {
+    setWidget(_state, action: PayloadAction<WidgetProp[]>): WidgetState {
       const widgets = action.payload;
       const uniqueKeys = [...new Set(widgets.map((item) => item.group))];
       const results = {};
@@ -23,7 +23,10 @@ const widget = createSlice({
       });
       return results;
     },
-    updateWidget(state, action: PayloadAction<{ key: string; id: string }>) {
+    updateWidget(
+      state,
+      action: PayloadAction<{ key: string; id: string }>,
+    ): void {
       const { key, id } = action.payload;
       state[key] = state[key] === id ? null : id;
     },

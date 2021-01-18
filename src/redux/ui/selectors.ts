@@ -1,5 +1,5 @@
-import { clientState } from '../investigate/selectors';
+import { UIState } from './types';
 
-const getUI = (state: any) => clientState(state).ui;
+const getUI = (state: any): UIState => state.investigate.ui;
 
 export { getUI };

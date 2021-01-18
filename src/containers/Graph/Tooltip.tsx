@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { styled } from 'baseui';

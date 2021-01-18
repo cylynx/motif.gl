@@ -1,5 +1,5 @@
-import { clientState } from '../investigate/selectors';
+import { WidgetState } from './types';
 
-const getWidget = (state: any) => clientState(state).widget;
+const getWidget = (state: any): WidgetState => state.investigate.widget;
 
 export { getWidget };

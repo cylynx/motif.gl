@@ -1,5 +1,4 @@
 /* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable import/no-cycle */
 // @ts-nocheck
 import React, { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';

@@ -15,7 +15,7 @@ import {
   JsonImport,
 } from '../../processors/import-data';
 
-import { UIActions, UISlices } from '../ui';
+import { UISlices, UIActions } from '../ui';
 
 type ImportAccessors = Graph.Accessors | null;
 

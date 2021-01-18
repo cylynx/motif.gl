@@ -1,6 +1,15 @@
 import { IToaster, ToastProps } from 'baseui/toast';
 import { ReactNode, ReactText } from 'react';
 
+export interface UIState {
+  name: string;
+  currency: string;
+  loading: boolean;
+  modal: ModalState;
+  score: any;
+  toast: ToastState;
+}
+
 export type NullableReactNode = ReactNode | null;
 export type NullableReactText = ReactText | null;
 export type ToastKind =
@@ -23,8 +32,4 @@ export type ModalState = {
   content: 'import' | string;
 };
 
-export type ShowToastAction = {
-  message: ReactNode;
-  kind?: ToastKind;
-  props?: ToastProps;
-};
+export type ShowToastAction = string | number;
