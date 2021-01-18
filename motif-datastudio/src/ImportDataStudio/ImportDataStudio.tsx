@@ -27,6 +27,8 @@ import {
 
 import { closeModal, fetchError } from '../../../src/redux';
 
+import { DataStudioMessage } from './DataStudioMessage';
+
 type FormValues = {
   dataType: { label: string; id: string }[];
   nodeID?: string;
@@ -42,7 +44,7 @@ const importOptions = Object.values(IMPORT_OPTIONS);
  */
 const cleanInput = (file: string) => file.replace(/\r/g, '').trim();
 
-const ImportLocalFile = () => {
+const ImportDataStudio = ({ data }: { data: DataStudioMessage }) => {
   const dispatch = useDispatch();
   const batchFileRef = useRef<ImportFormat[]>(null);
   const singleFileRef = useRef<ImportFormat>(null);
@@ -218,6 +220,29 @@ const ImportLocalFile = () => {
 
     dispatch(closeModal());
   };
+  console.log(data);
+  return (
+    <form onSubmit={handleSubmit(onSubmitForm)}>
+      <Block marginTop='10px' display='flex' justifyContent='flex-end'>
+        <table>
+          <thead></thead>
+          <tbody>
+            {data.tables.DEFAULT &&
+              data.tables.DEFAULT.map((row) => (
+                <tr>
+                  {row.dimensions.map((d) => (
+                    <td>{d}</td>
+                  ))}
+                </tr>
+              ))}
+          </tbody>
+        </table>
+        <Button type='submit' disabled={isButtonDisabled}>
+          Import Data
+        </Button>
+      </Block>
+    </form>
+  );
 
   return (
     <Fragment>
@@ -333,4 +358,4 @@ const AdditionalOptions = ({ register }: { register: any }) => {
   );
 };
 
-export default ImportLocalFile;
+export default ImportDataStudio;

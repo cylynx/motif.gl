@@ -7,11 +7,11 @@ import { Motif, MotifLightTheme, MotifDarkTheme } from 'motif.gl';
 import { Provider } from 'react-redux';
 import store from './redux-store';
 import 'motif.gl/dist/index.css';
-import ImportDataStudio from './ImportDataStudio';
+import ImportDataStudio, { DataStudioMessage } from './ImportDataStudio';
 
 const engine = new Styletron();
 
-const App = () => {
+const App = ({ data }: { data: DataStudioMessage }) => {
   return (
     <StyletronProvider value={engine}>
       <BaseProvider theme={MotifLightTheme}>
@@ -32,7 +32,7 @@ const App = () => {
                 {
                   key: 'datastudio',
                   title: 'Google Data Studio',
-                  component: <ImportDataStudio />,
+                  component: <ImportDataStudio data={data} />,
                 },
                 { key: 'file' },
                 { key: 'sample-data' },
