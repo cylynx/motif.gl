@@ -2,24 +2,8 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-param-reassign */
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
-import { ReactNode } from 'react';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export type WidgetItem = WidgetProp & {
-  icon: ReactNode;
-  widget: ReactNode;
-};
-
-export type WidgetProp = {
-  id: string;
-  group: string;
-  position: 'top' | 'bottom';
-  active: boolean;
-};
-
-export interface WidgetState {
-  [key: string]: string;
-}
+import { WidgetState, WidgetProp } from './types';
 
 const initialState: WidgetState = {};
 

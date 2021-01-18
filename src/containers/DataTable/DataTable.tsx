@@ -12,7 +12,7 @@ import {
 } from 'baseui/data-table';
 import { DATA_TYPES as AnalyzerDataTypes } from 'type-analyzer';
 import { format } from 'date-fns';
-import { getGraph } from '../../redux';
+import { GraphSelectors } from '../../redux/graph';
 import * as Graph from '../Graph/types';
 
 export const FIELDS_COLUMN_MAP = {
@@ -143,10 +143,10 @@ const DataTable = ({ dataKey }: { dataKey: string }) => {
 
   const graphData: Graph.GraphData = useSelector((state) => {
     if (key === 'graphList') {
-      return getGraph(state).graphList[Number(index)];
+      return GraphSelectors.getGraph(state).graphList[Number(index)];
     }
 
-    return getGraph(state)[key];
+    return GraphSelectors.getGraph(state)[key];
   });
 
   const rows = graphData[types].map((r: Graph.EdgeNode) => ({

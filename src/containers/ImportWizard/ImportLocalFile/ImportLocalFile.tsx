@@ -23,10 +23,9 @@ import {
   importEdgeListData,
   importJsonData,
   importNodeEdgeData,
-} from '../../../redux/add-data-thunk';
+} from '../../../redux/graph/thunk';
 
-import { closeModal } from '../../../redux';
-import { ToastAction } from '../../../redux/actions/Toast';
+import { UISlices, UIActions } from '../../../redux/ui';
 
 type FormValues = {
   dataType: { label: string; id: string }[];
@@ -186,7 +185,7 @@ const ImportLocalFile = () => {
       })
       .catch(() =>
         dispatch(
-          ToastAction.show('The file provided is not readable', 'negative'),
+          UIActions.show('The file provided is not readable', 'negative'),
         ),
       );
     setIsUploading(false);
@@ -221,7 +220,7 @@ const ImportLocalFile = () => {
       dispatch(importJsonData(batchFileRef.current, accessors));
     }
 
-    dispatch(closeModal());
+    dispatch(UISlices.closeModal());
   };
 
   return (

@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { combineReducers } from '@reduxjs/toolkit';
-import { initialState as initialStateGraph } from './graph-slice';
-import { initialStateUi } from './ui-slice';
+import { initialState as initialStateGraph } from '../../graph/reducer';
+import { initialStateUi } from '../../ui/reducer';
 import {
   investigateReducer,
   getUI,
@@ -14,8 +14,8 @@ import {
   getGraphFiltered,
   getAccessors,
   getWidget,
-} from './combine-reducers';
-import { FilterOptions, GraphData, Node } from '../containers/Graph';
+} from '../reducer';
+import { FilterOptions, GraphData, Node } from '../../../containers/Graph';
 
 const clientReducer = combineReducers({
   investigate: investigateReducer,

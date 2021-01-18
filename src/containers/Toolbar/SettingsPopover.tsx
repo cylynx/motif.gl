@@ -5,14 +5,7 @@ import { Select } from 'baseui/select';
 import { Checkbox } from 'baseui/checkbox';
 import { Block } from 'baseui/block';
 import { TriGrid } from '../../components/ui';
-import {
-  changeOptions,
-  changeLayout,
-  changeNodeStyle,
-  changeEdgeStyle,
-  getGraph,
-  getStyleOptions,
-} from '../../redux';
+import { GraphSlices, GraphSelectors } from '../../redux/graph';
 
 import { getFieldNames } from '../../utils/graph-utils';
 import * as LAYOUT from '../../constants/layout-options';
@@ -27,9 +20,9 @@ const SettingsPopover = () => {
     resetView,
     groupEdges,
     layout,
-  } = useSelector((state) => getStyleOptions(state));
+  } = useSelector((state) => GraphSelectors.getStyleOptions(state));
   const graphFields = useSelector(
-    (state) => getGraph(state).graphFlatten.metadata.fields,
+    (state) => GraphSelectors.getGraph(state).graphFlatten.metadata.fields,
   );
   const numericNodeOptions = getFieldNames(graphFields.nodes, [
     'integer',
@@ -49,11 +42,13 @@ const SettingsPopover = () => {
     key: string,
     newValue: boolean | string | number,
   ) => {
-    dispatch(changeOptions({ key, value: newValue }));
+    dispatch(GraphSlices.changeOptions({ key, value: newValue }));
   };
 
-  const updateNodeStyle = (data: any) => dispatch(changeNodeStyle(data));
-  const updateEdgeStyle = (data: any) => dispatch(changeEdgeStyle(data));
+  const updateNodeStyle = (data: any) =>
+    dispatch(GraphSlices.changeNodeStyle(data));
+  const updateEdgeStyle = (data: any) =>
+    dispatch(GraphSlices.changeEdgeStyle(data));
 
   return (
     <Block width='300px' paddingBottom='scale400'>
@@ -65,7 +60,9 @@ const SettingsPopover = () => {
           value={[findID(LAYOUT.LAYOUT_NAMES, layout.name)]}
           onChange={(params) =>
             dispatch(
-              changeLayout({ layout: { id: params.option.id as string } }),
+              GraphSlices.changeLayout({
+                layout: { id: params.option.id as string },
+              }),
             )
           }
         />

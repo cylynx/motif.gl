@@ -2,12 +2,7 @@ import React, { Fragment } from 'react';
 
 import { Block } from 'baseui/block';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getGraph,
-  changeLayout,
-  changeNodeStyle,
-  changeEdgeStyle,
-} from '../../../redux';
+import { GraphSlices, GraphSelectors } from '../../../redux/graph';
 import Header from '../Header';
 import Accordion from '../../../components/Accordion';
 import {
@@ -40,9 +35,11 @@ const defaultLabelOptions = [
 const OptionsPanel = () => {
   const dispatch = useDispatch();
 
-  const styleOptions = useSelector((state) => getGraph(state).styleOptions);
+  const styleOptions = useSelector(
+    (state) => GraphSelectors.getGraph(state).styleOptions,
+  );
   const graphFields = useSelector(
-    (state) => getGraph(state).graphFlatten.metadata.fields,
+    (state) => GraphSelectors.getGraph(state).graphFlatten.metadata.fields,
   );
 
   const nodeOptions = getFieldNames(graphFields.nodes).map((x) => {
@@ -72,9 +69,11 @@ const OptionsPanel = () => {
   const { layout, nodeStyle, edgeStyle } = styleOptions;
   const layoutOptions = { layout: { id: layout.name, ...layout.options } };
 
-  const updateLayout = (data: any) => dispatch(changeLayout(data));
-  const updateNodeStyle = (data: any) => dispatch(changeNodeStyle(data));
-  const updateEdgeStyle = (data: any) => dispatch(changeEdgeStyle(data));
+  const updateLayout = (data: any) => dispatch(GraphSlices.changeLayout(data));
+  const updateNodeStyle = (data: any) =>
+    dispatch(GraphSlices.changeNodeStyle(data));
+  const updateEdgeStyle = (data: any) =>
+    dispatch(GraphSlices.changeEdgeStyle(data));
 
   return (
     <Fragment>

@@ -20,7 +20,7 @@ import {
   AnimationController,
   PlaybackControls,
 } from '../../components/animation-controller';
-import { getGraphFlatten, getGraphVisible } from '../../redux';
+import { GraphSelectors } from '../../redux/graph';
 import { getFieldDomain, unixTimeConverter } from '../../utils/data-utils';
 
 const dateTimeAnalyzerTypes = ['DATETIME', 'DATE', 'TIME'];
@@ -44,8 +44,12 @@ const VariableInspector = () => {
   const [histogramProp, setHistogramProp] = useState({});
   const [value, setValue] = useState(false);
   const [speed, setSpeed] = useState(1);
-  const graphFlatten = useSelector((state) => getGraphFlatten(state));
-  const graphVisible = useSelector((state) => getGraphVisible(state));
+  const graphFlatten = useSelector((state) =>
+    GraphSelectors.getGraphFlatten(state),
+  );
+  const graphVisible = useSelector((state) =>
+    GraphSelectors.getGraphVisible(state),
+  );
   const graphFields = graphFlatten.metadata.fields;
 
   /**

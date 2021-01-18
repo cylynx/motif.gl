@@ -13,17 +13,12 @@ import {
   FilterOptions,
 } from '../../../../Graph';
 
-import {
-  updateFilterAttributes,
-  removeFilterAttributes,
-  resetFilters,
-  getFilterOptions,
-} from '../../../../../redux';
+import { GraphSlices, GraphSelectors } from '../../../../../redux/graph';
 
 const useGraphFilter = (): GraphFilterActions => {
   const dispatch = useDispatch();
   const filterOptions: FilterOptions = useSelector((state) =>
-    getFilterOptions(state),
+    GraphSelectors.getFilterOptions(state),
   );
 
   const getStringOptions = (
@@ -49,15 +44,15 @@ const useGraphFilter = (): GraphFilterActions => {
   const addFilter = (): void => {
     const key: string = shortid.generate();
     const criteria: FilterCriteria = {};
-    dispatch(updateFilterAttributes({ key, criteria }));
+    dispatch(GraphSlices.updateFilterAttributes({ key, criteria }));
   };
 
   const deleteFilter = (key: string): void => {
-    dispatch(removeFilterAttributes({ key }));
+    dispatch(GraphSlices.removeFilterAttributes({ key }));
   };
 
   const resetFilter = (): void => {
-    dispatch(resetFilters());
+    dispatch(GraphSlices.resetFilters());
   };
 
   const getFilterCriteria = (key: string): FilterCriteria => {
@@ -68,7 +63,7 @@ const useGraphFilter = (): GraphFilterActions => {
     key: string,
     criteria: FilterCriteria,
   ): void => {
-    dispatch(updateFilterAttributes({ key, criteria }));
+    dispatch(GraphSlices.updateFilterAttributes({ key, criteria }));
   };
 
   return {

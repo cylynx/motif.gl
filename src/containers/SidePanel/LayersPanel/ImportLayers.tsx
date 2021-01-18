@@ -9,12 +9,12 @@ import {
   updateGraphList,
   deleteGraphList,
   changeVisibilityGraphList,
-} from '../../../redux/graph-slice';
-import { openDataTableModal } from '../../../redux/ui-slice';
+} from '../../../redux/graph/reducer';
+import { openDataTableModal } from '../../../redux/ui/reducer';
 import { Statistic } from '../../../components/ui';
 import { countProperty } from '../../../utils/graph-utils';
 import * as Graph from '../../Graph/types';
-import { getGraphList, getGraphVisible, getAccessors } from '../../../redux';
+import { GraphSelectors } from '../../../redux/graph';
 
 const StyledText = ({ children }: { children: React.ReactNode }) => (
   <ParagraphSmall
@@ -42,8 +42,10 @@ const LayerDetailed = ({
   index: number;
 }) => {
   const dispatch = useDispatch();
-  const graphVisible = useSelector((state) => getGraphVisible(state));
-  const accessors = useSelector((state) => getAccessors(state));
+  const graphVisible = useSelector((state) =>
+    GraphSelectors.getGraphVisible(state),
+  );
+  const accessors = useSelector((state) => GraphSelectors.getAccessors(state));
   const visibleNodeList = graphVisible.nodes.map((x) => x.id);
   const visibleEdgeList = graphVisible.edges.map((x) => x.id);
   const hiddenNodes = graph.nodes.filter(
@@ -117,7 +119,7 @@ const LayerDetailed = ({
 
 const ImportLayers = () => {
   const dispatch = useDispatch();
-  const graphList = useSelector((state) => getGraphList(state));
+  const graphList = useSelector((state) => GraphSelectors.getGraphList(state));
 
   const importItems = graphList.map((graph: Graph.GraphData, index: number) => {
     let title = `import ${index}`;

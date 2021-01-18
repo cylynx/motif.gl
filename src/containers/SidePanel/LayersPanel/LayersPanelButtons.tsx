@@ -2,8 +2,8 @@ import React, { MouseEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
-import { resetState } from '../../../redux/graph-slice';
-import { openImportModal } from '../../../redux';
+import { GraphSlices } from '../../../redux/graph';
+import { UISlices } from '../../../redux/ui';
 import ToggleTokens from '../../../components/ToggleTokens';
 import * as Icon from '../../../components/Icons';
 
@@ -36,7 +36,7 @@ export const ImportDataButton = () => {
   const dispatch = useDispatch();
   const onClickImport = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    dispatch(openImportModal());
+    dispatch(UISlices.openImportModal());
   };
 
   return (
@@ -55,7 +55,7 @@ export const ClearDataButton = () => {
   const dispatch = useDispatch();
   const onClickClearAll = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    dispatch(resetState());
+    dispatch(GraphSlices.resetState());
   };
 
   return (

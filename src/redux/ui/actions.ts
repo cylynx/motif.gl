@@ -1,8 +1,8 @@
 import { ToastProps, toaster } from 'baseui/toast';
 import { ReactNode } from 'react';
-import { getUI } from '../../combine-reducers';
+import { getUI } from './selectors';
 import { NullableReactText, ToastKind } from './types';
-import { removeToast, updateToast } from '../../ui-slice';
+import { removeToast, updateToast } from './reducer';
 
 const DEFAULT_TOAST_PROPS: ToastProps = {
   autoHideDuration: 3500,

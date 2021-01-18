@@ -5,7 +5,7 @@ import { styled } from 'baseui';
 import { Block } from 'baseui/block';
 import * as Graph from './types';
 import { getNodeProperties, getEdgeProperties } from '../../utils/graph-utils';
-import { getGraph } from '../../redux';
+import { GraphSelectors } from '../../redux/graph';
 
 export type TooltipProps = null | {
   id: string;
@@ -27,9 +27,15 @@ export const StyledInner = styled('div', ({ $theme }) => ({
 }));
 
 const Tooltip = ({ tooltip }: { tooltip: TooltipProps }) => {
-  const graphFlatten = useSelector((state) => getGraph(state).graphFlatten);
-  const nodeFields = useSelector((state) => getGraph(state).nodeSelection);
-  const edgeFields = useSelector((state) => getGraph(state).edgeSelection);
+  const graphFlatten = useSelector(
+    (state) => GraphSelectors.getGraph(state).graphFlatten,
+  );
+  const nodeFields = useSelector(
+    (state) => GraphSelectors.getGraph(state).nodeSelection,
+  );
+  const edgeFields = useSelector(
+    (state) => GraphSelectors.getGraph(state).edgeSelection,
+  );
   const properties = useMemo(
     () =>
       tooltip.type === 'node'

@@ -6,8 +6,7 @@ import { Button } from 'baseui/button';
 import { FormControl } from 'baseui/form-control';
 import { Select } from 'baseui/select';
 import { LabelSmall, ParagraphSmall } from 'baseui/typography';
-import { changeNodeStyle } from '../../redux/graph-slice';
-import { getStyleOptions, getGraphFlatten } from '../../redux';
+import { GraphSelectors, GraphSlices } from '../../redux/graph';
 import { getFieldNames } from '../../utils/graph-utils';
 import { CATEGORICAL_COLOR } from '../../constants/colors';
 
@@ -50,7 +49,9 @@ const Legend = ({ data }: { data: { [key: string]: string } }) => {
 
 const LegendPopover = () => {
   const dispatch = useDispatch();
-  const nodeStyle = useSelector((state) => getStyleOptions(state).nodeStyle);
+  const nodeStyle = useSelector(
+    (state) => GraphSelectors.getStyleOptions(state).nodeStyle,
+  );
 
   let selectValue: any;
   if (
@@ -66,7 +67,7 @@ const LegendPopover = () => {
   }
 
   const graphFields = useSelector(
-    (state) => getGraphFlatten(state).metadata.fields,
+    (state) => GraphSelectors.getGraphFlatten(state).metadata.fields,
   );
 
   const nodeOptions = getFieldNames(graphFields.nodes).map((x) => {
@@ -75,13 +76,13 @@ const LegendPopover = () => {
 
   const updateNodeStyle = (data: any) => {
     const dispatchData = { color: { id: 'legend', variable: data[0].id } };
-    dispatch(changeNodeStyle(dispatchData));
+    dispatch(GraphSlices.changeNodeStyle(dispatchData));
   };
 
   const switchToFixedColor = (e: React.MouseEvent) => {
     e.preventDefault();
     const dispatchData = { color: { id: 'fixed' } };
-    dispatch(changeNodeStyle(dispatchData));
+    dispatch(GraphSlices.changeNodeStyle(dispatchData));
   };
 
   return (

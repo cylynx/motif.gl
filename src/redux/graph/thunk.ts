@@ -2,11 +2,10 @@ import some from 'lodash/some';
 import isUndefined from 'lodash/isUndefined';
 import flatten from 'lodash/flatten';
 import isEmpty from 'lodash/isEmpty';
-import { getFilterOptions, getGraph } from './combine-reducers';
-import * as Graph from '../containers/Graph/types';
+import { getFilterOptions, getGraph } from './selectors';
+import * as Graph from '../../containers/Graph/types';
 
-import { fetchBegin, fetchDone } from './ui-slice';
-import { addQuery, processGraphResponse } from './graph-slice';
+import { addQuery, processGraphResponse } from './reducer';
 import {
   ImportFormat,
   importEdgeListCsv,
@@ -14,8 +13,9 @@ import {
   importJson,
   NodeEdgeDataType,
   JsonImport,
-} from '../processors/import-data';
-import { ToastAction } from './actions/Toast';
+} from '../../processors/import-data';
+
+import { UIActions, UISlices } from '../ui';
 
 type ImportAccessors = Graph.Accessors | null;
 
@@ -39,15 +39,15 @@ const processResponse = (
   accessors: Graph.Accessors,
   newData: Graph.GraphData | Graph.GraphList,
 ) => {
-  dispatch(fetchBegin());
+  dispatch(UISlices.fetchBegin());
   for (const data of Array.isArray(newData) ? newData : [newData]) {
     // Check edges for new data as it might just be repeated
     if (checkNewData(graphList, data)) {
       dispatch(addQuery(data));
       dispatch(processGraphResponse({ data, accessors }));
-      dispatch(fetchDone());
+      dispatch(UISlices.fetchDone());
     } else {
-      dispatch(fetchDone());
+      dispatch(UISlices.fetchDone());
       throw new Error('Data has already imported');
     }
   }
@@ -69,11 +69,11 @@ const showImportDataToast = (
 ): void => {
   const isFilterEmpty: boolean = isEmpty(filterOptions);
   if (isFilterEmpty) {
-    dispatch(ToastAction.show('Data imported successfully', 'positive'));
+    dispatch(UIActions.show('Data imported successfully', 'positive'));
     return;
   }
 
-  dispatch(ToastAction.show('Data imported with filters applied', 'warning'));
+  dispatch(UIActions.show('Data imported with filters applied', 'warning'));
 };
 
 /**
@@ -110,7 +110,7 @@ export const importEdgeListData = (
     })
     .catch((err: Error) => {
       const { message } = err;
-      dispatch(ToastAction.show(message, 'negative'));
+      dispatch(UIActions.show(message, 'negative'));
     });
 };
 
@@ -148,7 +148,7 @@ export const importJsonData = (
     })
     .catch((err: Error) => {
       const { message } = err;
-      dispatch(ToastAction.show(message, 'negative'));
+      dispatch(UIActions.show(message, 'negative'));
     });
 };
 
@@ -189,7 +189,7 @@ export const importNodeEdgeData = (
     })
     .catch((err: Error) => {
       const { message } = err;
-      dispatch(ToastAction.show(message, 'negative'));
+      dispatch(UIActions.show(message, 'negative'));
     });
 };
 
@@ -224,6 +224,6 @@ export const importSingleJsonData = (
     })
     .catch((err: Error) => {
       const { message } = err;
-      dispatch(ToastAction.show(message, 'negative'));
+      dispatch(UIActions.show(message, 'negative'));
     });
 };

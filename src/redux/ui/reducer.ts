@@ -4,7 +4,7 @@
 /* eslint-disable no-param-reassign */
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ModalState, ShowToastAction, ToastState } from './types';
+import { ModalState, ShowToastAction, ToastState } from '../types';
 
 export interface UiState {
   name: string;

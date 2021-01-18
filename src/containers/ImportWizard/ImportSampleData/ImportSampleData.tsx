@@ -7,9 +7,9 @@ import { LabelMedium, ParagraphSmall } from 'baseui/typography';
 import * as Graph from '../../Graph/types';
 import * as DATA from '../../../constants/sample-data';
 import { FlushedGrid } from '../../../components/ui';
-import { closeModal, changeLayout } from '../../../redux';
+import { UISlices } from '../../../redux/ui';
+import { GraphSlices, GraphThunks } from '../../../redux/graph';
 import { JsonImport } from '../../../processors/import-data';
-import { importSingleJsonData } from '../../../redux/add-data-thunk';
 
 export enum SampleData {
   SIMPLE_GRAPH,
@@ -119,16 +119,18 @@ const StyledItem = ({ item }: { item: SampleDataItem }) => {
     e: MouseEvent<HTMLButtonElement>,
   ) => {
     e.preventDefault();
-    dispatch(closeModal());
+    dispatch(UISlices.closeModal());
 
     // These two datasets come with x-y coordinates
     if (item.key === SampleData.AA || item.key === SampleData.NETWORK) {
-      dispatch(changeLayout({ layout: { id: 'none' } }));
+      dispatch(GraphSlices.changeLayout({ layout: { id: 'none' } }));
     }
 
     Promise.resolve(item.data()).then((d: void) => {
       const sampleDataset: JsonImport = { data: d, type: 'json' };
-      dispatch(importSingleJsonData(sampleDataset, defaultAccessors));
+      dispatch(
+        GraphThunks.importSingleJsonData(sampleDataset, defaultAccessors),
+      );
     });
   };
 

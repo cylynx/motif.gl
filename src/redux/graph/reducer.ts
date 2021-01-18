@@ -4,10 +4,13 @@
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import isUndefined from 'lodash/isUndefined';
-import * as LAYOUT from '../constants/layout-options';
-import * as Graph from '../containers/Graph/types';
-import { combineProcessedData } from '../utils/graph-utils';
-import { generateDefaultColorMap } from '../utils/style-nodes';
+import * as LAYOUT from '../../constants/layout-options';
+import * as Graph from '../../containers/Graph/types';
+import { combineProcessedData } from '../../utils/graph-utils';
+import { generateDefaultColorMap } from '../../utils/style-nodes';
+import { GraphState } from './types';
+import undoable, { excludeAction } from 'redux-undo';
+import graphReducer, { GraphSlices } from './index';
 
 export const updateSelections = (state: GraphState, data: Graph.GraphData) => {
   const currentNodeFields = state.nodeSelection.map((x) => x.id);
@@ -52,23 +55,6 @@ export const updateAll = (state: GraphState, graphData: Graph.GraphData) => {
     state.filterOptions = initialState.filterOptions;
   }
 };
-
-export type Selection = {
-  label: string;
-  id: string;
-  type: string;
-  selected: boolean;
-};
-
-export interface GraphState {
-  accessors: Graph.Accessors;
-  styleOptions: Graph.StyleOptions;
-  filterOptions: Graph.FilterOptions;
-  graphList: Graph.GraphList;
-  graphFlatten: Graph.GraphData;
-  nodeSelection: Selection[];
-  edgeSelection: Selection[];
-}
 
 const initialState: GraphState = {
   accessors: {

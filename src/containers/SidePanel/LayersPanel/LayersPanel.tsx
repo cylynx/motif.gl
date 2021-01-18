@@ -12,25 +12,25 @@ import {
   ClearDataButton,
   ToggleAllButton,
 } from './LayersPanelButtons';
-import {
-  updateNodeSelection,
-  updateAllNodeSelection,
-  updateEdgeSelection,
-  updateAllEdgeSelection,
-  getGraph,
-  getGraphList,
-  getGraphVisible,
-  getGraphFlatten,
-} from '../../../redux';
+
+import { GraphSelectors, GraphSlices } from '../../../redux/graph';
 import Header from '../Header';
 
 const LayersPanel = () => {
   const dispatch = useDispatch();
-  const graphList = useSelector((state) => getGraphList(state));
-  const graphFlatten = useSelector((state) => getGraphFlatten(state));
-  const graphVisible = useSelector((state) => getGraphVisible(state));
-  const nodeFields = useSelector((state) => getGraph(state).nodeSelection);
-  const edgeFields = useSelector((state) => getGraph(state).edgeSelection);
+  const graphList = useSelector((state) => GraphSelectors.getGraphList(state));
+  const graphFlatten = useSelector((state) =>
+    GraphSelectors.getGraphFlatten(state),
+  );
+  const graphVisible = useSelector((state) =>
+    GraphSelectors.getGraphVisible(state),
+  );
+  const nodeFields = useSelector(
+    (state) => GraphSelectors.getGraph(state).nodeSelection,
+  );
+  const edgeFields = useSelector(
+    (state) => GraphSelectors.getGraph(state).edgeSelection,
+  );
   const haveData = graphFlatten && graphVisible;
   const isAllNodeSelected = nodeFields.every((f) => f.selected === true);
   const isAllEdgeSelected = edgeFields.every((f) => f.selected === true);
@@ -39,19 +39,23 @@ const LayersPanel = () => {
   const isGraphListHaveData: boolean = graphList.length > 0;
 
   const onClickNodeToken = (index: number, status: boolean) => {
-    dispatch(updateNodeSelection({ index, status }));
+    dispatch(GraphSlices.updateNodeSelection({ index, status }));
   };
 
   const onSelectAllNodeToken = () => {
-    dispatch(updateAllNodeSelection({ status: !isAllNodeSelected }));
+    dispatch(
+      GraphSlices.updateAllNodeSelection({ status: !isAllNodeSelected }),
+    );
   };
 
   const onClickEdgeToken = (index: number, status: boolean) => {
-    dispatch(updateEdgeSelection({ index, status }));
+    dispatch(GraphSlices.updateEdgeSelection({ index, status }));
   };
 
   const onSelectAllEdgeToken = () => {
-    dispatch(updateAllEdgeSelection({ status: !isAllEdgeSelected }));
+    dispatch(
+      GraphSlices.updateAllEdgeSelection({ status: !isAllEdgeSelected }),
+    );
   };
 
   return (

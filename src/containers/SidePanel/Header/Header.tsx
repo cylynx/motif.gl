@@ -4,19 +4,23 @@ import html2canvas from 'html2canvas';
 import { Block } from 'baseui/block';
 import { useDispatch, useSelector } from 'react-redux';
 import { GraphList } from '../../Graph';
-import { getGraphList, getUI, setName } from '../../../redux';
+import { UISelectors, UISlices } from '../../../redux/ui';
+import { GraphSelectors } from '../../../redux/graph';
 import * as Icon from '../../../components/Icons';
 import Editable from '../../../components/Editable';
 import HeaderButton, { HeaderButtonProp } from './HeaderButton';
 
 const Header = () => {
-  const name: string = useSelector((state) => getUI(state).name);
-  const exportGraph: GraphList = useSelector((state) => getGraphList(state));
+  const name: string = useSelector((state) => UISelectors.getUI(state).name);
+  const exportGraph: GraphList = useSelector((state) =>
+    GraphSelectors.getGraphList(state),
+  );
   const dispatch = useDispatch();
 
-  const onChangeName = useCallback((text: string) => dispatch(setName(text)), [
-    dispatch,
-  ]);
+  const onChangeName = useCallback(
+    (text: string) => dispatch(UISlices.setName(text)),
+    [dispatch],
+  );
 
   const isCanvasHasGraph: boolean = useMemo(() => {
     return exportGraph.length > 0;

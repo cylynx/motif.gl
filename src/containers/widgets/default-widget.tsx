@@ -5,7 +5,7 @@ import Toolbar from '../Toolbar';
 import { LayersPanel, OptionsPanel } from '../SidePanel';
 import IconButton from './IconButton';
 import * as Icon from '../../components/Icons';
-import { WidgetItem } from './widget-slice';
+import { WidgetItem } from '../../redux/widget';
 import FilterPanel from '../SidePanel/FilterPanel';
 
 const defaultWidgetList: WidgetItem[] = [

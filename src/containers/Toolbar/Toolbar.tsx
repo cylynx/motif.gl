@@ -4,7 +4,7 @@ import { ActionCreators as UndoActionCreators } from 'redux-undo';
 import fscreen from 'fscreen';
 import * as Icon from '../../components/Icons';
 import { GraphRefContext } from '../Graph';
-import { resetState } from '../../redux';
+import { GraphSlices } from '../../redux/graph';
 import ToolbarButton, { ToolbarItem } from './ToolbarButton';
 import SettingsPopover from './SettingsPopover';
 import LegendPopover from './LegendPopover';
@@ -107,7 +107,7 @@ const Toolbar = () => {
       icon: <Icon.X size={18} />,
       isDisabled: false,
       popoverContent: null,
-      onClick: () => dispatch(resetState()),
+      onClick: () => dispatch(GraphSlices.resetState()),
     },
   ];
 

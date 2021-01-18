@@ -2,8 +2,8 @@ import React from 'react';
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateWidget } from './widget-slice';
-import { getWidget } from '../../redux';
+import { updateWidget } from '../../redux/widget/reducer';
+import { WidgetSelectors } from '../../redux/widget';
 
 type IconButton = {
   icon: React.ReactNode;
@@ -13,7 +13,9 @@ type IconButton = {
 
 const IconButton = ({ icon, id, group }: IconButton) => {
   const dispatch = useDispatch();
-  const activeId = useSelector((state) => getWidget(state)[group]);
+  const activeId = useSelector(
+    (state) => WidgetSelectors.getWidget(state)[group],
+  );
   const updateSelection = () => {
     dispatch(updateWidget({ key: group, id }));
   };
