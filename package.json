@@ -14,7 +14,7 @@
   "scripts": {
     "start": "tsdx watch --target node",
     "start:example": "cd ./example && npm install && npm run start",
-    "build": "tsdx build --target node",
+    "build": "tsdx build --target node --tsconfig ./tsconfig.prod.json",
     "prepare": "tsdx build --target node",
     "lint": "tsdx lint",
     "test": "tsdx test",
