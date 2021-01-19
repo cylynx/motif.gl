@@ -53,3 +53,14 @@ Update `cylynx-datastudio/src/index.js` until the visualisation looks right, the
 npm run build:dev
 npm run push:dev
 ```
+
+## Quirks
+
+When running `npm run update_message` it outputs `build/index.js` so `src/manifest.json` should point
+`components.resource.js` to a `.js` file, but when running `npm run build:dev` it builds a
+`.jsx` file, so remember to update `manifest.json` to `.jsx` as well. You may need to manually
+delete the misnamed file in Google Cloud Storage because `npm run push:dev` does not appear to first
+clear out the folder.
+
+`src/index.tsx`.`DSCC_IS_LOCAL` is not defined properly by webpack, so we'll just have to do it manually
+each time when switching between `npm run push:dev` and `npm start` for local.
