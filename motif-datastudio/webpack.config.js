@@ -28,7 +28,7 @@ if (fs.existsSync(cssFilePath)) {
 }
 const iframeHTML = `
 <!doctype html>
-<html><body id="root">
+<html><body>
 ${body}
 </body></html>
 `;

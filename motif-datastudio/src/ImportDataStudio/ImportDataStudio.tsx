@@ -224,19 +224,25 @@ const ImportDataStudio = ({ data }: { data: DataStudioMessage }) => {
   return (
     <form onSubmit={handleSubmit(onSubmitForm)}>
       <Block marginTop='10px' display='flex' justifyContent='flex-end'>
-        <table>
-          <thead></thead>
-          <tbody>
-            {data.tables.DEFAULT &&
-              data.tables.DEFAULT.map((row) => (
-                <tr>
-                  {row.dimensions.map((d) => (
-                    <td>{d}</td>
-                  ))}
-                </tr>
-              ))}
-          </tbody>
-        </table>
+        <div style={{ height: '500px', width: '800px', overflow: 'scroll' }}>
+          <table
+            style={{ border: '1px solid black', borderCollapse: 'collapse' }}
+          >
+            <thead></thead>
+            <tbody>
+              {data.tables.DEFAULT &&
+                data.tables.DEFAULT.map((row) => (
+                  <tr>
+                    {row.dimensions.concat(row.metric).map((d) => (
+                      <td style={{ border: '1px solid black', padding: '5px' }}>
+                        {d}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
         <Button type='submit' disabled={isButtonDisabled}>
           Import Data
         </Button>

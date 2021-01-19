@@ -30,7 +30,7 @@ import { DataStudioMessage } from './ImportDataStudio';
 // pipe data from datastudio into Motif
 const local = require('./localMessage.js');
 const message: DataStudioMessage = local.message;
-ReactDOM.render(
-  <App data={message} />,
-  document.getElementsByTagName('body')[0],
-);
+const rootDiv = document.createElement('div');
+rootDiv.setAttribute('id', 'root');
+document.getElementsByTagName('body')[0].appendChild(rootDiv);
+ReactDOM.render(<App data={message} />, document.getElementById('root'));
