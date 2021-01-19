@@ -1,7 +1,5 @@
 // @ts-nocheck
 import { combineReducers } from '@reduxjs/toolkit';
-import { initialState as initialStateGraph } from '../../graph/reducer';
-import { initialStateUi } from '../../ui/reducer';
 import {
   getGraph,
   getStyleOptions,
@@ -9,30 +7,28 @@ import {
   getGraphFlatten,
   getGraphVisible,
   getFilterOptions,
-  getGraphFiltered,
   getAccessors,
-} from '../../graph/selectors';
+  getGraphFiltered,
+} from '../selectors';
 
-import { getUI } from '../../ui/selectors';
-
-import investigateReducer from '../reducer';
-import { FilterOptions, GraphData, Node } from '../types';
+import investigateReducer from '../../investigate/reducer';
+import { initialState } from '../reducer';
+import { FilterOptions, GraphData, Node } from '../../investigate/types';
 
 const clientReducer = combineReducers({
   investigate: investigateReducer,
 });
 
-describe('selectors', () => {
+describe('graph selectors', () => {
   it('initial selectors should be valid', async () => {
     const results = clientReducer({}, {});
-    expect(getUI(results)).toEqual(initialStateUi);
-    expect(getGraph(results)).toEqual(initialStateGraph);
-    expect(getAccessors(results)).toEqual(initialStateGraph.accessors);
-    expect(getGraphList(results)).toEqual(initialStateGraph.graphList);
-    expect(getGraphFlatten(results)).toEqual(initialStateGraph.graphFlatten);
-    expect(getStyleOptions(results)).toEqual(initialStateGraph.styleOptions);
-    expect(getGraphVisible(results)).toEqual(initialStateGraph.graphFlatten);
-    expect(getFilterOptions(results)).toEqual(initialStateGraph.filterOptions);
+    expect(getGraph(results)).toEqual(initialState);
+    expect(getAccessors(results)).toEqual(initialState.accessors);
+    expect(getGraphList(results)).toEqual(initialState.graphList);
+    expect(getGraphFlatten(results)).toEqual(initialState.graphFlatten);
+    expect(getStyleOptions(results)).toEqual(initialState.styleOptions);
+    expect(getGraphVisible(results)).toEqual(initialState.graphFlatten);
+    expect(getFilterOptions(results)).toEqual(initialState.filterOptions);
   });
 
   describe('getGraphFiltered', () => {
