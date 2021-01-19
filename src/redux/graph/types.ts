@@ -205,8 +205,3 @@ export type GraphAttribute = 'nodes' | 'edges';
 
 export type TimeRange = [number, number];
 export type TimeSeries = Array<[number, number]> | [];
-
-export interface ChartData {
-  name: string;
-  value: number;
-}
