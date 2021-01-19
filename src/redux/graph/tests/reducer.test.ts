@@ -13,7 +13,7 @@ import graph, {
   resetFilters,
   removeFilterAttributes,
 } from '../reducer';
-import { importJson } from '../../../processors/import-data';
+import { importJson } from '../processors/import';
 
 const JsonData = {
   nodes: [{ id: 'node-1' }, { id: 'node-2' }],

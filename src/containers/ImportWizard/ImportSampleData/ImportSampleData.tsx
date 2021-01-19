@@ -4,12 +4,15 @@ import { Button } from 'baseui/button';
 import { Block } from 'baseui/block';
 import { Cell } from 'baseui/layout-grid';
 import { LabelMedium, ParagraphSmall } from 'baseui/typography';
-import * as Graph from '../../Graph/types';
 import * as DATA from '../../../constants/sample-data';
 import { FlushedGrid } from '../../../components/ui';
 import { UISlices } from '../../../redux/ui';
-import { GraphSlices, GraphThunks } from '../../../redux/graph';
-import { JsonImport } from '../../../processors/import-data';
+import {
+  GraphSlices,
+  GraphThunks,
+  JsonImport,
+  Accessors,
+} from '../../../redux/graph';
 
 export enum SampleData {
   SIMPLE_GRAPH,
@@ -91,7 +94,7 @@ const sampleData: SampleDataItem[] = [
   },
 ];
 
-const defaultAccessors: Graph.Accessors = {
+const defaultAccessors: Accessors = {
   nodeID: 'id',
   edgeSource: 'source',
   edgeTarget: 'target',

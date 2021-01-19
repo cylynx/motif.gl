@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 
 import { Block } from 'baseui/block';
 import { useDispatch, useSelector } from 'react-redux';
-import { GraphSlices, GraphSelectors } from '../../../redux/graph';
+import { GraphSlices, GraphSelectors, GraphUtils } from '../../../redux/graph';
 import Header from '../Header';
 import Accordion from '../../../components/Accordion';
 import {
@@ -12,7 +12,6 @@ import {
   genSimpleForm,
 } from '../../../components/form';
 
-import { getFieldNames } from '../../../utils/graph-utils';
 import * as Icon from '../../../components/Icons';
 import {
   layoutForm,
@@ -42,29 +41,33 @@ const OptionsPanel = () => {
     (state) => GraphSelectors.getGraph(state).graphFlatten.metadata.fields,
   );
 
-  const nodeOptions = getFieldNames(graphFields.nodes).map((x) => {
+  const nodeOptions = GraphUtils.getFieldNames(graphFields.nodes).map((x) => {
     return { id: x, label: x };
   });
 
   const nodeLabelOptions = [...defaultLabelOptions, ...nodeOptions];
 
-  const numericNodeOptions = getFieldNames(graphFields.nodes, [
+  const numericNodeOptions = GraphUtils.getFieldNames(graphFields.nodes, [
     'integer',
     'real',
   ]).map((x) => {
     return { id: x, label: x };
   });
 
-  let edgeLabelOptions = getFieldNames(graphFields.edges).map((x) => {
-    return { id: x, label: x };
-  });
+  let edgeLabelOptions = GraphUtils.getFieldNames(graphFields.edges).map(
+    (x) => {
+      return { id: x, label: x };
+    },
+  );
 
   edgeLabelOptions = [...defaultLabelOptions, ...edgeLabelOptions];
 
   const numericEdgeOptions =
-    getFieldNames(graphFields.edges, ['integer', 'real']).map((x) => {
-      return { id: x, label: x };
-    }) || [];
+    GraphUtils.getFieldNames(graphFields.edges, ['integer', 'real']).map(
+      (x) => {
+        return { id: x, label: x };
+      },
+    ) || [];
 
   const { layout, nodeStyle, edgeStyle } = styleOptions;
   const layoutOptions = { layout: { id: layout.name, ...layout.options } };

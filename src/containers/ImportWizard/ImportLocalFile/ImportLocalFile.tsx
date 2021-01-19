@@ -8,24 +8,18 @@ import { FileUploader } from 'baseui/file-uploader';
 import { FormControl } from 'baseui/form-control';
 import { Select } from 'baseui/select';
 import { Hide, Show } from 'baseui/icon';
+
 import {
   EdgeListCsv,
   ImportFormat,
   JsonImport,
   NodeEdgeCsv,
   NodeEdgeDataType,
-  OPTIONS as IMPORT_OPTIONS,
-} from '../../../processors/import-data';
-
-import * as Graph from '../../Graph/types';
-
-import {
-  importEdgeListData,
-  importJsonData,
-  importNodeEdgeData,
-} from '../../../redux/graph/thunk';
-
-import { UISlices, UIActions } from '../../../redux/ui';
+  Accessors,
+  GraphList,
+  GraphThunks,
+} from '../../../redux/graph';
+import { UISlices, UIActions, UIConstants } from '../../../redux/ui';
 
 type FormValues = {
   dataType: { label: string; id: string }[];
@@ -35,7 +29,7 @@ type FormValues = {
   edgeTarget: string;
 };
 
-const importOptions = Object.values(IMPORT_OPTIONS);
+const importOptions = Object.values(UIConstants.OPTIONS);
 
 /**
  * remove \r and use \n as new line delimiter and strip whitespace
@@ -102,7 +96,7 @@ const ImportLocalFile = () => {
         if (fileExtension === 'json' && selectedDataType === 'json') {
           const jsonFileContents: JsonImport[] = fileContents.map(
             (content: string) => {
-              const jsonGraphList: Graph.GraphList = JSON.parse(content);
+              const jsonGraphList: GraphList = JSON.parse(content);
               return {
                 data: jsonGraphList,
                 type: 'json',
@@ -203,21 +197,23 @@ const ImportLocalFile = () => {
     const { dataType, ...accessors } = data;
 
     // remove accessor keys with empty string
-    Object.keys(accessors as Graph.Accessors)
+    Object.keys(accessors as Accessors)
       .filter((k) => accessors[k] === '')
       .map((k) => delete accessors[k]);
 
     const selectedDataType: string = watchDataType[0].id;
     if (selectedDataType === 'nodeEdgeCsv') {
-      dispatch(importNodeEdgeData(singleFileRef.current, accessors));
+      dispatch(
+        GraphThunks.importNodeEdgeData(singleFileRef.current, accessors),
+      );
     }
 
     if (selectedDataType === 'edgeListCsv') {
-      dispatch(importEdgeListData(batchFileRef.current, accessors));
+      dispatch(GraphThunks.importEdgeListData(batchFileRef.current, accessors));
     }
 
     if (selectedDataType === 'json') {
-      dispatch(importJsonData(batchFileRef.current, accessors));
+      dispatch(GraphThunks.importJsonData(batchFileRef.current, accessors));
     }
 
     dispatch(UISlices.closeModal());

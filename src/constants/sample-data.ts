@@ -1,8 +1,10 @@
 /* eslint-disable no-restricted-properties */
 /* eslint-disable no-param-reassign */
+/* eslint-disable @typescript-eslint/camelcase */
+
 // @ts-nocheck
 import mock from '../utils/mock';
-import * as Graph from '../containers/Graph/types';
+import { GraphData } from '../redux/graph';
 
 export const RandomData = () => {
   const data = mock(15)
@@ -50,7 +52,7 @@ const mapNodeSize = (nodes, propertyName, visualRange) => {
 
 export const TwoDataArray = () => [RandomData(), CircleData()];
 
-export const SimpleEdge = (): Graph.GraphData => ({
+export const SimpleEdge = (): GraphData => ({
   nodes: [
     {
       id: '1',
@@ -71,7 +73,7 @@ export const SimpleEdge = (): Graph.GraphData => ({
   },
 });
 
-export const TriangleJSON = (): Graph.GraphList => [
+export const TriangleJSON = (): GraphList => [
   {
     nodes: [
       {
@@ -140,12 +142,12 @@ export const TriangleJSON = (): Graph.GraphList => [
   },
 ];
 
-export const BankData = (): Promise<Graph.GraphData> =>
+export const BankData = (): Promise<GraphData> =>
   fetch(
     'https://storage.googleapis.com/cylynx-landing-content/banking-connections-demo.json',
   )
     .then((res) => res.json())
-    .then((data: Graph.GraphData) => {
+    .then((data: GraphData) => {
       Object.assign(data[0].metadata, {
         title: 'Banking Connections',
       });
@@ -157,9 +159,9 @@ export const MiserablesData = () =>
     'https://gist.githubusercontent.com/emanueles/1dc73efc65b830f111723e7b877efdd5/raw/2c7a42b5d27789d74c8708e13ed327dc52802ec6/lesmiserables.json',
   )
     .then((res) => res.json())
-    .then((data: Graph.GraphData) => {
+    .then((data: GraphData) => {
       const { nodes, links } = data;
-      const newData: Graph.GraphData = {
+      const newData: GraphData = {
         nodes,
         edges: links,
         metadata: {

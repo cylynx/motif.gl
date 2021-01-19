@@ -6,13 +6,12 @@ import { Button } from 'baseui/button';
 import { FormControl } from 'baseui/form-control';
 import { Select } from 'baseui/select';
 import { LabelSmall, ParagraphSmall } from 'baseui/typography';
-import { GraphSelectors, GraphSlices } from '../../redux/graph';
-import { getFieldNames } from '../../utils/graph-utils';
+import { GraphSelectors, GraphSlices, GraphUtils } from '../../redux/graph';
 import { CATEGORICAL_COLOR } from '../../constants/colors';
 
 const MAX_LEGEND_SIZE = CATEGORICAL_COLOR.length;
 
-const Legend = ({ data }: { data: { [key: string]: string } }) => {
+const Legend = ({ data }: { data: { [_: string]: string } }) => {
   const [css] = useStyletron();
   let valueArr = Object.keys(data);
   let colorArr = Object.values(data);
@@ -70,9 +69,11 @@ const LegendPopover = () => {
     (state) => GraphSelectors.getGraphFlatten(state).metadata.fields,
   );
 
-  const nodeOptions = getFieldNames(graphFields.nodes).map((x) => {
-    return { id: x, label: x };
-  });
+  const nodeOptions = GraphUtils.getFieldNames(graphFields.nodes).map(
+    (x: string) => {
+      return { id: x, label: x };
+    },
+  );
 
   const updateNodeStyle = (data: any) => {
     const dispatchData = { color: { id: 'legend', variable: data[0].id } };

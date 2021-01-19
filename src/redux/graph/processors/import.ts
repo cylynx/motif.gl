@@ -8,36 +8,9 @@ import {
   processNodeEdgeCsv,
   processEdgeListCsv,
   validateMotifJson,
-} from './data-processors';
-import { GraphData, GraphList, Accessors } from '../containers/Graph';
+} from './data';
 
-export type ImportFormat = JsonImport | EdgeListCsv | NodeEdgeCsv;
-
-export type NodeEdgeDataType = {
-  nodeData: string;
-  edgeData: string;
-};
-
-export type JsonImport = {
-  data: GraphData | GraphList | void;
-  type: 'json';
-};
-
-export type EdgeListCsv = {
-  data: string;
-  type: 'edgeListCsv';
-};
-
-export type NodeEdgeCsv = {
-  data: NodeEdgeDataType;
-  type: 'nodeEdgeCsv';
-};
-
-export const OPTIONS = {
-  json: { label: 'Json', id: 'json' },
-  edgeListCsv: { label: 'Edge List Csv', id: 'edgeListCsv' },
-  nodeEdgeCsv: { label: 'Node Edge Csv (2 Files)', id: 'nodeEdgeCsv' },
-};
+import { GraphList, GraphData, Accessors } from '../types';
 
 /**
  * Initial function to process json object with node, edge fields or motif json to required format

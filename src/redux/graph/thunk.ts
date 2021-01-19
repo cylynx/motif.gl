@@ -3,26 +3,28 @@ import isUndefined from 'lodash/isUndefined';
 import flatten from 'lodash/flatten';
 import isEmpty from 'lodash/isEmpty';
 import { getFilterOptions, getGraph } from './selectors';
-import * as Graph from '../../containers/Graph/types';
 
 import { addQuery, processGraphResponse } from './reducer';
 import {
-  ImportFormat,
   importEdgeListCsv,
   importNodeEdgeCsv,
   importJson,
+} from './processors/import';
+import {
+  ImportFormat,
   NodeEdgeDataType,
   JsonImport,
-} from '../../processors/import-data';
+  Accessors,
+  GraphList,
+  GraphData,
+  FilterOptions,
+} from './types';
 
 import { UISlices, UIActions } from '../ui';
 
-type ImportAccessors = Graph.Accessors | null;
+type ImportAccessors = Accessors | null;
 
-const checkNewData = (
-  graphList: Graph.GraphList,
-  newData: Graph.GraphData,
-): boolean => {
+const checkNewData = (graphList: GraphList, newData: GraphData): boolean => {
   if (isUndefined(newData.metadata)) {
     // eslint-disable-next-line no-param-reassign
     newData.metadata = {
@@ -35,9 +37,9 @@ const checkNewData = (
 
 const processResponse = (
   dispatch: any,
-  graphList: Graph.GraphList,
-  accessors: Graph.Accessors,
-  newData: Graph.GraphData | Graph.GraphList,
+  graphList: GraphList,
+  accessors: Accessors,
+  newData: GraphData | GraphList,
 ) => {
   dispatch(UISlices.fetchBegin());
   for (const data of Array.isArray(newData) ? newData : [newData]) {
@@ -65,7 +67,7 @@ const processResponse = (
  */
 const showImportDataToast = (
   dispatch: any,
-  filterOptions: Graph.FilterOptions,
+  filterOptions: FilterOptions,
 ): void => {
   const isFilterEmpty: boolean = isEmpty(filterOptions);
   if (isFilterEmpty) {
@@ -96,7 +98,7 @@ export const importEdgeListData = (
 
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
-  const filterOptions: Graph.FilterOptions = getFilterOptions(getState());
+  const filterOptions: FilterOptions = getFilterOptions(getState());
 
   const batchDataPromises = importData.map((graphData: ImportFormat) => {
     const { data } = graphData;
@@ -104,7 +106,7 @@ export const importEdgeListData = (
   });
 
   return Promise.all(batchDataPromises)
-    .then((graphData: Graph.GraphList) => {
+    .then((graphData: GraphList) => {
       processResponse(dispatch, graphList, mainAccessors, graphData);
       showImportDataToast(dispatch, filterOptions);
     })
@@ -133,16 +135,16 @@ export const importJsonData = (
 
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
-  const filterOptions: Graph.FilterOptions = getFilterOptions(getState());
+  const filterOptions: FilterOptions = getFilterOptions(getState());
 
   const batchDataPromises = importData.map((graphData: ImportFormat) => {
     const { data } = graphData;
-    return importJson(data as Graph.GraphList, accessors);
+    return importJson(data as GraphList, accessors);
   });
 
   return Promise.all(batchDataPromises)
-    .then((graphDataArr: Graph.GraphList[]) => {
-      const graphData: Graph.GraphList = flatten(graphDataArr);
+    .then((graphDataArr: GraphList[]) => {
+      const graphData: GraphList = flatten(graphDataArr);
       processResponse(dispatch, graphList, mainAccessors, graphData);
       showImportDataToast(dispatch, filterOptions);
     })
@@ -172,10 +174,10 @@ export const importNodeEdgeData = (
   const { data } = importData;
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
-  const filterOptions: Graph.FilterOptions = getFilterOptions(getState());
+  const filterOptions: FilterOptions = getFilterOptions(getState());
 
   const { nodeData, edgeData } = data as NodeEdgeDataType;
-  const newData: Promise<Graph.GraphData> = importNodeEdgeCsv(
+  const newData: Promise<GraphData> = importNodeEdgeCsv(
     nodeData,
     edgeData,
     accessors,
@@ -183,7 +185,7 @@ export const importNodeEdgeData = (
   );
 
   return newData
-    .then((graphData: Graph.GraphData) => {
+    .then((graphData: GraphData) => {
       processResponse(dispatch, graphList, mainAccessors, graphData);
       showImportDataToast(dispatch, filterOptions);
     })
@@ -210,15 +212,12 @@ export const importSingleJsonData = (
   const { data } = importData;
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
-  const filterOptions: Graph.FilterOptions = getFilterOptions(getState());
+  const filterOptions: FilterOptions = getFilterOptions(getState());
 
-  const newData: Promise<Graph.GraphList> = importJson(
-    data as Graph.GraphData,
-    accessors,
-  );
+  const newData: Promise<GraphList> = importJson(data as GraphData, accessors);
 
   return newData
-    .then((graphData: Graph.GraphList) => {
+    .then((graphData: GraphList) => {
       processResponse(dispatch, graphList, mainAccessors, graphData);
       showImportDataToast(dispatch, filterOptions);
     })

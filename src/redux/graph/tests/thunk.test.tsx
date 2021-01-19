@@ -17,7 +17,7 @@ import {
   importJson,
   importNodeEdgeCsv,
   importEdgeListCsv,
-} from '../../../processors/import-data';
+} from '../processors/import';
 import { fetchBegin, fetchDone, updateToast } from '../../ui/reducer';
 import { SimpleEdge } from '../../../constants/sample-data';
 

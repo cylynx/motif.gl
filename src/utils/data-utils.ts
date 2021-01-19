@@ -1,7 +1,6 @@
 import { bisectLeft, extent, histogram as d3Histogram, ticks } from 'd3-array';
 import Decimal from 'decimal.js';
 import { parseISO } from 'date-fns';
-import { LEFT_LAYER_WIDTH } from '../constants/widget-units';
 
 export const ONE_SECOND = 1000;
 export const ONE_MINUTE = ONE_SECOND * 60;

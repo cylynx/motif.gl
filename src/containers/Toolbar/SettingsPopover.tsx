@@ -5,9 +5,8 @@ import { Select } from 'baseui/select';
 import { Checkbox } from 'baseui/checkbox';
 import { Block } from 'baseui/block';
 import { TriGrid } from '../../components/ui';
-import { GraphSlices, GraphSelectors } from '../../redux/graph';
+import { GraphSlices, GraphSelectors, GraphUtils } from '../../redux/graph';
 
-import { getFieldNames } from '../../utils/graph-utils';
 import * as LAYOUT from '../../constants/layout-options';
 import { NestedForm, genNestedForm } from '../../components/form';
 import { nodeSizeForm, edgeWidthForm } from '../SidePanel/OptionsPanel';
@@ -24,16 +23,18 @@ const SettingsPopover = () => {
   const graphFields = useSelector(
     (state) => GraphSelectors.getGraph(state).graphFlatten.metadata.fields,
   );
-  const numericNodeOptions = getFieldNames(graphFields.nodes, [
+  const numericNodeOptions = GraphUtils.getFieldNames(graphFields.nodes, [
     'integer',
     'real',
-  ]).map((x) => {
+  ]).map((x: string) => {
     return { id: x, label: x };
   });
   const numericEdgeOptions =
-    getFieldNames(graphFields.edges, ['integer', 'real']).map((x) => {
-      return { id: x, label: x };
-    }) || [];
+    GraphUtils.getFieldNames(graphFields.edges, ['integer', 'real']).map(
+      (x) => {
+        return { id: x, label: x };
+      },
+    ) || [];
 
   const findID = (options: { label: string; id: string }[], id: string) =>
     options.find((x) => x.id === id);

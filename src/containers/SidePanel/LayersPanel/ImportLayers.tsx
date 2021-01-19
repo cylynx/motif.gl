@@ -12,9 +12,13 @@ import {
 } from '../../../redux/graph/reducer';
 import { openDataTableModal } from '../../../redux/ui/reducer';
 import { Statistic } from '../../../components/ui';
-import { countProperty } from '../../../utils/graph-utils';
-import * as Graph from '../../Graph/types';
-import { GraphSelectors } from '../../../redux/graph';
+import {
+  GraphSelectors,
+  GraphUtils,
+  GraphData,
+  Node,
+  Edge,
+} from '../../../redux/graph';
 
 const StyledText = ({ children }: { children: React.ReactNode }) => (
   <ParagraphSmall
@@ -38,7 +42,7 @@ const LayerDetailed = ({
   graph,
   index,
 }: {
-  graph: Graph.GraphData;
+  graph: GraphData;
   index: number;
 }) => {
   const dispatch = useDispatch();
@@ -46,8 +50,8 @@ const LayerDetailed = ({
     GraphSelectors.getGraphVisible(state),
   );
   const accessors = useSelector((state) => GraphSelectors.getAccessors(state));
-  const visibleNodeList = graphVisible.nodes.map((x) => x.id);
-  const visibleEdgeList = graphVisible.edges.map((x) => x.id);
+  const visibleNodeList = graphVisible.nodes.map((x: Node) => x.id);
+  const visibleEdgeList = graphVisible.edges.map((x: Edge) => x.id);
   const hiddenNodes = graph.nodes.filter(
     (x) => !visibleNodeList.includes(x.id),
   );
@@ -55,10 +59,10 @@ const LayerDetailed = ({
     (x) => !visibleEdgeList.includes(x.id),
   );
   const nodeTypeMap = accessors.nodeType
-    ? countProperty(graph.nodes, accessors.nodeType)
+    ? GraphUtils.countProperty(graph.nodes, accessors.nodeType)
     : null;
   const edgeTypeMap = accessors.edgeType
-    ? countProperty(graph.edges, accessors.edgeType)
+    ? GraphUtils.countProperty(graph.edges, accessors.edgeType)
     : null;
 
   return (
@@ -121,7 +125,7 @@ const ImportLayers = () => {
   const dispatch = useDispatch();
   const graphList = useSelector((state) => GraphSelectors.getGraphList(state));
 
-  const importItems = graphList.map((graph: Graph.GraphData, index: number) => {
+  const importItems = graphList.map((graph: GraphData, index: number) => {
     let title = `import ${index}`;
     if (graph.metadata?.title) {
       title = graph.metadata.title;

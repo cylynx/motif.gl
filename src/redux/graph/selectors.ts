@@ -1,22 +1,27 @@
 import { createSelector } from '@reduxjs/toolkit';
 import produce from 'immer';
-import * as Graph from '../../containers/Graph/types';
-import { deriveVisibleGraph, filterGraph } from '../../utils/graph-utils';
+import {
+  Accessors,
+  GraphList,
+  GraphData,
+  StyleOptions,
+  FilterOptions,
+} from './types';
+import { deriveVisibleGraph, filterGraph } from './utils';
 
 const getGraph = (state: any) => state.investigate.graph.present;
-const getAccessors = (state: any): Graph.Accessors => getGraph(state).accessors;
-const getGraphList = (state: any): Graph.GraphList => getGraph(state).graphList;
-const getGraphFlatten = (state: any): Graph.GraphData =>
-  getGraph(state).graphFlatten;
-const getStyleOptions = (state: any): Graph.StyleOptions =>
+const getAccessors = (state: any): Accessors => getGraph(state).accessors;
+const getGraphList = (state: any): GraphList => getGraph(state).graphList;
+const getGraphFlatten = (state: any): GraphData => getGraph(state).graphFlatten;
+const getStyleOptions = (state: any): StyleOptions =>
   getGraph(state).styleOptions;
-const getFilterOptions = (state: any): Graph.FilterOptions =>
+const getFilterOptions = (state: any): FilterOptions =>
   getGraph(state).filterOptions;
 
 // Selector to perform filter on graph datas
 const getGraphFiltered = createSelector(
   [getGraphFlatten, getFilterOptions],
-  (graphFlatten: Graph.GraphData, filterOptions: Graph.FilterOptions) => {
+  (graphFlatten: GraphData, filterOptions: FilterOptions) => {
     const graphFiltered = produce(graphFlatten, (draftState) => {
       filterGraph(draftState, filterOptions);
     });
@@ -28,7 +33,7 @@ const getGraphFiltered = createSelector(
 // Selector to derive visible data
 const getGraphVisible = createSelector(
   [getGraphFiltered, getStyleOptions],
-  (graphFiltered: Graph.GraphData, styleOptions: Graph.StyleOptions) => {
+  (graphFiltered: GraphData, styleOptions: StyleOptions) => {
     const graphVisible = produce(graphFiltered, (draftState) => {
       deriveVisibleGraph(draftState, styleOptions);
     });
