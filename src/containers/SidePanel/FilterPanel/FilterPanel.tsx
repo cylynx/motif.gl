@@ -6,8 +6,7 @@ import FilterSelection from './FilterSelection';
 import AddFilterButton from './AddFilterButton';
 import useGraphFilter from './hooks/UseGraphFilter';
 
-import { GraphSelectors } from '../../../redux/graph';
-import { Field, GraphFields } from '../../Graph';
+import { GraphSelectors, Field, GraphFields } from '../../../redux/graph';
 import { SelectOptions } from '../../../components/SelectVariable/SelectVariable';
 
 const FilterPanel: FC = () => {

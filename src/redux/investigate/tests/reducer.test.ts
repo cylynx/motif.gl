@@ -3,8 +3,6 @@ import { combineReducers } from '@reduxjs/toolkit';
 import { initialState as initialStateGraph } from '../../graph/reducer';
 import { initialStateUi } from '../../ui/reducer';
 import {
-  investigateReducer,
-  getUI,
   getGraph,
   getStyleOptions,
   getGraphList,
@@ -13,9 +11,12 @@ import {
   getFilterOptions,
   getGraphFiltered,
   getAccessors,
-  getWidget,
-} from '../reducer';
-import { FilterOptions, GraphData, Node } from '../../../containers/Graph';
+} from '../../graph/selectors';
+
+import { getUI } from '../../ui/selectors';
+
+import investigateReducer from '../reducer';
+import { FilterOptions, GraphData, Node } from '../types';
 
 const clientReducer = combineReducers({
   investigate: investigateReducer,

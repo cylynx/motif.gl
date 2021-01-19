@@ -12,7 +12,11 @@ import {
   SelectVariableOption,
 } from '../../../../components/SelectVariable/SelectVariable';
 import { getFieldDomain } from '../../../../utils/data-utils';
-import { FilterCriteria, GraphData, GraphAttribute } from '../../../Graph';
+import {
+  FilterCriteria,
+  GraphData,
+  GraphAttribute,
+} from '../../../../redux/graph';
 
 export type FilterSelectionProps = {
   selectOptions: SelectOptions;

@@ -1,17 +1,22 @@
 /* eslint-disable no-param-reassign */
 import get from 'lodash/get';
-import * as Graph from '../containers/Graph/types';
+import {
+  GraphData,
+  EdgeStyleOptions,
+  Edge,
+  EdgeWidth,
+} from '../redux/graph/types';
 
 /**
  * Style an edge dataset based on a given method
  *
- * @param {Graph.GraphData} data
- * @param {Graph.EdgeStyleOptions} edgeStyleOptions
- * @return {*}  {Graph.Edge[]}
+ * @param {GraphData} data
+ * @param {EdgeStyleOptions} edgeStyleOptions
+ * @return {*}  {Edge[]}
  */
 export const styleEdges = (
-  data: Graph.GraphData,
-  edgeStyleOptions: Graph.EdgeStyleOptions,
+  data: GraphData,
+  edgeStyleOptions: EdgeStyleOptions,
 ) => {
   // Separated out as it cannot be done in the loop
   if (edgeStyleOptions.width && edgeStyleOptions.width.id !== 'fixed') {
@@ -41,12 +46,12 @@ export const styleEdges = (
 /**
  * Utility function to map a edge property between a given range
  *
- * @param {Graph.Edge[]} edges
+ * @param {Edge[]} edges
  * @param {string} propertyName
  * @param {[number, number]} visualRange
  */
 export const mapEdgeWidth = (
-  edges: Graph.Edge[],
+  edges: Edge[],
   propertyName: string,
   visualRange: [number, number],
 ) => {
@@ -67,16 +72,13 @@ export const mapEdgeWidth = (
   });
 };
 
-export const styleEdgeWidthByProp = (
-  data: Graph.GraphData,
-  option: Graph.EdgeWidth,
-) => {
+export const styleEdgeWidthByProp = (data: GraphData, option: EdgeWidth) => {
   if (option.id === 'property' && option.variable) {
     mapEdgeWidth(data.edges, option.variable, option.range);
   }
 };
 
-export const styleEdgeLabel = (edge: Graph.Edge, label: string) => {
+export const styleEdgeLabel = (edge: Edge, label: string) => {
   if (label === 'none') {
     edge.label = '';
   } else if (label !== 'label') {
@@ -84,7 +86,7 @@ export const styleEdgeLabel = (edge: Graph.Edge, label: string) => {
   }
 };
 
-export const styleEdgePattern = (edge: Graph.Edge, pattern: string) => {
+export const styleEdgePattern = (edge: Edge, pattern: string) => {
   if (pattern === 'none') {
     delete edge.defaultStyle.pattern;
   } else {
@@ -92,11 +94,11 @@ export const styleEdgePattern = (edge: Graph.Edge, pattern: string) => {
   }
 };
 
-export const styleEdgeFontSize = (edge: Graph.Edge, fontSize: number) => {
+export const styleEdgeFontSize = (edge: Edge, fontSize: number) => {
   edge.defaultStyle.fontSize = fontSize;
 };
 
-export const styleEdgeArrow = (edge: Graph.Edge, arrow: string) => {
+export const styleEdgeArrow = (edge: Edge, arrow: string) => {
   edge.defaultStyle.arrow = arrow;
 };
 
@@ -108,23 +110,20 @@ type MinMax = {
 /**
  * Check edge.data.value is array to determine if it is grouped
  *
- * @param {Graph.Edge} edge
+ * @param {Edge} edge
  * @param {string} edgeWidth accesor function that maps to edge width
  */
-export const isGroupEdges = (edge: Graph.Edge, edgeWidth: string) =>
+export const isGroupEdges = (edge: Edge, edgeWidth: string) =>
   Array.isArray(get(edge, edgeWidth));
 
 /**
  * Get minimum and maximum value of attribute that maps to edge width
  *
- * @param {Graph.GraphData} data
+ * @param {GraphData} data
  * @param {string} edgeWidth accesor string that maps to edge width
  * @return {*}  {MinMax}
  */
-export const getMinMaxValue = (
-  data: Graph.GraphData,
-  edgeWidth: string,
-): MinMax => {
+export const getMinMaxValue = (data: GraphData, edgeWidth: string): MinMax => {
   const arrValue = [];
   for (const edge of data.edges) {
     if (isGroupEdges(edge, edgeWidth)) {

@@ -20,14 +20,9 @@ import {
 } from './utils/overrides';
 import { UISelectors, UISlices } from './redux/ui';
 import { WidgetSelectors, WidgetSlices, WidgetItem } from './redux/widget';
-import { GraphSlices } from './redux/graph';
+import { GraphSlices, Accessors, StyleOptions } from './redux/graph';
 import SideNavBars from './containers/SideNavBar';
-import Graph, {
-  Tooltip,
-  GraphRefContext,
-  Accessors,
-  StyleOptions,
-} from './containers/Graph';
+import Graph, { Tooltip, GraphRefContext } from './containers/Graph';
 import ImportWizard, { defaultImportTabs } from './containers/ImportWizard';
 import { LEFT_LAYER_WIDTH } from './constants/widget-units';
 import { GraphLayer } from './containers/widgets/layer';

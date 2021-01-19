@@ -4,16 +4,17 @@ import shortid from 'shortid';
 import { Value } from 'baseui/select';
 import { useDispatch, useSelector } from 'react-redux';
 import { GraphFilterActions } from './types';
+
 import {
+  GraphSlices,
+  GraphSelectors,
   GraphAttribute,
   Node,
   Edge,
   GraphData,
   FilterCriteria,
   FilterOptions,
-} from '../../../../Graph';
-
-import { GraphSlices, GraphSelectors } from '../../../../../redux/graph';
+} from '../../../../../redux/graph';
 
 const useGraphFilter = (): GraphFilterActions => {
   const dispatch = useDispatch();

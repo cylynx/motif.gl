@@ -3,9 +3,8 @@ import html2canvas from 'html2canvas';
 
 import { Block } from 'baseui/block';
 import { useDispatch, useSelector } from 'react-redux';
-import { GraphList } from '../../Graph';
 import { UISelectors, UISlices } from '../../../redux/ui';
-import { GraphSelectors } from '../../../redux/graph';
+import { GraphSelectors, GraphList } from '../../../redux/graph';
 import * as Icon from '../../../components/Icons';
 import Editable from '../../../components/Editable';
 import HeaderButton, { HeaderButtonProp } from './HeaderButton';

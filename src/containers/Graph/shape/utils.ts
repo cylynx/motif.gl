@@ -1,7 +1,7 @@
 /* https://github.com/antvis/Graphin/blob/master/packages/graphin/src/shape/graph-studio/utils.ts */
 /* eslint-disable import/prefer-default-export */
 import { transparentize, lighten, desaturate } from 'polished';
-import { ArrowOptions } from '../types';
+import { ArrowOptions } from '../../../redux/graph';
 
 export interface NormalizedColor {
   dark: string;

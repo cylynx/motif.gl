@@ -1,19 +1,25 @@
 /* eslint-disable no-param-reassign */
 import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
-import * as Graph from '../containers/Graph/types';
+import {
+  GraphData,
+  NodeStyleOptions,
+  Node,
+  NodeColor,
+  NodeSize,
+} from '../redux/graph/types';
 import { CATEGORICAL_COLOR, DARK_GREY } from '../constants/colors';
 
 /**
  * Main function to style nodes
  *
- * @param {Graph.GraphData} data
- * @param {Graph.NodeStyleOptions} nodeStyleOptions
- * @return {*}  {Graph.Node[]}
+ * @param {GraphData} data
+ * @param {NodeStyleOptions} nodeStyleOptions
+ * @return {*}  {Node[]}
  */
 export const styleNodes = (
-  data: Graph.GraphData,
-  nodeStyleOptions: Graph.NodeStyleOptions,
+  data: GraphData,
+  nodeStyleOptions: NodeStyleOptions,
 ) => {
   // Separated out as it cannot be done in the loop
   if (nodeStyleOptions.size && nodeStyleOptions.size.id !== 'fixed') {
@@ -40,13 +46,10 @@ export const styleNodes = (
 /**
  * Generate default nodes color map
  *
- * @param {Graph.Node[]} nodes
- * @param {Graph.NodeColor} options
+ * @param {Node[]} nodes
+ * @param {NodeColor} options
  */
-export const generateDefaultColorMap = (
-  nodes: Graph.Node[],
-  options: Graph.NodeColor,
-) => {
+export const generateDefaultColorMap = (nodes: Node[], options: NodeColor) => {
   const uniqueKeys = [
     ...new Set(
       // @ts-ignore
@@ -74,12 +77,12 @@ export const generateDefaultColorMap = (
 /**
  * Utility function to map a node property between a given range
  *
- * @param {Graph.Node[]} nodes
+ * @param {Node[]} nodes
  * @param {string} propertyName
  * @param {[number, number]} visualRange
  */
 export const mapNodeSize = (
-  nodes: Graph.Node[],
+  nodes: Node[],
   propertyName: string,
   visualRange: [number, number],
 ) => {
@@ -103,14 +106,11 @@ export const mapNodeSize = (
 /**
  * Style node size based on a given method
  *
- * @param {Graph.GraphData} data
+ * @param {GraphData} data
  * @param {(string | undefined)} accessor
  * @param {string} option
  */
-export const styleNodeSizeByProp = (
-  data: Graph.GraphData,
-  option: Graph.NodeSize,
-) => {
+export const styleNodeSizeByProp = (data: GraphData, option: NodeSize) => {
   if (option.id === 'degree') {
     data.nodes.forEach((node) => {
       node.degree = 0;
@@ -126,7 +126,7 @@ export const styleNodeSizeByProp = (
   }
 };
 
-export const styleNodeLabel = (node: Graph.Node, label: string) => {
+export const styleNodeLabel = (node: Node, label: string) => {
   if (label === 'none') {
     node.label = '';
   } else if (label !== 'label') {
@@ -134,7 +134,7 @@ export const styleNodeLabel = (node: Graph.Node, label: string) => {
   }
 };
 
-export const styleNodeColor = (node: Graph.Node, option: Graph.NodeColor) => {
+export const styleNodeColor = (node: Node, option: NodeColor) => {
   if (option.id === 'fixed') {
     node.defaultStyle.color = option.value;
   } else if (option.id === 'legend') {
@@ -147,36 +147,36 @@ export const styleNodeColor = (node: Graph.Node, option: Graph.NodeColor) => {
   }
 };
 
-export const styleFontSize = (node: Graph.Node, fontSize: number) => {
+export const styleFontSize = (node: Node, fontSize: number) => {
   node.defaultStyle.fontSize = fontSize;
 };
 
 /**
  * Filter all edges which contains a given node id as source or target
  *
- * @param {Graph.GraphData} data
+ * @param {GraphData} data
  * @param {string} id node id
  */
-export const findConnectedEdges = (data: Graph.GraphData, id: string) =>
+export const findConnectedEdges = (data: GraphData, id: string) =>
   data.edges.filter((e) => e.source === id || e.target === id);
 
 /**
  * Get degree of a given node id
  *
- * @param {Graph.GraphData} data
+ * @param {GraphData} data
  * @param {string} id node id
  */
-export const getDegree = (data: Graph.GraphData, id: string) =>
+export const getDegree = (data: GraphData, id: string) =>
   findConnectedEdges(data, id).length;
 
 /**
  * Get degree of a given graph keyed by node id
  *
- * @param {Graph.GraphData} data
+ * @param {GraphData} data
  * @return {*}  {(Record<string | number, number>)}
  */
 export const getGraphDegree = (
-  data: Graph.GraphData,
+  data: GraphData,
 ): Record<string | number, number> => {
   const nodeIds = [];
   const degree = {};
