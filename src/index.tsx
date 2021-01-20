@@ -1,6 +1,10 @@
-import Explorer from './Explorer';
+import Motif from './containers/Explorer';
+
+import investigateReducer from './redux';
+
+export default Motif;
+export { investigateReducer };
 
 export * from './theme';
-export * from './redux';
 export * from './utils/utils';
-export { Explorer as Motif };
+export * from './redux';

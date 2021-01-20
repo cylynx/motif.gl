@@ -1,3 +1,7 @@
 import investigateReducer from './investigate';
 
-export { investigateReducer };
+export * from './investigate';
+export * from './graph';
+export * from './ui';
+export * from './widget';
+export default investigateReducer;

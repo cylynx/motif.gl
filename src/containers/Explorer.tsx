@@ -8,24 +8,24 @@ import { Block } from 'baseui/block';
 import { Modal, ModalBody, SIZE } from 'baseui/modal';
 
 import { ToasterContainer, PLACEMENT } from 'baseui/toast';
-import { PRIMARY_COLOR } from './constants/colors';
-import { Loader } from './components/ui';
-import DataTable from './containers/DataTable';
-import { defaultWidgetList } from './containers/widgets';
+import { PRIMARY_COLOR } from '../constants/colors';
+import { Loader } from '../components/ui';
+import DataTable from './DataTable';
+import { defaultWidgetList } from './widgets';
 import {
   Overrides,
   getTabsOverride,
   getTooltipOverride,
   getWidgetOverride,
-} from './utils/overrides';
-import { UISelectors, UISlices } from './redux/ui';
-import { WidgetSelectors, WidgetSlices, WidgetItem } from './redux/widget';
-import { GraphSlices, Accessors, StyleOptions } from './redux/graph';
-import SideNavBars from './containers/SideNavBar';
-import Graph, { Tooltip, GraphRefContext } from './containers/Graph';
-import ImportWizard, { defaultImportTabs } from './containers/ImportWizard';
-import { LEFT_LAYER_WIDTH } from './constants/widget-units';
-import { GraphLayer } from './containers/widgets/layer';
+} from '../utils/overrides';
+import { UISelectors, UISlices } from '../redux/ui';
+import { WidgetSelectors, WidgetSlices, WidgetItem } from '../redux/widget';
+import { GraphSlices, Accessors, StyleOptions } from '../redux/graph';
+import SideNavBars from './SideNavBar';
+import Graph, { Tooltip, GraphRefContext } from './Graph';
+import ImportWizard, { defaultImportTabs } from './ImportWizard';
+import { LEFT_LAYER_WIDTH } from '../constants/widget-units';
+import { GraphLayer } from './widgets/layer';
 
 export interface WidgetContainerProps {
   children: React.ReactNode;
@@ -36,7 +36,7 @@ export interface WidgetContainerProps {
 export interface ExplorerProps {
   name: string;
   accessors: Accessors;
-  overrides: Overrides;
+  overrides?: Overrides;
   styleOptions?: StyleOptions;
   secondaryTheme?: Theme;
 }
