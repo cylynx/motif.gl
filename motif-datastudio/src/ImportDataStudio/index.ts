@@ -1,4 +1,4 @@
 import ImportDataStudio from './ImportDataStudio';
 
 export default ImportDataStudio;
-export { DataStudioMessage } from './DataStudioMessage';
+export type { DataStudioMessage } from './DataStudioMessage';
