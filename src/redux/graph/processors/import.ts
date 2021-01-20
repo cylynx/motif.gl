@@ -1,5 +1,3 @@
-/* eslint-disable no-nested-ternary */
-/* eslint-disable no-param-reassign */
 import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
 import shortid from 'shortid';
@@ -46,7 +44,7 @@ export const importJson = async (
  * @param {<Accessors} accessors
  * @param {string} metadataKey = null
  *
- * @return {*}  {Promise<GraphData>}
+ * @return {Promise<GraphData>}
  */
 export const importEdgeListCsv = async (
   csv: string,
@@ -75,7 +73,7 @@ export const importEdgeListCsv = async (
  * @param {Accessors} accessors
  * @param {string} metadataKey [metadataKey=null]
  *
- * @return {*}  {Promise<GraphData>}
+ * @return {Promise<GraphData>}
  */
 export const importNodeEdgeCsv = async (
   nodeCsv: string,
@@ -95,12 +93,12 @@ export const importNodeEdgeCsv = async (
  *
  * @param {GraphData} data
  * @param {Accessors} accessors
- * @return {*}
+ * @return {GraphData}
  */
 export const addRequiredFieldsJson = (
   data: GraphData,
   accessors: Accessors,
-) => {
+): GraphData => {
   for (const node of data.nodes) {
     addNodeFields(node, accessors);
     if (isUndefined(node.data)) node.data = {}; // required by graphin
@@ -120,18 +118,9 @@ export const addRequiredFieldsJson = (
  * @param {*} node
  * @param {Accessors} accessors
  */
-export const addNodeFields = (node: any, accessors: Accessors) => {
+export const addNodeFields = (node: any, accessors: Accessors): void => {
   const { nodeID } = accessors;
-  if (isUndefined(nodeID)) {
-    if (isUndefined(node.id)) {
-      node.id = shortid.generate();
-    }
-    // else node.id = node.id
-  } else if (isUndefined(get(node, nodeID))) {
-    node.id = shortid.generate();
-  } else {
-    node.id = get(node, nodeID).toString();
-  }
+  generateIdKey(node, nodeID);
 };
 
 /**
@@ -140,27 +129,49 @@ export const addNodeFields = (node: any, accessors: Accessors) => {
  * @param {*} edge
  * @param {Accessors} accessors
  */
-export const addEdgeFields = (edge: any, accessors: Accessors) => {
+export const addEdgeFields = (edge: any, accessors: Accessors): void => {
   const { edgeSource, edgeTarget, edgeID } = accessors;
 
   const edgeSourceValue = get(edge, edgeSource);
   const edgeTargetValue = get(edge, edgeTarget);
 
-  if (!edgeSourceValue || !edgeTargetValue) {
+  if (isUndefined(edgeSourceValue) || isUndefined(edgeTargetValue)) {
     throw new Error('Invalid Source and Target fields.');
   }
 
-  edge.source = edgeSourceValue.toString();
-  edge.target = edgeTargetValue.toString();
+  Object.assign(edge, {
+    source: edgeSourceValue.toString(),
+    target: edgeTargetValue.toString(),
+  });
 
-  if (isUndefined(edgeID)) {
-    if (isUndefined(edge.id)) {
-      edge.id = shortid.generate();
+  generateIdKey(edge, edgeID);
+};
+
+/**
+ * Generate ID with the given object if following conditions are satisfied:
+ * 1. accessor's id is not provided and object doesn't contain id
+ * 2. unable to obtain the value with given accessor's id
+ *
+ * Convert object's id to string if above condition are not satisfied.
+ *
+ * @param object
+ * @param idAccessor
+ */
+const generateIdKey = (object: any, idAccessor: string | undefined): void => {
+  if (isUndefined(idAccessor)) {
+    if (isUndefined(object.id)) {
+      Object.assign(object, {
+        id: shortid.generate(),
+      });
     }
     // else edge.id = edge.id
-  } else if (isUndefined(get(edge, edgeID))) {
-    edge.id = shortid.generate();
+  } else if (isUndefined(get(object, idAccessor))) {
+    Object.assign(object, {
+      id: shortid.generate(),
+    });
   } else {
-    edge.id = get(edge, edgeID).toString();
+    Object.assign(object, {
+      id: get(object, idAccessor).toString(),
+    });
   }
 };
