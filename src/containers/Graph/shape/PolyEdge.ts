@@ -16,7 +16,7 @@ import {
   GREY as GREY_RGB,
   EnumNodeAndEdgeStatus,
 } from './constants';
-import { ArrowOptions } from '../types';
+import { ArrowOptions } from '../../../redux/graph';
 
 const HIDDEN_LABEL_COLOR = normalizeColor(HIDDEN_LABEL_COLOR_RGB);
 const GREY = normalizeColor(GREY_RGB);
@@ -248,9 +248,8 @@ export default (g6: any) => {
           lineWidth: basicLineWidth + 1,
           endArrow: isArrowDisplay(arrowOptions, {
             d: -deltaD / 2,
-            path: `M 0,0 L ${deltaD},${deltaD / 2} L ${deltaD},-${
-              deltaD / 2
-            } Z`,
+            path: `M 0,0 L ${deltaD},${deltaD / 2} L ${deltaD},-${deltaD /
+              2} Z`,
           }),
         };
       }
@@ -263,9 +262,8 @@ export default (g6: any) => {
           lineWidth: basicLineWidth + 1,
           endArrow: isArrowDisplay(arrowOptions, {
             d: -deltaD / 2,
-            path: `M 0,0 L ${deltaD},${deltaD / 2} L ${deltaD},-${
-              deltaD / 2
-            } Z`,
+            path: `M 0,0 L ${deltaD},${deltaD / 2} L ${deltaD},-${deltaD /
+              2} Z`,
           }),
         };
         targetAttrs.selected = {
