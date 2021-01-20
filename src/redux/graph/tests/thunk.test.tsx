@@ -12,13 +12,13 @@ import {
   importNodeEdgeData,
   importSingleJsonData,
 } from '../thunk';
-import { initialState, addQuery, processGraphResponse } from '../reducer';
+import { initialState, addQuery, processGraphResponse } from '../slice';
 import {
   importJson,
   importNodeEdgeCsv,
   importEdgeListCsv,
 } from '../processors/import';
-import { fetchBegin, fetchDone, updateToast } from '../../ui/reducer';
+import { fetchBegin, fetchDone, updateToast } from '../../ui/slice';
 import { SimpleEdge } from '../../../constants/sample-data';
 
 const mockStore = configureStore([thunk]);

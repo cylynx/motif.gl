@@ -1,3 +1,3 @@
-import investigateReducer from './reducer';
+import investigateReducer from './slice';
 
 export type RootState = ReturnType<typeof investigateReducer>;

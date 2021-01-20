@@ -1,7 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import undoable, { excludeAction, GroupByFunction } from 'redux-undo';
-import uiReducer from '../ui/reducer';
-import widgetReducer from '../widget/reducer';
+import uiReducer from '../ui/slice';
+import widgetReducer from '../widget/slice';
 import graphReducer, { GraphState, GraphSlices } from '../graph';
 
 // History group that collapses both actions into 1 undo/redo

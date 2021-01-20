@@ -12,7 +12,7 @@ import graph, {
   GraphState,
   resetFilters,
   removeFilterAttributes,
-} from '../reducer';
+} from '../slice';
 import { importJson } from '../processors/import';
 
 const JsonData = {

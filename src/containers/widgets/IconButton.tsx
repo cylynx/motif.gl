@@ -2,7 +2,7 @@ import React from 'react';
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateWidget } from '../../redux/widget/reducer';
+import { updateWidget } from '../../redux/widget/slice';
 import { WidgetSelectors } from '../../redux/widget';
 
 type IconButton = {

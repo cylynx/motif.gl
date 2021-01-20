@@ -4,7 +4,7 @@ import flatten from 'lodash/flatten';
 import isEmpty from 'lodash/isEmpty';
 import { getFilterOptions, getGraph } from './selectors';
 
-import { addQuery, processGraphResponse } from './reducer';
+import { addQuery, processGraphResponse } from './slice';
 import {
   importEdgeListCsv,
   importNodeEdgeCsv,

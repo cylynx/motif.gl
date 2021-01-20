@@ -9,8 +9,8 @@ import {
   updateGraphList,
   deleteGraphList,
   changeVisibilityGraphList,
-} from '../../../redux/graph/reducer';
-import { openDataTableModal } from '../../../redux/ui/reducer';
+} from '../../../redux/graph/slice';
+import { openDataTableModal } from '../../../redux/ui/slice';
 import { Statistic } from '../../../components/ui';
 import {
   GraphSelectors,

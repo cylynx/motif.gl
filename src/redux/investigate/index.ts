@@ -1,4 +1,4 @@
-import reducer from './reducer';
+import reducer from './slice';
 
 export * as InvestigateSelectors from "./selectors";
 export * from "./types";

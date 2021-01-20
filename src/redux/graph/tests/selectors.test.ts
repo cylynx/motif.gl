@@ -11,8 +11,8 @@ import {
   getGraphFiltered,
 } from '../selectors';
 
-import investigateReducer from '../../investigate/reducer';
-import { initialState } from '../reducer';
+import investigateReducer from '../../investigate/slice';
+import { initialState } from '../slice';
 import { FilterOptions, GraphData, Node } from '../../investigate/types';
 
 const clientReducer = combineReducers({
