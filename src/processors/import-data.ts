@@ -169,8 +169,17 @@ export const addNodeFields = (node: any, accessors: Accessors) => {
  */
 export const addEdgeFields = (edge: any, accessors: Accessors) => {
   const { edgeSource, edgeTarget, edgeID } = accessors;
-  edge.source = get(edge, edgeSource).toString();
-  edge.target = get(edge, edgeTarget).toString();
+
+  const edgeSourceValue = get(edge, edgeSource);
+  const edgeTargetValue = get(edge, edgeTarget);
+
+  if (!edgeSourceValue || !edgeTargetValue) {
+    throw new Error('Invalid Source and Target fields.');
+  }
+
+  edge.source = edgeSourceValue.toString();
+  edge.target = edgeTargetValue.toString();
+
   if (isUndefined(edgeID)) {
     if (isUndefined(edge.id)) {
       edge.id = shortid.generate();
