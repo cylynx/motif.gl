@@ -1,8 +1,4 @@
 {
   "extends": "./tsconfig.json",
-  "paths": {
-    "motif.gl": ["./src"],
-    "motif.gl/*": ["./src/*"]
-  },
   "exclude": ["src/**/*.+(test|spec).+(ts|tsx|js|jsx)"]
 }
