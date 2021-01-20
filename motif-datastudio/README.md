@@ -45,7 +45,7 @@ npm run start            # fails as of 8 Jan 2021
 
 Known package distribution issue here: https://github.com/googledatastudio/tooling/issues/190
 
-Fix issue by editing `cylynx-datastudio/webpack.config.js`:
+Fix issue by editing `motif-datastudio/webpack.config.js`:
 
 ```js
 --- const {getBuildableComponents} = require('@google/dscc-scripts/build/viz/util');
@@ -65,9 +65,9 @@ Fix issue by editing `cylynx-datastudio/webpack.config.js`:
 `npm run start` should work now and host a server at http://localhost:8080 , which has the
 following numbered instructions:
 
-1. Edit `cylynx-datastudio/src/index.json` to declare accepted columns
+1. Edit `motif-datastudio/src/index.json` to declare accepted columns
 
-Also edit `cylynx-datastudio/src/manifest.json` for metadata / company branding
+Also edit `motif-datastudio/src/manifest.json` for metadata / company branding
 
 2. `npm run update_message` which uploads to `gs://lynx-community-viz/cylynx-dev`
 
