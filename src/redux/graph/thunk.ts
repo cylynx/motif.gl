@@ -20,7 +20,7 @@ import {
   FilterOptions,
 } from './types';
 
-import { UISlices, UIActions } from '../ui';
+import { UISlices, UIThunks } from '../ui';
 
 type ImportAccessors = Accessors | null;
 
@@ -71,11 +71,11 @@ const showImportDataToast = (
 ): void => {
   const isFilterEmpty: boolean = isEmpty(filterOptions);
   if (isFilterEmpty) {
-    dispatch(UIActions.show('Data imported successfully', 'positive'));
+    dispatch(UIThunks.show('Data imported successfully', 'positive'));
     return;
   }
 
-  dispatch(UIActions.show('Data imported with filters applied', 'warning'));
+  dispatch(UIThunks.show('Data imported with filters applied', 'warning'));
 };
 
 /**
@@ -112,7 +112,7 @@ export const importEdgeListData = (
     })
     .catch((err: Error) => {
       const { message } = err;
-      dispatch(UIActions.show(message, 'negative'));
+      dispatch(UIThunks.show(message, 'negative'));
     });
 };
 
@@ -150,7 +150,7 @@ export const importJsonData = (
     })
     .catch((err: Error) => {
       const { message } = err;
-      dispatch(UIActions.show(message, 'negative'));
+      dispatch(UIThunks.show(message, 'negative'));
     });
 };
 
@@ -191,7 +191,7 @@ export const importNodeEdgeData = (
     })
     .catch((err: Error) => {
       const { message } = err;
-      dispatch(UIActions.show(message, 'negative'));
+      dispatch(UIThunks.show(message, 'negative'));
     });
 };
 
@@ -223,6 +223,6 @@ export const importSingleJsonData = (
     })
     .catch((err: Error) => {
       const { message } = err;
-      dispatch(UIActions.show(message, 'negative'));
+      dispatch(UIThunks.show(message, 'negative'));
     });
 };

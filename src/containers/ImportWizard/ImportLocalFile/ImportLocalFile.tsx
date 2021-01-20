@@ -19,7 +19,7 @@ import {
   GraphList,
   GraphThunks,
 } from '../../../redux/graph';
-import { UISlices, UIActions, UIConstants } from '../../../redux/ui';
+import { UISlices, UIThunks, UIConstants } from '../../../redux/ui';
 
 type FormValues = {
   dataType: { label: string; id: string }[];
@@ -179,7 +179,7 @@ const ImportLocalFile = () => {
       })
       .catch(() =>
         dispatch(
-          UIActions.show('The file provided is not readable', 'negative'),
+          UIThunks.show('The file provided is not readable', 'negative'),
         ),
       );
     setIsUploading(false);
