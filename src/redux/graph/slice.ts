@@ -4,12 +4,18 @@
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import isUndefined from 'lodash/isUndefined';
-import * as LAYOUT from '../constants/layout-options';
-import * as Graph from '../containers/Graph/types';
-import { combineProcessedData } from '../utils/graph-utils';
-import { generateDefaultColorMap } from '../utils/style-nodes';
+import * as LAYOUT from '../../constants/layout-options';
+import { combineProcessedData } from './utils';
+import { generateDefaultColorMap } from '../../utils/style-nodes';
+import {
+  Accessors,
+  FilterCriteria,
+  GraphState,
+  StyleOptions,
+  GraphData,
+} from './types';
 
-export const updateSelections = (state: GraphState, data: Graph.GraphData) => {
+export const updateSelections = (state: GraphState, data: GraphData) => {
   const currentNodeFields = state.nodeSelection.map((x) => x.id);
   const currentEdgeFields = state.edgeSelection.map((x) => x.id);
   for (const field of data.metadata.fields.nodes) {
@@ -39,9 +45,9 @@ export const updateSelections = (state: GraphState, data: Graph.GraphData) => {
  * Updates graphFlatten onwards
  *
  * @param {GraphState} state
- * @param {Graph.GraphData} graphData
+ * @param {GraphData} graphData
  */
-export const updateAll = (state: GraphState, graphData: Graph.GraphData) => {
+export const updateAll = (state: GraphState, graphData: GraphData) => {
   if (graphData) {
     state.graphFlatten = graphData;
   } else {
@@ -52,23 +58,6 @@ export const updateAll = (state: GraphState, graphData: Graph.GraphData) => {
     state.filterOptions = initialState.filterOptions;
   }
 };
-
-export type Selection = {
-  label: string;
-  id: string;
-  type: string;
-  selected: boolean;
-};
-
-export interface GraphState {
-  accessors: Graph.Accessors;
-  styleOptions: Graph.StyleOptions;
-  filterOptions: Graph.FilterOptions;
-  graphList: Graph.GraphList;
-  graphFlatten: Graph.GraphData;
-  nodeSelection: Selection[];
-  edgeSelection: Selection[];
-}
 
 const initialState: GraphState = {
   accessors: {
@@ -167,7 +156,7 @@ const graph = createSlice({
         graphFlatten: graphData ?? initialState.graphFlatten,
       });
     },
-    addQuery(state, action: PayloadAction<Graph.GraphData>) {
+    addQuery(state, action: PayloadAction<GraphData>) {
       state.graphList.push(action.payload);
     },
     changeOptions(state, action: PayloadAction<{ key: string; value: any }>) {
@@ -224,8 +213,8 @@ const graph = createSlice({
     processGraphResponse(
       state,
       action: PayloadAction<{
-        data: Graph.GraphData;
-        accessors: Graph.Accessors;
+        data: GraphData;
+        accessors: Accessors;
       }>,
     ) {
       const { data } = action.payload;
@@ -234,10 +223,10 @@ const graph = createSlice({
       updateAll(state, graphData);
       updateSelections(state, data);
     },
-    setAccessors(state, action: PayloadAction<Graph.Accessors>) {
+    setAccessors(state, action: PayloadAction<Accessors>) {
       state.accessors = action.payload;
     },
-    overrideStyles(state, action: PayloadAction<Graph.StyleOptions>) {
+    overrideStyles(state, action: PayloadAction<StyleOptions>) {
       state.styleOptions = { ...state.styleOptions, ...action.payload };
     },
     updateNodeSelection(
@@ -271,7 +260,7 @@ const graph = createSlice({
     },
     updateFilterAttributes(
       state,
-      action: PayloadAction<{ key: string; criteria: Graph.FilterCriteria }>,
+      action: PayloadAction<{ key: string; criteria: FilterCriteria }>,
     ) {
       const { key, criteria } = action.payload;
       Object.assign(state.filterOptions, {

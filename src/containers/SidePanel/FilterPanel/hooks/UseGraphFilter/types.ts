@@ -4,7 +4,7 @@ import {
   FilterOptions,
   GraphData,
   GraphAttribute,
-} from '../../../../Graph';
+} from '../../../../../redux/graph';
 
 export interface GraphFilterActions {
   filterOptions: FilterOptions;

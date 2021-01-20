@@ -8,30 +8,24 @@ import { Block } from 'baseui/block';
 import { Modal, ModalBody, SIZE } from 'baseui/modal';
 
 import { ToasterContainer, PLACEMENT } from 'baseui/toast';
-import { PRIMARY_COLOR } from './constants/colors';
-import { Loader } from './components/ui';
-import DataTable from './containers/DataTable';
-import { closeModal, setName } from './redux/ui-slice';
-import { defaultWidgetList, WidgetItem } from './containers/widgets';
-import { setWidget } from './containers/widgets/widget-slice';
-import { setAccessors, overrideStyles } from './redux/graph-slice';
+import { PRIMARY_COLOR } from '../constants/colors';
+import { Loader } from '../components/ui';
+import DataTable from './DataTable';
+import { defaultWidgetList } from './widgets';
 import {
   Overrides,
   getTabsOverride,
   getTooltipOverride,
   getWidgetOverride,
-} from './utils/overrides';
-import { getUI, getWidget } from './redux';
-import SideNavBars from './containers/SideNavBar';
-import Graph, {
-  Tooltip,
-  GraphRefContext,
-  Accessors,
-  StyleOptions,
-} from './containers/Graph';
-import ImportWizard, { defaultImportTabs } from './containers/ImportWizard';
-import { LEFT_LAYER_WIDTH } from './constants/widget-units';
-import { GraphLayer } from './containers/widgets/layer';
+} from '../utils/overrides';
+import { UISelectors, UISlices } from '../redux/ui';
+import { WidgetSelectors, WidgetSlices, WidgetItem } from '../redux/widget';
+import { GraphSlices, Accessors, StyleOptions } from '../redux/graph';
+import SideNavBars from './SideNavBar';
+import Graph, { Tooltip, GraphRefContext } from './Graph';
+import ImportWizard, { defaultImportTabs } from './ImportWizard';
+import { LEFT_LAYER_WIDTH } from '../constants/widget-units';
+import { GraphLayer } from './widgets/layer';
 
 export interface WidgetContainerProps {
   children: React.ReactNode;
@@ -42,7 +36,7 @@ export interface WidgetContainerProps {
 export interface ExplorerProps {
   name: string;
   accessors: Accessors;
-  overrides: Overrides;
+  overrides?: Overrides;
   styleOptions?: StyleOptions;
   secondaryTheme?: Theme;
 }
@@ -88,9 +82,9 @@ const Explorer = (props: ExplorerProps) => {
 
   const [, theme] = useStyletron();
   const dispatch = useDispatch();
-  const modal = useSelector((state) => getUI(state).modal);
-  const loading = useSelector((state) => getUI(state).loading);
-  const widgetState = useSelector((state) => getWidget(state));
+  const modal = useSelector((state) => UISelectors.getUI(state).modal);
+  const loading = useSelector((state) => UISelectors.getUI(state).loading);
+  const widgetState = useSelector((state) => WidgetSelectors.getWidget(state));
   const widgetStateIds = useMemo(() => {
     return Object.values(widgetState);
   }, [widgetState]);
@@ -125,18 +119,18 @@ const Explorer = (props: ExplorerProps) => {
       };
     });
     if (accessors) {
-      dispatch(setAccessors(accessors));
+      dispatch(GraphSlices.setAccessors(accessors));
     }
     if (name) {
-      dispatch(setName(name));
+      dispatch(UISlices.setName(name));
     }
-    dispatch(setWidget(widgetProp));
-    dispatch(overrideStyles(styleOptions));
+    dispatch(WidgetSlices.setWidget(widgetProp));
+    dispatch(GraphSlices.overrideStyles(styleOptions));
   }, [accessors, overrides?.widgetList, name]);
 
   // UI Functions
   const onCloseModal = () => {
-    dispatch(closeModal());
+    dispatch(UISlices.closeModal());
   };
 
   return (

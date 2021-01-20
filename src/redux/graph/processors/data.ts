@@ -5,8 +5,8 @@ import shortid from 'shortid';
 import get from 'lodash/get';
 // @ts-ignore
 import { Analyzer, DATA_TYPES as AnalyzerDatatypes } from 'type-analyzer';
-import * as Graph from '../containers/Graph/types';
-import { notNullorUndefined } from '../utils/data-utils';
+import { notNullorUndefined } from '../../../utils/data-utils';
+import { Edge, Field, GraphData, Metadata } from '../types';
 
 type RowData = {
   [key: string]: any;
@@ -105,7 +105,7 @@ export const validateMotifJson = (json: any): boolean => {
 export const processJson = async (
   json: any,
   key: string | number = shortid.generate(),
-): Promise<Graph.GraphData> => {
+): Promise<GraphData> => {
   if (validateMotifJson(json)) return json;
 
   if (json.nodes && json.edges) {
@@ -141,10 +141,10 @@ export const processNodeEdgeCsv = async (
   nodeCsv: string,
   edgeCsv: string,
   key = shortid.generate(),
-): Promise<Graph.GraphData> => {
+): Promise<GraphData> => {
   const { fields: nodeFields, json: nodeJson } = await processCsvData(nodeCsv);
   const { fields: edgeFields, json: edgeJson } = await processCsvData(edgeCsv);
-  const graphMetadata: Graph.Metadata = {
+  const graphMetadata: Metadata = {
     fields: { nodes: nodeFields, edges: edgeFields },
     key,
   };
@@ -165,10 +165,10 @@ export const processEdgeListCsv = async (
   edgeSourceAccessor = 'source',
   edgeTargetAccessor = 'target',
   key = shortid.generate(),
-): Promise<Graph.GraphData> => {
+): Promise<GraphData> => {
   const { fields: edgeFields, json: edgeJson } = await processCsvData(edgeCsv);
   const edgeIds: string[] = [];
-  edgeJson.forEach((edge: Graph.Edge) => {
+  edgeJson.forEach((edge: Edge) => {
     edgeIds.push(edge[edgeSourceAccessor]);
     edgeIds.push(edge[edgeTargetAccessor]);
   });
@@ -177,7 +177,7 @@ export const processEdgeListCsv = async (
     return { id: node };
   });
 
-  const graphMetadata: Graph.Metadata = {
+  const graphMetadata: Metadata = {
     fields: { nodes: [], edges: edgeFields },
     key,
   };
@@ -196,6 +196,7 @@ export const json2csv = async (json: any): Promise<string | void> => {
   const csv = converter
     .json2csvAsync(json)
     .then()
+    // eslint-disable-next-line no-console
     .catch((err) => console.log(`ERROR: ${err.message}`));
   return csv;
 };
@@ -211,6 +212,7 @@ export const csv2json = async (csv: string) => {
   const json = converter
     .csv2jsonAsync(csv)
     .then()
+    // eslint-disable-next-line no-console
     .catch((err) => console.log(`ERROR: ${err.message}`));
   return json;
 };
@@ -269,8 +271,8 @@ export const flattenObject = (obj: any, history = '') => {
 };
 
 export type ProcessedCsv = {
-  fields: Graph.Field[] | [];
-  json: Graph.Node[] | Graph.Edge[];
+  fields: Field[] | [];
+  json: Node[] | Edge[];
 };
 
 /**
@@ -309,10 +311,10 @@ export const processCsvData = async (rawCsv: string): Promise<ProcessedCsv> => {
 
 /**
  * Parse rows of csv by analyzed field types. So that `'1'` -> `1`, `'True'` -> `true`
- * @param {Array<Array>} rows
+ * @param json
  * @param {Array<Object>} fields
  */
-export const parseJsonByFields = (json: any[], fields: Graph.Field[]) => {
+export const parseJsonByFields = (json: any[], fields: Field[]) => {
   // Edit rows in place
   fields.forEach((field) => {
     const parser = PARSE_FIELD_VALUE_FROM_STRING[field.type];
@@ -420,7 +422,7 @@ export const getSampleForTypeAnalyze = (
 export const getFieldsFromData = (
   data: RowData,
   fieldOrder: string[],
-): Graph.Field[] => {
+): Field[] => {
   // add a check for epoch timestamp
   const metadata = Analyzer.computeColMeta(
     data,
@@ -428,7 +430,7 @@ export const getFieldsFromData = (
     { ignoredDataTypes: IGNORE_DATA_TYPES },
   );
   const { fieldByIndex } = renameDuplicateFields(fieldOrder);
-  const result: Graph.Field[] = [];
+  const result: Field[] = [];
   for (const [index, field] of fieldOrder.entries()) {
     const name = fieldByIndex[index];
     const fieldMeta = metadata.find((m: any) => m.key === field);

@@ -1,3 +1,7 @@
-export * from './ui-slice';
-export * from './graph-slice';
-export * from './combine-reducers';
+import investigateReducer from './investigate';
+
+export * from './investigate';
+export * from './graph';
+export * from './ui';
+export * from './widget';
+export default investigateReducer;

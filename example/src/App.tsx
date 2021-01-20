@@ -3,7 +3,7 @@ import React from 'react';
 import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
 import { BaseProvider } from 'baseui';
-import { Motif, MotifLightTheme, MotifDarkTheme } from 'motif.gl';
+import Motif, { MotifDarkTheme, MotifLightTheme } from 'motif.gl';
 import { Provider } from 'react-redux';
 import store from './redux-store';
 import 'motif.gl/dist/index.css';

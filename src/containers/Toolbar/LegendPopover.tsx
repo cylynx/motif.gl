@@ -6,14 +6,12 @@ import { Button } from 'baseui/button';
 import { FormControl } from 'baseui/form-control';
 import { Select } from 'baseui/select';
 import { LabelSmall, ParagraphSmall } from 'baseui/typography';
-import { changeNodeStyle } from '../../redux/graph-slice';
-import { getStyleOptions, getGraphFlatten } from '../../redux';
-import { getFieldNames } from '../../utils/graph-utils';
+import { GraphSelectors, GraphSlices, GraphUtils } from '../../redux/graph';
 import { CATEGORICAL_COLOR } from '../../constants/colors';
 
 const MAX_LEGEND_SIZE = CATEGORICAL_COLOR.length;
 
-const Legend = ({ data }: { data: { [key: string]: string } }) => {
+const Legend = ({ data }: { data: { [_: string]: string } }) => {
   const [css] = useStyletron();
   let valueArr = Object.keys(data);
   let colorArr = Object.values(data);
@@ -50,7 +48,9 @@ const Legend = ({ data }: { data: { [key: string]: string } }) => {
 
 const LegendPopover = () => {
   const dispatch = useDispatch();
-  const nodeStyle = useSelector((state) => getStyleOptions(state).nodeStyle);
+  const nodeStyle = useSelector(
+    (state) => GraphSelectors.getStyleOptions(state).nodeStyle,
+  );
 
   let selectValue: any;
   if (
@@ -66,22 +66,24 @@ const LegendPopover = () => {
   }
 
   const graphFields = useSelector(
-    (state) => getGraphFlatten(state).metadata.fields,
+    (state) => GraphSelectors.getGraphFlatten(state).metadata.fields,
   );
 
-  const nodeOptions = getFieldNames(graphFields.nodes).map((x) => {
-    return { id: x, label: x };
-  });
+  const nodeOptions = GraphUtils.getFieldNames(graphFields.nodes).map(
+    (x: string) => {
+      return { id: x, label: x };
+    },
+  );
 
   const updateNodeStyle = (data: any) => {
     const dispatchData = { color: { id: 'legend', variable: data[0].id } };
-    dispatch(changeNodeStyle(dispatchData));
+    dispatch(GraphSlices.changeNodeStyle(dispatchData));
   };
 
   const switchToFixedColor = (e: React.MouseEvent) => {
     e.preventDefault();
     const dispatchData = { color: { id: 'fixed' } };
-    dispatch(changeNodeStyle(dispatchData));
+    dispatch(GraphSlices.changeNodeStyle(dispatchData));
   };
 
   return (

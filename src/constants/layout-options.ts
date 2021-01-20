@@ -1,6 +1,6 @@
 // https://graphin.antv.vision/en/docs/manual/main-concepts/layout
 
-import * as Graph from '../containers/Graph/types';
+import { Layout } from '../redux/graph/types';
 
 export const DAGRE_DEFAULT = {
   rankSep: 50,
@@ -26,7 +26,7 @@ export const CONCENTRIC_DEFAULT = {
   minNodeSpacing: 60,
 };
 
-export const OPTIONS: Graph.Layout[] = [
+export const OPTIONS: Layout[] = [
   { name: 'dagre', options: DAGRE_DEFAULT },
   { name: 'circle', options: CIRCLE_DEFAULT },
   { name: 'grid', options: GRID_DEFAULT },

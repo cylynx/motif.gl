@@ -4,12 +4,15 @@ import { Button } from 'baseui/button';
 import { Block } from 'baseui/block';
 import { Cell } from 'baseui/layout-grid';
 import { LabelMedium, ParagraphSmall } from 'baseui/typography';
-import * as Graph from '../../Graph/types';
 import * as DATA from '../../../constants/sample-data';
 import { FlushedGrid } from '../../../components/ui';
-import { closeModal, changeLayout } from '../../../redux';
-import { JsonImport } from '../../../processors/import-data';
-import { importSingleJsonData } from '../../../redux/add-data-thunk';
+import { UISlices } from '../../../redux/ui';
+import {
+  GraphSlices,
+  GraphThunks,
+  JsonImport,
+  Accessors,
+} from '../../../redux/graph';
 
 export enum SampleData {
   SIMPLE_GRAPH,
@@ -91,7 +94,7 @@ const sampleData: SampleDataItem[] = [
   },
 ];
 
-const defaultAccessors: Graph.Accessors = {
+const defaultAccessors: Accessors = {
   nodeID: 'id',
   edgeSource: 'source',
   edgeTarget: 'target',
@@ -119,16 +122,18 @@ const StyledItem = ({ item }: { item: SampleDataItem }) => {
     e: MouseEvent<HTMLButtonElement>,
   ) => {
     e.preventDefault();
-    dispatch(closeModal());
+    dispatch(UISlices.closeModal());
 
     // These two datasets come with x-y coordinates
     if (item.key === SampleData.AA || item.key === SampleData.NETWORK) {
-      dispatch(changeLayout({ layout: { id: 'none' } }));
+      dispatch(GraphSlices.changeLayout({ layout: { id: 'none' } }));
     }
 
     Promise.resolve(item.data()).then((d: void) => {
       const sampleDataset: JsonImport = { data: d, type: 'json' };
-      dispatch(importSingleJsonData(sampleDataset, defaultAccessors));
+      dispatch(
+        GraphThunks.importSingleJsonData(sampleDataset, defaultAccessors),
+      );
     });
   };
 

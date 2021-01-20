@@ -11,15 +11,15 @@ import {
   importJsonData,
   importNodeEdgeData,
   importSingleJsonData,
-} from './add-data-thunk';
-import { initialState, addQuery, processGraphResponse } from './graph-slice';
+} from '../thunk';
+import { initialState, addQuery, processGraphResponse } from '../slice';
 import {
   importJson,
   importNodeEdgeCsv,
   importEdgeListCsv,
-} from '../processors/import-data';
-import { fetchBegin, fetchDone, updateToast } from './ui-slice';
-import { SimpleEdge } from '../constants/sample-data';
+} from '../processors/import';
+import { fetchBegin, fetchDone, updateToast } from '../../ui/slice';
+import { SimpleEdge } from '../../../constants/sample-data';
 
 const mockStore = configureStore([thunk]);
 const getStore = () => {

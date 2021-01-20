@@ -2,24 +2,8 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-param-reassign */
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
-import { ReactNode } from 'react';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export type WidgetItem = WidgetProp & {
-  icon: ReactNode;
-  widget: ReactNode;
-};
-
-export type WidgetProp = {
-  id: string;
-  group: string;
-  position: 'top' | 'bottom';
-  active: boolean;
-};
-
-export interface WidgetState {
-  [key: string]: string;
-}
+import { WidgetState, WidgetProp } from './types';
 
 const initialState: WidgetState = {};
 
@@ -27,7 +11,7 @@ const widget = createSlice({
   name: 'widget',
   initialState,
   reducers: {
-    setWidget(_state, action: PayloadAction<WidgetProp[]>) {
+    setWidget(_state, action: PayloadAction<WidgetProp[]>): WidgetState {
       const widgets = action.payload;
       const uniqueKeys = [...new Set(widgets.map((item) => item.group))];
       const results = {};
@@ -39,7 +23,10 @@ const widget = createSlice({
       });
       return results;
     },
-    updateWidget(state, action: PayloadAction<{ key: string; id: string }>) {
+    updateWidget(
+      state,
+      action: PayloadAction<{ key: string; id: string }>,
+    ): void {
       const { key, id } = action.payload;
       state[key] = state[key] === id ? null : id;
     },

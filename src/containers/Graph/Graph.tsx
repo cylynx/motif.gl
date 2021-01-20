@@ -1,5 +1,4 @@
 /* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable import/no-cycle */
 // @ts-nocheck
 import React, { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -13,7 +12,7 @@ import RegisterPolyEdge from './shape/PolyEdge';
 import RegisterLineEdge from './shape/LineEdge';
 import RegisterLoopEdge from './shape/LoopEdge';
 import { interactionStates } from './shape/constants';
-import { getStyleOptions, getGraphVisible } from '../../redux';
+import { GraphSelectors } from '../../redux/graph';
 import { TooltipProps } from './Tooltip';
 import './graphin.css';
 
@@ -26,8 +25,12 @@ export type GraphProps = {
 const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
   const { setTooltip } = props;
   const [, theme] = useStyletron();
-  const graphVisible = useSelector((state) => getGraphVisible(state));
-  const layout = useSelector((state) => getStyleOptions(state).layout);
+  const graphVisible = useSelector((state) =>
+    GraphSelectors.getGraphVisible(state),
+  );
+  const layout = useSelector(
+    (state) => GraphSelectors.getStyleOptions(state).layout,
+  );
 
   useLayoutEffect(() => {
     // Imperatively set the color by theme

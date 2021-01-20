@@ -1,11 +1,11 @@
 // @ts-nocheck
-import * as DATA from '../constants/sample-data';
+import * as DATA from '../../../constants/sample-data';
 import {
   importJson,
   importEdgeListCsv,
   importNodeEdgeCsv,
   addRequiredFieldsJson,
-} from './import-data';
+} from '../processors/import';
 
 const accessors = {
   nodeID: 'id',

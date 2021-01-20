@@ -6,12 +6,13 @@ import FilterSelection from './FilterSelection';
 import AddFilterButton from './AddFilterButton';
 import useGraphFilter from './hooks/UseGraphFilter';
 
-import { getGraphFlatten } from '../../../redux';
-import { Field, GraphFields } from '../../Graph';
+import { GraphSelectors, Field, GraphFields } from '../../../redux/graph';
 import { SelectOptions } from '../../../components/SelectVariable/SelectVariable';
 
 const FilterPanel: FC = () => {
-  const graphFlatten = useSelector((state) => getGraphFlatten(state));
+  const graphFlatten = useSelector((state) =>
+    GraphSelectors.getGraphFlatten(state),
+  );
   const graphFields: GraphFields = graphFlatten.metadata.fields;
   const { filterOptions, addFilter } = useGraphFilter();
 

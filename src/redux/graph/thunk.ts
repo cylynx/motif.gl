@@ -2,27 +2,29 @@ import some from 'lodash/some';
 import isUndefined from 'lodash/isUndefined';
 import flatten from 'lodash/flatten';
 import isEmpty from 'lodash/isEmpty';
-import { getFilterOptions, getGraph } from './combine-reducers';
-import * as Graph from '../containers/Graph/types';
+import { getFilterOptions, getGraph } from './selectors';
 
-import { fetchBegin, fetchDone } from './ui-slice';
-import { addQuery, processGraphResponse } from './graph-slice';
+import { addQuery, processGraphResponse } from './slice';
 import {
-  ImportFormat,
   importEdgeListCsv,
   importNodeEdgeCsv,
   importJson,
+} from './processors/import';
+import {
+  ImportFormat,
   NodeEdgeDataType,
   JsonImport,
-} from '../processors/import-data';
-import { ToastAction } from './actions/Toast';
+  Accessors,
+  GraphList,
+  GraphData,
+  FilterOptions,
+} from './types';
 
-type ImportAccessors = Graph.Accessors | null;
+import { UISlices, UIThunks } from '../ui';
 
-const checkNewData = (
-  graphList: Graph.GraphList,
-  newData: Graph.GraphData,
-): boolean => {
+type ImportAccessors = Accessors | null;
+
+const checkNewData = (graphList: GraphList, newData: GraphData): boolean => {
   if (isUndefined(newData.metadata)) {
     // eslint-disable-next-line no-param-reassign
     newData.metadata = {
@@ -35,19 +37,19 @@ const checkNewData = (
 
 const processResponse = (
   dispatch: any,
-  graphList: Graph.GraphList,
-  accessors: Graph.Accessors,
-  newData: Graph.GraphData | Graph.GraphList,
+  graphList: GraphList,
+  accessors: Accessors,
+  newData: GraphData | GraphList,
 ) => {
-  dispatch(fetchBegin());
+  dispatch(UISlices.fetchBegin());
   for (const data of Array.isArray(newData) ? newData : [newData]) {
     // Check edges for new data as it might just be repeated
     if (checkNewData(graphList, data)) {
       dispatch(addQuery(data));
       dispatch(processGraphResponse({ data, accessors }));
-      dispatch(fetchDone());
+      dispatch(UISlices.fetchDone());
     } else {
-      dispatch(fetchDone());
+      dispatch(UISlices.fetchDone());
       throw new Error('Data has already imported');
     }
   }
@@ -65,15 +67,15 @@ const processResponse = (
  */
 const showImportDataToast = (
   dispatch: any,
-  filterOptions: Graph.FilterOptions,
+  filterOptions: FilterOptions,
 ): void => {
   const isFilterEmpty: boolean = isEmpty(filterOptions);
   if (isFilterEmpty) {
-    dispatch(ToastAction.show('Data imported successfully', 'positive'));
+    dispatch(UIThunks.show('Data imported successfully', 'positive'));
     return;
   }
 
-  dispatch(ToastAction.show('Data imported with filters applied', 'warning'));
+  dispatch(UIThunks.show('Data imported with filters applied', 'warning'));
 };
 
 /**
@@ -96,7 +98,7 @@ export const importEdgeListData = (
 
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
-  const filterOptions: Graph.FilterOptions = getFilterOptions(getState());
+  const filterOptions: FilterOptions = getFilterOptions(getState());
 
   const batchDataPromises = importData.map((graphData: ImportFormat) => {
     const { data } = graphData;
@@ -104,13 +106,13 @@ export const importEdgeListData = (
   });
 
   return Promise.all(batchDataPromises)
-    .then((graphData: Graph.GraphList) => {
+    .then((graphData: GraphList) => {
       processResponse(dispatch, graphList, mainAccessors, graphData);
       showImportDataToast(dispatch, filterOptions);
     })
     .catch((err: Error) => {
       const { message } = err;
-      dispatch(ToastAction.show(message, 'negative'));
+      dispatch(UIThunks.show(message, 'negative'));
     });
 };
 
@@ -133,22 +135,22 @@ export const importJsonData = (
 
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
-  const filterOptions: Graph.FilterOptions = getFilterOptions(getState());
+  const filterOptions: FilterOptions = getFilterOptions(getState());
 
   const batchDataPromises = importData.map((graphData: ImportFormat) => {
     const { data } = graphData;
-    return importJson(data as Graph.GraphList, accessors);
+    return importJson(data as GraphList, accessors);
   });
 
   return Promise.all(batchDataPromises)
-    .then((graphDataArr: Graph.GraphList[]) => {
-      const graphData: Graph.GraphList = flatten(graphDataArr);
+    .then((graphDataArr: GraphList[]) => {
+      const graphData: GraphList = flatten(graphDataArr);
       processResponse(dispatch, graphList, mainAccessors, graphData);
       showImportDataToast(dispatch, filterOptions);
     })
     .catch((err: Error) => {
       const { message } = err;
-      dispatch(ToastAction.show(message, 'negative'));
+      dispatch(UIThunks.show(message, 'negative'));
     });
 };
 
@@ -172,10 +174,10 @@ export const importNodeEdgeData = (
   const { data } = importData;
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
-  const filterOptions: Graph.FilterOptions = getFilterOptions(getState());
+  const filterOptions: FilterOptions = getFilterOptions(getState());
 
   const { nodeData, edgeData } = data as NodeEdgeDataType;
-  const newData: Promise<Graph.GraphData> = importNodeEdgeCsv(
+  const newData: Promise<GraphData> = importNodeEdgeCsv(
     nodeData,
     edgeData,
     accessors,
@@ -183,13 +185,13 @@ export const importNodeEdgeData = (
   );
 
   return newData
-    .then((graphData: Graph.GraphData) => {
+    .then((graphData: GraphData) => {
       processResponse(dispatch, graphList, mainAccessors, graphData);
       showImportDataToast(dispatch, filterOptions);
     })
     .catch((err: Error) => {
       const { message } = err;
-      dispatch(ToastAction.show(message, 'negative'));
+      dispatch(UIThunks.show(message, 'negative'));
     });
 };
 
@@ -210,20 +212,17 @@ export const importSingleJsonData = (
   const { data } = importData;
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
-  const filterOptions: Graph.FilterOptions = getFilterOptions(getState());
+  const filterOptions: FilterOptions = getFilterOptions(getState());
 
-  const newData: Promise<Graph.GraphList> = importJson(
-    data as Graph.GraphData,
-    accessors,
-  );
+  const newData: Promise<GraphList> = importJson(data as GraphData, accessors);
 
   return newData
-    .then((graphData: Graph.GraphList) => {
+    .then((graphData: GraphList) => {
       processResponse(dispatch, graphList, mainAccessors, graphData);
       showImportDataToast(dispatch, filterOptions);
     })
     .catch((err: Error) => {
       const { message } = err;
-      dispatch(ToastAction.show(message, 'negative'));
+      dispatch(UIThunks.show(message, 'negative'));
     });
 };

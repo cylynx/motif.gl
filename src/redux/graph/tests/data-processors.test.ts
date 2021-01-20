@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { TriangleJSON } from '../constants/sample-data';
+import { TriangleJSON } from '../../../constants/sample-data';
 import {
   json2csv,
   csv2json,
@@ -11,7 +11,7 @@ import {
   processJson,
   processNodeEdgeCsv,
   processEdgeListCsv,
-} from './data-processors';
+} from '../processors/data';
 
 describe('Parsing json to csv', () => {
   it('should contain the right number of rows (including header)', async () => {

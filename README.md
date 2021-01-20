@@ -42,7 +42,7 @@ import React from 'react';
 import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
 import { BaseProvider } from 'baseui';
-import { Motif, MotifLightTheme, MotifDarkTheme } from 'motif.gl';
+import Motif, { MotifLightTheme, MotifDarkTheme } from 'motif.gl';
 import { Provider } from 'react-redux';
 import store from './redux-store';
 import 'motif.gl/dist/index.css';
@@ -106,7 +106,7 @@ To import as a json object, the object needs to have two properties: nodes and e
 }
 ```
 
-**Node Styles**  
+**Node Styles**
 Each node can take a style property as follows. All style property are optional. Icon is based on [material icons outlined style](https://material.io/resources/icons/)
 
 ```json
@@ -119,7 +119,7 @@ style : {
 }
 ```
 
-**Edge Styles**  
+**Edge Styles**
 Each edge can take a style property as follows. All style property are optional.
 
 ```json

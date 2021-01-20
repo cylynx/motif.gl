@@ -5,11 +5,23 @@ import set from 'lodash/set';
 
 import { Option } from 'baseui/select';
 import { isWithinInterval } from 'date-fns';
-import * as Graph from '../containers/Graph/types';
-import { flattenObject, ALL_FIELD_TYPES } from '../processors/data-processors';
-import { styleEdges } from './style-edges';
-import { styleNodes } from './style-nodes';
-import { unixTimeConverter } from './data-utils';
+import { flattenObject, ALL_FIELD_TYPES } from './processors/data';
+import { styleEdges } from '../../utils/style-edges';
+import { styleNodes } from '../../utils/style-nodes';
+import { unixTimeConverter } from '../../utils/data-utils';
+import {
+  Edge,
+  Field,
+  FilterCriteria,
+  FilterOptions,
+  GraphData,
+  StyleOptions,
+  Node,
+  EdgeNode,
+  TimeRange,
+  GraphAttribute,
+  TimeSeries,
+} from './types';
 
 type MinMax = {
   min: number;
@@ -19,23 +31,20 @@ type MinMax = {
 /**
  * Check edge.data.value is array to determine if it is grouped
  *
- * @param {Graph.Edge} edge
+ * @param {Edge} edge
  * @param {string} edgeWidth accesor function that maps to edge width
  */
-export const isGroupEdges = (edge: Graph.Edge, edgeWidth: string) =>
+export const isGroupEdges = (edge: Edge, edgeWidth: string) =>
   Array.isArray(get(edge, edgeWidth));
 
 /**
  * Get minimum and maximum value of attribute that maps to edge width
  *
- * @param {Graph.GraphData} data
+ * @param {GraphData} data
  * @param {string} edgeWidth accesor string that maps to edge width
  * @return {*}  {MinMax}
  */
-export const getMinMaxValue = (
-  data: Graph.GraphData,
-  edgeWidth: string,
-): MinMax => {
+export const getMinMaxValue = (data: GraphData, edgeWidth: string): MinMax => {
   const arrValue = [];
   for (const edge of data.edges) {
     if (isGroupEdges(edge, edgeWidth)) {
@@ -56,13 +65,11 @@ export const getMinMaxValue = (
 /**
  * Group edges based on common source, target into a single edge with the attributes as arrays
  *
- * @param {Graph.Edge[]} edges
- * @return {*}  {Graph.Edge[]}
+ * @param {Edge[]} edges
+ * @param {Field[]} fields
+ * @return {*}  {Edge[]}
  */
-export const combineEdges = (
-  edges: Graph.Edge[],
-  fields: Graph.Field[],
-): Graph.Edge[] => {
+export const combineEdges = (edges: Edge[], fields: Field[]): Edge[] => {
   const modEdges = [
     ...edges
       .reduce((r, o) => {
@@ -95,16 +102,16 @@ export const combineEdges = (
 /**
  * Filter dataset by timerange based on time attribute on the edges
  *
- * @param {Graph.GraphData} data
+ * @param {GraphData} data
  * @param {number[]} timerange
  * @param {string} edgeTime
- * @return {*}  {Graph.GraphData}
+ * @return {*}  {GraphData}
  */
 export const filterDataByTime = (
-  data: Graph.GraphData,
+  data: GraphData,
   timerange: number[],
   edgeTime: string,
-): Graph.GraphData => {
+): GraphData => {
   if (isUndefined(edgeTime)) return data;
   const { nodes, edges } = data;
   // Because our time data is on links, the timebar's filteredData object only contains links.
@@ -133,14 +140,14 @@ export const filterDataByTime = (
 /**
  * Helper function to replace graph data with modified edges
  *
- * @param {Graph.GraphData} oldData
- * @param {Graph.Edge[]} newEdges
- * @return {*}  {Graph.GraphData}
+ * @param {GraphData} oldData
+ * @param {Edge[]} newEdges
+ * @return {*}  {GraphData}
  */
 export const replaceEdges = (
-  oldData: Graph.GraphData,
-  newEdges: Graph.Edge[],
-): Graph.GraphData => {
+  oldData: GraphData,
+  newEdges: Edge[],
+): GraphData => {
   const modData = { ...oldData };
   modData.edges = [...newEdges];
   return modData;
@@ -149,16 +156,16 @@ export const replaceEdges = (
 /**
  * Helper function to replace graph data with modified nodes and edges
  *
- * @param {Graph.GraphData} oldData
- * @param {Graph.Node[]} newNodes
- * @param {Graph.Edge[]} newEdges
- * @return {*}  {Graph.GraphData}
+ * @param {GraphData} oldData
+ * @param {Node[]} newNodes
+ * @param {Edge[]} newEdges
+ * @return {*}  {GraphData}
  */
 export const replaceData = (
-  oldData: Graph.GraphData,
-  newNodes: Graph.Node[],
-  newEdges: Graph.Edge[],
-): Graph.GraphData => {
+  oldData: GraphData,
+  newNodes: Node[],
+  newEdges: Edge[],
+): GraphData => {
   const modData = { ...oldData };
   modData.edges = [...newEdges];
   modData.nodes = [...newNodes];
@@ -168,14 +175,11 @@ export const replaceData = (
 /**
  * Aggregates a given edge time attribute in the to time series counts, sorted based on time
  *
- * @param {Graph.GraphData} data
+ * @param {GraphData} data
  * @param {string} edgeTime
- * @return {*}  {Graph.TimeSeries}
+ * @return {*}  {TimeSeries}
  */
-export const datatoTS = (
-  data: Graph.GraphData,
-  edgeTime: string,
-): Graph.TimeSeries =>
+export const datatoTS = (data: GraphData, edgeTime: string): TimeSeries =>
   // @ts-ignore
   isUndefined(edgeTime)
     ? []
@@ -186,22 +190,22 @@ export const datatoTS = (
 /**
  * Gets time series range
  *
- * @param {Graph.TimeRange} timeRange
- * @return {*}  {Graph.TimeRange}
+ * @param {TimeRange} timeRange
+ * @return {*}  {TimeRange}
  */
-export const chartRange = (timeRange: Graph.TimeRange): Graph.TimeRange => {
-  const range = Math.max((timeRange[1] - timeRange[0]) / 8, 1000 * 60 * 60 * 1);
+export const chartRange = (timeRange: TimeRange): TimeRange => {
+  const range = Math.max((timeRange[1] - timeRange[0]) / 8, 1000 * 60 * 60);
   return [timeRange[0] - range, timeRange[1] + range];
 };
 
 /**
  * Remove duplicates from array by checking on prop
  *
- * @param {(Graph.Node[] | Graph.Edge[] | [])} myArr
+ * @param {(Node[] | Edge[] | [])} myArr
  * @param {string} prop
  */
 export const removeDuplicates = (
-  myArr: Graph.Node[] | Graph.Edge[] | Graph.Field[] | [],
+  myArr: Node[] | Edge[] | Field[] | [],
   prop: string,
 ) => {
   const seen = new Set();
@@ -216,33 +220,33 @@ export const removeDuplicates = (
 /**
  * Combines processed data by removing duplicate nodes and edges
  *
- * @param {Graph.GraphData} newData
- * @param {Graph.GraphData} oldData
- * @return {*}  {Graph.GraphData}
+ * @param {GraphData} newData
+ * @param {GraphData} oldData
+ * @return {*}  {GraphData}
  */
 export const combineProcessedData = (
-  newData: Graph.GraphData,
-  oldData: Graph.GraphData,
-): Graph.GraphData => {
+  newData: GraphData,
+  oldData: GraphData,
+): GraphData => {
   if (oldData) {
     const modData = { ...oldData };
     modData.nodes = removeDuplicates(
       [...newData.nodes, ...oldData.nodes],
       'id',
-    ) as Graph.Node[];
+    ) as Node[];
     modData.edges = removeDuplicates(
       [...newData.edges, ...oldData.edges],
       'id',
-    ) as Graph.Edge[];
+    ) as Edge[];
     // Get unique fields metadata
     modData.metadata.fields.nodes = removeDuplicates(
       [...newData.metadata.fields.nodes, ...oldData.metadata.fields.nodes],
       'name',
-    ) as Graph.Field[];
+    ) as Field[];
     modData.metadata.fields.edges = removeDuplicates(
       [...newData.metadata.fields.edges, ...oldData.metadata.fields.edges],
       'name',
-    ) as Graph.Field[];
+    ) as Field[];
     return modData;
   }
   return newData;
@@ -252,14 +256,11 @@ export const combineProcessedData = (
  * Main function to apply style.
  * Check if the graph is of group edges or non-group and apply the appropriate styling based on options.
  *
- * @param {Graph.GraphData} data
- * @param {Graph.StyleOptions} options
- * @return {*}  {Graph.GraphData}
+ * @param {GraphData} data
+ * @param {StyleOptions} options
+ * @return {*}  {GraphData}
  */
-export const applyStyle = (
-  data: Graph.GraphData,
-  options: Graph.StyleOptions,
-) => {
+export const applyStyle = (data: GraphData, options: StyleOptions) => {
   styleNodes(data, options.nodeStyle);
   styleEdges(data, options.edgeStyle);
 };
@@ -267,10 +268,10 @@ export const applyStyle = (
 /**
  * Combine edges and replace edges with the new one
  *
- * @param {Graph.GraphData} data
- * @return {*}  {Graph.GraphData}
+ * @param {GraphData} data
+ * @return {*}  {GraphData}
  */
-export const groupEdges = (data: Graph.GraphData): Graph.GraphData => {
+export const groupEdges = (data: GraphData): GraphData => {
   // const newEdges = combineEdges(data.edges);
   // eslint-disable-next-line no-param-reassign
   data.edges = combineEdges(data.edges, data.metadata.fields.edges);
@@ -280,14 +281,14 @@ export const groupEdges = (data: Graph.GraphData): Graph.GraphData => {
 /**
  * Get visible graph by applying appropriate style
  *
- * @param {Graph.GraphData} graphData
- * @param {Graph.StyleOptions} styleOptions
- * @return {*}  {Graph.GraphData}
+ * @param {GraphData} graphData
+ * @param {StyleOptions} styleOptions
+ * @return {*}  {GraphData}
  */
 export const deriveVisibleGraph = (
-  graphData: Graph.GraphData,
-  styleOptions: Graph.StyleOptions,
-): Graph.GraphData => {
+  graphData: GraphData,
+  styleOptions: StyleOptions,
+): GraphData => {
   if (styleOptions.groupEdges) {
     applyStyle(groupEdges(graphData), styleOptions);
   } else {
@@ -310,13 +311,13 @@ export const isValidValue = (value: any): boolean =>
  * Helper function to retrieve relevant node properties.
  * Also removes non-truthy values and arrays of length 0
  *
- * @param {Graph.Node} node
+ * @param {Node} node
  * @param {('all' | 'style' | 'data')} [kind='all'] set to 'style' to get only style fields and 'data' to exclude style fields
  * @param {string[]} filter list of items to filter out
  * @return {*} object sorted by id, data fields followed by style fields
  */
 export const getNodeProperties = (
-  node: Graph.Node,
+  node: Node,
   kind: 'all' | 'style' | 'data' = 'all',
   filter: string[],
 ) => {
@@ -351,13 +352,13 @@ export const getNodeProperties = (
  * Helper function to retrieve relevant edge properties.
  * Also removes non-truthy values and arrays of length 0
  *
- * @param {Graph.Edge} edge
+ * @param {Edge} edge
  * @param {('all' | 'style' | 'data')} [kind='all'] set to 'style' to get only style fields and 'data' to exclude style fields
  * @param {string[]} filter list of items to filter out
  * @return {*} object sorted by id, source, target, data fields followed by style fields
  */
 export const getEdgeProperties = (
-  edge: Graph.Edge,
+  edge: Edge,
   kind: 'all' | 'style' | 'data' = 'all',
   filter: string[],
 ) => {
@@ -401,14 +402,11 @@ export const getEdgeProperties = (
 /**
  * For a given accessor and node / edge dataset, the function creates a dictionary of value / count pairs
  *
- * @param {(Graph.Node[] | Graph.Edge[])} data
+ * @param {(Node[] | Edge[])} data
  * @param {string} accessor
  * @return {*} map of property: counts
  */
-export const countProperty = (
-  data: Graph.Node[] | Graph.Edge[],
-  accessor: string,
-) => {
+export const countProperty = (data: Node[] | Edge[], accessor: string) => {
   const map = {};
   data.forEach((o: any) => {
     if (!Object.prototype.hasOwnProperty.call(map, get(o, accessor))) {
@@ -426,17 +424,17 @@ const allFields = Object.keys(ALL_FIELD_TYPES) as FieldTypes;
 /**
  * Returns field name of which has type which matches the given type array
  *
- * @param {Graph.Field[]} fields
+ * @param {Field[]} fields
  * @param {FieldTypes} [typeArray=allFields]
  */
 export const getFieldNames = (
-  fields: Graph.Field[],
+  fields: Field[],
   typeArray: FieldTypes = allFields,
 ) =>
   // @ts-ignore
   fields.filter((f) => typeArray.includes(f.type)).map((f) => f.name);
 
-type FilterArray = [string, Graph.FilterCriteria];
+type FilterArray = [string, FilterCriteria];
 
 /**
  * Filter graph with given dynamic options on graph data
@@ -447,9 +445,9 @@ type FilterArray = [string, Graph.FilterCriteria];
  * @return {GraphData}
  */
 export const filterGraph = (
-  graphFlatten: Graph.GraphData,
-  filterOptions: Graph.FilterOptions,
-): Graph.GraphData => {
+  graphFlatten: GraphData,
+  filterOptions: FilterOptions,
+): GraphData => {
   if (Object.keys(filterOptions).length === 0) {
     return graphFlatten;
   }
@@ -474,13 +472,13 @@ export const filterGraph = (
 
   if (hasNodeFilters) {
     const { nodes, edges } = graphFlatten;
-    const filteredNodes: Graph.Node[] = filterGraphEdgeNodes(
+    const filteredNodes: Node[] = filterGraphEdgeNodes(
       nodes,
       filtersArray,
       'nodes',
     );
 
-    const connectedEdges: Graph.Edge[] = connectEdges(filteredNodes, edges);
+    const connectedEdges: Edge[] = connectEdges(filteredNodes, edges);
 
     Object.assign(graphFlatten, {
       nodes: filteredNodes,
@@ -490,13 +488,13 @@ export const filterGraph = (
 
   if (hasEdgeFilters) {
     const { nodes, edges } = graphFlatten;
-    const filteredEdges: Graph.Edge[] = filterGraphEdgeNodes(
+    const filteredEdges: Edge[] = filterGraphEdgeNodes(
       edges,
       filtersArray,
       'edges',
     );
 
-    const connectedNodes: Graph.Node[] = connectNodes(filteredEdges, nodes);
+    const connectedNodes: Node[] = connectNodes(filteredEdges, nodes);
 
     Object.assign(graphFlatten, {
       nodes: connectedNodes,
@@ -507,9 +505,9 @@ export const filterGraph = (
   return graphFlatten;
 };
 
-const hasGraphFilters = (value: FilterArray, type: Graph.GraphAttribute) => {
+const hasGraphFilters = (value: FilterArray, type: GraphAttribute) => {
   const { 1: criteria } = value;
-  const { isFilterReady, from } = criteria as Graph.FilterCriteria;
+  const { isFilterReady, from } = criteria as FilterCriteria;
   return from === type && isFilterReady;
 };
 
@@ -520,15 +518,15 @@ const hasGraphFilters = (value: FilterArray, type: Graph.GraphAttribute) => {
  *
  * @param {EdgeNode[]} nodes
  * @param {FilterArray[]} filtersArray
- * @param {Graph.GraphAttribute} type
+ * @param {GraphAttribute} type
  *
  * @return {Node[]}
  */
 const filterGraphEdgeNodes = (
-  nodes: Graph.EdgeNode[],
+  nodes: EdgeNode[],
   filtersArray: FilterArray[],
-  type: Graph.GraphAttribute,
-): Graph.EdgeNode[] => {
+  type: GraphAttribute,
+): EdgeNode[] => {
   const dynamicFilters: any[] = [];
 
   // 1. construct filter objects
@@ -541,21 +539,19 @@ const filterGraphEdgeNodes = (
         caseSearch,
         analyzerType,
         range,
-      } = criteria as Graph.FilterCriteria;
+      } = criteria as FilterCriteria;
 
       if (analyzerType === 'STRING') {
         const stringCases: (string | number)[] = caseSearch.map(
           (option: Option) => option.id,
         );
 
-        accFilter.push((node: Graph.EdgeNode) =>
-          stringCases.includes(get(node, id)),
-        );
+        accFilter.push((node: EdgeNode) => stringCases.includes(get(node, id)));
         return accFilter;
       }
 
       if (analyzerType === 'DATETIME' || analyzerType === 'DATE') {
-        const isDateTimeWithinRange = (node: Graph.EdgeNode): boolean => {
+        const isDateTimeWithinRange = (node: EdgeNode): boolean => {
           const [startDate, endDate] = range;
           const dateTime: Date = new Date(get(node, id));
           const startInterval: Date = new Date(startDate);
@@ -572,7 +568,7 @@ const filterGraphEdgeNodes = (
       }
 
       if (analyzerType === 'TIME') {
-        const isTimeWithinRange = (node: Graph.EdgeNode): boolean => {
+        const isTimeWithinRange = (node: EdgeNode): boolean => {
           const [startDate, endDate] = range;
           const timeInUnix: number = unixTimeConverter(
             get(node, id),
@@ -595,7 +591,7 @@ const filterGraphEdgeNodes = (
       }
 
       // analyzerType ("INT", "FLOAT", "NUMBER")
-      const isNumericWithinRange = (node: Graph.EdgeNode): boolean => {
+      const isNumericWithinRange = (node: EdgeNode): boolean => {
         const [min, max] = range;
         return min <= get(node, id) && max >= get(node, id);
       };
@@ -604,8 +600,8 @@ const filterGraphEdgeNodes = (
     }, dynamicFilters);
 
   // 2. perform filtering with dynamic options in AND conditions
-  const filteredGraphNodes: Graph.EdgeNode[] = nodes.filter(
-    (node: Graph.EdgeNode) => dynamicFilters.every((f) => f(node)),
+  const filteredGraphNodes: EdgeNode[] = nodes.filter((node: EdgeNode) =>
+    dynamicFilters.every((f) => f(node)),
   );
 
   return filteredGraphNodes;
@@ -620,15 +616,12 @@ const filterGraphEdgeNodes = (
  * @param {Edge[]} edges
  * @return {Edge[]}
  */
-const connectEdges = (
-  filteredNodes: Graph.Node[],
-  edges: Graph.Edge[],
-): Graph.Edge[] => {
+const connectEdges = (filteredNodes: Node[], edges: Edge[]): Edge[] => {
   if (filteredNodes.length === 0) return [];
 
-  const idsArr: string[] = filteredNodes.map((nodes: Graph.Node) => nodes.id);
+  const idsArr: string[] = filteredNodes.map((nodes: Node) => nodes.id);
 
-  const associatedEdges: Graph.Edge[] = edges.filter((edge: Graph.Edge) => {
+  const associatedEdges: Edge[] = edges.filter((edge: Edge) => {
     const { source, target } = edge;
     return idsArr.includes(source) && idsArr.includes(target);
   });
@@ -640,20 +633,17 @@ const connectEdges = (
  * Obtain the associated nodes with the given edges.
  * 1. obtain nodes based on source and targets
  *
- * @param {Graph.Edge[]} filteredEdges
- * @param {Graph.Node[]} nodes
+ * @param {Edge[]} filteredEdges
+ * @param {Node[]} nodes
  *
- * @return {Graph.Node[]}
+ * @return {Node[]}
  */
-const connectNodes = (
-  filteredEdges: Graph.Edge[],
-  nodes: Graph.Node[],
-): Graph.Node[] => {
+const connectNodes = (filteredEdges: Edge[], nodes: Node[]): Node[] => {
   if (filteredEdges.length === 0) return [];
 
   const sourceTargetIds: Set<string> = new Set();
 
-  filteredEdges.reduce((acc: Set<string>, edge: Graph.Edge) => {
+  filteredEdges.reduce((acc: Set<string>, edge: Edge) => {
     const { source, target } = edge;
 
     if (acc.has(source) === false) acc.add(source);
@@ -665,7 +655,7 @@ const connectNodes = (
 
   const sourceTargetIdArr: string[] = [...sourceTargetIds];
 
-  const associatedNodes = nodes.filter((node: Graph.Node) =>
+  const associatedNodes = nodes.filter((node: Node) =>
     sourceTargetIdArr.includes(node.id),
   );
   return associatedNodes;

@@ -1,4 +1,7 @@
-import { ChartData } from '../containers/Graph/types';
+export interface ChartData {
+  name: string;
+  value: number;
+}
 
 export const timeConverter = (timestamp: number): string => {
   // Unix timestamp in milliseconds
