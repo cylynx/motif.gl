@@ -1,6 +1,15 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-nested-ternary */
-import React, { useState, useEffect, useRef, Fragment, useMemo } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  Fragment,
+  useMemo,
+  RefObject,
+  ReactNode,
+  MutableRefObject,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useStyletron, ThemeProvider } from 'baseui';
 import { Theme } from 'baseui/theme';
@@ -8,6 +17,7 @@ import { Block } from 'baseui/block';
 import { Modal, ModalBody, SIZE } from 'baseui/modal';
 
 import { ToasterContainer, PLACEMENT } from 'baseui/toast';
+import Graphin from '@antv/graphin';
 import { PRIMARY_COLOR } from '../constants/colors';
 import { Loader } from '../components/ui';
 import DataTable from './DataTable';
@@ -28,8 +38,8 @@ import { LEFT_LAYER_WIDTH } from '../constants/widget-units';
 import { GraphLayer } from './widgets/layer';
 
 export interface WidgetContainerProps {
-  children: React.ReactNode;
-  graphRef: React.MutableRefObject<HTMLDivElement | null>;
+  children: ReactNode;
+  graphRef: MutableRefObject<Graphin>;
   theme: Theme;
 }
 
@@ -74,7 +84,7 @@ const Explorer = (props: ExplorerProps) => {
     secondaryTheme,
     styleOptions = { nodeStyle: defaultNodeStyle },
   } = props;
-  const graphRef = useRef(null);
+  const graphRef = useRef<Graphin>(null);
   const [tooltip, setTooltip] = useState(null);
   const [leftLayerWidth, setLeftLayerWidth] = useState<string>(
     LEFT_LAYER_WIDTH,

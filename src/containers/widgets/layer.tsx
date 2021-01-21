@@ -1,7 +1,14 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable  react/no-did-update-set-state */
-import React, { Component, ReactNode, createRef } from 'react';
+import React, {
+  Component,
+  ReactNode,
+  createRef,
+  MutableRefObject,
+  RefObject,
+} from 'react';
 import { Block } from 'baseui/block';
+import Graphin, { GraphinContextType } from '@antv/graphin';
 import {
   SIDE_NAVBAR_WIDTH,
   LEFT_LAYER_WIDTH,
@@ -65,7 +72,7 @@ type GraphLayerProps = {
   isMainWidgetExpanded: boolean;
   children: ReactNode;
   leftLayerWidth: string;
-  graphRef: any;
+  graphRef: MutableRefObject<Graphin>;
 };
 
 type GraphLayerState = {
@@ -85,7 +92,7 @@ export class GraphLayer extends Component<GraphLayerProps, GraphLayerState> {
     };
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     const { graphRef } = this.props;
     const { graph } = graphRef.current;
     const { innerWidth, innerHeight } = this.getInnerDimension();
@@ -107,7 +114,7 @@ export class GraphLayer extends Component<GraphLayerProps, GraphLayerState> {
     return false;
   }
 
-  componentDidUpdate(prevProps: GraphLayerProps) {
+  componentDidUpdate(prevProps: GraphLayerProps): void {
     if (this.props.isMainWidgetExpanded !== prevProps.isMainWidgetExpanded) {
       const { graphRef, isMainWidgetExpanded } = this.props;
 
@@ -173,7 +180,7 @@ export class GraphLayer extends Component<GraphLayerProps, GraphLayerState> {
     graph.translate(viewCenter.x - groupCenter.x, viewCenter.y - groupCenter.y);
   };
 
-  render() {
+  render(): JSX.Element {
     const { children } = this.props;
     const { width, left } = this.state;
 

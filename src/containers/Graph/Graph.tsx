@@ -3,8 +3,8 @@
 import React, { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useStyletron } from 'baseui';
-import Graphin from '@antv/graphin';
-import { IG6GraphEvent } from '@antv/g6/lib/types';
+import Graphin, { IG6GraphEvent } from '@antv/graphin';
+import { GraphinData } from '@antv/graphin/dist/typings/type';
 import RegisterGraphinHighlight from './behaviors/graphin-highlight';
 import RegisterActivateRelations from './behaviors/activate-relations';
 import RegisterCircleNode from './shape/CircleNode';
@@ -22,7 +22,7 @@ export type GraphProps = {
   setTooltip: (tooltip: TooltipProps | null) => void;
 };
 
-const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
+const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
   const { setTooltip } = props;
   const [, theme] = useStyletron();
   const graphVisible = useSelector((state) =>
@@ -39,7 +39,7 @@ const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
 
     const { graph } = ref.current;
 
-    const onResetClick = () => {
+    const onResetClick = (): void => {
       setTooltip(null);
     };
 
@@ -48,35 +48,54 @@ const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
       // Avoid inconsistent styling between highlight.light and selected by giving priority to selected
       graph.clearItemStates(item, interactionStates);
       graph.setItemState(item, 'selected', true);
+
+      const node = item.get('model');
+      const { clientX, clientY } = e;
+      setTooltip({
+        id: node.id,
+        x: clientX,
+        y: clientY,
+        type: 'node',
+      });
       // Ctrl event is for multiple select so don't display tooltip
-      if (!e.originalEvent.ctrlKey && !e.originalEvent.shiftKey) {
-        const node = item.get('model');
-        const { clientX, clientY } = e;
-        setTooltip({
-          id: node.id,
-          x: clientX,
-          y: clientY,
-          type: 'node',
-        });
-      }
+      // if (!e.originalEvent.ctrlKey && !e.originalEvent.shiftKey) {
+      //   const node = item.get('model');
+      //   const { clientX, clientY } = e;
+      //   setTooltip({
+      //     id: node.id,
+      //     x: clientX,
+      //     y: clientY,
+      //     type: 'node',
+      //   });
+      // }
     };
 
-    const onEdgeClick = (e: IG6GraphEvent) => {
+    const onEdgeClick = (e: IG6GraphEvent): void => {
       const { item } = e;
       // Avoid inconsistent styling between highlight.light and selected by giving priority to selected
       graph.clearItemStates(item, interactionStates);
       graph.setItemState(item, 'selected', true);
+
+      const { clientX, clientY } = e;
+      const edge = item.get('model');
+      setTooltip({
+        id: edge.id,
+        x: clientX,
+        y: clientY,
+        type: 'edge',
+      });
+
       // Ctrl event is for multiple select so don't display tooltip
-      if (!e.originalEvent.ctrlKey && !e.originalEvent.shiftKey) {
-        const { clientX, clientY } = e;
-        const edge = item.get('model');
-        setTooltip({
-          id: edge.id,
-          x: clientX,
-          y: clientY,
-          type: 'edge',
-        });
-      }
+      // if (!e.originalEvent.ctrlKey && !e.originalEvent.shiftKey) {
+      //   const { clientX, clientY } = e;
+      //   const edge = item.get('model');
+      //   setTooltip({
+      //     id: edge.id,
+      //     x: clientX,
+      //     y: clientY,
+      //     type: 'edge',
+      //   });
+      // }
     };
 
     // Graph Behaviours
@@ -85,7 +104,7 @@ const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
     graph.on('edge:click', onEdgeClick);
     graph.on('canvas:click', onResetClick);
     graph.on('canvas:dragstart', onResetClick);
-    return () => {
+    return (): void => {
       graph.off('node:click', onNodeClick);
       graph.off('node:mouseleave', onResetClick);
       graph.off('edge:click', onEdgeClick);
@@ -96,7 +115,7 @@ const Graph = React.forwardRef<HTMLDivElement, GraphProps>((props, ref) => {
 
   return (
     <Graphin
-      data={graphVisible}
+      data={graphVisible as GraphinData}
       layout={layout}
       ref={ref}
       options={{
