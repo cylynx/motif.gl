@@ -144,7 +144,7 @@ export interface EdgeStyleOptions {
 }
 
 export interface Layout {
-  name:
+  type:
     | 'concentric'
     | 'force'
     | 'radial'

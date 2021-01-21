@@ -5,6 +5,7 @@ import set from 'lodash/set';
 
 import { Option } from 'baseui/select';
 import { isWithinInterval } from 'date-fns';
+import { WritableDraft } from 'immer/dist/types/types-external';
 import { flattenObject, ALL_FIELD_TYPES } from './processors/data';
 import { styleEdges } from '../../utils/style-edges';
 import { styleNodes } from '../../utils/style-nodes';

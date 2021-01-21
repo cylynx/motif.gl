@@ -4,6 +4,7 @@
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import isUndefined from 'lodash/isUndefined';
+import { WritableDraft } from 'immer/dist/types/types-external';
 import * as LAYOUT from '../../constants/layout-options';
 import { combineProcessedData } from './utils';
 import { generateDefaultColorMap } from '../../utils/style-nodes';
@@ -13,9 +14,13 @@ import {
   GraphState,
   StyleOptions,
   GraphData,
+  Layout,
 } from './types';
 
-export const updateSelections = (state: GraphState, data: GraphData) => {
+export const updateSelections = (
+  state: WritableDraft<GraphState>,
+  data: GraphData,
+) => {
   const currentNodeFields = state.nodeSelection.map((x) => x.id);
   const currentEdgeFields = state.edgeSelection.map((x) => x.id);
   for (const field of data.metadata.fields.nodes) {
@@ -47,7 +52,10 @@ export const updateSelections = (state: GraphState, data: GraphData) => {
  * @param {GraphState} state
  * @param {GraphData} graphData
  */
-export const updateAll = (state: GraphState, graphData: GraphData) => {
+export const updateAll = (
+  state: GraphState | WritableDraft<GraphState>,
+  graphData: GraphData,
+) => {
   if (graphData) {
     state.graphFlatten = graphData;
   } else {
@@ -68,7 +76,7 @@ const initialState: GraphState = {
   },
   styleOptions: {
     layout: {
-      name: 'concentric',
+      type: 'concentric',
       options: {
         minNodeSpacing: 60,
       },
@@ -133,7 +141,7 @@ const graph = createSlice({
       let graphData;
       for (const data of graphList) {
         if (data?.metadata?.visible !== false) {
-          graphData = combineProcessedData(data, graphData);
+          graphData = combineProcessedData(data as GraphData, graphData);
         }
       }
       updateAll(state, graphData);
@@ -148,7 +156,7 @@ const graph = createSlice({
       let graphData;
       for (const data of graphList) {
         if (data?.metadata?.visible !== false) {
-          graphData = combineProcessedData(data, graphData);
+          graphData = combineProcessedData(data as GraphData, graphData);
         }
       }
 
@@ -173,11 +181,12 @@ const graph = createSlice({
       }>,
     ) {
       const { id, ...options } = action.payload.layout;
-      const defaultOptions = LAYOUT.OPTIONS.find((x) => x.name === id);
+      const defaultOptions = LAYOUT.OPTIONS.find((x: Layout) => x.type === id);
       const newOptions = { ...defaultOptions.options, ...options };
-      // @ts-ignore
-      state.styleOptions.layout.name = id;
-      state.styleOptions.layout.options = newOptions;
+      Object.assign(state.styleOptions.layout, {
+        type: id,
+        options: newOptions,
+      });
     },
     changeNodeStyle(
       state,
@@ -219,7 +228,7 @@ const graph = createSlice({
     ) {
       const { data } = action.payload;
       const { graphFlatten } = state;
-      const graphData = combineProcessedData(data, graphFlatten);
+      const graphData = combineProcessedData(data, graphFlatten as GraphData);
       updateAll(state, graphData);
       updateSelections(state, data);
     },

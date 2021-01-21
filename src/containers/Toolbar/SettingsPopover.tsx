@@ -58,7 +58,7 @@ const SettingsPopover = () => {
           options={LAYOUT.LAYOUT_NAMES}
           size='compact'
           clearable={false}
-          value={[findID(LAYOUT.LAYOUT_NAMES, layout.name)]}
+          value={[findID(LAYOUT.LAYOUT_NAMES, layout.type)]}
           onChange={(params) =>
             dispatch(
               GraphSlices.changeLayout({

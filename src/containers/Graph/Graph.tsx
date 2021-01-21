@@ -1,9 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
-// @ts-nocheck
 import React, { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useStyletron } from 'baseui';
-import Graphin, { IG6GraphEvent } from '@antv/graphin';
+import Graphin, { GraphinContextType, IG6GraphEvent, G6 } from '@antv/graphin';
 import { GraphinData } from '@antv/graphin/dist/typings/type';
 import RegisterGraphinHighlight from './behaviors/graphin-highlight';
 import RegisterActivateRelations from './behaviors/activate-relations';
@@ -12,7 +11,7 @@ import RegisterPolyEdge from './shape/PolyEdge';
 import RegisterLineEdge from './shape/LineEdge';
 import RegisterLoopEdge from './shape/LoopEdge';
 import { interactionStates } from './shape/constants';
-import { GraphSelectors } from '../../redux/graph';
+import { GraphSelectors, Layout } from '../../redux/graph';
 import { TooltipProps } from './Tooltip';
 import './graphin.css';
 
@@ -28,7 +27,7 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
   const graphVisible = useSelector((state) =>
     GraphSelectors.getGraphVisible(state),
   );
-  const layout = useSelector(
+  const layout: Layout = useSelector(
     (state) => GraphSelectors.getStyleOptions(state).layout,
   );
 
@@ -37,7 +36,8 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
     document.getElementById('graphin-container').style.backgroundColor =
       theme.colors.backgroundPrimary;
 
-    const { graph } = ref.current;
+    // @ts-ignore
+    const { graph }: GraphinContextType = ref.current;
 
     const onResetClick = (): void => {
       setTooltip(null);
@@ -137,7 +137,7 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
         },
       }}
       register={{
-        nodeShape: (G6) => [
+        nodeShape: (G6: any) => [
           {
             name: 'CircleNode',
             register: () => {
@@ -145,7 +145,7 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
             },
           },
         ],
-        edgeShape: (G6) => [
+        edgeShape: (G6: any) => [
           {
             name: 'PolyEdge',
             register: () => {
@@ -165,7 +165,7 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
             },
           },
         ],
-        behavior: (G6) => [
+        behavior: (G6: any) => [
           {
             name: 'activate-relations',
             mode: 'default',

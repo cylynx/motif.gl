@@ -27,13 +27,13 @@ export const CONCENTRIC_DEFAULT = {
 };
 
 export const OPTIONS: Layout[] = [
-  { name: 'dagre', options: DAGRE_DEFAULT },
-  { name: 'circle', options: CIRCLE_DEFAULT },
-  { name: 'grid', options: GRID_DEFAULT },
-  { name: 'radial', options: RADIAL_DEFAULT },
-  { name: 'concentric', options: CONCENTRIC_DEFAULT },
-  { name: 'force' },
-  { name: 'none' },
+  { type: 'dagre', options: DAGRE_DEFAULT },
+  { type: 'circle', options: CIRCLE_DEFAULT },
+  { type: 'grid', options: GRID_DEFAULT },
+  { type: 'radial', options: RADIAL_DEFAULT },
+  { type: 'concentric', options: CONCENTRIC_DEFAULT },
+  { type: 'force' },
+  { type: 'none' },
 ];
 
 export const LAYOUT_NAMES = [
