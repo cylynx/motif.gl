@@ -22,7 +22,7 @@ const getFilterOptions = (state: any): FilterOptions =>
 const getGraphFiltered = createSelector(
   [getGraphFlatten, getFilterOptions],
   (graphFlatten: GraphData, filterOptions: FilterOptions) => {
-    const graphFiltered = produce(graphFlatten, (draftState) => {
+    const graphFiltered = produce(graphFlatten, (draftState: GraphData) => {
       filterGraph(draftState, filterOptions);
     });
 
@@ -34,7 +34,7 @@ const getGraphFiltered = createSelector(
 const getGraphVisible = createSelector(
   [getGraphFiltered, getStyleOptions],
   (graphFiltered: GraphData, styleOptions: StyleOptions) => {
-    const graphVisible = produce(graphFiltered, (draftState) => {
+    const graphVisible = produce(graphFiltered, (draftState: GraphData) => {
       deriveVisibleGraph(draftState, styleOptions);
     });
     return graphVisible;

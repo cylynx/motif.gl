@@ -122,7 +122,11 @@ export const processJson = async (
       fields: { nodes: nodeFields, edges: edgeFields },
       key: get(json, key, key),
     };
-    return { nodes: nodeJson, edges: edgeJson, metadata: graphMetadata };
+    return {
+      nodes: nodeJson as Node[],
+      edges: edgeJson as Edge[],
+      metadata: graphMetadata,
+    };
   }
   throw new Error(
     'process Json Data Failed: Json has to contain a nodes & edges object',
@@ -148,7 +152,11 @@ export const processNodeEdgeCsv = async (
     fields: { nodes: nodeFields, edges: edgeFields },
     key,
   };
-  return { nodes: nodeJson, edges: edgeJson, metadata: graphMetadata };
+  return {
+    nodes: nodeJson as Node[],
+    edges: edgeJson as Edge[],
+    metadata: graphMetadata,
+  };
 };
 
 /**

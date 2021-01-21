@@ -26,21 +26,30 @@ export const styleEdges = (
 
   // For perf reasons, batch style operations which require a single loop through nodes
   for (const edge of data.edges) {
+    const edgeStyle = edge.style ?? {};
+
     if (edgeStyleOptions.width && edgeStyleOptions.width.id === 'fixed') {
-      edge.style.width = edgeStyleOptions.width.value;
+      Object.assign(edgeStyle, {
+        width: edgeStyleOptions.width.value,
+      });
     }
+
     if (edgeStyleOptions.pattern) {
-      styleEdgePattern(edge, edgeStyleOptions.pattern);
+      styleEdgePattern(edgeStyle, edgeStyleOptions.pattern);
     }
     if (edgeStyleOptions.fontSize) {
-      styleEdgeFontSize(edge, edgeStyleOptions.fontSize);
+      styleEdgeFontSize(edgeStyle, edgeStyleOptions.fontSize);
     }
     if (edgeStyleOptions.label) {
-      styleEdgeLabel(edge, edgeStyleOptions.label);
+      styleEdgeLabel(edgeStyle, edgeStyleOptions.label);
     }
     if (edgeStyleOptions.arrow) {
-      styleEdgeArrow(edge, edgeStyleOptions.arrow);
+      styleEdgeArrow(edgeStyle, edgeStyleOptions.arrow);
     }
+
+    Object.assign(edge, {
+      style: edgeStyle,
+    });
   }
 };
 
@@ -87,11 +96,11 @@ export const styleEdgeLabel = (edge: Edge, label: string) => {
   }
 };
 
-export const styleEdgePattern = (edge: Edge, pattern: string) => {
+export const styleEdgePattern = (edgeStyle: Edge, pattern: string) => {
   if (pattern === 'none') {
-    delete edge.style.stroke;
+    delete edgeStyle.stroke;
   } else {
-    edge.style.stroke = pattern;
+    Object.assign(edgeStyle, { stroke: pattern });
   }
 };
 

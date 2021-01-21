@@ -117,7 +117,7 @@ export const filterDataByTime = (
   // Because our time data is on links, the timebar's filteredData object only contains links.
   // But we need to show nodes in the chart too: so for each link, track the connected nodes
   const filteredEdges = edges.filter((edge) =>
-    inRange(get(edge, edgeTime), timerange[0], timerange[1]),
+    inRange(Number(get(edge, edgeTime)), timerange[0], timerange[1]),
   );
   // Filter nodes which are connected to the edges
   const filteredNodesId: any[] = [];
@@ -185,7 +185,7 @@ export const datatoTS = (data: GraphData, edgeTime: string): TimeSeries =>
     ? []
     : data.edges
         .map((edge) => [get(edge, edgeTime), 1])
-        .sort((a, b) => a[0] - b[0]);
+        .sort((a, b) => Number(a[0]) - Number(b[0]));
 
 /**
  * Gets time series range
@@ -472,13 +472,13 @@ export const filterGraph = (
 
   if (hasNodeFilters) {
     const { nodes, edges } = graphFlatten;
-    const filteredNodes: Node[] = filterGraphEdgeNodes(
+    const filteredNodes: EdgeNode[] = filterGraphEdgeNodes(
       nodes,
       filtersArray,
       'nodes',
     );
 
-    const connectedEdges: Edge[] = connectEdges(filteredNodes, edges);
+    const connectedEdges: Edge[] = connectEdges(filteredNodes as Node[], edges);
 
     Object.assign(graphFlatten, {
       nodes: filteredNodes,
@@ -546,14 +546,16 @@ const filterGraphEdgeNodes = (
           (option: Option) => option.id,
         );
 
-        accFilter.push((node: EdgeNode) => stringCases.includes(get(node, id)));
+        accFilter.push((node: EdgeNode) =>
+          stringCases.includes(get(node, id) as string | number),
+        );
         return accFilter;
       }
 
       if (analyzerType === 'DATETIME' || analyzerType === 'DATE') {
         const isDateTimeWithinRange = (node: EdgeNode): boolean => {
           const [startDate, endDate] = range;
-          const dateTime: Date = new Date(get(node, id));
+          const dateTime: Date = new Date(get(node, id) as number);
           const startInterval: Date = new Date(startDate);
           const endInterval: Date = new Date(endDate);
           const isWithinRange: boolean = isWithinInterval(dateTime, {
@@ -571,7 +573,7 @@ const filterGraphEdgeNodes = (
         const isTimeWithinRange = (node: EdgeNode): boolean => {
           const [startDate, endDate] = range;
           const timeInUnix: number = unixTimeConverter(
-            get(node, id),
+            get(node, id) as string,
             analyzerType,
           );
           const dateTime: Date = new Date(timeInUnix);
