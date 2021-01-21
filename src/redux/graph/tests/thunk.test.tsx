@@ -6,6 +6,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import flatten from 'lodash/flatten';
 import { render } from '@testing-library/react';
 import { ToasterContainer } from 'baseui/toast';
+import { RootState } from '../../investigate/types';
 import {
   importEdgeListData,
   importJsonData,
@@ -22,7 +23,7 @@ import { fetchBegin, fetchDone, updateToast } from '../../ui/slice';
 import { SimpleEdge } from '../../../constants/sample-data';
 
 const mockStore = configureStore([thunk]);
-const getStore = () => {
+const getStore = (): RootState => {
   const graphState = cloneDeep(initialState);
   const store = {
     investigate: {
@@ -152,6 +153,21 @@ describe('add-data-thunk.test.js', () => {
       const importDataArr = [jsonDataOne, jsonDataTwo];
       await expect(importNodeEdgeData(importDataArr)).toThrow(Error);
     });
+
+    it('should throw errors if source and target fields are invalid', async () => {
+      const invalidNodeEdgeData = {
+        data: {
+          edgeData:
+            'id,relation,from,to\ntxn1,hello,a,b\ntxn2,works,b,c\ntxn3,abc,c,a',
+          nodeData: 'id,value,score\na,20,80\nb,40,100\nc,60,123',
+          metadata: {
+            key: 123,
+          },
+        },
+        type: 'nodeEdgeCsv',
+      };
+      await expect(importNodeEdgeData(invalidNodeEdgeData)).toThrow(Error);
+    });
   });
 
   describe('importEdgeListData', () => {
@@ -209,6 +225,22 @@ describe('add-data-thunk.test.js', () => {
     it('should throw errors if importData parameter is not array', async () => {
       await expect(importEdgeListData(firstEdgeListCsv)).toThrow(Error);
     });
+
+    it('should throw errors if source and target fields are invalid', async () => {
+      const firstErrorEdgeCsv = {
+        data:
+          'id,relation,from,to\ntxn1,works,jason,cylynx\ntxn3,abc,cylynx,timothy\ntxn4,says hi to,swan,cylynx',
+        type: 'edgeListCsv',
+      };
+
+      const secondValidEdgeCsv = {
+        data: 'id,source,target\n123,x,y\n456,y,z\n789,z,x',
+        type: 'edgeListCsv',
+      };
+      await expect(
+        importEdgeListData([firstErrorEdgeCsv, secondValidEdgeCsv]),
+      ).toThrow(Error);
+    });
   });
 
   describe('importSingleJsonData', () => {
@@ -244,6 +276,36 @@ describe('add-data-thunk.test.js', () => {
       const importData = { data, type: 'json' };
 
       await expect(importSingleJsonData([importData])).toThrow(Error);
+    });
+
+    it('should throw error if source and target fields are invalid', async () => {
+      // input
+      const invalidData = {
+        nodes: [
+          {
+            id: 'nodeA',
+            label: 'nodeA',
+          },
+          {
+            id: 'nodeB',
+            label: 'nodeB',
+          },
+        ],
+        edges: [
+          {
+            id: 'nodeA-nodeB',
+            from: 'nodeA',
+            to: 'nodeB',
+            weight: 100,
+          },
+        ],
+        metadata: {
+          key: '123',
+        },
+      };
+      const importData = { data: invalidData, type: 'json' };
+
+      await expect(importSingleJsonData(importData)).toThrow(Error);
     });
   });
 });

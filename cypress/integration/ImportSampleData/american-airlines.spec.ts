@@ -8,7 +8,7 @@ describe('Import American Airlines', () => {
     cy.waitForReact();
   });
 
-  it('should import Les Misérables successfully', () => {
+  it('should import American Airlines successfully', () => {
     // switch tabs to sample data
     cy.switchTab('sample-data');
 
@@ -19,7 +19,7 @@ describe('Import American Airlines', () => {
       .find('Button')
       .click();
 
-    cy.wait(4000);
+    cy.wait(4500);
   });
 
   it('should display layout as x y coordinate', () => {
