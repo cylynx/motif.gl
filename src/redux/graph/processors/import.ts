@@ -103,13 +103,11 @@ export const addRequiredFieldsJson = (
 ) => {
   for (const node of data.nodes) {
     addNodeFields(node, accessors);
-    if (isUndefined(node.data)) node.data = {}; // required by graphin
-    if (isUndefined(node.defaultStyle)) node.defaultStyle = {};
+    if (isUndefined(node.style)) node.style = {};
   }
   for (const edge of data.edges) {
     addEdgeFields(edge, accessors);
-    if (isUndefined(edge.data)) edge.data = {}; // required by graphin
-    if (isUndefined(edge.defaultStyle)) edge.defaultStyle = {};
+    if (isUndefined(edge.style)) edge.style = {};
   }
   return data;
 };

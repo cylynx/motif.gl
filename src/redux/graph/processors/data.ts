@@ -6,7 +6,7 @@ import get from 'lodash/get';
 // @ts-ignore
 import { Analyzer, DATA_TYPES as AnalyzerDatatypes } from 'type-analyzer';
 import { notNullorUndefined } from '../../../utils/data-utils';
-import { Edge, Field, GraphData, Metadata } from '../types';
+import { Edge, Field, GraphData, Metadata, Node } from '../types';
 
 type RowData = {
   [key: string]: any;
@@ -169,8 +169,8 @@ export const processEdgeListCsv = async (
   const { fields: edgeFields, json: edgeJson } = await processCsvData(edgeCsv);
   const edgeIds: string[] = [];
   edgeJson.forEach((edge: Edge) => {
-    edgeIds.push(edge[edgeSourceAccessor]);
-    edgeIds.push(edge[edgeTargetAccessor]);
+    edgeIds.push(edge[edgeSourceAccessor] as string);
+    edgeIds.push(edge[edgeTargetAccessor] as string);
   });
   const uniqueNodes = [...new Set(edgeIds)];
   const nodeJson = uniqueNodes.map((node) => {

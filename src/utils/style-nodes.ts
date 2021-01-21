@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import get from 'lodash/get';
+import has from 'lodash/has';
 import isUndefined from 'lodash/isUndefined';
 import {
   GraphData,
@@ -29,7 +30,7 @@ export const styleNodes = (
   // For perf reasons, batch style operations which require a single loop through nodes
   for (const node of data.nodes) {
     if (nodeStyleOptions.size && nodeStyleOptions.size.id === 'fixed') {
-      node.defaultStyle.size = nodeStyleOptions.size.value;
+      node.style.size = nodeStyleOptions.size.value;
     }
     if (nodeStyleOptions.color) {
       styleNodeColor(node, nodeStyleOptions.color);
@@ -61,12 +62,14 @@ export const generateDefaultColorMap = (nodes: Node[], options: NodeColor) => {
   for (const [i, value] of uniqueKeys.entries()) {
     // Assign undefined to grey and all others to last of colors
     if (i < MAX_LEGEND_SIZE && !isUndefined(value)) {
+      // @ts-ignore
       mapping[value] = CATEGORICAL_COLOR[i];
     } else if (isUndefined(value)) {
       // eslint-disable-next-line @typescript-eslint/dot-notation
       mapping['undefined'] = DARK_GREY;
     } else {
       // eslint-disable-next-line prefer-destructuring
+      // @ts-ignore
       mapping[value] = CATEGORICAL_COLOR[MAX_LEGEND_SIZE - 1];
     }
   }
@@ -88,16 +91,17 @@ export const mapNodeSize = (
 ) => {
   let minp = 9999999999;
   let maxp = -9999999999;
-  nodes.forEach((node) => {
-    node.defaultStyle.size = get(node, propertyName) ** (1 / 3);
-    minp = node.defaultStyle.size < minp ? node.defaultStyle.size : minp;
-    maxp = node.defaultStyle.size > maxp ? node.defaultStyle.size : maxp;
+
+  nodes.forEach((node: Node) => {
+    node.style.size = Number(get(node, propertyName)) ** (1 / 3);
+    minp = node.style.size < minp ? node.style.size : minp;
+    maxp = node.style.size > maxp ? node.style.size : maxp;
   });
   const rangepLength = maxp - minp;
   const rangevLength = visualRange[1] - visualRange[0];
   nodes.forEach((node) => {
-    node.defaultStyle.size =
-      ((get(node, propertyName) ** (1 / 3) - minp) / rangepLength) *
+    node.style.size =
+      ((Number(get(node, propertyName)) ** (1 / 3) - minp) / rangepLength) *
         rangevLength +
       visualRange[0];
   });
@@ -107,7 +111,7 @@ export const mapNodeSize = (
  * Style node size based on a given method
  *
  * @param {GraphData} data
- * @param {(string | undefined)} accessor
+ * @param {(string | undefined)} option
  * @param {string} option
  */
 export const styleNodeSizeByProp = (data: GraphData, option: NodeSize) => {
@@ -116,7 +120,7 @@ export const styleNodeSizeByProp = (data: GraphData, option: NodeSize) => {
       node.degree = 0;
       data.edges.forEach((edge) => {
         if (edge.source === node.id || edge.target === node.id) {
-          node.degree++;
+          node.degree = Number(node.degree) + 1;
         }
       });
     });
@@ -136,19 +140,19 @@ export const styleNodeLabel = (node: Node, label: string) => {
 
 export const styleNodeColor = (node: Node, option: NodeColor) => {
   if (option.id === 'fixed') {
-    node.defaultStyle.color = option.value;
+    node.color = option.value;
   } else if (option.id === 'legend') {
-    const variable = get(node, option.variable);
+    const variable: string | unknown = get(node, option.variable);
     if (variable) {
-      node.defaultStyle.color = option.mapping[variable];
+      node.color = option.mapping[variable as string];
     } else {
-      node.defaultStyle.color = 'grey';
+      node.color = 'grey';
     }
   }
 };
 
 export const styleFontSize = (node: Node, fontSize: number) => {
-  node.defaultStyle.fontSize = fontSize;
+  node.style.fontSize = fontSize;
 };
 
 /**

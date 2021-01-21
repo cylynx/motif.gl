@@ -5,6 +5,7 @@ import {
   EdgeStyleOptions,
   Edge,
   EdgeWidth,
+  ArrowOptions,
 } from '../redux/graph/types';
 
 /**
@@ -26,7 +27,7 @@ export const styleEdges = (
   // For perf reasons, batch style operations which require a single loop through nodes
   for (const edge of data.edges) {
     if (edgeStyleOptions.width && edgeStyleOptions.width.id === 'fixed') {
-      edge.defaultStyle.width = edgeStyleOptions.width.value;
+      edge.style.width = edgeStyleOptions.width.value;
     }
     if (edgeStyleOptions.pattern) {
       styleEdgePattern(edge, edgeStyleOptions.pattern);
@@ -58,15 +59,15 @@ export const mapEdgeWidth = (
   let minp = 9999999999;
   let maxp = -9999999999;
   edges.forEach((edge) => {
-    edge.defaultStyle.width = get(edge, propertyName) ** (1 / 3);
-    minp = edge.defaultStyle.width < minp ? edge.defaultStyle.width : minp;
-    maxp = edge.defaultStyle.width > maxp ? edge.defaultStyle.width : maxp;
+    edge.style.width = Number(get(edge, propertyName)) ** (1 / 3);
+    minp = edge.style.width < minp ? edge.style.width : minp;
+    maxp = edge.style.width > maxp ? edge.style.width : maxp;
   });
   const rangepLength = maxp - minp;
   const rangevLength = visualRange[1] - visualRange[0];
   edges.forEach((edge) => {
-    edge.defaultStyle.width =
-      ((get(edge, propertyName) ** (1 / 3) - minp) / rangepLength) *
+    edge.style.width =
+      ((Number(get(edge, propertyName)) ** (1 / 3) - minp) / rangepLength) *
         rangevLength +
       visualRange[0];
   });
@@ -88,18 +89,20 @@ export const styleEdgeLabel = (edge: Edge, label: string) => {
 
 export const styleEdgePattern = (edge: Edge, pattern: string) => {
   if (pattern === 'none') {
-    delete edge.defaultStyle.pattern;
+    delete edge.style.stroke;
   } else {
-    edge.defaultStyle.pattern = pattern;
+    edge.style.stroke = pattern;
   }
 };
 
 export const styleEdgeFontSize = (edge: Edge, fontSize: number) => {
-  edge.defaultStyle.fontSize = fontSize;
+  edge.style.fontSize = fontSize;
 };
 
-export const styleEdgeArrow = (edge: Edge, arrow: string) => {
-  edge.defaultStyle.arrow = arrow;
+export const styleEdgeArrow = (edge: Edge, arrow: ArrowOptions) => {
+  const isArrowDisplay: boolean = arrow === 'display';
+  edge.style.startArrow = isArrowDisplay;
+  edge.style.endArrow = isArrowDisplay;
 };
 
 type MinMax = {

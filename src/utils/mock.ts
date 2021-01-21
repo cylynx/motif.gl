@@ -1,7 +1,11 @@
-// @ts-nocheck
-// Copied from https://github.com/antvis/Graphin/blob/master/packages/graphin/src/utils/mock.ts
-// Since there's a problem getting the imported mock to work with jest...
-import { NodeData, EdgeData, Data } from '@antv/graphin';
+import {
+  NodeStyleLabel,
+  NodeStyleIcon,
+  NodeStyleBadge,
+  IUserNode,
+  IUserEdge,
+  GraphinData,
+} from '@antv/graphin/dist/typings/type';
 
 const defaultOptions = {
   /** 节点 */
@@ -18,9 +22,9 @@ type OptionType = typeof defaultOptions;
  * 4.
  */
 export class Mock {
-  nodes: NodeData[];
+  nodes: IUserNode[];
 
-  edges: EdgeData[];
+  edges: IUserEdge[];
 
   options: OptionType;
 
@@ -40,7 +44,7 @@ export class Mock {
   initNodes = () => {
     const { nodeCount, nodeType } = this.options;
     const temp = Array.from({ length: nodeCount });
-    this.nodes = temp.map((node, index) => {
+    this.nodes = temp.map((_, index) => {
       return {
         id: `node-${index}`,
         label: `node-${index}`,
@@ -49,8 +53,8 @@ export class Mock {
       };
     });
 
-    for (let i = 0; i < nodeCount; i = i + 1) {
-      for (let j = 0; j < nodeCount - 1; j = j + 1) {
+    for (let i = 0; i < nodeCount; i += 1) {
+      for (let j = 0; j < nodeCount - 1; j += 1) {
         this.edges.push({
           source: `node-${i}`,
           target: `node-${j}`,
@@ -62,7 +66,7 @@ export class Mock {
     this.nodeIds = this.nodes.map((node) => node.id);
   };
 
-  expand = (snodes: NodeData[]) => {
+  expand = (snodes: IUserNode[]) => {
     this.edges = [];
     this.nodes = [];
     snodes.forEach((node) => {
@@ -99,7 +103,7 @@ export class Mock {
     if (this.nodeIds.indexOf(id) === -1) {
       id = 'node-0';
     }
-    this.edges = this.edges.filter((edge: EdgeData) => {
+    this.edges = this.edges.filter((edge: IUserEdge) => {
       return edge.source === id || edge.target === id;
     });
     return this;
@@ -110,13 +114,13 @@ export class Mock {
    */
   random = (ratio = 0.5) => {
     const { nodeCount } = this.options;
-    const length: number = parseInt(String(nodeCount * ratio));
+    const length: number = parseInt(String(nodeCount * ratio), 8);
     /**  随机ID */
     const randomArray: string[] = this.nodeIds
       .sort(() => Math.random() - 0.5)
       .slice(0, length);
 
-    this.edges = this.edges.filter((edge: EdgeData) => {
+    this.edges = this.edges.filter((edge: IUserEdge) => {
       return randomArray.indexOf(edge.target) !== -1;
     });
 
@@ -153,17 +157,54 @@ export class Mock {
     return this;
   };
 
-  graphin = (): Data => {
+  graphin = (): GraphinData => {
+    return {
+      nodes: this.nodes.map((node: IUserNode) => {
+        return {
+          id: node.id,
+          type: 'graphin-circle',
+          comboId: node.comboId,
+          style: {
+            label: {
+              value: `${node.id}`,
+            },
+          },
+        };
+      }),
+      edges: this.edges.map((edge: IUserEdge) => {
+        return {
+          source: edge.source,
+          target: edge.target,
+        };
+      }),
+      combos: this.combosData,
+    };
+  };
+
+  graphinMock = (
+    label?: NodeStyleLabel,
+    icon?: NodeStyleIcon,
+    badges?: NodeStyleBadge[],
+  ) => {
     return {
       nodes: this.nodes.map((node) => {
         return {
           id: node.id,
-          label: `node-${node.id}`,
           data: node,
-          shape: 'CircleNode',
+          type: 'graphin-circle',
           comboId: node.comboId,
           style: {
-            nodeSize: 24,
+            keyshape: {
+              size: 48,
+            },
+            label: label || {
+              position: 'bottom',
+              value: `node-${node.id}`,
+              fill: 'red',
+              fontSize: 14,
+            },
+            icon,
+            badges,
           },
         };
       }),
@@ -173,6 +214,7 @@ export class Mock {
           target: edge.target,
           label: edge.label,
           data: edge,
+          type: 'graphin-line',
         };
       }),
       combos: this.combosData,
@@ -184,13 +226,3 @@ const mock = (count: number) => {
   return new Mock(count);
 };
 export default mock;
-
-/**
- * mock(10).type('company').value()
- * mock(10).type('company').circle('node-1').value()
- * mock(10).type('company').random('node-1').value()
- * mock(10).type('company').random('node-1').value()
- *
- *
- * graphin()
- */

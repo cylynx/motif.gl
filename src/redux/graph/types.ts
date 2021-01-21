@@ -1,7 +1,4 @@
-import {
-  EdgeConfig as GraphinEdge,
-  NodeConfig as GraphinNode,
-} from '@antv/graphin';
+import { EdgeConfig, NodeConfig } from '@antv/graphin';
 import { Value } from 'baseui/select';
 import { SelectVariableOption } from '../../components/SelectVariable/SelectVariable';
 import { HistogramProp } from '../../containers/SidePanel/FilterPanel/FilterSelection/RangePlot';
@@ -86,19 +83,8 @@ export type NodeEdgeCsv = {
   type: 'nodeEdgeCsv';
 };
 
-export interface Edge extends Omit<GraphinEdge, 'style'> {
-  style?:
-    | Partial<GraphinEdge['style']>
-    | {
-        [property: string]: boolean;
-      };
-}
-
-export interface Node extends Omit<GraphinNode, 'data'> {
-  data?: Partial<GraphinNode['data']> & {
-    [property: string]: any;
-  };
-}
+export declare type Edge = EdgeConfig;
+export declare type Node = NodeConfig;
 
 export type GraphFields = {
   nodes: Field[] | [];
@@ -122,7 +108,7 @@ export interface GraphData {
 }
 
 export type GraphList = GraphData[];
-export type EdgeNode = Edge | Node;
+export type EdgeNode = Node | Edge;
 
 export interface Accessors {
   nodeID?: string;
