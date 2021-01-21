@@ -1,9 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import G6 from '@antv/g6';
-import { G6KeyboardEvent, Node, Edge } from '@antv/graphin';
-import { IG6GraphEvent } from '@antv/g6/lib/types';
-import { IGraph } from '@antv/g6/lib/interface/graph';
-import { INode, IEdge } from '@antv/g6/lib/interface/item';
+import G6, { IG6GraphEvent, IGraph, INode, IEdge } from '@antv/g6';
 import { interactionStates } from '../shape/constants';
 
 // TODO: sort out behaviours especialyl for clearstate
@@ -30,10 +26,10 @@ export default (g6: typeof G6) => {
       // eslint-disable-next-line
       const { graph } = this as any;
       graph.setAutoPaint(false);
-      graph.getNodes().forEach((node: Node) => {
+      graph.getNodes().forEach((node: INode) => {
         graph.clearItemStates(node, interactionStates);
       });
-      graph.getEdges().forEach((edge: Edge) => {
+      graph.getEdges().forEach((edge: IEdge) => {
         graph.clearItemStates(edge, interactionStates);
       });
       graph.paint();
@@ -179,7 +175,7 @@ export default (g6: typeof G6) => {
       }
     },
 
-    onKeyDown(e: G6KeyboardEvent) {
+    onKeyDown(e: any) {
       const ctx = this as any; // eslint-disable-line
       const { keyCode } = this as any; // eslint-disable-line
 

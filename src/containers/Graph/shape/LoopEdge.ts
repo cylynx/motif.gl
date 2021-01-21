@@ -1,7 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Group, Shape } from '@antv/g-canvas';
-import { INode } from '@antv/g6/lib/interface/item';
-import { G6Edge, G6Node } from '@antv/graphin';
+import G6, { INode } from '@antv/g6';
 import {
   normalizeColor,
   mapEdgePattern,
@@ -24,13 +23,13 @@ const RADIO = 0.75;
 
 // NOT IN USE EVEN IN GRAPHIN, they use the default loop
 
-export default (g6: any) => {
+export default (g6: typeof G6) => {
   g6.registerEdge('LoopEdge', {
-    draw(cfg: G6Edge, group: Group) {
+    draw(cfg: any, group: Group) {
       const hasLabel = cfg.label;
       const { startPoint, endPoint, style, defaultStyle } = cfg;
 
-      const target = cfg.sourceNode.get('model') as G6Node;
+      const target = cfg.sourceNode.get('model') as any;
       let size =
         (target.style?.nodeSize || 0) > 28
           ? (target.style?.nodeSize as number)
@@ -159,7 +158,7 @@ export default (g6: any) => {
       if (!name) return;
       // eslint-disable-next-line no-underscore-dangle
       const { states } = edge._cfg;
-      const data: G6Edge = edge.get('model');
+      const data: any = edge.get('model');
       const { style, defaultStyle } = data;
       const mainShape = edge
         .getContainer()

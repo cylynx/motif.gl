@@ -1,8 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Group, Shape } from '@antv/g-canvas';
-import { INode } from '@antv/g6/lib/interface/item';
-import G6 from '@antv/g6';
-import { G6Node } from '@antv/graphin';
+import G6, { INode } from '@antv/g6';
+import { NodeConfig } from '@antv/graphin';
 import {
   GREY as GREY_RGB,
   EnumNodeAndEdgeStatus,
@@ -22,7 +21,7 @@ const getIcon = (str: string) => {
 
 export default (g6: typeof G6) => {
   g6.registerNode('CircleNode', {
-    draw(cfg: G6Node, group: Group) {
+    draw(cfg: any, group: Group) {
       const hasLabel = cfg.label;
       const { defaultStyle, style } = cfg;
       const innerSize =
@@ -173,7 +172,7 @@ export default (g6: typeof G6) => {
       if (!name) return;
       // eslint-disable-next-line no-underscore-dangle
       const { states } = node._cfg;
-      const data: G6Node = node.get('model');
+      const data: any = node.get('model');
       const { defaultStyle, style } = data;
       const container = node.getContainer();
       const circleSelected = container

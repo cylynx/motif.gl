@@ -44,9 +44,15 @@ const mapNodeSize = (nodes, propertyName, visualRange) => {
   const rangepLength = maxp - minp;
   const rangevLength = visualRange[1] - visualRange[0];
   nodes.forEach((node) => {
-    node.style.size =
-      ((node[propertyName] - minp) / rangepLength) * rangevLength +
-      visualRange[0];
+    const nodeStyle = node.style ?? {};
+    Object.assign(nodeStyle, {
+      size:
+        ((node[propertyName] - minp) / rangepLength) * rangevLength +
+        visualRange[0],
+    });
+    Object.assign(node, {
+      style: nodeStyle,
+    });
   });
 };
 

@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import get from 'lodash/get';
-import has from 'lodash/has';
 import isUndefined from 'lodash/isUndefined';
 import {
   GraphData,
@@ -29,14 +28,20 @@ export const styleNodes = (
 
   // For perf reasons, batch style operations which require a single loop through nodes
   for (const node of data.nodes) {
+    const nodeStyle = node.style ?? {};
+
     if (nodeStyleOptions.size && nodeStyleOptions.size.id === 'fixed') {
-      node.style.size = nodeStyleOptions.size.value;
+      Object.assign(nodeStyle, {
+        style: nodeStyleOptions.size.value,
+      });
     }
     if (nodeStyleOptions.color) {
       styleNodeColor(node, nodeStyleOptions.color);
     }
     if (nodeStyleOptions.fontSize) {
-      styleFontSize(node, nodeStyleOptions.fontSize);
+      Object.assign(nodeStyle, {
+        fontSize: nodeStyleOptions.fontSize,
+      });
     }
     if (nodeStyleOptions.label) {
       styleNodeLabel(node, nodeStyleOptions.label);
@@ -151,8 +156,8 @@ export const styleNodeColor = (node: Node, option: NodeColor) => {
   }
 };
 
-export const styleFontSize = (node: Node, fontSize: number) => {
-  node.style.fontSize = fontSize;
+export const styleFontSize = (nodeStyle: Node, fontSize: number) => {
+  nodeStyle.fontSize = fontSize;
 };
 
 /**

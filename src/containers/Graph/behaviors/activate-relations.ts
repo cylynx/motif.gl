@@ -1,7 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import G6 from '@antv/g6';
-import { G6Event, IG6GraphEvent } from '@antv/g6/lib/types';
-import { Node, Edge } from '@antv/graphin';
+import G6, { G6Event, IG6GraphEvent, INode, IEdge } from '@antv/g6';
 import { interactionStates } from '../shape/constants';
 
 export default (g6: typeof G6) => {
@@ -26,7 +24,7 @@ export default (g6: typeof G6) => {
         return;
       }
       graph.setAutoPaint(false);
-      graph.getNodes().forEach((node: Node) => {
+      graph.getNodes().forEach((node: INode) => {
         if (!node.hasState('selected')) {
           graph.clearItemStates(node, interactionStates);
           graph.setItemState(node, 'highlight.dark', true);
@@ -38,7 +36,7 @@ export default (g6: typeof G6) => {
         graph.setItemState(item, 'highlight.dark', false);
         graph.setItemState(item, 'highlight.light', true);
       }
-      graph.getEdges().forEach((edge: Edge) => {
+      graph.getEdges().forEach((edge: IEdge) => {
         if (edge.getSource() === item) {
           if (!edge.getTarget().hasState('selected')) {
             graph.setItemState(edge.getTarget(), 'highlight.dark', false);
@@ -67,12 +65,12 @@ export default (g6: typeof G6) => {
         return;
       }
       graph.setAutoPaint(false);
-      graph.getNodes().forEach((node: Node) => {
+      graph.getNodes().forEach((node: INode) => {
         if (!node.hasState('selected')) {
           graph.clearItemStates(node, interactionStates);
         }
       });
-      graph.getEdges().forEach((edge: Edge) => {
+      graph.getEdges().forEach((edge: IEdge) => {
         if (!edge.hasState('selected')) {
           graph.clearItemStates(edge, interactionStates);
         }
