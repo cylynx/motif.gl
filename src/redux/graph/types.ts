@@ -1,4 +1,7 @@
-import { Edge as GraphinEdge, Node as GraphinNode } from '@antv/graphin';
+import {
+  EdgeConfig as GraphinEdge,
+  NodeConfig as GraphinNode,
+} from '@antv/graphin';
 import { Value } from 'baseui/select';
 import { SelectVariableOption } from '../../components/SelectVariable/SelectVariable';
 import { HistogramProp } from '../../containers/SidePanel/FilterPanel/FilterSelection/RangePlot';
