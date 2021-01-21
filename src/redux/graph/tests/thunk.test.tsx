@@ -157,7 +157,7 @@ describe('add-data-thunk.test.js', () => {
       const invalidNodeEdgeData = {
         data: {
           edgeData:
-            'id,relation,sources,target\ntxn1,hello,a,b\ntxn2,works,b,c\ntxn3,abc,c,a',
+            'id,relation,from,to\ntxn1,hello,a,b\ntxn2,works,b,c\ntxn3,abc,c,a',
           nodeData: 'id,value,score\na,20,80\nb,40,100\nc,60,123',
           metadata: {
             key: 123,
@@ -228,7 +228,7 @@ describe('add-data-thunk.test.js', () => {
     it('should throw errors if source and target fields are invalid', async () => {
       const firstErrorEdgeCsv = {
         data:
-          'id,relation,sources,target\ntxn1,works,jason,cylynx\ntxn3,abc,cylynx,timothy\ntxn4,says hi to,swan,cylynx',
+          'id,relation,from,to\ntxn1,works,jason,cylynx\ntxn3,abc,cylynx,timothy\ntxn4,says hi to,swan,cylynx',
         type: 'edgeListCsv',
       };
 
