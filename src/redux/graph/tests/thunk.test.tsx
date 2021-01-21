@@ -6,6 +6,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import flatten from 'lodash/flatten';
 import { render } from '@testing-library/react';
 import { ToasterContainer } from 'baseui/toast';
+import { RootState } from '../../investigate/types';
 import {
   importEdgeListData,
   importJsonData,
@@ -22,7 +23,7 @@ import { fetchBegin, fetchDone, updateToast } from '../../ui/slice';
 import { SimpleEdge } from '../../../constants/sample-data';
 
 const mockStore = configureStore([thunk]);
-const getStore = () => {
+const getStore = (): RootState => {
   const graphState = cloneDeep(initialState);
   const store = {
     investigate: {
