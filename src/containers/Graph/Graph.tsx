@@ -116,8 +116,8 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
   return (
     <Graphin
       data={graphVisible as GraphinData}
-      layout={layout}
       ref={ref}
+      layout={layout}
       options={{
         isZoomOptimize: () => true,
         keyShapeZoom: 0.6,

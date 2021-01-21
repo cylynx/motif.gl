@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormControl } from 'baseui/form-control';
-import { Select } from 'baseui/select';
+import { OnChangeParams, Select } from 'baseui/select';
 import { Checkbox } from 'baseui/checkbox';
 import { Block } from 'baseui/block';
 import { TriGrid } from '../../components/ui';
@@ -51,6 +51,14 @@ const SettingsPopover = () => {
   const updateEdgeStyle = (data: any) =>
     dispatch(GraphSlices.changeEdgeStyle(data));
 
+  const onLayoutChange = (params: OnChangeParams): void => {
+    dispatch(
+      GraphSlices.changeLayout({
+        layout: { id: params.option.id as string },
+      }),
+    );
+  };
+
   return (
     <Block width='300px' paddingBottom='scale400'>
       <FormControl label='Graph Layout'>
@@ -59,13 +67,7 @@ const SettingsPopover = () => {
           size='compact'
           clearable={false}
           value={[findID(LAYOUT.LAYOUT_NAMES, layout.type)]}
-          onChange={(params) =>
-            dispatch(
-              GraphSlices.changeLayout({
-                layout: { id: params.option.id as string },
-              }),
-            )
-          }
+          onChange={onLayoutChange}
         />
       </FormControl>
       <NestedForm

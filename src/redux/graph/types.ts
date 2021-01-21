@@ -150,7 +150,7 @@ export interface Layout {
     | 'radial'
     | 'grid'
     | 'dagre'
-    | 'circle'
+    | 'circular'
     | 'none';
   options?: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -28,7 +28,7 @@ export const CONCENTRIC_DEFAULT = {
 
 export const OPTIONS: Layout[] = [
   { type: 'dagre', options: DAGRE_DEFAULT },
-  { type: 'circle', options: CIRCLE_DEFAULT },
+  { type: 'circular', options: CIRCLE_DEFAULT },
   { type: 'grid', options: GRID_DEFAULT },
   { type: 'radial', options: RADIAL_DEFAULT },
   { type: 'concentric', options: CONCENTRIC_DEFAULT },
@@ -42,6 +42,6 @@ export const LAYOUT_NAMES = [
   { label: 'Radial', id: 'radial' },
   { label: 'Grid', id: 'grid' },
   { label: 'Sequential', id: 'dagre' },
-  { label: 'Circular', id: 'circle' },
+  { label: 'Circular', id: 'circular' },
   { label: 'x y coordinates', id: 'none' },
 ];
