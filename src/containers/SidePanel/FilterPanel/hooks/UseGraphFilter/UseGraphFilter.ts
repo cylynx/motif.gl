@@ -29,7 +29,7 @@ const useGraphFilter = (): GraphFilterActions => {
   ): Value => {
     const properties: (Node | Edge)[] = graphFlatten[attribute];
     const stringValues: string[] = properties.map((node: Node | Edge) => {
-      const data: string = get(node, criteria);
+      const data = get(node, criteria) as string;
       return data;
     });
 

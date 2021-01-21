@@ -3,11 +3,11 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
 // @ts-nocheck
-import mock from '../utils/mock';
+import { Utils } from '@antv/graphin';
 import { GraphData } from '../redux/graph';
 
 export const RandomData = () => {
-  const data = mock(15)
+  const data = Utils.mock(15)
     .random()
     .graphin();
   data.nodes.forEach((n) => {
@@ -20,7 +20,7 @@ export const RandomData = () => {
   return data;
 };
 export const CircleData = () => {
-  const data = mock(10)
+  const data = Utils.mock(10)
     .circle()
     .graphin();
   data.edges.forEach((e) => {

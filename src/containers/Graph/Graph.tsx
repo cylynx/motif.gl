@@ -2,8 +2,8 @@
 import React, { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useStyletron } from 'baseui';
-import Graphin, { GraphinContextType, IG6GraphEvent, G6 } from '@antv/graphin';
-import { GraphinData } from '@antv/graphin/dist/typings/type';
+import Graphin, { GraphinContextType, IG6GraphEvent } from '@antv/graphin';
+import { GraphinData } from '@antv/graphin/lib/typings/type';
 import RegisterGraphinHighlight from './behaviors/graphin-highlight';
 import RegisterActivateRelations from './behaviors/activate-relations';
 import RegisterCircleNode from './shape/CircleNode';

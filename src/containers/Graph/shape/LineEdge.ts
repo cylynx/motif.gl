@@ -24,6 +24,7 @@ const GREY = normalizeColor(GREY_RGB);
 export default (g6: any) => {
   g6.registerEdge('LineEdge', {
     draw(cfg: G6Edge, group: Group) {
+      console.log(cfg);
       const hasLabel = cfg.label;
       const { startPoint, endPoint, style, defaultStyle } = cfg;
 

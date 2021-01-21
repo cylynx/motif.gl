@@ -107,8 +107,6 @@ export const addRequiredFieldsJson = (
     addEdgeFields(edge, accessors);
     if (isUndefined(edge.style)) edge.style = {};
   }
-
-  console.log(data);
   return data;
 };
 
