@@ -4,7 +4,7 @@
 
 // @ts-nocheck
 import { Utils } from '@antv/graphin';
-import { GraphData } from '../redux/graph';
+import { GraphData, GraphList } from '../redux/graph';
 
 export const RandomData = () => {
   const data = Utils.mock(15)

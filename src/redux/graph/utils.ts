@@ -2,10 +2,10 @@ import inRange from 'lodash/inRange';
 import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
 import set from 'lodash/set';
+import has from 'lodash/has';
 
 import { Option } from 'baseui/select';
 import { isWithinInterval } from 'date-fns';
-import { WritableDraft } from 'immer/dist/types/types-external';
 import { flattenObject, ALL_FIELD_TYPES } from './processors/data';
 import { styleEdges } from '../../utils/style-edges';
 import { styleNodes } from '../../utils/style-nodes';
@@ -13,8 +13,8 @@ import { unixTimeConverter } from '../../utils/data-utils';
 import {
   Edge,
   Field,
-  FilterCriteria,
   FilterOptions,
+  FilterCriteria,
   GraphData,
   StyleOptions,
   Node,
@@ -662,4 +662,25 @@ const connectNodes = (filteredEdges: Edge[], nodes: Node[]): Node[] => {
     sourceTargetIdArr.includes(node.id),
   );
   return associatedNodes;
+};
+
+export const addStyleField = (obj: EdgeNode): void => {
+  if (isUndefined(obj.style)) {
+    Object.assign(obj, {
+      style: {},
+    });
+  }
+};
+
+export const formatLabelStyle = (obj: EdgeNode): void => {
+  const LABEL_KEY = 'label';
+  const isObjHasLabel: boolean = has(obj, LABEL_KEY);
+
+  if (isObjHasLabel) {
+    Object.assign(obj.style, {
+      label: {
+        value: obj[LABEL_KEY],
+      },
+    });
+  }
 };

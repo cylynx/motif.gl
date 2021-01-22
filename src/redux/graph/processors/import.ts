@@ -9,6 +9,7 @@ import {
 } from './data';
 
 import { GraphList, GraphData, Accessors } from '../types';
+import { addStyleField, formatLabelStyle } from '../utils';
 
 /**
  * Initial function to process json object with node, edge fields or motif json to required format
@@ -101,11 +102,9 @@ export const addRequiredFieldsJson = (
 ): GraphData => {
   for (const node of data.nodes) {
     addNodeFields(node, accessors);
-    if (isUndefined(node.style)) node.style = {};
   }
   for (const edge of data.edges) {
     addEdgeFields(edge, accessors);
-    if (isUndefined(edge.style)) edge.style = {};
   }
   return data;
 };
@@ -119,6 +118,8 @@ export const addRequiredFieldsJson = (
 export const addNodeFields = (node: any, accessors: Accessors): void => {
   const { nodeID } = accessors;
   generateIdKey(node, nodeID);
+  addStyleField(node);
+  formatLabelStyle(node);
 };
 
 /**
@@ -143,6 +144,8 @@ export const addEdgeFields = (edge: any, accessors: Accessors): void => {
   });
 
   generateIdKey(edge, edgeID);
+  addStyleField(edge);
+  formatLabelStyle(edge);
 };
 
 /**
