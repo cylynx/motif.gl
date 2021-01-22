@@ -179,7 +179,7 @@ const graph = createSlice({
           [key: string]: any;
         };
       }>,
-    ) {
+    ): void {
       const { id, ...options } = action.payload.layout;
       const defaultOptions = LAYOUT.OPTIONS.find((x: Layout) => x.type === id);
       const newOptions = { ...defaultOptions.options, ...options };

@@ -43,7 +43,7 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
       setTooltip(null);
     };
 
-    const onNodeClick = (e: IG6GraphEvent) => {
+    const onNodeClick = (e: IG6GraphEvent): void => {
       const { item } = e;
       // Avoid inconsistent styling between highlight.light and selected by giving priority to selected
       graph.clearItemStates(item, interactionStates);

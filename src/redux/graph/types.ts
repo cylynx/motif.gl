@@ -151,7 +151,12 @@ export interface Layout {
     | 'grid'
     | 'dagre'
     | 'circular'
+    | 'gForce'
+    | 'fruchterman'
+    | 'mds'
+    | 'comboForce'
     | 'none';
+  [key: string]: any;
   options?: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;

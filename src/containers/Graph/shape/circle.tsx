@@ -7,7 +7,6 @@ import GGroup from '@antv/g-canvas/lib/group';
 import { IShape } from '@antv/g-canvas/lib/interfaces';
 import deepMix from '@antv/util/lib/deep-mix';
 import { Item, NodeConfig, ShapeStyle } from '@antv/g6/lib/types';
-// import { Item, NodeConfig, ShapeStyle } from '../../types';
 import { ShapeOptions } from '@antv/g6/lib/interface/shape';
 
 export default (g6: typeof G6) => {

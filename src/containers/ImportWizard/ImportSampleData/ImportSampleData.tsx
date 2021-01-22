@@ -100,7 +100,7 @@ const defaultAccessors: Accessors = {
   edgeTarget: 'target',
 };
 
-const ImportSampleData = () => {
+const ImportSampleData = (): JSX.Element => {
   return (
     <FlushedGrid gridGutters={0}>
       {sampleData &&
@@ -113,20 +113,19 @@ const ImportSampleData = () => {
   );
 };
 
-const StyledItem = ({ item }: { item: SampleDataItem }) => {
+const StyledItem = ({ item }: { item: SampleDataItem }): JSX.Element => {
   const dispatch = useDispatch();
 
   const trySampleData = (
-    // eslint-disable-next-line no-shadow
     item: SampleDataItem,
     e: MouseEvent<HTMLButtonElement>,
-  ) => {
+  ): void => {
     e.preventDefault();
     dispatch(UISlices.closeModal());
 
     // These two datasets come with x-y coordinates
     if (item.key === SampleData.AA || item.key === SampleData.NETWORK) {
-      dispatch(GraphSlices.changeLayout({ layout: { id: 'none' } }));
+      dispatch(GraphSlices.changeLayout({ layout: { id: 'render' } }));
     }
 
     Promise.resolve(item.data()).then((d: void) => {
@@ -138,7 +137,7 @@ const StyledItem = ({ item }: { item: SampleDataItem }) => {
   };
 
   return (
-    <Button onClick={(e) => trySampleData(item, e)} kind='minimal'>
+    <Button onClick={(e): void => trySampleData(item, e)} kind='minimal'>
       <Block width='200px'>
         <img src={item.src} height='120px' width='180px' alt={item.title} />
         <LabelMedium marginTop='6px' marginBottom='0'>

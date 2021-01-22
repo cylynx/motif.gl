@@ -6,10 +6,11 @@ import {
   GraphData,
   StyleOptions,
   FilterOptions,
+  GraphState,
 } from './types';
 import { deriveVisibleGraph, filterGraph } from './utils';
 
-const getGraph = (state: any) => state.investigate.graph.present;
+const getGraph = (state: any): GraphState => state.investigate.graph.present;
 const getAccessors = (state: any): Accessors => getGraph(state).accessors;
 const getGraphList = (state: any): GraphList => getGraph(state).graphList;
 const getGraphFlatten = (state: any): GraphData => getGraph(state).graphFlatten;

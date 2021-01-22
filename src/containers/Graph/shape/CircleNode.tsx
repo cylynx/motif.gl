@@ -1,7 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Group, Shape } from '@antv/g-canvas';
 import G6, { INode } from '@antv/g6';
-import { NodeConfig } from '@antv/graphin';
 import {
   GREY as GREY_RGB,
   EnumNodeAndEdgeStatus,
