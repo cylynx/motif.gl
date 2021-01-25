@@ -2,7 +2,7 @@
 import React, { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useStyletron } from 'baseui';
-import Graphin, { G6, GraphinContextType, IG6GraphEvent } from '@antv/graphin';
+import Graphin, { GraphinContextType, IG6GraphEvent } from '@antv/graphin';
 import { GraphinData } from '@antv/graphin/lib/typings/type';
 import RegisterGraphinHighlight from './behaviors/graphin-highlight';
 import RegisterActivateRelations from './behaviors/activate-relations';
@@ -30,31 +30,6 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
   const layout: Layout = useSelector(
     (state) => GraphSelectors.getStyleOptions(state).layout,
   );
-
-  useLayoutEffect(() => {
-    Graphin.registerBehavior('highlight', {
-      // Bind the event and its callback
-      getEvents() {
-        return {
-          'node:click': 'onClick',
-          mousemove: 'onMousemove',
-          'edge:click': 'onEdgeClick',
-        };
-      },
-      /**
-       * Handle the callback for node:click
-       * @override
-       * @param  {Object} evt The handler
-       */
-      onClick(evt: IG6GraphEvent) {
-        const node = evt.item;
-        const point = { x: evt.x, y: evt.y };
-        const model = node.getModel();
-        console.log(point);
-        console.log(model);
-      },
-    });
-  }, []);
 
   useLayoutEffect(() => {
     // Imperatively set the color by theme
