@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Group, Shape } from '@antv/g-canvas';
 import G6, { INode } from '@antv/g6';
+import { IUserNode } from '@antv/graphin/lib/typings/type';
 import {
   GREY as GREY_RGB,
   EnumNodeAndEdgeStatus,
@@ -171,7 +172,7 @@ export default (g6: typeof G6) => {
       if (!name) return;
       // eslint-disable-next-line no-underscore-dangle
       const { states } = node._cfg;
-      const data: any = node.get('model');
+      const data: IUserNode = node.get('model');
       const { defaultStyle, style } = data;
       const container = node.getContainer();
       const circleSelected = container
