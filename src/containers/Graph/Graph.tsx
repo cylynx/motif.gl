@@ -2,7 +2,11 @@
 import React, { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useStyletron } from 'baseui';
-import Graphin, { GraphinContextType, IG6GraphEvent } from '@antv/graphin';
+import Graphin, {
+  GraphinContextType,
+  IG6GraphEvent,
+  Utils,
+} from '@antv/graphin';
 import { GraphinData } from '@antv/graphin/lib/typings/type';
 import RegisterGraphinHighlight from './behaviors/graphin-highlight';
 import RegisterActivateRelations from './behaviors/activate-relations';
@@ -14,8 +18,15 @@ import { interactionStates } from './shape/constants';
 import { GraphSelectors, Layout } from '../../redux/graph';
 import { TooltipProps } from './Tooltip';
 import './graphin.css';
+import {
+  DefaultNodeStatusStyle,
+  DefaultNodeStyle,
+} from './styles/DefaultNodeStyle';
 
 const INTERACTION_LIMIT = 500;
+const data: GraphinData = Utils.mock(8)
+  .circle()
+  .graphin();
 
 export type GraphProps = {
   setTooltip: (tooltip: TooltipProps | null) => void;
@@ -120,72 +131,26 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
       data={graphVisible as GraphinData}
       ref={ref}
       layout={layout}
-      options={{
-        isZoomOptimize: () => true,
-        keyShapeZoom: 0.6,
-        autoPolyEdge: true,
-        autoLoopEdge: true,
-        // If using combo in the future, might have to set to false
-        // https://g6.antv.vision/en/docs/api/Graph/#graphoptionsgroupbytypes
-        groupByTypes: true,
-        modes: {
-          default: [
-            {
-              type: 'brush-select',
-              trigger: 'shift',
-              includeEdges: true,
-            },
-          ],
-        },
-      }}
-      register={{
-        nodeShape: (G6: any) => [
-          {
-            name: 'CircleNode',
-            register: () => {
-              RegisterCircleNode(G6);
-            },
-          },
-        ],
-        edgeShape: (G6: any) => [
-          {
-            name: 'PolyEdge',
-            register: () => {
-              RegisterPolyEdge(G6);
-            },
-          },
-          {
-            name: 'LineEdge',
-            register: () => {
-              RegisterLineEdge(G6);
-            },
-          },
-          {
-            name: 'LoopEdge',
-            register: () => {
-              RegisterLoopEdge(G6);
-            },
-          },
-        ],
-        behavior: (G6: any) => [
-          {
-            name: 'activate-relations',
-            mode: 'default',
-            options: { limit: INTERACTION_LIMIT },
-            register: () => {
-              RegisterActivateRelations(G6);
-            },
-          },
-          {
-            name: 'graphin-highlight',
-            mode: 'default',
-            options: { limit: INTERACTION_LIMIT },
-            register: () => {
-              RegisterGraphinHighlight(G6);
-            },
-          },
-        ],
-      }}
+      defaultNode={DefaultNodeStyle}
+      nodeStateStyles={DefaultNodeStatusStyle}
+      // options={{
+      //   isZoomOptimize: () => true,
+      //   keyShapeZoom: 0.6,
+      //   autoPolyEdge: true,
+      //   autoLoopEdge: true,
+      //   // If using combo in the future, might have to set to false
+      //   // https://g6.antv.vision/en/docs/api/Graph/#graphoptionsgroupbytypes
+      //   groupByTypes: true,
+      //   modes: {
+      //     default: [
+      //       {
+      //         type: 'brush-select',
+      //         trigger: 'shift',
+      //         includeEdges: true,
+      //       },
+      //     ],
+      //   },
+      // }}
     />
   );
 });
