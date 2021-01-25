@@ -2,31 +2,18 @@
 import React, { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useStyletron } from 'baseui';
-import Graphin, {
-  GraphinContextType,
-  IG6GraphEvent,
-  Utils,
-} from '@antv/graphin';
+import Graphin, { GraphinContextType, IG6GraphEvent } from '@antv/graphin';
 import { GraphinData } from '@antv/graphin/lib/typings/type';
-import RegisterGraphinHighlight from './behaviors/graphin-highlight';
-import RegisterActivateRelations from './behaviors/activate-relations';
-import RegisterCircleNode from './shape/CircleNode';
-import RegisterPolyEdge from './shape/PolyEdge';
-import RegisterLineEdge from './shape/LineEdge';
-import RegisterLoopEdge from './shape/LoopEdge';
 import { interactionStates } from './shape/constants';
 import { GraphSelectors, Layout } from '../../redux/graph';
 import { TooltipProps } from './Tooltip';
 import './graphin.css';
 import {
-  DefaultNodeStatusStyle,
-  DefaultNodeStyle,
-} from './styles/DefaultNodeStyle';
-
-const INTERACTION_LIMIT = 500;
-const data: GraphinData = Utils.mock(8)
-  .circle()
-  .graphin();
+  defaultNodeStateStyle,
+  defaultNodeStyle,
+  defaultEdgeStyle,
+  defaultEdgeStateStyle,
+} from './styles';
 
 export type GraphProps = {
   setTooltip: (tooltip: TooltipProps | null) => void;
@@ -131,8 +118,11 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
       data={graphVisible as GraphinData}
       ref={ref}
       layout={layout}
-      defaultNode={DefaultNodeStyle}
-      nodeStateStyles={DefaultNodeStatusStyle}
+      defaultNode={defaultNodeStyle}
+      // @ts-ignore
+      defaultEdge={defaultEdgeStyle}
+      nodeStateStyles={defaultNodeStateStyle}
+      edgeStateStyles={defaultEdgeStateStyle}
       // options={{
       //   isZoomOptimize: () => true,
       //   keyShapeZoom: 0.6,
