@@ -44,7 +44,7 @@ export const styleNodes = (
       });
     }
     if (nodeStyleOptions.color) {
-      styleNodeColor(node, nodeStyleOptions.color);
+      styleNodeColor(node, nodeStyle, nodeStyleOptions.color);
     }
     if (nodeStyleOptions.fontSize) {
       styleNodeFontSize(nodeStyle, nodeStyleOptions.fontSize);
@@ -108,7 +108,8 @@ export const mapNodeSize = (
   let maxp = -9999999999;
 
   nodes.forEach((node: Node) => {
-    const keyshapeStyle = node.style.keyshape ?? {};
+    const keyshapeStyle: Partial<NodeStyle['partial']> =
+      node.style?.keyshape ?? {};
     const nodeStyleSize = Number(get(node, propertyName)) ** (1 / 3);
     Object.assign(node.style, {
       keyshape: Object.assign(keyshapeStyle, {
@@ -169,7 +170,7 @@ export const styleNodeLabel = (
   nodeStyle: Partial<NodeStyle>,
   label: string,
 ): void => {
-  const labelStyle: Partial<NodeStyle['label']> = node.style.label ?? {};
+  const labelStyle: Partial<NodeStyle['label']> = node.style?.label ?? {};
 
   let customLabel = '';
 
@@ -186,16 +187,20 @@ export const styleNodeLabel = (
   });
 };
 
-export const styleNodeColor = (node: Node, option: NodeColor): void => {
+export const styleNodeColor = (
+  node: IUserNode,
+  nodeStyle: Partial<NodeStyle>,
+  option: NodeColor,
+): void => {
   const { id } = option;
-  const nodeKeyShape: Partial<NodeStyle['keyshape']> =
-    node.style.keyshape ?? {};
+  const nodeKeyShape: Partial<NodeStyle['keyshape']> = nodeStyle.keyshape ?? {};
 
   if (id === 'fixed') {
     const { value } = option as NodeColorFixed;
+    const fixedNodeColor = normalizeColor(value);
     Object.assign(nodeKeyShape, {
-      fill: value,
-      stroke: value,
+      fill: fixedNodeColor.dark,
+      stroke: fixedNodeColor.normal,
     });
 
     return;
@@ -220,7 +225,7 @@ export const styleNodeColor = (node: Node, option: NodeColor): void => {
     stroke: grey.normal,
   });
 
-  Object.assign(node.style, {
+  Object.assign(nodeStyle, {
     keyshape: nodeKeyShape,
   });
 };
