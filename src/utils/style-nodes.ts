@@ -100,7 +100,7 @@ export const generateDefaultColorMap = (nodes: Node[], options: NodeColor) => {
  * @param {[number, number]} visualRange
  */
 export const mapNodeSize = (
-  nodes: Node[],
+  nodes: IUserNode[],
   propertyName: string,
   visualRange: [number, number],
 ) => {
@@ -108,17 +108,27 @@ export const mapNodeSize = (
   let maxp = -9999999999;
 
   nodes.forEach((node: Node) => {
-    node.style.size = Number(get(node, propertyName)) ** (1 / 3);
-    minp = node.style.size < minp ? node.style.size : minp;
-    maxp = node.style.size > maxp ? node.style.size : maxp;
+    const keyshapeStyle = node.style.keyshape ?? {};
+    const nodeStyleSize = Number(get(node, propertyName)) ** (1 / 3);
+    Object.assign(node.style, {
+      keyshape: Object.assign(keyshapeStyle, {
+        size: nodeStyleSize,
+      }),
+    });
+
+    minp = nodeStyleSize < minp ? nodeStyleSize : minp;
+    maxp = nodeStyleSize > maxp ? nodeStyleSize : maxp;
   });
+
   const rangepLength = maxp - minp;
   const rangevLength = visualRange[1] - visualRange[0];
   nodes.forEach((node) => {
-    node.style.size =
-      ((Number(get(node, propertyName)) ** (1 / 3) - minp) / rangepLength) *
-        rangevLength +
-      visualRange[0];
+    Object.assign(node.style.keyshape, {
+      size:
+        ((Number(get(node, propertyName)) ** (1 / 3) - minp) / rangepLength) *
+          rangevLength +
+        visualRange[0],
+    });
   });
 };
 
