@@ -33,15 +33,11 @@ export const styleNodes = (
   }
 
   // For perf reasons, batch style operations which require a single loop through nodes
-  data.nodes.forEach((node: NodeConfig) => {
+  data.nodes.forEach((node: IUserNode) => {
     const nodeStyle: Partial<NodeStyle> = node.style ?? {};
 
     if (nodeStyleOptions.size && nodeStyleOptions.size.id === 'fixed') {
-      Object.assign(nodeStyle, {
-        keyshape: {
-          size: nodeStyleOptions.size.value,
-        },
-      });
+      styleNodeSize(nodeStyle, nodeStyleOptions.size.value);
     }
     if (nodeStyleOptions.color) {
       styleNodeColor(node, nodeStyle, nodeStyleOptions.color);
@@ -108,7 +104,7 @@ export const mapNodeSize = (
   let maxp = -9999999999;
 
   nodes.forEach((node: Node) => {
-    const keyshapeStyle: Partial<NodeStyle['partial']> =
+    const keyshapeStyle: Partial<NodeStyle['keyshape']> =
       node.style?.keyshape ?? {};
     const nodeStyleSize = Number(get(node, propertyName)) ** (1 / 3);
     Object.assign(node.style, {
@@ -154,6 +150,20 @@ export const styleNodeSizeByProp = (data: GraphData, option: NodeSize) => {
   } else if (option.id === 'property' && option.variable) {
     mapNodeSize(data.nodes, option.variable, option.range);
   }
+};
+
+export const styleNodeSize = (
+  nodeStyle: Partial<NodeStyle>,
+  size: number,
+): void => {
+  const keyShapeStyle: Partial<NodeStyle['keyshape']> =
+    nodeStyle.keyshape ?? {};
+  Object.assign(keyShapeStyle, {
+    size,
+  });
+  Object.assign(nodeStyle, {
+    keyshape: keyShapeStyle,
+  });
 };
 
 export const styleNodeFontSize = (

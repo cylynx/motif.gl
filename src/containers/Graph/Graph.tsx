@@ -26,6 +26,8 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
     GraphSelectors.getGraphVisible(state),
   );
 
+  console.log(graphVisible.edges);
+
   const layout: Layout = useSelector(
     (state) => GraphSelectors.getStyleOptions(state).layout,
   );
