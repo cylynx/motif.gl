@@ -4,10 +4,10 @@ import {
   DEFAULT_NODE_STYLE,
   GREY,
 } from './shape/constants';
-import { mapEdgePattern, normalizeColor } from './shape/utils';
+import { normalizeColor } from '../../utils/style-utils';
 
 const nodeSize = DEFAULT_NODE_STYLE.size;
-const nodeLineWidth = 1;
+const nodeLineWidth = 3;
 
 const nodeColor = normalizeColor(DEFAULT_NODE_STYLE.color);
 const grey = normalizeColor(GREY);
@@ -28,7 +28,7 @@ export const defaultNodeStyle: { style: Partial<NodeStyle> } = {
       size: DEFAULT_NODE_STYLE.size,
       stroke: nodeColor.normal,
       fill: nodeColor.dark,
-      lineWidth: 2,
+      lineWidth: nodeLineWidth,
       opacity: 1,
     },
     icon: {
@@ -52,7 +52,6 @@ export const defaultNodeStateStyle: {
         fill: '#000000',
         opacity: 0.05,
         lineWidth: selectedLineWidth,
-        stroke: 'lightgreen',
       },
       icon: {
         fill: '#FFFFFF',

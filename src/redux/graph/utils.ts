@@ -6,6 +6,7 @@ import has from 'lodash/has';
 
 import { Option } from 'baseui/select';
 import { isWithinInterval } from 'date-fns';
+import { WritableDraft } from 'immer/dist/internal';
 import { flattenObject, ALL_FIELD_TYPES } from './processors/data';
 import { styleEdges } from '../../utils/style-edges';
 import { styleNodes } from '../../utils/style-nodes';
@@ -204,11 +205,12 @@ export const chartRange = (timeRange: TimeRange): TimeRange => {
  *
  * @param {(Node[] | Edge[] | [])} myArr
  * @param {string} prop
+ * @return {Node[] | Edge[] | Field[]}
  */
 export const removeDuplicates = (
   myArr: Node[] | Edge[] | Field[] | [],
   prop: string,
-) => {
+): Node[] | Edge[] | Field[] => {
   const seen = new Set();
   const filteredArr = myArr.filter((el) => {
     const duplicate = seen.has(el[prop]);
@@ -257,11 +259,14 @@ export const combineProcessedData = (
  * Main function to apply style.
  * Check if the graph is of group edges or non-group and apply the appropriate styling based on options.
  *
- * @param {GraphData} data
+ * @param {WritableDraft<GraphData>} data
  * @param {StyleOptions} options
- * @return {*}  {GraphData}
+ * @return {void}
  */
-export const applyStyle = (data: GraphData, options: StyleOptions) => {
+export const applyStyle = (
+  data: WritableDraft<GraphData>,
+  options: StyleOptions,
+): void => {
   styleNodes(data, options.nodeStyle);
   styleEdges(data, options.edgeStyle);
 };
@@ -287,7 +292,7 @@ export const groupEdges = (data: GraphData): GraphData => {
  * @return {*}  {GraphData}
  */
 export const deriveVisibleGraph = (
-  graphData: GraphData,
+  graphData: WritableDraft<GraphData>,
   styleOptions: StyleOptions,
 ): GraphData => {
   if (styleOptions.groupEdges) {
@@ -489,11 +494,11 @@ export const filterGraph = (
 
   if (hasEdgeFilters) {
     const { nodes, edges } = graphFlatten;
-    const filteredEdges: Edge[] = filterGraphEdgeNodes(
+    const filteredEdges = filterGraphEdgeNodes(
       edges,
       filtersArray,
       'edges',
-    );
+    ) as Edge[];
 
     const connectedNodes: Node[] = connectNodes(filteredEdges, nodes);
 
@@ -506,7 +511,7 @@ export const filterGraph = (
   return graphFlatten;
 };
 
-const hasGraphFilters = (value: FilterArray, type: GraphAttribute) => {
+const hasGraphFilters = (value: FilterArray, type: GraphAttribute): boolean => {
   const { 1: criteria } = value;
   const { isFilterReady, from } = criteria as FilterCriteria;
   return from === type && isFilterReady;

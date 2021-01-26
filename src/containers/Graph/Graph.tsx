@@ -25,6 +25,7 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
   const graphVisible = useSelector((state) =>
     GraphSelectors.getGraphVisible(state),
   );
+
   const layout: Layout = useSelector(
     (state) => GraphSelectors.getStyleOptions(state).layout,
   );

@@ -1,52 +1,62 @@
 /* eslint-disable no-param-reassign */
 import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
+import { NodeConfig } from '@antv/graphin';
+import { IUserNode, NodeStyle } from '@antv/graphin/lib/typings/type';
+import { WritableDraft } from 'immer/dist/internal';
 import {
   GraphData,
   NodeStyleOptions,
   Node,
   NodeColor,
   NodeSize,
+  NodeColorFixed,
+  NodeColorLegend,
 } from '../redux/graph/types';
-import { CATEGORICAL_COLOR, DARK_GREY } from '../constants/colors';
+import { CATEGORICAL_COLOR, DARK_GREY, GREY } from '../constants/colors';
+import { normalizeColor } from './style-utils';
 
 /**
  * Main function to style nodes
  *
  * @param {GraphData} data
  * @param {NodeStyleOptions} nodeStyleOptions
- * @return {*}  {Node[]}
+ * @return {void}
  */
 export const styleNodes = (
-  data: GraphData,
+  data: WritableDraft<GraphData>,
   nodeStyleOptions: NodeStyleOptions,
-) => {
+): void => {
   // Separated out as it cannot be done in the loop
   if (nodeStyleOptions.size && nodeStyleOptions.size.id !== 'fixed') {
     styleNodeSizeByProp(data, nodeStyleOptions.size);
   }
 
   // For perf reasons, batch style operations which require a single loop through nodes
-  for (const node of data.nodes) {
-    const nodeStyle = node.style ?? {};
+  data.nodes.forEach((node: NodeConfig) => {
+    const nodeStyle: Partial<NodeStyle> = node.style ?? {};
 
     if (nodeStyleOptions.size && nodeStyleOptions.size.id === 'fixed') {
       Object.assign(nodeStyle, {
-        style: nodeStyleOptions.size.value,
+        keyshape: {
+          size: nodeStyleOptions.size.value,
+        },
       });
     }
     if (nodeStyleOptions.color) {
       styleNodeColor(node, nodeStyleOptions.color);
     }
     if (nodeStyleOptions.fontSize) {
-      Object.assign(nodeStyle, {
-        fontSize: nodeStyleOptions.fontSize,
-      });
+      styleNodeFontSize(nodeStyle, nodeStyleOptions.fontSize);
     }
     if (nodeStyleOptions.label) {
-      styleNodeLabel(node, nodeStyleOptions.label);
+      styleNodeLabel(node, nodeStyle, nodeStyleOptions.label);
     }
-  }
+
+    Object.assign(node, {
+      style: nodeStyle,
+    });
+  });
 };
 
 /**
@@ -135,29 +145,74 @@ export const styleNodeSizeByProp = (data: GraphData, option: NodeSize) => {
   }
 };
 
-export const styleNodeLabel = (node: Node, label: string) => {
-  if (label === 'none') {
-    node.label = '';
-  } else if (label !== 'label') {
-    node.label = get(node, label, '').toString();
-  }
+export const styleNodeFontSize = (
+  nodeStyle: Partial<NodeStyle>,
+  fontSize: number,
+) => {
+  const labelStyle: Partial<NodeStyle['label']> = nodeStyle.label ?? {};
+  Object.assign(labelStyle, { fontSize });
+  Object.assign(nodeStyle, { label: labelStyle });
 };
 
-export const styleNodeColor = (node: Node, option: NodeColor) => {
-  if (option.id === 'fixed') {
-    node.color = option.value;
-  } else if (option.id === 'legend') {
-    const variable: string | unknown = get(node, option.variable);
-    if (variable) {
-      node.color = option.mapping[variable as string];
-    } else {
-      node.color = 'grey';
-    }
+export const styleNodeLabel = (
+  node: IUserNode,
+  nodeStyle: Partial<NodeStyle>,
+  label: string,
+): void => {
+  const labelStyle: Partial<NodeStyle['label']> = node.style.label ?? {};
+
+  let customLabel = '';
+
+  if (label !== 'label') {
+    customLabel = get(node, label, '').toString();
   }
+
+  Object.assign(labelStyle, {
+    value: customLabel,
+  });
+
+  Object.assign(nodeStyle, {
+    label: labelStyle,
+  });
 };
 
-export const styleFontSize = (nodeStyle: Node, fontSize: number) => {
-  nodeStyle.fontSize = fontSize;
+export const styleNodeColor = (node: Node, option: NodeColor): void => {
+  const { id } = option;
+  const nodeKeyShape: Partial<NodeStyle['keyshape']> =
+    node.style.keyshape ?? {};
+
+  if (id === 'fixed') {
+    const { value } = option as NodeColorFixed;
+    Object.assign(nodeKeyShape, {
+      fill: value,
+      stroke: value,
+    });
+
+    return;
+  }
+
+  const { variable, mapping } = option as NodeColorLegend;
+  const variableProperty: string | unknown = get(node, variable);
+
+  if (variableProperty) {
+    const nodeColor = normalizeColor(mapping[variableProperty as string]);
+    Object.assign(nodeKeyShape, {
+      fill: nodeColor.dark,
+      stroke: nodeColor.normal,
+    });
+
+    return;
+  }
+
+  const grey = normalizeColor(GREY);
+  Object.assign(nodeKeyShape, {
+    fill: grey.dark,
+    stroke: grey.normal,
+  });
+
+  Object.assign(node.style, {
+    keyshape: nodeKeyShape,
+  });
 };
 
 /**

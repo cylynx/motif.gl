@@ -3,12 +3,7 @@
 import { Group, Shape } from '@antv/g-canvas';
 import { IEdge } from '@antv/g6/lib/interface/item';
 import { G6Edge } from '@antv/graphin';
-import {
-  normalizeColor,
-  mapEdgePattern,
-  isArrowDisplay,
-  processArrowOption,
-} from './utils';
+import { mapEdgePattern, isArrowDisplay, processArrowOption } from './utils';
 import {
   DEFAULT_EDGE_STYLE,
   HIDDEN_LABEL_COLOR as HIDDEN_LABEL_COLOR_RGB,
@@ -16,6 +11,7 @@ import {
   EnumNodeAndEdgeStatus,
 } from './constants';
 import { ArrowOptions } from '../../../redux/graph';
+import { normalizeColor } from '../../../utils/style-utils';
 
 const HIDDEN_LABEL_COLOR = normalizeColor(HIDDEN_LABEL_COLOR_RGB);
 const GREY = normalizeColor(GREY_RGB);
