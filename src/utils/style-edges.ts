@@ -35,7 +35,7 @@ export const styleEdges = (
     const edgeStyle: Partial<EdgeStyle> = edge.style ?? {};
 
     if (edgeStyleOptions.width && edgeStyleOptions.width.id === 'fixed') {
-      styleLineWidth(edgeStyle, edgeStyleOptions.width.value);
+      // styleLineWidth(edgeStyle, edgeStyleOptions.width.value);
     }
 
     if (edgeStyleOptions.pattern) {

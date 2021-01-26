@@ -208,9 +208,12 @@ export const styleNodeColor = (
   if (id === 'fixed') {
     const { value } = option as NodeColorFixed;
     const fixedNodeColor = normalizeColor(value);
-    Object.assign(nodeKeyShape, {
-      fill: fixedNodeColor.dark,
-      stroke: fixedNodeColor.normal,
+
+    Object.assign(nodeStyle, {
+      keyshape: Object.assign(nodeKeyShape, {
+        fill: fixedNodeColor.dark,
+        stroke: fixedNodeColor.normal,
+      }),
     });
 
     return;
@@ -221,22 +224,23 @@ export const styleNodeColor = (
 
   if (variableProperty) {
     const nodeColor = normalizeColor(mapping[variableProperty as string]);
-    Object.assign(nodeKeyShape, {
-      fill: nodeColor.dark,
-      stroke: nodeColor.normal,
+
+    Object.assign(nodeStyle, {
+      keyshape: Object.assign(nodeKeyShape, {
+        fill: nodeColor.dark,
+        stroke: nodeColor.normal,
+      }),
     });
 
     return;
   }
 
   const grey = normalizeColor(GREY);
-  Object.assign(nodeKeyShape, {
-    fill: grey.dark,
-    stroke: grey.normal,
-  });
-
   Object.assign(nodeStyle, {
-    keyshape: nodeKeyShape,
+    keyshape: Object.assign(nodeKeyShape, {
+      fill: grey.dark,
+      stroke: grey.normal,
+    }),
   });
 };
 
