@@ -117,10 +117,10 @@ export const addRequiredFieldsJson = (
 /**
  * Created id field in the node based on nodeID accessor
  *
- * @param {*} node
+ * @param {IUserNode} node
  * @param {Accessors} accessors
  */
-export const addNodeFields = (node: any, accessors: Accessors): void => {
+export const addNodeFields = (node: IUserNode, accessors: Accessors): void => {
   const { nodeID } = accessors;
   generateIdKey(node, nodeID);
   addNodeStyleField(node);
@@ -130,10 +130,10 @@ export const addNodeFields = (node: any, accessors: Accessors): void => {
 /**
  * Create id, source, target field in edge based on accessors
  *
- * @param {*} edge
+ * @param {IUserEdge} edge
  * @param {Accessors} accessors
  */
-export const addEdgeFields = (edge: any, accessors: Accessors): void => {
+export const addEdgeFields = (edge: IUserEdge, accessors: Accessors): void => {
   const { edgeSource, edgeTarget, edgeID } = accessors;
 
   const edgeSourceValue = get(edge, edgeSource);
@@ -182,6 +182,12 @@ const generateIdKey = (object: any, idAccessor: string | undefined): void => {
   }
 };
 
+/**
+ * Add Default Node Style into IUserNode's object.
+ *
+ * @param {IUserNode} obj
+ * @return {void}
+ */
 const addNodeStyleField = (obj: IUserNode): void => {
   if (isUndefined(obj.style)) {
     Object.assign(obj, {
@@ -190,6 +196,12 @@ const addNodeStyleField = (obj: IUserNode): void => {
   }
 };
 
+/**
+ * Add Default Edge Style into IUserEdge's object.
+ *
+ * @param {IUserNode} obj
+ * @return {void}
+ */
 const addEdgeStyleField = (obj: IUserEdge): void => {
   if (isUndefined(obj.style)) {
     Object.assign(obj, {

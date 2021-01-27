@@ -211,6 +211,14 @@ export const styleNodeFontSize = (
   Object.assign(nodeStyle, { label: labelStyle });
 };
 
+/**
+ * Style Node Label based on given Node Style Options
+ *
+ * @param {IUserNode} node
+ * @param {Partial<NodeStyle>} nodeStyle
+ * @param {string} label
+ * @return {void}
+ */
 export const styleNodeLabel = (
   node: IUserNode,
   nodeStyle: Partial<NodeStyle>,
@@ -233,6 +241,16 @@ export const styleNodeLabel = (
   });
 };
 
+/**
+ * Style Node Color based on values given by:
+ * 1. Node Option Filters
+ * 2. Legend Selection
+ *
+ * @param {IUserNode} node
+ * @param {Partial<NodeStyle>} nodeStyle
+ * @param {NodeColor} option
+ * @return {void}
+ */
 export const styleNodeColor = (
   node: IUserNode,
   nodeStyle: Partial<NodeStyle>,

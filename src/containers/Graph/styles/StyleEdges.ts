@@ -103,6 +103,13 @@ export const mapEdgeWidth = (
   });
 };
 
+/**
+ * Style Line Width based on Edge Filter Options
+ *
+ * @param {Partial<EdgeStyle>} edgeStyle
+ * @param {number} lineWidth
+ * @return {void}
+ */
 export const styleLineWidth = (
   edgeStyle: Partial<EdgeStyle>,
   lineWidth: number,
@@ -122,6 +129,13 @@ export const styleLineWidth = (
   Object.assign(edgeStyle, { keyshape: keyShapeStyle });
 };
 
+/**
+ * Style Edge width based on given value in Edge Filter Options
+ *
+ * @param {GraphData} data
+ * @param {EdgeWidth} option
+ * @return {void}
+ */
 export const styleEdgeWidthByProp = (
   data: GraphData,
   option: EdgeWidth,
@@ -131,6 +145,13 @@ export const styleEdgeWidthByProp = (
   }
 };
 
+/**
+ * Style Edge Label based on given value in Edge Filter Options
+ * @param {IUserEdge} edge
+ * @param {Partial<EdgeStyle>} edgeStyle
+ * @param {string} label
+ * @return {void}
+ */
 export const styleEdgeLabel = (
   edge: IUserEdge,
   edgeStyle: Partial<EdgeStyle>,
@@ -168,6 +189,13 @@ export const styleEdgePattern = (
   Object.assign(edgeStyle, { keyshape: edgeKeyshape });
 };
 
+/**
+ * Style Edge Font Size with given value by Edge Style Filter
+ *
+ * @param edgeStyle
+ * @param fontSize
+ * @return {void}
+ */
 export const styleEdgeFontSize = (
   edgeStyle: Partial<EdgeStyle>,
   fontSize: number,
@@ -177,6 +205,12 @@ export const styleEdgeFontSize = (
   Object.assign(edgeStyle, { label: edgeLabelStyle });
 };
 
+/**
+ * Style Edge's arrow with given value by Edge Style Filter
+ * @param edgeStyle
+ * @param arrow
+ * @return {void}
+ */
 export const styleEdgeArrow = (
   edgeStyle: Partial<EdgeStyle>,
   arrow: ArrowOptions,

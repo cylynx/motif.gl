@@ -6,8 +6,14 @@ export interface NormalizedColor {
   reflect: string;
 }
 
+/**
+ * Normalized color with given colours code in HEX and RGB
+ *
+ * @param rgb
+ * @return {NormalizedColor}
+ */
 export const normalizeColor = (
-  rgb: string | [number, number, number] | NormalizedColor,
+  rgb: string | number[] | NormalizedColor,
 ): NormalizedColor => {
   if (Array.isArray(rgb)) {
     const color = `rgba(${rgb.join(',')}, 1)`;
