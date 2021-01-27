@@ -5,8 +5,8 @@ import {
   GREY as GREY_RGB,
   EnumNodeAndEdgeStatus,
   DEFAULT_NODE_STYLE,
-} from './constants';
-import { normalizeColor } from './utils';
+} from '../../../constants/graph-shapes';
+import { normalizeColor } from '../../../utils/style-utils';
 import iconmap from '../../../components/font-icon/icon-map.json';
 
 const GREY = normalizeColor(GREY_RGB);

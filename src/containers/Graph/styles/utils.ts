@@ -8,10 +8,13 @@ import { Option } from 'baseui/select';
 import { isWithinInterval } from 'date-fns';
 import { WritableDraft } from 'immer/dist/internal';
 import { IUserEdge, IUserNode } from '@antv/graphin/lib/typings/type';
-import { flattenObject, ALL_FIELD_TYPES } from './processors/data';
-import { styleEdges } from '../../utils/style-edges';
-import { styleNodes } from '../../utils/style-nodes';
-import { unixTimeConverter } from '../../utils/data-utils';
+import {
+  flattenObject,
+  ALL_FIELD_TYPES,
+} from '../../../redux/graph/processors/data';
+import { styleEdges } from './StyleEdges';
+import { styleNodes } from './StyleNodes';
+import { unixTimeConverter } from '../../../utils/data-utils';
 import {
   Edge,
   Field,
@@ -24,13 +27,7 @@ import {
   TimeRange,
   GraphAttribute,
   TimeSeries,
-} from './types';
-import {
-  defaultEdgeStyle,
-  defaultNodeStyle,
-  defaultEdgeStateStyle,
-  defaultNodeStateStyle,
-} from '../../containers/Graph/styles';
+} from '../../../redux/graph/types';
 
 type MinMax = {
   min: number;
@@ -439,11 +436,13 @@ const allFields = Object.keys(ALL_FIELD_TYPES) as FieldTypes;
  *
  * @param {Field[]} fields
  * @param {FieldTypes} [typeArray=allFields]
+ *
+ * @return {string[]}
  */
 export const getFieldNames = (
   fields: Field[],
   typeArray: FieldTypes = allFields,
-) =>
+): string[] =>
   // @ts-ignore
   fields.filter((f) => typeArray.includes(f.type)).map((f) => f.name);
 
@@ -674,22 +673,6 @@ const connectNodes = (filteredEdges: Edge[], nodes: Node[]): Node[] => {
     sourceTargetIdArr.includes(node.id),
   );
   return associatedNodes;
-};
-
-export const addNodeStyleField = (obj: IUserNode): void => {
-  if (isUndefined(obj.style)) {
-    Object.assign(obj, {
-      style: defaultNodeStyle.style,
-    });
-  }
-};
-
-export const addEdgeStyleField = (obj: IUserEdge): void => {
-  if (isUndefined(obj.style)) {
-    Object.assign(obj, {
-      style: defaultEdgeStyle.style,
-    });
-  }
 };
 
 export const formatLabelStyle = (obj: EdgeNode): void => {

@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import G6, { G6Event, IG6GraphEvent, INode, IEdge } from '@antv/g6';
-import { interactionStates } from '../shape/constants';
+import { interactionStates } from '../../../constants/graph-shapes';
 
 export default (g6: typeof G6) => {
   g6.registerBehavior('activate-relations', {

@@ -1,6 +1,8 @@
 import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
 import shortid from 'shortid';
+import { IUserEdge, IUserNode } from '@antv/graphin/lib/typings/type';
+import has from 'lodash/has';
 import {
   processJson,
   processNodeEdgeCsv,
@@ -8,12 +10,11 @@ import {
   validateMotifJson,
 } from './data';
 
-import { GraphList, GraphData, Accessors } from '../types';
+import { GraphList, GraphData, Accessors, EdgeNode } from '../types';
 import {
-  addEdgeStyleField,
-  addNodeStyleField,
-  formatLabelStyle,
-} from '../utils';
+  defaultEdgeStyle,
+  defaultNodeStyle,
+} from '../../../constants/graph-styles';
 
 /**
  * Initial function to process json object with node, edge fields or motif json to required format
@@ -177,6 +178,35 @@ const generateIdKey = (object: any, idAccessor: string | undefined): void => {
   } else {
     Object.assign(object, {
       id: get(object, idAccessor).toString(),
+    });
+  }
+};
+
+const addNodeStyleField = (obj: IUserNode): void => {
+  if (isUndefined(obj.style)) {
+    Object.assign(obj, {
+      style: defaultNodeStyle.style,
+    });
+  }
+};
+
+const addEdgeStyleField = (obj: IUserEdge): void => {
+  if (isUndefined(obj.style)) {
+    Object.assign(obj, {
+      style: defaultEdgeStyle.style,
+    });
+  }
+};
+
+const formatLabelStyle = (obj: EdgeNode): void => {
+  const LABEL_KEY = 'label';
+  const isObjHasLabel: boolean = has(obj, LABEL_KEY);
+
+  if (isObjHasLabel) {
+    Object.assign(obj.style, {
+      label: {
+        value: obj[LABEL_KEY],
+      },
     });
   }
 };

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useStyletron } from 'baseui';
 import Graphin, { GraphinContextType, IG6GraphEvent } from '@antv/graphin';
 import { GraphinData } from '@antv/graphin/lib/typings/type';
-import { interactionStates } from './shape/constants';
+import { interactionStates } from '../../constants/graph-shapes';
 import { GraphSelectors, Layout } from '../../redux/graph';
 import { TooltipProps } from './Tooltip';
 import './graphin.css';
@@ -13,7 +13,7 @@ import {
   defaultNodeStyle,
   defaultEdgeStyle,
   defaultEdgeStateStyle,
-} from './styles';
+} from '../../constants/graph-styles';
 
 export type GraphProps = {
   setTooltip: (tooltip: TooltipProps | null) => void;

@@ -1,6 +1,6 @@
 /* https://github.com/antvis/Graphin/blob/master/packages/graphin/src/shape/graph-studio/utils.ts */
 /* eslint-disable import/prefer-default-export */
-import { ArrowOptions } from '../../../redux/graph';
+import { ArrowOptions } from '../../../redux/graph/types';
 
 export interface EndArrow {
   d: number;
@@ -9,7 +9,7 @@ export interface EndArrow {
 
 export type EdgePattern = null | 'dot' | 'dash' | 'dash-dot' | 'none';
 
-export const mapEdgePattern = (str: EdgePattern) => {
+export const mapEdgePattern = (str: EdgePattern): number[] => {
   let result: null | number[] = null;
   // eslint-disable-next-line no-empty
   if (str === null) {
@@ -31,8 +31,11 @@ export const mapEdgePattern = (str: EdgePattern) => {
  * - the end arrow will always be display on default unless user choose to hide
  *
  * @param {undefined|ArrowOptions} arrowOption
+ * @return {string|ArrowOptions}
  */
-export const processArrowOption = (arrowOption: undefined | ArrowOptions) => {
+export const processArrowOption = (
+  arrowOption: undefined | ArrowOptions,
+): string | ArrowOptions => {
   return arrowOption || 'display';
 };
 
@@ -45,7 +48,7 @@ export const processArrowOption = (arrowOption: undefined | ArrowOptions) => {
 export const isArrowDisplay = (
   arrowOptions: ArrowOptions | boolean,
   endArrow: EndArrow,
-) => {
+): boolean | EndArrow => {
   if (arrowOptions === 'none') {
     return false;
   }

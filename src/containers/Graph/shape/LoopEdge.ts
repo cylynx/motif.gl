@@ -7,7 +7,7 @@ import {
   HIDDEN_LABEL_COLOR as HIDDEN_LABEL_COLOR_RGB,
   GREY as GREY_RGB,
   EnumNodeAndEdgeStatus,
-} from './constants';
+} from '../../../constants/graph-shapes';
 import { ArrowOptions } from '../../../redux/graph';
 import { normalizeColor } from '../../../utils/style-utils';
 

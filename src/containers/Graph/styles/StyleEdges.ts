@@ -8,10 +8,10 @@ import {
   Edge,
   EdgeWidth,
   ArrowOptions,
-} from '../redux/graph/types';
-import { normalizeColor, NormalizedColor } from './style-utils';
-import { DEFAULT_EDGE_STYLE } from '../containers/Graph/shape/constants';
-import { EdgePattern, mapEdgePattern } from '../containers/Graph/shape/utils';
+} from '../../../redux/graph/types';
+import { normalizeColor, NormalizedColor } from '../../../utils/style-utils';
+import { DEFAULT_EDGE_STYLE } from '../../../constants/graph-shapes';
+import { EdgePattern, mapEdgePattern } from '../shape/utils';
 
 /**
  * Style an edge dataset based on a given method

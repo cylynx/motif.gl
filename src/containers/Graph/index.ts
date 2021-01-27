@@ -7,7 +7,7 @@ export {
   EnumNodeAndEdgeStatus,
   DEFAULT_EDGE_STYLE,
   DEFAULT_NODE_STYLE,
-} from './shape/constants';
+} from '../../constants/graph-shapes';
 export default Graph;
 
 export type {
@@ -15,6 +15,6 @@ export type {
   NodeStyleKey,
   EdgeStyleType,
   EdgeStyleKey,
-} from './shape/constants';
+} from '../../constants/graph-shapes';
 export type { GraphProps } from './Graph';
 export type { TooltipProps } from './Tooltip';

@@ -6,8 +6,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import isUndefined from 'lodash/isUndefined';
 import { WritableDraft } from 'immer/dist/types/types-external';
 import * as LAYOUT from '../../constants/layout-options';
-import { combineProcessedData } from './utils';
-import { generateDefaultColorMap } from '../../utils/style-nodes';
+import { combineProcessedData } from '../../containers/Graph/styles/utils';
+import { generateDefaultColorMap } from '../../containers/Graph/styles/StyleNodes';
 import {
   Accessors,
   FilterCriteria,

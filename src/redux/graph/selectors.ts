@@ -9,7 +9,10 @@ import {
   FilterOptions,
   GraphState,
 } from './types';
-import { deriveVisibleGraph, filterGraph } from './utils';
+import {
+  deriveVisibleGraph,
+  filterGraph,
+} from '../../containers/Graph/styles/utils';
 
 const getGraph = (state: any): GraphState => state.investigate.graph.present;
 const getAccessors = (state: any): Accessors => getGraph(state).accessors;

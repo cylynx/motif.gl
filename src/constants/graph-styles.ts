@@ -1,11 +1,7 @@
 import { EdgeStyle, NodeStyle } from '@antv/graphin';
-import {
-  DEFAULT_EDGE_STYLE,
-  DEFAULT_NODE_STYLE,
-  GREY,
-} from './shape/constants';
-import { normalizeColor } from '../../utils/style-utils';
-import { mapEdgePattern } from './shape/utils';
+import { DEFAULT_EDGE_STYLE, DEFAULT_NODE_STYLE, GREY } from './graph-shapes';
+import { normalizeColor } from '../utils/style-utils';
+import { mapEdgePattern } from '../containers/Graph/shape/utils';
 
 const nodeSize = DEFAULT_NODE_STYLE.size;
 const nodeLineWidth = 3;

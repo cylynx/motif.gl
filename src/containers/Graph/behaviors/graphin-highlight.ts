@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import G6, { IG6GraphEvent, IGraph, INode, IEdge } from '@antv/g6';
-import { interactionStates } from '../shape/constants';
+import { interactionStates } from '../../../constants/graph-shapes';
 
 // TODO: sort out behaviours especialyl for clearstate
 
