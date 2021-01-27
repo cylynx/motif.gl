@@ -1,11 +1,7 @@
 /* eslint-disable no-param-reassign */
 import get from 'lodash/get';
 import { WritableDraft } from 'immer/dist/types/types-external';
-import {
-  EdgeStyle,
-  IUserEdge,
-  NodeStyle,
-} from '@antv/graphin/lib/typings/type';
+import { EdgeStyle, IUserEdge } from '@antv/graphin/lib/typings/type';
 import {
   GraphData,
   EdgeStyleOptions,
@@ -13,6 +9,9 @@ import {
   EdgeWidth,
   ArrowOptions,
 } from '../redux/graph/types';
+import { normalizeColor, NormalizedColor } from './style-utils';
+import { DEFAULT_EDGE_STYLE } from '../containers/Graph/shape/constants';
+import { EdgePattern, mapEdgePattern } from '../containers/Graph/shape/utils';
 
 /**
  * Style an edge dataset based on a given method
@@ -24,7 +23,7 @@ import {
 export const styleEdges = (
   data: WritableDraft<GraphData>,
   edgeStyleOptions: EdgeStyleOptions,
-) => {
+): void => {
   // Separated out as it cannot be done in the loop
   if (edgeStyleOptions.width && edgeStyleOptions.width.id !== 'fixed') {
     styleEdgeWidthByProp(data, edgeStyleOptions.width);
@@ -35,17 +34,17 @@ export const styleEdges = (
     const edgeStyle: Partial<EdgeStyle> = edge.style ?? {};
 
     if (edgeStyleOptions.width && edgeStyleOptions.width.id === 'fixed') {
-      // styleLineWidth(edgeStyle, edgeStyleOptions.width.value);
+      styleLineWidth(edgeStyle, edgeStyleOptions.width.value);
     }
 
     if (edgeStyleOptions.pattern) {
-      // styleEdgePattern(edgeStyle, edgeStyleOptions.pattern);
+      styleEdgePattern(edgeStyle, edgeStyleOptions.pattern);
     }
     if (edgeStyleOptions.fontSize) {
-      // styleEdgeFontSize(edgeStyle, edgeStyleOptions.fontSize);
+      styleEdgeFontSize(edgeStyle, edgeStyleOptions.fontSize);
     }
     if (edgeStyleOptions.label) {
-      // styleEdgeLabel(edge, edgeStyle, edgeStyleOptions.label);
+      styleEdgeLabel(edge, edgeStyle, edgeStyleOptions.label);
     }
     if (edgeStyleOptions.arrow) {
       // styleEdgeArrow(edgeStyle, edgeStyleOptions.arrow);
@@ -68,21 +67,24 @@ export const mapEdgeWidth = (
   edges: IUserEdge[],
   propertyName: string,
   visualRange: [number, number],
-) => {
+): void => {
   let minp = 9999999999;
   let maxp = -9999999999;
 
   edges.forEach((edge: IUserEdge) => {
+    const edgeStyle: Partial<EdgeStyle> = edge.style ?? {};
     const keyshapeStyle: Partial<EdgeStyle['keyshape']> =
-      edge.style?.keyshape ?? {};
+      edgeStyle.keyshape ?? {};
 
     const edgeLineWidth: number = Number(get(edge, propertyName)) ** (1 / 3);
 
-    Object.assign(edge.style, {
+    Object.assign(edgeStyle, {
       keyshape: Object.assign(keyshapeStyle, {
         lineWidth: edgeLineWidth,
       }),
     });
+
+    Object.assign(edge, { style: edgeStyle });
 
     minp = edgeLineWidth < minp ? edgeLineWidth : minp;
     maxp = edgeLineWidth > maxp ? edgeLineWidth : maxp;
@@ -104,17 +106,26 @@ export const mapEdgeWidth = (
 export const styleLineWidth = (
   edgeStyle: Partial<EdgeStyle>,
   lineWidth: number,
-) => {
+): void => {
   const keyShapeStyle: Partial<EdgeStyle['keyshape']> =
     edgeStyle.keyshape ?? {};
+
+  const edgeFontColor: NormalizedColor = normalizeColor(
+    DEFAULT_EDGE_STYLE.fontColor,
+  );
+
   Object.assign(keyShapeStyle, {
     lineWidth,
+    stroke: edgeFontColor.dark,
   });
 
   Object.assign(edgeStyle, { keyshape: keyShapeStyle });
 };
 
-export const styleEdgeWidthByProp = (data: GraphData, option: EdgeWidth) => {
+export const styleEdgeWidthByProp = (
+  data: GraphData,
+  option: EdgeWidth,
+): void => {
   if (option.id === 'property' && option.variable) {
     mapEdgeWidth(data.edges, option.variable, option.range);
   }
@@ -124,7 +135,7 @@ export const styleEdgeLabel = (
   edge: IUserEdge,
   edgeStyle: Partial<EdgeStyle>,
   label: string,
-) => {
+): void => {
   const labelStyle: Partial<EdgeStyle['label']> = edge.style?.label ?? {};
 
   let customLabel = '';
@@ -144,23 +155,23 @@ export const styleEdgeLabel = (
 
 export const styleEdgePattern = (
   edgeStyle: Partial<EdgeStyle>,
-  pattern: string,
-) => {
+  pattern: EdgePattern,
+): void => {
   const edgeKeyshape: Partial<EdgeStyle['keyshape']> = edgeStyle.keyshape ?? {};
 
   if (pattern === 'none') {
-    delete edgeKeyshape.type;
+    delete edgeKeyshape.lineDash;
     return;
   }
 
-  Object.assign(edgeKeyshape, { type: pattern });
+  Object.assign(edgeKeyshape, { lineDash: mapEdgePattern(pattern) });
   Object.assign(edgeStyle, { keyshape: edgeKeyshape });
 };
 
 export const styleEdgeFontSize = (
   edgeStyle: Partial<EdgeStyle>,
   fontSize: number,
-) => {
+): void => {
   const edgeLabelStyle: Partial<EdgeStyle['label']> = edgeStyle.label ?? {};
   Object.assign(edgeLabelStyle, { fontSize });
   Object.assign(edgeStyle, { label: edgeLabelStyle });
@@ -169,7 +180,7 @@ export const styleEdgeFontSize = (
 export const styleEdgeArrow = (
   edgeStyle: Partial<EdgeStyle>,
   arrow: ArrowOptions,
-) => {
+): void => {
   const isArrowDisplay: boolean = arrow === 'display';
   Object.assign(edgeStyle, {
     startArrow: isArrowDisplay,
@@ -188,7 +199,7 @@ type MinMax = {
  * @param {Edge} edge
  * @param {string} edgeWidth accesor function that maps to edge width
  */
-export const isGroupEdges = (edge: Edge, edgeWidth: string) =>
+export const isGroupEdges = (edge: Edge, edgeWidth: string): boolean =>
   Array.isArray(get(edge, edgeWidth));
 
 /**
@@ -196,7 +207,7 @@ export const isGroupEdges = (edge: Edge, edgeWidth: string) =>
  *
  * @param {GraphData} data
  * @param {string} edgeWidth accesor string that maps to edge width
- * @return {*}  {MinMax}
+ * @return  {MinMax}
  */
 export const getMinMaxValue = (data: GraphData, edgeWidth: string): MinMax => {
   const arrValue = [];

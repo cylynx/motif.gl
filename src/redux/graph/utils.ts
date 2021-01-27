@@ -7,6 +7,7 @@ import has from 'lodash/has';
 import { Option } from 'baseui/select';
 import { isWithinInterval } from 'date-fns';
 import { WritableDraft } from 'immer/dist/internal';
+import { IUserEdge, IUserNode } from '@antv/graphin/lib/typings/type';
 import { flattenObject, ALL_FIELD_TYPES } from './processors/data';
 import { styleEdges } from '../../utils/style-edges';
 import { styleNodes } from '../../utils/style-nodes';
@@ -24,6 +25,12 @@ import {
   GraphAttribute,
   TimeSeries,
 } from './types';
+import {
+  defaultEdgeStyle,
+  defaultNodeStyle,
+  defaultEdgeStateStyle,
+  defaultNodeStateStyle,
+} from '../../containers/Graph/styles';
 
 type MinMax = {
   min: number;
@@ -669,10 +676,18 @@ const connectNodes = (filteredEdges: Edge[], nodes: Node[]): Node[] => {
   return associatedNodes;
 };
 
-export const addStyleField = (obj: EdgeNode): void => {
+export const addNodeStyleField = (obj: IUserNode): void => {
   if (isUndefined(obj.style)) {
     Object.assign(obj, {
-      style: {},
+      style: defaultNodeStyle.style,
+    });
+  }
+};
+
+export const addEdgeStyleField = (obj: IUserEdge): void => {
+  if (isUndefined(obj.style)) {
+    Object.assign(obj, {
+      style: defaultEdgeStyle.style,
     });
   }
 };

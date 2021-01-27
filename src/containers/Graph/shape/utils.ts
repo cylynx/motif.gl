@@ -7,7 +7,7 @@ export interface EndArrow {
   path: string;
 }
 
-export type EdgePattern = null | 'dot' | 'dash' | 'dash-dot';
+export type EdgePattern = null | 'dot' | 'dash' | 'dash-dot' | 'none';
 
 export const mapEdgePattern = (str: EdgePattern) => {
   let result: null | number[] = null;

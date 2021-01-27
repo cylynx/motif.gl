@@ -42,6 +42,7 @@ const getGraphVisible = createSelector(
         deriveVisibleGraph(draftState, styleOptions);
       },
     );
+
     return graphVisible;
   },
 );
