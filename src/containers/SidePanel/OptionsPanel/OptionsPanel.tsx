@@ -26,10 +26,7 @@ import {
   edgeArrowForm,
 } from './constants';
 
-const defaultLabelOptions = [
-  { id: 'id', label: 'id' },
-  { id: 'none', label: 'None' },
-];
+const defaultLabelOptions = [{ id: 'none', label: 'None' }];
 
 const OptionsPanel = () => {
   const dispatch = useDispatch();
