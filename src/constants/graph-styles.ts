@@ -60,7 +60,6 @@ export const defaultNodeStyle: { style: Partial<NodeStyle> } = {
       fill: '#FFFFFF',
       fontFamily: 'Material Icons',
     },
-    ...defaultNodeStateStyle,
   },
 };
 
@@ -121,6 +120,5 @@ export const defaultEdgeStyle: { style: Partial<EdgeStyle> } = {
       lineAppendWidth: 4,
       cursor: 'pointer',
     },
-    ...defaultEdgeStateStyle,
   },
 };
