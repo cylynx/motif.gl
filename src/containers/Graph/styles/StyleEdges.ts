@@ -10,7 +10,10 @@ import {
   ArrowOptions,
 } from '../../../redux/graph/types';
 import { normalizeColor, NormalizedColor } from '../../../utils/style-utils';
-import { DEFAULT_EDGE_STYLE } from '../../../constants/graph-shapes';
+import {
+  DEFAULT_EDGE_STYLE,
+  DEFAULT_NODE_STYLE,
+} from '../../../constants/graph-shapes';
 import { EdgePattern, mapEdgePattern } from '../shape/utils';
 
 /**
@@ -76,7 +79,14 @@ export const mapEdgeWidth = (
     const keyshapeStyle: Partial<EdgeStyle['keyshape']> =
       edgeStyle.keyshape ?? {};
 
-    const edgeLineWidth: number = Number(get(edge, propertyName)) ** (1 / 3);
+    let edgeLineWidth = Number(get(edge, propertyName)) ** (1 / 3);
+
+    minp = edgeLineWidth < minp ? edgeLineWidth : minp;
+    maxp = edgeLineWidth > maxp ? edgeLineWidth : maxp;
+
+    edgeLineWidth = Number.isNaN(edgeLineWidth)
+      ? DEFAULT_EDGE_STYLE.width
+      : edgeLineWidth;
 
     Object.assign(edgeStyle, {
       keyshape: Object.assign(keyshapeStyle, {
@@ -85,20 +95,23 @@ export const mapEdgeWidth = (
     });
 
     Object.assign(edge, { style: edgeStyle });
-
-    minp = edgeLineWidth < minp ? edgeLineWidth : minp;
-    maxp = edgeLineWidth > maxp ? edgeLineWidth : maxp;
   });
 
   const rangepLength = maxp - minp;
   const rangevLength = visualRange[1] - visualRange[0];
 
   edges.forEach((edge: IUserEdge) => {
+    let edgeLineWidth =
+      ((Number(get(edge, propertyName)) ** (1 / 3) - minp) / rangepLength) *
+        rangevLength +
+      visualRange[0];
+
+    edgeLineWidth = Number.isNaN(edgeLineWidth)
+      ? DEFAULT_EDGE_STYLE.width
+      : edgeLineWidth;
+
     Object.assign(edge.style.keyshape, {
-      lineWidth:
-        ((Number(get(edge, propertyName)) ** (1 / 3) - minp) / rangepLength) *
-          rangevLength +
-        visualRange[0],
+      lineWidth: edgeLineWidth,
     });
   });
 };
