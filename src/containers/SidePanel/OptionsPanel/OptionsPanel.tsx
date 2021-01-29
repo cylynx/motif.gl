@@ -26,10 +26,7 @@ import {
   edgeArrowForm,
 } from './constants';
 
-const defaultLabelOptions = [
-  { id: 'id', label: 'id' },
-  { id: 'none', label: 'None' },
-];
+const defaultLabelOptions = [{ id: 'none', label: 'None' }];
 
 const OptionsPanel = () => {
   const dispatch = useDispatch();
@@ -73,8 +70,9 @@ const OptionsPanel = () => {
   const layoutOptions = { layout: { id: layout.name, ...layout.options } };
 
   const updateLayout = (data: any) => dispatch(GraphSlices.changeLayout(data));
-  const updateNodeStyle = (data: any) =>
+  const updateNodeStyle = (data: any) => {
     dispatch(GraphSlices.changeNodeStyle(data));
+  };
   const updateEdgeStyle = (data: any) =>
     dispatch(GraphSlices.changeEdgeStyle(data));
 

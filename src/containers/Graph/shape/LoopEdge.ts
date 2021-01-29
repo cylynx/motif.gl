@@ -1,19 +1,15 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Group, Shape } from '@antv/g-canvas';
 import G6, { INode } from '@antv/g6';
-import {
-  normalizeColor,
-  mapEdgePattern,
-  isArrowDisplay,
-  processArrowOption,
-} from './utils';
+import { mapEdgePattern, isArrowDisplay, processArrowOption } from './utils';
 import {
   DEFAULT_EDGE_STYLE,
   HIDDEN_LABEL_COLOR as HIDDEN_LABEL_COLOR_RGB,
   GREY as GREY_RGB,
   EnumNodeAndEdgeStatus,
-} from './constants';
+} from '../../../constants/graph-shapes';
 import { ArrowOptions } from '../../../redux/graph';
+import { normalizeColor } from '../../../utils/style-utils';
 
 const HIDDEN_LABEL_COLOR = normalizeColor(HIDDEN_LABEL_COLOR_RGB);
 const GREY = normalizeColor(GREY_RGB);

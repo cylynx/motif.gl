@@ -2,20 +2,18 @@
 import React, { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useStyletron } from 'baseui';
-import Graphin, { G6, GraphinContextType, IG6GraphEvent } from '@antv/graphin';
+import Graphin, { GraphinContextType, IG6GraphEvent } from '@antv/graphin';
 import { GraphinData } from '@antv/graphin/lib/typings/type';
-import RegisterGraphinHighlight from './behaviors/graphin-highlight';
-import RegisterActivateRelations from './behaviors/activate-relations';
-import RegisterCircleNode from './shape/CircleNode';
-import RegisterPolyEdge from './shape/PolyEdge';
-import RegisterLineEdge from './shape/LineEdge';
-import RegisterLoopEdge from './shape/LoopEdge';
-import { interactionStates } from './shape/constants';
+import { interactionStates } from '../../constants/graph-shapes';
 import { GraphSelectors, Layout } from '../../redux/graph';
 import { TooltipProps } from './Tooltip';
 import './graphin.css';
-
-const INTERACTION_LIMIT = 500;
+import {
+  defaultNodeStateStyle,
+  defaultNodeStyle,
+  defaultEdgeStyle,
+  defaultEdgeStateStyle,
+} from '../../constants/graph-styles';
 
 export type GraphProps = {
   setTooltip: (tooltip: TooltipProps | null) => void;
@@ -27,34 +25,10 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
   const graphVisible = useSelector((state) =>
     GraphSelectors.getGraphVisible(state),
   );
+
   const layout: Layout = useSelector(
     (state) => GraphSelectors.getStyleOptions(state).layout,
   );
-
-  useLayoutEffect(() => {
-    Graphin.registerBehavior('highlight', {
-      // Bind the event and its callback
-      getEvents() {
-        return {
-          'node:click': 'onClick',
-          mousemove: 'onMousemove',
-          'edge:click': 'onEdgeClick',
-        };
-      },
-      /**
-       * Handle the callback for node:click
-       * @override
-       * @param  {Object} evt The handler
-       */
-      onClick(evt: IG6GraphEvent) {
-        const node = evt.item;
-        const point = { x: evt.x, y: evt.y };
-        const model = node.getModel();
-        console.log(point);
-        console.log(model);
-      },
-    });
-  }, []);
 
   useLayoutEffect(() => {
     // Imperatively set the color by theme
@@ -145,72 +119,11 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
       data={graphVisible as GraphinData}
       ref={ref}
       layout={layout}
-      options={{
-        isZoomOptimize: () => true,
-        keyShapeZoom: 0.6,
-        autoPolyEdge: true,
-        autoLoopEdge: true,
-        // If using combo in the future, might have to set to false
-        // https://g6.antv.vision/en/docs/api/Graph/#graphoptionsgroupbytypes
-        groupByTypes: true,
-        modes: {
-          default: [
-            {
-              type: 'brush-select',
-              trigger: 'shift',
-              includeEdges: true,
-            },
-          ],
-        },
-      }}
-      register={{
-        nodeShape: (G6: any) => [
-          {
-            name: 'CircleNode',
-            register: () => {
-              RegisterCircleNode(G6);
-            },
-          },
-        ],
-        edgeShape: (G6: any) => [
-          {
-            name: 'PolyEdge',
-            register: () => {
-              RegisterPolyEdge(G6);
-            },
-          },
-          {
-            name: 'LineEdge',
-            register: () => {
-              RegisterLineEdge(G6);
-            },
-          },
-          {
-            name: 'LoopEdge',
-            register: () => {
-              RegisterLoopEdge(G6);
-            },
-          },
-        ],
-        behavior: (G6: any) => [
-          {
-            name: 'activate-relations',
-            mode: 'default',
-            options: { limit: INTERACTION_LIMIT },
-            register: () => {
-              RegisterActivateRelations(G6);
-            },
-          },
-          {
-            name: 'graphin-highlight',
-            mode: 'default',
-            options: { limit: INTERACTION_LIMIT },
-            register: () => {
-              RegisterGraphinHighlight(G6);
-            },
-          },
-        ],
-      }}
+      defaultNode={defaultNodeStyle}
+      // @ts-ignore
+      defaultEdge={defaultEdgeStyle}
+      nodeStateStyles={defaultNodeStateStyle}
+      edgeStateStyles={defaultEdgeStateStyle}
     />
   );
 });

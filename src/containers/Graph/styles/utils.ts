@@ -6,10 +6,14 @@ import has from 'lodash/has';
 
 import { Option } from 'baseui/select';
 import { isWithinInterval } from 'date-fns';
-import { flattenObject, ALL_FIELD_TYPES } from './processors/data';
-import { styleEdges } from '../../utils/style-edges';
-import { styleNodes } from '../../utils/style-nodes';
-import { unixTimeConverter } from '../../utils/data-utils';
+import { Draft } from 'immer';
+import {
+  flattenObject,
+  ALL_FIELD_TYPES,
+} from '../../../redux/graph/processors/data';
+import { styleEdges } from './StyleEdges';
+import { styleNodes } from './StyleNodes';
+import { unixTimeConverter } from '../../../utils/data-utils';
 import {
   Edge,
   Field,
@@ -22,7 +26,7 @@ import {
   TimeRange,
   GraphAttribute,
   TimeSeries,
-} from './types';
+} from '../../../redux/graph/types';
 
 type MinMax = {
   min: number;
@@ -204,11 +208,12 @@ export const chartRange = (timeRange: TimeRange): TimeRange => {
  *
  * @param {(Node[] | Edge[] | [])} myArr
  * @param {string} prop
+ * @return {Node[] | Edge[] | Field[]}
  */
 export const removeDuplicates = (
   myArr: Node[] | Edge[] | Field[] | [],
   prop: string,
-) => {
+): Node[] | Edge[] | Field[] => {
   const seen = new Set();
   const filteredArr = myArr.filter((el) => {
     const duplicate = seen.has(el[prop]);
@@ -257,11 +262,14 @@ export const combineProcessedData = (
  * Main function to apply style.
  * Check if the graph is of group edges or non-group and apply the appropriate styling based on options.
  *
- * @param {GraphData} data
+ * @param {Draft<GraphData>} data
  * @param {StyleOptions} options
- * @return {*}  {GraphData}
+ * @return {void}
  */
-export const applyStyle = (data: GraphData, options: StyleOptions) => {
+export const applyStyle = (
+  data: Draft<GraphData>,
+  options: StyleOptions,
+): void => {
   styleNodes(data, options.nodeStyle);
   styleEdges(data, options.edgeStyle);
 };
@@ -287,7 +295,7 @@ export const groupEdges = (data: GraphData): GraphData => {
  * @return {*}  {GraphData}
  */
 export const deriveVisibleGraph = (
-  graphData: GraphData,
+  graphData: Draft<GraphData>,
   styleOptions: StyleOptions,
 ): GraphData => {
   if (styleOptions.groupEdges) {
@@ -427,11 +435,13 @@ const allFields = Object.keys(ALL_FIELD_TYPES) as FieldTypes;
  *
  * @param {Field[]} fields
  * @param {FieldTypes} [typeArray=allFields]
+ *
+ * @return {string[]}
  */
 export const getFieldNames = (
   fields: Field[],
   typeArray: FieldTypes = allFields,
-) =>
+): string[] =>
   // @ts-ignore
   fields.filter((f) => typeArray.includes(f.type)).map((f) => f.name);
 
@@ -489,11 +499,11 @@ export const filterGraph = (
 
   if (hasEdgeFilters) {
     const { nodes, edges } = graphFlatten;
-    const filteredEdges: Edge[] = filterGraphEdgeNodes(
+    const filteredEdges = filterGraphEdgeNodes(
       edges,
       filtersArray,
       'edges',
-    );
+    ) as Edge[];
 
     const connectedNodes: Node[] = connectNodes(filteredEdges, nodes);
 
@@ -506,7 +516,7 @@ export const filterGraph = (
   return graphFlatten;
 };
 
-const hasGraphFilters = (value: FilterArray, type: GraphAttribute) => {
+const hasGraphFilters = (value: FilterArray, type: GraphAttribute): boolean => {
   const { 1: criteria } = value;
   const { isFilterReady, from } = criteria as FilterCriteria;
   return from === type && isFilterReady;
@@ -662,14 +672,6 @@ const connectNodes = (filteredEdges: Edge[], nodes: Node[]): Node[] => {
     sourceTargetIdArr.includes(node.id),
   );
   return associatedNodes;
-};
-
-export const addStyleField = (obj: EdgeNode): void => {
-  if (isUndefined(obj.style)) {
-    Object.assign(obj, {
-      style: {},
-    });
-  }
 };
 
 export const formatLabelStyle = (obj: EdgeNode): void => {
