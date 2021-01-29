@@ -24,11 +24,14 @@ export const defaultNodeStateStyle: { status: NodeStyle['status'] } = {
       label: {
         fill: '#3B3B3B',
       },
-      halo: {},
+      halo: {
+        visible: true,
+      },
     },
     hover: {},
     active: {},
     inactive: {},
+    disable: {},
   },
 };
 
@@ -87,6 +90,9 @@ export const defaultEdgeStateStyle: {
         opacity: 0.6,
       },
     },
+    active: {},
+    inactive: {},
+    disable: {},
   },
 };
 
