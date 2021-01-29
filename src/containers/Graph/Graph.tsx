@@ -124,24 +124,6 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
       defaultEdge={defaultEdgeStyle}
       nodeStateStyles={defaultNodeStateStyle}
       edgeStateStyles={defaultEdgeStateStyle}
-      // options={{
-      //   isZoomOptimize: () => true,
-      //   keyShapeZoom: 0.6,
-      //   autoPolyEdge: true,
-      //   autoLoopEdge: true,
-      //   // If using combo in the future, might have to set to false
-      //   // https://g6.antv.vision/en/docs/api/Graph/#graphoptionsgroupbytypes
-      //   groupByTypes: true,
-      //   modes: {
-      //     default: [
-      //       {
-      //         type: 'brush-select',
-      //         trigger: 'shift',
-      //         includeEdges: true,
-      //       },
-      //     ],
-      //   },
-      // }}
     />
   );
 });
