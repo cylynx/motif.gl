@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import get from 'lodash/get';
-import { WritableDraft } from 'immer/dist/types/types-external';
+import { Draft } from 'immer';
 import { EdgeStyle, IUserEdge } from '@antv/graphin/lib/typings/type';
 import {
   GraphData,
@@ -21,7 +21,7 @@ import { EdgePattern, mapEdgePattern } from '../shape/utils';
  * @return {*}  {Edge[]}
  */
 export const styleEdges = (
-  data: WritableDraft<GraphData>,
+  data: Draft<GraphData>,
   edgeStyleOptions: EdgeStyleOptions,
 ): void => {
   // Separated out as it cannot be done in the loop

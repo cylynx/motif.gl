@@ -6,8 +6,7 @@ import has from 'lodash/has';
 
 import { Option } from 'baseui/select';
 import { isWithinInterval } from 'date-fns';
-import { WritableDraft } from 'immer/dist/internal';
-import { IUserEdge, IUserNode } from '@antv/graphin/lib/typings/type';
+import { Draft } from 'immer';
 import {
   flattenObject,
   ALL_FIELD_TYPES,
@@ -263,12 +262,12 @@ export const combineProcessedData = (
  * Main function to apply style.
  * Check if the graph is of group edges or non-group and apply the appropriate styling based on options.
  *
- * @param {WritableDraft<GraphData>} data
+ * @param {Draft<GraphData>} data
  * @param {StyleOptions} options
  * @return {void}
  */
 export const applyStyle = (
-  data: WritableDraft<GraphData>,
+  data: Draft<GraphData>,
   options: StyleOptions,
 ): void => {
   styleNodes(data, options.nodeStyle);
@@ -296,7 +295,7 @@ export const groupEdges = (data: GraphData): GraphData => {
  * @return {*}  {GraphData}
  */
 export const deriveVisibleGraph = (
-  graphData: WritableDraft<GraphData>,
+  graphData: Draft<GraphData>,
   styleOptions: StyleOptions,
 ): GraphData => {
   if (styleOptions.groupEdges) {

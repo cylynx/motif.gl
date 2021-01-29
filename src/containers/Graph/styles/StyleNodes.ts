@@ -6,7 +6,7 @@ import {
   IUserNode,
   NodeStyle,
 } from '@antv/graphin/lib/typings/type';
-import { WritableDraft } from 'immer/dist/internal';
+import { Draft } from 'immer';
 import {
   GraphData,
   NodeStyleOptions,
@@ -28,7 +28,7 @@ import { DEFAULT_NODE_STYLE } from '../../../constants/graph-shapes';
  * @return {void}
  */
 export const styleNodes = (
-  data: WritableDraft<GraphData>,
+  data: Draft<GraphData>,
   nodeStyleOptions: NodeStyleOptions,
 ): void => {
   // Separated out as it cannot be done in the loop
@@ -198,11 +198,7 @@ export const styleNodeSize = (
     size,
   });
 
-  const offsetY = size - DEFAULT_NODE_STYLE.size;
   const labelStyle: Partial<NodeStyle['label']> = nodeStyle.label ?? {};
-  Object.assign(labelStyle, {
-    offset: [0, offsetY],
-  });
 
   Object.assign(nodeStyle, {
     keyshape: keyShapeStyle,

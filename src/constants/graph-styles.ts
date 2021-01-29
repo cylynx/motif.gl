@@ -9,9 +9,7 @@ const nodeColor = normalizeColor(DEFAULT_NODE_STYLE.color);
 const grey = normalizeColor(GREY);
 
 const selectedLineWidth = nodeLineWidth * 2;
-export const defaultNodeStateStyle: {
-  status: Partial<{}>;
-} = {
+export const defaultNodeStateStyle: { status: NodeStyle['status'] } = {
   status: {
     selected: {
       badges: [],
@@ -34,8 +32,7 @@ export const defaultNodeStateStyle: {
   },
 };
 
-export const defaultNodeStyle: { type: string; style: Partial<NodeStyle> } = {
-  type: 'graphin-circle',
+export const defaultNodeStyle: { style: Partial<NodeStyle> } = {
   style: {
     badges: [],
     halo: {
@@ -68,13 +65,7 @@ const edgeFontColor = normalizeColor(DEFAULT_EDGE_STYLE.fontColor);
 const edgeLinePattern = mapEdgePattern(DEFAULT_EDGE_STYLE.pattern);
 
 export const defaultEdgeStateStyle: {
-  status: Partial<
-    Partial<{
-      selected: Partial<EdgeStyle>;
-      hover: Partial<EdgeStyle>;
-      disabled: Partial<EdgeStyle>;
-    }>
-  >;
+  status: EdgeStyle['status'];
 } = {
   status: {
     selected: {

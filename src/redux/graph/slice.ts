@@ -4,7 +4,7 @@
 // immer wraps around redux-toolkit so we can 'directly' mutate state'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import isUndefined from 'lodash/isUndefined';
-import { WritableDraft } from 'immer/dist/types/types-external';
+import { Draft } from 'immer';
 import * as LAYOUT from '../../constants/layout-options';
 import { combineProcessedData } from '../../containers/Graph/styles/utils';
 import { generateDefaultColorMap } from '../../containers/Graph/styles/StyleNodes';
@@ -17,10 +17,7 @@ import {
   Layout,
 } from './types';
 
-export const updateSelections = (
-  state: WritableDraft<GraphState>,
-  data: GraphData,
-) => {
+export const updateSelections = (state: Draft<GraphState>, data: GraphData) => {
   const currentNodeFields = state.nodeSelection.map((x) => x.id);
   const currentEdgeFields = state.edgeSelection.map((x) => x.id);
   for (const field of data.metadata.fields.nodes) {
@@ -53,7 +50,7 @@ export const updateSelections = (
  * @param {GraphData} graphData
  */
 export const updateAll = (
-  state: GraphState | WritableDraft<GraphState>,
+  state: GraphState | Draft<GraphState>,
   graphData: GraphData,
 ) => {
   if (graphData) {
