@@ -18,6 +18,7 @@ import {
 } from '../../../redux/graph/types';
 import { CATEGORICAL_COLOR, DARK_GREY, GREY } from '../../../constants/colors';
 import { normalizeColor } from '../../../utils/style-utils';
+import { DEFAULT_NODE_STYLE } from '../../../constants/graph-shapes';
 
 /**
  * Main function to style nodes
@@ -118,7 +119,10 @@ export const mapNodeSize = (
     const keyshapeStyle: Partial<NodeStyle['keyshape']> =
       nodeStyle?.keyshape ?? {};
 
-    const nodeStyleSize = Number(get(node, propertyName)) ** (1 / 3);
+    let nodeStyleSize = Number(get(node, propertyName)) ** (1 / 3);
+    nodeStyleSize = Number.isNaN(nodeStyleSize)
+      ? DEFAULT_NODE_STYLE.size
+      : nodeStyleSize;
 
     Object.assign(nodeStyle, {
       keyshape: Object.assign(keyshapeStyle, {
@@ -135,11 +139,14 @@ export const mapNodeSize = (
   const rangepLength = maxp - minp;
   const rangevLength = visualRange[1] - visualRange[0];
   nodes.forEach((node: IUserNode) => {
+    let nodeSize =
+      ((Number(get(node, propertyName)) ** (1 / 3) - minp) / rangepLength) *
+        rangevLength +
+      visualRange[0];
+    nodeSize = Number.isNaN(nodeSize) ? DEFAULT_NODE_STYLE.size : nodeSize;
+
     Object.assign(node.style.keyshape, {
-      size:
-        ((Number(get(node, propertyName)) ** (1 / 3) - minp) / rangepLength) *
-          rangevLength +
-        visualRange[0],
+      size: nodeSize,
     });
   });
 };
@@ -186,11 +193,20 @@ export const styleNodeSize = (
 ): void => {
   const keyShapeStyle: Partial<NodeStyle['keyshape']> =
     nodeStyle.keyshape ?? {};
+
   Object.assign(keyShapeStyle, {
     size,
   });
+
+  const offsetY = size - DEFAULT_NODE_STYLE.size;
+  const labelStyle: Partial<NodeStyle['label']> = nodeStyle.label ?? {};
+  Object.assign(labelStyle, {
+    offset: [0, offsetY],
+  });
+
   Object.assign(nodeStyle, {
     keyshape: keyShapeStyle,
+    label: labelStyle,
   });
 };
 

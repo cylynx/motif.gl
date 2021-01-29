@@ -34,7 +34,8 @@ export const defaultNodeStateStyle: {
   },
 };
 
-export const defaultNodeStyle: { style: Partial<NodeStyle> } = {
+export const defaultNodeStyle: { type: string; style: Partial<NodeStyle> } = {
+  type: 'graphin-circle',
   style: {
     badges: [],
     halo: {
@@ -44,7 +45,6 @@ export const defaultNodeStyle: { style: Partial<NodeStyle> } = {
       position: 'bottom',
       fill: '#3B3B3B',
       fontSize: 12,
-      offset: 0,
     },
     keyshape: {
       size: DEFAULT_NODE_STYLE.size,
