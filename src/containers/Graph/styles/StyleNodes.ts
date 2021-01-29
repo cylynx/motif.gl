@@ -120,6 +120,10 @@ export const mapNodeSize = (
       nodeStyle?.keyshape ?? {};
 
     let nodeStyleSize = Number(get(node, propertyName)) ** (1 / 3);
+
+    minp = nodeStyleSize < minp ? nodeStyleSize : minp;
+    maxp = nodeStyleSize > maxp ? nodeStyleSize : maxp;
+
     nodeStyleSize = Number.isNaN(nodeStyleSize)
       ? DEFAULT_NODE_STYLE.size
       : nodeStyleSize;
@@ -131,9 +135,6 @@ export const mapNodeSize = (
     });
 
     Object.assign(node, { style: nodeStyle });
-
-    minp = nodeStyleSize < minp ? nodeStyleSize : minp;
-    maxp = nodeStyleSize > maxp ? nodeStyleSize : maxp;
   });
 
   const rangepLength = maxp - minp;
