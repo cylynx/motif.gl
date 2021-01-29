@@ -1,4 +1,3 @@
-import { EdgeConfig, NodeConfig } from '@antv/graphin';
 import { IUserEdge, IUserNode } from '@antv/graphin/lib/typings/type';
 import { Value } from 'baseui/select';
 import { SelectVariableOption } from '../../components/SelectVariable/SelectVariable';
@@ -156,7 +155,7 @@ export interface Layout {
     | 'fruchterman'
     | 'mds'
     | 'comboForce'
-    | 'none';
+    | 'render';
   [key: string]: any;
   options?: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
