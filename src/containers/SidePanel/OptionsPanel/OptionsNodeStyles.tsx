@@ -49,6 +49,26 @@ const OptionsNodeStyles = () => {
     dispatch(GraphSlices.changeNodeStyle(data));
   };
 
+  const nodeSizeFormData = genNestedForm(
+    nodeSizeForm,
+    nodeStyle,
+    updateNodeStyle,
+    {
+      'property[0].options': numericNodeOptions,
+      'property[0].value':
+        numericNodeOptions.length > 0 ? numericNodeOptions[0].id : null,
+    },
+  );
+
+  const nodeColorFormData = genNestedForm(
+    nodeColorForm,
+    nodeStyle,
+    updateNodeStyle,
+    {
+      'legend[0].options': nodeOptions,
+    },
+  );
+
   return (
     <Accordion
       data-testid='options-panel:node-styles'
@@ -64,13 +84,8 @@ const OptionsNodeStyles = () => {
           content: (
             <Fragment>
               <NestedForm
-                data={genNestedForm(nodeSizeForm, nodeStyle, updateNodeStyle, {
-                  'property[0].options': numericNodeOptions,
-                  'property[0].value':
-                    numericNodeOptions.length > 0
-                      ? numericNodeOptions[0].id
-                      : null,
-                })}
+                data={nodeSizeFormData}
+                key={`${nodeSizeFormData.id}-${nodeSizeFormData.value}`}
               />
               <SimpleForm
                 data={genSimpleForm(nodeLabelForm, nodeStyle, updateNodeStyle, {
@@ -78,9 +93,8 @@ const OptionsNodeStyles = () => {
                 })}
               />
               <NestedForm
-                data={genNestedForm(nodeColorForm, nodeStyle, updateNodeStyle, {
-                  'legend[0].options': nodeOptions,
-                })}
+                data={nodeColorFormData}
+                key={`${nodeColorFormData.id}-${nodeColorFormData.value}`}
               />
               <SimpleForm
                 data={genSimpleForm(

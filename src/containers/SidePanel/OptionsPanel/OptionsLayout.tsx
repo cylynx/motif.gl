@@ -20,6 +20,8 @@ const OptionsLayout = () => {
 
   const updateLayout = (data: any) => dispatch(GraphSlices.changeLayout(data));
 
+  const formData = genNestedForm(layoutForm, layoutOptions, updateLayout);
+
   return (
     <Accordion
       data-testid='options-panel:layout-options'
@@ -34,8 +36,8 @@ const OptionsLayout = () => {
           key: 'layout',
           content: (
             <NestedForm
-              data={genNestedForm(layoutForm, layoutOptions, updateLayout)}
-              key={layout.type}
+              data={formData}
+              key={`${formData.id}-${formData.value}`}
             />
           ),
           expanded: true,

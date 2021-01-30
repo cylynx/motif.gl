@@ -50,6 +50,18 @@ const OptionsEdgeStyles = () => {
 
   const updateEdgeStyle = (data: any) =>
     dispatch(GraphSlices.changeEdgeStyle(data));
+
+  const edgeWidthFormData = genNestedForm(
+    edgeWidthForm,
+    edgeStyle,
+    updateEdgeStyle,
+    {
+      'property[0].options': numericEdgeOptions,
+      'property[0].value':
+        numericEdgeOptions.length > 0 ? numericEdgeOptions[0].id : null,
+    },
+  );
+
   return (
     <Accordion
       data-testid='options-panel:edge-styles'
@@ -65,13 +77,8 @@ const OptionsEdgeStyles = () => {
           content: (
             <Fragment>
               <NestedForm
-                data={genNestedForm(edgeWidthForm, edgeStyle, updateEdgeStyle, {
-                  'property[0].options': numericEdgeOptions,
-                  'property[0].value':
-                    numericEdgeOptions.length > 0
-                      ? numericEdgeOptions[0].id
-                      : null,
-                })}
+                data={edgeWidthFormData}
+                key={`${edgeWidthFormData.id}-${edgeWidthFormData.value}`}
               />
               <SimpleForm
                 data={genSimpleForm(edgeLabelForm, edgeStyle, updateEdgeStyle, {
