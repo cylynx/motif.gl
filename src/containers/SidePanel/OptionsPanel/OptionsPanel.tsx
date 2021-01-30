@@ -67,7 +67,7 @@ const OptionsPanel = () => {
     ) || [];
 
   const { layout, nodeStyle, edgeStyle } = styleOptions;
-  const layoutOptions = { layout: { id: layout.name, ...layout.options } };
+  const layoutOptions = { layout: { id: layout.type, ...layout } };
 
   const updateLayout = (data: any) => dispatch(GraphSlices.changeLayout(data));
   const updateNodeStyle = (data: any) => {
