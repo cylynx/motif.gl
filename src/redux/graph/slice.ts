@@ -176,7 +176,7 @@ const graph = createSlice({
       const defaultOptions = LAYOUT.OPTIONS.find((x) => x.type === id);
       state.styleOptions.layout = {
         type: id,
-        ...defaultOptions.options,
+        ...defaultOptions,
         ...options,
       };
     },
