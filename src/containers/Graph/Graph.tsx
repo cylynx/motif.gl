@@ -13,6 +13,7 @@ import {
   defaultNodeStyle,
   defaultEdgeStyle,
   defaultEdgeStateStyle,
+  lightTheme,
 } from '../../constants/graph-styles';
 
 export type GraphProps = {
@@ -124,6 +125,7 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
       defaultEdge={defaultEdgeStyle}
       nodeStateStyles={defaultNodeStateStyle}
       edgeStateStyles={defaultEdgeStateStyle}
+      theme={lightTheme}
     />
   );
 });

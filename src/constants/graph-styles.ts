@@ -1,4 +1,5 @@
 import { EdgeStyle, NodeStyle } from '@antv/graphin';
+import { ThemeType } from '@antv/graphin/lib/consts';
 import { DEFAULT_EDGE_STYLE, DEFAULT_NODE_STYLE, GREY } from './graph-shapes';
 import { normalizeColor } from '../utils/style-utils';
 import { mapEdgePattern } from '../containers/Graph/shape/utils';
@@ -118,4 +119,22 @@ export const defaultEdgeStyle: { style: Partial<EdgeStyle> } = {
       cursor: 'pointer',
     },
   },
+};
+
+export const lightTheme: ThemeType = {
+  mode: 'light',
+  primaryColor: DEFAULT_NODE_STYLE.color,
+  nodeSize: DEFAULT_NODE_STYLE.size,
+  edgeSize: DEFAULT_EDGE_STYLE.width,
+  edgePrimaryColor: DEFAULT_EDGE_STYLE.color,
+  background: '#FFFFFF',
+};
+
+export const darkTheme: ThemeType = {
+  mode: 'dark',
+  primaryColor: DEFAULT_NODE_STYLE.color,
+  nodeSize: DEFAULT_NODE_STYLE.size,
+  edgeSize: DEFAULT_EDGE_STYLE.width,
+  edgePrimaryColor: '#f5f2f2',
+  background: '#000000',
 };
