@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import produce, { Draft } from 'immer';
+import produce from 'immer';
 import {
   Accessors,
   GraphList,
@@ -38,12 +38,9 @@ const getGraphFiltered = createSelector(
 const getGraphVisible = createSelector(
   [getGraphFiltered, getStyleOptions],
   (graphFiltered: GraphData, styleOptions: StyleOptions) => {
-    const graphVisible = produce(
-      graphFiltered,
-      (draftState: Draft<GraphData>) => {
-        deriveVisibleGraph(draftState, styleOptions);
-      },
-    );
+    const graphVisible = produce(graphFiltered, (draftState: GraphData) => {
+      deriveVisibleGraph(draftState, styleOptions);
+    });
 
     return graphVisible;
   },

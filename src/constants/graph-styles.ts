@@ -39,6 +39,8 @@ export const defaultNodeStateStyle: { status: NodeStyle['status'] } = {
 };
 
 export const defaultNodeStyle: { style: Partial<NodeStyle> } = {
+  // @ts-ignore
+  type: 'circle',
   style: {
     badges: [],
     halo: {
