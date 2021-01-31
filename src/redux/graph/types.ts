@@ -1,4 +1,6 @@
-import { IUserEdge, IUserNode } from '@antv/graphin/lib/typings/type';
+/* eslint-disable import/no-extraneous-dependencies */
+import { IUserNode } from '@antv/graphin/lib/typings/type';
+import { EdgeConfig } from '@antv/g6';
 import { Value } from 'baseui/select';
 import { SelectVariableOption } from '../../components/SelectVariable/SelectVariable';
 import { HistogramProp } from '../../containers/SidePanel/FilterPanel/FilterSelection/RangePlot';
@@ -83,7 +85,7 @@ export type NodeEdgeCsv = {
   type: 'nodeEdgeCsv';
 };
 
-export declare type Edge = IUserEdge;
+export declare type Edge = EdgeConfig;
 export declare type Node = IUserNode;
 
 export type GraphFields = {
