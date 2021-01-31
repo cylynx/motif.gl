@@ -1,5 +1,6 @@
 import { EdgeStyle, NodeStyle } from '@antv/graphin';
 import { ThemeType } from '@antv/graphin/lib/consts';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Edge } from '../redux/graph/types';
 import { DEFAULT_EDGE_STYLE, DEFAULT_NODE_STYLE, GREY } from './graph-shapes';
 import { normalizeColor } from '../utils/style-utils';
@@ -115,6 +116,7 @@ export const defaultEdge: Edge = {
     stroke: edgeLineColor.dark,
     lineWidth: DEFAULT_EDGE_STYLE.width,
     lineAppendWidth: 4,
+    endArrow: DEFAULT_EDGE_STYLE.endArrow,
   },
 };
 

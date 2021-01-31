@@ -50,6 +50,10 @@ export const DEFAULT_EDGE_STYLE = {
   fontColor: EDGE_LABEL_DEFAULT_COLOR,
   fontFamily: DEFAULT_ICON_FONT_FAMILY,
   fontSize: 12,
+  endArrow: {
+    d: -1 / 2,
+    path: `M 0,0 L ${2},${2 / 2} L ${2},-${2 / 2} Z`,
+  },
 };
 
 export type EdgeStyleType = Partial<typeof DEFAULT_EDGE_STYLE>;

@@ -51,7 +51,7 @@ export const styleEdges = (
       styleEdgeLabel(edge, edgeStyleOptions.label);
     }
     if (edgeStyleOptions.arrow) {
-      // styleEdgeArrow(edgeStyle, edgeStyleOptions.arrow);
+      styleEdgeArrow(edgeStyle, edgeStyleOptions.arrow);
     }
 
     Object.assign(edge, {
@@ -202,10 +202,15 @@ export const styleEdgeArrow = (
   arrow: ArrowOptions,
 ): void => {
   const isArrowDisplay: boolean = arrow === 'display';
-  Object.assign(edgeStyle, {
-    startArrow: isArrowDisplay,
-    endArrow: isArrowDisplay,
-  });
+  if (isArrowDisplay) {
+    Object.assign(edgeStyle, {
+      endArrow: DEFAULT_EDGE_STYLE.endArrow,
+    });
+  } else {
+    Object.assign(edgeStyle, {
+      endArrow: false,
+    });
+  }
 };
 
 type MinMax = {
