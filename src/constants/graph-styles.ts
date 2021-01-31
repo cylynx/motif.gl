@@ -1,12 +1,11 @@
 import { EdgeStyle, NodeStyle } from '@antv/graphin';
 import { ThemeType } from '@antv/graphin/lib/consts';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { Edge } from '../redux/graph/types';
+import { Edge, Node } from '../redux/graph/types';
 import { DEFAULT_EDGE_STYLE, DEFAULT_NODE_STYLE, GREY } from './graph-shapes';
 import { normalizeColor } from '../utils/style-utils';
 import { mapEdgePattern } from '../containers/Graph/shape/utils';
 
-const nodeSize = DEFAULT_NODE_STYLE.size;
 const nodeLineWidth = 3;
 const nodeColor = normalizeColor(DEFAULT_NODE_STYLE.color);
 const grey = normalizeColor(GREY);
@@ -38,34 +37,32 @@ export const defaultNodeStateStyle: { status: NodeStyle['status'] } = {
   },
 };
 
-export const defaultNodeStyle: { style: Partial<NodeStyle> } = {
+export const defaultNode: Partial<Node> = {
   // @ts-ignore
   type: 'circle',
-  style: {
-    badges: [],
-    halo: {
-      fill: grey.dark,
-    },
-    label: {
-      position: 'bottom',
+  labelCfg: {
+    position: 'bottom',
+    style: {
+      // @ts-ignore
+      fontFamily: DEFAULT_NODE_STYLE.fontFamily,
+      fontSize: DEFAULT_NODE_STYLE.fontSize,
       fill: '#3B3B3B',
-      fontSize: 12,
     },
-    keyshape: {
-      size: DEFAULT_NODE_STYLE.size,
-      stroke: nodeColor.normal,
-      fill: nodeColor.dark,
-      lineWidth: nodeLineWidth,
-      opacity: 1,
-    },
-    icon: {
-      type: 'font',
-      value: '',
-      size: nodeSize,
-      fill: '#FFFFFF',
-      fontFamily: 'Material Icons',
-    },
+    size: DEFAULT_NODE_STYLE.size,
   },
+  style: {
+    stroke: nodeColor.normal,
+    fill: nodeColor.dark,
+    lineWidth: nodeLineWidth,
+  },
+  //   icon: {
+  //     type: 'font',
+  //     value: '',
+  //     size: nodeSize,
+  //     fill: '#FFFFFF',
+  //     fontFamily: 'Material Icons',
+  //   },
+  // },
 };
 
 const edgeLineColor = normalizeColor(DEFAULT_EDGE_STYLE.color);

@@ -1,9 +1,15 @@
 import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
 import shortid from 'shortid';
-import { IUserNode } from '@antv/graphin/lib/typings/type';
 import has from 'lodash/has';
-import { Edge, GraphList, GraphData, Accessors, EdgeNode } from '../types';
+import {
+  Node,
+  Edge,
+  GraphList,
+  GraphData,
+  Accessors,
+  EdgeNode,
+} from '../types';
 import {
   processJson,
   processNodeEdgeCsv,
@@ -11,7 +17,7 @@ import {
   validateMotifJson,
 } from './data';
 
-import { defaultEdge, defaultNodeStyle } from '../../../constants/graph-styles';
+import { defaultEdge, defaultNode } from '../../../constants/graph-styles';
 
 /**
  * Initial function to process json object with node, edge fields or motif json to required format
@@ -114,10 +120,10 @@ export const addRequiredFieldsJson = (
 /**
  * Created id field in the node based on nodeID accessor
  *
- * @param {IUserNode} node
+ * @param {Node} node
  * @param {Accessors} accessors
  */
-export const addNodeFields = (node: IUserNode, accessors: Accessors): void => {
+export const addNodeFields = (node: Node, accessors: Accessors): void => {
   const { nodeID } = accessors;
   generateIdKey(node, nodeID);
   addNodeStyleField(node);
@@ -180,16 +186,14 @@ const generateIdKey = (object: any, idAccessor: string | undefined): void => {
 };
 
 /**
- * Add Default Node Style into IUserNode's object.
+ * Add Default Node Style into Node's object.
  *
- * @param {IUserNode} obj
+ * @param {Node} obj
  * @return {void}
  */
-const addNodeStyleField = (obj: IUserNode): void => {
+const addNodeStyleField = (obj: Node): void => {
   if (isUndefined(obj.style)) {
-    Object.assign(obj, {
-      style: defaultNodeStyle.style,
-    });
+    Object.assign(obj, defaultNode);
   }
 };
 

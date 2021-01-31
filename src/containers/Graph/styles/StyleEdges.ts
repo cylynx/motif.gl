@@ -157,9 +157,7 @@ export const styleEdgeLabel = (edge: Edge, label: string): void => {
   if (label !== 'label') {
     let customLabel = '';
     customLabel = get(edge, label, '').toString();
-    Object.assign(edge, {
-      label: customLabel,
-    });
+    edge.label = customLabel;
   }
 };
 

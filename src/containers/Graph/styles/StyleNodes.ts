@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
 import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
-import { NodeStyle } from '@antv/graphin/lib/typings/type';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ShapeStyle, ILabelConfig } from '@antv/g6';
 import {
   GraphData,
   NodeStyleOptions,
@@ -34,19 +35,19 @@ export const styleNodes = (
 
   // For perf reasons, batch style operations which require a single loop through nodes
   data.nodes.forEach((node: Node) => {
-    const nodeStyle: Partial<NodeStyle> = node.style ?? {};
+    const nodeStyle: ShapeStyle = node.style ?? {};
 
     if (nodeStyleOptions.size && nodeStyleOptions.size.id === 'fixed') {
-      styleNodeSize(nodeStyle, nodeStyleOptions.size.value);
+      styleNodeSize(node, nodeStyleOptions.size.value);
     }
     if (nodeStyleOptions.color) {
       styleNodeColor(node, nodeStyle, nodeStyleOptions.color);
     }
     if (nodeStyleOptions.fontSize) {
-      styleNodeFontSize(nodeStyle, nodeStyleOptions.fontSize);
+      styleNodeFontSize(node, nodeStyleOptions.fontSize);
     }
     if (nodeStyleOptions.label) {
-      styleNodeLabel(node, nodeStyle, nodeStyleOptions.label);
+      styleNodeLabel(node, nodeStyleOptions.label);
     }
 
     Object.assign(node, {
@@ -111,10 +112,6 @@ export const mapNodeSize = (
   let maxp = -9999999999;
 
   nodes.forEach((node: Node) => {
-    const nodeStyle: Partial<NodeStyle> = node.style ?? {};
-    const keyshapeStyle: Partial<NodeStyle['keyshape']> =
-      nodeStyle?.keyshape ?? {};
-
     let nodeStyleSize = Number(get(node, propertyName)) ** (1 / 3);
 
     minp = nodeStyleSize < minp ? nodeStyleSize : minp;
@@ -123,14 +120,7 @@ export const mapNodeSize = (
     nodeStyleSize = Number.isNaN(nodeStyleSize)
       ? DEFAULT_NODE_STYLE.size
       : nodeStyleSize;
-
-    Object.assign(nodeStyle, {
-      keyshape: Object.assign(keyshapeStyle, {
-        size: nodeStyleSize,
-      }),
-    });
-
-    Object.assign(node, { style: nodeStyle });
+    node.size = nodeStyleSize;
   });
 
   const rangepLength = maxp - minp;
@@ -142,9 +132,7 @@ export const mapNodeSize = (
       visualRange[0];
     nodeSize = Number.isNaN(nodeSize) ? DEFAULT_NODE_STYLE.size : nodeSize;
 
-    Object.assign(node.style.keyshape, {
-      size: nodeSize,
-    });
+    node.size = nodeSize;
   });
 };
 
@@ -179,75 +167,46 @@ export const styleNodeSizeByProp = (
 /**
  * Style Node Size based on given values.
  *
- * @param nodeStyle
+ * @param node
  * @param size
  *
  * @return {void}
  */
-export const styleNodeSize = (
-  nodeStyle: Partial<NodeStyle>,
-  size: number,
-): void => {
-  const keyShapeStyle: Partial<NodeStyle['keyshape']> =
-    nodeStyle.keyshape ?? {};
-
-  Object.assign(keyShapeStyle, {
-    size,
-  });
-
-  const labelStyle: Partial<NodeStyle['label']> = nodeStyle.label ?? {};
-
-  Object.assign(nodeStyle, {
-    keyshape: keyShapeStyle,
-    label: labelStyle,
-  });
+export const styleNodeSize = (node: Node, size: number): void => {
+  node.size = size;
 };
 
 /**
  * Style Node's Font Size based on given values.
  *
- * @param nodeStyle
+ * @param node
  * @param fontSize
  *
  * @return {void}
  */
-export const styleNodeFontSize = (
-  nodeStyle: Partial<NodeStyle>,
-  fontSize: number,
-): void => {
-  const labelStyle: Partial<NodeStyle['label']> = nodeStyle.label ?? {};
-  Object.assign(labelStyle, { fontSize });
-  Object.assign(nodeStyle, { label: labelStyle });
+export const styleNodeFontSize = (node: Node, fontSize: number): void => {
+  const labelConfig: ILabelConfig = node.labelCfg ?? {};
+  const labelConfigStyle = labelConfig.style ?? {};
+
+  Object.assign(labelConfigStyle, { fontSize });
+  Object.assign(labelConfig, { style: labelConfigStyle });
+  Object.assign(node, { labelCfg: labelConfig });
 };
 
 /**
  * Style Node Label based on given Node Style Options
  *
  * @param {Node} node
- * @param {Partial<NodeStyle>} nodeStyle
+ * @param {ShapeStyle} nodeStyle
  * @param {string} label
  * @return {void}
  */
-export const styleNodeLabel = (
-  node: Node,
-  nodeStyle: Partial<NodeStyle>,
-  label: string,
-): void => {
-  const labelStyle: Partial<NodeStyle['label']> = node.style?.label ?? {};
-
-  let customLabel = '';
-
+export const styleNodeLabel = (node: Node, label: string): void => {
   if (label !== 'label') {
+    let customLabel = '';
     customLabel = get(node, label, '').toString();
+    node.label = customLabel;
   }
-
-  Object.assign(labelStyle, {
-    value: customLabel,
-  });
-
-  Object.assign(nodeStyle, {
-    label: labelStyle,
-  });
 };
 
 /**
@@ -256,27 +215,24 @@ export const styleNodeLabel = (
  * 2. Legend Selection
  *
  * @param {Node} node
- * @param {Partial<NodeStyle>} nodeStyle
+ * @param {ShapeStyle} nodeStyle
  * @param {NodeColor} option
  * @return {void}
  */
 export const styleNodeColor = (
   node: Node,
-  nodeStyle: Partial<NodeStyle>,
+  nodeStyle: ShapeStyle,
   option: NodeColor,
 ): void => {
   const { id } = option;
-  const nodeKeyShape: Partial<NodeStyle['keyshape']> = nodeStyle.keyshape ?? {};
 
   if (id === 'fixed') {
     const { value } = option as NodeColorFixed;
     const fixedNodeColor = normalizeColor(value);
 
     Object.assign(nodeStyle, {
-      keyshape: Object.assign(nodeKeyShape, {
-        fill: fixedNodeColor.dark,
-        stroke: fixedNodeColor.normal,
-      }),
+      fill: fixedNodeColor.dark,
+      stroke: fixedNodeColor.normal,
     });
 
     return;
@@ -289,10 +245,8 @@ export const styleNodeColor = (
     const nodeColor = normalizeColor(mapping[variableProperty as string]);
 
     Object.assign(nodeStyle, {
-      keyshape: Object.assign(nodeKeyShape, {
-        fill: nodeColor.dark,
-        stroke: nodeColor.normal,
-      }),
+      fill: nodeColor.dark,
+      stroke: nodeColor.normal,
     });
 
     return;
@@ -300,10 +254,8 @@ export const styleNodeColor = (
 
   const grey = normalizeColor(GREY);
   Object.assign(nodeStyle, {
-    keyshape: Object.assign(nodeKeyShape, {
-      fill: grey.dark,
-      stroke: grey.normal,
-    }),
+    fill: grey.dark,
+    stroke: grey.normal,
   });
 };
 

@@ -10,7 +10,7 @@ import { TooltipProps } from './Tooltip';
 import './graphin.css';
 import {
   defaultNodeStateStyle,
-  defaultNodeStyle,
+  defaultNode,
   defaultEdge,
   defaultEdgeStateStyle,
   lightTheme,
@@ -120,7 +120,8 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
       data={graphVisible as GraphinData}
       ref={ref}
       layout={layout}
-      defaultNode={defaultNodeStyle}
+      // @ts-ignore
+      defaultNode={defaultNode}
       // @ts-ignore
       defaultEdge={defaultEdge}
       nodeStateStyles={defaultNodeStateStyle}
