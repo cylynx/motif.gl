@@ -202,15 +202,9 @@ export const styleEdgeArrow = (
   arrow: ArrowOptions,
 ): void => {
   const isArrowDisplay: boolean = arrow === 'display';
-  if (isArrowDisplay) {
-    Object.assign(edgeStyle, {
-      endArrow: DEFAULT_EDGE_STYLE.endArrow,
-    });
-  } else {
-    Object.assign(edgeStyle, {
-      endArrow: false,
-    });
-  }
+  Object.assign(edgeStyle, {
+    endArrow: isArrowDisplay ? DEFAULT_EDGE_STYLE.endArrow : false,
+  });
 };
 
 type MinMax = {
