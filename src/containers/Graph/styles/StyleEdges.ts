@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import get from 'lodash/get';
+import groupBy from 'lodash/groupBy';
 import { Draft } from 'immer';
 import { EdgeStyle, IUserEdge } from '@antv/graphin/lib/typings/type';
 import {
@@ -10,10 +11,7 @@ import {
   ArrowOptions,
 } from '../../../redux/graph/types';
 import { normalizeColor, NormalizedColor } from '../../../utils/style-utils';
-import {
-  DEFAULT_EDGE_STYLE,
-  DEFAULT_NODE_STYLE,
-} from '../../../constants/graph-shapes';
+import { DEFAULT_EDGE_STYLE } from '../../../constants/graph-shapes';
 import { EdgePattern, mapEdgePattern } from '../shape/utils';
 
 /**
@@ -27,6 +25,9 @@ export const styleEdges = (
   data: Draft<GraphData>,
   edgeStyleOptions: EdgeStyleOptions,
 ): void => {
+  // Assign edge type - line, loop or quadratic
+  deriveEdgeType(data);
+
   // Separated out as it cannot be done in the loop
   if (edgeStyleOptions.width && edgeStyleOptions.width.id !== 'fixed') {
     styleEdgeWidthByProp(data, edgeStyleOptions.width);
@@ -272,4 +273,48 @@ export const getMinMaxValue = (data: GraphData, edgeWidth: string): MinMax => {
     min: Math.min(...(arrValue as number[])),
     max: Math.max(...(arrValue as number[])),
   };
+};
+
+/**
+ * Derive edge type (line, loop or quadratic) based on a given GraphData.
+ * Assign type = loop if edges have the same source and target.
+ * Assign type = line if the edge is the only edge connecting the two nodes.
+ * Assign type = quadratic if the edge is one of many connecting the two nodes.
+ * Quadratic edges are assigned an offset and bundled based on their source and target.
+ *
+ * @param {GraphData} data
+ */
+export const deriveEdgeType = (data: GraphData): void => {
+  const noLoopEdges = data.edges.filter((edge) => edge.source !== edge.target);
+  const loopEdges = data.edges.filter((edge) => edge.source === edge.target);
+  const groups = groupBy(noLoopEdges, (edge) => {
+    // a => b !== b => a
+    return `${edge.source}-${edge.target}`;
+  });
+
+  for (const edge of loopEdges) {
+    edge.type = 'loop';
+  }
+
+  for (const edge of noLoopEdges) {
+    const group = groups[`${edge.source}-${edge.target}`];
+    const revGroup = groups[`${edge.target}-${edge.source}`] || [];
+    const isBidirection = revGroup.length > 0;
+    if (group.length === 1 && !isBidirection) {
+      edge.type = 'line';
+    } else if (group.length > 1 && !isBidirection) {
+      // If single direction, alternate the edges offset e.g. 20, -20, 40, -40
+      edge.type = 'quadratic';
+      const index = group.findIndex((e) => e.id === edge.id);
+      const EVEN_OFFSET = group.length % 2 === 0 ? 1 : 0;
+      const OFFSET = Math.round((index + EVEN_OFFSET) / 2) * 20;
+      edge.curveOffset = index % 2 === 0 ? OFFSET : -OFFSET;
+    } else {
+      // If bidirectional, each direction will have it's own distinct group
+      edge.type = 'quadratic';
+      const index = group.findIndex((e) => e.id === edge.id);
+      const OFFSET = (index + 1) * 20;
+      edge.curveOffset = -OFFSET;
+    }
+  }
 };
