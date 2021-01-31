@@ -11,7 +11,7 @@ import './graphin.css';
 import {
   defaultNodeStateStyle,
   defaultNodeStyle,
-  defaultEdgeStyle,
+  defaultEdge,
   defaultEdgeStateStyle,
   lightTheme,
 } from '../../constants/graph-styles';
@@ -122,7 +122,7 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
       layout={layout}
       defaultNode={defaultNodeStyle}
       // @ts-ignore
-      defaultEdge={defaultEdgeStyle}
+      defaultEdge={defaultEdge}
       nodeStateStyles={defaultNodeStateStyle}
       edgeStateStyles={defaultEdgeStateStyle}
       theme={lightTheme}

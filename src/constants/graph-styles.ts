@@ -1,5 +1,6 @@
 import { EdgeStyle, NodeStyle } from '@antv/graphin';
 import { ThemeType } from '@antv/graphin/lib/consts';
+import { Edge } from '../redux/graph/types';
 import { DEFAULT_EDGE_STYLE, DEFAULT_NODE_STYLE, GREY } from './graph-shapes';
 import { normalizeColor } from '../utils/style-utils';
 import { mapEdgePattern } from '../containers/Graph/shape/utils';
@@ -97,27 +98,23 @@ export const defaultEdgeStateStyle: {
   },
 };
 
-export const defaultEdgeStyle: { style: Partial<EdgeStyle> } = {
-  style: {
-    halo: {
-      lineWidth: DEFAULT_EDGE_STYLE.width + 3,
-      opacity: 1,
-      cursor: 'pointer',
-    },
-    label: {
-      position: 'T',
-      autoRote: true,
-      fill: edgeFontColor.dark,
+export const defaultEdge: Edge = {
+  labelCfg: {
+    position: 'T',
+    autoRotate: true,
+    style: {
+      // @ts-ignore
       fontFamily: DEFAULT_EDGE_STYLE.fontFamily,
+      fill: edgeFontColor.dark,
+      textBaseline: 'bottom',
     },
-    keyshape: {
-      lineWidth: DEFAULT_EDGE_STYLE.width,
-      stroke: edgeLineColor.dark,
-      opacity: 0.8,
-      lineDash: edgeLinePattern,
-      lineAppendWidth: 4,
-      cursor: 'pointer',
-    },
+  },
+  style: {
+    opacity: 0.8,
+    lineDash: edgeLinePattern,
+    stroke: edgeLineColor.dark,
+    lineWidth: DEFAULT_EDGE_STYLE.width,
+    lineAppendWidth: 4,
   },
 };
 

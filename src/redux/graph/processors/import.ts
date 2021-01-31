@@ -1,8 +1,9 @@
 import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
 import shortid from 'shortid';
-import { IUserEdge, IUserNode } from '@antv/graphin/lib/typings/type';
+import { IUserNode } from '@antv/graphin/lib/typings/type';
 import has from 'lodash/has';
+import { Edge, GraphList, GraphData, Accessors, EdgeNode } from '../types';
 import {
   processJson,
   processNodeEdgeCsv,
@@ -10,11 +11,7 @@ import {
   validateMotifJson,
 } from './data';
 
-import { GraphList, GraphData, Accessors, EdgeNode } from '../types';
-import {
-  defaultEdgeStyle,
-  defaultNodeStyle,
-} from '../../../constants/graph-styles';
+import { defaultEdge, defaultNodeStyle } from '../../../constants/graph-styles';
 
 /**
  * Initial function to process json object with node, edge fields or motif json to required format
@@ -130,10 +127,10 @@ export const addNodeFields = (node: IUserNode, accessors: Accessors): void => {
 /**
  * Create id, source, target field in edge based on accessors
  *
- * @param {IUserEdge} edge
+ * @param {Edge} edge
  * @param {Accessors} accessors
  */
-export const addEdgeFields = (edge: IUserEdge, accessors: Accessors): void => {
+export const addEdgeFields = (edge: Edge, accessors: Accessors): void => {
   const { edgeSource, edgeTarget, edgeID } = accessors;
 
   const edgeSourceValue = get(edge, edgeSource);
@@ -197,16 +194,14 @@ const addNodeStyleField = (obj: IUserNode): void => {
 };
 
 /**
- * Add Default Edge Style into IUserEdge's object.
+ * Add Default Edge Style into User's edge object.
  *
- * @param {IUserNode} obj
+ * @param {Edge} obj
  * @return {void}
  */
-const addEdgeStyleField = (obj: IUserEdge): void => {
+const addEdgeStyleField = (obj: Edge): void => {
   if (isUndefined(obj.style)) {
-    Object.assign(obj, {
-      style: defaultEdgeStyle.style,
-    });
+    Object.assign(obj, defaultEdge);
   }
 };
 
