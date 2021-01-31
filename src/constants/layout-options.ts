@@ -4,22 +4,24 @@ import { Layout } from '../redux/graph/types';
 
 export const DAGRE_DEFAULT: Layout = {
   type: 'dagre',
-  rankdir: 'LR',
+  rankdir: 'TB',
   rankSep: 50,
   nodeSep: 12,
-  // align:'DL',
+  workerEnabled: true,
+  // align: 'UL',
   // controlPoints: true,
 };
 
 export const CIRCLE_DEFAULT: Layout = {
   type: 'circular',
-  startRadius: 100,
-  endRadius: 100,
+  startRadius: 250,
+  endRadius: 250,
   angleRatio: 1,
+  divisions: 5,
+  workerEnabled: true,
   // center: [200, 200],
   // radius: null,
   // clockwise: false,
-  // divisions: 5,
   // ordering: 'degree',
 };
 
@@ -52,7 +54,7 @@ export const RADIAL_DEFAULT: Layout = {
 
 export const CONCENTRIC_DEFAULT: Layout = {
   type: 'concentric',
-  minNodeSpacing: 10,
+  minNodeSpacing: 50,
   preventOverlap: true,
   workerEnabled: true,
   // nodeSize: 30,
@@ -96,13 +98,14 @@ export const FORCE_DEFAULT: Layout = {
 
 export const FRUCHTERMAN_DEFAULT: Layout = {
   type: 'fruchterman',
+  clustering: true,
+  gravity: 10,
+  clusterGravity: 10,
+  speed: 2,
   workerEnabled: true,
   gpuEnabled: true,
   // center: [200, 200],
   // gravity: 20,
-  // speed: 2,
-  // clustering: true,
-  // clusterGravity: 30,
   // maxIteration: 2000,
 };
 
@@ -127,6 +130,7 @@ export const OPTIONS: Layout[] = [
   DAGRE_DEFAULT,
   RADIAL_DEFAULT,
   GFORCE_DEFAULT,
+  FRUCHTERMAN_DEFAULT,
   { type: 'render' },
   // FORCE_DEFAULT,
   // FRUCHTERMAN_DEFAULT,
@@ -141,6 +145,7 @@ export const LAYOUT_NAMES = [
   { label: 'Sequential', id: 'dagre' },
   { label: 'Circular', id: 'circular' },
   { label: 'Force-directed', id: 'gForce' },
+  { label: 'Fruchterman-force', id: 'fruchterman' },
   { label: 'X Y Coordinates', id: 'render' },
   // { label: 'Fruchterman', id: 'fruchterman' },
   // { label: 'Combo Force', id: 'comboForce' },

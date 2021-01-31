@@ -101,11 +101,11 @@ export const defaultEdgeStateStyle: {
 
 export const defaultEdge: Edge = {
   labelCfg: {
-    position: 'T',
     autoRotate: true,
     style: {
       // @ts-ignore
       fontFamily: DEFAULT_EDGE_STYLE.fontFamily,
+      fontSize: DEFAULT_EDGE_STYLE.fontSize,
       fill: edgeFontColor.dark,
       textBaseline: 'bottom',
     },
