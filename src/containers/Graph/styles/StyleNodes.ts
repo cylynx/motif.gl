@@ -1,16 +1,12 @@
 /* eslint-disable no-param-reassign */
 import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
-import {
-  IUserEdge,
-  IUserNode,
-  NodeStyle,
-} from '@antv/graphin/lib/typings/type';
-import { Draft } from 'immer';
+import { NodeStyle } from '@antv/graphin/lib/typings/type';
 import {
   GraphData,
   NodeStyleOptions,
   Node,
+  Edge,
   NodeColor,
   NodeSize,
   NodeColorFixed,
@@ -28,7 +24,7 @@ import { DEFAULT_NODE_STYLE } from '../../../constants/graph-shapes';
  * @return {void}
  */
 export const styleNodes = (
-  data: Draft<GraphData>,
+  data: GraphData,
   nodeStyleOptions: NodeStyleOptions,
 ): void => {
   // Separated out as it cannot be done in the loop
@@ -37,7 +33,7 @@ export const styleNodes = (
   }
 
   // For perf reasons, batch style operations which require a single loop through nodes
-  data.nodes.forEach((node: IUserNode) => {
+  data.nodes.forEach((node: Node) => {
     const nodeStyle: Partial<NodeStyle> = node.style ?? {};
 
     if (nodeStyleOptions.size && nodeStyleOptions.size.id === 'fixed') {
@@ -107,14 +103,14 @@ export const generateDefaultColorMap = (
  * @return {void}
  */
 export const mapNodeSize = (
-  nodes: IUserNode[],
+  nodes: Node[],
   propertyName: string,
   visualRange: [number, number],
 ): void => {
   let minp = 9999999999;
   let maxp = -9999999999;
 
-  nodes.forEach((node: IUserNode) => {
+  nodes.forEach((node: Node) => {
     const nodeStyle: Partial<NodeStyle> = node.style ?? {};
     const keyshapeStyle: Partial<NodeStyle['keyshape']> =
       nodeStyle?.keyshape ?? {};
@@ -139,7 +135,7 @@ export const mapNodeSize = (
 
   const rangepLength = maxp - minp;
   const rangevLength = visualRange[1] - visualRange[0];
-  nodes.forEach((node: IUserNode) => {
+  nodes.forEach((node: Node) => {
     let nodeSize =
       ((Number(get(node, propertyName)) ** (1 / 3) - minp) / rangepLength) *
         rangevLength +
@@ -227,13 +223,13 @@ export const styleNodeFontSize = (
 /**
  * Style Node Label based on given Node Style Options
  *
- * @param {IUserNode} node
+ * @param {Node} node
  * @param {Partial<NodeStyle>} nodeStyle
  * @param {string} label
  * @return {void}
  */
 export const styleNodeLabel = (
-  node: IUserNode,
+  node: Node,
   nodeStyle: Partial<NodeStyle>,
   label: string,
 ): void => {
@@ -259,13 +255,13 @@ export const styleNodeLabel = (
  * 1. Node Option Filters
  * 2. Legend Selection
  *
- * @param {IUserNode} node
+ * @param {Node} node
  * @param {Partial<NodeStyle>} nodeStyle
  * @param {NodeColor} option
  * @return {void}
  */
 export const styleNodeColor = (
-  node: IUserNode,
+  node: Node,
   nodeStyle: Partial<NodeStyle>,
   option: NodeColor,
 ): void => {
@@ -317,9 +313,9 @@ export const styleNodeColor = (
  * @param {GraphData} data
  * @param {string} id node id
  *
- * @return {IUserEdge[]}
+ * @return {Edge[]}
  */
-export const findConnectedEdges = (data: GraphData, id: string): IUserEdge[] =>
+export const findConnectedEdges = (data: GraphData, id: string): Edge[] =>
   data.edges.filter((e) => e.source === id || e.target === id);
 
 /**
