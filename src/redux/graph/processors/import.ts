@@ -192,9 +192,11 @@ const generateIdKey = (object: any, idAccessor: string | undefined): void => {
  * @return {void}
  */
 const addNodeStyleField = (obj: Node): void => {
-  if (isUndefined(obj.style)) {
-    Object.assign(obj, defaultNode);
-  }
+  // TODO: Determine best way to inject defaultStyles
+  // if (isUndefined(obj.style)) {
+  //   Object.assign(obj, defaultNode);
+  // }
+  Object.assign(obj, defaultNode);
 };
 
 /**
@@ -204,9 +206,11 @@ const addNodeStyleField = (obj: Node): void => {
  * @return {void}
  */
 const addEdgeStyleField = (obj: Edge): void => {
-  if (isUndefined(obj.style)) {
-    Object.assign(obj, defaultEdge);
-  }
+  // TODO: Determine best way to inject defaultStyles
+  // if (isUndefined(obj.style)) {
+  //   Object.assign(obj, defaultEdge);
+  // }
+  Object.assign(obj, defaultEdge);
 };
 
 const formatLabelStyle = (obj: EdgeNode): void => {
