@@ -34,8 +34,6 @@ export const defaultNodeStateStyle: {
     hover: {},
     active: {
       keyshape: {
-        stroke: 'darkgreen',
-        fill: 'green',
         lineWidth: selectedLineWidth,
       },
     },
@@ -60,21 +58,6 @@ export const defaultNode: Partial<Node> = {
     stroke: nodeColor.normal,
     fill: nodeColor.dark,
     lineWidth: nodeLineWidth,
-  },
-  stateStyles: {
-    status: {
-      selected: {},
-      hover: {
-        fill: 'black',
-      },
-      active: {
-        fill: 'black',
-      },
-      inactive: {
-        fill: 'grey',
-      },
-      disable: {},
-    },
   },
   //   icon: {
   //     type: 'font',

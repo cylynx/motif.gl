@@ -1,12 +1,13 @@
-import G6, { G6Event, IG6GraphEvent, INode, IEdge } from '@antv/g6';
+import Graphin, { IG6GraphEvent } from '@antv/graphin';
+import { G6Event, IEdge, INode } from '@antv/g6';
 import { interactionStates } from '../../../constants/graph-shapes';
 
-export default (g6: typeof G6) => {
-  g6.registerBehavior('activate-relations', {
+export default (graphin: typeof Graphin) => {
+  graphin.registerBehavior('activate-relations', {
     getDefaultCfg() {
       return {
-        activeState: 'highlight.light',
-        inactiveState: 'highlight.dark',
+        activeState: 'active',
+        inactiveState: 'inactive',
       };
     },
     getEvents(): { [key in G6Event]?: string } {

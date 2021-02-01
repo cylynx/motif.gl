@@ -1,10 +1,11 @@
-import G6, { IG6GraphEvent, IGraph, INode, IEdge } from '@antv/g6';
+import { IG6GraphEvent, IGraph, INode, IEdge } from '@antv/g6';
+import Graphin from '@antv/graphin';
 import { interactionStates } from '../../../constants/graph-shapes';
 
 // TODO: sort out behaviours especialyl for clearstate
 
-export default (g6: typeof G6) => {
-  g6.registerBehavior('graphin-highlight', {
+export default (graphin: typeof Graphin) => {
+  graphin.registerBehavior('graphin-highlight', {
     getDefaultCfg() {
       return {
         multiple: true,
