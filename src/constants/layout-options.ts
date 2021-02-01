@@ -68,12 +68,12 @@ export const CONCENTRIC_DEFAULT: Layout = {
   // sortBy: 'degree',
 };
 
-export const GFORCE_DEFAULT: Layout = {
-  type: 'gForce',
-  coulombDisScale: 0.005,
-  gravity: 10,
-  workerEnabled: true,
-  gpuEnabled: true,
+export const GRAPHIN_FORCE_DEFAULT: Layout = {
+  type: 'graphin-force',
+  // coulombDisScale: 0.005,
+  // gravity: 10,
+  // workerEnabled: true,
+  // gpuEnabled: true,
   // nodeStrength: 1000,
   // edgeStrength: 200,
   // center: [200, 200], // The center of the graph by default
@@ -129,7 +129,7 @@ export const OPTIONS: Layout[] = [
   CIRCLE_DEFAULT,
   DAGRE_DEFAULT,
   RADIAL_DEFAULT,
-  GFORCE_DEFAULT,
+  GRAPHIN_FORCE_DEFAULT,
   FRUCHTERMAN_DEFAULT,
   { type: 'render' },
   // FORCE_DEFAULT,
@@ -144,7 +144,7 @@ export const LAYOUT_NAMES = [
   { label: 'Grid', id: 'grid' },
   { label: 'Sequential', id: 'dagre' },
   { label: 'Circular', id: 'circular' },
-  { label: 'Force-directed', id: 'gForce' },
+  { label: 'Force-directed', id: 'graphin-force' },
   { label: 'Fruchterman-force', id: 'fruchterman' },
   { label: 'X Y Coordinates', id: 'render' },
   // { label: 'Fruchterman', id: 'fruchterman' },

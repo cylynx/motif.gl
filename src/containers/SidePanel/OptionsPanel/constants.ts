@@ -86,26 +86,7 @@ export const layoutForm: NestedFormData = {
       max: 100,
     },
   ],
-  gForce: [
-    {
-      id: 'gravity',
-      label: 'Gravity',
-      type: 'slider',
-      value: LAYOUT.GFORCE_DEFAULT.gravity,
-      min: 1,
-      max: 500,
-      step: 1,
-    },
-    {
-      id: 'coulombDisScale',
-      label: 'Replusive Force',
-      type: 'slider',
-      value: LAYOUT.GFORCE_DEFAULT.coulombDisScale,
-      min: 0.001,
-      max: 0.05,
-      step: 0.001,
-    },
-  ],
+  'graphin-force': [],
   fruchterman: [
     {
       id: 'gravity',
