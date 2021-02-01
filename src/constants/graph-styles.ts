@@ -10,7 +10,9 @@ const nodeColor = normalizeColor(DEFAULT_NODE_STYLE.color);
 const grey = normalizeColor(GREY);
 
 const selectedLineWidth = nodeLineWidth * 2;
-export const defaultNodeStateStyle: { status: NodeStyle['status'] } = {
+export const defaultNodeStateStyle: {
+  status: NodeStyle['status'];
+} = {
   status: {
     selected: {
       badges: [],
@@ -30,7 +32,13 @@ export const defaultNodeStateStyle: { status: NodeStyle['status'] } = {
       },
     },
     hover: {},
-    active: {},
+    active: {
+      keyshape: {
+        stroke: 'darkgreen',
+        fill: 'green',
+        lineWidth: selectedLineWidth,
+      },
+    },
     inactive: {},
     disable: {},
   },
@@ -52,6 +60,21 @@ export const defaultNode: Partial<Node> = {
     stroke: nodeColor.normal,
     fill: nodeColor.dark,
     lineWidth: nodeLineWidth,
+  },
+  stateStyles: {
+    status: {
+      selected: {},
+      hover: {
+        fill: 'black',
+      },
+      active: {
+        fill: 'black',
+      },
+      inactive: {
+        fill: 'grey',
+      },
+      disable: {},
+    },
   },
   //   icon: {
   //     type: 'font',

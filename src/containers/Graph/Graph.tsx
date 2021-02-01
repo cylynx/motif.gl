@@ -18,6 +18,7 @@ import {
   defaultEdgeStateStyle,
   lightTheme,
 } from '../../constants/graph-styles';
+import SampleBehavior from './behaviors/SampleBehavior';
 
 export type GraphProps = {
   setTooltip: (tooltip: TooltipProps | null) => void;
@@ -129,9 +130,8 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
       defaultNode={defaultNode}
       // @ts-ignore
       defaultEdge={defaultEdge}
-      nodeStateStyles={defaultNodeStateStyle}
-      edgeStateStyles={defaultEdgeStateStyle}
-      theme={lightTheme}
+      // nodeStateStyles={defaultNodeStateStyle}
+      // edgeStateStyles={defaultEdgeStateStyle}
     >
       <DragCanvas shouldBegin={() => true} />
     </Graphin>

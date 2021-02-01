@@ -4,14 +4,16 @@
 
 // @ts-nocheck
 import { Utils } from '@antv/graphin';
+import { IUserNode } from '@antv/graphin/lib/typings/type';
 import { GraphData, GraphList } from '../redux/graph';
 
 export const RandomData = () => {
   const data = Utils.mock(15)
     .random()
     .graphin();
-  data.nodes.forEach((n) => {
+  data.nodes.forEach((n: IUserNode) => {
     n.numeric = Math.floor(Math.random() * 100 + 1);
+    delete n.type;
   });
 
   data.metadata = {
@@ -23,6 +25,9 @@ export const CircleData = () => {
   const data = Utils.mock(10)
     .circle()
     .graphin();
+
+  data.nodes.forEach((n) => delete n.type);
+
   data.edges.forEach((e) => {
     e.numeric = Math.floor(Math.random() * 10 + 1);
   });

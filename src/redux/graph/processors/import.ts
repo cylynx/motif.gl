@@ -1,15 +1,7 @@
 import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
 import shortid from 'shortid';
-import has from 'lodash/has';
-import {
-  Node,
-  Edge,
-  GraphList,
-  GraphData,
-  Accessors,
-  EdgeNode,
-} from '../types';
+import { Node, Edge, GraphList, GraphData, Accessors } from '../types';
 import {
   processJson,
   processNodeEdgeCsv,
@@ -17,7 +9,8 @@ import {
   validateMotifJson,
 } from './data';
 
-import { defaultEdge, defaultNode } from '../../../constants/graph-styles';
+import { styleNodeLabel } from '../../../containers/Graph/styles/StyleNodes';
+import { styleEdgeLabel } from '../../../containers/Graph/styles/StyleEdges';
 
 /**
  * Initial function to process json object with node, edge fields or motif json to required format
@@ -126,8 +119,7 @@ export const addRequiredFieldsJson = (
 export const addNodeFields = (node: Node, accessors: Accessors): void => {
   const { nodeID } = accessors;
   generateIdKey(node, nodeID);
-  addNodeStyleField(node);
-  formatLabelStyle(node);
+  styleNodeLabel(node, 'id');
 };
 
 /**
@@ -152,8 +144,7 @@ export const addEdgeFields = (edge: Edge, accessors: Accessors): void => {
   });
 
   generateIdKey(edge, edgeID);
-  addEdgeStyleField(edge);
-  formatLabelStyle(edge);
+  styleEdgeLabel(edge, 'id');
 };
 
 /**
@@ -181,47 +172,6 @@ const generateIdKey = (object: any, idAccessor: string | undefined): void => {
   } else {
     Object.assign(object, {
       id: get(object, idAccessor).toString(),
-    });
-  }
-};
-
-/**
- * Add Default Node Style into Node's object.
- *
- * @param {Node} obj
- * @return {void}
- */
-const addNodeStyleField = (obj: Node): void => {
-  // TODO: Determine best way to inject defaultStyles
-  // if (isUndefined(obj.style)) {
-  //   Object.assign(obj, defaultNode);
-  // }
-  Object.assign(obj, defaultNode);
-};
-
-/**
- * Add Default Edge Style into User's edge object.
- *
- * @param {Edge} obj
- * @return {void}
- */
-const addEdgeStyleField = (obj: Edge): void => {
-  // TODO: Determine best way to inject defaultStyles
-  // if (isUndefined(obj.style)) {
-  //   Object.assign(obj, defaultEdge);
-  // }
-  Object.assign(obj, defaultEdge);
-};
-
-const formatLabelStyle = (obj: EdgeNode): void => {
-  const LABEL_KEY = 'label';
-  const isObjHasLabel: boolean = has(obj, LABEL_KEY);
-
-  if (isObjHasLabel) {
-    Object.assign(obj.style, {
-      label: {
-        value: obj[LABEL_KEY],
-      },
     });
   }
 };
