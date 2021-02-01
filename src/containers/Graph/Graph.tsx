@@ -1,8 +1,11 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React, { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useStyletron } from 'baseui';
-import Graphin, { GraphinContextType, IG6GraphEvent } from '@antv/graphin';
+import Graphin, {
+  GraphinContextType,
+  IG6GraphEvent,
+  Behaviors,
+} from '@antv/graphin';
 import { GraphinData } from '@antv/graphin/lib/typings/type';
 import { interactionStates } from '../../constants/graph-shapes';
 import { GraphSelectors, Layout } from '../../redux/graph';
@@ -115,6 +118,8 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
     };
   }, [setTooltip]);
 
+  const { DragCanvas } = Behaviors;
+
   return (
     <Graphin
       data={graphVisible as GraphinData}
@@ -127,7 +132,9 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
       nodeStateStyles={defaultNodeStateStyle}
       edgeStateStyles={defaultEdgeStateStyle}
       theme={lightTheme}
-    />
+    >
+      <DragCanvas shouldBegin={() => true} />
+    </Graphin>
   );
 });
 
