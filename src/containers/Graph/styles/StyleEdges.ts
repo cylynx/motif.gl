@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-param-reassign */
 import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';

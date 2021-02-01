@@ -1,7 +1,5 @@
-// @ts-nocheck
 import { EdgeStyle, NodeStyle } from '@antv/graphin';
 import { ThemeType } from '@antv/graphin/lib/consts';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Edge, Node } from '../redux/graph/types';
 import { DEFAULT_EDGE_STYLE, DEFAULT_NODE_STYLE, GREY } from './graph-shapes';
 import { normalizeColor } from '../utils/style-utils';

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import G6, { G6Event, IG6GraphEvent, INode, IEdge } from '@antv/g6';
 import { interactionStates } from '../../../constants/graph-shapes';
 

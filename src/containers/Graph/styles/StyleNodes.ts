@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { ShapeStyle, ILabelConfig } from '@antv/g6';
 import {
   GraphData,

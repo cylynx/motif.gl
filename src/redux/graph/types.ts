@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { NodeConfig, EdgeConfig } from '@antv/g6';
 import { Value } from 'baseui/select';
 import { SelectVariableOption } from '../../components/SelectVariable/SelectVariable';
@@ -153,6 +152,7 @@ export interface Layout {
     | 'dagre'
     | 'circular'
     | 'gForce'
+    | 'graphin-force'
     | 'fruchterman'
     | 'mds'
     | 'comboForce'
