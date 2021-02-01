@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
-    "@antv/graphin": "^2.0.0-beta.8",
+    "@antv/graphin": "^2.0.0-beta.9",
     "@reduxjs/toolkit": "^1.2.3",
     "d3-array": "^2.8.0",
     "d3-axis": "^2.0.0",

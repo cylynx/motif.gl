@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { EdgeStyle, NodeStyle } from '@antv/graphin';
 import { ThemeType } from '@antv/graphin/lib/consts';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -38,7 +39,6 @@ export const defaultNodeStateStyle: { status: NodeStyle['status'] } = {
 };
 
 export const defaultNode: Partial<Node> = {
-  // @ts-ignore
   type: 'circle',
   labelCfg: {
     position: 'bottom',
