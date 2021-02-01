@@ -5,7 +5,6 @@ import shortid from 'shortid';
 import get from 'lodash/get';
 // @ts-ignore
 import { Analyzer, DATA_TYPES as AnalyzerDatatypes } from 'type-analyzer';
-import { IUserEdge } from '@antv/graphin/lib/typings/type';
 import { notNullorUndefined } from '../../../utils/data-utils';
 import { Edge, Field, GraphData, Metadata, Node } from '../types';
 
@@ -177,7 +176,7 @@ export const processEdgeListCsv = async (
 ): Promise<GraphData> => {
   const { fields: edgeFields, json: edgeJson } = await processCsvData(edgeCsv);
   const edgeIds: string[] = [];
-  (edgeJson as IUserEdge[]).forEach((edge: IUserEdge) => {
+  (edgeJson as Edge[]).forEach((edge: Edge) => {
     edgeIds.push(edge[edgeSourceAccessor] as string);
     edgeIds.push(edge[edgeTargetAccessor] as string);
   });
@@ -192,7 +191,7 @@ export const processEdgeListCsv = async (
   };
   return {
     nodes: nodeJson,
-    edges: edgeJson as IUserEdge[],
+    edges: edgeJson as Edge[],
     metadata: graphMetadata,
   };
 };

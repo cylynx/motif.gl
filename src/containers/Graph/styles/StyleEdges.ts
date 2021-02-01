@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import get from 'lodash/get';
-import { Draft } from 'immer';
-import { EdgeStyle, IUserEdge } from '@antv/graphin/lib/typings/type';
+import groupBy from 'lodash/groupBy';
+import { ShapeStyle, ILabelConfig } from '@antv/g6';
 import {
   GraphData,
   EdgeStyleOptions,
@@ -10,10 +10,7 @@ import {
   ArrowOptions,
 } from '../../../redux/graph/types';
 import { normalizeColor, NormalizedColor } from '../../../utils/style-utils';
-import {
-  DEFAULT_EDGE_STYLE,
-  DEFAULT_NODE_STYLE,
-} from '../../../constants/graph-shapes';
+import { DEFAULT_EDGE_STYLE } from '../../../constants/graph-shapes';
 import { EdgePattern, mapEdgePattern } from '../shape/utils';
 
 /**
@@ -24,17 +21,20 @@ import { EdgePattern, mapEdgePattern } from '../shape/utils';
  * @return {*}  {Edge[]}
  */
 export const styleEdges = (
-  data: Draft<GraphData>,
+  data: GraphData,
   edgeStyleOptions: EdgeStyleOptions,
 ): void => {
+  // Assign edge type - line, loop or quadratic
+  deriveEdgeType(data);
+
   // Separated out as it cannot be done in the loop
   if (edgeStyleOptions.width && edgeStyleOptions.width.id !== 'fixed') {
     styleEdgeWidthByProp(data, edgeStyleOptions.width);
   }
 
   // For perf reasons, batch style operations which require a single loop through nodes
-  data.edges.forEach((edge: IUserEdge) => {
-    const edgeStyle: Partial<EdgeStyle> = edge.style ?? {};
+  data.edges.forEach((edge: Edge) => {
+    const edgeStyle: ShapeStyle = edge.style ?? {};
 
     if (edgeStyleOptions.width && edgeStyleOptions.width.id === 'fixed') {
       styleLineWidth(edgeStyle, edgeStyleOptions.width.value);
@@ -44,13 +44,13 @@ export const styleEdges = (
       styleEdgePattern(edgeStyle, edgeStyleOptions.pattern);
     }
     if (edgeStyleOptions.fontSize) {
-      styleEdgeFontSize(edgeStyle, edgeStyleOptions.fontSize);
+      styleEdgeFontSize(edge, edgeStyleOptions.fontSize);
     }
     if (edgeStyleOptions.label) {
-      styleEdgeLabel(edge, edgeStyle, edgeStyleOptions.label);
+      styleEdgeLabel(edge, edgeStyleOptions.label);
     }
     if (edgeStyleOptions.arrow) {
-      // styleEdgeArrow(edgeStyle, edgeStyleOptions.arrow);
+      styleEdgeArrow(edgeStyle, edgeStyleOptions.arrow);
     }
 
     Object.assign(edge, {
@@ -67,17 +67,15 @@ export const styleEdges = (
  * @param {[number, number]} visualRange
  */
 export const mapEdgeWidth = (
-  edges: IUserEdge[],
+  edges: Edge[],
   propertyName: string,
   visualRange: [number, number],
 ): void => {
   let minp = 9999999999;
   let maxp = -9999999999;
 
-  edges.forEach((edge: IUserEdge) => {
-    const edgeStyle: Partial<EdgeStyle> = edge.style ?? {};
-    const keyshapeStyle: Partial<EdgeStyle['keyshape']> =
-      edgeStyle.keyshape ?? {};
+  edges.forEach((edge: Edge) => {
+    const edgeStyle: ShapeStyle = edge.style ?? {};
 
     let edgeLineWidth = Number(get(edge, propertyName)) ** (1 / 3);
 
@@ -89,9 +87,7 @@ export const mapEdgeWidth = (
       : edgeLineWidth;
 
     Object.assign(edgeStyle, {
-      keyshape: Object.assign(keyshapeStyle, {
-        lineWidth: edgeLineWidth,
-      }),
+      lineWidth: edgeLineWidth,
     });
 
     Object.assign(edge, { style: edgeStyle });
@@ -100,7 +96,7 @@ export const mapEdgeWidth = (
   const rangepLength = maxp - minp;
   const rangevLength = visualRange[1] - visualRange[0];
 
-  edges.forEach((edge: IUserEdge) => {
+  edges.forEach((edge: Edge) => {
     let edgeLineWidth =
       ((Number(get(edge, propertyName)) ** (1 / 3) - minp) / rangepLength) *
         rangevLength +
@@ -110,7 +106,7 @@ export const mapEdgeWidth = (
       ? DEFAULT_EDGE_STYLE.width
       : edgeLineWidth;
 
-    Object.assign(edge.style.keyshape, {
+    Object.assign(edge.style, {
       lineWidth: edgeLineWidth,
     });
   });
@@ -119,27 +115,19 @@ export const mapEdgeWidth = (
 /**
  * Style Line Width based on Edge Filter Options
  *
- * @param {Partial<EdgeStyle>} edgeStyle
+ * @param {ShapeStyle} edgeStyle
  * @param {number} lineWidth
  * @return {void}
  */
 export const styleLineWidth = (
-  edgeStyle: Partial<EdgeStyle>,
+  edgeStyle: ShapeStyle,
   lineWidth: number,
 ): void => {
-  const keyShapeStyle: Partial<EdgeStyle['keyshape']> =
-    edgeStyle.keyshape ?? {};
-
   const edgeFontColor: NormalizedColor = normalizeColor(
     DEFAULT_EDGE_STYLE.fontColor,
   );
 
-  Object.assign(keyShapeStyle, {
-    lineWidth,
-    stroke: edgeFontColor.dark,
-  });
-
-  Object.assign(edgeStyle, { keyshape: keyShapeStyle });
+  Object.assign(edgeStyle, { lineWidth, stroke: edgeFontColor.dark });
 };
 
 /**
@@ -160,62 +148,44 @@ export const styleEdgeWidthByProp = (
 
 /**
  * Style Edge Label based on given value in Edge Filter Options
- * @param {IUserEdge} edge
- * @param {Partial<EdgeStyle>} edgeStyle
+ * @param {Edge} edge
  * @param {string} label
  * @return {void}
  */
-export const styleEdgeLabel = (
-  edge: IUserEdge,
-  edgeStyle: Partial<EdgeStyle>,
-  label: string,
-): void => {
-  const labelStyle: Partial<EdgeStyle['label']> = edge.style?.label ?? {};
-
-  let customLabel = '';
-
+export const styleEdgeLabel = (edge: Edge, label: string): void => {
   if (label !== 'label') {
+    let customLabel = '';
     customLabel = get(edge, label, '').toString();
+    edge.label = customLabel;
   }
-
-  Object.assign(labelStyle, {
-    value: customLabel,
-  });
-
-  Object.assign(edgeStyle, {
-    label: labelStyle,
-  });
 };
 
 export const styleEdgePattern = (
-  edgeStyle: Partial<EdgeStyle>,
+  edgeStyle: ShapeStyle,
   pattern: EdgePattern,
 ): void => {
-  const edgeKeyshape: Partial<EdgeStyle['keyshape']> = edgeStyle.keyshape ?? {};
-
   if (pattern === 'none') {
-    delete edgeKeyshape.lineDash;
+    delete edgeStyle.lineDash;
     return;
   }
 
-  Object.assign(edgeKeyshape, { lineDash: mapEdgePattern(pattern) });
-  Object.assign(edgeStyle, { keyshape: edgeKeyshape });
+  Object.assign(edgeStyle, { lineDash: mapEdgePattern(pattern) });
 };
 
 /**
  * Style Edge Font Size with given value by Edge Style Filter
  *
- * @param edgeStyle
+ * @param edge
  * @param fontSize
  * @return {void}
  */
-export const styleEdgeFontSize = (
-  edgeStyle: Partial<EdgeStyle>,
-  fontSize: number,
-): void => {
-  const edgeLabelStyle: Partial<EdgeStyle['label']> = edgeStyle.label ?? {};
-  Object.assign(edgeLabelStyle, { fontSize });
-  Object.assign(edgeStyle, { label: edgeLabelStyle });
+export const styleEdgeFontSize = (edge: Edge, fontSize: number): void => {
+  const labelConfig: ILabelConfig = edge.labelCfg ?? {};
+  const labelConfigStyle = labelConfig.style ?? {};
+
+  Object.assign(labelConfigStyle, { fontSize });
+  Object.assign(labelConfig, { style: labelConfigStyle });
+  Object.assign(edge, { labelCfg: labelConfig });
 };
 
 /**
@@ -225,13 +195,12 @@ export const styleEdgeFontSize = (
  * @return {void}
  */
 export const styleEdgeArrow = (
-  edgeStyle: Partial<EdgeStyle>,
+  edgeStyle: ShapeStyle,
   arrow: ArrowOptions,
 ): void => {
   const isArrowDisplay: boolean = arrow === 'display';
   Object.assign(edgeStyle, {
-    startArrow: isArrowDisplay,
-    endArrow: isArrowDisplay,
+    endArrow: isArrowDisplay ? DEFAULT_EDGE_STYLE.endArrow : false,
   });
 };
 
@@ -272,4 +241,48 @@ export const getMinMaxValue = (data: GraphData, edgeWidth: string): MinMax => {
     min: Math.min(...(arrValue as number[])),
     max: Math.max(...(arrValue as number[])),
   };
+};
+
+/**
+ * Derive edge type (line, loop or quadratic) based on a given GraphData.
+ * Assign type = loop if edges have the same source and target.
+ * Assign type = line if the edge is the only edge connecting the two nodes.
+ * Assign type = quadratic if the edge is one of many connecting the two nodes.
+ * Quadratic edges are assigned an offset and bundled based on their source and target.
+ *
+ * @param {GraphData} data
+ */
+export const deriveEdgeType = (data: GraphData): void => {
+  const noLoopEdges = data.edges.filter((edge) => edge.source !== edge.target);
+  const loopEdges = data.edges.filter((edge) => edge.source === edge.target);
+  const groups = groupBy(noLoopEdges, (edge) => {
+    // a => b !== b => a
+    return `${edge.source}-${edge.target}`;
+  });
+
+  for (const edge of loopEdges) {
+    edge.type = 'loop';
+  }
+
+  for (const edge of noLoopEdges) {
+    const group = groups[`${edge.source}-${edge.target}`];
+    const revGroup = groups[`${edge.target}-${edge.source}`] || [];
+    const isBidirection = revGroup.length > 0;
+    if (group.length === 1 && !isBidirection) {
+      edge.type = 'line';
+    } else if (group.length > 1 && !isBidirection) {
+      // If single direction, alternate the edges offset e.g. 20, -20, 40, -40
+      edge.type = 'quadratic';
+      const index = group.findIndex((e) => e.id === edge.id);
+      const EVEN_OFFSET = group.length % 2 === 0 ? 1 : 0;
+      const OFFSET = Math.round((index + EVEN_OFFSET) / 2) * 20;
+      edge.curveOffset = index % 2 === 0 ? OFFSET : -OFFSET;
+    } else {
+      // If bidirectional, each direction will have it's own distinct group
+      edge.type = 'quadratic';
+      const index = group.findIndex((e) => e.id === edge.id);
+      const OFFSET = (index + 1) * 20;
+      edge.curveOffset = -OFFSET;
+    }
+  }
 };

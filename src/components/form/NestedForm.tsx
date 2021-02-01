@@ -231,7 +231,7 @@ const NestedForm = ({ data }: { data: NestedFormData }) => {
                 : parsedValue;
             return (
               <Block
-                key={`${data[watchSelection[0].id]}_${id}`}
+                key={`${data.id}-${d.id}`}
                 display={labelPosition === 'left' ? 'flex' : 'block'}
                 marginBottom={labelPosition === 'left' ? 'scale200' : 0}
                 marginTop={labelPosition === 'left' ? 'scale200' : 0}

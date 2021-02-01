@@ -72,12 +72,7 @@ const initialState: GraphState = {
     edgeTarget: 'target',
   },
   styleOptions: {
-    layout: {
-      type: 'concentric',
-      options: {
-        minNodeSpacing: 60,
-      },
-    },
+    layout: LAYOUT.CONCENTRIC_DEFAULT,
     nodeStyle: {
       size: {
         id: 'fixed',
@@ -172,18 +167,18 @@ const graph = createSlice({
       state,
       action: PayloadAction<{
         layout: {
-          id: string;
+          id: Layout['types'];
           [key: string]: any;
         };
       }>,
     ): void {
       const { id, ...options } = action.payload.layout;
-      const defaultOptions = LAYOUT.OPTIONS.find((x: Layout) => x.type === id);
-      const newOptions = { ...defaultOptions.options, ...options };
-      Object.assign(state.styleOptions.layout, {
+      const defaultOptions = LAYOUT.OPTIONS.find((x) => x.type === id);
+      state.styleOptions.layout = {
         type: id,
-        options: newOptions,
-      });
+        ...defaultOptions,
+        ...options,
+      };
     },
     changeNodeStyle(
       state,

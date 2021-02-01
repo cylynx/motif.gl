@@ -1,10 +1,10 @@
 import { EdgeStyle, NodeStyle } from '@antv/graphin';
 import { ThemeType } from '@antv/graphin/lib/consts';
+import { Edge, Node } from '../redux/graph/types';
 import { DEFAULT_EDGE_STYLE, DEFAULT_NODE_STYLE, GREY } from './graph-shapes';
 import { normalizeColor } from '../utils/style-utils';
 import { mapEdgePattern } from '../containers/Graph/shape/utils';
 
-const nodeSize = DEFAULT_NODE_STYLE.size;
 const nodeLineWidth = 3;
 const nodeColor = normalizeColor(DEFAULT_NODE_STYLE.color);
 const grey = normalizeColor(GREY);
@@ -36,32 +36,31 @@ export const defaultNodeStateStyle: { status: NodeStyle['status'] } = {
   },
 };
 
-export const defaultNodeStyle: { style: Partial<NodeStyle> } = {
-  style: {
-    badges: [],
-    halo: {
-      fill: grey.dark,
-    },
-    label: {
-      position: 'bottom',
+export const defaultNode: Partial<Node> = {
+  type: 'circle',
+  labelCfg: {
+    position: 'bottom',
+    style: {
+      // @ts-ignore
+      fontFamily: DEFAULT_NODE_STYLE.fontFamily,
+      fontSize: DEFAULT_NODE_STYLE.fontSize,
       fill: '#3B3B3B',
-      fontSize: 12,
     },
-    keyshape: {
-      size: DEFAULT_NODE_STYLE.size,
-      stroke: nodeColor.normal,
-      fill: nodeColor.dark,
-      lineWidth: nodeLineWidth,
-      opacity: 1,
-    },
-    icon: {
-      type: 'font',
-      value: '',
-      size: nodeSize,
-      fill: '#FFFFFF',
-      fontFamily: 'Material Icons',
-    },
+    size: DEFAULT_NODE_STYLE.size,
   },
+  style: {
+    stroke: nodeColor.normal,
+    fill: nodeColor.dark,
+    lineWidth: nodeLineWidth,
+  },
+  //   icon: {
+  //     type: 'font',
+  //     value: '',
+  //     size: nodeSize,
+  //     fill: '#FFFFFF',
+  //     fontFamily: 'Material Icons',
+  //   },
+  // },
 };
 
 const edgeLineColor = normalizeColor(DEFAULT_EDGE_STYLE.color);
@@ -97,27 +96,24 @@ export const defaultEdgeStateStyle: {
   },
 };
 
-export const defaultEdgeStyle: { style: Partial<EdgeStyle> } = {
-  style: {
-    halo: {
-      lineWidth: DEFAULT_EDGE_STYLE.width + 3,
-      opacity: 1,
-      cursor: 'pointer',
-    },
-    label: {
-      position: 'T',
-      autoRote: true,
-      fill: edgeFontColor.dark,
+export const defaultEdge: Edge = {
+  labelCfg: {
+    autoRotate: true,
+    style: {
+      // @ts-ignore
       fontFamily: DEFAULT_EDGE_STYLE.fontFamily,
+      fontSize: DEFAULT_EDGE_STYLE.fontSize,
+      fill: edgeFontColor.dark,
+      textBaseline: 'bottom',
     },
-    keyshape: {
-      lineWidth: DEFAULT_EDGE_STYLE.width,
-      stroke: edgeLineColor.dark,
-      opacity: 0.8,
-      lineDash: edgeLinePattern,
-      lineAppendWidth: 4,
-      cursor: 'pointer',
-    },
+  },
+  style: {
+    opacity: 0.8,
+    lineDash: edgeLinePattern,
+    stroke: edgeLineColor.dark,
+    lineWidth: DEFAULT_EDGE_STYLE.width,
+    lineAppendWidth: 4,
+    endArrow: DEFAULT_EDGE_STYLE.endArrow,
   },
 };
 

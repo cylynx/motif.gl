@@ -1,183 +1,154 @@
-// https://graphin.antv.vision/en/docs/manual/main-concepts/layout
+// https://g6.antv.vision/en/docs/api/graphLayout/guide
 
 import { Layout } from '../redux/graph/types';
 
-export const DAGRE_DEFAULT = {
+export const DAGRE_DEFAULT: Layout = {
+  type: 'dagre',
+  rankdir: 'TB',
   rankSep: 50,
   nodeSep: 12,
+  workerEnabled: true,
+  // align: 'UL',
+  // controlPoints: true,
 };
 
-export const CIRCLE_DEFAULT = {
-  r: 150,
-  scale: 0.8,
+export const CIRCLE_DEFAULT: Layout = {
+  type: 'circular',
+  startRadius: 250,
+  endRadius: 250,
+  angleRatio: 1,
+  divisions: 5,
+  workerEnabled: true,
+  // center: [200, 200],
+  // radius: null,
+  // clockwise: false,
+  // ordering: 'degree',
 };
 
-export const GRID_DEFAULT = {
-  nodeSep: 100,
-  nodeSize: 50,
+export const GRID_DEFAULT: Layout = {
+  type: 'grid',
+  begin: [0, 0],
+  preventOverlapPadding: 20,
+  rows: 2,
+  preventOverlap: true,
+  workerEnabled: true,
+  // nodeSize: 30,
+  // condense: false,
+  // cols: 3, // automatically calculated based on the number of rows
+  // sortBy: 'degree',
 };
 
-export const RADIAL_DEFAULT = {
+export const RADIAL_DEFAULT: Layout = {
+  type: 'radial',
   unitRadius: 100,
-  nodeSize: 50,
+  linkDistance: 100,
+  preventOverlap: true,
+  strictRadial: true,
+  workerEnabled: true,
+  // center: [200, 200],
+  // maxIteration: 1000,
+  // focusNode: 'node11',
+  // nodeSize: 30,
+  // sortBy: 'data'
 };
 
-export const CONCENTRIC_DEFAULT = {
-  minNodeSpacing: 60,
+export const CONCENTRIC_DEFAULT: Layout = {
+  type: 'concentric',
+  minNodeSpacing: 50,
+  preventOverlap: true,
+  workerEnabled: true,
+  // nodeSize: 30,
+  // sortBy: 'degree',
+  // center: [200, 200],
+  // sweep: 10,
+  // equidistant: false,
+  // startAngle: 0,
+  // clockwise: false,
+  // maxLevelDiff: 10,
+  // sortBy: 'degree',
 };
 
-// export const OPTIONS: Layout[] = [
-//   { type: 'dagre', options: DAGRE_DEFAULT },
-//   { type: 'circular', options: CIRCLE_DEFAULT },
-//   { type: 'grid', options: GRID_DEFAULT },
-//   { type: 'radial', options: RADIAL_DEFAULT },
-//   { type: 'concentric', options: CONCENTRIC_DEFAULT },
-//   { type: 'force' },
-//   { type: 'none' },
-// ];
+export const GRAPHIN_FORCE_DEFAULT: Layout = {
+  type: 'graphin-force',
+  // coulombDisScale: 0.005,
+  // gravity: 10,
+  // workerEnabled: true,
+  // gpuEnabled: true,
+  // nodeStrength: 1000,
+  // edgeStrength: 200,
+  // center: [200, 200], // The center of the graph by default
+  // linkDistance: 1,
+  // nodeSize: 30,
+};
+
+export const FORCE_DEFAULT: Layout = {
+  type: 'force',
+  preventOverlap: true,
+  nodeStrength: 1000,
+  edgeStrength: 200,
+  // center: [200, 200],
+  // linkDistance: 50,
+  // collideStrength: 0.8,
+  // nodeSize: 30,
+  // alpha: 0.3,
+  // alphaDecay: 0.028,
+  // alphaMin: 0.01,
+  // forceSimulation: null,
+};
+
+export const FRUCHTERMAN_DEFAULT: Layout = {
+  type: 'fruchterman',
+  clustering: true,
+  gravity: 10,
+  clusterGravity: 10,
+  speed: 2,
+  workerEnabled: true,
+  gpuEnabled: true,
+  // center: [200, 200],
+  // gravity: 20,
+  // maxIteration: 2000,
+};
+
+export const MDS_DEFAULT: Layout = {
+  type: 'mds',
+  workerEnabled: true,
+  // linkDistance: 50
+};
+
+export const COMBOFORCE_DEFAULT: Layout = {
+  type: 'comboForce',
+  // center: [ 200, 200 ],     // The center of the graph by default
+  //   linkDistance: 50,         // Edge length
+  //   nodeStrength: 30,
+  //   edgeStrength: 0.1,
+};
 
 export const OPTIONS: Layout[] = [
-  {
-    type: 'grid',
-    // begin: [0, 0], // 可选，
-    preventOverlap: true, // 可选，必须配合 nodeSize
-    // preventOverlapPdding: 20, // 可选
-    // nodeSize: 30, // 可选
-    // condense: false, // 可选
-    // rows: 5, // 可选
-    // cols: 5, // 可选
-    // sortBy: 'degree', // 可选
-    workerEnabled: true, // 可选，开启 web-worker
-  },
-  {
-    type: 'circular',
-    // center: [200, 200], // 可选，默认为图的中心
-    // radius: null, // 可选
-    // startRadius: 10, // 可选
-    // endRadius: 100, // 可选
-    // clockwise: false, // 可选
-    // divisions: 5, // 可选
-    // ordering: 'degree', // 可选
-    // angleRatio: 1, // 可选
-  },
-  {
-    type: 'radial',
-    // center: [200, 200], // 可选，默认为图的中心
-    // linkDistance: 50, // 可选，边长
-    // maxIteration: 1000, // 可选
-    // focusNode: 'node11', // 可选
-    // unitRadius: 100, // 可选
-    preventOverlap: true, // 可选，必须配合 nodeSize
-    // nodeSize: 30, // 可选
-    strictRadial: true, // 可选
-    workerEnabled: true, // 可选，开启 web-worker
-  },
-  {
-    type: 'force',
-    preventOverlap: true,
-    // center: [200, 200], // 可选，默认为图的中心
-    // linkDistance: 50, // 可选，边长
-    // nodeStrength: 30, // 可选
-    // edgeStrength: 0.8, // 可选
-    // collideStrength: 0.8, // 可选
-    // nodeSize: 30, // 可选
-    // alpha: 0.9, // 可选
-    // alphaDecay: 0.3, // 可选
-    // alphaMin: 0.01, // 可选
-    // forceSimulation: null, // 可选
-    // onTick: () => {
-    //   // 可选
-    //   console.log('ticking');
-    // },
-    // onLayoutEnd: () => {
-    //   // 可选
-    //   console.log('force layout done');
-    // },
-  },
-  {
-    type: 'gForce',
-    // linkDistance: 150, // 可选，边长
-    // nodeStrength: 30, // 可选
-    // edgeStrength: 0.1, // 可选
-    // nodeSize: 30, // 可选
-    // onTick: () => {
-    //   // 可选
-    //   console.log('ticking');
-    // },
-    // onLayoutEnd: () => {
-    //   // 可选
-    //   console.log('force layout done');
-    // },
-    workerEnabled: true, // 可选，开启 web-worker
-    // gpuEnabled: false, // 可选，开启 GPU 并行计算，G6 4.0 支持
-  },
-  {
-    type: 'concentric',
-    // maxLevelDiff: 0.5,
-    // sortBy: 'degree',
-    // center: [200, 200], // 可选，
-    // linkDistance: 50, // 可选，边长
-    // preventOverlap: true, // 可选，必须配合 nodeSize
-    // nodeSize: 30, // 可选
-    // sweep: 10, // 可选
-    // equidistant: false, // 可选
-    // startAngle: 0, // 可选
-    // clockwise: false, // 可选
-    // maxLevelDiff: 10, // 可选
-    // sortBy: 'degree', // 可选
-    workerEnabled: true, // 可选，开启 web-worker
-  },
-  {
-    type: 'dagre',
-    // rankdir: 'LR', // 可选，默认为图的中心
-    // align: 'DL', // 可选
-    // nodesep: 20, // 可选
-    // ranksep: 50, // 可选
-    // controlPoints: true, // 可选
-  },
-  {
-    type: 'fruchterman',
-    // center: [200, 200], // 可选，默认为图的中心
-    // gravity: 20, // 可选
-    // speed: 2, // 可选
-    // clustering: true, // 可选
-    // clusterGravity: 30, // 可选
-    // maxIteration: 2000, // 可选，迭代次数
-    workerEnabled: true, // 可选，开启 web-worker
-    // gpuEnabled: false, // 可选，开启 GPU 并行计算，G6 4.0 支持
-  },
-  {
-    type: 'mds',
-    workerEnabled: true, // 可选，开启 web-worker
-  },
-  {
-    type: 'comboForce',
-    // // center: [200, 200], // 可选，默认为图的中心
-    // linkDistance: 50, // 可选，边长
-    // nodeStrength: 30, // 可选
-    // edgeStrength: 0.1, // 可选
-    // onTick: () => {
-    //   // 可选
-    //   console.log('ticking');
-    // },
-    // onLayoutEnd: () => {
-    //   // 可选
-    //   console.log('combo force layout done');
-    // },
-  },
-  { type: 'none' },
+  CONCENTRIC_DEFAULT,
+  GRID_DEFAULT,
+  CIRCLE_DEFAULT,
+  DAGRE_DEFAULT,
+  RADIAL_DEFAULT,
+  GRAPHIN_FORCE_DEFAULT,
+  FRUCHTERMAN_DEFAULT,
+  { type: 'render' },
+  // FORCE_DEFAULT,
+  // FRUCHTERMAN_DEFAULT,
+  // MDS_DEFAULT,
+  // COMBOFORCE_DEFAULT,
 ];
 
 export const LAYOUT_NAMES = [
   { label: 'Concentric', id: 'concentric' },
-  { label: 'Force-Directed', id: 'force' },
   { label: 'Radial', id: 'radial' },
   { label: 'Grid', id: 'grid' },
   { label: 'Sequential', id: 'dagre' },
   { label: 'Circular', id: 'circular' },
-  { label: 'MDS', id: 'mds' },
-  { label: 'Fruchterman', id: 'fruchterman' },
-  { label: 'Combo Force', id: 'comboForce' },
-  { label: 'G Force', id: 'gForce' },
-  { label: 'X Y Coordinates', id: 'none' },
+  { label: 'Force-directed', id: 'graphin-force' },
+  { label: 'Fruchterman-force', id: 'fruchterman' },
+  { label: 'X Y Coordinates', id: 'render' },
+  // { label: 'Fruchterman', id: 'fruchterman' },
+  // { label: 'Combo Force', id: 'comboForce' },
+  // { label: 'MDS', id: 'mds' },
+  // { label: 'Force-Directed', id: 'force' },
 ];

@@ -1,5 +1,4 @@
-import { EdgeConfig, NodeConfig } from '@antv/graphin';
-import { IUserEdge, IUserNode } from '@antv/graphin/lib/typings/type';
+import { NodeConfig, EdgeConfig } from '@antv/g6';
 import { Value } from 'baseui/select';
 import { SelectVariableOption } from '../../components/SelectVariable/SelectVariable';
 import { HistogramProp } from '../../containers/SidePanel/FilterPanel/FilterSelection/RangePlot';
@@ -84,8 +83,8 @@ export type NodeEdgeCsv = {
   type: 'nodeEdgeCsv';
 };
 
-export declare type Edge = IUserEdge;
-export declare type Node = IUserNode;
+export declare type Edge = EdgeConfig;
+export declare type Node = NodeConfig;
 
 export type GraphFields = {
   nodes: Field[] | [];
@@ -153,10 +152,11 @@ export interface Layout {
     | 'dagre'
     | 'circular'
     | 'gForce'
+    | 'graphin-force'
     | 'fruchterman'
     | 'mds'
     | 'comboForce'
-    | 'none';
+    | 'render';
   [key: string]: any;
   options?: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

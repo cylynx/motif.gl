@@ -1,8 +1,15 @@
 import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
 import shortid from 'shortid';
-import { IUserEdge, IUserNode } from '@antv/graphin/lib/typings/type';
 import has from 'lodash/has';
+import {
+  Node,
+  Edge,
+  GraphList,
+  GraphData,
+  Accessors,
+  EdgeNode,
+} from '../types';
 import {
   processJson,
   processNodeEdgeCsv,
@@ -10,11 +17,7 @@ import {
   validateMotifJson,
 } from './data';
 
-import { GraphList, GraphData, Accessors, EdgeNode } from '../types';
-import {
-  defaultEdgeStyle,
-  defaultNodeStyle,
-} from '../../../constants/graph-styles';
+import { defaultEdge, defaultNode } from '../../../constants/graph-styles';
 
 /**
  * Initial function to process json object with node, edge fields or motif json to required format
@@ -117,10 +120,10 @@ export const addRequiredFieldsJson = (
 /**
  * Created id field in the node based on nodeID accessor
  *
- * @param {IUserNode} node
+ * @param {Node} node
  * @param {Accessors} accessors
  */
-export const addNodeFields = (node: IUserNode, accessors: Accessors): void => {
+export const addNodeFields = (node: Node, accessors: Accessors): void => {
   const { nodeID } = accessors;
   generateIdKey(node, nodeID);
   addNodeStyleField(node);
@@ -130,10 +133,10 @@ export const addNodeFields = (node: IUserNode, accessors: Accessors): void => {
 /**
  * Create id, source, target field in edge based on accessors
  *
- * @param {IUserEdge} edge
+ * @param {Edge} edge
  * @param {Accessors} accessors
  */
-export const addEdgeFields = (edge: IUserEdge, accessors: Accessors): void => {
+export const addEdgeFields = (edge: Edge, accessors: Accessors): void => {
   const { edgeSource, edgeTarget, edgeID } = accessors;
 
   const edgeSourceValue = get(edge, edgeSource);
@@ -183,31 +186,31 @@ const generateIdKey = (object: any, idAccessor: string | undefined): void => {
 };
 
 /**
- * Add Default Node Style into IUserNode's object.
+ * Add Default Node Style into Node's object.
  *
- * @param {IUserNode} obj
+ * @param {Node} obj
  * @return {void}
  */
-const addNodeStyleField = (obj: IUserNode): void => {
-  if (isUndefined(obj.style)) {
-    Object.assign(obj, {
-      style: defaultNodeStyle.style,
-    });
-  }
+const addNodeStyleField = (obj: Node): void => {
+  // TODO: Determine best way to inject defaultStyles
+  // if (isUndefined(obj.style)) {
+  //   Object.assign(obj, defaultNode);
+  // }
+  Object.assign(obj, defaultNode);
 };
 
 /**
- * Add Default Edge Style into IUserEdge's object.
+ * Add Default Edge Style into User's edge object.
  *
- * @param {IUserNode} obj
+ * @param {Edge} obj
  * @return {void}
  */
-const addEdgeStyleField = (obj: IUserEdge): void => {
-  if (isUndefined(obj.style)) {
-    Object.assign(obj, {
-      style: defaultEdgeStyle.style,
-    });
-  }
+const addEdgeStyleField = (obj: Edge): void => {
+  // TODO: Determine best way to inject defaultStyles
+  // if (isUndefined(obj.style)) {
+  //   Object.assign(obj, defaultEdge);
+  // }
+  Object.assign(obj, defaultEdge);
 };
 
 const formatLabelStyle = (obj: EdgeNode): void => {

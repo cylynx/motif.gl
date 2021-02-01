@@ -6,7 +6,6 @@ import has from 'lodash/has';
 
 import { Option } from 'baseui/select';
 import { isWithinInterval } from 'date-fns';
-import { Draft } from 'immer';
 import {
   flattenObject,
   ALL_FIELD_TYPES,
@@ -262,14 +261,11 @@ export const combineProcessedData = (
  * Main function to apply style.
  * Check if the graph is of group edges or non-group and apply the appropriate styling based on options.
  *
- * @param {Draft<GraphData>} data
+ * @param {GraphData} data
  * @param {StyleOptions} options
  * @return {void}
  */
-export const applyStyle = (
-  data: Draft<GraphData>,
-  options: StyleOptions,
-): void => {
+export const applyStyle = (data: GraphData, options: StyleOptions): void => {
   styleNodes(data, options.nodeStyle);
   styleEdges(data, options.edgeStyle);
 };
@@ -295,7 +291,7 @@ export const groupEdges = (data: GraphData): GraphData => {
  * @return {*}  {GraphData}
  */
 export const deriveVisibleGraph = (
-  graphData: Draft<GraphData>,
+  graphData: GraphData,
   styleOptions: StyleOptions,
 ): GraphData => {
   if (styleOptions.groupEdges) {
