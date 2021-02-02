@@ -11,6 +11,9 @@ import {
   NodeColorFixed,
   NodeColorLegend,
   Edge,
+  NodeSizeFixed,
+  NodeSizeDegree,
+  NodeSizeProperty,
 } from '../../../redux/graph/types';
 import { CATEGORICAL_COLOR, DARK_GREY, GREY } from '../../../constants/colors';
 import { normalizeColor } from '../../../utils/style-utils';
@@ -36,18 +39,26 @@ export const styleNodes = (
   data.nodes.forEach((node: Node) => {
     const nodeStyle: Partial<NodeStyle> = node.style ?? {};
 
+    const { size, color, fontSize, label } = nodeStyleOptions;
+
     if (nodeStyleOptions.size && nodeStyleOptions.size.id === 'fixed') {
-      styleNodeSize(nodeStyle, nodeStyleOptions.size.value);
+      const { value } = size as NodeSizeFixed;
+      styleNodeSize(nodeStyle, value);
     }
     if (nodeStyleOptions.color) {
-      styleNodeColor(node, nodeStyle, nodeStyleOptions.color);
+      styleNodeColor(node, nodeStyle, color);
     }
     if (nodeStyleOptions.fontSize) {
-      styleNodeFontSize(nodeStyle, nodeStyleOptions.fontSize);
+      styleNodeFontSize(nodeStyle, fontSize);
     }
     if (nodeStyleOptions.label) {
-      styleNodeLabel(node, nodeStyle, nodeStyleOptions.label);
+      styleNodeLabel(node, nodeStyle, label);
     }
+
+    // const iconSize: number =
+    //   (size as NodeSizeFixed)?.value ??
+    //   (size as NodeSizeDegree | NodeSizeProperty).range[1];
+    styleNodeIcon(node, nodeStyle, color);
 
     Object.assign(node, {
       style: nodeStyle,
@@ -305,6 +316,48 @@ export const styleNodeColor = (
       stroke: grey.normal,
     }),
   });
+};
+
+export const styleNodeIcon = (
+  node: Node,
+  nodeStyle: Partial<NodeStyle>,
+  color: NodeColor,
+  keyshapeSize: number = DEFAULT_NODE_STYLE.size,
+) => {
+  const nodePadding = 8;
+  const iconStyle = nodeStyle.icon ?? {
+    type: 'font',
+    size: keyshapeSize - nodePadding,
+    fontFamily: 'Material Icons',
+  };
+
+  const iconProperty = node.icon ?? get(node, 'style.icon.value', '');
+  iconStyle.value = iconProperty;
+  iconStyle.size = keyshapeSize - nodePadding;
+
+  const { id } = color;
+  if (id === 'fixed') {
+    const { value } = color as NodeColorFixed;
+    const fixedNodeColor = normalizeColor(value);
+    iconStyle.fill = fixedNodeColor.normal;
+    Object.assign(nodeStyle, { icon: iconStyle });
+    return;
+  }
+
+  const { variable, mapping } = color as NodeColorLegend;
+  const variableProperty: string | unknown = get(node, variable);
+
+  if (variableProperty) {
+    const nodeColor = normalizeColor(mapping[variableProperty as string]);
+    iconStyle.fill = nodeColor.normal;
+    Object.assign(nodeStyle, { icon: iconStyle });
+
+    return;
+  }
+
+  const grey = normalizeColor(GREY);
+  iconStyle.fill = grey.normal;
+  Object.assign(nodeStyle, { icon: iconStyle });
 };
 
 /**

@@ -44,7 +44,6 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
       defaultNode={defaultNode}
       // @ts-ignore
       defaultEdge={defaultEdge}
-      theme={lightTheme}
       nodeStateStyles={nodeStateStyles}
       edgeStateStyles={edgeStateStyles}
     >

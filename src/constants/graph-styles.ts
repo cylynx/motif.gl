@@ -46,6 +46,7 @@ export const defaultNode: { style: Partial<NodeStyle> } = {
       position: 'bottom',
       fill: '#3B3B3B',
       fontSize: 12,
+      offset: [0, 1],
     },
     keyshape: {
       size: DEFAULT_NODE_STYLE.size,
@@ -58,7 +59,7 @@ export const defaultNode: { style: Partial<NodeStyle> } = {
       type: 'font',
       value: '',
       size: nodeSize,
-      fill: '#FFFFFF',
+      fill: '#000000',
       fontFamily: 'Material Icons',
     },
   },

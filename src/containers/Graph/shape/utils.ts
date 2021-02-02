@@ -46,7 +46,7 @@ export const processArrowOption = (
  * @param {EndArrow} endArrow - end arrow styling
  */
 export const isArrowDisplay = (
-  arrowOptions: ArrowOptions | boolean,
+  arrowOptions: ArrowOptions | boolean | string,
   endArrow: EndArrow,
 ): boolean | EndArrow => {
   if (arrowOptions === 'none') {

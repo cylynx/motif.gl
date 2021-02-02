@@ -97,7 +97,7 @@ export default (g6: typeof G6) => {
         name: 'selected',
       });
 
-      const arrowOptions: ArrowOptions = processArrowOption(
+      const arrowOptions: string | ArrowOptions = processArrowOption(
         defaultStyle?.arrow,
       );
 
@@ -177,7 +177,7 @@ export default (g6: typeof G6) => {
       const basicLineWidth =
         style?.width || defaultStyle?.width || DEFAULT_EDGE_STYLE.width;
 
-      const arrowOptions: ArrowOptions = processArrowOption(
+      const arrowOptions: string | ArrowOptions = processArrowOption(
         defaultStyle?.arrow,
       );
 
