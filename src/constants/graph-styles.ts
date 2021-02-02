@@ -114,6 +114,7 @@ export const defaultEdge: { style: Partial<EdgeStyle> } = {
       lineDash: edgeLinePattern,
       lineAppendWidth: 4,
       cursor: 'pointer',
+      endArrow: DEFAULT_EDGE_STYLE.endArrow,
     },
   },
 };

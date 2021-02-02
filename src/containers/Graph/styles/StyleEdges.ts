@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
 import { EdgeStyle, IUserEdge } from '@antv/graphin/lib/typings/type';
@@ -9,11 +8,12 @@ import {
   EdgeWidth,
   ArrowOptions,
 } from '../../../redux/graph/types';
-import { normalizeColor, NormalizedColor } from '../../../utils/style-utils';
+import { normalizeColor } from '../../../utils/style-utils';
 import { DEFAULT_EDGE_STYLE } from '../../../constants/graph-shapes';
 import { EdgePattern, mapEdgePattern } from '../shape/utils';
 
 const edgeColor = normalizeColor(DEFAULT_EDGE_STYLE.color);
+const edgeFontColor = normalizeColor(DEFAULT_EDGE_STYLE.fontColor);
 
 /**
  * Style an edge dataset based on a given method
@@ -45,14 +45,17 @@ export const styleEdges = (
     if (edgeStyleOptions.pattern) {
       styleEdgePattern(edgeStyle, edgeStyleOptions.pattern);
     }
-    if (edgeStyleOptions.fontSize) {
-      styleEdgeFontSize(edgeStyle, edgeStyleOptions.fontSize);
-    }
+
     if (edgeStyleOptions.label) {
       styleEdgeLabel(edge, edgeStyle, edgeStyleOptions.label);
     }
+
+    if (edgeStyleOptions.fontSize) {
+      styleEdgeFontSize(edgeStyle, edgeStyleOptions.fontSize);
+    }
+
     if (edgeStyleOptions.arrow) {
-      // styleEdgeArrow(edgeStyle, edgeStyleOptions.arrow);
+      styleEdgeArrow(edgeStyle, edgeStyleOptions.arrow);
     }
 
     Object.assign(edge, {
@@ -130,16 +133,12 @@ export const styleLineWidth = (
   edgeStyle: Partial<EdgeStyle>,
   lineWidth: number,
 ): void => {
-  const keyShapeStyle: Partial<EdgeStyle['keyshape']> =
-    edgeStyle.keyshape ?? {};
-
-  const edgeFontColor: NormalizedColor = normalizeColor(
-    DEFAULT_EDGE_STYLE.fontColor,
-  );
+  const keyShapeStyle: Partial<EdgeStyle['keyshape']> = edgeStyle.keyshape ?? {
+    stroke: edgeFontColor.dark,
+  };
 
   Object.assign(keyShapeStyle, {
     lineWidth,
-    stroke: edgeFontColor.dark,
   });
 
   Object.assign(edgeStyle, { keyshape: keyShapeStyle });
@@ -173,7 +172,10 @@ export const styleEdgeLabel = (
   edgeStyle: Partial<EdgeStyle>,
   label: string,
 ): void => {
-  const labelStyle: Partial<EdgeStyle['label']> = edgeStyle.label ?? {};
+  const labelStyle: Partial<EdgeStyle['label']> = edgeStyle.label ?? {
+    fill: edgeFontColor.normal,
+    fontSize: DEFAULT_EDGE_STYLE.fontSize,
+  };
 
   let customLabel = '';
 
@@ -201,7 +203,7 @@ export const styleEdgePattern = (
     return;
   }
 
-  Object.assign(edgeKeyshape, { lineDash: mapEdgePattern(pattern) });
+  edgeKeyshape.lineDash = mapEdgePattern(pattern);
   Object.assign(edgeStyle, { keyshape: edgeKeyshape });
 };
 
@@ -217,7 +219,7 @@ export const styleEdgeFontSize = (
   fontSize: number,
 ): void => {
   const edgeLabelStyle: Partial<EdgeStyle['label']> = edgeStyle.label ?? {};
-  Object.assign(edgeLabelStyle, { fontSize });
+  edgeLabelStyle.fontSize = fontSize;
   Object.assign(edgeStyle, { label: edgeLabelStyle });
 };
 
@@ -231,11 +233,18 @@ export const styleEdgeArrow = (
   edgeStyle: Partial<EdgeStyle>,
   arrow: ArrowOptions,
 ): void => {
+  const edgeKeyShape: Partial<EdgeStyle['keyshape']> = edgeStyle.keyshape ?? {};
   const isArrowDisplay: boolean = arrow === 'display';
-  Object.assign(edgeStyle, {
-    startArrow: isArrowDisplay,
-    endArrow: isArrowDisplay,
-  });
+
+  if (isArrowDisplay === false) {
+    edgeKeyShape.endArrow = {
+      d: -1 / 2,
+      path: `M 0,0 L 0,0 L 0,0 Z`,
+    };
+    return;
+  }
+
+  edgeKeyShape.endArrow = DEFAULT_EDGE_STYLE.endArrow;
 };
 
 type MinMax = {
