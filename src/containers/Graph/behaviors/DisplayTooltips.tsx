@@ -3,6 +3,7 @@ import {
   IG6GraphEvent,
   GraphinContextType,
 } from '@antv/graphin';
+import { INode, IEdge } from '@antv/g6';
 import { useContext, useLayoutEffect } from 'react';
 import { TooltipProps } from '../Tooltip';
 import { interactionStates } from '../../../constants/graph-shapes';
@@ -19,7 +20,9 @@ const DisplayTooltip = ({ setTooltip }: DisplayTooltipProps): any => {
   };
 
   const onNodeClick = (e: IG6GraphEvent): void => {
-    const { item } = e;
+    const item = e.item as INode;
+    const originalEvent = e.originalEvent as Event;
+
     // Avoid inconsistent styling between highlight.light and selected by giving priority to selected
     graph.clearItemStates(item, interactionStates);
     graph.setItemState(item, 'selected', true);
@@ -33,21 +36,25 @@ const DisplayTooltip = ({ setTooltip }: DisplayTooltipProps): any => {
       type: 'node',
     });
 
-    // Ctrl event is for multiple select so don't display tooltip
-    // if (!e.originalEvent.ctrlKey && !e.originalEvent.shiftKey) {
-    //   const node = item.get('model');
-    //   const { clientX, clientY } = e;
-    //   setTooltip({
-    //     id: node.id,
-    //     x: clientX,
-    //     y: clientY,
-    //     type: 'node',
-    //   });
-    // }
+    const { ctrlKey, shiftKey } = originalEvent as KeyboardEvent;
+
+    // Ctrl and Shift event is for multiple select so don't display tooltip
+    if (ctrlKey === false || shiftKey === false) {
+      const node = item.get('model');
+      const { clientX, clientY } = e;
+      setTooltip({
+        id: node.id,
+        x: clientX,
+        y: clientY,
+        type: 'node',
+      });
+    }
   };
 
   const onEdgeClick = (e: IG6GraphEvent): void => {
-    const { item } = e;
+    const item = e.item as IEdge;
+    const originalEvent = e.originalEvent as Event;
+
     // Avoid inconsistent styling between highlight.light and selected by giving priority to selected
     graph.clearItemStates(item, interactionStates);
     graph.setItemState(item, 'selected', true);
@@ -61,22 +68,23 @@ const DisplayTooltip = ({ setTooltip }: DisplayTooltipProps): any => {
       type: 'edge',
     });
 
-    // Ctrl event is for multiple select so don't display tooltip
-    // if (!e.originalEvent.ctrlKey && !e.originalEvent.shiftKey) {
-    //   const { clientX, clientY } = e;
-    //   const edge = item.get('model');
-    //   setTooltip({
-    //     id: edge.id,
-    //     x: clientX,
-    //     y: clientY,
-    //     type: 'edge',
-    //   });
-    // }
+    const { ctrlKey, shiftKey } = originalEvent as KeyboardEvent;
+
+    if (ctrlKey === false && shiftKey === false) {
+      const { clientX, clientY } = e;
+      const edge = item.get('model');
+      setTooltip({
+        id: edge.id,
+        x: clientX,
+        y: clientY,
+        type: 'edge',
+      });
+    }
   };
 
   useLayoutEffect(() => {
     graph.on('node:click', onNodeClick);
-    graph.on('node:dragstart', onResetClick);
+    graph.on('node:mouseleave', onResetClick);
     graph.on('edge:click', onEdgeClick);
     graph.on('canvas:click', onResetClick);
     graph.on('canvas:dragstart', onResetClick);
