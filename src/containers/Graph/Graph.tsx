@@ -9,16 +9,11 @@ import {
   defaultEdge,
   nodeStateStyles,
   edgeStateStyles,
-  lightTheme,
 } from '../../constants/graph-styles';
 import './graphin.css';
 
-import ActivateRelations from './behaviors/ActivateRelations';
-import GraphinHighlight from './behaviors/GraphinHighlight';
 import DisplayTooltips from './behaviors/DisplayTooltips';
-
-ActivateRelations(Graphin);
-GraphinHighlight(Graphin);
+import ActivateEdgeRelations from './behaviors/ActivateEdgeRelations';
 
 export type GraphProps = {
   setTooltip: (tooltip: TooltipProps) => void;
@@ -50,6 +45,7 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
       <DragCanvas shouldBegin={() => true} />
       <DisplayTooltips setTooltip={setTooltip} />
       <ActivateRelations />
+      <ActivateEdgeRelations />
     </Graphin>
   );
 });

@@ -30,8 +30,31 @@ export const nodeStateStyles: { status: NodeStyle['status'] } = {
       },
     },
     hover: {},
-    active: {},
-    inactive: {},
+    active: {
+      halo: {
+        fill: nodeColor.reflect,
+        visible: true,
+        lineWidth: 1,
+        opacity: 0.5,
+      },
+      label: {
+        fill: '#000000',
+      },
+    },
+    inactive: {
+      keyshape: {
+        fill: grey.dark,
+        shadowColor: grey.dark,
+        shadowBlur: 2,
+        strokeOpacity: 0.2,
+        lineWidth: 2,
+        stroke: grey.normal,
+      },
+      label: {
+        position: 'bottom',
+        offset: [0, 1],
+      },
+    },
     disable: {},
   },
 };
@@ -93,7 +116,11 @@ export const edgeStateStyles: {
       },
     },
     active: {},
-    inactive: {},
+    inactive: {
+      keyshape: {
+        fill: grey.dark,
+      },
+    },
     disable: {},
   },
 };
