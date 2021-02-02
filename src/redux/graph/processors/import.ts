@@ -119,7 +119,6 @@ export const addRequiredFieldsJson = (
 export const addNodeFields = (node: Node, accessors: Accessors): void => {
   const { nodeID } = accessors;
   generateIdKey(node, nodeID);
-  styleNodeLabel(node, 'id');
 };
 
 /**
@@ -144,7 +143,6 @@ export const addEdgeFields = (edge: Edge, accessors: Accessors): void => {
   });
 
   generateIdKey(edge, edgeID);
-  styleEdgeLabel(edge, 'id');
 };
 
 /**

@@ -7,6 +7,8 @@ import { TooltipProps } from './Tooltip';
 import {
   defaultNode,
   defaultEdge,
+  nodeStateStyles,
+  edgeStateStyles,
   lightTheme,
 } from '../../constants/graph-styles';
 import './graphin.css';
@@ -32,26 +34,23 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
     (state) => GraphSelectors.getStyleOptions(state).layout,
   );
 
-  const { DragCanvas, ZoomCanvas, DragNode } = Behaviors;
+  const { DragCanvas, ActivateRelations } = Behaviors;
 
   return (
     <Graphin
       data={graphVisible as GraphinData}
       ref={ref}
       layout={layout}
-      // @ts-ignore
       defaultNode={defaultNode}
       // @ts-ignore
       defaultEdge={defaultEdge}
-      modes={{ default: ['activate-relations', 'graphin-highlight'] }}
       theme={lightTheme}
-      // nodeStateStyles={defaultNodeStateStyle}
-      // edgeStateStyles={defaultEdgeStateStyle}
+      nodeStateStyles={nodeStateStyles}
+      edgeStateStyles={edgeStateStyles}
     >
       <DragCanvas shouldBegin={() => true} />
-      <ZoomCanvas />
-      <DragNode />
       <DisplayTooltips setTooltip={setTooltip} />
+      <ActivateRelations />
     </Graphin>
   );
 });

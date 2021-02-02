@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
-import { ShapeStyle, ILabelConfig } from '@antv/g6';
+import { EdgeStyle, IUserEdge } from '@antv/graphin/lib/typings/type';
 import {
   GraphData,
   EdgeStyleOptions,
@@ -12,6 +12,8 @@ import {
 import { normalizeColor, NormalizedColor } from '../../../utils/style-utils';
 import { DEFAULT_EDGE_STYLE } from '../../../constants/graph-shapes';
 import { EdgePattern, mapEdgePattern } from '../shape/utils';
+
+const edgeColor = normalizeColor(DEFAULT_EDGE_STYLE.color);
 
 /**
  * Style an edge dataset based on a given method
@@ -25,7 +27,7 @@ export const styleEdges = (
   edgeStyleOptions: EdgeStyleOptions,
 ): void => {
   // Assign edge type - line, loop or quadratic
-  deriveEdgeType(data);
+  // deriveEdgeType(data);
 
   // Separated out as it cannot be done in the loop
   if (edgeStyleOptions.width && edgeStyleOptions.width.id !== 'fixed') {
@@ -33,8 +35,8 @@ export const styleEdges = (
   }
 
   // For perf reasons, batch style operations which require a single loop through nodes
-  data.edges.forEach((edge: Edge) => {
-    const edgeStyle: ShapeStyle = edge.style ?? {};
+  data.edges.forEach((edge: IUserEdge) => {
+    const edgeStyle: Partial<EdgeStyle> = edge.style ?? {};
 
     if (edgeStyleOptions.width && edgeStyleOptions.width.id === 'fixed') {
       styleLineWidth(edgeStyle, edgeStyleOptions.width.value);
@@ -44,13 +46,13 @@ export const styleEdges = (
       styleEdgePattern(edgeStyle, edgeStyleOptions.pattern);
     }
     if (edgeStyleOptions.fontSize) {
-      styleEdgeFontSize(edge, edgeStyleOptions.fontSize);
+      styleEdgeFontSize(edgeStyle, edgeStyleOptions.fontSize);
     }
     if (edgeStyleOptions.label) {
-      styleEdgeLabel(edge, edgeStyleOptions.label);
+      styleEdgeLabel(edge, edgeStyle, edgeStyleOptions.label);
     }
     if (edgeStyleOptions.arrow) {
-      styleEdgeArrow(edgeStyle, edgeStyleOptions.arrow);
+      // styleEdgeArrow(edgeStyle, edgeStyleOptions.arrow);
     }
 
     Object.assign(edge, {
@@ -67,15 +69,17 @@ export const styleEdges = (
  * @param {[number, number]} visualRange
  */
 export const mapEdgeWidth = (
-  edges: Edge[],
+  edges: IUserEdge[],
   propertyName: string,
   visualRange: [number, number],
 ): void => {
   let minp = 9999999999;
   let maxp = -9999999999;
 
-  edges.forEach((edge: Edge) => {
-    const edgeStyle: ShapeStyle = edge.style ?? {};
+  edges.forEach((edge: IUserEdge) => {
+    const edgeStyle: Partial<EdgeStyle> = edge.style ?? {};
+    const keyshapeStyle: Partial<EdgeStyle['keyshape']> =
+      edgeStyle.keyshape ?? {};
 
     let edgeLineWidth = Number(get(edge, propertyName)) ** (1 / 3);
 
@@ -87,7 +91,10 @@ export const mapEdgeWidth = (
       : edgeLineWidth;
 
     Object.assign(edgeStyle, {
-      lineWidth: edgeLineWidth,
+      keyshape: Object.assign(keyshapeStyle, {
+        lineWidth: edgeLineWidth,
+        stroke: keyshapeStyle.stroke ?? edgeColor.normal,
+      }),
     });
 
     Object.assign(edge, { style: edgeStyle });
@@ -96,7 +103,7 @@ export const mapEdgeWidth = (
   const rangepLength = maxp - minp;
   const rangevLength = visualRange[1] - visualRange[0];
 
-  edges.forEach((edge: Edge) => {
+  edges.forEach((edge: IUserEdge) => {
     let edgeLineWidth =
       ((Number(get(edge, propertyName)) ** (1 / 3) - minp) / rangepLength) *
         rangevLength +
@@ -106,7 +113,7 @@ export const mapEdgeWidth = (
       ? DEFAULT_EDGE_STYLE.width
       : edgeLineWidth;
 
-    Object.assign(edge.style, {
+    Object.assign(edge.style.keyshape, {
       lineWidth: edgeLineWidth,
     });
   });
@@ -115,19 +122,27 @@ export const mapEdgeWidth = (
 /**
  * Style Line Width based on Edge Filter Options
  *
- * @param {ShapeStyle} edgeStyle
+ * @param {Partial<EdgeStyle>} edgeStyle
  * @param {number} lineWidth
  * @return {void}
  */
 export const styleLineWidth = (
-  edgeStyle: ShapeStyle,
+  edgeStyle: Partial<EdgeStyle>,
   lineWidth: number,
 ): void => {
+  const keyShapeStyle: Partial<EdgeStyle['keyshape']> =
+    edgeStyle.keyshape ?? {};
+
   const edgeFontColor: NormalizedColor = normalizeColor(
     DEFAULT_EDGE_STYLE.fontColor,
   );
 
-  Object.assign(edgeStyle, { lineWidth, stroke: edgeFontColor.dark });
+  Object.assign(keyShapeStyle, {
+    lineWidth,
+    stroke: edgeFontColor.dark,
+  });
+
+  Object.assign(edgeStyle, { keyshape: keyShapeStyle });
 };
 
 /**
@@ -148,44 +163,62 @@ export const styleEdgeWidthByProp = (
 
 /**
  * Style Edge Label based on given value in Edge Filter Options
- * @param {Edge} edge
+ * @param {IUserEdge} edge
+ * @param {Partial<EdgeStyle>} edgeStyle
  * @param {string} label
  * @return {void}
  */
-export const styleEdgeLabel = (edge: Edge, label: string): void => {
+export const styleEdgeLabel = (
+  edge: IUserEdge,
+  edgeStyle: Partial<EdgeStyle>,
+  label: string,
+): void => {
+  const labelStyle: Partial<EdgeStyle['label']> = edgeStyle.label ?? {};
+
+  let customLabel = '';
+
   if (label !== 'label') {
-    let customLabel = '';
     customLabel = get(edge, label, '').toString();
-    edge.label = customLabel;
   }
+
+  Object.assign(labelStyle, {
+    value: customLabel,
+  });
+
+  Object.assign(edgeStyle, {
+    label: labelStyle,
+  });
 };
 
 export const styleEdgePattern = (
-  edgeStyle: ShapeStyle,
+  edgeStyle: Partial<EdgeStyle>,
   pattern: EdgePattern,
 ): void => {
+  const edgeKeyshape: Partial<EdgeStyle['keyshape']> = edgeStyle.keyshape ?? {};
+
   if (pattern === 'none') {
-    delete edgeStyle.lineDash;
+    delete edgeKeyshape.lineDash;
     return;
   }
 
-  Object.assign(edgeStyle, { lineDash: mapEdgePattern(pattern) });
+  Object.assign(edgeKeyshape, { lineDash: mapEdgePattern(pattern) });
+  Object.assign(edgeStyle, { keyshape: edgeKeyshape });
 };
 
 /**
  * Style Edge Font Size with given value by Edge Style Filter
  *
- * @param edge
+ * @param edgeStyle
  * @param fontSize
  * @return {void}
  */
-export const styleEdgeFontSize = (edge: Edge, fontSize: number): void => {
-  const labelConfig: ILabelConfig = edge.labelCfg ?? {};
-  const labelConfigStyle = labelConfig.style ?? {};
-
-  Object.assign(labelConfigStyle, { fontSize });
-  Object.assign(labelConfig, { style: labelConfigStyle });
-  Object.assign(edge, { labelCfg: labelConfig });
+export const styleEdgeFontSize = (
+  edgeStyle: Partial<EdgeStyle>,
+  fontSize: number,
+): void => {
+  const edgeLabelStyle: Partial<EdgeStyle['label']> = edgeStyle.label ?? {};
+  Object.assign(edgeLabelStyle, { fontSize });
+  Object.assign(edgeStyle, { label: edgeLabelStyle });
 };
 
 /**
@@ -195,12 +228,13 @@ export const styleEdgeFontSize = (edge: Edge, fontSize: number): void => {
  * @return {void}
  */
 export const styleEdgeArrow = (
-  edgeStyle: ShapeStyle,
+  edgeStyle: Partial<EdgeStyle>,
   arrow: ArrowOptions,
 ): void => {
   const isArrowDisplay: boolean = arrow === 'display';
   Object.assign(edgeStyle, {
-    endArrow: isArrowDisplay ? DEFAULT_EDGE_STYLE.endArrow : false,
+    startArrow: isArrowDisplay,
+    endArrow: isArrowDisplay,
   });
 };
 

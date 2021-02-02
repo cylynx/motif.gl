@@ -1,16 +1,16 @@
 /* eslint-disable no-param-reassign */
 import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
-import { ShapeStyle, ILabelConfig } from '@antv/g6';
+import { NodeStyle } from '@antv/graphin/lib/typings/type';
 import {
   GraphData,
   NodeStyleOptions,
   Node,
-  Edge,
   NodeColor,
   NodeSize,
   NodeColorFixed,
   NodeColorLegend,
+  Edge,
 } from '../../../redux/graph/types';
 import { CATEGORICAL_COLOR, DARK_GREY, GREY } from '../../../constants/colors';
 import { normalizeColor } from '../../../utils/style-utils';
@@ -34,19 +34,19 @@ export const styleNodes = (
 
   // For perf reasons, batch style operations which require a single loop through nodes
   data.nodes.forEach((node: Node) => {
-    const nodeStyle: ShapeStyle = node.style ?? {};
+    const nodeStyle: Partial<NodeStyle> = node.style ?? {};
 
     if (nodeStyleOptions.size && nodeStyleOptions.size.id === 'fixed') {
-      styleNodeSize(node, nodeStyleOptions.size.value);
+      styleNodeSize(nodeStyle, nodeStyleOptions.size.value);
     }
     if (nodeStyleOptions.color) {
       styleNodeColor(node, nodeStyle, nodeStyleOptions.color);
     }
     if (nodeStyleOptions.fontSize) {
-      styleNodeFontSize(node, nodeStyleOptions.fontSize);
+      styleNodeFontSize(nodeStyle, nodeStyleOptions.fontSize);
     }
     if (nodeStyleOptions.label) {
-      styleNodeLabel(node, nodeStyleOptions.label);
+      styleNodeLabel(node, nodeStyle, nodeStyleOptions.label);
     }
 
     Object.assign(node, {
@@ -111,6 +111,10 @@ export const mapNodeSize = (
   let maxp = -9999999999;
 
   nodes.forEach((node: Node) => {
+    const nodeStyle: Partial<NodeStyle> = node.style ?? {};
+    const keyshapeStyle: Partial<NodeStyle['keyshape']> =
+      nodeStyle?.keyshape ?? {};
+
     let nodeStyleSize = Number(get(node, propertyName)) ** (1 / 3);
 
     minp = nodeStyleSize < minp ? nodeStyleSize : minp;
@@ -119,7 +123,14 @@ export const mapNodeSize = (
     nodeStyleSize = Number.isNaN(nodeStyleSize)
       ? DEFAULT_NODE_STYLE.size
       : nodeStyleSize;
-    node.size = nodeStyleSize;
+
+    Object.assign(nodeStyle, {
+      keyshape: Object.assign(keyshapeStyle, {
+        size: nodeStyleSize,
+      }),
+    });
+
+    Object.assign(node, { style: nodeStyle });
   });
 
   const rangepLength = maxp - minp;
@@ -131,7 +142,9 @@ export const mapNodeSize = (
       visualRange[0];
     nodeSize = Number.isNaN(nodeSize) ? DEFAULT_NODE_STYLE.size : nodeSize;
 
-    node.size = nodeSize;
+    Object.assign(node.style.keyshape, {
+      size: nodeSize,
+    });
   });
 };
 
@@ -166,46 +179,75 @@ export const styleNodeSizeByProp = (
 /**
  * Style Node Size based on given values.
  *
- * @param node
+ * @param nodeStyle
  * @param size
  *
  * @return {void}
  */
-export const styleNodeSize = (node: Node, size: number): void => {
-  node.size = size;
+export const styleNodeSize = (
+  nodeStyle: Partial<NodeStyle>,
+  size: number,
+): void => {
+  const keyShapeStyle: Partial<NodeStyle['keyshape']> =
+    nodeStyle.keyshape ?? {};
+
+  Object.assign(keyShapeStyle, {
+    size,
+  });
+
+  const labelStyle: Partial<NodeStyle['label']> = nodeStyle.label ?? {};
+
+  Object.assign(nodeStyle, {
+    keyshape: keyShapeStyle,
+    label: labelStyle,
+  });
 };
 
 /**
  * Style Node's Font Size based on given values.
  *
- * @param node
+ * @param nodeStyle
  * @param fontSize
  *
  * @return {void}
  */
-export const styleNodeFontSize = (node: Node, fontSize: number): void => {
-  const labelConfig: ILabelConfig = node.labelCfg ?? {};
-  const labelConfigStyle = labelConfig.style ?? {};
-
-  Object.assign(labelConfigStyle, { fontSize });
-  Object.assign(labelConfig, { style: labelConfigStyle });
-  Object.assign(node, { labelCfg: labelConfig });
+export const styleNodeFontSize = (
+  nodeStyle: Partial<NodeStyle>,
+  fontSize: number,
+): void => {
+  const labelStyle: Partial<NodeStyle['label']> = nodeStyle.label ?? {};
+  Object.assign(labelStyle, { fontSize });
+  Object.assign(nodeStyle, { label: labelStyle });
 };
 
 /**
  * Style Node Label based on given Node Style Options
  *
  * @param {Node} node
- * @param {ShapeStyle} nodeStyle
+ * @param {Partial<NodeStyle>} nodeStyle
  * @param {string} label
  * @return {void}
  */
-export const styleNodeLabel = (node: Node, label: string): void => {
+export const styleNodeLabel = (
+  node: Node,
+  nodeStyle: Partial<NodeStyle>,
+  label: string,
+): void => {
+  const labelStyle: Partial<NodeStyle['label']> = nodeStyle.label ?? {};
+
+  let customLabel = '';
+
   if (label !== 'label') {
-    let customLabel = '';
     customLabel = get(node, label, '').toString();
-    node.label = customLabel;
   }
+
+  Object.assign(labelStyle, {
+    value: customLabel,
+  });
+
+  Object.assign(nodeStyle, {
+    label: labelStyle,
+  });
 };
 
 /**
@@ -214,24 +256,27 @@ export const styleNodeLabel = (node: Node, label: string): void => {
  * 2. Legend Selection
  *
  * @param {Node} node
- * @param {ShapeStyle} nodeStyle
+ * @param {Partial<NodeStyle>} nodeStyle
  * @param {NodeColor} option
  * @return {void}
  */
 export const styleNodeColor = (
   node: Node,
-  nodeStyle: ShapeStyle,
+  nodeStyle: Partial<NodeStyle>,
   option: NodeColor,
 ): void => {
   const { id } = option;
+  const nodeKeyShape: Partial<NodeStyle['keyshape']> = nodeStyle.keyshape ?? {};
 
   if (id === 'fixed') {
     const { value } = option as NodeColorFixed;
     const fixedNodeColor = normalizeColor(value);
 
     Object.assign(nodeStyle, {
-      fill: fixedNodeColor.dark,
-      stroke: fixedNodeColor.normal,
+      keyshape: Object.assign(nodeKeyShape, {
+        fill: fixedNodeColor.dark,
+        stroke: fixedNodeColor.normal,
+      }),
     });
 
     return;
@@ -244,8 +289,10 @@ export const styleNodeColor = (
     const nodeColor = normalizeColor(mapping[variableProperty as string]);
 
     Object.assign(nodeStyle, {
-      fill: nodeColor.dark,
-      stroke: nodeColor.normal,
+      keyshape: Object.assign(nodeKeyShape, {
+        fill: nodeColor.dark,
+        stroke: nodeColor.normal,
+      }),
     });
 
     return;
@@ -253,8 +300,10 @@ export const styleNodeColor = (
 
   const grey = normalizeColor(GREY);
   Object.assign(nodeStyle, {
-    fill: grey.dark,
-    stroke: grey.normal,
+    keyshape: Object.assign(nodeKeyShape, {
+      fill: grey.dark,
+      stroke: grey.normal,
+    }),
   });
 };
 
