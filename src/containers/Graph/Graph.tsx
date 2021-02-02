@@ -4,7 +4,11 @@ import Graphin, { Behaviors } from '@antv/graphin';
 import { GraphinData } from '@antv/graphin/lib/typings/type';
 import { GraphSelectors, Layout } from '../../redux/graph';
 import { TooltipProps } from './Tooltip';
-import { defaultNode, defaultEdge } from '../../constants/graph-styles';
+import {
+  defaultNode,
+  defaultEdge,
+  lightTheme,
+} from '../../constants/graph-styles';
 import './graphin.css';
 
 import ActivateRelations from './behaviors/ActivateRelations';
@@ -40,6 +44,7 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
       // @ts-ignore
       defaultEdge={defaultEdge}
       modes={{ default: ['activate-relations', 'graphin-highlight'] }}
+      theme={lightTheme}
       // nodeStateStyles={defaultNodeStateStyle}
       // edgeStateStyles={defaultEdgeStateStyle}
     >

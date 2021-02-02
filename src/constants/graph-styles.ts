@@ -58,6 +58,7 @@ export const defaultNode: Partial<Node> = {
     stroke: nodeColor.normal,
     fill: nodeColor.dark,
     lineWidth: nodeLineWidth,
+    cursor: 'pointer',
   },
   //   icon: {
   //     type: 'font',
@@ -120,6 +121,7 @@ export const defaultEdge: Edge = {
     lineWidth: DEFAULT_EDGE_STYLE.width,
     lineAppendWidth: 4,
     endArrow: DEFAULT_EDGE_STYLE.endArrow,
+    cursor: 'pointer',
   },
 };
 
