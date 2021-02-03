@@ -38,12 +38,16 @@ export const nodeStateStyles: { status: NodeStyle['status'] } = {
     },
     active: {
       halo: {
-        size: nodeSize * 2,
         visible: false,
-        lineWidth: 2,
-        opacity: 0.8,
-        fillOpacity: 0.5,
-        strokeOpacity: 0.5,
+      },
+      keyshape: {
+        size: [nodeSize, nodeSize],
+        stroke: nodeColor.normal,
+        fill: nodeColor.dark,
+        fillOpacity: 0.3,
+        lineWidth: nodeLineWidth,
+        opacity: 1,
+        strokeOpacity: 1,
       },
       label: {
         position: 'bottom',
@@ -67,7 +71,6 @@ export const nodeStateStyles: { status: NodeStyle['status'] } = {
       },
       icon: {
         type: 'font',
-        value: '',
         fill: grey.dark,
         fontFamily: 'Material Icons',
       },
@@ -131,22 +134,31 @@ export const edgeStateStyles: {
         lineWidth: DEFAULT_EDGE_STYLE.width + 1,
       },
     },
-    disabled: {
+    disable: {
       label: {
-        fill: grey.dark,
+        fill: grey.normal,
+        fillOpacity: 0.8,
       },
       keyshape: {
         lineWidth: DEFAULT_EDGE_STYLE.width,
+        fill: grey.normal,
+        fillOpacity: 0.8,
         opacity: 0.6,
       },
     },
     active: {},
     inactive: {
+      label: {
+        fill: grey.normal,
+        fillOpacity: 0.8,
+      },
       keyshape: {
-        fill: grey.dark,
+        lineWidth: DEFAULT_EDGE_STYLE.width,
+        fill: grey.normal,
+        fillOpacity: 0.8,
+        opacity: 0.6,
       },
     },
-    disable: {},
   },
 };
 

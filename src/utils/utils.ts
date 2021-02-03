@@ -67,3 +67,11 @@ export const shortifyLabel = (label: string): string => {
   }
   return `${label.substring(0, 5)}...`;
 };
+
+export const isBigDataSet = (
+  nodeLength: number,
+  edgeLength: number,
+): boolean => {
+  const TOTAL_LIMIT = 500;
+  return nodeLength + edgeLength > TOTAL_LIMIT;
+};

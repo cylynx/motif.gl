@@ -15,7 +15,8 @@ import {
 import './graphin.css';
 
 import DisplayTooltips from './customBehaviors/DisplayTooltips';
-import GraphinHighlight from './customBehaviors/GraphinHighlight';
+import ActivateEdgeRelations from './customBehaviors/ActivateEdgeRelations';
+import ActivateNodeRelations from './customBehaviors/ActivateNodeRelations';
 
 export type GraphProps = {
   setTooltip: (tooltip: TooltipProps) => void;
@@ -48,8 +49,9 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
       <DragCanvas shouldBegin={() => true} />
       <DisplayTooltips setTooltip={setTooltip} />
       <ClickSelect trigger='shift' />
-      <ActivateRelations />
-      <GraphinHighlight />
+      <ActivateNodeRelations />
+      {/* <ActivateRelations /> */}
+      <ActivateEdgeRelations />
     </Graphin>
   );
 });

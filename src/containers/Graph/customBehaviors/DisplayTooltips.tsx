@@ -21,12 +21,9 @@ const DisplayTooltip = ({ setTooltip }: DisplayTooltipProps): any => {
 
   const onNodeClick = (e: IG6GraphEvent): void => {
     const item = e.item as INode;
-    const originalEvent = e.originalEvent as Event;
-    const { shiftKey } = originalEvent as KeyboardEvent;
+    const { shiftKey } = e.originalEvent as KeyboardEvent;
 
-    // Shift event is for multiple select so don't display tooltip
     if (shiftKey === false) {
-      // Avoid inconsistent styling between highlight.light and selected by giving priority to selected
       graph.clearItemStates(item, interactionStates);
       graph.setItemState(item, 'selected', true);
 
@@ -43,12 +40,9 @@ const DisplayTooltip = ({ setTooltip }: DisplayTooltipProps): any => {
 
   const onEdgeClick = (e: IG6GraphEvent): void => {
     const item = e.item as IEdge;
-    const originalEvent = e.originalEvent as Event;
-
-    const { shiftKey } = originalEvent as KeyboardEvent;
+    const { shiftKey } = e.originalEvent as KeyboardEvent;
 
     if (shiftKey === false) {
-      // Avoid inconsistent styling between highlight.light and selected by giving priority to selected
       graph.clearItemStates(item, interactionStates);
       graph.setItemState(item, 'selected', true);
 
@@ -68,16 +62,12 @@ const DisplayTooltip = ({ setTooltip }: DisplayTooltipProps): any => {
     graph.on('node:mouseleave', onResetClick);
     graph.on('edge:click', onEdgeClick);
     graph.on('edge:mouseleave', onResetClick);
-    graph.on('canvas:click', onResetClick);
-    graph.on('canvas:dragstart', onResetClick);
 
     return (): void => {
       graph.off('node:click', onNodeClick);
       graph.off('node:mouseleave', onResetClick);
       graph.off('edge:click', onEdgeClick);
       graph.off('edge:mouseleave', onResetClick);
-      graph.off('canvas:click', onResetClick);
-      graph.off('canvas:dragstart', onResetClick);
     };
   }, [setTooltip]);
 
