@@ -13,11 +13,11 @@ const ActivateNodeRelations = (): null => {
 
   const clearAllStates = () => {
     graph.getNodes().forEach((node: INode) => {
-      graph.clearItemStates(node, interactionStates);
+      graph.clearItemStates(node, ['inactive', 'active']);
     });
 
     graph.getEdges().forEach((edge: IEdge) => {
-      graph.clearItemStates(edge, interactionStates);
+      graph.clearItemStates(edge, ['inactive', 'active']);
     });
   };
 
@@ -36,20 +36,20 @@ const ActivateNodeRelations = (): null => {
 
   const disableAllNodeEdges = () => {
     graph.getNodes().forEach((node: INode) => {
-      graph.clearItemStates(node, interactionStates);
+      graph.clearItemStates(node, ['inactive', 'active']);
       graph.setItemState(node, 'inactive', true);
     });
 
     graph.getEdges().forEach((edge: IEdge) => {
-      graph.clearItemStates(edge, interactionStates);
+      graph.clearItemStates(edge, ['inactive', 'active']);
       graph.setItemState(edge, 'inactive', true);
     });
   };
 
   const highlightNode = (node: INode) => {
-    if (node.hasState('selected') === false) {
+    if (node.hasState('active') === false) {
       graph.setItemState(node, 'inactive', false);
-      graph.setItemState(node, 'selected', true);
+      graph.setItemState(node, 'active', true);
       node.toFront();
     }
   };
@@ -58,13 +58,13 @@ const ActivateNodeRelations = (): null => {
     const currentNodeID: string = currentNode.getID();
 
     currentNode.getEdges().forEach((edge: IEdge) => {
-      graph.setItemState(edge, 'selected', true);
+      graph.setItemState(edge, 'active', true);
 
       const edgeSource: INode = edge.getSource();
       const edgeSourceID: string = edgeSource.getID();
 
       if (edgeSourceID !== currentNodeID) {
-        if (edgeSource.hasState('selected') === false) {
+        if (edgeSource.hasState('active') === false) {
           highlightNode(edgeSource);
         }
       }
@@ -73,7 +73,7 @@ const ActivateNodeRelations = (): null => {
       const edgeTargetID: string = edgeTarget.getID();
 
       if (edgeTargetID !== currentNodeID) {
-        if (edgeTarget.hasState('selected') === false) {
+        if (edgeTarget.hasState('active') === false) {
           highlightNode(edgeTarget);
         }
       }
