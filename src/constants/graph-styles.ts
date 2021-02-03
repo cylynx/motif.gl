@@ -10,14 +10,13 @@ const nodeColor = normalizeColor(DEFAULT_NODE_STYLE.color);
 const nodeLabelOffset: number[] = [0, 3];
 const grey = normalizeColor(GREY);
 
-const selectedLineWidth = nodeLineWidth + 2;
 export const nodeStateStyles: { status: NodeStyle['status'] } = {
   status: {
     selected: {
       badges: [],
       keyshape: {
         fillOpacity: 1.0,
-        lineWidth: selectedLineWidth,
+        lineWidth: nodeLineWidth,
       },
       label: {
         fill: '#000000',
@@ -27,6 +26,9 @@ export const nodeStateStyles: { status: NodeStyle['status'] } = {
         opacity: 0.4,
         fillOpacity: 0.9,
         strokeOpacity: 0.9,
+      },
+      icon: {
+        fill: '#FFFFFF',
       },
     },
     hover: {
@@ -121,7 +123,7 @@ export const edgeStateStyles: {
   status: {
     selected: {
       keyshape: {
-        lineWidth: DEFAULT_EDGE_STYLE.width + 1,
+        lineWidth: DEFAULT_EDGE_STYLE.width + 0.5,
       },
     },
     hover: {
@@ -151,8 +153,8 @@ export const edgeStateStyles: {
 export const defaultEdge: { style: Partial<EdgeStyle> } = {
   style: {
     halo: {
-      lineWidth: DEFAULT_EDGE_STYLE.width + 3,
-      opacity: 1,
+      lineWidth: DEFAULT_EDGE_STYLE.width + 2,
+      opacity: 0.5,
       cursor: 'pointer',
     },
     label: {
