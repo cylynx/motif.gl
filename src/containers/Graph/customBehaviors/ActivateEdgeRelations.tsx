@@ -6,23 +6,48 @@ import {
 } from '@antv/graphin';
 
 import { IEdge, INode } from '@antv/g6';
-import { interactionStates } from '../../../constants/graph-shapes';
 import { isBigDataSet } from '../../../utils/utils';
 
 const ActivateEdgeRelations = (): null => {
   const { graph } = useContext(GraphinContext) as GraphinContextType;
 
-  const clearNodeEdgeStates = useCallback((): void => {
-    graph.findAllByState('node', 'selected').forEach((node: INode) => {
-      graph.clearItemStates(node, interactionStates);
+  const clearAllStates = useCallback(() => {
+    graph.getNodes().forEach((node: INode) => {
+      graph.clearItemStates(node, ['inactive', 'active']);
     });
-    graph.findAllByState('edge', 'selected').forEach((edge: IEdge) => {
-      graph.clearItemStates(edge, interactionStates);
+
+    graph.getEdges().forEach((edge: IEdge) => {
+      graph.clearItemStates(edge, ['inactive', 'active']);
     });
   }, []);
 
+  const disableAllNodeEdges = useCallback(() => {
+    graph.getNodes().forEach((node: INode) => {
+      graph.clearItemStates(node, ['inactive', 'active']);
+      graph.setItemState(node, 'inactive', true);
+    });
+
+    graph.getEdges().forEach((edge: IEdge) => {
+      graph.clearItemStates(edge, ['inactive', 'active']);
+      graph.setItemState(edge, 'inactive', true);
+    });
+  }, []);
+
+  const resetNodeEdgeStates = useCallback((e: IG6GraphEvent) => {
+    const { cfg } = e.currentTarget;
+    const isBigData: boolean = isBigDataSet(cfg.nodes.length, cfg.edges.length);
+    if (isBigData) {
+      return;
+    }
+
+    graph.setAutoPaint(false);
+    clearAllStates();
+    graph.paint();
+    graph.setAutoPaint(true);
+  }, []);
+
   const highlightEdge = useCallback((currentEdge: IEdge): void => {
-    graph.setItemState(currentEdge, 'selected', true);
+    graph.setItemState(currentEdge, 'active', true);
     currentEdge.toFront();
   }, []);
 
@@ -31,7 +56,7 @@ const ActivateEdgeRelations = (): null => {
     const targetNode = graph.findById(target.getID()) as INode;
 
     [sourceNode, targetNode].forEach((node: INode) => {
-      graph.setItemState(node, 'selected', true);
+      graph.setItemState(node, 'active', true);
     });
   }, []);
 
@@ -45,7 +70,7 @@ const ActivateEdgeRelations = (): null => {
 
     graph.setAutoPaint(false);
 
-    clearNodeEdgeStates();
+    disableAllNodeEdges();
     highlightEdge(currentEdge);
     if (isBigData === false) {
       highlightNodes(sourceNode, targetNode);
@@ -56,10 +81,12 @@ const ActivateEdgeRelations = (): null => {
   }, []);
 
   useLayoutEffect(() => {
-    graph.on('edge:click', onEdgeClick);
+    graph.on('edge:mouseenter', onEdgeClick);
+    graph.on('edge:mouseleave', resetNodeEdgeStates);
 
     return (): void => {
-      graph.off('edge:click', onEdgeClick);
+      graph.off('edge:mouseenter', onEdgeClick);
+      graph.off('edge:mouseleave', resetNodeEdgeStates);
     };
   }, []);
   return null;

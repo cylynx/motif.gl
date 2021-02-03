@@ -1,4 +1,4 @@
-import { useContext, useLayoutEffect } from 'react';
+import { useCallback, useContext, useLayoutEffect } from 'react';
 import {
   GraphinContext,
   GraphinContextType,
@@ -11,7 +11,7 @@ import { interactionStates } from '../../../constants/graph-shapes';
 const ActivateNodeRelations = (): null => {
   const { graph } = useContext(GraphinContext) as GraphinContextType;
 
-  const clearAllStates = () => {
+  const clearAllStates = useCallback(() => {
     graph.getNodes().forEach((node: INode) => {
       graph.clearItemStates(node, ['inactive', 'active']);
     });
@@ -19,9 +19,9 @@ const ActivateNodeRelations = (): null => {
     graph.getEdges().forEach((edge: IEdge) => {
       graph.clearItemStates(edge, ['inactive', 'active']);
     });
-  };
+  }, []);
 
-  const resetNodeEdgeStates = (e: IG6GraphEvent) => {
+  const resetNodeEdgeStates = useCallback((e: IG6GraphEvent) => {
     const { cfg } = e.currentTarget;
     const isBigData: boolean = isBigDataSet(cfg.nodes.length, cfg.edges.length);
     if (isBigData) {
@@ -32,9 +32,9 @@ const ActivateNodeRelations = (): null => {
     clearAllStates();
     graph.paint();
     graph.setAutoPaint(true);
-  };
+  }, []);
 
-  const disableAllNodeEdges = () => {
+  const disableAllNodeEdges = useCallback(() => {
     graph.getNodes().forEach((node: INode) => {
       graph.clearItemStates(node, ['inactive', 'active']);
       graph.setItemState(node, 'inactive', true);
@@ -44,17 +44,17 @@ const ActivateNodeRelations = (): null => {
       graph.clearItemStates(edge, ['inactive', 'active']);
       graph.setItemState(edge, 'inactive', true);
     });
-  };
+  }, []);
 
-  const highlightNode = (node: INode) => {
+  const highlightNode = useCallback((node: INode) => {
     if (node.hasState('active') === false) {
       graph.setItemState(node, 'inactive', false);
       graph.setItemState(node, 'active', true);
       node.toFront();
     }
-  };
+  }, []);
 
-  const highlightEdgeRelations = (currentNode: INode): void => {
+  const highlightEdgeRelations = useCallback((currentNode: INode): void => {
     const currentNodeID: string = currentNode.getID();
 
     currentNode.getEdges().forEach((edge: IEdge) => {
@@ -78,9 +78,9 @@ const ActivateNodeRelations = (): null => {
         }
       }
     });
-  };
+  }, []);
 
-  const onNodeHover = (e: IG6GraphEvent): void => {
+  const onNodeHover = useCallback((e: IG6GraphEvent): void => {
     const currentNode = e.item as INode;
 
     const { cfg } = e.currentTarget;
@@ -97,7 +97,7 @@ const ActivateNodeRelations = (): null => {
 
     graph.paint();
     graph.setAutoPaint(true);
-  };
+  }, []);
 
   useLayoutEffect(() => {
     graph.on('node:mouseenter', onNodeHover);

@@ -147,7 +147,11 @@ export const edgeStateStyles: {
         opacity: 0.6,
       },
     },
-    active: {},
+    active: {
+      keyshape: {
+        lineWidth: DEFAULT_EDGE_STYLE.width + 0.5,
+      },
+    },
     inactive: {
       label: {
         fill: grey.normal,
