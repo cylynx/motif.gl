@@ -86,6 +86,7 @@ const DisplayTooltip = ({ setTooltip }: DisplayTooltipProps): any => {
     graph.on('node:click', onNodeClick);
     graph.on('node:mouseleave', onResetClick);
     graph.on('edge:click', onEdgeClick);
+    graph.on('edge:mouseleave', onResetClick);
     graph.on('canvas:click', onResetClick);
     graph.on('canvas:dragstart', onResetClick);
 
@@ -93,6 +94,7 @@ const DisplayTooltip = ({ setTooltip }: DisplayTooltipProps): any => {
       graph.off('node:click', onNodeClick);
       graph.off('node:mouseleave', onResetClick);
       graph.off('edge:click', onEdgeClick);
+      graph.off('edge:mouseleave', onResetClick);
       graph.off('canvas:click', onResetClick);
       graph.off('canvas:dragstart', onResetClick);
     };
