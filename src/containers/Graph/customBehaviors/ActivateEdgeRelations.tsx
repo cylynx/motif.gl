@@ -47,8 +47,11 @@ const ActivateEdgeRelations = (): null => {
   }, []);
 
   const highlightEdge = useCallback((currentEdge: IEdge): void => {
-    graph.setItemState(currentEdge, 'active', true);
-    currentEdge.toFront();
+    if (currentEdge.hasState('active') === false) {
+      graph.setItemState(currentEdge, 'inactive', false);
+      graph.setItemState(currentEdge, 'active', true);
+      currentEdge.toFront();
+    }
   }, []);
 
   const highlightNodes = useCallback((source: INode, target: INode): void => {
@@ -56,6 +59,7 @@ const ActivateEdgeRelations = (): null => {
     const targetNode = graph.findById(target.getID()) as INode;
 
     [sourceNode, targetNode].forEach((node: INode) => {
+      graph.setItemState(node, 'inactive', false);
       graph.setItemState(node, 'active', true);
     });
   }, []);

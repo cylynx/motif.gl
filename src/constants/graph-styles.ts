@@ -42,8 +42,6 @@ export const nodeStateStyles: { status: NodeStyle['status'] } = {
       },
       keyshape: {
         size: [nodeSize, nodeSize],
-        stroke: nodeColor.normal,
-        fill: nodeColor.dark,
         fillOpacity: 0.3,
         lineWidth: nodeLineWidth,
         opacity: 1,
@@ -57,12 +55,12 @@ export const nodeStateStyles: { status: NodeStyle['status'] } = {
     },
     inactive: {
       keyshape: {
-        fill: grey.dark,
-        shadowColor: grey.dark,
+        fill: grey.normal,
+        shadowColor: grey.reflect,
+        stroke: grey.dark,
         shadowBlur: 2,
         strokeOpacity: 0.2,
         lineWidth: 2,
-        stroke: grey.normal,
         fillOpacity: 0.3,
       },
       label: {
@@ -86,11 +84,11 @@ export const defaultNode: { style: Partial<NodeStyle> } = {
       size: nodeSize * 2,
       visible: false,
       lineWidth: 2,
+      fill: grey.normal,
+      stroke: grey.dark,
       opacity: 0.8,
       fillOpacity: 0.2,
       strokeOpacity: 0.5,
-      fill: nodeColor.normal,
-      stroke: nodeColor.dark,
     },
     label: {
       position: 'bottom',
