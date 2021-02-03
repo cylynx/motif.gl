@@ -1,4 +1,4 @@
-import React, { useContext, useLayoutEffect } from 'react';
+import { useContext, useLayoutEffect } from 'react';
 import {
   GraphinContext,
   GraphinContextType,

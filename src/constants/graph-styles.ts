@@ -7,6 +7,7 @@ import { mapEdgePattern } from '../containers/Graph/shape/utils';
 const nodeSize = DEFAULT_NODE_STYLE.size;
 const nodeLineWidth = 3;
 const nodeColor = normalizeColor(DEFAULT_NODE_STYLE.color);
+const nodeLabelOffset: number[] = [0, 3];
 const grey = normalizeColor(GREY);
 
 const selectedLineWidth = nodeLineWidth * 2;
@@ -15,9 +16,9 @@ export const nodeStateStyles: { status: NodeStyle['status'] } = {
     selected: {
       badges: [],
       keyshape: {
-        fill: '#000000',
         opacity: 0.05,
         lineWidth: selectedLineWidth,
+        size: nodeSize,
       },
       icon: {
         fill: '#FFFFFF',
@@ -29,15 +30,23 @@ export const nodeStateStyles: { status: NodeStyle['status'] } = {
         visible: true,
       },
     },
-    hover: {},
+    hover: {
+      halo: {
+        visible: true,
+      },
+    },
     active: {
       halo: {
-        fill: nodeColor.reflect,
-        visible: true,
-        lineWidth: 1,
-        opacity: 0.5,
+        size: nodeSize * 2,
+        visible: false,
+        lineWidth: 2,
+        opacity: 0.8,
+        fillOpacity: 0.5,
+        strokeOpacity: 0.5,
       },
       label: {
+        position: 'bottom',
+        offset: nodeLabelOffset,
         fill: '#000000',
       },
     },
@@ -49,10 +58,17 @@ export const nodeStateStyles: { status: NodeStyle['status'] } = {
         strokeOpacity: 0.2,
         lineWidth: 2,
         stroke: grey.normal,
+        fillOpacity: 0.3,
       },
       label: {
         position: 'bottom',
-        offset: [0, 1],
+        offset: nodeLabelOffset,
+      },
+      icon: {
+        type: 'font',
+        value: '',
+        fill: grey.dark,
+        fontFamily: 'Material Icons',
       },
     },
     disable: {},
@@ -63,26 +79,34 @@ export const defaultNode: { style: Partial<NodeStyle> } = {
   style: {
     badges: [],
     halo: {
-      fill: grey.dark,
+      size: nodeSize * 2,
+      visible: false,
+      lineWidth: 2,
+      opacity: 0.8,
+      fillOpacity: 0.2,
+      strokeOpacity: 0.5,
+      stroke: nodeColor.dark,
     },
     label: {
       position: 'bottom',
       fill: '#3B3B3B',
       fontSize: 12,
-      offset: [0, 1],
+      offset: nodeLabelOffset,
     },
     keyshape: {
-      size: DEFAULT_NODE_STYLE.size,
+      size: [nodeSize, nodeSize],
       stroke: nodeColor.normal,
       fill: nodeColor.dark,
+      fillOpacity: 0.3,
       lineWidth: nodeLineWidth,
       opacity: 1,
+      strokeOpacity: 1,
     },
     icon: {
       type: 'font',
       value: '',
       size: nodeSize,
-      fill: '#000000',
+      fill: nodeColor.dark,
       fontFamily: 'Material Icons',
     },
   },
