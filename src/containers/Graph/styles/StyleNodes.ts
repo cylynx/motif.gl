@@ -278,6 +278,7 @@ export const styleNodeColor = (
 ): void => {
   const { id } = option;
   const nodeKeyShape: Partial<NodeStyle['keyshape']> = nodeStyle.keyshape ?? {};
+  const nodeHalo: Partial<NodeStyle['halo']> = nodeStyle.halo ?? {};
 
   if (id === 'fixed') {
     const { value } = option as NodeColorFixed;
@@ -287,6 +288,10 @@ export const styleNodeColor = (
       keyshape: Object.assign(nodeKeyShape, {
         fill: fixedNodeColor.dark,
         stroke: fixedNodeColor.normal,
+      }),
+      halo: Object.assign(nodeHalo, {
+        fill: fixedNodeColor.normal,
+        stroke: fixedNodeColor.reflect,
       }),
     });
 
@@ -304,6 +309,10 @@ export const styleNodeColor = (
         fill: nodeColor.dark,
         stroke: nodeColor.normal,
       }),
+      halo: Object.assign(nodeHalo, {
+        fill: nodeColor.normal,
+        stroke: nodeColor.reflect,
+      }),
     });
 
     return;
@@ -314,6 +323,10 @@ export const styleNodeColor = (
     keyshape: Object.assign(nodeKeyShape, {
       fill: grey.dark,
       stroke: grey.normal,
+    }),
+    halo: Object.assign(nodeHalo, {
+      fill: grey.normal,
+      stroke: grey.reflect,
     }),
   });
 };

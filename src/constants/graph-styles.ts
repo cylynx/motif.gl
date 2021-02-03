@@ -89,6 +89,7 @@ export const defaultNode: { style: Partial<NodeStyle> } = {
       opacity: 0.8,
       fillOpacity: 0.2,
       strokeOpacity: 0.5,
+      fill: nodeColor.normal,
       stroke: nodeColor.dark,
     },
     label: {
@@ -154,9 +155,9 @@ export const edgeStateStyles: {
       },
       keyshape: {
         lineWidth: DEFAULT_EDGE_STYLE.width,
-        fill: grey.normal,
-        fillOpacity: 0.8,
-        opacity: 0.6,
+        fill: grey.reflect,
+        fillOpacity: 0.5,
+        opacity: 0.5,
       },
     },
   },
