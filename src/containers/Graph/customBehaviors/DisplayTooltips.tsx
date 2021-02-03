@@ -22,24 +22,14 @@ const DisplayTooltip = ({ setTooltip }: DisplayTooltipProps): any => {
   const onNodeClick = (e: IG6GraphEvent): void => {
     const item = e.item as INode;
     const originalEvent = e.originalEvent as Event;
+    const { shiftKey } = originalEvent as KeyboardEvent;
 
-    // Avoid inconsistent styling between highlight.light and selected by giving priority to selected
-    graph.clearItemStates(item, interactionStates);
-    graph.setItemState(item, 'selected', true);
+    // Shift event is for multiple select so don't display tooltip
+    if (shiftKey === false) {
+      // Avoid inconsistent styling between highlight.light and selected by giving priority to selected
+      graph.clearItemStates(item, interactionStates);
+      graph.setItemState(item, 'selected', true);
 
-    const node = item.get('model');
-    const { clientX, clientY } = e;
-    setTooltip({
-      id: node.id,
-      x: clientX,
-      y: clientY,
-      type: 'node',
-    });
-
-    const { ctrlKey, shiftKey } = originalEvent as KeyboardEvent;
-
-    // Ctrl and Shift event is for multiple select so don't display tooltip
-    if (ctrlKey === false || shiftKey === false) {
       const node = item.get('model');
       const { clientX, clientY } = e;
       setTooltip({
@@ -55,22 +45,13 @@ const DisplayTooltip = ({ setTooltip }: DisplayTooltipProps): any => {
     const item = e.item as IEdge;
     const originalEvent = e.originalEvent as Event;
 
-    // Avoid inconsistent styling between highlight.light and selected by giving priority to selected
-    graph.clearItemStates(item, interactionStates);
-    graph.setItemState(item, 'selected', true);
+    const { shiftKey } = originalEvent as KeyboardEvent;
 
-    const { clientX, clientY } = e;
-    const edge = item.get('model');
-    setTooltip({
-      id: edge.id,
-      x: clientX,
-      y: clientY,
-      type: 'edge',
-    });
+    if (shiftKey === false) {
+      // Avoid inconsistent styling between highlight.light and selected by giving priority to selected
+      graph.clearItemStates(item, interactionStates);
+      graph.setItemState(item, 'selected', true);
 
-    const { ctrlKey, shiftKey } = originalEvent as KeyboardEvent;
-
-    if (ctrlKey === false && shiftKey === false) {
       const { clientX, clientY } = e;
       const edge = item.get('model');
       setTooltip({

@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import Graphin, { Behaviors } from '@antv/graphin';
 import { GraphinData } from '@antv/graphin/lib/typings/type';
+import ClickSelect from '@antv/graphin/lib/behaviors/ClickSelect';
 import { GraphSelectors, Layout } from '../../redux/graph';
 import { TooltipProps } from './Tooltip';
 import {
@@ -13,7 +14,8 @@ import {
 } from '../../constants/graph-styles';
 import './graphin.css';
 
-import DisplayTooltips from './behaviors/DisplayTooltips';
+import DisplayTooltips from './customBehaviors/DisplayTooltips';
+import GraphinHighlight from './customBehaviors/GraphinHighlight';
 
 export type GraphProps = {
   setTooltip: (tooltip: TooltipProps) => void;
@@ -29,7 +31,7 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
     (state) => GraphSelectors.getStyleOptions(state).layout,
   );
 
-  const { DragCanvas, ActivateRelations } = Behaviors;
+  const { DragCanvas, ClickSelect, ActivateRelations } = Behaviors;
 
   return (
     <Graphin
@@ -45,7 +47,9 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
     >
       <DragCanvas shouldBegin={() => true} />
       <DisplayTooltips setTooltip={setTooltip} />
+      <ClickSelect trigger='shift' />
       <ActivateRelations />
+      <GraphinHighlight />
     </Graphin>
   );
 });
