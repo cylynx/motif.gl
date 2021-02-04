@@ -13,22 +13,19 @@ export const DEFAULT_ICON_FONT_FAMILY = `-apple-system, system-ui, BlinkMacSyste
 Ubuntu, Arial, sans-serif`;
 
 export enum EnumNodeAndEdgeStatus {
-  NORMAL = 'normal',
   SELECTED = 'selected',
-  LIGHT = 'highlight.light',
-  DARK = 'highlight.dark',
-  HOVERED = 'hovered',
-  FILTERED = 'filtered',
   INACTIVE = 'inactive',
+  ACTIVE = 'active',
+  HOVERED = 'hover',
+  DISABLED = 'disabled',
 }
 
 export const interactionStates = [
-  EnumNodeAndEdgeStatus.NORMAL,
   EnumNodeAndEdgeStatus.SELECTED,
-  EnumNodeAndEdgeStatus.LIGHT,
-  EnumNodeAndEdgeStatus.DARK,
   EnumNodeAndEdgeStatus.HOVERED,
   EnumNodeAndEdgeStatus.INACTIVE,
+  EnumNodeAndEdgeStatus.ACTIVE,
+  EnumNodeAndEdgeStatus.DISABLED,
 ];
 
 /* Additions */

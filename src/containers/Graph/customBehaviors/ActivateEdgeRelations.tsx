@@ -8,6 +8,7 @@ import {
 import { IEdge, INode } from '@antv/g6';
 import { isBigDataSet } from '../../../utils/utils';
 import useGraphBehaviors from './hooks/useGraphBehaviors';
+import { EnumNodeAndEdgeStatus } from '../../../constants/graph-shapes';
 
 const ActivateEdgeRelations = (): null => {
   const { graph } = useContext(GraphinContext) as GraphinContextType;
