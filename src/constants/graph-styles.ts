@@ -4,25 +4,17 @@ import { DEFAULT_EDGE_STYLE, DEFAULT_NODE_STYLE, GREY } from './graph-shapes';
 import { normalizeColor } from '../utils/style-utils';
 import { mapEdgePattern } from '../utils/shape-utils';
 
-const nodeSize = DEFAULT_NODE_STYLE.size;
-const nodeLineWidth = 3;
-const nodeColor = normalizeColor(DEFAULT_NODE_STYLE.color);
-const nodeLabelOffset: number[] = [0, 3];
 const grey = normalizeColor(GREY);
-
 export const nodeStateStyles: { status: NodeStyle['status'] } = {
   status: {
     selected: {
       badges: [],
       keyshape: {
-        fillOpacity: 1.0,
-        lineWidth: nodeLineWidth,
+        fillOpacity: DEFAULT_NODE_STYLE.status.selected.keyshape.opacity,
+        lineWidth: DEFAULT_NODE_STYLE.keyshape.lineWidth,
       },
       halo: {
         visible: false,
-      },
-      icon: {
-        fill: '#FFFFFF',
       },
     },
     hover: {
@@ -35,14 +27,14 @@ export const nodeStateStyles: { status: NodeStyle['status'] } = {
         visible: false,
       },
       keyshape: {
-        fillOpacity: 0.3,
-        lineWidth: nodeLineWidth,
+        fillOpacity: DEFAULT_NODE_STYLE.status.active.keyshape.opacity,
+        lineWidth: DEFAULT_NODE_STYLE.keyshape.lineWidth,
         opacity: 1,
         strokeOpacity: 1,
       },
       label: {
         position: 'bottom',
-        offset: nodeLabelOffset,
+        offset: DEFAULT_NODE_STYLE.label.offset,
       },
     },
     inactive: {
@@ -51,13 +43,13 @@ export const nodeStateStyles: { status: NodeStyle['status'] } = {
         shadowColor: grey.reflect,
         stroke: grey.dark,
         shadowBlur: 2,
-        strokeOpacity: 0.2,
-        lineWidth: 2,
-        fillOpacity: 0.3,
+        strokeOpacity: DEFAULT_NODE_STYLE.status.inactive.keyshape.opacity,
+        lineWidth: DEFAULT_NODE_STYLE.keyshape.lineWidth - 1,
+        fillOpacity: DEFAULT_NODE_STYLE.status.inactive.keyshape.opacity,
       },
       label: {
         position: 'bottom',
-        offset: nodeLabelOffset,
+        offset: DEFAULT_NODE_STYLE.label.offset,
       },
       icon: {
         type: 'font',
@@ -65,7 +57,6 @@ export const nodeStateStyles: { status: NodeStyle['status'] } = {
         fontFamily: 'Material Icons',
       },
     },
-    disable: {},
   },
 };
 
@@ -74,34 +65,15 @@ export const defaultNode: { style: Partial<NodeStyle> } = {
     badges: [],
     halo: {
       visible: false,
-      lineWidth: 2,
-      fill: grey.normal,
-      stroke: grey.dark,
-      opacity: 0.8,
-      fillOpacity: 0.2,
-      strokeOpacity: 0.5,
-      shadowBlur: 2,
+      ...DEFAULT_NODE_STYLE.halo,
     },
-    label: {
-      position: 'bottom',
-      fill: '#3B3B3B',
-      fontSize: 12,
-      offset: nodeLabelOffset,
-    },
-    keyshape: {
-      size: [nodeSize, nodeSize],
-      stroke: nodeColor.normal,
-      fill: nodeColor.dark,
-      fillOpacity: 0.3,
-      lineWidth: nodeLineWidth,
-      opacity: 1,
-      strokeOpacity: 1,
-    },
+    label: DEFAULT_NODE_STYLE.label,
+    keyshape: DEFAULT_NODE_STYLE.keyshape,
     icon: {
       type: 'font',
       value: '',
-      size: nodeSize,
-      fill: nodeColor.dark,
+      size: DEFAULT_NODE_STYLE.keyshape.size,
+      fill: DEFAULT_NODE_STYLE.color.dark,
       fontFamily: 'Material Icons',
     },
   },
@@ -183,8 +155,8 @@ export const defaultEdge: { style: Partial<EdgeStyle> } = {
 
 export const lightTheme: ThemeType = {
   mode: 'light',
-  primaryColor: DEFAULT_NODE_STYLE.color,
-  nodeSize: DEFAULT_NODE_STYLE.size,
+  primaryColor: DEFAULT_NODE_STYLE.color.normal,
+  nodeSize: DEFAULT_NODE_STYLE.keyshape.size,
   edgeSize: DEFAULT_EDGE_STYLE.width,
   primaryEdgeColor: DEFAULT_EDGE_STYLE.color,
   background: '#FFFFFF',
@@ -192,8 +164,8 @@ export const lightTheme: ThemeType = {
 
 export const darkTheme: ThemeType = {
   mode: 'dark',
-  primaryColor: DEFAULT_NODE_STYLE.color,
-  nodeSize: DEFAULT_NODE_STYLE.size,
+  primaryColor: DEFAULT_NODE_STYLE.color.normal,
+  nodeSize: DEFAULT_NODE_STYLE.keyshape.size,
   edgeSize: DEFAULT_EDGE_STYLE.width,
   primaryEdgeColor: '#f5f2f2',
   background: '#000000',
