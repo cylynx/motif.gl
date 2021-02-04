@@ -1,9 +1,10 @@
 import Motif from './containers/Explorer';
+import Tooltip from './containers/Tooltip';
 
 import investigateReducer from './redux';
 
 export default Motif;
-export { investigateReducer };
+export { investigateReducer, Tooltip };
 
 export * from './theme';
 export * from './utils/utils';

@@ -157,7 +157,7 @@ export interface Layout {
     | 'fruchterman'
     | 'mds'
     | 'comboForce'
-    | 'render';
+    | 'preset';
   [key: string]: any;
   options?: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

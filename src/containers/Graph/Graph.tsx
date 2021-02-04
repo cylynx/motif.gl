@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import Graphin, { Behaviors } from '@antv/graphin';
 import { GraphinData } from '@antv/graphin/lib/typings/type';
 import { GraphSelectors, Layout } from '../../redux/graph';
-import { TooltipProps } from './Tooltip';
+import { TooltipProps } from '../Tooltip/Tooltip';
 import {
   defaultNode,
   defaultEdge,
@@ -11,7 +11,7 @@ import {
   edgeStateStyles,
   lightTheme,
 } from '../../constants/graph-styles';
-import './graphin.css';
+import './styles/graphin.css';
 
 import DisplayTooltips from './customBehaviors/DisplayTooltips';
 import ActivateEdgeRelations from './customBehaviors/ActivateEdgeRelations';

@@ -10,7 +10,7 @@ import {
 } from '../../../redux/graph/types';
 import { normalizeColor } from '../../../utils/style-utils';
 import { DEFAULT_EDGE_STYLE } from '../../../constants/graph-shapes';
-import { EdgePattern, mapEdgePattern } from '../shape/utils';
+import { EdgePattern, mapEdgePattern } from '../../../utils/shape-utils';
 
 const edgeColor = normalizeColor(DEFAULT_EDGE_STYLE.color);
 const edgeFontColor = normalizeColor(DEFAULT_EDGE_STYLE.fontColor);
@@ -340,11 +340,11 @@ const deriveEdgeType = (data: GraphData): void => {
   }
 
   // loop edges
-  data.edges
-    .filter((edge: Edge) => edge.source === edge.target)
-    .forEach((edge: Edge) => {
-      Object.assign(edge.style.keyshape, {
-        type: 'loop',
-      });
-    });
+  // data.edges
+  //   .filter((edge: Edge) => edge.source === edge.target)
+  //   .forEach((edge: Edge) => {
+  //     Object.assign(edge.style.keyshape, {
+  //       type: 'loop',
+  //     });
+  //   });
 };

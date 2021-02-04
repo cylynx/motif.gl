@@ -1,6 +1,6 @@
 /* https://github.com/antvis/Graphin/blob/master/packages/graphin/src/shape/graph-studio/utils.ts */
 /* eslint-disable import/prefer-default-export */
-import { ArrowOptions } from '../../../redux/graph/types';
+import { ArrowOptions } from '../redux/graph/types';
 
 export interface EndArrow {
   d: number;

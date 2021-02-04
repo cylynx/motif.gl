@@ -6,7 +6,6 @@ import React, {
   useRef,
   Fragment,
   useMemo,
-  RefObject,
   ReactNode,
   MutableRefObject,
 } from 'react';
@@ -32,7 +31,8 @@ import { UISelectors, UISlices } from '../redux/ui';
 import { WidgetSelectors, WidgetSlices, WidgetItem } from '../redux/widget';
 import { GraphSlices, Accessors, StyleOptions } from '../redux/graph';
 import SideNavBars from './SideNavBar';
-import Graph, { Tooltip, GraphRefContext } from './Graph';
+import Graph, { GraphRefContext } from './Graph';
+import Tooltip from './Tooltip';
 import ImportWizard, { defaultImportTabs } from './ImportWizard';
 import { LEFT_LAYER_WIDTH } from '../constants/widget-units';
 import { GraphLayer } from './widgets/layer';

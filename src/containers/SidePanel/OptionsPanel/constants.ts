@@ -1,7 +1,10 @@
 /* eslint-disable no-console */
 import { SimpleFormData, NestedFormData } from '../../../components/form';
 import * as LAYOUT from '../../../constants/layout-options';
-import { DEFAULT_EDGE_STYLE, DEFAULT_NODE_STYLE } from '../../Graph';
+import {
+  DEFAULT_EDGE_STYLE,
+  DEFAULT_NODE_STYLE,
+} from '../../../constants/graph-shapes';
 
 export const layoutForm: NestedFormData = {
   id: 'layout',

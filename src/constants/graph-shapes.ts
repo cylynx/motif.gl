@@ -1,5 +1,5 @@
 import { PRIMARY_COLOR } from './colors';
-import { EdgePattern } from '../containers/Graph/shape/utils';
+import { EdgePattern } from '../utils/shape-utils';
 
 export { GREY } from './colors';
 export const EDGE_DEFAULT_COLOR = 'rgba(105, 123, 140,1)';
