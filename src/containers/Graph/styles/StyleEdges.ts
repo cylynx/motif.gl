@@ -175,6 +175,7 @@ export const styleEdgeLabel = (
   const labelStyle: Partial<EdgeStyle['label']> = edgeStyle.label ?? {
     fill: edgeFontColor.normal,
     fontSize: DEFAULT_EDGE_STYLE.label.fontSize,
+    offset: DEFAULT_EDGE_STYLE.label.offset,
   };
 
   let customLabel = '';

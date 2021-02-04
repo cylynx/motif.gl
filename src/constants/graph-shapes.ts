@@ -90,6 +90,7 @@ export const DEFAULT_EDGE_STYLE = {
   label: {
     fill: edgeFontColor.dark,
     fontSize: 12,
+    offset: [0, 5],
   },
   keyshape: {
     stroke: edgeLineColor.dark,
