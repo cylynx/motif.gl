@@ -12,8 +12,6 @@ import {
   NodeColorLegend,
   Edge,
   NodeSizeFixed,
-  NodeSizeDegree,
-  NodeSizeProperty,
 } from '../../../redux/graph/types';
 import { CATEGORICAL_COLOR, DARK_GREY, GREY } from '../../../constants/colors';
 import { normalizeColor } from '../../../utils/style-utils';

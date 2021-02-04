@@ -9,9 +9,6 @@ import {
   validateMotifJson,
 } from './data';
 
-import { styleNodeLabel } from '../../../containers/Graph/styles/StyleNodes';
-import { styleEdgeLabel } from '../../../containers/Graph/styles/StyleEdges';
-
 /**
  * Initial function to process json object with node, edge fields or motif json to required format
  * Parse and generates metadata fields

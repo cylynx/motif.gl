@@ -54,7 +54,8 @@ export const DEFAULT_EDGE_STYLE = {
   fontSize: 12,
   endArrow: {
     d: -1 / 2,
-    path: `M 0,0 L ${2},${2 / 2} L ${2},-${2 / 2} Z`,
+    path: `M 0,0 L 4,2 L 4,-2 Z`,
+    fill: EDGE_DEFAULT_COLOR,
   },
 };
 

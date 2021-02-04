@@ -149,17 +149,6 @@ const VariableInspector = () => {
             graph.setItemState(nodeId, 'disabled', true);
           }
         });
-        // for (const obj of graphVisible.nodes) {
-        //   let prop = get(obj, id);
-        //   if (isDateTime) {
-        //     prop = unixTimeConverter(prop, analyzerType);
-        //   }
-        //   if (val[0] <= prop && prop <= val[1]) {
-        //     graph.setItemState(obj.id, EnumNodeAndEdgeStatus.FILTERED, false);
-        //   } else {
-        //     graph.setItemState(obj.id, EnumNodeAndEdgeStatus.FILTERED, true);
-        //   }
-        // }
       } else {
         graphVisible.edges.forEach((edge: IUserEdge) => {
           let prop = get(edge, id);
@@ -190,32 +179,6 @@ const VariableInspector = () => {
             graph.setItemState(edgeID, 'disabled', true);
           }
         });
-        // for (const obj of graphVisible.edges) {
-        //   let prop = get(obj, id);
-        //   if (isDateTime) {
-        //     if (Array.isArray(prop)) {
-        //       // eslint-disable-next-line no-loop-func
-        //       prop = prop.map((el: string) =>
-        //         unixTimeConverter(el, analyzerType),
-        //       );
-        //     } else {
-        //       prop = unixTimeConverter(prop, analyzerType);
-        //     }
-        //   }
-        //   let condition = true;
-        //   if (Array.isArray(prop)) {
-        //     condition = prop.some((el: any) => {
-        //       return val[0] <= el && el <= val[1];
-        //     });
-        //   } else {
-        //     condition = val[0] <= prop && prop <= val[1];
-        //   }
-        //   if (condition) {
-        //     graph.setItemState(obj.id, EnumNodeAndEdgeStatus.FILTERED, false);
-        //   } else {
-        //     graph.setItemState(obj.id, EnumNodeAndEdgeStatus.FILTERED, true);
-        //   }
-        // }
       }
       graph.paint();
       graph.setAutoPaint(true);

@@ -20,9 +20,6 @@ export const nodeStateStyles: { status: NodeStyle['status'] } = {
       },
       halo: {
         visible: false,
-        opacity: 0.4,
-        fillOpacity: 0.9,
-        strokeOpacity: 0.9,
       },
       icon: {
         fill: '#FFFFFF',
@@ -125,10 +122,6 @@ export const edgeStateStyles: {
       },
     },
     hover: {
-      halo: {
-        fill: '#ddd',
-        visible: true,
-      },
       keyshape: {
         lineWidth: DEFAULT_EDGE_STYLE.width + 1,
       },
@@ -136,30 +129,29 @@ export const edgeStateStyles: {
     disabled: {
       label: {
         fill: edgeFontColor.reflect,
-        fillOpacity: 0.8,
+        fillOpacity: 0.3,
       },
       keyshape: {
         lineWidth: DEFAULT_EDGE_STYLE.width - 0.5,
-        fill: edgeFontColor.reflect,
-        fillOpacity: 0.2,
-        opacity: 0.5,
+        strokeOpacity: 0.3,
+        opacity: 0.3,
       },
     },
     active: {
       keyshape: {
-        lineWidth: DEFAULT_EDGE_STYLE.width + 0.5,
+        stroke: edgeLineColor.dark,
+        lineWidth: DEFAULT_EDGE_STYLE.width + 1,
       },
     },
     inactive: {
       label: {
         fill: grey.normal,
-        fillOpacity: 0.8,
+        fillOpacity: 0.7,
       },
       keyshape: {
-        lineWidth: DEFAULT_EDGE_STYLE.width,
-        fill: grey.reflect,
-        fillOpacity: 0.5,
-        opacity: 0.5,
+        stroke: grey.normal,
+        strokeOpacity: 0.7,
+        opacity: 0.7,
       },
     },
   },
@@ -168,25 +160,24 @@ export const edgeStateStyles: {
 export const defaultEdge: { style: Partial<EdgeStyle> } = {
   style: {
     halo: {
-      lineWidth: DEFAULT_EDGE_STYLE.width + 2,
-      fill: '#ddd',
-      fillOpacity: 0.6,
-      shadowBlur: 0.5,
-      shadowColor: grey.dark,
+      lineWidth: DEFAULT_EDGE_STYLE.width + 1,
       opacity: 0.5,
       cursor: 'pointer',
+      visible: false,
     },
     label: {
       fill: edgeFontColor.dark,
+      fillOpacity: 0.9,
     },
     keyshape: {
       lineWidth: DEFAULT_EDGE_STYLE.width,
       stroke: edgeLineColor.dark,
-      opacity: 0.8,
+      strokeOpacity: 1.0,
+      opacity: 1.0,
       lineDash: edgeLinePattern,
-      lineAppendWidth: 4,
       cursor: 'pointer',
       endArrow: DEFAULT_EDGE_STYLE.endArrow,
+      shadowColor: 'transparent',
     },
   },
 };

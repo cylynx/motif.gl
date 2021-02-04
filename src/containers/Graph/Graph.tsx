@@ -44,7 +44,7 @@ const Graph = React.forwardRef<Graphin, GraphProps>(({ setTooltip }, ref) => {
       edgeStateStyles={edgeStateStyles}
       theme={lightTheme}
     >
-      <DragCanvas enableOptimize />
+      <DragCanvas enableOptimize={false} />
       <DisplayTooltips setTooltip={setTooltip} />
       <ClickSelect trigger='shift' />
       <ActivateNodeRelations />

@@ -26,9 +26,6 @@ export const styleEdges = (
   data: GraphData,
   edgeStyleOptions: EdgeStyleOptions,
 ): void => {
-  // Assign edge type - line, loop or quadratic
-  // deriveEdgeType(data);
-
   // Separated out as it cannot be done in the loop
   if (edgeStyleOptions.width && edgeStyleOptions.width.id !== 'fixed') {
     styleEdgeWidthByProp(data, edgeStyleOptions.width);
@@ -62,6 +59,9 @@ export const styleEdges = (
       style: edgeStyle,
     });
   });
+
+  // Assign edge type - line, loop or quadratic
+  deriveEdgeType(data);
 };
 
 /**
@@ -296,37 +296,46 @@ export const getMinMaxValue = (data: GraphData, edgeWidth: string): MinMax => {
  * @param {GraphData} data
  * @return {void}
  */
-export const deriveEdgeType = (data: GraphData): void => {
-  const noLoopEdges = data.edges.filter((edge) => edge.source !== edge.target);
-  const loopEdges = data.edges.filter((edge) => edge.source === edge.target);
+const deriveEdgeType = (data: GraphData): void => {
+  const noLoopEdges: Edge[] = data.edges.filter(
+    (edge: Edge) => edge.source !== edge.target,
+  );
+
   const groups = groupBy(noLoopEdges, (edge) => {
-    // a => b !== b => a
     return `${edge.source}-${edge.target}`;
   });
-
-  for (const edge of loopEdges) {
-    edge.type = 'loop';
-  }
 
   for (const edge of noLoopEdges) {
     const group = groups[`${edge.source}-${edge.target}`];
     const revGroup = groups[`${edge.target}-${edge.source}`] || [];
     const isBidirection = revGroup.length > 0;
+
     if (group.length === 1 && !isBidirection) {
-      edge.type = 'line';
-    } else if (group.length > 1 && !isBidirection) {
-      // If single direction, alternate the edges offset e.g. 20, -20, 40, -40
-      edge.type = 'quadratic';
+      Object.assign(edge.style.keyshape, { type: 'line' });
+    }
+    // If single direction, alternate the edges offset e.g. 20, -20, 40, -40
+    else if (group.length > 1 && !isBidirection) {
       const index = group.findIndex((e) => e.id === edge.id);
       const EVEN_OFFSET = group.length % 2 === 0 ? 1 : 0;
       const OFFSET = Math.round((index + EVEN_OFFSET) / 2) * 20;
-      edge.curveOffset = index % 2 === 0 ? OFFSET : -OFFSET;
-    } else {
-      // If bidirectional, each direction will have it's own distinct group
-      edge.type = 'quadratic';
+      const CURVE_OFFSET = index % 2 === 0 ? OFFSET : -OFFSET;
+      Object.assign(edge.style.keyshape, {
+        type: 'poly',
+        poly: {
+          distance: CURVE_OFFSET,
+        },
+      });
+    }
+    // If bidirectional, each direction will have it's own distinct group
+    else {
       const index = group.findIndex((e) => e.id === edge.id);
       const OFFSET = (index + 1) * 20;
-      edge.curveOffset = -OFFSET;
+      Object.assign(edge.style.keyshape, {
+        type: 'poly',
+        poly: {
+          distance: -OFFSET,
+        },
+      });
     }
   }
 };
