@@ -7,44 +7,11 @@ import {
 
 import { IEdge, INode } from '@antv/g6';
 import { isBigDataSet } from '../../../utils/utils';
+import useGraphBehaviors from './hooks/useGraphBehaviors';
 
 const ActivateEdgeRelations = (): null => {
   const { graph } = useContext(GraphinContext) as GraphinContextType;
-
-  const clearAllStates = useCallback(() => {
-    graph.getNodes().forEach((node: INode) => {
-      graph.clearItemStates(node, ['inactive', 'active']);
-    });
-
-    graph.getEdges().forEach((edge: IEdge) => {
-      graph.clearItemStates(edge, ['inactive', 'active']);
-    });
-  }, []);
-
-  const disableAllNodeEdges = useCallback(() => {
-    graph.getNodes().forEach((node: INode) => {
-      graph.clearItemStates(node, ['inactive', 'active']);
-      graph.setItemState(node, 'inactive', true);
-    });
-
-    graph.getEdges().forEach((edge: IEdge) => {
-      graph.clearItemStates(edge, ['inactive', 'active']);
-      graph.setItemState(edge, 'inactive', true);
-    });
-  }, []);
-
-  const resetNodeEdgeStates = useCallback((e: IG6GraphEvent) => {
-    const { cfg } = e.currentTarget;
-    const isBigData: boolean = isBigDataSet(cfg.nodes.length, cfg.edges.length);
-    if (isBigData) {
-      return;
-    }
-
-    graph.setAutoPaint(false);
-    clearAllStates();
-    graph.paint();
-    graph.setAutoPaint(true);
-  }, []);
+  const { disableAllNodeEdges, resetNodeEdgeStates } = useGraphBehaviors(graph);
 
   const highlightEdge = useCallback((currentEdge: IEdge): void => {
     if (currentEdge.hasState('active') === false) {
