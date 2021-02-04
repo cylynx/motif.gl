@@ -264,7 +264,7 @@ export const edgeWidthForm: NestedFormData = {
       id: 'value',
       label: 'Width',
       type: 'slider',
-      value: DEFAULT_EDGE_STYLE.width,
+      value: DEFAULT_EDGE_STYLE.lineWidth,
       min: 1,
       max: 10,
       step: 0.1,

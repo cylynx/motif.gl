@@ -8,12 +8,12 @@ import {
   EdgeWidth,
   ArrowOptions,
 } from '../../../redux/graph/types';
-import { normalizeColor } from '../../../utils/style-utils';
-import { DEFAULT_EDGE_STYLE } from '../../../constants/graph-shapes';
+import {
+  DEFAULT_EDGE_STYLE,
+  edgeFontColor,
+  edgeLineColor,
+} from '../../../constants/graph-shapes';
 import { EdgePattern, mapEdgePattern } from '../../../utils/shape-utils';
-
-const edgeColor = normalizeColor(DEFAULT_EDGE_STYLE.color);
-const edgeFontColor = normalizeColor(DEFAULT_EDGE_STYLE.fontColor);
 
 /**
  * Style an edge dataset based on a given method
@@ -90,13 +90,13 @@ export const mapEdgeWidth = (
     maxp = edgeLineWidth > maxp ? edgeLineWidth : maxp;
 
     edgeLineWidth = Number.isNaN(edgeLineWidth)
-      ? DEFAULT_EDGE_STYLE.width
+      ? DEFAULT_EDGE_STYLE.lineWidth
       : edgeLineWidth;
 
     Object.assign(edgeStyle, {
       keyshape: Object.assign(keyshapeStyle, {
         lineWidth: edgeLineWidth,
-        stroke: keyshapeStyle.stroke ?? edgeColor.normal,
+        stroke: keyshapeStyle.stroke ?? edgeLineColor.normal,
       }),
     });
 
@@ -113,7 +113,7 @@ export const mapEdgeWidth = (
       visualRange[0];
 
     edgeLineWidth = Number.isNaN(edgeLineWidth)
-      ? DEFAULT_EDGE_STYLE.width
+      ? DEFAULT_EDGE_STYLE.lineWidth
       : edgeLineWidth;
 
     Object.assign(edge.style.keyshape, {
@@ -174,7 +174,7 @@ export const styleEdgeLabel = (
 ): void => {
   const labelStyle: Partial<EdgeStyle['label']> = edgeStyle.label ?? {
     fill: edgeFontColor.normal,
-    fontSize: DEFAULT_EDGE_STYLE.fontSize,
+    fontSize: DEFAULT_EDGE_STYLE.label.fontSize,
   };
 
   let customLabel = '';
@@ -244,7 +244,7 @@ export const styleEdgeArrow = (
     return;
   }
 
-  edgeKeyShape.endArrow = DEFAULT_EDGE_STYLE.endArrow;
+  edgeKeyShape.endArrow = DEFAULT_EDGE_STYLE.keyshape.endArrow;
 };
 
 type MinMax = {
