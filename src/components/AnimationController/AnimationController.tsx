@@ -1,12 +1,11 @@
 /* eslint-disable react/sort-comp */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable react/state-in-constructor */
 /* https://github.com/keplergl/kepler.gl/blob/master/src/components/common/animation-control/animation-controller.js */
-// @ts-nocheck
 
-import { Component } from 'react';
+import { PureComponent } from 'react';
 import { bisectLeft } from 'd3-array';
+import { AnimationControllerProps, AnimationControllerState } from './types';
 
 export const BASE_SPEED = 600;
 export const FPS = 60;
@@ -15,10 +14,27 @@ export const ANIMATION_TYPE = {
   continuous: 'continuous',
 };
 
-class AnimationController extends Component {
-  state = {
-    isAnimating: false,
+class AnimationController extends PureComponent<
+  AnimationControllerProps,
+  AnimationControllerState
+> {
+  static defaultProps = {
+    baseSpeed: BASE_SPEED,
+    speed: 1,
+    animationType: ANIMATION_TYPE.continuous,
   };
+
+  constructor(props: AnimationControllerProps) {
+    super(props);
+
+    this.state = {
+      isAnimating: false,
+    };
+  }
+
+  _timer: number = null;
+
+  _startTime: number = null;
 
   componentDidUpdate() {
     if (!this._timer && this.state.isAnimating) {
@@ -29,7 +45,7 @@ class AnimationController extends Component {
         // 30*600
         const { steps, speed } = this.props;
         if (!Array.isArray(steps) || !steps.length) {
-          console.log('animation steps should be an array');
+          // console.log('animation steps should be an array');
           return;
         }
         // when speed = 1, animation should loop through 600 frames at 60 FPS
@@ -40,9 +56,7 @@ class AnimationController extends Component {
     }
   }
 
-  _timer = null;
-
-  _animate = (delay) => {
+  _animate = (delay: number) => {
     this._startTime = new Date().getTime();
 
     const loop = () => {
@@ -150,11 +164,5 @@ class AnimationController extends Component {
       : null;
   }
 }
-
-AnimationController.defaultProps = {
-  baseSpeed: BASE_SPEED,
-  speed: 1,
-  animationType: ANIMATION_TYPE.continuous,
-};
 
 export default AnimationController;

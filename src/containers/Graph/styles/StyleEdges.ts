@@ -294,6 +294,7 @@ export const getMinMaxValue = (data: GraphData, edgeWidth: string): MinMax => {
  * Quadratic edges are assigned an offset and bundled based on their source and target.
  *
  * @param {GraphData} data
+ * @return {void}
  */
 export const deriveEdgeType = (data: GraphData): void => {
   const noLoopEdges = data.edges.filter((edge) => edge.source !== edge.target);

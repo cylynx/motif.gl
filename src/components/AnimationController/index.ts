@@ -1,4 +1,4 @@
-import AnimationController from './animation-controller';
+import AnimationController from './AnimationController';
 import PlaybackControls from './PlaybackControls';
 
 export { AnimationController, PlaybackControls };

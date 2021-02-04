@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, {
   useContext,
   useState,
@@ -12,21 +11,22 @@ import get from 'lodash/get';
 import { useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
-import { Node, Edge } from '@antv/graphin';
+import { IUserNode, IUserEdge } from '@antv/graphin/lib/typings/type';
 import { GraphRefContext, EnumNodeAndEdgeStatus } from '../Graph';
 import SelectVariable from '../../components/SelectVariable';
 import { RangePlot } from '../../components/plots';
 import {
   AnimationController,
   PlaybackControls,
-} from '../../components/animation-controller';
-import { GraphSelectors } from '../../redux/graph';
+} from '../../components/AnimationController';
+import { Field, GraphData, GraphSelectors } from '../../redux/graph';
 import { getFieldDomain, unixTimeConverter } from '../../utils/data-utils';
+import { TPlotDiv, THistogramProp } from './types';
 
 const dateTimeAnalyzerTypes = ['DATETIME', 'DATE', 'TIME'];
 const validTypes = ['integer', 'real', 'timestamp', 'date'];
 
-export const PlotDiv = styled('div', ({ $theme, $expanded }) => {
+export const PlotDiv = styled('div', ({ $theme, $expanded }: TPlotDiv) => {
   const { animation, sizing } = $theme;
   return {
     paddingLeft: sizing.scale700,
@@ -41,10 +41,11 @@ export const PlotDiv = styled('div', ({ $theme, $expanded }) => {
 const VariableInspector = () => {
   const graphRef = useContext(GraphRefContext);
   const [selection, setSelection] = useState([]);
-  const [histogramProp, setHistogramProp] = useState({});
-  const [value, setValue] = useState(false);
-  const [speed, setSpeed] = useState(1);
-  const graphFlatten = useSelector((state) =>
+  const [histogramProp, setHistogramProp] = useState<THistogramProp>({});
+  const [value, setValue] = useState<number[]>([]);
+  const [speed, setSpeed] = useState<number>(1);
+
+  const graphFlatten: GraphData = useSelector((state) =>
     GraphSelectors.getGraphFlatten(state),
   );
   const graphVisible = useSelector((state) =>
@@ -90,7 +91,7 @@ const VariableInspector = () => {
   const nodeOptions = useMemo(
     () =>
       graphFields.nodes
-        .filter((f) => validTypes.includes(f.type))
+        .filter((f: Field) => validTypes.includes(f.type))
         .map((f) => {
           const optionKey = `nodes-${f.name}`;
           return {
@@ -109,7 +110,7 @@ const VariableInspector = () => {
   const edgeOptions = useMemo(
     () =>
       graphFields.edges
-        .filter((f) => validTypes.includes(f.type))
+        .filter((f: Field) => validTypes.includes(f.type))
         .map((f) => {
           const optionKey = `edges-${f.name}`;
           return {
@@ -198,17 +199,17 @@ const VariableInspector = () => {
       } else {
         const { graph } = graphRef;
         graph.setAutoPaint(false);
-        graph.getNodes().forEach((node: Node) => {
+        graph.getNodes().forEach((node: IUserNode) => {
           graph.clearItemStates(node, EnumNodeAndEdgeStatus.FILTERED);
         });
-        graph.getEdges().forEach((edge: Edge) => {
+        graph.getEdges().forEach((edge: IUserEdge) => {
           graph.clearItemStates(edge, EnumNodeAndEdgeStatus.FILTERED);
         });
         graph.paint();
         graph.setAutoPaint(true);
         setSelection([]);
         setHistogramProp({});
-        setValue(false);
+        setValue([]);
       }
     },
     [graphRef, setSelection, setHistogramProp, setValue, graphVisible],
@@ -260,7 +261,7 @@ const VariableInspector = () => {
       <PlotDiv $expanded={histogramProp.histogram}>
         {histogramProp.histogram && (
           <RangePlot
-            value={value}
+            value={value as [number, number]}
             step={histogramProp.step}
             onChange={onChangeRange}
             range={histogramProp.domain}
