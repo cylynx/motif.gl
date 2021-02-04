@@ -73,7 +73,7 @@ export const defaultNode: { style: Partial<NodeStyle> } = {
       type: 'font',
       value: '',
       size: DEFAULT_NODE_STYLE.keyshape.size,
-      fill: DEFAULT_NODE_STYLE.color.dark,
+      fill: DEFAULT_NODE_STYLE.color,
       fontFamily: 'Material Icons',
     },
   },
@@ -155,7 +155,7 @@ export const defaultEdge: { style: Partial<EdgeStyle> } = {
 
 export const lightTheme: ThemeType = {
   mode: 'light',
-  primaryColor: DEFAULT_NODE_STYLE.color.normal,
+  primaryColor: DEFAULT_NODE_STYLE.color,
   nodeSize: DEFAULT_NODE_STYLE.keyshape.size,
   edgeSize: DEFAULT_EDGE_STYLE.width,
   primaryEdgeColor: DEFAULT_EDGE_STYLE.color,
@@ -164,7 +164,7 @@ export const lightTheme: ThemeType = {
 
 export const darkTheme: ThemeType = {
   mode: 'dark',
-  primaryColor: DEFAULT_NODE_STYLE.color.normal,
+  primaryColor: DEFAULT_NODE_STYLE.color,
   nodeSize: DEFAULT_NODE_STYLE.keyshape.size,
   edgeSize: DEFAULT_EDGE_STYLE.width,
   primaryEdgeColor: '#f5f2f2',

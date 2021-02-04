@@ -130,7 +130,7 @@ export const mapNodeSize = (
     maxp = nodeStyleSize > maxp ? nodeStyleSize : maxp;
 
     nodeStyleSize = Number.isNaN(nodeStyleSize)
-      ? DEFAULT_NODE_STYLE.size
+      ? DEFAULT_NODE_STYLE.keyshape.size
       : nodeStyleSize;
 
     Object.assign(nodeStyle, {
@@ -149,7 +149,9 @@ export const mapNodeSize = (
       ((Number(get(node, propertyName)) ** (1 / 3) - minp) / rangepLength) *
         rangevLength +
       visualRange[0];
-    nodeSize = Number.isNaN(nodeSize) ? DEFAULT_NODE_STYLE.size : nodeSize;
+    nodeSize = Number.isNaN(nodeSize)
+      ? DEFAULT_NODE_STYLE.keyshape.size
+      : nodeSize;
 
     Object.assign(node.style.keyshape, {
       size: nodeSize,
@@ -333,7 +335,7 @@ export const styleNodeIcon = (
   node: Node,
   nodeStyle: Partial<NodeStyle>,
   color: NodeColor,
-  keyshapeSize: number = DEFAULT_NODE_STYLE.size,
+  keyshapeSize: number = DEFAULT_NODE_STYLE.keyshape.size,
 ) => {
   const nodePadding = 8;
   const iconStyle = nodeStyle.icon ?? {

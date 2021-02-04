@@ -29,41 +29,10 @@ export const interactionStates = [
   EnumNodeAndEdgeStatus.DISABLED,
 ];
 
-/* Additions */
-
-// export const DEFAULT_NODE_STYLE = {
-//   size: 20,
-//   color: PRIMARY_NODE_COLOR,
-//   fontFamily: DEFAULT_ICON_FONT_FAMILY,
-//   fontSize: 12,
-// };
-
-export type NodeStyleType = Partial<typeof DEFAULT_NODE_STYLE>;
-export type NodeStyleKey = keyof typeof DEFAULT_NODE_STYLE;
-
-export const EDGE_DEFAULT_PATTERN: EdgePattern = null;
-
-export const DEFAULT_EDGE_STYLE = {
-  color: EDGE_DEFAULT_COLOR,
-  width: 1,
-  pattern: EDGE_DEFAULT_PATTERN,
-  fontColor: EDGE_LABEL_DEFAULT_COLOR,
-  fontFamily: DEFAULT_ICON_FONT_FAMILY,
-  fontSize: 12,
-  endArrow: {
-    d: -1 / 2,
-    path: `M 0,0 L 4,2 L 4,-2 Z`,
-    fill: EDGE_DEFAULT_COLOR,
-  },
-};
-
-export type EdgeStyleType = Partial<typeof DEFAULT_EDGE_STYLE>;
-export type EdgeStyleKey = keyof typeof DEFAULT_EDGE_STYLE;
-
 const grey = normalizeColor(GREY);
 const nodeColor = normalizeColor(PRIMARY_NODE_COLOR);
 export const DEFAULT_NODE_STYLE = {
-  color: nodeColor,
+  color: PRIMARY_NODE_COLOR,
   label: {
     position: 'bottom',
     fill: '#3b3b3b',
@@ -106,3 +75,25 @@ export const DEFAULT_NODE_STYLE = {
     },
   },
 };
+
+export type NodeStyleType = Partial<typeof DEFAULT_NODE_STYLE>;
+export type NodeStyleKey = keyof typeof DEFAULT_NODE_STYLE;
+
+export const EDGE_DEFAULT_PATTERN: EdgePattern = null;
+
+export const DEFAULT_EDGE_STYLE = {
+  color: EDGE_DEFAULT_COLOR,
+  width: 1,
+  pattern: EDGE_DEFAULT_PATTERN,
+  fontColor: EDGE_LABEL_DEFAULT_COLOR,
+  fontFamily: DEFAULT_ICON_FONT_FAMILY,
+  fontSize: 12,
+  endArrow: {
+    d: -1 / 2,
+    path: `M 0,0 L 4,2 L 4,-2 Z`,
+    fill: EDGE_DEFAULT_COLOR,
+  },
+};
+
+export type EdgeStyleType = Partial<typeof DEFAULT_EDGE_STYLE>;
+export type EdgeStyleKey = keyof typeof DEFAULT_EDGE_STYLE;

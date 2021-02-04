@@ -156,7 +156,7 @@ export const nodeSizeForm: NestedFormData = {
       id: 'value',
       label: 'Size',
       type: 'slider',
-      value: DEFAULT_NODE_STYLE.size,
+      value: DEFAULT_NODE_STYLE.keyshape.size,
       min: 1,
       max: 100,
     },
