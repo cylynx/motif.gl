@@ -11,10 +11,11 @@ import get from 'lodash/get';
 import { styled } from 'baseui';
 import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
+import { GraphinContextType } from '@antv/graphin';
 
 import { IUserNode, IUserEdge } from '@antv/graphin/lib/typings/type';
-import { IGraph } from '@antv/g6';
-import { GraphRefContext, EnumNodeAndEdgeStatus } from '../Graph';
+import { IEdge, INode } from '@antv/g6';
+import { GraphRefContext } from '../Graph';
 import SelectVariable from '../../components/SelectVariable';
 import { RangePlot } from '../../components/plots';
 import {
@@ -41,7 +42,7 @@ export const PlotDiv = styled('div', ({ $theme, $expanded }: TPlotDiv) => {
 });
 
 const VariableInspector = () => {
-  const graphRef = useContext(GraphRefContext);
+  const graphRef = useContext(GraphRefContext) as GraphinContextType;
   const [selection, setSelection] = useState([]);
   const [histogramProp, setHistogramProp] = useState<THistogramProp>({});
   const [value, setValue] = useState<number[]>([]);
@@ -127,7 +128,7 @@ const VariableInspector = () => {
   const onChangeRange = useCallback(
     (val) => {
       setValue(val);
-      const { graph }: { graph: IGraph } = graphRef;
+      const { graph } = graphRef;
       const { from, id, analyzerType } = selection[0];
       const isDateTime: boolean = dateTimeAnalyzerTypes.includes(analyzerType);
 
@@ -239,21 +240,22 @@ const VariableInspector = () => {
           analyzerType: obj.analyzerType,
         });
         setValue(domain);
-      } else {
-        const { graph } = graphRef;
-        graph.setAutoPaint(false);
-        graph.getNodes().forEach((node: IUserNode) => {
-          graph.clearItemStates(node, EnumNodeAndEdgeStatus.FILTERED);
-        });
-        graph.getEdges().forEach((edge: IUserEdge) => {
-          graph.clearItemStates(edge, EnumNodeAndEdgeStatus.FILTERED);
-        });
-        graph.paint();
-        graph.setAutoPaint(true);
-        setSelection([]);
-        setHistogramProp({});
-        setValue([]);
+        return;
       }
+
+      const { graph } = graphRef;
+      graph.setAutoPaint(false);
+      graph.getNodes().forEach((node: INode) => {
+        graph.clearItemStates(node, 'disabled');
+      });
+      graph.getEdges().forEach((edge: IEdge) => {
+        graph.clearItemStates(edge, 'disabled');
+      });
+      graph.paint();
+      graph.setAutoPaint(true);
+      setSelection([]);
+      setHistogramProp({});
+      setValue([]);
     },
     [graphRef, setSelection, setHistogramProp, setValue, graphVisible],
   );

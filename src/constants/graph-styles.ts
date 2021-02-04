@@ -141,7 +141,7 @@ export const edgeStateStyles: {
       keyshape: {
         lineWidth: DEFAULT_EDGE_STYLE.width - 0.5,
         fill: edgeFontColor.reflect,
-        fillOpacity: 0.5,
+        fillOpacity: 0.2,
         opacity: 0.5,
       },
     },

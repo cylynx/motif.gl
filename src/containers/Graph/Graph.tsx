@@ -21,8 +21,7 @@ export type GraphProps = {
   setTooltip: (tooltip: TooltipProps) => void;
 };
 
-const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
-  const { setTooltip } = props;
+const Graph = React.forwardRef<Graphin, GraphProps>(({ setTooltip }, ref) => {
   const graphVisible = useSelector((state) =>
     GraphSelectors.getGraphVisible(state),
   );
@@ -45,7 +44,7 @@ const Graph = React.forwardRef<Graphin, GraphProps>((props, ref) => {
       edgeStateStyles={edgeStateStyles}
       theme={lightTheme}
     >
-      <DragCanvas shouldBegin={() => true} />
+      <DragCanvas enableOptimize />
       <DisplayTooltips setTooltip={setTooltip} />
       <ClickSelect trigger='shift' />
       <ActivateNodeRelations />
