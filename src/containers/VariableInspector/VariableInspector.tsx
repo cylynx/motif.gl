@@ -6,12 +6,14 @@ import React, {
   useMemo,
   Fragment,
 } from 'react';
-import { styled } from 'baseui';
-import get from 'lodash/get';
 import { useSelector } from 'react-redux';
+import get from 'lodash/get';
+import { styled } from 'baseui';
 import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
+
 import { IUserNode, IUserEdge } from '@antv/graphin/lib/typings/type';
+import { IGraph } from '@antv/g6';
 import { GraphRefContext, EnumNodeAndEdgeStatus } from '../Graph';
 import SelectVariable from '../../components/SelectVariable';
 import { RangePlot } from '../../components/plots';
@@ -70,23 +72,19 @@ const VariableInspector = () => {
     setValue([]);
   }, [graphVisible]);
 
-  const onChangeSpeed = useCallback(
-    // eslint-disable-next-line no-shadow
-    () => {
-      if (speed === 1) {
-        setSpeed(2);
-      } else if (speed === 2) {
-        setSpeed(4);
-      } else if (speed === 4) {
-        setSpeed(8);
-      } else if (speed === 8) {
-        setSpeed(16);
-      } else if (speed === 16) {
-        setSpeed(1);
-      }
-    },
-    [speed, setSpeed],
-  );
+  const onChangeSpeed = useCallback(() => {
+    if (speed === 1) {
+      setSpeed(2);
+    } else if (speed === 2) {
+      setSpeed(4);
+    } else if (speed === 4) {
+      setSpeed(8);
+    } else if (speed === 8) {
+      setSpeed(16);
+    } else if (speed === 16) {
+      setSpeed(1);
+    }
+  }, [speed, setSpeed]);
 
   const nodeOptions = useMemo(
     () =>
@@ -129,28 +127,45 @@ const VariableInspector = () => {
   const onChangeRange = useCallback(
     (val) => {
       setValue(val);
-      const { graph } = graphRef;
+      const { graph }: { graph: IGraph } = graphRef;
       const { from, id, analyzerType } = selection[0];
-      const isDateTime = dateTimeAnalyzerTypes.includes(analyzerType);
+      const isDateTime: boolean = dateTimeAnalyzerTypes.includes(analyzerType);
+
       graph.setAutoPaint(false);
       if (from === 'nodes') {
-        for (const obj of graphVisible.nodes) {
-          let prop = get(obj, id);
+        graphVisible.nodes.forEach((node: IUserNode) => {
+          let prop = get(node, id);
+
           if (isDateTime) {
             prop = unixTimeConverter(prop, analyzerType);
           }
-          if (val[0] <= prop && prop <= val[1]) {
-            graph.setItemState(obj.id, EnumNodeAndEdgeStatus.FILTERED, false);
+
+          const [startRange, endRange] = val;
+          const nodeId: string = node.id;
+          if (startRange <= prop && prop <= endRange) {
+            graph.setItemState(nodeId, 'disabled', false);
           } else {
-            graph.setItemState(obj.id, EnumNodeAndEdgeStatus.FILTERED, true);
+            graph.setItemState(nodeId, 'disabled', true);
           }
-        }
+        });
+        // for (const obj of graphVisible.nodes) {
+        //   let prop = get(obj, id);
+        //   if (isDateTime) {
+        //     prop = unixTimeConverter(prop, analyzerType);
+        //   }
+        //   if (val[0] <= prop && prop <= val[1]) {
+        //     graph.setItemState(obj.id, EnumNodeAndEdgeStatus.FILTERED, false);
+        //   } else {
+        //     graph.setItemState(obj.id, EnumNodeAndEdgeStatus.FILTERED, true);
+        //   }
+        // }
       } else {
-        for (const obj of graphVisible.edges) {
-          let prop = get(obj, id);
+        graphVisible.edges.forEach((edge: IUserEdge) => {
+          let prop = get(edge, id);
+          let condition = true;
+
           if (isDateTime) {
             if (Array.isArray(prop)) {
-              // eslint-disable-next-line no-loop-func
               prop = prop.map((el: string) =>
                 unixTimeConverter(el, analyzerType),
               );
@@ -158,7 +173,7 @@ const VariableInspector = () => {
               prop = unixTimeConverter(prop, analyzerType);
             }
           }
-          let condition = true;
+
           if (Array.isArray(prop)) {
             condition = prop.some((el: any) => {
               return val[0] <= el && el <= val[1];
@@ -166,12 +181,40 @@ const VariableInspector = () => {
           } else {
             condition = val[0] <= prop && prop <= val[1];
           }
+
+          const edgeID: string = edge.id;
           if (condition) {
-            graph.setItemState(obj.id, EnumNodeAndEdgeStatus.FILTERED, false);
+            graph.setItemState(edgeID, 'disabled', false);
           } else {
-            graph.setItemState(obj.id, EnumNodeAndEdgeStatus.FILTERED, true);
+            graph.setItemState(edgeID, 'disabled', true);
           }
-        }
+        });
+        // for (const obj of graphVisible.edges) {
+        //   let prop = get(obj, id);
+        //   if (isDateTime) {
+        //     if (Array.isArray(prop)) {
+        //       // eslint-disable-next-line no-loop-func
+        //       prop = prop.map((el: string) =>
+        //         unixTimeConverter(el, analyzerType),
+        //       );
+        //     } else {
+        //       prop = unixTimeConverter(prop, analyzerType);
+        //     }
+        //   }
+        //   let condition = true;
+        //   if (Array.isArray(prop)) {
+        //     condition = prop.some((el: any) => {
+        //       return val[0] <= el && el <= val[1];
+        //     });
+        //   } else {
+        //     condition = val[0] <= prop && prop <= val[1];
+        //   }
+        //   if (condition) {
+        //     graph.setItemState(obj.id, EnumNodeAndEdgeStatus.FILTERED, false);
+        //   } else {
+        //     graph.setItemState(obj.id, EnumNodeAndEdgeStatus.FILTERED, true);
+        //   }
+        // }
       }
       graph.paint();
       graph.setAutoPaint(true);

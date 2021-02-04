@@ -18,9 +18,6 @@ export const nodeStateStyles: { status: NodeStyle['status'] } = {
         fillOpacity: 1.0,
         lineWidth: nodeLineWidth,
       },
-      label: {
-        fill: '#000000',
-      },
       halo: {
         visible: false,
         opacity: 0.4,
@@ -50,7 +47,6 @@ export const nodeStateStyles: { status: NodeStyle['status'] } = {
       label: {
         position: 'bottom',
         offset: nodeLabelOffset,
-        fill: '#000000',
       },
     },
     inactive: {
@@ -129,20 +125,24 @@ export const edgeStateStyles: {
       },
     },
     hover: {
+      halo: {
+        fill: '#ddd',
+        visible: true,
+      },
       keyshape: {
         lineWidth: DEFAULT_EDGE_STYLE.width + 1,
       },
     },
-    disable: {
+    disabled: {
       label: {
-        fill: grey.normal,
+        fill: edgeFontColor.reflect,
         fillOpacity: 0.8,
       },
       keyshape: {
-        lineWidth: DEFAULT_EDGE_STYLE.width,
-        fill: grey.normal,
-        fillOpacity: 0.8,
-        opacity: 0.6,
+        lineWidth: DEFAULT_EDGE_STYLE.width - 0.5,
+        fill: edgeFontColor.reflect,
+        fillOpacity: 0.5,
+        opacity: 0.5,
       },
     },
     active: {
@@ -169,6 +169,10 @@ export const defaultEdge: { style: Partial<EdgeStyle> } = {
   style: {
     halo: {
       lineWidth: DEFAULT_EDGE_STYLE.width + 2,
+      fill: '#ddd',
+      fillOpacity: 0.6,
+      shadowBlur: 0.5,
+      shadowColor: grey.dark,
       opacity: 0.5,
       cursor: 'pointer',
     },
