@@ -338,4 +338,13 @@ const deriveEdgeType = (data: GraphData): void => {
       });
     }
   }
+
+  // loop edges
+  data.edges
+    .filter((edge: Edge) => edge.source === edge.target)
+    .forEach((edge: Edge) => {
+      Object.assign(edge.style.keyshape, {
+        type: 'loop',
+      });
+    });
 };

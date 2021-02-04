@@ -35,7 +35,6 @@ export const nodeStateStyles: { status: NodeStyle['status'] } = {
         visible: false,
       },
       keyshape: {
-        size: [nodeSize, nodeSize],
         fillOpacity: 0.3,
         lineWidth: nodeLineWidth,
         opacity: 1,
@@ -74,7 +73,6 @@ export const defaultNode: { style: Partial<NodeStyle> } = {
   style: {
     badges: [],
     halo: {
-      size: nodeSize * 2,
       visible: false,
       lineWidth: 2,
       fill: grey.normal,
@@ -82,6 +80,7 @@ export const defaultNode: { style: Partial<NodeStyle> } = {
       opacity: 0.8,
       fillOpacity: 0.2,
       strokeOpacity: 0.5,
+      shadowBlur: 2,
     },
     label: {
       position: 'bottom',
