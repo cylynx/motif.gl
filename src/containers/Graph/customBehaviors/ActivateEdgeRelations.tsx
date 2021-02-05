@@ -8,7 +8,6 @@ import {
 import { IEdge, INode } from '@antv/g6';
 import { isBigDataSet } from '../../../utils/utils';
 import useGraphBehaviors from './hooks/useGraphBehaviors';
-import { EnumNodeAndEdgeStatus } from '../../../constants/graph-shapes';
 
 const ActivateEdgeRelations = (): null => {
   const { graph } = useContext(GraphinContext) as GraphinContextType;
@@ -39,14 +38,13 @@ const ActivateEdgeRelations = (): null => {
 
     const { cfg } = e.currentTarget;
     const isBigData: boolean = isBigDataSet(cfg.nodes.length, cfg.edges.length);
+    if (isBigData) return;
 
     graph.setAutoPaint(false);
 
     disableAllNodeEdges();
     highlightEdge(currentEdge);
-    if (isBigData === false) {
-      highlightNodes(sourceNode, targetNode);
-    }
+    highlightNodes(sourceNode, targetNode);
 
     graph.paint();
     graph.setAutoPaint(true);

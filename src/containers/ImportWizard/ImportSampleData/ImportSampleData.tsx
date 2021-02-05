@@ -126,8 +126,16 @@ const StyledItem = ({ item }: { item: SampleDataItem }): JSX.Element => {
     // These two datasets come with x-y coordinates
     if (item.key === SampleData.AA || item.key === SampleData.NETWORK) {
       dispatch(GraphSlices.changeLayout({ layout: { id: 'preset' } }));
+      Promise.resolve(item.data()).then((d: void) => {
+        const sampleDataset: JsonImport = { data: d, type: 'json' };
+        dispatch(
+          GraphThunks.importSingleJsonData(sampleDataset, defaultAccessors),
+        );
+      });
+      return;
     }
 
+    dispatch(GraphSlices.changeLayout({ layout: { id: 'concentric' } }));
     Promise.resolve(item.data()).then((d: void) => {
       const sampleDataset: JsonImport = { data: d, type: 'json' };
       dispatch(

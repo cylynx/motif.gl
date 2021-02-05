@@ -2,13 +2,16 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable @typescript-eslint/camelcase */
 
-// @ts-nocheck
-import { Utils } from '@antv/graphin';
-import { IUserNode } from '@antv/graphin/lib/typings/type';
-import { GraphData, GraphList } from '../redux/graph';
+import { EdgeStyle, NodeStyle, Utils } from '@antv/graphin';
+import { IUserEdge, IUserNode } from '@antv/graphin/lib/typings/type';
+import { GraphData } from '../redux/graph';
+import {
+  mapNodeSize,
+  styleNodeSize,
+} from '../containers/Graph/styles/StyleNodes';
 
 export const RandomData = () => {
-  const data = Utils.mock(15)
+  const data: GraphData = Utils.mock(15)
     .random()
     .graphin();
   data.nodes.forEach((n: IUserNode) => {
@@ -22,7 +25,7 @@ export const RandomData = () => {
   return data;
 };
 export const CircleData = () => {
-  const data = Utils.mock(10)
+  const data: GraphData = Utils.mock(10)
     .circle()
     .graphin();
 
@@ -36,29 +39,6 @@ export const CircleData = () => {
     title: 'Circle Data',
   };
   return data;
-};
-
-const mapNodeSize = (nodes, propertyName, visualRange) => {
-  let minp = 9999999999;
-  let maxp = -9999999999;
-  nodes.forEach((node) => {
-    node[propertyName] = Math.pow(node[propertyName], 1 / 3);
-    minp = node[propertyName] < minp ? node[propertyName] : minp;
-    maxp = node[propertyName] > maxp ? node[propertyName] : maxp;
-  });
-  const rangepLength = maxp - minp;
-  const rangevLength = visualRange[1] - visualRange[0];
-  nodes.forEach((node) => {
-    const nodeStyle = node.style ?? {};
-    Object.assign(nodeStyle, {
-      size:
-        ((node[propertyName] - minp) / rangepLength) * rangevLength +
-        visualRange[0],
-    });
-    Object.assign(node, {
-      style: nodeStyle,
-    });
-  });
 };
 
 export const TwoDataArray = () => [RandomData(), CircleData()];
@@ -84,75 +64,6 @@ export const SimpleEdge = (): GraphData => ({
   },
 });
 
-export const TriangleJSON = (): GraphList => [
-  {
-    nodes: [
-      {
-        id: 'a',
-        data: {
-          category: 'Other',
-          created_ts_unix: 1557191325000,
-        },
-        label: 'Node 1',
-        style: { nodeSize: 20, primaryColor: '#008080' },
-      },
-      {
-        id: 'b',
-        data: {
-          category: 'Other',
-          created_ts_unix: 1558371616000,
-        },
-        label: 'Node 2',
-        style: { nodeSize: 20, primaryColor: '#008080' },
-      },
-      {
-        id: 'c',
-        data: {
-          category: 'Other',
-          created_ts_unix: 1558371616000,
-        },
-        label: 'Node 3',
-        style: { nodeSize: 20, primaryColor: '#008080' },
-      },
-    ],
-    edges: [
-      {
-        id: 'txn a-b',
-        data: {
-          value: 100,
-          blk_ts_unix: 1000000,
-        },
-        source: 'a',
-        target: 'b',
-        style: { endArrow: true },
-      },
-      {
-        id: 'txn b-c',
-        data: {
-          value: 200,
-          blk_ts_unix: 2000000,
-        },
-        source: 'b',
-        target: 'c',
-        style: { endArrow: true },
-      },
-      {
-        id: 'txn c-b',
-        data: {
-          value: 300,
-          blk_ts_unix: 3000000,
-        },
-        source: 'c',
-        target: 'b',
-        style: { endArrow: true },
-      },
-    ],
-    metadata: {
-      key: 1592981050812,
-    },
-  },
-];
-
 export const BankData = (): Promise<GraphData> =>
   fetch(
     'https://storage.googleapis.com/cylynx-landing-content/banking-connections-demo.json',
@@ -170,7 +81,7 @@ export const MiserablesData = () =>
     'https://gist.githubusercontent.com/emanueles/1dc73efc65b830f111723e7b877efdd5/raw/2c7a42b5d27789d74c8708e13ed327dc52802ec6/lesmiserables.json',
   )
     .then((res) => res.json())
-    .then((data: GraphData) => {
+    .then((data) => {
       const { nodes, links } = data;
       const newData: GraphData = {
         nodes,
@@ -188,12 +99,16 @@ export const NetworkData = () =>
   )
     .then((res) => res.json())
     .then((data) => {
-      data.nodes.forEach((node) => {
-        node.label = node.olabel;
+      data.nodes.forEach((node: IUserNode) => {
         node.degree = 0;
         node.style = {};
-        node.style.fontSize = 6;
-        data.edges.forEach((edge) => {
+        styleNodeSize(node.style, 6);
+
+        // set label values
+        const labelStyle: Partial<NodeStyle['label']> = { value: node.olabel };
+        node.style.label = labelStyle;
+
+        data.edges.forEach((edge: IUserEdge) => {
           if (edge.source === node.id || edge.target === node.id) {
             node.degree++;
           }
@@ -213,8 +128,8 @@ export const AAData = () => {
     .then((res) => res.json())
     .then((data) => {
       const { nodes, edges } = data;
-      nodes.forEach((n) => {
-        n.defaultStyle = {};
+      nodes.forEach((n: IUserNode) => {
+        n.style = {};
         n.y = -n.y + 1000;
         n.x += 2000;
         n.degree = 0;
@@ -223,18 +138,20 @@ export const AAData = () => {
       });
       // compute the degree of each node
       const nodeIdMap = new Map();
-      nodes.forEach((node) => {
+      nodes.forEach((node: IUserNode) => {
         nodeIdMap.set(node.id, node);
       });
-      edges.forEach((e) => {
+      edges.forEach((e: IUserEdge) => {
         const source = nodeIdMap.get(e.source);
         const target = nodeIdMap.get(e.target);
+        const keyshape: Partial<EdgeStyle>['keyshape'] = {};
         source.outDegree++;
         target.inDegree++;
         source.degree++;
         target.degree++;
         e.style = {};
-        e.style.width = 0.3;
+        Object.assign(keyshape, { lineWidth: 0.3 });
+        Object.assign(e.style, { keyshape });
       });
       mapNodeSize(nodes, 'degree', [2, 20]);
       data.metadata = {
@@ -243,27 +160,3 @@ export const AAData = () => {
       return data;
     });
 };
-
-export const NetworkData2 = () =>
-  fetch(
-    'https://gw.alipayobjects.com/os/basement_prod/0b9730ff-0850-46ff-84d0-1d4afecd43e6.json',
-  )
-    .then((res) => res.json())
-    .then((data) => {
-      data.nodes.forEach((node) => {
-        node.label = node.olabel;
-        node.degree = 0;
-        node.defaultStyle = {};
-        node.defaultStyle.fontSize = 1.3;
-        data.edges.forEach((edge) => {
-          if (edge.source === node.id || edge.target === node.id) {
-            node.degree++;
-          }
-        });
-      });
-      mapNodeSize(data.nodes, 'degree', [1, 15]);
-      data.metadata = {
-        title: 'Large Data',
-      };
-      return data;
-    });
