@@ -52,12 +52,10 @@ export const styleEdges = (
     }
 
     if (edgeStyleOptions.arrow) {
-      styleEdgeArrow(edgeStyle, edgeStyleOptions.arrow);
+      // styleEdgeArrow(edgeStyle, edgeStyleOptions.arrow);
     }
 
-    Object.assign(edge, {
-      style: edgeStyle,
-    });
+    Object.assign(edge, { style: edgeStyle });
   });
 
   // Assign edge type - line, loop or quadratic
@@ -116,9 +114,7 @@ export const mapEdgeWidth = (
       ? DEFAULT_EDGE_STYLE.lineWidth
       : edgeLineWidth;
 
-    Object.assign(edge.style.keyshape, {
-      lineWidth: edgeLineWidth,
-    });
+    Object.assign(edge.style.keyshape, { lineWidth: edgeLineWidth });
   });
 };
 
@@ -188,9 +184,7 @@ export const styleEdgeLabel = (
     value: customLabel,
   });
 
-  Object.assign(edgeStyle, {
-    label: labelStyle,
-  });
+  Object.assign(edgeStyle, { label: labelStyle });
 };
 
 export const styleEdgePattern = (
@@ -246,6 +240,7 @@ export const styleEdgeArrow = (
   }
 
   edgeKeyShape.endArrow = DEFAULT_EDGE_STYLE.keyshape.endArrow;
+  Object.assign(edgeStyle, { keyshape: edgeKeyShape });
 };
 
 type MinMax = {
@@ -339,13 +334,4 @@ const deriveEdgeType = (data: GraphData): void => {
       });
     }
   }
-
-  // loop edges
-  // data.edges
-  //   .filter((edge: Edge) => edge.source === edge.target)
-  //   .forEach((edge: Edge) => {
-  //     Object.assign(edge.style.keyshape, {
-  //       type: 'loop',
-  //     });
-  //   });
 };

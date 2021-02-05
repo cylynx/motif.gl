@@ -9,6 +9,7 @@ import {
   mapNodeSize,
   styleNodeSize,
 } from '../containers/Graph/styles/StyleNodes';
+import { edgeFontColor } from './graph-shapes';
 
 export const RandomData = () => {
   const data: GraphData = Utils.mock(15)
@@ -150,7 +151,10 @@ export const AAData = () => {
         source.degree++;
         target.degree++;
         e.style = {};
-        Object.assign(keyshape, { lineWidth: 0.3 });
+        Object.assign(keyshape, {
+          lineWidth: 0.3,
+          stroke: edgeFontColor.normal,
+        });
         Object.assign(e.style, { keyshape });
       });
       mapNodeSize(nodes, 'degree', [2, 20]);
