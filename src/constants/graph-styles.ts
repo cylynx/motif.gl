@@ -29,10 +29,6 @@ export const nodeStateStyles: { status: NodeStyle['status'] } = {
         opacity: 1,
         strokeOpacity: 1,
       },
-      label: {
-        position: 'bottom',
-        offset: DEFAULT_NODE_STYLE.label.offset,
-      },
     },
     inactive: {
       keyshape: {
