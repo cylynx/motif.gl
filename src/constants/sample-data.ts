@@ -9,7 +9,7 @@ import {
   mapNodeSize,
   styleNodeSize,
 } from '../containers/Graph/styles/StyleNodes';
-import { edgeFontColor } from './graph-shapes';
+import { DEFAULT_EDGE_STYLE, edgeFontColor } from './graph-shapes';
 
 export const RandomData = () => {
   const data: GraphData = Utils.mock(15)
@@ -153,7 +153,7 @@ export const AAData = () => {
         e.style = {};
         Object.assign(keyshape, {
           lineWidth: 0.3,
-          stroke: edgeFontColor.normal,
+          stroke: 'grey',
         });
         Object.assign(e.style, { keyshape });
       });
