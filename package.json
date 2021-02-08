@@ -137,6 +137,7 @@
     "@types/styletron-react": "^5.0.2",
     "@types/styletron-standard": "^2.0.0",
     "@types/webpack": "^4.41.26",
+    "babel-loader": "^8.2.2",
     "baseui": "^9.103.0",
     "css-loader": "^3.6.0",
     "cypress": "^6.4.0",
@@ -145,6 +146,7 @@
     "eslint-plugin-baseui": "^9.103.0",
     "eslint-plugin-import": "2.22.1",
     "husky": "^4.2.1",
+    "less-loader": "^8.0.0",
     "lint-staged": "^10.0.3",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -156,6 +158,7 @@
     "styletron-engine-atomic": "^1.4.5",
     "styletron-react": "^5.2.7",
     "ts-jest": "^26.4.4",
+    "ts-loader": "^8.0.15",
     "ts-node": "^9.1.1",
     "tsdx": "^0.14.1",
     "webpack": "^4.42.0"
