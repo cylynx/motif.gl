@@ -245,12 +245,7 @@ export const styleNodeLabel = (
   label: string,
 ): void => {
   const labelStyle: Partial<NodeStyle['label']> = nodeStyle.label ?? {};
-
-  let customLabel = '';
-
-  if (label !== 'none') {
-    customLabel = get(node, label, '').toString();
-  }
+  const customLabel = get(node, label, '').toString();
 
   Object.assign(labelStyle, { value: customLabel });
   Object.assign(nodeStyle, { label: labelStyle });
