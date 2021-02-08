@@ -28,12 +28,14 @@ export const interactionStates = [
   EnumNodeAndEdgeStatus.DISABLED,
 ];
 
+const nodeOpacity = 1;
+const nodeShapeLineWidth = 3;
 export const grey = normalizeColor(GREY);
 export const nodeColor = normalizeColor(PRIMARY_NODE_COLOR);
-export const nodeOpacity = 1;
-export const nodeShapeLineWidth = 3;
 export const DEFAULT_NODE_STYLE = {
   color: PRIMARY_NODE_COLOR,
+  opacity: nodeOpacity,
+  lineWidth: nodeShapeLineWidth,
   label: {
     position: 'bottom',
     fill: '#3b3b3b',
@@ -79,6 +81,9 @@ export const DEFAULT_NODE_STYLE = {
         lineWidth: nodeShapeLineWidth - 1,
         fillOpacity: nodeOpacity - 0.8,
       },
+      label: {
+        position: 'bottom',
+      },
     },
     active: {
       keyshape: {
@@ -96,6 +101,8 @@ export type NodeStyleKey = keyof typeof DEFAULT_NODE_STYLE;
 
 export const EDGE_DEFAULT_PATTERN: EdgePattern = null;
 
+const edgeLineWidth = 1;
+const edgeOpacity = 1;
 export const edgeLineColor = normalizeColor(EDGE_DEFAULT_COLOR);
 export const edgeFontColor = normalizeColor(EDGE_LABEL_DEFAULT_COLOR);
 export const edgeLinePattern = mapEdgePattern(EDGE_DEFAULT_PATTERN);
@@ -120,14 +127,42 @@ export const DEFAULT_EDGE_STYLE = {
     },
   },
   status: {
+    selected: {
+      keyshape: {
+        lineWidth: edgeLineWidth + 0.5,
+      },
+    },
+    hover: {
+      keyshape: {
+        lineWidth: edgeLineWidth + 1,
+      },
+    },
     disabled: {
       label: {
         fill: edgeFontColor.reflect,
+        fillOpacity: edgeOpacity - 0.7,
+      },
+      keyshape: {
+        lineWidth: edgeLineWidth - 0.5,
+        strokeOpacity: edgeOpacity - 0.7,
+        opacity: edgeOpacity - 0.7,
       },
     },
     active: {
       keyshape: {
         stroke: edgeLineColor.dark,
+        lineWidth: edgeLineWidth + 1,
+      },
+    },
+    inactive: {
+      label: {
+        fill: grey.normal,
+        fillOpacity: edgeOpacity - 0.3,
+      },
+      keyshape: {
+        stroke: grey.normal,
+        strokeOpacity: edgeOpacity - 0.3,
+        opacity: edgeOpacity - 0.3,
       },
     },
   },

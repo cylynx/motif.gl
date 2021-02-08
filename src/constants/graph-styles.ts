@@ -18,13 +18,13 @@ export const nodeStateStyles: { status: NodeStyle['status'] } = {
     },
     inactive: {
       keyshape: DEFAULT_NODE_STYLE.status.inactive.keyshape,
-      label: {
-        position: 'bottom',
-      },
+      label: DEFAULT_NODE_STYLE.status.inactive.label,
       icon: {
         type: 'font',
         fill: grey.dark,
+        value: '',
         fontFamily: 'Material Icons',
+        visible: true,
       },
     },
   },
@@ -53,44 +53,11 @@ export const edgeStateStyles: {
   status: EdgeStyle['status'];
 } = {
   status: {
-    selected: {
-      keyshape: {
-        lineWidth: DEFAULT_EDGE_STYLE.lineWidth + 0.5,
-      },
-    },
-    hover: {
-      keyshape: {
-        lineWidth: DEFAULT_EDGE_STYLE.lineWidth + 1,
-      },
-    },
-    disabled: {
-      label: {
-        fill: DEFAULT_EDGE_STYLE.status.disabled.label.fill,
-        fillOpacity: DEFAULT_EDGE_STYLE.opacity - 0.7,
-      },
-      keyshape: {
-        lineWidth: DEFAULT_EDGE_STYLE.lineWidth - 0.5,
-        strokeOpacity: DEFAULT_EDGE_STYLE.opacity - 0.7,
-        opacity: DEFAULT_EDGE_STYLE.opacity - 0.7,
-      },
-    },
-    active: {
-      keyshape: {
-        stroke: DEFAULT_EDGE_STYLE.status.active.keyshape.stroke,
-        lineWidth: DEFAULT_EDGE_STYLE.lineWidth + 1,
-      },
-    },
-    inactive: {
-      label: {
-        fill: grey.normal,
-        fillOpacity: DEFAULT_EDGE_STYLE.opacity - 0.3,
-      },
-      keyshape: {
-        stroke: grey.normal,
-        strokeOpacity: DEFAULT_EDGE_STYLE.opacity - 0.3,
-        opacity: DEFAULT_EDGE_STYLE.opacity - 0.3,
-      },
-    },
+    selected: DEFAULT_EDGE_STYLE.status.selected,
+    hover: DEFAULT_EDGE_STYLE.status.hover,
+    disabled: DEFAULT_EDGE_STYLE.status.disabled,
+    active: DEFAULT_EDGE_STYLE.status.active,
+    inactive: DEFAULT_EDGE_STYLE.status.inactive,
   },
 };
 
