@@ -18,6 +18,7 @@ export const RandomData = () => {
   data.nodes.forEach((n: IUserNode) => {
     n.numeric = Math.floor(Math.random() * 100 + 1);
     delete n.type;
+    delete n.style;
   });
 
   data.metadata = {
@@ -30,7 +31,10 @@ export const CircleData = () => {
     .circle()
     .graphin();
 
-  data.nodes.forEach((n) => delete n.type);
+  data.nodes.forEach((n) => {
+    delete n.type;
+    delete n.style;
+  });
 
   data.edges.forEach((e) => {
     e.numeric = Math.floor(Math.random() * 10 + 1);

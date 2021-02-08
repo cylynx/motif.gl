@@ -1,6 +1,7 @@
 import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
 import shortid from 'shortid';
+
 import { Node, Edge, GraphList, GraphData, Accessors } from '../types';
 import {
   processJson,
