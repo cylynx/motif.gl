@@ -252,10 +252,6 @@ export const styleNodeLabel = (
     customLabel = get(node, label, '').toString();
   }
 
-  if (label === 'none') {
-    customLabel = '';
-  }
-
   Object.assign(labelStyle, { value: customLabel });
   Object.assign(nodeStyle, { label: labelStyle });
 };
