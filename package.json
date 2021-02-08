@@ -47,7 +47,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
     "@antv/g6": "^4.1.7",
-    "@antv/graphin": "^2.0.0-beta.11",
+    "@antv/graphin": "^2.0.0-beta.12",
     "@reduxjs/toolkit": "^1.2.3",
     "d3-array": "^2.8.0",
     "d3-axis": "^2.0.0",
@@ -76,7 +76,7 @@
     "react-movable": "^2.5.3",
     "react-redux": "^7.1.3",
     "react-virtualized-auto-sizer": "^1.0.2",
-    "recompose": "^0.30.0",
+    "recompose": "^0.17.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "redux-undo": "^1.0.1",
@@ -86,9 +86,9 @@
     "type-analyzer": "^0.2.5"
   },
   "peerDependencies": {
+    "baseui": "^9.90.0",
     "react": ">=16",
     "react-dom": ">=16",
-    "baseui": "^9.90.0",
     "styletron-engine-atomic": "^1.4.5",
     "styletron-react": "^5.2.7"
   },
@@ -103,7 +103,7 @@
     }
   ],
   "devDependencies": {
-    "@commitlint/cli": "^8.0.0",
+    "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^8.0.0",
     "@cypress/react": "^4.16.1",
     "@rollup/plugin-url": "^6.0.0",

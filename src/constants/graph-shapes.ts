@@ -30,6 +30,8 @@ export const interactionStates = [
 
 export const grey = normalizeColor(GREY);
 export const nodeColor = normalizeColor(PRIMARY_NODE_COLOR);
+export const nodeOpacity = 1;
+export const nodeShapeLineWidth = 3;
 export const DEFAULT_NODE_STYLE = {
   color: PRIMARY_NODE_COLOR,
   label: {
@@ -42,34 +44,48 @@ export const DEFAULT_NODE_STYLE = {
     size: 20,
     stroke: nodeColor.normal,
     fill: nodeColor.dark,
-    fillOpacity: 0.3,
-    lineWidth: 3,
-    opacity: 1,
-    strokeOpacity: 1,
+    fillOpacity: nodeOpacity - 0.7,
+    lineWidth: nodeShapeLineWidth,
+    opacity: nodeOpacity,
+    strokeOpacity: nodeOpacity,
   },
   halo: {
     lineWidth: 2,
     fill: grey.normal,
     stroke: grey.dark,
-    opacity: 0.8,
-    fillOpacity: 0.2,
-    strokeOpacity: 0.5,
+    opacity: nodeOpacity - 0.2,
+    fillOpacity: nodeOpacity - 0.8,
+    strokeOpacity: nodeOpacity - 0.5,
     shadowBlur: 2,
   },
   status: {
+    selected: {
+      keyshape: {
+        fillOpacity: nodeOpacity,
+        lineWidth: nodeShapeLineWidth,
+        opacity: nodeOpacity,
+      },
+      halo: {
+        visible: false,
+      },
+    },
     inactive: {
       keyshape: {
-        opacity: 0.2,
+        fill: grey.normal,
+        shadowColor: grey.reflect,
+        stroke: grey.dark,
+        shadowBlur: 2,
+        strokeOpacity: nodeOpacity - 0.8,
+        lineWidth: nodeShapeLineWidth - 1,
+        fillOpacity: nodeOpacity - 0.8,
       },
     },
     active: {
       keyshape: {
-        opacity: 0.3,
-      },
-    },
-    selected: {
-      keyshape: {
-        opacity: 1.0,
+        fillOpacity: nodeOpacity - 0.7,
+        strokeOpacity: nodeOpacity,
+        opacity: nodeOpacity,
+        lineWidth: nodeShapeLineWidth,
       },
     },
   },

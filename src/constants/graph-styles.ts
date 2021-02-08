@@ -4,16 +4,7 @@ import { DEFAULT_EDGE_STYLE, DEFAULT_NODE_STYLE, grey } from './graph-shapes';
 
 export const nodeStateStyles: { status: NodeStyle['status'] } = {
   status: {
-    selected: {
-      badges: [],
-      keyshape: {
-        fillOpacity: DEFAULT_NODE_STYLE.status.selected.keyshape.opacity,
-        lineWidth: DEFAULT_NODE_STYLE.keyshape.lineWidth,
-      },
-      halo: {
-        visible: false,
-      },
-    },
+    selected: DEFAULT_NODE_STYLE.status.selected,
     hover: {
       halo: {
         visible: true,
@@ -23,26 +14,12 @@ export const nodeStateStyles: { status: NodeStyle['status'] } = {
       halo: {
         visible: false,
       },
-      keyshape: {
-        fillOpacity: DEFAULT_NODE_STYLE.status.active.keyshape.opacity,
-        lineWidth: DEFAULT_NODE_STYLE.keyshape.lineWidth,
-        opacity: 1,
-        strokeOpacity: 1,
-      },
+      keyshape: DEFAULT_NODE_STYLE.status.active.keyshape,
     },
     inactive: {
-      keyshape: {
-        fill: grey.normal,
-        shadowColor: grey.reflect,
-        stroke: grey.dark,
-        shadowBlur: 2,
-        strokeOpacity: DEFAULT_NODE_STYLE.status.inactive.keyshape.opacity,
-        lineWidth: DEFAULT_NODE_STYLE.keyshape.lineWidth - 1,
-        fillOpacity: DEFAULT_NODE_STYLE.status.inactive.keyshape.opacity,
-      },
+      keyshape: DEFAULT_NODE_STYLE.status.inactive.keyshape,
       label: {
         position: 'bottom',
-        offset: DEFAULT_NODE_STYLE.label.offset,
       },
       icon: {
         type: 'font',

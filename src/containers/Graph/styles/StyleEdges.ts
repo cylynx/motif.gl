@@ -52,7 +52,7 @@ export const styleEdges = (
     }
 
     if (edgeStyleOptions.arrow) {
-      // styleEdgeArrow(edgeStyle, edgeStyleOptions.arrow);
+      styleEdgeArrow(edgeStyle, edgeStyleOptions.arrow);
     }
 
     Object.assign(edge, { style: edgeStyle });
