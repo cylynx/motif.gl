@@ -71,7 +71,7 @@ export const defaultEdge: { style: Partial<EdgeStyle> } = {
     },
     label: {
       fill: DEFAULT_EDGE_STYLE.label.fill,
-      fillOpacity: DEFAULT_EDGE_STYLE.lineWidth - 0.1,
+      fillOpacity: DEFAULT_EDGE_STYLE.opacity - 0.1,
       offset: DEFAULT_EDGE_STYLE.label.offset,
     },
     keyshape: {

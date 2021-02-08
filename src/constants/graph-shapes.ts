@@ -108,8 +108,8 @@ export const edgeFontColor = normalizeColor(EDGE_LABEL_DEFAULT_COLOR);
 export const edgeLinePattern = mapEdgePattern(EDGE_DEFAULT_PATTERN);
 export const DEFAULT_EDGE_STYLE = {
   color: EDGE_DEFAULT_COLOR,
-  lineWidth: 1,
-  opacity: 1,
+  lineWidth: edgeLineWidth,
+  opacity: edgeOpacity,
   label: {
     fill: edgeFontColor.dark,
     fontSize: 12,
@@ -120,6 +120,7 @@ export const DEFAULT_EDGE_STYLE = {
     lineDash: edgeLinePattern,
     cursor: 'pointer',
     shadowColor: 'transparent',
+    lineAppendWidth: 9,
     endArrow: {
       d: -1 / 2,
       path: `M 0,0 L 4,2 L 4,-2 Z`,
@@ -144,8 +145,7 @@ export const DEFAULT_EDGE_STYLE = {
       },
       keyshape: {
         lineWidth: edgeLineWidth - 0.5,
-        strokeOpacity: edgeOpacity - 0.7,
-        opacity: edgeOpacity - 0.7,
+        stroke: '#ddd',
       },
     },
     active: {

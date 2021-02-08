@@ -226,7 +226,10 @@ export const styleNodeFontSize = (
   nodeStyle: Partial<NodeStyle>,
   fontSize: number,
 ): void => {
-  const labelStyle: Partial<NodeStyle['label']> = nodeStyle.label ?? {};
+  const labelStyle: Partial<NodeStyle['label']> = nodeStyle.label ?? {
+    position: 'bottom',
+    stroke: '#000000',
+  };
   Object.assign(labelStyle, { fontSize });
   Object.assign(nodeStyle, { label: labelStyle });
 };
@@ -247,7 +250,16 @@ export const styleNodeLabel = (
   const labelStyle: Partial<NodeStyle['label']> = nodeStyle.label ?? {};
   const customLabel = get(node, label, '').toString();
 
-  Object.assign(labelStyle, { value: customLabel });
+  if (label === 'none') {
+    Object.assign(labelStyle, { visible: false });
+    Object.assign(nodeStyle, { label: labelStyle });
+    return;
+  }
+
+  Object.assign(labelStyle, {
+    value: customLabel,
+    visible: true,
+  });
   Object.assign(nodeStyle, { label: labelStyle });
 };
 

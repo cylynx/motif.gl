@@ -144,7 +144,7 @@ const VariableInspector = () => {
           const [startRange, endRange] = val;
           const nodeId: string = node.id;
           if (startRange <= prop && prop <= endRange) {
-            graph.setItemState(nodeId, 'disabled', false);
+            graph.clearItemStates(nodeId, ['disabled']);
           } else {
             graph.setItemState(nodeId, 'disabled', true);
           }
@@ -152,7 +152,7 @@ const VariableInspector = () => {
       } else {
         graphVisible.edges.forEach((edge: IUserEdge) => {
           let prop = get(edge, id);
-          let condition = true;
+          let condition: boolean;
 
           if (isDateTime) {
             if (Array.isArray(prop)) {

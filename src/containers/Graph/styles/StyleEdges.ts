@@ -94,7 +94,7 @@ export const mapEdgeWidth = (
     Object.assign(edgeStyle, {
       keyshape: Object.assign(keyshapeStyle, {
         lineWidth: edgeLineWidth,
-        stroke: keyshapeStyle.stroke ?? edgeLineColor.normal,
+        stroke: keyshapeStyle.stroke ?? DEFAULT_EDGE_STYLE.keyshape.stroke,
       }),
     });
 
@@ -130,7 +130,7 @@ export const styleLineWidth = (
   lineWidth: number,
 ): void => {
   const keyShapeStyle: Partial<EdgeStyle['keyshape']> = edgeStyle.keyshape ?? {
-    stroke: edgeFontColor.dark,
+    stroke: DEFAULT_EDGE_STYLE.keyshape.stroke,
   };
 
   Object.assign(keyShapeStyle, {
@@ -174,11 +174,7 @@ export const styleEdgeLabel = (
     offset: DEFAULT_EDGE_STYLE.label.offset,
   };
 
-  let customLabel = '';
-
-  if (label !== 'label') {
-    customLabel = get(edge, label, '').toString();
-  }
+  const customLabel = get(edge, label, '').toString();
 
   Object.assign(labelStyle, {
     value: customLabel,
