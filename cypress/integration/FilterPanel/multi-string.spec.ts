@@ -1,8 +1,7 @@
-/// <reference types="cypress" />
-import 'cypress-react-selector';
 import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
 
 describe('String Filters', () => {
+  const graphinEl = 'Graphin';
   beforeEach(() => {
     cy.visit('/');
     cy.waitForReact();
@@ -31,30 +30,38 @@ describe('String Filters', () => {
 
     it('should perform filter with one variable', () => {
       // perform selection
-      cy.selectFilterSelection('label{enter}', 'first');
-      cy.filterMultiString('node-node-0{enter}');
+      cy.selectFilterSelection('data.label{enter}', 'first');
+      cy.filterMultiString('node-0{enter}');
 
       // switch to layer panel
       cy.switchPanel('layers');
 
       // possess only one edge and one node
-      cy.getReact('Graph').getProps('data.nodes').should('have.length', 1);
+      cy.getReact(graphinEl)
+        .getProps('data.nodes')
+        .should('have.length', 1);
 
-      cy.getReact('Graph').getProps('data.edges').should('have.length', 1);
+      cy.getReact(graphinEl)
+        .getProps('data.edges')
+        .should('have.length', 1);
     });
 
     it('should perform filter with multi variable', () => {
       // perform selection
-      cy.selectFilterSelection('label{enter}', 'first');
-      cy.filterMultiString('node-node-0{enter}node-node-1{enter}');
+      cy.selectFilterSelection('data.label{enter}', 'first');
+      cy.filterMultiString('node-0{enter}node-1{enter}');
 
       // switch to layer panel
       cy.switchPanel('layers');
 
       // possess three edges and two nodes
-      cy.getReact('Graph').getProps('data.nodes').should('have.length', 2);
+      cy.getReact(graphinEl)
+        .getProps('data.nodes')
+        .should('have.length', 2);
 
-      cy.getReact('Graph').getProps('data.edges').should('have.length', 3);
+      cy.getReact(graphinEl)
+        .getProps('data.edges')
+        .should('have.length', 3);
     });
   });
 
@@ -79,9 +86,13 @@ describe('String Filters', () => {
       cy.switchPanel('layers');
 
       // possess only one edge and two nodes
-      cy.getReact('Graph').getProps('data.nodes').should('have.length', 2);
+      cy.getReact(graphinEl)
+        .getProps('data.nodes')
+        .should('have.length', 2);
 
-      cy.getReact('Graph').getProps('data.edges').should('have.length', 1);
+      cy.getReact(graphinEl)
+        .getProps('data.edges')
+        .should('have.length', 1);
     });
 
     it('should perform filter with multi variable', () => {
@@ -93,9 +104,13 @@ describe('String Filters', () => {
       cy.switchPanel('layers');
 
       // possess three edges and two nodes
-      cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
+      cy.getReact(graphinEl)
+        .getProps('data.nodes')
+        .should('have.length', 9);
 
-      cy.getReact('Graph').getProps('data.edges').should('have.length', 10);
+      cy.getReact(graphinEl)
+        .getProps('data.edges')
+        .should('have.length', 10);
     });
   });
 });

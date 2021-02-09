@@ -1,8 +1,7 @@
-/// <reference types="cypress" />
-import 'cypress-react-selector';
 import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
 
 describe('Histogram Filters', () => {
+  const graphinEl: string = 'Graphin';
   beforeEach(() => {
     cy.visit('/');
     cy.waitForReact();
@@ -35,8 +34,12 @@ describe('Histogram Filters', () => {
     cy.switchPanel('layers');
 
     // results
-    cy.getReact('Graph').getProps('data.nodes').should('have.length', 7);
-    cy.getReact('Graph').getProps('data.edges').should('have.length', 0);
+    cy.getReact(graphinEl)
+      .getProps('data.nodes')
+      .should('have.length', 7);
+    cy.getReact(graphinEl)
+      .getProps('data.edges')
+      .should('have.length', 0);
   });
 
   it('should filter with DateTime Variable', () => {
@@ -47,8 +50,12 @@ describe('Histogram Filters', () => {
     cy.switchPanel('layers');
 
     // results
-    cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
-    cy.getReact('Graph').getProps('data.edges').should('have.length', 14);
+    cy.getReact(graphinEl)
+      .getProps('data.nodes')
+      .should('have.length', 9);
+    cy.getReact(graphinEl)
+      .getProps('data.edges')
+      .should('have.length', 14);
   });
 
   it('should filter with Date Variable', () => {
@@ -59,8 +66,12 @@ describe('Histogram Filters', () => {
     cy.switchPanel('layers');
 
     // results
-    cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
-    cy.getReact('Graph').getProps('data.edges').should('have.length', 14);
+    cy.getReact(graphinEl)
+      .getProps('data.nodes')
+      .should('have.length', 9);
+    cy.getReact(graphinEl)
+      .getProps('data.edges')
+      .should('have.length', 14);
   });
 
   it('should filter with Time Variable', () => {
@@ -71,7 +82,11 @@ describe('Histogram Filters', () => {
     cy.switchPanel('layers');
 
     // results
-    cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
-    cy.getReact('Graph').getProps('data.edges').should('have.length', 14);
+    cy.getReact(graphinEl)
+      .getProps('data.nodes')
+      .should('have.length', 9);
+    cy.getReact(graphinEl)
+      .getProps('data.edges')
+      .should('have.length', 14);
   });
 });

@@ -1,8 +1,7 @@
-/// <reference types="cypress" />
-import 'cypress-react-selector';
 import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
 
 describe('Multiple Selection', () => {
+  const graphinEl = 'Graphin';
   beforeEach(() => {
     cy.visit('/');
     cy.waitForReact(5000);
@@ -43,9 +42,13 @@ describe('Multiple Selection', () => {
       cy.switchPanel('layers');
 
       // results
-      cy.getReact('Graph').getProps('data.nodes').should('have.length', 1);
+      cy.getReact(graphinEl)
+        .getProps('data.nodes')
+        .should('have.length', 1);
 
-      cy.getReact('Graph').getProps('data.edges').should('have.length', 0);
+      cy.getReact(graphinEl)
+        .getProps('data.edges')
+        .should('have.length', 0);
     });
 
     it('Multiple - Single combination', () => {
@@ -62,9 +65,13 @@ describe('Multiple Selection', () => {
       cy.switchPanel('layers');
 
       // results
-      cy.getReact('Graph').getProps('data.nodes').should('have.length', 2);
+      cy.getReact(graphinEl)
+        .getProps('data.nodes')
+        .should('have.length', 2);
 
-      cy.getReact('Graph').getProps('data.edges').should('have.length', 0);
+      cy.getReact(graphinEl)
+        .getProps('data.edges')
+        .should('have.length', 0);
     });
 
     it('Multiple - Multiple combination', () => {
@@ -81,9 +88,13 @@ describe('Multiple Selection', () => {
       cy.switchPanel('layers');
 
       // results
-      cy.getReact('Graph').getProps('data.nodes').should('have.length', 2);
+      cy.getReact(graphinEl)
+        .getProps('data.nodes')
+        .should('have.length', 2);
 
-      cy.getReact('Graph').getProps('data.edges').should('have.length', 0);
+      cy.getReact(graphinEl)
+        .getProps('data.edges')
+        .should('have.length', 0);
     });
   });
 
@@ -117,9 +128,13 @@ describe('Multiple Selection', () => {
       cy.switchPanel('layers');
 
       // results
-      cy.getReact('Graph').getProps('data.nodes').should('have.length', 2);
+      cy.getReact(graphinEl)
+        .getProps('data.nodes')
+        .should('have.length', 2);
 
-      cy.getReact('Graph').getProps('data.edges').should('have.length', 0);
+      cy.getReact(graphinEl)
+        .getProps('data.edges')
+        .should('have.length', 0);
     });
   });
 
@@ -148,9 +163,13 @@ describe('Multiple Selection', () => {
       cy.switchPanel('layers');
 
       // results
-      cy.getReact('Graph').getProps('data.nodes').should('have.length', 1);
+      cy.getReact(graphinEl)
+        .getProps('data.nodes')
+        .should('have.length', 1);
 
-      cy.getReact('Graph').getProps('data.edges').should('have.length', 0);
+      cy.getReact(graphinEl)
+        .getProps('data.edges')
+        .should('have.length', 0);
     });
 
     it('Numeric - Double String combination', () => {
@@ -166,9 +185,13 @@ describe('Multiple Selection', () => {
       cy.switchPanel('layers');
 
       // results
-      cy.getReact('Graph').getProps('data.nodes').should('have.length', 2);
+      cy.getReact(graphinEl)
+        .getProps('data.nodes')
+        .should('have.length', 2);
 
-      cy.getReact('Graph').getProps('data.edges').should('have.length', 0);
+      cy.getReact(graphinEl)
+        .getProps('data.edges')
+        .should('have.length', 0);
     });
   });
 
@@ -196,9 +219,13 @@ describe('Multiple Selection', () => {
       cy.switchPanel('layers');
 
       // results
-      cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
+      cy.getReact(graphinEl)
+        .getProps('data.nodes')
+        .should('have.length', 9);
 
-      cy.getReact('Graph').getProps('data.edges').should('have.length', 14);
+      cy.getReact(graphinEl)
+        .getProps('data.edges')
+        .should('have.length', 14);
     });
 
     it('Triple Numeric combination', () => {
@@ -217,9 +244,13 @@ describe('Multiple Selection', () => {
       cy.switchPanel('layers');
 
       // results
-      cy.getReact('Graph').getProps('data.nodes').should('have.length', 0);
+      cy.getReact(graphinEl)
+        .getProps('data.nodes')
+        .should('have.length', 0);
 
-      cy.getReact('Graph').getProps('data.edges').should('have.length', 0);
+      cy.getReact(graphinEl)
+        .getProps('data.edges')
+        .should('have.length', 0);
     });
   });
 
@@ -248,9 +279,13 @@ describe('Multiple Selection', () => {
       cy.switchPanel('layers');
 
       // results
-      cy.getReact('Graph').getProps('data.nodes').should('have.length', 1);
+      cy.getReact(graphinEl)
+        .getProps('data.nodes')
+        .should('have.length', 1);
 
-      cy.getReact('Graph').getProps('data.edges').should('have.length', 0);
+      cy.getReact(graphinEl)
+        .getProps('data.edges')
+        .should('have.length', 0);
     });
   });
 
@@ -278,9 +313,13 @@ describe('Multiple Selection', () => {
       cy.switchPanel('layers');
 
       // results
-      cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
+      cy.getReact(graphinEl)
+        .getProps('data.nodes')
+        .should('have.length', 9);
 
-      cy.getReact('Graph').getProps('data.edges').should('have.length', 14);
+      cy.getReact(graphinEl)
+        .getProps('data.edges')
+        .should('have.length', 14);
     });
 
     it('Multi String - DateTime combination', () => {
@@ -296,9 +335,13 @@ describe('Multiple Selection', () => {
       cy.switchPanel('layers');
 
       // results
-      cy.getReact('Graph').getProps('data.nodes').should('have.length', 0);
+      cy.getReact(graphinEl)
+        .getProps('data.nodes')
+        .should('have.length', 0);
 
-      cy.getReact('Graph').getProps('data.edges').should('have.length', 0);
+      cy.getReact(graphinEl)
+        .getProps('data.edges')
+        .should('have.length', 0);
     });
   });
 
@@ -327,9 +370,13 @@ describe('Multiple Selection', () => {
       cy.switchPanel('layers');
 
       // results
-      cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
+      cy.getReact(graphinEl)
+        .getProps('data.nodes')
+        .should('have.length', 9);
 
-      cy.getReact('Graph').getProps('data.edges').should('have.length', 14);
+      cy.getReact(graphinEl)
+        .getProps('data.edges')
+        .should('have.length', 14);
     });
 
     it('Multi String - Time combination', () => {
@@ -345,9 +392,13 @@ describe('Multiple Selection', () => {
       cy.switchPanel('layers');
 
       // results
-      cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
+      cy.getReact(graphinEl)
+        .getProps('data.nodes')
+        .should('have.length', 9);
 
-      cy.getReact('Graph').getProps('data.edges').should('have.length', 14);
+      cy.getReact(graphinEl)
+        .getProps('data.edges')
+        .should('have.length', 14);
     });
   });
 
@@ -375,9 +426,13 @@ describe('Multiple Selection', () => {
       cy.switchPanel('layers');
 
       // results
-      cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
+      cy.getReact(graphinEl)
+        .getProps('data.nodes')
+        .should('have.length', 9);
 
-      cy.getReact('Graph').getProps('data.edges').should('have.length', 14);
+      cy.getReact(graphinEl)
+        .getProps('data.edges')
+        .should('have.length', 14);
     });
 
     it('Multi String - Date combination', () => {
@@ -393,9 +448,13 @@ describe('Multiple Selection', () => {
       cy.switchPanel('layers');
 
       // results
-      cy.getReact('Graph').getProps('data.nodes').should('have.length', 9);
+      cy.getReact(graphinEl)
+        .getProps('data.nodes')
+        .should('have.length', 9);
 
-      cy.getReact('Graph').getProps('data.edges').should('have.length', 14);
+      cy.getReact(graphinEl)
+        .getProps('data.edges')
+        .should('have.length', 14);
     });
   });
 });

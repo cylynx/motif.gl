@@ -1,6 +1,5 @@
 /* eslint-disable no-restricted-properties */
 /* eslint-disable no-param-reassign */
-/* eslint-disable @typescript-eslint/camelcase */
 
 import { EdgeStyle, NodeStyle, Utils } from '@antv/graphin';
 import { IUserEdge, IUserNode } from '@antv/graphin/lib/typings/type';
@@ -9,7 +8,6 @@ import {
   mapNodeSize,
   styleNodeSize,
 } from '../containers/Graph/styles/StyleNodes';
-import { DEFAULT_EDGE_STYLE, edgeFontColor } from './graph-shapes';
 
 export const RandomData = () => {
   const data: GraphData = Utils.mock(15)
