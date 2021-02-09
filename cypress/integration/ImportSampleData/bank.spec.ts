@@ -1,5 +1,4 @@
 /// <reference types="cypress" />
-import 'cypress-react-selector';
 import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
 import { DndItem } from '../../../src/components/DndList';
 
@@ -24,19 +23,19 @@ describe('Import Bank Connections', () => {
   });
 
   it('should display layout in Concentric', () => {
-    cy.getReact('Graph')
-      .getProps('layout.name')
+    cy.getReact('Graphin')
+      .getProps('layout.type')
       .should('deep.eq', 'concentric');
   });
 
   it('should render 23 edges in Graphin', () => {
-    cy.getReact('Graph')
+    cy.getReact('Graphin')
       .getProps('data.edges')
       .should('have.length', 23);
   });
 
   it('should render 17 nodes in Graphin', () => {
-    cy.getReact('Graph')
+    cy.getReact('Graphin')
       .getProps('data.nodes')
       .should('have.length', 17);
   });

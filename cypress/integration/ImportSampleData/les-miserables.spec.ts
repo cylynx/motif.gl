@@ -1,5 +1,4 @@
 /// <reference types="cypress" />
-import 'cypress-react-selector';
 import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
 import { DndItem } from '../../../src/components/DndList';
 
@@ -20,21 +19,25 @@ describe('Import Les Misérables', () => {
       .find('Button')
       .click();
 
-    cy.wait(3000);
+    cy.wait(1500);
   });
 
   it('should display layout in Concentric', () => {
-    cy.getReact('Graph')
-      .getProps('layout.name')
+    cy.getReact('Graphin')
+      .getProps('layout.type')
       .should('deep.eq', 'concentric');
   });
 
   it('should render 254 edges in Graphin', () => {
-    cy.getReact('Graph').getProps('data.edges').should('have.length', 254);
+    cy.getReact('Graphin')
+      .getProps('data.edges')
+      .should('have.length', 254);
   });
 
   it('should render 77 nodes in Graphin', () => {
-    cy.getReact('Graph').getProps('data.nodes').should('have.length', 77);
+    cy.getReact('Graphin')
+      .getProps('data.nodes')
+      .should('have.length', 77);
   });
 
   it('should display 77 nodes count in Nodes label', () => {
@@ -54,7 +57,9 @@ describe('Import Les Misérables', () => {
   });
 
   it('should display one row for data list', () => {
-    cy.getReact('DndList').getProps('items').should('have.length', 1);
+    cy.getReact('DndList')
+      .getProps('items')
+      .should('have.length', 1);
   });
 
   it('should display data list name [Les Miserables]', () => {

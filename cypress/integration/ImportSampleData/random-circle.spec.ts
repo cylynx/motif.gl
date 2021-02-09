@@ -22,19 +22,19 @@ describe('Import Random + Circle', () => {
   });
 
   it('should display layout in Concentric', () => {
-    cy.getReact('Graph')
-      .getProps('layout.name')
+    cy.getReact('Graphin')
+      .getProps('layout.type')
       .should('deep.eq', 'concentric');
   });
 
   it('should render 25 edges in Graphin', () => {
-    cy.getReact('Graph')
+    cy.getReact('Graphin')
       .getProps('data.edges')
       .should('have.length', 25);
   });
 
   it('should render 15 nodes in Graphin', () => {
-    cy.getReact('Graph')
+    cy.getReact('Graphin')
       .getProps('data.nodes')
       .should('have.length', 15);
   });

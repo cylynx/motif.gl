@@ -1,5 +1,4 @@
 /// <reference types="cypress" />
-import 'cypress-react-selector';
 import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
 
 describe('Import Authorship', () => {
@@ -23,15 +22,21 @@ describe('Import Authorship', () => {
   });
 
   it('should display layout as x y coordinate', () => {
-    cy.getReact('Graph').getProps('layout.name').should('deep.eq', 'none');
+    cy.getReact('Graphin')
+      .getProps('layout.type')
+      .should('deep.eq', 'preset');
   });
 
   it('should render 2742 edges in Graphin', () => {
-    cy.getReact('Graph').getProps('data.edges').should('have.length', 2742);
+    cy.getReact('Graphin')
+      .getProps('data.edges')
+      .should('have.length', 2742);
   });
 
   it('should render 1589 nodes in Graphin', () => {
-    cy.getReact('Graph').getProps('data.nodes').should('have.length', 1589);
+    cy.getReact('Graphin')
+      .getProps('data.nodes')
+      .should('have.length', 1589);
   });
 
   it('should display 1589 nodes count in Nodes label', () => {

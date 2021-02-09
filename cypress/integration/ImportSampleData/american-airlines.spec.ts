@@ -18,24 +18,22 @@ describe('Import American Airlines', () => {
     })
       .find('Button')
       .click();
-
-    cy.wait(4500);
   });
 
   it('should display layout as x y coordinate', () => {
-    cy.getReact('Graph')
-      .getProps('layout.name')
-      .should('deep.eq', 'none');
+    cy.getReact('Graphin')
+      .getProps('layout.type')
+      .should('deep.eq', 'preset');
   });
 
   it('should render 1298 edges in Graphin', () => {
-    cy.getReact('Graph')
+    cy.getReact('Graphin')
       .getProps('data.edges')
       .should('have.length', 1298);
   });
 
   it('should render 235 nodes in Graphin', () => {
-    cy.getReact('Graph')
+    cy.getReact('Graphin')
       .getProps('data.nodes')
       .should('have.length', 235);
   });
