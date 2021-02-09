@@ -4,17 +4,13 @@ describe('String Filters', () => {
   const graphinEl = 'Graphin';
   beforeEach(() => {
     cy.visit('/');
-    cy.waitForReact();
+    cy.waitForReact(5000);
 
     // switch tabs to sample data
     cy.switchTab('sample-data');
 
     // import sample data by clicking circle graph
-    cy.react('Cell', {
-      props: { 'data-testid': SampleData.CIRCLE_GRAPH },
-    })
-      .find('Button')
-      .click();
+    cy.importSampleData(SampleData.CIRCLE_GRAPH);
   });
 
   describe('Filter with Node String Variable', () => {

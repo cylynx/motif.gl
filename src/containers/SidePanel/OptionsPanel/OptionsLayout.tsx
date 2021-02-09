@@ -24,7 +24,6 @@ const OptionsLayout = () => {
 
   return (
     <Accordion
-      data-testid='options-panel:layout-options'
       items={[
         {
           title: (

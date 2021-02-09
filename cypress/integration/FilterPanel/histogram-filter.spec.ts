@@ -10,11 +10,7 @@ describe('Histogram Filters', () => {
     cy.switchTab('sample-data');
 
     // import sample data by clicking bank
-    cy.react('Cell', {
-      props: { 'data-testid': SampleData.BANK },
-    })
-      .find('Button')
-      .click();
+    cy.importSampleData(SampleData.BANK);
 
     // switch to filter panel
     cy.switchPanel('filters');

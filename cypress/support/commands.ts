@@ -7,6 +7,7 @@ declare namespace Cypress {
     selectFilterSelection(text: string, type?: FilterSelectionType): void;
     filterMultiString(text: string, type?: FilterSelectionType): void;
     switchPanel(type: string): void;
+    importSampleData(type: any): void;
   }
 }
 
@@ -79,7 +80,16 @@ const switchPanel = (type: string) => {
     .click();
 };
 
+const importSampleData = (type: any) => {
+  cy.react('Cell', {
+    props: { 'data-testid': type },
+  })
+    .find('Button')
+    .click();
+};
+
 Cypress.Commands.add('switchTab', switchTab);
 Cypress.Commands.add('selectFilterSelection', selectFilterSelection);
 Cypress.Commands.add('filterMultiString', filterMultiString);
 Cypress.Commands.add('switchPanel', switchPanel);
+Cypress.Commands.add('importSampleData', importSampleData);

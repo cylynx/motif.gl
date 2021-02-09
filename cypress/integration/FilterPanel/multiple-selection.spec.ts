@@ -10,11 +10,7 @@ describe('Multiple Selection', () => {
     cy.switchTab('sample-data');
 
     // import sample data by clicking bank
-    cy.react('Cell', {
-      props: { 'data-testid': SampleData.BANK },
-    })
-      .find('Button')
-      .click();
+    cy.importSampleData(SampleData.BANK);
   });
 
   describe('Double Strings filter', () => {
