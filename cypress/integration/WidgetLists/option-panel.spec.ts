@@ -26,26 +26,14 @@ describe('Option Panel', () => {
       .should('exist');
   });
 
-  it('should render Layout Options', () => {
-    cy.getReact('OptionsPanel')
-      .getReact('OptionsLayout')
-      .should('exist');
-  });
-
-  it('should render Node Style Filter', () => {
-    cy.getReact('OptionsPanel')
-      .getReact('OptionsNodeStyles')
-      .should('exist');
-  });
-
-  it('should render Edge Style Filter', () => {
-    cy.getReact('OptionsPanel')
-      .getReact('OptionsEdgeStyles')
-      .should('exist');
-  });
-
   describe('Layout Options', () => {
-    it('should possess one layout form', () => {
+    it('should render Layout Options', () => {
+      cy.getReact('OptionsPanel')
+        .getReact('OptionsLayout')
+        .should('exist');
+    });
+
+    it('should possess one layout nested form', () => {
       cy.getReact('OptionsPanel')
         .getReact('OptionsLayout')
         .getReact('Accordion', {
@@ -55,9 +43,61 @@ describe('Option Panel', () => {
         })
         .getProps('items.0')
         .then(($item) => {
-          const { key, expanded } = $item;
+          const { key, expanded, content } = $item;
           cy.wrap(key).should('deep.equal', 'layout');
           cy.wrap(expanded).should('deep.equal', true);
+          cy.wrap(content.type.name).should('deep.equal', 'NestedForm');
+          cy.wrap(content.type.length).should('deep.equal', 1);
+        });
+    });
+  });
+
+  describe('Node Style Options', () => {
+    it('should render Node Style Options', () => {
+      cy.getReact('OptionsPanel')
+        .getReact('OptionsNodeStyles')
+        .should('exist');
+    });
+
+    it('should possess four forms', () => {
+      cy.getReact('OptionsPanel')
+        .getReact('OptionsNodeStyles')
+        .getReact('Accordion', {
+          props: {
+            'data-testid': 'OptionsNodeStyles',
+          },
+        })
+        .getProps('items.0')
+        .then(($item) => {
+          const { key, expanded, content } = $item;
+          cy.wrap(key).should('deep.equal', 'node styles');
+          cy.wrap(expanded).should('deep.equal', true);
+          cy.wrap(content.props.children).should('have.length', 4);
+        });
+    });
+  });
+
+  describe('Edge Style Options', () => {
+    it('should render Edge Style Filter', () => {
+      cy.getReact('OptionsPanel')
+        .getReact('OptionsEdgeStyles')
+        .should('exist');
+    });
+
+    it('should possess five forms', () => {
+      cy.getReact('OptionsPanel')
+        .getReact('OptionsEdgeStyles')
+        .getReact('Accordion', {
+          props: {
+            'data-testid': 'OptionsEdgeStyles',
+          },
+        })
+        .getProps('items.0')
+        .then(($item) => {
+          const { key, expanded, content } = $item;
+          cy.wrap(key).should('deep.equal', 'edge styles');
+          cy.wrap(expanded).should('deep.equal', true);
+          cy.wrap(content.props.children).should('have.length', 5);
         });
     });
   });

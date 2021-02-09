@@ -71,6 +71,7 @@ const OptionsNodeStyles = () => {
 
   return (
     <Accordion
+      data-testid='OptionsNodeStyles'
       items={[
         {
           title: (

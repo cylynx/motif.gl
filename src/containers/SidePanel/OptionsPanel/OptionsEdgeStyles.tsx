@@ -64,6 +64,7 @@ const OptionsEdgeStyles = () => {
 
   return (
     <Accordion
+      data-testid='OptionsEdgeStyles'
       items={[
         {
           title: (
