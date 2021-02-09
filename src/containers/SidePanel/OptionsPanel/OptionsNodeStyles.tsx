@@ -71,7 +71,6 @@ const OptionsNodeStyles = () => {
 
   return (
     <Accordion
-      data-testid='options-panel:node-styles'
       items={[
         {
           title: (

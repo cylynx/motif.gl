@@ -26,21 +26,39 @@ describe('Option Panel', () => {
       .should('exist');
   });
 
-  it('should render Layout Options accordion', () => {
+  it('should render Layout Options', () => {
     cy.getReact('OptionsPanel')
       .getReact('OptionsLayout')
       .should('exist');
   });
 
-  it('should render Node Styles accordion', () => {
+  it('should render Node Style Filter', () => {
     cy.getReact('OptionsPanel')
       .getReact('OptionsNodeStyles')
       .should('exist');
   });
 
-  it('should render Edge Styles accordion', () => {
+  it('should render Edge Style Filter', () => {
     cy.getReact('OptionsPanel')
       .getReact('OptionsEdgeStyles')
       .should('exist');
+  });
+
+  describe('Layout Options', () => {
+    it('should possess one layout form', () => {
+      cy.getReact('OptionsPanel')
+        .getReact('OptionsLayout')
+        .getReact('Accordion', {
+          props: {
+            'data-testid': 'OptionsLayout',
+          },
+        })
+        .getProps('items.0')
+        .then(($item) => {
+          const { key, expanded } = $item;
+          cy.wrap(key).should('deep.equal', 'layout');
+          cy.wrap(expanded).should('deep.equal', true);
+        });
+    });
   });
 });

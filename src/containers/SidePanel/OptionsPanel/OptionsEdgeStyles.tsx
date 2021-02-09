@@ -64,7 +64,6 @@ const OptionsEdgeStyles = () => {
 
   return (
     <Accordion
-      data-testid='options-panel:edge-styles'
       items={[
         {
           title: (
