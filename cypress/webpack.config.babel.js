@@ -1,6 +1,8 @@
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 const config = {
   resolve: {
-    extensions: ['.tsx', '.ts', '.css', '.js', '.jsx', '.less'],
+    extensions: ['.tsx', '.ts', '.js', '.jsx'],
   },
   module: {
     rules: [
@@ -11,7 +13,7 @@ const config = {
           {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-env'],
+              presets: ['@babel/preset-env', '@babel/preset-react'],
               plugins: ['@babel/plugin-transform-runtime'],
             },
           },
@@ -20,28 +22,32 @@ const config = {
       {
         test: /\.tsx?$/,
         exclude: [/node_modules/],
-        use: [
-          {
-            loader: 'ts-loader',
-            options: {
-              // skip typechecking for speed
-              transpileOnly: true,
-            },
-          },
-        ],
+        loader: 'ts-loader',
+        options: {
+          transpileOnly: true,
+        },
       },
       {
         test: /\.css$/i,
-        exclude: [/node_modules/],
-        use: ['style-loader', 'css-loader'],
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
-        test: /\.less$/i,
-        exclude: [/node_modules/],
-        use: ['less-loader'],
+        test: /\.less$/,
+        use: [
+          { loader: MiniCssExtractPlugin.loader },
+          { loader: 'css-loader' },
+          {
+            loader: 'less-loader',
+            options: {
+              javascriptEnabled: true,
+            },
+          },
+        ],
+        sideEffects: true,
       },
     ],
   },
+  plugins: [new MiniCssExtractPlugin()],
 };
 
 module.exports = config;
