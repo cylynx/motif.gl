@@ -17,6 +17,8 @@ describe('Import American Airlines', () => {
     })
       .find('Button')
       .click();
+
+    cy.wait(2000);
   });
 
   it('should display layout as x y coordinate', () => {
