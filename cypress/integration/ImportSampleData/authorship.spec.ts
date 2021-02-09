@@ -1,4 +1,3 @@
-/// <reference types="cypress" />
 import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
 
 describe('Import Authorship', () => {

@@ -1,5 +1,4 @@
 /// <reference types="cypress" />
-import 'cypress-react-selector';
 import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
 
 describe('Import American Airlines', () => {

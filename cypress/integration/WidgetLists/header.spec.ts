@@ -1,11 +1,9 @@
-/// <reference types="cypress" />
-import 'cypress-react-selector';
 import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
 
 describe('Header', () => {
   before(() => {
     cy.visit('/');
-    cy.waitForReact();
+    cy.waitForReact(5000);
 
     // // close modal
     // cy.get('button[aria-label="Close"]').click();

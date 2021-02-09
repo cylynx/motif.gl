@@ -1,6 +1,3 @@
-/// <reference types="cypress" />
-import 'cypress-react-selector';
-
 describe('Toolbar', () => {
   before(() => {
     cy.visit('/');

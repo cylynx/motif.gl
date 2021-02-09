@@ -1,6 +1,3 @@
-/// <reference types="cypress" />
-import 'cypress-react-selector';
-
 describe('Variable Inspector', () => {
   before(() => {
     cy.visit('/');

@@ -1,5 +1,3 @@
-/// <reference types="cypress" />
-import 'cypress-react-selector';
 import { SIDE_NAVBAR_WIDTH } from '../../../src/constants/widget-units';
 
 describe('Option Panel', () => {

@@ -1,6 +1,3 @@
-/// <reference types="cypress" />
-import 'cypress-react-selector';
-
 describe('Left Navigation Bar', () => {
   before(() => {
     cy.visit('/');

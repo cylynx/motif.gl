@@ -1,12 +1,10 @@
-/// <reference types="cypress" />
-import 'cypress-react-selector';
 import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
 import { SIDE_NAVBAR_WIDTH } from '../../../src/constants/widget-units';
 
 describe('Filter Panel', () => {
   before(() => {
     cy.visit('/');
-    cy.waitForReact();
+    cy.waitForReact(5000);
 
     // close modal
     cy.get('button[aria-label="Close"]').click();
@@ -29,22 +27,7 @@ describe('Filter Panel', () => {
   });
 
   it('should render beside Left Navigation Bar', () => {
-    cy.react('Block', {
-      props: {
-        position: 'fixed',
-        top: '0px',
-        bottom: '0px',
-        left: SIDE_NAVBAR_WIDTH,
-        width: '310px',
-        paddingTop: 'scale600',
-        paddingBottom: 'scale200',
-        paddingLeft: 'scale550',
-        paddingRight: 'scale550',
-        backgroundColor: 'backgroundPrimary',
-        overflow: 'auto',
-      },
-      exact: true,
-    })
+    cy.getReact('LeftLayer')
       .getReact('FilterPanel')
       .should('exist');
   });
