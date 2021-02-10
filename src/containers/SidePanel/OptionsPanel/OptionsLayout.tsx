@@ -36,7 +36,6 @@ const OptionsLayout = () => {
           key: 'layout',
           content: (
             <NestedForm
-              id='layout'
               data={formData}
               key={`${formData.id}-${formData.value}`}
             />

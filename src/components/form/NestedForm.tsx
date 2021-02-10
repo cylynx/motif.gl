@@ -18,7 +18,7 @@ export type NestedFormData = {
   callback: (data: any) => void;
   [optionId: string]: any;
 };
-type NestedFormProps = { id: string; data: NestedFormData };
+type NestedFormProps = { id?: string; data: NestedFormData };
 
 const cleanGetValues = (obj: any, mainKey: string) => {
   const results: any = {};
