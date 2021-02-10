@@ -3,14 +3,16 @@ import * as form from '../../../src/containers/SidePanel/OptionsPanel/constants'
 import { NestedFormData } from '../../../src/components/form/NestedForm';
 import {
   GraphSelectors,
+  NodeColorFixed,
+  NodeColorLegend,
   NodeSizeDegree,
   NodeSizeFixed,
   NodeSizeProperty,
   NodeStyleOptions,
-} from '../../../src/redux/Graph';
+} from '../../../src/redux/graph';
 
 describe('Node Style Filter', () => {
-  const findDefaultFromLayoutForm = (
+  const findDefaultFromForm = (
     form: NestedFormData,
     layout: string,
     controllerName: string,
@@ -57,7 +59,7 @@ describe('Node Style Filter', () => {
         .nthNode(0)
         .type(arrows);
 
-      const formDefaults = findDefaultFromLayoutForm(
+      const formDefaults = findDefaultFromForm(
         form.nodeSizeForm,
         nodeSizeType,
         controllerName,
@@ -76,7 +78,7 @@ describe('Node Style Filter', () => {
       const nodeSizeType = 'degree';
       const controllerName = 'range';
 
-      const formDefaults = findDefaultFromLayoutForm(
+      const formDefaults = findDefaultFromForm(
         form.nodeSizeForm,
         nodeSizeType,
         controllerName,
@@ -100,7 +102,7 @@ describe('Node Style Filter', () => {
         'risk_score{enter}',
       );
 
-      const formDefaults = findDefaultFromLayoutForm(
+      const formDefaults = findDefaultFromForm(
         form.nodeSizeForm,
         nodeSizeType,
         controllerName,
@@ -112,6 +114,139 @@ describe('Node Style Filter', () => {
       expect(id).to.deep.equal(nodeSizeType);
       expect(variable).to.deep.equal('risk_score');
       expect(range).to.deep.equal(value);
+    });
+  });
+
+  describe('Node Label', () => {
+    const controllerName = 'label';
+
+    const changeNodeLabel = (value: string) => {
+      cy.react('Controller', { props: { name: controllerName } })
+        .first()
+        .type(`${value}{enter}`);
+    };
+
+    it('should change successfully', async () => {
+      const selectedLabel: string = 'id';
+      changeNodeLabel(selectedLabel);
+
+      const nodeStyle: NodeStyleOptions = await getNodeStyleFromReduxStore();
+      const nodeLabel: string = nodeStyle.label;
+      expect(nodeLabel).to.deep.equal(selectedLabel);
+    });
+  });
+
+  describe('Node Colours', () => {
+    const controllerName = 'color';
+
+    before(() => {
+      cy.visit('/');
+      cy.waitForReact(5000);
+      cy.switchTab('sample-data');
+      cy.importSampleData(SampleData.BANK);
+      cy.switchPanel('options');
+    });
+
+    const changeColorType = (value: string) => {
+      cy.react('Controller', { props: { name: controllerName } })
+        .first()
+        .type(`${value}{enter}`);
+    };
+
+    const changeColorValue = (value: string) => {
+      cy.react('Controller', { props: { name: 'value' } })
+        .nthNode(1)
+        .type(`${value}{enter}`);
+    };
+
+    const changeColorVariable = (value: string) => {
+      cy.react('Controller', { props: { name: 'variable' } }).type(
+        `${value}{enter}`,
+      );
+    };
+
+    describe('should change with fixed node color', () => {
+      const selectedType: string = 'fixed';
+
+      const assertNodeColour = async (selectedColor: string) => {
+        changeColorValue(selectedColor);
+
+        const nodeStyle: NodeStyleOptions = await getNodeStyleFromReduxStore();
+        const { id, value } = nodeStyle.color as NodeColorFixed;
+        expect(id).to.deep.equal(selectedType);
+        expect(value).to.deep.equal(selectedColor);
+      };
+
+      it('should change to teal', async () => {
+        changeColorType(selectedType);
+        await assertNodeColour('teal');
+      });
+
+      it('should change to blue', async () => {
+        changeColorType(selectedType);
+        await assertNodeColour('blue');
+      });
+
+      it('should change to green', async () => {
+        changeColorType(selectedType);
+        await assertNodeColour('green');
+      });
+
+      it('should change to orange', async () => {
+        changeColorType(selectedType);
+        await assertNodeColour('orange');
+      });
+    });
+
+    describe('should change with legends', () => {
+      const selectedType: string = 'legend';
+
+      it('should display grey when variable is empty', async () => {
+        changeColorType(selectedType);
+        const nodeStyle: NodeStyleOptions = await getNodeStyleFromReduxStore();
+        const { id, variable, mapping } = nodeStyle.color as NodeColorLegend;
+
+        const { value } = findDefaultFromForm(
+          form.nodeColorForm,
+          selectedType,
+          'variable',
+        );
+        expect(id).to.deep.equal(selectedType);
+        expect(variable).to.deep.equal(value);
+        assert.isObject(mapping);
+      });
+
+      it('should display colours based on mapping', async () => {
+        changeColorType(selectedType);
+
+        const selectedVariable = 'id';
+        changeColorVariable(selectedVariable);
+
+        const nodeStyle: NodeStyleOptions = await getNodeStyleFromReduxStore();
+        const { id, variable, mapping } = nodeStyle.color as NodeColorLegend;
+        expect(id).to.deep.equal(selectedType);
+        expect(variable).to.deep.equal(selectedVariable);
+        assert.isObject(mapping);
+      });
+    });
+  });
+
+  describe('Node Label Font Size', () => {
+    const controllerName = 'fontSize';
+
+    it('should change successfully', async () => {
+      const modifyValue = 1;
+      const { max, value } = form.nodeFontSizeForm;
+      const arrow = '{rightarrow}'.repeat(modifyValue);
+      cy.react('Controller', {
+        props: { name: controllerName, defaultValue: [value] },
+      })
+        .nthNode(0)
+        .type(arrow);
+
+      const nodeStyle: NodeStyleOptions = await getNodeStyleFromReduxStore();
+      const nodeLabelFontSize: number = nodeStyle.fontSize;
+      expect(nodeLabelFontSize).to.deep.equal(max / 2 + 1);
     });
   });
 });

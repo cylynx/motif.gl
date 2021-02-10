@@ -84,7 +84,6 @@ const OptionsNodeStyles = () => {
           content: (
             <Fragment>
               <NestedForm
-                id='nodeSize'
                 data={nodeSizeFormData}
                 key={`${nodeSizeFormData.id}-${nodeSizeFormData.value}`}
               />
