@@ -18,6 +18,7 @@ export type NestedFormData = {
   callback: (data: any) => void;
   [optionId: string]: any;
 };
+type NestedFormProps = { id: string; data: NestedFormData };
 
 const cleanGetValues = (obj: any, mainKey: string) => {
   const results: any = {};
@@ -50,67 +51,6 @@ const cleanGetValues = (obj: any, mainKey: string) => {
   delete results[mainKey];
 
   return { [mainKey]: results };
-};
-
-const testData: NestedFormData = {
-  id: 'name',
-  label: 'The Two Gentlemen of Verona',
-  value: 'AliceBlue',
-  options: [
-    { label: 'AliceBlue', id: 'AliceBlue' },
-    { label: 'AntiqueWhite', id: 'AntiqueWhite' },
-    { label: 'Aqua', id: 'Aqua' },
-  ],
-  callback: (data) => console.log(data),
-  AliceBlue: [
-    {
-      id: 'animal',
-      label: 'Duke of Milan',
-      type: 'select',
-      value: 'Dog',
-      options: [
-        { label: 'Cat', id: 'Cat' },
-        { label: 'Dog', id: 'Dog' },
-      ],
-    },
-    {
-      id: 'customInput',
-      label: 'Hello World',
-      type: 'input',
-      value: 'Hello',
-    },
-  ],
-  AntiqueWhite: [
-    {
-      id: 'animal',
-      label: 'Duke of Milan',
-      type: 'select',
-      value: 'Dog',
-      options: [
-        { label: 'Cat', id: 'Cat' },
-        { label: 'Dog', id: 'Dog' },
-      ],
-    },
-    {
-      id: 'number',
-      label: 'Slippery Snakes',
-      type: 'slider',
-      value: 30,
-      max: 50,
-    },
-  ],
-  Aqua: [
-    {
-      id: 'animal',
-      label: 'Duke of Milan',
-      type: 'select',
-      value: 'Cat',
-      options: [
-        { label: 'Cat', id: 'Cat' },
-        { label: 'Dog', id: 'Dog' },
-      ],
-    },
-  ],
 };
 
 /**
@@ -146,9 +86,9 @@ const testData: NestedFormData = {
   ],
 };
  * @param {{ data: NestedFormData }} { data = testData }
- * @return {*} 
+ * @return {JSX.Element} 
  */
-const NestedForm = ({ data }: { data: NestedFormData }) => {
+const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
   const { callback, labelPosition } = data;
   const { watch, control, getValues } = useForm();
   const watchSelection = watch(data.id, [

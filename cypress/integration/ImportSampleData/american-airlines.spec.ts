@@ -11,14 +11,8 @@ describe('Import American Airlines', () => {
     // switch tabs to sample data
     cy.switchTab('sample-data');
 
-    // import sample data by clicking random graph
-    cy.react('Cell', {
-      props: { 'data-testid': SampleData.AA },
-    })
-      .find('Button')
-      .click();
-
-    cy.wait(2000);
+    // import sample data
+    cy.importSampleData(SampleData.AA);
   });
 
   it('should display layout as x y coordinate', () => {
