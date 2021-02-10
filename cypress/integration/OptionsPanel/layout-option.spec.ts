@@ -229,23 +229,162 @@ describe('Layout Options', () => {
     });
   });
 
-  // it('should convert to Sequential', () => {
-  //   changeAndVerifyLayout('dagre');
-  // });
+  describe('Circular', () => {
+    const {
+      type,
+      startRadius,
+      endRadius,
+      angleRatio,
+      divisions,
+    } = layoutOptions.CIRCLE_DEFAULT;
 
-  // it('should convert to Circular', () => {
-  //   changeAndVerifyLayout('circular');
-  // });
+    it('should convert layout', () => {
+      const { label, id } = findLayout(type);
+      changeLayout(label);
 
-  // it('should convert to Force-directed', () => {
-  //   changeAndVerifyLayout('graphin-force');
-  // });
+      cy.getReact('Graphin')
+        .getProps('layout')
+        .then(($layout) => {
+          cy.wrap($layout.type).should('deep.equal', id);
+          cy.wrap($layout.startRadius).should('deep.equal', startRadius);
+          cy.wrap($layout.endRadius).should('deep.equal', endRadius);
+          cy.wrap($layout.angleRatio).should('deep.equal', angleRatio);
+          cy.wrap($layout.divisions).should('deep.equal', divisions);
+        });
+    });
 
-  // it('should convert to Fruchterman-force', () => {
-  //   changeAndVerifyLayout('fruchterman');
-  // });
+    it('should change start radius', () => {
+      const modifyValue = 1;
+      const arrows = '{rightarrow}'.repeat(modifyValue);
+      const controllerName: string = 'startRadius';
 
-  // it('should convert to X Y Coordinates', () => {
-  //   changeAndVerifyLayout('preset');
-  // });
+      cy.react('Controller', { props: { name: controllerName } }).type(arrows);
+
+      cy.getReact('Graphin')
+        .getProps(`layout.${controllerName}`)
+        .should('deep.equal', startRadius - modifyValue);
+    });
+
+    it('should change end radius', () => {
+      const modifyValue = 1;
+      const arrows = '{rightarrow}'.repeat(modifyValue);
+      const controllerName: string = 'endRadius';
+
+      cy.react('Controller', { props: { name: controllerName } }).type(arrows);
+
+      cy.getReact('Graphin')
+        .getProps(`layout.${controllerName}`)
+        .should('deep.equal', endRadius - modifyValue);
+    });
+
+    it('should change angle ratio', () => {
+      const modifyValue = 1;
+      const arrows = '{leftarrow}'.repeat(modifyValue);
+      const controllerName: string = 'angleRatio';
+
+      const formDefaults = findDefaultFromLayoutForm(
+        form.layoutForm,
+        type,
+        controllerName,
+      );
+      const { max } = formDefaults;
+
+      cy.react('Controller', { props: { name: controllerName } }).type(arrows);
+
+      cy.getReact('Graphin')
+        .getProps(`layout.${controllerName}`)
+        .should('deep.equal', max / 2 - 0.1);
+    });
+
+    it('should change divisions', () => {
+      const modifyValue = 1;
+      const arrows = '{rightarrow}'.repeat(modifyValue);
+      const controllerName: string = 'divisions';
+
+      cy.react('Controller', { props: { name: controllerName } }).type(arrows);
+
+      cy.getReact('Graphin')
+        .getProps(`layout.${controllerName}`)
+        .should('deep.equal', divisions + modifyValue);
+    });
+  });
+
+  describe('Force-Directed', () => {
+    const { type } = layoutOptions.GRAPHIN_FORCE_DEFAULT;
+
+    it('should convert to layout', () => {
+      const { label, id } = findLayout(type);
+      changeLayout(label);
+
+      cy.getReact('Graphin')
+        .getProps('layout.type')
+        .should('deep.equal', id);
+    });
+  });
+
+  describe('Fruchterman-Force', () => {
+    const { type, gravity, clusterGravity } = layoutOptions.FRUCHTERMAN_DEFAULT;
+
+    it('should convert layout', () => {
+      const { label, id } = findLayout(type);
+      changeLayout(label);
+
+      cy.getReact('Graphin')
+        .getProps('layout')
+        .then(($layout) => {
+          cy.wrap($layout.type).should('deep.equal', id);
+          cy.wrap($layout.gravity).should('deep.equal', gravity);
+          cy.wrap($layout.clusterGravity).should('deep.equal', clusterGravity);
+        });
+    });
+
+    it('should change gravity', () => {
+      const modifyValue = 1;
+      const arrows = '{rightarrow}'.repeat(modifyValue);
+      const controllerName: string = 'gravity';
+
+      const formDefaults = findDefaultFromLayoutForm(
+        form.layoutForm,
+        type,
+        controllerName,
+      );
+      const { max } = formDefaults;
+
+      cy.react('Controller', { props: { name: controllerName } }).type(arrows);
+
+      cy.getReact('Graphin')
+        .getProps(`layout.${controllerName}`)
+        .should('deep.equal', max / 2 + modifyValue);
+    });
+
+    it('should change cluster gravity', () => {
+      const modifyValue = 1;
+      const arrows = '{rightarrow}'.repeat(modifyValue);
+      const controllerName: string = 'clusterGravity';
+
+      const formDefaults = findDefaultFromLayoutForm(
+        form.layoutForm,
+        type,
+        controllerName,
+      );
+      const { max } = formDefaults;
+
+      cy.react('Controller', { props: { name: controllerName } }).type(arrows);
+
+      cy.getReact('Graphin')
+        .getProps(`layout.${controllerName}`)
+        .should('deep.equal', max / 2 + modifyValue);
+    });
+  });
+
+  describe('X Y Coordinates', () => {
+    it('should convert to layout', () => {
+      const { label, id } = findLayout('preset');
+      changeLayout(label);
+
+      cy.getReact('Graphin')
+        .getProps('layout.type')
+        .should('deep.equal', id);
+    });
+  });
 });
