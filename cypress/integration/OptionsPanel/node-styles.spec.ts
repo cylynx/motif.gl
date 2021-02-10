@@ -3,7 +3,9 @@ import * as form from '../../../src/containers/SidePanel/OptionsPanel/constants'
 import { NestedFormData } from '../../../src/components/form/NestedForm';
 import {
   GraphSelectors,
+  NodeSizeDegree,
   NodeSizeFixed,
+  NodeSizeProperty,
   NodeStyleOptions,
 } from '../../../src/redux/Graph';
 
@@ -34,7 +36,7 @@ describe('Node Style Filter', () => {
     cy.visit('/');
     cy.waitForReact(5000);
     cy.switchTab('sample-data');
-    cy.importSampleData(SampleData.CIRCLE_GRAPH);
+    cy.importSampleData(SampleData.BANK);
     cy.switchPanel('options');
   });
 
@@ -64,8 +66,52 @@ describe('Node Style Filter', () => {
 
       const nodeStyle = await getNodeStyleFromReduxStore();
       const { id, value } = nodeStyle.size as NodeSizeFixed;
-      expect(id).to.deep.equal('fixed');
+      expect(id).to.deep.equal(nodeSizeType);
       expect(value).to.deep.equal(max / 2 + modifyValue);
+    });
+
+    it('should adjust with degree of connections', async () => {
+      cy.react('Controller', { props: { name: 'size' } }).type('Degree{enter}');
+
+      const nodeSizeType = 'degree';
+      const controllerName = 'range';
+
+      const formDefaults = findDefaultFromLayoutForm(
+        form.nodeSizeForm,
+        nodeSizeType,
+        controllerName,
+      );
+      const { value } = formDefaults;
+
+      const nodeStyle = await getNodeStyleFromReduxStore();
+      const { id, range } = nodeStyle.size as NodeSizeDegree;
+      expect(id).to.deep.equal(nodeSizeType);
+      expect(range).to.deep.equal(value);
+    });
+
+    it('should adjust with property (user defined)', async () => {
+      const nodeSizeType = 'property';
+      const controllerName = 'range';
+
+      cy.react('Controller', { props: { name: 'size' } }).type(
+        'Property{enter}',
+      );
+      cy.react('Controller', { props: { name: 'variable' } }).type(
+        'risk_score{enter}',
+      );
+
+      const formDefaults = findDefaultFromLayoutForm(
+        form.nodeSizeForm,
+        nodeSizeType,
+        controllerName,
+      );
+      const { value } = formDefaults;
+
+      const nodeStyle = await getNodeStyleFromReduxStore();
+      const { id, range, variable } = nodeStyle.size as NodeSizeProperty;
+      expect(id).to.deep.equal(nodeSizeType);
+      expect(variable).to.deep.equal('risk_score');
+      expect(range).to.deep.equal(value);
     });
   });
 });

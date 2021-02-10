@@ -8,7 +8,6 @@ declare namespace Cypress {
     filterMultiString(text: string, type?: FilterSelectionType): void;
     switchPanel(type: string): void;
     importSampleData(type: any): void;
-    getReduxStore(): Promise<any>;
   }
 }
 
@@ -89,20 +88,8 @@ const importSampleData = (type: any) => {
     .click();
 };
 
-const getReduxStore = (): Promise<any> => {
-  return new Promise((resolve) => {
-    cy.getReact('Provider')
-      .getProps('store')
-      .then((store) => {
-        const globalStore = store.getState();
-        return resolve(globalStore);
-      });
-  });
-};
-
 Cypress.Commands.add('switchTab', switchTab);
 Cypress.Commands.add('selectFilterSelection', selectFilterSelection);
 Cypress.Commands.add('filterMultiString', filterMultiString);
 Cypress.Commands.add('switchPanel', switchPanel);
 Cypress.Commands.add('importSampleData', importSampleData);
-Cypress.Commands.add('getReduxStore', getReduxStore);
