@@ -5,21 +5,17 @@ import React, {
   ReactNode,
   createRef,
   MutableRefObject,
-  RefObject,
+  FC,
 } from 'react';
 import { Block } from 'baseui/block';
-import Graphin, { GraphinContextType } from '@antv/graphin';
+import Graphin from '@antv/graphin';
 import {
   SIDE_NAVBAR_WIDTH,
   LEFT_LAYER_WIDTH,
 } from '../../constants/widget-units';
 import { extractIntegerFromString } from '../../utils/data-utils';
 
-export const BottomRightLayer = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => (
+export const BottomRightLayer: FC = ({ children }) => (
   <Block
     position='fixed'
     bottom='10px'
@@ -34,7 +30,7 @@ export const BottomRightLayer = ({
   </Block>
 );
 
-export const LeftLayer = ({ children }: { children: React.ReactNode }) => {
+export const LeftLayer: FC = ({ children }) => {
   return (
     <Block
       position='fixed'
@@ -54,7 +50,7 @@ export const LeftLayer = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const TopRightLayer = ({ children }: { children: React.ReactNode }) => {
+export const TopRightLayer: FC = ({ children }) => {
   return (
     <Block
       display='flex'

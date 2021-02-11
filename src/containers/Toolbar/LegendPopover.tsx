@@ -91,8 +91,9 @@ const LegendPopover = () => {
 
   return (
     <Block width='300px'>
-      <FormControl label='Legend selection'>
+      <FormControl label='Legend Selection'>
         <Select
+          id='legendSelection'
           options={nodeOptions}
           onChange={(params: any) => updateNodeStyle(params.value)}
           size='compact'
@@ -108,6 +109,7 @@ const LegendPopover = () => {
           <Legend data={nodeStyle.color.mapping} />
           <Block display='flex' justifyContent='flex-end'>
             <Button
+              data-testid='switchFixedColor'
               kind='tertiary'
               size='compact'
               onClick={(e) => switchToFixedColor(e)}

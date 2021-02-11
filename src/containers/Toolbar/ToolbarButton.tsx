@@ -1,4 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
 import React, { Fragment } from 'react';
 import { Button } from 'baseui/button';
 import { PLACEMENT } from 'baseui/popover';
@@ -19,8 +18,8 @@ export type ToolbarButtonProp = {
   item: ToolbarItem;
 };
 
-const ToolbarButton = (props: ToolbarButtonProp) => {
-  const { name, icon, isDisabled, popoverContent, onClick } = props.item;
+const ToolbarButton = ({ item }: ToolbarButtonProp) => {
+  const { name, icon, isDisabled, popoverContent, onClick } = item;
 
   return (
     <Fragment>
@@ -34,6 +33,7 @@ const ToolbarButton = (props: ToolbarButtonProp) => {
           disabled={isDisabled}
           kind='secondary'
           size='compact'
+          data-testid={`ToolbarButton:${name}`}
         >
           {icon}
         </Button>

@@ -18,16 +18,14 @@ describe('Toolbar', () => {
   });
 
   it('should render on top right position and flex column direction', () => {
-    cy.react('Block', {
-      props: {
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'fixed',
-        top: '10px',
-        right: '10px',
-      },
-    })
+    cy.react('TopRightLayer')
       .getReact('Toolbar')
       .should('exist');
+  });
+
+  it('should render legend button successfully', () => {
+    cy.getReact('ToolbarButton', {
+      props: { item: { name: 'Legend' } },
+    }).should('exist');
   });
 });
