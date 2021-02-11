@@ -63,6 +63,7 @@ const SettingsPopover = () => {
     <Block width='300px' paddingBottom='scale400'>
       <FormControl label='Graph Layout'>
         <Select
+          id='SettingsPopover:GraphLayout'
           options={LAYOUT.LAYOUT_NAMES}
           size='compact'
           clearable={false}
@@ -75,7 +76,6 @@ const SettingsPopover = () => {
           'property[0].options': numericNodeOptions,
           'property[0].value':
             numericNodeOptions.length > 0 ? numericNodeOptions[0].id : null,
-
           labelPosition: 'top',
         })}
       />
