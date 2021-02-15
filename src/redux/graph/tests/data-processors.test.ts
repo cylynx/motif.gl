@@ -12,6 +12,7 @@ import {
   processNodeEdgeCsv,
   processEdgeListCsv,
 } from '../processors/data';
+import { DEFAULT_EDGE_STYLE } from '../../../constants/graph-shapes';
 
 describe('Parsing json to csv', () => {
   it('should contain the right number of rows (including header)', async () => {
@@ -29,12 +30,12 @@ describe('Parsing json to csv', () => {
   it('should contain nested style fields', async () => {
     const nodeCsv = await json2csv(TriangleJSON()[0].nodes);
     const edgeCsv = await json2csv(TriangleJSON()[0].edges);
-    expect(nodeCsv).toContain('style.nodeSize');
-    expect(edgeCsv).toContain('style.endArrow');
+    expect(nodeCsv).toContain('style.keyshape.size');
+    expect(edgeCsv).toContain('style.keyshape.endArrow');
   });
 });
 
-const testCsv = `id,data.value,data.blk_ts_unix,source,target,style.endArrow
+const testCsv = `id,data.value,data.blk_ts_unix,source,target,style.keyshape.endArrow
 txn a-b,100,NaN,a,b,true
 txn b-c,200,2000000,b,c,true
 txn c-b,300,Null,c,b,true
@@ -177,7 +178,7 @@ describe('Process csv data to required json format', () => {
     const cleanedJson = parseJsonByFields(edgeJson, fields);
     expect(cleanedJson[0].data.blk_ts_unix).toBeNull();
     expect(cleanedJson[1].data.blk_ts_unix).toEqual(2000000);
-    expect(cleanedJson[2].style.endArrow).toEqual(true);
+    expect(cleanedJson[2].style.keyshape.endArrow).toEqual(true);
   });
 });
 

@@ -3,11 +3,12 @@
 
 import { EdgeStyle, NodeStyle, Utils } from '@antv/graphin';
 import { IUserEdge, IUserNode } from '@antv/graphin/lib/typings/type';
-import { GraphData } from '../redux/graph';
+import { GraphData, GraphList } from '../redux/graph';
 import {
   mapNodeSize,
   styleNodeSize,
 } from '../containers/Graph/styles/StyleNodes';
+import { DEFAULT_EDGE_STYLE } from './graph-shapes';
 
 export const RandomData = () => {
   const data: GraphData = Utils.mock(15)
@@ -66,6 +67,106 @@ export const SimpleEdge = (): GraphData => ({
     key: 123,
   },
 });
+
+/**
+ * This dataset is used by test case.
+ * @constructor
+ */
+export const TriangleJSON = (): GraphList => [
+  {
+    nodes: [
+      {
+        id: 'a',
+        data: {
+          category: 'Other',
+          created_ts_unix: 1557191325000,
+        },
+        label: 'Node 1',
+        style: {
+          keyshape: {
+            size: 20,
+            fill: '#008080',
+          },
+        },
+      },
+      {
+        id: 'b',
+        data: {
+          category: 'Other',
+          created_ts_unix: 1558371616000,
+        },
+        label: 'Node 2',
+        style: {
+          keyshape: {
+            size: 20,
+            fill: '#008080',
+          },
+        },
+      },
+      {
+        id: 'c',
+        data: {
+          category: 'Other',
+          created_ts_unix: 1558371616000,
+        },
+        label: 'Node 3',
+        style: {
+          keyshape: {
+            size: 20,
+            fill: '#008080',
+          },
+        },
+      },
+    ],
+    edges: [
+      {
+        id: 'txn a-b',
+        data: {
+          value: 100,
+          blk_ts_unix: 1000000,
+        },
+        source: 'a',
+        target: 'b',
+        style: {
+          keyshape: {
+            endArrow: DEFAULT_EDGE_STYLE.keyshape.endArrow,
+          },
+        },
+      },
+      {
+        id: 'txn b-c',
+        data: {
+          value: 200,
+          blk_ts_unix: 2000000,
+        },
+        source: 'b',
+        target: 'c',
+        style: {
+          keyshape: {
+            endArrow: DEFAULT_EDGE_STYLE.keyshape.endArrow,
+          },
+        },
+      },
+      {
+        id: 'txn c-b',
+        data: {
+          value: 300,
+          blk_ts_unix: 3000000,
+        },
+        source: 'c',
+        target: 'b',
+        style: {
+          keyshape: {
+            endArrow: DEFAULT_EDGE_STYLE.keyshape.endArrow,
+          },
+        },
+      },
+    ],
+    metadata: {
+      key: 1592981050812,
+    },
+  },
+];
 
 export const BankData = (): Promise<GraphData> =>
   fetch(
