@@ -13,7 +13,7 @@
   },
   "scripts": {
     "start": "tsdx watch --target node",
-    "example": "cd ./example && npm install && echo -e \"SKIP_PREFLIGHT_CHECK=true\nCI=true\" >> .env && npm run start",
+    "example": "cd ./example && echo \"SKIP_PREFLIGHT_CHECK=true\nCI=true\" >> .env && npm run start",
     "build": "tsdx build --target node --tsconfig ./tsconfig.prod.json",
     "prepare": "tsdx build --target node",
     "lint": "tsdx lint",
