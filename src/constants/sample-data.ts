@@ -177,6 +177,10 @@ export const BankData = (): Promise<GraphData> =>
       Object.assign(data[0].metadata, {
         title: 'Banking Connections',
       });
+
+      data[0].nodes.forEach((node: IUserNode) => {
+        Object.assign(node, { style: { label: { value: ' ' } } });
+      });
       return data;
     });
 
@@ -194,6 +198,10 @@ export const MiserablesData = () =>
           title: 'Les Miserables',
         },
       };
+
+      newData.nodes.forEach((node: IUserNode) => {
+        Object.assign(node, { style: { label: { value: ' ' } } });
+      });
       return newData;
     });
 
@@ -249,6 +257,7 @@ export const AAData = () => {
         const source = nodeIdMap.get(e.source);
         const target = nodeIdMap.get(e.target);
         const keyshape: Partial<EdgeStyle>['keyshape'] = {};
+        const label: Partial<EdgeStyle>['label'] = {};
         source.outDegree++;
         target.inDegree++;
         source.degree++;
@@ -258,7 +267,9 @@ export const AAData = () => {
           lineWidth: 0.3,
           stroke: 'grey',
         });
-        Object.assign(e.style, { keyshape });
+
+        Object.assign(label, { value: ' ' });
+        Object.assign(e.style, { keyshape, label });
       });
       mapNodeSize(nodes, 'degree', [2, 20]);
       data.metadata = {

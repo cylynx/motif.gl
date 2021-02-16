@@ -2,6 +2,11 @@ import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
 import shortid from 'shortid';
 
+import {
+  IUserNode,
+  NodeStyle,
+  NodeStyleLabel,
+} from '@antv/graphin/lib/typings/type';
 import { Node, Edge, GraphList, GraphData, Accessors } from '../types';
 import {
   processJson,
@@ -117,6 +122,7 @@ export const addRequiredFieldsJson = (
 export const addNodeFields = (node: Node, accessors: Accessors): void => {
   const { nodeID } = accessors;
   generateIdKey(node, nodeID);
+  appendNodeLabel(node);
 };
 
 /**
@@ -170,4 +176,21 @@ const generateIdKey = (object: any, idAccessor: string | undefined): void => {
       id: get(object, idAccessor).toString(),
     });
   }
+};
+
+/**
+ * This function is created intended to append label into node
+ *
+ * @param {IUserNode} node
+ * @return {void}
+ */
+const appendNodeLabel = (node: IUserNode): void => {
+  const nodeStyle: Partial<NodeStyle> = node.style ?? {};
+  const nodeStyleLabel: Partial<NodeStyleLabel> = nodeStyle.label ?? {};
+  Object.assign(nodeStyleLabel, {
+    value: ' ',
+    visible: false,
+  });
+  Object.assign(nodeStyle, { label: nodeStyleLabel });
+  Object.assign(node, { style: nodeStyle });
 };
