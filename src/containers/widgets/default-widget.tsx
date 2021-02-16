@@ -2,11 +2,15 @@ import React from 'react';
 import { LeftLayer, BottomRightLayer, TopRightLayer } from './layer';
 import VariableInspector from '../VariableInspector';
 import Toolbar from '../Toolbar';
-import { LayersPanel, OptionsPanel } from '../SidePanel';
+import {
+  LayersPanel,
+  OptionsPanel,
+  FilterPanel,
+  SearchPanel,
+} from '../SidePanel';
 import IconButton from './IconButton';
 import * as Icon from '../../components/Icons';
 import { WidgetItem } from '../../redux/widget';
-import FilterPanel from '../SidePanel/FilterPanel';
 
 const defaultWidgetList: WidgetItem[] = [
   {
@@ -40,6 +44,18 @@ const defaultWidgetList: WidgetItem[] = [
     widget: (
       <LeftLayer>
         <FilterPanel />
+      </LeftLayer>
+    ),
+    position: 'top',
+    active: false,
+  },
+  {
+    id: 'search',
+    group: 'main',
+    icon: <IconButton icon={<Icon.Search />} id='search' group='main' />,
+    widget: (
+      <LeftLayer>
+        <SearchPanel />
       </LeftLayer>
     ),
     position: 'top',

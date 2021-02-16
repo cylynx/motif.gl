@@ -5,7 +5,6 @@ import {
   HiOutlineEyeOff,
   HiChevronDown,
   HiOutlinePlus,
-  HiOutlineShare,
   HiCheck,
   HiX,
   HiOutlinePencil,
@@ -15,6 +14,7 @@ import {
   HiOutlineZoomOut,
   HiOutlineCamera,
   HiOutlineFilter,
+  HiOutlineSearch,
 } from 'react-icons/hi';
 import {
   BiLayer,
@@ -213,6 +213,12 @@ export const Camera = ({ children, size = 16, ...rest }: IconBaseProps) => (
   <HiOutlineCamera size={size} {...rest}>
     {children}
   </HiOutlineCamera>
+);
+
+export const Search = ({ children, size = 16, ...rest }: IconBaseProps) => (
+  <HiOutlineSearch size={size} {...rest}>
+    {children}
+  </HiOutlineSearch>
 );
 
 export const Save = ({ children, size = 16, ...rest }: IconBaseProps) => (
