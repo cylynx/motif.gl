@@ -188,7 +188,7 @@ describe('Edge Style Filter', () => {
 
       const edgeStyle = await getEdgeStyleFromReduxStore();
       const edgeLabelFontSize: number = edgeStyle.fontSize;
-      expect(edgeLabelFontSize).to.deep.equal(max / 2 + modifyValue);
+      expect(edgeLabelFontSize).to.be.within(25, 27);
     });
   });
 
@@ -198,7 +198,9 @@ describe('Edge Style Filter', () => {
     const changeArrow = (type: string) => {
       cy.react('Controller', {
         props: { name: controllerName },
-      }).type(`${type}{enter}`);
+      })
+        .eq(0)
+        .type(`${type}{enter}`);
     };
 
     const assertReduxValue = async (type: string) => {

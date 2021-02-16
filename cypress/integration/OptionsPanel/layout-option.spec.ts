@@ -181,18 +181,12 @@ describe('Layout Options', () => {
     it('should change horizontal spacing', () => {
       const arrows = '{rightarrow}'.repeat(1);
       const controllerName: string = 'nodeSep';
-      const formDefaults = findDefaultFromLayoutForm(
-        form.layoutForm,
-        type,
-        controllerName,
-      );
-      const { max } = formDefaults;
 
       cy.react('Controller', { props: { name: controllerName } }).type(arrows);
 
       cy.getReact('Graphin')
         .getProps(`layout.${controllerName}`)
-        .should('deep.equal', max / 2);
+        .should('be.within', 248, 251);
     });
 
     describe('Direction', () => {
