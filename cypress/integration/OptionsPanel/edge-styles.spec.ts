@@ -188,7 +188,7 @@ describe('Edge Style Filter', () => {
 
       const edgeStyle = await getEdgeStyleFromReduxStore();
       const edgeLabelFontSize: number = edgeStyle.fontSize;
-      expect(edgeLabelFontSize).to.deep.equal(max / 2);
+      expect(edgeLabelFontSize).to.deep.equal(max / 2 + modifyValue);
     });
   });
 
