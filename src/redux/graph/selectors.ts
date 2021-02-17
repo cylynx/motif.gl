@@ -1,4 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
+import { Option } from 'baseui/select';
 import produce from 'immer';
 import {
   Accessors,
@@ -53,11 +54,11 @@ const getGraphFieldsOptions = createSelector(
   (graphFlatten: GraphData) => {
     const graphFields = graphFlatten.metadata.fields;
 
-    const allNodeFields = [{ id: 'id', label: 'id' }];
-    const numericNodeFields: any[] = [];
-    const allEdgeFields = [{ id: 'id', label: 'id' }];
-    const numericEdgeFields: any[] = [];
-    const layoutFields = [
+    const allNodeFields: Option[] = [{ id: 'id', label: 'id' }];
+    const numericNodeFields: Option[] = [];
+    const allEdgeFields: Option[] = [{ id: 'id', label: 'id' }];
+    const numericEdgeFields: Option[] = [];
+    const layoutFields: Option[] = [
       { id: 'id', label: 'id' },
       { id: 'degree', label: 'degree' },
     ];
