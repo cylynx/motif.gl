@@ -1,22 +1,52 @@
 import React, { Fragment, useState } from 'react';
 
-import { Tabs, Tab, FILL } from 'baseui/tabs-motion';
+import { Tabs, Tab } from 'baseui/tabs';
 import { Block } from 'baseui/block';
 import { Select, Value, TYPE } from 'baseui/select';
 import { Theme } from 'baseui/theme';
 
+import { LabelXSmall } from 'baseui/typography';
 import { TActiveKey } from './types';
 import Header from '../Header';
+import Accordion from '../../../components/Accordion';
+import * as Icon from '../../../components/Icons';
 
-const tabContentStyle = ({ $theme }: { $theme: Theme }) => ({
+const TabContentStyle = ({ $theme }: { $theme: Theme }) => ({
   paddingLeft: $theme.sizing.scale300,
   paddingRight: $theme.sizing.scale300,
-  paddingTop: $theme.sizing.scale600,
+  paddingTop: $theme.sizing.scale500,
   paddingBottom: $theme.sizing.scale300,
+  background: $theme.colors.backgroundTertiary,
+});
+
+const TabStyle = ({
+  $theme,
+  $active,
+}: {
+  $theme: Theme;
+  $active: boolean;
+}) => ({
+  width: '50%',
+  paddingTop: $theme.sizing.scale300,
+  paddingBottom: $theme.sizing.scale300,
+  fontWeight: $active ? 700 : 400,
+  color: $active ? '#06a2a2' : $theme.colors.mono200,
+  textAlign: 'center',
+  borderBottom: `2px solid ${$active ? '#17806f' : 'transparent'}`,
+  ':hover': {
+    color: '#06a2a2',
+  },
+  ':focus': {
+    color: '#06a2a2',
+  },
+});
+
+const TabBarStyle = () => ({
+  background: '#0c0b0b',
 });
 
 const TabsMotion = () => {
-  const [activeKey, setActiveKey] = useState<number>(0);
+  const [activeKey, setActiveKey] = useState<TActiveKey['activeKey']>('node');
 
   const onTabChange = ({ activeKey }: TActiveKey) => {
     setActiveKey(activeKey);
@@ -26,21 +56,222 @@ const TabsMotion = () => {
     <Tabs
       activeKey={activeKey}
       onChange={onTabChange}
-      activateOnFocus={false}
-      fill={FILL.fixed}
       overrides={{
-        // @ts-ignore
+        Tab: {
+          // @ts-ignore
+          style: TabStyle,
+        },
         TabContent: {
-          style: tabContentStyle,
+          style: TabContentStyle,
+        },
+        TabBar: {
+          style: TabBarStyle,
         },
       }}
     >
-      <Tab title={<div>Node</div>}>
+      <Tab key='node' title='Node'>
         <Block>
           <SingleStringSelect />
+
+          <Block color='primary300' marginTop='scale800'>
+            <LabelXSmall>Selected 7 Nodes</LabelXSmall>
+          </Block>
+
+          <Block marginTop='scale200'>
+            <Accordion
+              overrides={{
+                Content: {
+                  style: ({ $expanded, $theme }) => ({
+                    paddingTop: $expanded ? $theme.sizing.scale300 : 0,
+                    paddingBottom: $expanded ? $theme.sizing.scale300 : 0,
+                    paddingLeft: $theme.sizing.scale300,
+                    paddingRight: $theme.sizing.scale300,
+                    backgroundColor: '#323742',
+                    color: $theme.colors.mono200,
+                    borderBottomWidth: 0,
+                  }),
+                },
+                Header: {
+                  style: ({ $theme }) => ({
+                    ...$theme.typography.ParagraphSmall,
+                    textTransform: 'capitalize',
+                    paddingLeft: $theme.sizing.scale300,
+                    paddingRight: $theme.sizing.scale300,
+                    paddingTop: $theme.sizing.scale200,
+                    paddingBottom: $theme.sizing.scale200,
+                    backgroundColor: $theme.colors.backgroundSecondary,
+                    color: $theme.colors.backgroundInverseSecondary,
+                    borderBottomStyle: 'none',
+                  }),
+                },
+                PanelContainer: {
+                  style: ({ $theme }) => ({
+                    marginBottom: $theme.sizing.scale500,
+                  }),
+                },
+                ToggleIcon: {
+                  component: () => {
+                    return <Icon.ChevronDown />;
+                  },
+                },
+              }}
+              items={[
+                {
+                  title: (
+                    <Block display='flex' justifyContent='center'>
+                      Sample Data
+                    </Block>
+                  ),
+                  key: 'sample-data',
+                  content: (
+                    <table id='sample-data' style={{ fontSize: '12px' }}>
+                      <tbody>
+                        <tr>
+                          <th style={{ width: '35%' }}>
+                            Company Data For Sales
+                          </th>
+                          <td style={{ width: '65%', verticalAlign: 'top' }}>
+                            Alfreds Futterkiste
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>Contact</th>
+                          <td>Maria Anders</td>
+                        </tr>
+                        <tr>
+                          <th>Country</th>
+                          <td>Germany</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  ),
+                },
+                {
+                  title: (
+                    <Block display='flex' justifyContent='center'>
+                      Sample Data
+                    </Block>
+                  ),
+                  key: 'sample-data2',
+                  content: (
+                    <table id='sample-data2' style={{ fontSize: '12px' }}>
+                      <tbody>
+                        <tr>
+                          <th style={{ width: '35%' }}>
+                            Company Data For Sales
+                          </th>
+                          <td style={{ width: '65%', verticalAlign: 'top' }}>
+                            Alfreds Futterkiste
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>Contact</th>
+                          <td>Maria Anders</td>
+                        </tr>
+                        <tr>
+                          <th>Country</th>
+                          <td>Germany</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  ),
+                },
+                {
+                  title: (
+                    <Block display='flex' justifyContent='center'>
+                      Sample Data
+                    </Block>
+                  ),
+                  key: 'sample-data3',
+                  content: (
+                    <table id='sample-data3' style={{ fontSize: '12px' }}>
+                      <tbody>
+                        <tr>
+                          <th style={{ width: '35%' }}>
+                            Company Data For Sales
+                          </th>
+                          <td style={{ width: '65%', verticalAlign: 'top' }}>
+                            Alfreds Futterkiste
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>Contact</th>
+                          <td>Maria Anders</td>
+                        </tr>
+                        <tr>
+                          <th>Country</th>
+                          <td>Germany</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  ),
+                },
+                {
+                  title: (
+                    <Block display='flex' justifyContent='center'>
+                      Sample Data
+                    </Block>
+                  ),
+                  key: 'sample-data4',
+                  content: (
+                    <table id='sample-data4' style={{ fontSize: '12px' }}>
+                      <tbody>
+                        <tr>
+                          <th style={{ width: '35%' }}>
+                            Company Data For Sales
+                          </th>
+                          <td style={{ width: '65%', verticalAlign: 'top' }}>
+                            Alfreds Futterkiste
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>Contact</th>
+                          <td>Maria Anders</td>
+                        </tr>
+                        <tr>
+                          <th>Country</th>
+                          <td>Germany</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  ),
+                },
+                {
+                  title: (
+                    <Block display='flex' justifyContent='center'>
+                      Sample Data
+                    </Block>
+                  ),
+                  key: 'sample-data5',
+                  content: (
+                    <table id='sample-data5' style={{ fontSize: '12px' }}>
+                      <tbody>
+                        <tr>
+                          <th style={{ width: '35%' }}>
+                            Company Data For Sales
+                          </th>
+                          <td style={{ width: '65%', verticalAlign: 'top' }}>
+                            Alfreds Futterkiste
+                          </td>
+                        </tr>
+                        <tr>
+                          <th>Contact</th>
+                          <td>Maria Anders</td>
+                        </tr>
+                        <tr>
+                          <th>Country</th>
+                          <td>Germany</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  ),
+                },
+              ]}
+            />
+          </Block>
         </Block>
       </Tab>
-      <Tab title='Edge'>
+      <Tab key='edge' title='Edge'>
         <div style={{ color: 'white' }}>Fear is the mind-killer.</div>
       </Tab>
     </Tabs>
@@ -61,11 +292,20 @@ const SingleStringSelect = () => {
       ]}
       labelKey='id'
       valueKey='color'
-      placeholder='Choose a color'
+      placeholder='Find a node'
       maxDropdownHeight='300px'
       type={TYPE.search}
       onChange={({ value }) => setValue(value)}
       value={value}
+      overrides={{
+        Root: {
+          style: {
+            ':focus': {
+              outline: 'none',
+            },
+          },
+        },
+      }}
       size='compact'
     />
   );

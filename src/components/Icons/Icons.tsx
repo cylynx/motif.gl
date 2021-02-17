@@ -4,6 +4,7 @@ import {
   HiOutlineEye,
   HiOutlineEyeOff,
   HiChevronDown,
+  HiChevronUp,
   HiOutlinePlus,
   HiCheck,
   HiX,
@@ -83,6 +84,12 @@ export const ChevronDown = ({
   <HiChevronDown size={size} {...rest}>
     {children}
   </HiChevronDown>
+);
+
+export const ChevronUp = ({ children, size = 16, ...rest }: IconBaseProps) => (
+  <HiChevronUp size={size} {...rest}>
+    {children}
+  </HiChevronUp>
 );
 
 export const Plus = ({ children, size = 16, ...rest }: IconBaseProps) => (

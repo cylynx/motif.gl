@@ -12,7 +12,7 @@
     "node": ">=10"
   },
   "scripts": {
-    "start": "tsdx watch --target node",
+    "start": "tsdx watch --target node --noClean --transpileOnly",
     "example": "cd ./example && npm install && echo SKIP_PREFLIGHT_CHECK=true >> .env && npm run start",
     "build": "tsdx build --target node --tsconfig ./tsconfig.prod.json",
     "prepare": "tsdx build --target node",
