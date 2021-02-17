@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 
 import { Block } from 'baseui/block';
 import { useDispatch, useSelector } from 'react-redux';
-import { GraphSlices, GraphSelectors, GraphUtils } from '../../../redux/graph';
+import { GraphSlices, GraphSelectors } from '../../../redux/graph';
 import Accordion from '../../../components/Accordion';
 import {
   NestedForm,
@@ -19,8 +19,6 @@ import {
   nodeLabelForm,
 } from './constants';
 
-const defaultLabelOptions = [{ id: 'none', label: 'None' }];
-
 const OptionsNodeStyles = () => {
   const dispatch = useDispatch();
 
@@ -28,22 +26,11 @@ const OptionsNodeStyles = () => {
     (state) => GraphSelectors.getGraph(state).styleOptions.nodeStyle,
   );
 
-  const graphFields = useSelector(
-    (state) => GraphSelectors.getGraph(state).graphFlatten.metadata.fields,
-  );
-
-  const nodeOptions = GraphUtils.getFieldNames(graphFields.nodes).map((x) => {
-    return { id: x, label: x };
-  });
-
-  const nodeLabelOptions = [...defaultLabelOptions, ...nodeOptions];
-
-  const numericNodeOptions = GraphUtils.getFieldNames(graphFields.nodes, [
-    'integer',
-    'real',
-  ]).map((x) => {
-    return { id: x, label: x };
-  });
+  const {
+    allNodeFields,
+    nodeLabelFields,
+    numericNodeFields,
+  } = useSelector((state) => GraphSelectors.getGraphFieldsOptions(state));
 
   const updateNodeStyle = (data: any) => {
     dispatch(GraphSlices.changeNodeStyle(data));
@@ -54,9 +41,9 @@ const OptionsNodeStyles = () => {
     nodeStyle,
     updateNodeStyle,
     {
-      'property[0].options': numericNodeOptions,
+      'property[0].options': numericNodeFields,
       'property[0].value':
-        numericNodeOptions.length > 0 ? numericNodeOptions[0].id : null,
+        numericNodeFields.length > 0 ? numericNodeFields[0].id : null,
     },
   );
 
@@ -65,7 +52,7 @@ const OptionsNodeStyles = () => {
     nodeStyle,
     updateNodeStyle,
     {
-      'legend[0].options': nodeOptions,
+      'legend[0].options': allNodeFields,
     },
   );
 
@@ -89,7 +76,7 @@ const OptionsNodeStyles = () => {
               />
               <SimpleForm
                 data={genSimpleForm(nodeLabelForm, nodeStyle, updateNodeStyle, {
-                  options: nodeLabelOptions,
+                  options: nodeLabelFields,
                 })}
               />
               <NestedForm

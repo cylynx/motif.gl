@@ -5,7 +5,7 @@ import { OnChangeParams, Select } from 'baseui/select';
 import { Checkbox } from 'baseui/checkbox';
 import { Block } from 'baseui/block';
 import { TriGrid } from '../../components/ui';
-import { GraphSlices, GraphSelectors, GraphUtils } from '../../redux/graph';
+import { GraphSlices, GraphSelectors } from '../../redux/graph';
 
 import * as LAYOUT from '../../constants/layout-options';
 import { NestedForm, genNestedForm } from '../../components/form';
@@ -20,21 +20,14 @@ const SettingsPopover = () => {
     groupEdges,
     layout,
   } = useSelector((state) => GraphSelectors.getStyleOptions(state));
+
   const graphFields = useSelector(
     (state) => GraphSelectors.getGraph(state).graphFlatten.metadata.fields,
   );
-  const numericNodeOptions = GraphUtils.getFieldNames(graphFields.nodes, [
-    'integer',
-    'real',
-  ]).map((x: string) => {
-    return { id: x, label: x };
-  });
-  const numericEdgeOptions =
-    GraphUtils.getFieldNames(graphFields.edges, ['integer', 'real']).map(
-      (x) => {
-        return { id: x, label: x };
-      },
-    ) || [];
+
+  const { numericNodeFields, numericEdgeFields } = useSelector((state) =>
+    GraphSelectors.getGraphFieldsOptions(state),
+  );
 
   const findID = (options: { label: string; id: string }[], id: string) =>
     options.find((x) => x.id === id);
@@ -73,17 +66,17 @@ const SettingsPopover = () => {
       </FormControl>
       <NestedForm
         data={genNestedForm(nodeSizeForm, nodeStyle, updateNodeStyle, {
-          'property[0].options': numericNodeOptions,
+          'property[0].options': numericNodeFields,
           'property[0].value':
-            numericNodeOptions.length > 0 ? numericNodeOptions[0].id : null,
+            numericNodeFields.length > 0 ? numericNodeFields[0].id : null,
           labelPosition: 'top',
         })}
       />
       <NestedForm
         data={genNestedForm(edgeWidthForm, edgeStyle, updateEdgeStyle, {
-          'property[0].options': numericEdgeOptions,
+          'property[0].options': numericEdgeFields,
           'property[0].value':
-            numericEdgeOptions.length > 0 ? numericEdgeOptions[0].id : null,
+            numericEdgeFields.length > 0 ? numericEdgeFields[0].id : null,
           labelPosition: 'top',
         })}
       />

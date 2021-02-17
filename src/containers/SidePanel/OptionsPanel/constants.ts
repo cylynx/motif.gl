@@ -88,6 +88,13 @@ export const layoutForm: NestedFormData = {
       min: 1,
       max: 100,
     },
+    {
+      id: 'sortBy',
+      label: 'Sort By',
+      type: 'select',
+      value: 'degree',
+      options: [{ id: 'degree', label: 'degree' }],
+    },
   ],
   'graphin-force': [],
   fruchterman: [
@@ -119,6 +126,13 @@ export const layoutForm: NestedFormData = {
       min: 1,
       max: 10,
     },
+    {
+      id: 'sortBy',
+      label: 'Sort By',
+      type: 'select',
+      value: 'degree',
+      options: [{ id: 'degree', label: 'degree' }],
+    },
   ],
   radial: [
     {
@@ -135,7 +149,13 @@ export const layoutForm: NestedFormData = {
       type: 'slider',
       value: LAYOUT.RADIAL_DEFAULT.linkDistance,
       min: 1,
-      max: 200,
+      max: 500,
+    },
+    {
+      id: 'focusNode',
+      label: 'Focus Node',
+      type: 'input',
+      value: '',
     },
   ],
 };

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Block } from 'baseui/block';
 import { useDispatch, useSelector } from 'react-redux';
-import { GraphSlices, GraphSelectors } from '../../../redux/graph';
+import { GraphSlices, GraphSelectors, GraphUtils } from '../../../redux/graph';
 import Accordion from '../../../components/Accordion';
 import { NestedForm, genNestedForm } from '../../../components/form';
 
@@ -16,11 +16,18 @@ const OptionsLayout = () => {
     (state) => GraphSelectors.getGraph(state).styleOptions.layout,
   );
 
+  const { layoutFields } = useSelector((state) =>
+    GraphSelectors.getGraphFieldsOptions(state),
+  );
+
   const layoutOptions = { layout: { id: layout.type, ...layout } };
 
   const updateLayout = (data: any) => dispatch(GraphSlices.changeLayout(data));
 
-  const formData = genNestedForm(layoutForm, layoutOptions, updateLayout);
+  const formData = genNestedForm(layoutForm, layoutOptions, updateLayout, {
+    'grid[1].options': layoutFields,
+    'concentric[1].options': layoutFields,
+  });
 
   return (
     <Accordion
