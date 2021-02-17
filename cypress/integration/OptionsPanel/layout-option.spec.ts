@@ -103,13 +103,12 @@ describe('Layout Options', () => {
         type,
         controllerName,
       );
-      const { min, max } = formDefaults;
 
       cy.react('Controller', { props: { name: controllerName } }).type(arrows);
 
       cy.getReact('Graphin')
         .getProps(`layout.${controllerName}`)
-        .should('deep.equal', max / 2 + min);
+        .should('be.within', 248, 251);
     });
   });
 
