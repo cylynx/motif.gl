@@ -98,11 +98,6 @@ describe('Layout Options', () => {
     it('should change node spacing', () => {
       const arrows = '{rightarrow}'.repeat(1);
       const controllerName: string = 'linkDistance';
-      const formDefaults = findDefaultFromLayoutForm(
-        form.layoutForm,
-        type,
-        controllerName,
-      );
 
       cy.react('Controller', { props: { name: controllerName } }).type(arrows);
 

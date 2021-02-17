@@ -20,10 +20,6 @@ describe('String Filters', () => {
       cy.react('AddFilterButton').click();
     });
 
-    afterEach(() => {
-      cy.react('ClearDataButton').click();
-    });
-
     it('should perform filter with one variable', () => {
       // perform selection
       cy.selectFilterSelection('data.label{enter}', 'first');

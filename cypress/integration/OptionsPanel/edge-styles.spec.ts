@@ -199,7 +199,7 @@ describe('Edge Style Filter', () => {
       cy.react('Controller', {
         props: { name: controllerName },
       })
-        .eq(0)
+        .first()
         .type(`${type}{enter}`);
     };
 
