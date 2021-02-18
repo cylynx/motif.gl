@@ -53,8 +53,6 @@ export const DEFAULT_NODE_STYLE = {
   },
   halo: {
     lineWidth: 2,
-    fill: grey.normal,
-    stroke: grey.dark,
     opacity: nodeOpacity - 0.2,
     fillOpacity: nodeOpacity - 0.8,
     strokeOpacity: nodeOpacity - 0.5,

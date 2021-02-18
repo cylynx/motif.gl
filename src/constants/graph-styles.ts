@@ -7,6 +7,7 @@ export const nodeStateStyles: { status: NodeStyle['status'] } = {
     selected: DEFAULT_NODE_STYLE.status.selected,
     hover: {
       halo: {
+        ...DEFAULT_NODE_STYLE.halo,
         visible: true,
       },
     },

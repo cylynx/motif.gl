@@ -7,7 +7,7 @@ import { flattenObject } from '../../../../redux/graph/processors/data';
 
 type ResultAccordionProps = {
   results: EdgeNode[];
-  expanded: boolean;
+  expanded?: boolean;
 };
 
 const ResultAccordion = ({
