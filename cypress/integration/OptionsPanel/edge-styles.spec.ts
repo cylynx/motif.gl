@@ -209,7 +209,7 @@ describe('Edge Style Filter', () => {
       expect(edgeArrow).to.deep.equal(type);
     };
 
-    it('should hide arrow', async () => {
+    it.skip('should hide arrow', async () => {
       const selectedValue = 'none';
       changeArrow(selectedValue);
       await assertReduxValue(selectedValue);
@@ -225,7 +225,7 @@ describe('Edge Style Filter', () => {
         });
     });
 
-    it('should display arrow', async () => {
+    it.skip('should display arrow', async () => {
       const selectedValue = 'display';
       changeArrow(selectedValue);
       await assertReduxValue(selectedValue);
