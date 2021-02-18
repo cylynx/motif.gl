@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Value } from 'baseui/select';
 import get from 'lodash/get';
-import { GraphData, GraphSelectors, Node } from '../../../../redux/graph';
+import { GraphData, GraphSelectors, Node, Edge } from '../../../../redux/graph';
 
 const useGraphSearch = () => {
   const graphVisible: GraphData = useSelector((state) =>
@@ -19,6 +19,16 @@ const useGraphSearch = () => {
     });
   }, [graphVisible.nodes]);
 
+  const edgeOptions: Value = useMemo(() => {
+    return graphVisible.edges.map((edge: Edge) => {
+      const { id } = edge;
+      return {
+        id,
+        label: id,
+      };
+    });
+  }, [graphVisible.edges]);
+
   const searchNodes = (searchCase: string, accessor = 'id'): Node[] => {
     const node: Node[] = graphVisible.nodes.filter((node: Node) => {
       const nodeProperty: string = get(node, accessor, '');
@@ -29,7 +39,17 @@ const useGraphSearch = () => {
     return node;
   };
 
-  return { nodeOptions, searchNodes };
+  const searchEdges = (searchCase: string, accessor = 'id'): Edge[] => {
+    const node: Edge[] = graphVisible.edges.filter((edge: Edge) => {
+      const nodeProperty: string = get(edge, accessor, '');
+
+      return nodeProperty === searchCase;
+    });
+
+    return node;
+  };
+
+  return { nodeOptions, edgeOptions, searchNodes, searchEdges };
 };
 
 export default useGraphSearch;

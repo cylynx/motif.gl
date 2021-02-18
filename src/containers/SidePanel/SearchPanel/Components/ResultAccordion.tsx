@@ -37,10 +37,10 @@ const ResultAccordion = ({
 
             return (
               <tr key={key}>
-                <th style={{ width: '35%', textTransform: 'lowercase' }}>
+                <th style={{ width: '40%', textTransform: 'lowercase' }}>
                   {key}
                 </th>
-                <td style={{ width: '65%', verticalAlign: 'top' }}>{value}</td>
+                <td style={{ width: '60%', verticalAlign: 'top' }}>{value}</td>
               </tr>
             );
           },
@@ -80,7 +80,7 @@ const ResultAccordion = ({
           style: ({ $theme }) => ({
             ...$theme.typography.ParagraphSmall,
             textTransform: 'capitalize',
-            paddingLeft: $theme.sizing.scale300,
+            paddingLeft: $theme.sizing.scale500,
             paddingRight: $theme.sizing.scale300,
             paddingTop: $theme.sizing.scale200,
             paddingBottom: $theme.sizing.scale200,

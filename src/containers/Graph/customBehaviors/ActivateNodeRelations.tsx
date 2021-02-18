@@ -6,7 +6,7 @@ import {
 } from '@antv/graphin';
 import { IEdge, INode } from '@antv/g6';
 import { isBigDataSet } from '../../../utils/utils';
-import useGraphBehaviors from './hooks/useGraphBehaviors';
+import useGraphBehaviors from '../hooks/useGraphBehaviors';
 
 const ActivateNodeRelations = (): null => {
   const { graph } = useContext(GraphinContext) as GraphinContextType;
