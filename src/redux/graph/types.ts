@@ -1,4 +1,3 @@
-import { NodeConfig, EdgeConfig } from '@antv/g6';
 import { Value } from 'baseui/select';
 import { IUserEdge, IUserNode } from '@antv/graphin/lib/typings/type';
 import { SelectVariableOption } from '../../components/SelectVariable/SelectVariable';
