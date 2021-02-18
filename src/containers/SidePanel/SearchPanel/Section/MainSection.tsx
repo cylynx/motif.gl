@@ -11,7 +11,7 @@ const TabContentStyle = ({ $theme }: { $theme: Theme }) => ({
   paddingRight: $theme.sizing.scale300,
   paddingTop: $theme.sizing.scale500,
   paddingBottom: $theme.sizing.scale300,
-  background: $theme.colors.backgroundTertiary,
+  backgroundColor: $theme.colors.backgroundTertiary,
 });
 
 const TabStyle = ({
@@ -37,7 +37,7 @@ const TabStyle = ({
 });
 
 const TabBarStyle = () => ({
-  background: '#0c0b0b',
+  backgroundColor: '#0c0b0b',
 });
 
 const MainSection = () => {

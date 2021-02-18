@@ -49,10 +49,15 @@ const SearchNode = () => {
     const viewCenter = getViewCenterPoint();
 
     const nodeBBox = node.getCanvasBBox();
-    graph.translate(
-      viewCenter.x - nodeBBox.centerX,
-      viewCenter.y - nodeBBox.centerY,
-    );
+    const nodeCenter = {
+      x: nodeBBox.centerX,
+      y: nodeBBox.centerY,
+    };
+
+    const dx = (viewCenter.x - nodeCenter.x) * graph.getZoom();
+    const dy = (viewCenter.y - nodeCenter.y) * graph.getZoom();
+
+    graph.translate(dx, dy);
   };
 
   const setNodeToHoverState = (node: INode) => {
