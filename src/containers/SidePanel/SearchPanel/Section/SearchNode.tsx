@@ -49,14 +49,8 @@ const SearchNode = () => {
     const viewCenter = getViewCenterPoint();
 
     const nodeBBox = node.getCanvasBBox();
-    const nodeCenter = {
-      x: nodeBBox.centerX,
-      y: nodeBBox.centerY,
-    };
-
-    const dx = (viewCenter.x - nodeCenter.x) * graph.getZoom();
-    const dy = (viewCenter.y - nodeCenter.y) * graph.getZoom();
-
+    const dx = (viewCenter.x - nodeBBox.centerX) * graph.getZoom();
+    const dy = (viewCenter.y - nodeBBox.centerY) * graph.getZoom();
     graph.translate(dx, dy);
   };
 

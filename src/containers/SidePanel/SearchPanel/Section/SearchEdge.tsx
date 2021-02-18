@@ -52,11 +52,10 @@ const SearchEdge = () => {
   const centerEdge = (edge: IEdge) => {
     const viewCenter = getViewCenterPoint();
 
-    const nodeBBox = edge.getCanvasBBox();
-    graph.translate(
-      viewCenter.x - nodeBBox.centerX,
-      viewCenter.y - nodeBBox.centerY,
-    );
+    const edgeBBox = edge.getCanvasBBox();
+    const dx = (viewCenter.x - edgeBBox.centerX) * graph.getZoom();
+    const dy = (viewCenter.y - edgeBBox.centerY) * graph.getZoom();
+    graph.translate(dx, dy);
   };
 
   return (
