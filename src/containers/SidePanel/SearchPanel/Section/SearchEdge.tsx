@@ -74,7 +74,7 @@ const SearchEdge = () => {
         options={edgeOptions}
         labelKey='label'
         valueKey='id'
-        placeholder='Find an Edge'
+        placeholder='Type ID to find an edge'
         onChange={onSearchChange}
         value={edgeSearchCase}
       />
