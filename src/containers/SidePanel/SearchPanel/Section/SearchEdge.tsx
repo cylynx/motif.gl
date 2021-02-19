@@ -4,7 +4,7 @@ import { OnChangeParams } from 'baseui/select';
 import { IGraph, IEdge } from '@antv/g6';
 import useGraphSearch from '../hooks/useGraphSearch';
 import { Edge, SearchOptions } from '../../../../redux/graph';
-import SingleStringSelect from '../../../../components/SingleStringSelect';
+import AsyncSingleSelect from '../../../../components/AsyncSingleSelect';
 import { GraphRefContext } from '../../../Graph';
 import useGraphBehaviors from '../../../Graph/hooks/useGraphBehaviors';
 import useSearchOption from '../hooks/useSearchOption';
@@ -70,7 +70,7 @@ const SearchEdge = () => {
 
   return (
     <Block>
-      <SingleStringSelect
+      <AsyncSingleSelect
         options={edgeOptions}
         labelKey='label'
         valueKey='id'

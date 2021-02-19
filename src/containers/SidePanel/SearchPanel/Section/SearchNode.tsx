@@ -3,7 +3,7 @@ import { IGraph, INode } from '@antv/g6';
 import { Block } from 'baseui/block';
 import { OnChangeParams } from 'baseui/select';
 
-import SingleStringSelect from '../../../../components/SingleStringSelect';
+import AsyncSingleSelect from '../../../../components/AsyncSingleSelect';
 import useGraphSearch from '../hooks/useGraphSearch';
 import { Node, SearchOptions } from '../../../../redux/graph';
 import { GraphRefContext } from '../../../Graph';
@@ -70,7 +70,7 @@ const SearchNode = () => {
 
   return (
     <Block>
-      <SingleStringSelect
+      <AsyncSingleSelect
         options={nodeOptions}
         labelKey='label'
         valueKey='id'

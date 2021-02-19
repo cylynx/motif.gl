@@ -87,6 +87,7 @@ const ResultAccordion = ({
             backgroundColor: $theme.colors.backgroundSecondary,
             color: $theme.colors.backgroundInverseSecondary,
             borderBottomStyle: 'none',
+            fontWeight: 600,
           }),
         },
         PanelContainer: {
