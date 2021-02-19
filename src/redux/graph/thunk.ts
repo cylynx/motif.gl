@@ -2,9 +2,10 @@ import some from 'lodash/some';
 import isUndefined from 'lodash/isUndefined';
 import flatten from 'lodash/flatten';
 import isEmpty from 'lodash/isEmpty';
+import { Dispatch } from 'redux';
 import { getFilterOptions, getGraph } from './selectors';
 
-import { addQuery, processGraphResponse } from './slice';
+import { addQuery, processGraphResponse, updateSearchOptions } from './slice';
 import {
   importEdgeListCsv,
   importNodeEdgeCsv,
@@ -18,6 +19,7 @@ import {
   GraphList,
   GraphData,
   FilterOptions,
+  SearchOptionPayload,
 } from './types';
 
 import { UISlices, UIThunks } from '../ui';

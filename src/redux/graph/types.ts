@@ -55,6 +55,7 @@ export interface GraphState {
   accessors: Accessors;
   styleOptions: StyleOptions;
   filterOptions: FilterOptions;
+  searchOptions: SearchOptions;
   graphList: GraphList;
   graphFlatten: GraphData;
   nodeSelection: Selection[];
@@ -87,8 +88,8 @@ export declare type Edge = IUserEdge;
 export declare type Node = IUserNode;
 
 export type GraphFields = {
-  nodes: Field[] | [];
-  edges: Field[] | [];
+  nodes: Field[];
+  edges: Field[];
 };
 
 export interface Metadata {
@@ -200,3 +201,15 @@ export type GraphAttribute = 'nodes' | 'edges';
 
 export type TimeRange = [number, number];
 export type TimeSeries = Array<[number, number]> | [];
+
+export interface SearchOptions {
+  activeTabs: GraphAttribute;
+  nodeSearchCase: Value;
+  edgeSearchCase: Value;
+  results: EdgeNode[];
+}
+
+export type SearchOptionPayload = {
+  key: keyof SearchOptions;
+  value: GraphAttribute | Value | EdgeNode[];
+};

@@ -1,28 +1,32 @@
-import React, { useState, Fragment, useContext } from 'react';
+import React, { useContext } from 'react';
 import { IGraph, INode } from '@antv/g6';
 import { Block } from 'baseui/block';
-import { LabelXSmall } from 'baseui/typography';
-import { OnChangeParams, Value } from 'baseui/select';
+import { OnChangeParams } from 'baseui/select';
 
 import SingleStringSelect from '../../../../components/SingleStringSelect';
-import ResultAccordion from '../Components/ResultAccordion';
 import useGraphSearch from '../hooks/useGraphSearch';
-import { Node } from '../../../../redux/graph';
+import { Node, SearchOptions } from '../../../../redux/graph';
 import { GraphRefContext } from '../../../Graph';
 import useGraphBehaviors from '../../../Graph/hooks/useGraphBehaviors';
+import useSearchOption from '../hooks/useSearchOption';
 
 const SearchNode = () => {
-  const [searchCase, setSearchCase] = useState<Value>([]);
-  const [result, setResult] = useState<Node[]>([]);
   const { nodeOptions, searchNodes } = useGraphSearch();
   const { graph }: { graph: IGraph } = useContext(GraphRefContext);
   const { centerCanvas, getViewCenterPoint } = useGraphBehaviors(graph);
 
+  const {
+    searchOptions,
+    updateNodeSearch,
+    updateSearchResults,
+  } = useSearchOption();
+  const { nodeSearchCase } = searchOptions as SearchOptions;
+
   const onSearchChange = ({ value }: OnChangeParams): void => {
-    setSearchCase(value);
+    updateNodeSearch(value);
 
     if (value.length === 0) {
-      setResult([]);
+      updateSearchResults([]);
       graph.setAutoPaint(false);
       clearNodeHoverState();
       centerCanvas();
@@ -33,7 +37,7 @@ const SearchNode = () => {
 
     const [{ id: nodeId }] = value;
     const result: Node[] = searchNodes(nodeId as string);
-    setResult(result);
+    updateSearchResults(result);
 
     const node = graph.findById(nodeId as string) as INode;
     graph.setAutoPaint(false);
@@ -72,22 +76,8 @@ const SearchNode = () => {
         valueKey='id'
         placeholder='Find a node'
         onChange={onSearchChange}
-        value={searchCase}
+        value={nodeSearchCase}
       />
-
-      {searchCase.length > 0 && (
-        <Fragment>
-          <Block color='primary300' marginTop='scale800'>
-            <LabelXSmall>
-              Found {result.length} Node{result.length === 1 ? '' : 's'}
-            </LabelXSmall>
-          </Block>
-
-          <Block marginTop='scale200'>
-            <ResultAccordion results={result} expanded />
-          </Block>
-        </Fragment>
-      )}
     </Block>
   );
 };

@@ -22,18 +22,10 @@ const TabStyle = ({
   $active: boolean;
 }) => ({
   width: '50%',
-  paddingTop: $theme.sizing.scale300,
-  paddingBottom: $theme.sizing.scale300,
-  fontWeight: $active ? 700 : 400,
-  color: $active ? '#06a2a2' : $theme.colors.mono200,
+  paddingTop: $theme.sizing.scale100,
+  paddingBottom: $theme.sizing.scale100,
   textAlign: 'center',
-  borderBottom: `2px solid ${$active ? '#17806f' : 'transparent'}`,
-  ':hover': {
-    color: '#06a2a2',
-  },
-  ':focus': {
-    color: '#06a2a2',
-  },
+  borderBottom: `2px solid ${$active ? '#06a2a2' : 'transparent'}`,
 });
 
 const TabBarStyle = () => ({

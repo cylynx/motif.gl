@@ -7,6 +7,7 @@ import {
   StyleOptions,
   FilterOptions,
   GraphState,
+  SearchOptions,
 } from './types';
 import {
   deriveVisibleGraph,
@@ -21,6 +22,8 @@ const getStyleOptions = (state: any): StyleOptions =>
   getGraph(state).styleOptions;
 const getFilterOptions = (state: any): FilterOptions =>
   getGraph(state).filterOptions;
+const getSearchOptions = (state: any): SearchOptions =>
+  getGraph(state).searchOptions;
 
 // Selector to perform filter on graph datas
 const getGraphFiltered = createSelector(
@@ -53,6 +56,7 @@ export {
   getGraphFlatten,
   getStyleOptions,
   getFilterOptions,
+  getSearchOptions,
   getGraphFiltered,
   getGraphVisible,
 };

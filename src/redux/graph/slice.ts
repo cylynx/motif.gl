@@ -15,6 +15,7 @@ import {
   StyleOptions,
   GraphData,
   Layout,
+  SearchOptionPayload,
 } from './types';
 
 export const updateSelections = (state: Draft<GraphState>, data: GraphData) => {
@@ -90,6 +91,12 @@ const initialState: GraphState = {
     groupEdges: false,
   },
   filterOptions: {},
+  searchOptions: {
+    activeTabs: 'nodes',
+    nodeSearchCase: [],
+    edgeSearchCase: [],
+    results: [],
+  },
   graphList: [],
   graphFlatten: {
     nodes: [],
@@ -273,6 +280,15 @@ const graph = createSlice({
       const { [key]: value, ...res } = state.filterOptions;
       state.filterOptions = res;
     },
+    updateSearchOptions(state, action: PayloadAction<SearchOptionPayload>) {
+      const { key, value } = action.payload;
+      Object.assign(state.searchOptions, {
+        [key]: value,
+      });
+    },
+    resetSearchOptions(state) {
+      Object.assign(state.searchOptions, initialState);
+    },
   },
 });
 
@@ -298,6 +314,8 @@ export const {
   updateFilterAttributes,
   removeFilterAttributes,
   resetFilters,
+  updateSearchOptions,
+  resetSearchOptions,
 } = graph.actions;
 
 export default graph.reducer;
