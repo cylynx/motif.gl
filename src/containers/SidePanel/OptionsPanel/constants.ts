@@ -154,8 +154,9 @@ export const layoutForm: NestedFormData = {
     {
       id: 'focusNode',
       label: 'Focus Node',
-      type: 'input',
+      type: 'select',
       value: '',
+      options: [{ id: '', label: '' }],
     },
   ],
 };

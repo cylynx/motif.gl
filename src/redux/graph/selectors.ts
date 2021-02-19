@@ -48,6 +48,17 @@ const getGraphVisible = createSelector(
   },
 );
 
+/** Selector to derive visible node ids */
+const getGraphVisibleNodeOptions = createSelector(
+  [getGraphVisible],
+  (graphVisible: GraphData) => {
+    const nodeIdOptions: Option[] = graphVisible.nodes.map((n) => {
+      return { id: n.id, label: n.id };
+    });
+    return nodeIdOptions;
+  },
+);
+
 /** Selector to get node fields as select options */
 const getGraphFieldsOptions = createSelector(
   [getGraphFlatten],
@@ -107,5 +118,6 @@ export {
   getFilterOptions,
   getGraphFiltered,
   getGraphVisible,
+  getGraphVisibleNodeOptions,
   getGraphFieldsOptions,
 };
