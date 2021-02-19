@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Tab, Tabs } from 'baseui/tabs';
 import { Theme } from 'baseui/theme';
 
-import { TActiveKey } from '../types';
+import { IUseSearchOptions, TActiveKey } from '../types';
 import SearchEdge from './SearchEdge';
 import SearchNode from './SearchNode';
+import useSearchOption from '../hooks/useSearchOption';
+import { SearchOptions } from '../../../../redux/graph';
 
 const TabContentStyle = ({ $theme }: { $theme: Theme }) => ({
   paddingLeft: $theme.sizing.scale300,
@@ -33,15 +35,16 @@ const TabBarStyle = () => ({
 });
 
 const MainSection = () => {
-  const [activeKey, setActiveKey] = useState<TActiveKey['activeKey']>('node');
+  const { searchOptions, updateTabs } = useSearchOption() as IUseSearchOptions;
+  const { activeTabs } = searchOptions as SearchOptions;
 
   const onTabChange = ({ activeKey }: TActiveKey) => {
-    setActiveKey(activeKey);
+    updateTabs(activeKey);
   };
 
   return (
     <Tabs
-      activeKey={activeKey}
+      activeKey={activeTabs}
       onChange={onTabChange}
       overrides={{
         Tab: {
@@ -56,10 +59,10 @@ const MainSection = () => {
         },
       }}
     >
-      <Tab key='node' title='Node'>
+      <Tab key='nodes' title='Node'>
         <SearchNode />
       </Tab>
-      <Tab key='edge' title='Edge'>
+      <Tab key='edges' title='Edge'>
         <SearchEdge />
       </Tab>
     </Tabs>

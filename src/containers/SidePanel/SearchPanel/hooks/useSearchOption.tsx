@@ -5,6 +5,7 @@ import {
   GraphSlices,
   GraphSelectors,
   EdgeNode,
+  GraphAttribute,
 } from '../../../../redux/graph';
 import { IUseSearchOptions } from '../types';
 import { RootState } from '../../../../redux/investigate';
@@ -33,7 +34,16 @@ const useSearchOption = (): IUseSearchOptions => {
     dispatch(GraphSlices.updateSearchOptions(payload));
   };
 
-  return { searchOptions, updateNodeSearch, updateSearchResults };
+  const updateTabs = (activeTab: GraphAttribute): void => {
+    const payload: SearchOptionPayload = {
+      key: 'activeTabs',
+      value: activeTab,
+    };
+
+    dispatch(GraphSlices.updateSearchOptions(payload));
+  };
+
+  return { searchOptions, updateNodeSearch, updateSearchResults, updateTabs };
 };
 
 export default useSearchOption;
