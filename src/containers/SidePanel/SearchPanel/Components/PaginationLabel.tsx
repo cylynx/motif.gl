@@ -18,7 +18,7 @@ const PaginationLabel: FC<PaginationLabelProps> = ({ results = [] }) => {
       justifyContent='flex-start'
     >
       <LabelXSmall color='contentSecondary'>
-        Found {results.length} Node{results.length === 1 ? '' : 's'}
+        Found {results.length} Item{results.length === 0 ? '' : 's'}
       </LabelXSmall>
     </Block>
   );

@@ -25,6 +25,15 @@ const useSearchOption = (): IUseSearchOptions => {
     dispatch(GraphSlices.updateSearchOptions(payload));
   };
 
+  const updateEdgeSearch = (value: Value): void => {
+    const payload: SearchOptionPayload = {
+      key: 'edgeSearchCase',
+      value,
+    };
+
+    dispatch(GraphSlices.updateSearchOptions(payload));
+  };
+
   const updateSearchResults = (results: EdgeNode[]): void => {
     const payload: SearchOptionPayload = {
       key: 'results',
@@ -43,7 +52,13 @@ const useSearchOption = (): IUseSearchOptions => {
     dispatch(GraphSlices.updateSearchOptions(payload));
   };
 
-  return { searchOptions, updateNodeSearch, updateSearchResults, updateTabs };
+  return {
+    searchOptions,
+    updateNodeSearch,
+    updateEdgeSearch,
+    updateSearchResults,
+    updateTabs,
+  };
 };
 
 export default useSearchOption;

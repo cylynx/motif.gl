@@ -1,33 +1,43 @@
-import React, { Fragment, useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Block } from 'baseui/block';
-import { OnChangeParams, Value } from 'baseui/select';
-import { LabelXSmall } from 'baseui/typography';
+import { OnChangeParams } from 'baseui/select';
 import { IGraph, IEdge } from '@antv/g6';
 import useGraphSearch from '../hooks/useGraphSearch';
-import { Edge } from '../../../../redux/graph';
+import { Edge, SearchOptions } from '../../../../redux/graph';
 import SingleStringSelect from '../../../../components/SingleStringSelect';
-import ResultAccordion from '../Components/ResultAccordion';
 import { GraphRefContext } from '../../../Graph';
 import useGraphBehaviors from '../../../Graph/hooks/useGraphBehaviors';
+import useSearchOption from '../hooks/useSearchOption';
+import { IUseSearchOptions } from '../types';
 
 const SearchEdge = () => {
-  const [result, setResult] = useState<Edge[]>([]);
-  const [searchCase, setSearchCase] = useState<Value>([]);
   const { edgeOptions, searchEdges } = useGraphSearch();
   const { graph }: { graph: IGraph } = useContext(GraphRefContext);
   const { centerCanvas, getViewCenterPoint } = useGraphBehaviors(graph);
 
+  const {
+    searchOptions,
+    updateEdgeSearch,
+    updateSearchResults,
+  } = useSearchOption() as IUseSearchOptions;
+  const { edgeSearchCase } = searchOptions as SearchOptions;
+
   const onSearchChange = ({ value }: OnChangeParams): void => {
-    setSearchCase(value);
+    updateEdgeSearch(value);
 
     if (value.length === 0) {
-      setResult([]);
+      updateSearchResults([]);
+      graph.setAutoPaint(false);
+      clearEdgeHoverState();
+      centerCanvas();
+      graph.paint();
+      graph.setAutoPaint(true);
       return;
     }
 
     const [{ id: edgeId }] = value;
     const result: Edge[] = searchEdges(edgeId as string);
-    setResult(result);
+    updateSearchResults(result);
 
     const edge = graph.findById(edgeId as string) as IEdge;
     graph.setAutoPaint(false);
@@ -64,24 +74,10 @@ const SearchEdge = () => {
         options={edgeOptions}
         labelKey='label'
         valueKey='id'
-        placeholder='Find an edge'
+        placeholder='Find an Edge'
         onChange={onSearchChange}
-        value={searchCase}
+        value={edgeSearchCase}
       />
-
-      {searchCase.length > 0 && (
-        <Fragment>
-          <Block color='primary300' marginTop='scale800'>
-            <LabelXSmall>
-              Found {result.length} Edge{result.length === 1 ? '' : 's'}
-            </LabelXSmall>
-          </Block>
-
-          <Block marginTop='scale200'>
-            <ResultAccordion results={result} expanded />
-          </Block>
-        </Fragment>
-      )}
     </Block>
   );
 };

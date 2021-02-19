@@ -74,7 +74,7 @@ const SearchNode = () => {
         options={nodeOptions}
         labelKey='label'
         valueKey='id'
-        placeholder='Find a node'
+        placeholder='Find a Node'
         onChange={onSearchChange}
         value={nodeSearchCase}
       />
