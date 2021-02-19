@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Block } from 'baseui/block';
 import { OnChangeParams } from 'baseui/select';
-import { IGraph, IEdge } from '@antv/g6';
+import { IEdge } from '@antv/g6';
 import useGraphSearch from '../hooks/useGraphSearch';
 import { Edge, SearchOptions } from '../../../../redux/graph';
 import AsyncSingleSelect from '../../../../components/AsyncSingleSelect';
@@ -12,7 +12,7 @@ import { IUseSearchOptions } from '../types';
 
 const SearchEdge = () => {
   const { edgeOptions, searchEdges } = useGraphSearch();
-  const { graph }: { graph: IGraph } = useContext(GraphRefContext);
+  const { graph } = useContext(GraphRefContext);
   const { centerCanvas, getViewCenterPoint } = useGraphBehaviors(graph);
 
   const {

@@ -1,13 +1,7 @@
-/* eslint-disable react/jsx-props-no-spreading */
-// @ts-nocheck
 import React from 'react';
+import Graphin from '@antv/graphin';
 
-const GraphRefContext = React.createContext(null);
-
-export const withGraphRef = (Component) => (props) => (
-  <GraphRefContext.Consumer>
-    {(ref) => <Component {...props} graphRef={ref} />}
-  </GraphRefContext.Consumer>
-);
+/*  const graphContext = useContext(GraphRefContext); */
+const GraphRefContext = React.createContext<Graphin>(null);
 
 export default GraphRefContext;

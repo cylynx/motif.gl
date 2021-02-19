@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
-import { IGraph, INode } from '@antv/g6';
+import { INode } from '@antv/g6';
+
 import { Block } from 'baseui/block';
 import { OnChangeParams } from 'baseui/select';
 
@@ -12,7 +13,7 @@ import useSearchOption from '../hooks/useSearchOption';
 
 const SearchNode = () => {
   const { nodeOptions, searchNodes } = useGraphSearch();
-  const { graph }: { graph: IGraph } = useContext(GraphRefContext);
+  const { graph } = useContext(GraphRefContext);
   const { centerCanvas, getViewCenterPoint } = useGraphBehaviors(graph);
 
   const {

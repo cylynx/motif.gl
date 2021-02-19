@@ -48,19 +48,9 @@ const Graph = React.forwardRef<Graphin, GraphProps>(({ setTooltip }, ref) => {
       <DisplayTooltips setTooltip={setTooltip} />
       <ActivateNodeRelations />
       <ActivateEdgeRelations />
-      <LassoSelect
-        trigger='alt'
-        onSelect={() => {
-          console.log('on lasso select');
-        }}
-      />
+      <LassoSelect trigger='alt' />
       <ClickSelect trigger='shift' />
-      <BrushSelect
-        trigger='shift'
-        onSelect={() => {
-          console.log('on brush select');
-        }}
-      />
+      <BrushSelect trigger='shift' />
     </Graphin>
   );
 });

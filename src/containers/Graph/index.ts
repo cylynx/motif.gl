@@ -1,7 +1,7 @@
 import Graph from './Graph';
-import GraphRefContext, { withGraphRef } from './context';
+import GraphRefContext  from './context';
 
-export { GraphRefContext, withGraphRef };
+export { GraphRefContext };
 export type { GraphProps } from './Graph';
 export default Graph;
 
