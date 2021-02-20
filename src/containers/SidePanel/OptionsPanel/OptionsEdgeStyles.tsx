@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 
 import { Block } from 'baseui/block';
 import { useDispatch, useSelector } from 'react-redux';
-import { GraphSlices, GraphSelectors, GraphUtils } from '../../../redux/graph';
+import { GraphSlices, GraphSelectors } from '../../../redux/graph';
 import Accordion from '../../../components/Accordion';
 import {
   NestedForm,
@@ -20,8 +20,6 @@ import {
   edgeArrowForm,
 } from './constants';
 
-const defaultLabelOptions = [{ id: 'none', label: 'None' }];
-
 const OptionsEdgeStyles = () => {
   const dispatch = useDispatch();
 
@@ -29,24 +27,9 @@ const OptionsEdgeStyles = () => {
     (state) => GraphSelectors.getGraph(state).styleOptions.edgeStyle,
   );
 
-  const graphFields = useSelector(
-    (state) => GraphSelectors.getGraph(state).graphFlatten.metadata.fields,
+  const { numericEdgeFields, edgeLabelFields } = useSelector((state) =>
+    GraphSelectors.getGraphFieldsOptions(state),
   );
-
-  let edgeLabelOptions = GraphUtils.getFieldNames(graphFields.edges).map(
-    (x) => {
-      return { id: x, label: x };
-    },
-  );
-
-  edgeLabelOptions = [...defaultLabelOptions, ...edgeLabelOptions];
-
-  const numericEdgeOptions =
-    GraphUtils.getFieldNames(graphFields.edges, ['integer', 'real']).map(
-      (x) => {
-        return { id: x, label: x };
-      },
-    ) || [];
 
   const updateEdgeStyle = (data: any) =>
     dispatch(GraphSlices.changeEdgeStyle(data));
@@ -56,9 +39,9 @@ const OptionsEdgeStyles = () => {
     edgeStyle,
     updateEdgeStyle,
     {
-      'property[0].options': numericEdgeOptions,
+      'property[0].options': numericEdgeFields,
       'property[0].value':
-        numericEdgeOptions.length > 0 ? numericEdgeOptions[0].id : null,
+        numericEdgeFields.length > 0 ? numericEdgeFields[0].id : null,
     },
   );
 
@@ -82,7 +65,7 @@ const OptionsEdgeStyles = () => {
               />
               <SimpleForm
                 data={genSimpleForm(edgeLabelForm, edgeStyle, updateEdgeStyle, {
-                  options: edgeLabelOptions,
+                  options: edgeLabelFields,
                 })}
               />
               <SimpleForm

@@ -29,25 +29,24 @@ export const GRID_DEFAULT: Layout = {
   type: 'grid',
   begin: [0, 0],
   preventOverlapPadding: 20,
-  rows: 2,
+  rows: 4,
+  sortBy: 'degree',
+  condense: false,
   preventOverlap: true,
   workerEnabled: true,
   // nodeSize: 30,
-  // condense: false,
-  // cols: 3, // automatically calculated based on the number of rows
-  // sortBy: 'degree',
 };
 
 export const RADIAL_DEFAULT: Layout = {
   type: 'radial',
   unitRadius: 100,
-  linkDistance: 100,
+  linkDistance: 200,
+  focusNode: '',
   preventOverlap: true,
   strictRadial: true,
   workerEnabled: true,
   // center: [200, 200],
   // maxIteration: 1000,
-  // focusNode: 'node11',
   // nodeSize: 30,
   // sortBy: 'data'
 };
@@ -55,17 +54,16 @@ export const RADIAL_DEFAULT: Layout = {
 export const CONCENTRIC_DEFAULT: Layout = {
   type: 'concentric',
   minNodeSpacing: 50,
+  sortBy: 'degree',
   preventOverlap: true,
   workerEnabled: true,
   // nodeSize: 30,
-  // sortBy: 'degree',
   // center: [200, 200],
   // sweep: 10,
   // equidistant: false,
   // startAngle: 0,
   // clockwise: false,
   // maxLevelDiff: 10,
-  // sortBy: 'degree',
 };
 
 export const GRAPHIN_FORCE_DEFAULT: Layout = {
