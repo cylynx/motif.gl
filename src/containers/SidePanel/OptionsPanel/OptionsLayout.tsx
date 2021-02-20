@@ -32,6 +32,7 @@ const OptionsLayout = () => {
     'grid[1].options': layoutFields,
     'concentric[1].options': layoutFields,
     'radial[2].options': nodeIds,
+    'radial[2].value': nodeIds[0].id,
   });
 
   return (
