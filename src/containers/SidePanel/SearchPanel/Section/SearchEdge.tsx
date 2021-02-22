@@ -3,7 +3,12 @@ import { Block } from 'baseui/block';
 import { OnChangeParams } from 'baseui/select';
 import { IEdge } from '@antv/g6';
 import useGraphSearch from '../hooks/useGraphSearch';
-import { Edge, SearchOptions } from '../../../../redux/graph';
+import {
+  Edge,
+  Node,
+  EdgeInformation,
+  SearchOptions,
+} from '../../../../redux/graph';
 import AsyncSingleSelect from '../../../../components/AsyncSingleSelect';
 import { GraphRefContext } from '../../../Graph';
 import useGraphBehaviors from '../../../Graph/hooks/useGraphBehaviors';
@@ -11,14 +16,14 @@ import useSearchOption from '../hooks/useSearchOption';
 import { IUseSearchOptions } from '../types';
 
 const SearchEdge = () => {
-  const { edgeOptions, searchEdges } = useGraphSearch();
+  const { edgeOptions, searchEdges, searchNodes } = useGraphSearch();
   const { graph } = useContext(GraphRefContext);
   const { centerCanvas, getViewCenterPoint } = useGraphBehaviors(graph);
 
   const {
     searchOptions,
     updateEdgeSearch,
-    updateSearchResults,
+    updateEdgeResults,
   } = useSearchOption() as IUseSearchOptions;
   const { edgeSearchCase } = searchOptions as SearchOptions;
 
@@ -26,7 +31,7 @@ const SearchEdge = () => {
     updateEdgeSearch(value);
 
     if (value.length === 0) {
-      updateSearchResults([]);
+      updateEdgeResults([]);
       graph.setAutoPaint(false);
       clearEdgeHoverState();
       centerCanvas();
@@ -36,10 +41,20 @@ const SearchEdge = () => {
     }
 
     const [{ id: edgeId }] = value;
-    const result: Edge[] = searchEdges(edgeId as string);
-    updateSearchResults(result);
-
+    const result: Edge = searchEdges(edgeId as string);
     const edge = graph.findById(edgeId as string) as IEdge;
+    const sourceNodeID: string = edge.getSource().getID();
+    const sourceNode: Node = searchNodes(sourceNodeID);
+    const targetNodeID: string = edge.getTarget().getID();
+    const targetNode: Node = searchNodes(targetNodeID);
+    const edgeItemProperty: EdgeInformation = {
+      sourceNode,
+      edge: result,
+      targetNode,
+    };
+
+    updateEdgeResults([edgeItemProperty]);
+
     graph.setAutoPaint(false);
     clearEdgeHoverState();
     setEdgeToHoverState(edge);

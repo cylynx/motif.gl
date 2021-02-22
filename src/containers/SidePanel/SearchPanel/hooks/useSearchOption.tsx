@@ -1,12 +1,15 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Value } from 'baseui/select';
-import { NodeConfig } from '@antv/graphin';
 import {
   SearchOptionPayload,
   GraphSlices,
   GraphSelectors,
   EdgeNode,
   GraphAttribute,
+  SearchResultPayload,
+  Node,
+  Edge,
+  EdgeInformation,
 } from '../../../../redux/graph';
 import { IUseSearchOptions } from '../types';
 import { RootState } from '../../../../redux/investigate';
@@ -35,6 +38,22 @@ const useSearchOption = (): IUseSearchOptions => {
     dispatch(GraphSlices.updateSearchOptions(payload));
   };
 
+  const updateNodeResults = (results: Node[]): void => {
+    const payload: SearchResultPayload = {
+      value: results,
+    };
+
+    dispatch(GraphSlices.updateNodeResults(payload));
+  };
+
+  const updateEdgeResults = (results: EdgeInformation[]): void => {
+    const payload: SearchResultPayload = {
+      value: results,
+    };
+
+    dispatch(GraphSlices.updateEdgeResults(payload));
+  };
+
   const updateSearchResults = (results: EdgeNode[]): void => {
     const payload: SearchOptionPayload = {
       key: 'results',
@@ -53,17 +72,14 @@ const useSearchOption = (): IUseSearchOptions => {
     dispatch(GraphSlices.updateSearchOptions(payload));
   };
 
-  const displayNodeInformation = (nodeConfigs: NodeConfig[]) => {
-    console.log(nodeConfigs);
-  };
-
   return {
     searchOptions,
     updateNodeSearch,
     updateEdgeSearch,
     updateSearchResults,
     updateTabs,
-    displayNodeInformation,
+    updateNodeResults,
+    updateEdgeResults,
   };
 };
 

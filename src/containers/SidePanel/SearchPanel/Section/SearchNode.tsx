@@ -19,7 +19,7 @@ const SearchNode = () => {
   const {
     searchOptions,
     updateNodeSearch,
-    updateSearchResults,
+    updateNodeResults,
   } = useSearchOption();
   const { nodeSearchCase } = searchOptions as SearchOptions;
 
@@ -27,7 +27,7 @@ const SearchNode = () => {
     updateNodeSearch(value);
 
     if (value.length === 0) {
-      updateSearchResults([]);
+      updateNodeResults([]);
       graph.setAutoPaint(false);
       clearNodeHoverState();
       centerCanvas();
@@ -37,8 +37,8 @@ const SearchNode = () => {
     }
 
     const [{ id: nodeId }] = value;
-    const result: Node[] = searchNodes(nodeId as string);
-    updateSearchResults(result);
+    const result: Node = searchNodes(nodeId as string);
+    updateNodeResults([result]);
 
     const node = graph.findById(nodeId as string) as INode;
     graph.setAutoPaint(false);

@@ -13,7 +13,7 @@ const SearchPanel = () => {
   const { results } = searchOptions as SearchOptions;
 
   const isResultEmpty: boolean = useMemo(() => {
-    return results.length === 0;
+    return results.nodes.length === 0 && results.edges.length === 0;
   }, [results]);
 
   return (
@@ -22,8 +22,8 @@ const SearchPanel = () => {
       <MainSection />
       {isResultEmpty === false && (
         <Fragment>
-          <PaginationLabel results={results} />
-          <ItemResults results={results} />
+          <PaginationLabel results={results.nodes} />
+          <ItemResults nodes={results.nodes} edges={results.edges} />
         </Fragment>
       )}
     </Block>

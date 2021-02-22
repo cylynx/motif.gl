@@ -29,8 +29,8 @@ const useGraphSearch = () => {
     });
   }, [graphVisible.edges]);
 
-  const searchNodes = (searchCase: string, accessor = 'id'): Node[] => {
-    const node: Node[] = graphVisible.nodes.filter((node: Node) => {
+  const searchNodes = (searchCase: string, accessor = 'id'): Node => {
+    const node: Node = graphVisible.nodes.find((node: Node) => {
       const nodeProperty: string = get(node, accessor, '');
 
       return nodeProperty.toLowerCase() === searchCase.toLowerCase();
@@ -39,8 +39,8 @@ const useGraphSearch = () => {
     return node;
   };
 
-  const searchEdges = (searchCase: string, accessor = 'id'): Edge[] => {
-    const node: Edge[] = graphVisible.edges.filter((edge: Edge) => {
+  const searchEdges = (searchCase: string, accessor = 'id'): Edge => {
+    const node: Edge = graphVisible.edges.find((edge: Edge) => {
       const nodeProperty: string = get(edge, accessor, '');
 
       return nodeProperty.toLowerCase() === searchCase.toLowerCase();

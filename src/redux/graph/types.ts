@@ -206,10 +206,26 @@ export interface SearchOptions {
   activeTabs: GraphAttribute;
   nodeSearchCase: Value;
   edgeSearchCase: Value;
-  results: EdgeNode[];
+  results: ItemProperties;
+  selectionDisplay: GraphAttribute | 'all';
 }
 
 export type SearchOptionPayload = {
   key: keyof SearchOptions;
   value: GraphAttribute | Value | EdgeNode[];
+};
+
+export type EdgeInformation = {
+  sourceNode: Node;
+  edge: Edge;
+  targetNode: Node;
+};
+
+export type ItemProperties = {
+  nodes: Node[];
+  edges: EdgeInformation[];
+};
+
+export type SearchResultPayload = {
+  value: Node[] | EdgeInformation[];
 };

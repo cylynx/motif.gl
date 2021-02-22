@@ -414,3 +414,25 @@ export const getDecimalPrecisionCount = (float: number): number => {
 export const extractIntegerFromString = (value: string): number => {
   return parseInt(value.replace(/\D/g, ''), 10);
 };
+
+/**
+ * Remove empty value from an object
+ *
+ * @param {Record<string, any>}object
+ *
+ * @return {void}
+ */
+export const removeEmptyValueInObject = (object: Record<string, any>): void => {
+  Object.entries(object).forEach((property) => {
+    const [key, value] = property;
+
+    const isNullOrUndefined = !value;
+    const isEmptyArray: boolean = Array.isArray(value) && value.length === 0;
+    const isEmptyObj: boolean = typeof value === 'object' && value !== null;
+
+    if (isNullOrUndefined || isEmptyArray || isEmptyObj) {
+      // eslint-disable-next-line no-param-reassign
+      delete object[key];
+    }
+  });
+};
