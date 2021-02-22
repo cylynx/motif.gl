@@ -14,6 +14,11 @@ import { GraphRefContext } from '../../../Graph';
 import useGraphBehaviors from '../../../Graph/hooks/useGraphBehaviors';
 import useSearchOption from '../hooks/useSearchOption';
 import { IUseSearchOptions } from '../types';
+import {
+  ControlContainerStyle,
+  DropdownListItem,
+  DropdownStyle,
+} from '../Styles/SelectStyle';
 
 const SearchEdge = () => {
   const { edgeOptions, searchEdges, searchNodes } = useGraphSearch();
@@ -92,6 +97,17 @@ const SearchEdge = () => {
         placeholder='Type ID to find an edge'
         onChange={onSearchChange}
         value={edgeSearchCase}
+        overrides={{
+          ControlContainer: {
+            style: ControlContainerStyle,
+          },
+          DropdownListItem: {
+            style: DropdownListItem,
+          },
+          Dropdown: {
+            style: DropdownStyle,
+          },
+        }}
       />
     </Block>
   );

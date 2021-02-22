@@ -11,7 +11,6 @@ const PaginationLabel: FC<PaginationLabelProps> = ({ results = [] }) => {
   return (
     <Block
       color='primary300'
-      marginTop='scale600'
       marginBottom='scale300'
       display='flex'
       paddingLeft='scale300'

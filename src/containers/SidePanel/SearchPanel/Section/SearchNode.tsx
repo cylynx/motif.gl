@@ -10,6 +10,12 @@ import { Node, SearchOptions } from '../../../../redux/graph';
 import { GraphRefContext } from '../../../Graph';
 import useGraphBehaviors from '../../../Graph/hooks/useGraphBehaviors';
 import useSearchOption from '../hooks/useSearchOption';
+import {
+  ControlContainerStyle,
+  DropdownContainer,
+  DropdownListItem,
+  DropdownStyle,
+} from '../Styles/SelectStyle';
 
 const SearchNode = () => {
   const { nodeOptions, searchNodes } = useGraphSearch();
@@ -78,6 +84,18 @@ const SearchNode = () => {
         placeholder='Type ID to find a node'
         onChange={onSearchChange}
         value={nodeSearchCase}
+        overrides={{
+          ControlContainer: {
+            style: ControlContainerStyle,
+          },
+          Dropdown: {
+            style: DropdownStyle,
+          },
+
+          DropdownListItem: {
+            style: DropdownListItem,
+          },
+        }}
       />
     </Block>
   );

@@ -20,6 +20,7 @@ const ItemResults: FC<ItemResultsProps> = ({ nodes, edges }) => {
       paddingRight={px8}
       paddingLeft={px8}
       paddingBottom={px8}
+      $style={{ maxHeight: '65vh', overflowY: 'auto' }}
     >
       {nodes.map((node: Node) => (
         <Block marginBottom='scale500' key={node.id}>

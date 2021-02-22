@@ -7,6 +7,7 @@ import ItemResults from './Section/ItemResults';
 import PaginationLabel from './Components/PaginationLabel';
 import useSearchOption from './hooks/useSearchOption';
 import { SearchOptions } from '../../../redux/graph';
+import PropertyDisplaySelection from './Components/PropertyDisplaySelection';
 
 const SearchPanel = () => {
   const { searchOptions } = useSearchOption();
@@ -18,13 +19,23 @@ const SearchPanel = () => {
 
   return (
     <Block>
-      <Header />
       <MainSection />
+
       {isResultEmpty === false && (
-        <Fragment>
-          <PaginationLabel results={results.nodes} />
+        <Block marginTop='scale600'>
+          <Block
+            marginTop='scale200'
+            marginBottom='scale200'
+            display='flex'
+            justifyContent='flex-end'
+            paddingLeft='scale50'
+            paddingRight='scale50'
+          >
+            <PropertyDisplaySelection />
+          </Block>
           <ItemResults nodes={results.nodes} edges={results.edges} />
-        </Fragment>
+          <PaginationLabel results={results.nodes} />
+        </Block>
       )}
     </Block>
   );

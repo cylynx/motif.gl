@@ -7,16 +7,14 @@ import SearchEdge from './SearchEdge';
 import SearchNode from './SearchNode';
 import useSearchOption from '../hooks/useSearchOption';
 import { SearchOptions } from '../../../../redux/graph';
-import useGraphSearch from '../hooks/useGraphSearch';
 import { GraphRefContext } from '../../../Graph';
 import useGraphBehaviors from '../../../Graph/hooks/useGraphBehaviors';
 
 const TabContentStyle = ({ $theme }: { $theme: Theme }) => ({
-  paddingLeft: $theme.sizing.scale300,
-  paddingRight: $theme.sizing.scale300,
-  paddingTop: $theme.sizing.scale500,
-  paddingBottom: $theme.sizing.scale300,
-  backgroundColor: $theme.colors.backgroundTertiary,
+  paddingTop: $theme.sizing.scale100,
+  paddingBottom: $theme.sizing.scale100,
+  paddingLeft: 0,
+  paddingRight: 0,
 });
 
 const TabStyle = ({
@@ -31,10 +29,19 @@ const TabStyle = ({
   paddingBottom: $theme.sizing.scale100,
   textAlign: 'center',
   borderBottom: `2px solid ${$active ? '#06a2a2' : 'transparent'}`,
+  ':hover': {
+    backgroundColor: $theme.colors.backgroundTertiary,
+    borderTopLeftRadius: $theme.sizing.scale200,
+    borderTopRightRadius: $theme.sizing.scale200,
+  },
 });
 
-const TabBarStyle = () => ({
-  backgroundColor: '#0c0b0b',
+const TabBarStyle = ({ $theme }: { $theme: Theme }) => ({
+  borderBottomLeftRadius: $theme.sizing.scale500,
+  borderBottomRightRadius: $theme.sizing.scale500,
+  borderTopLeftRadius: $theme.sizing.scale500,
+  borderTopRightRadius: $theme.sizing.scale500,
+  backgroundColor: $theme.colors.backgroundSecondary,
 });
 
 const MainSection = () => {

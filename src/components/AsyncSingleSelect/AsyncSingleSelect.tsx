@@ -1,13 +1,14 @@
 import React, { FC, SyntheticEvent, useState } from 'react';
 
-import { Select, TYPE, OnChangeParams, Value, Option } from 'baseui/select';
+import {
+  Select,
+  TYPE,
+  OnChangeParams,
+  Value,
+  Option,
+  SelectOverrides,
+} from 'baseui/select';
 import debounce from 'lodash/debounce';
-
-const RootStyle = () => ({
-  ':focus': {
-    outline: 'none',
-  },
-});
 
 export type AsyncSingleSelectProps = {
   options: Value;
@@ -16,6 +17,7 @@ export type AsyncSingleSelectProps = {
   onChange: (params: OnChangeParams) => any;
   value: Value;
   placeholder?: string;
+  overrides?: SelectOverrides;
 };
 
 const AsyncSingleSelect: FC<AsyncSingleSelectProps> = ({
@@ -25,6 +27,7 @@ const AsyncSingleSelect: FC<AsyncSingleSelectProps> = ({
   onChange,
   value,
   placeholder = '',
+  overrides,
 }) => {
   const [asyncOptions, setAsyncOptions] = useState<Option[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -64,11 +67,7 @@ const AsyncSingleSelect: FC<AsyncSingleSelectProps> = ({
       value={value}
       onInputChange={onInputChange}
       openOnClick={false}
-      overrides={{
-        Root: {
-          style: RootStyle,
-        },
-      }}
+      overrides={overrides}
       size='compact'
     />
   );
