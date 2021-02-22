@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import Accordion from '../../../../components/Accordion';
 import * as Icon from '../../../../components/Icons';
 import { EdgeInformation } from '../../../../redux/graph';
-
 import useItemInformation from '../hooks/useItemInformation';
 
 type EdgeInformationProps = {

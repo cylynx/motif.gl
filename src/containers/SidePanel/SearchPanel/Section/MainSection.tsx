@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Tab, Tabs } from 'baseui/tabs';
 import { Theme } from 'baseui/theme';
 
@@ -7,6 +7,9 @@ import SearchEdge from './SearchEdge';
 import SearchNode from './SearchNode';
 import useSearchOption from '../hooks/useSearchOption';
 import { SearchOptions } from '../../../../redux/graph';
+import useGraphSearch from '../hooks/useGraphSearch';
+import { GraphRefContext } from '../../../Graph';
+import useGraphBehaviors from '../../../Graph/hooks/useGraphBehaviors';
 
 const TabContentStyle = ({ $theme }: { $theme: Theme }) => ({
   paddingLeft: $theme.sizing.scale300,
@@ -35,11 +38,36 @@ const TabBarStyle = () => ({
 });
 
 const MainSection = () => {
-  const { searchOptions, updateTabs } = useSearchOption() as IUseSearchOptions;
+  const {
+    searchOptions,
+    updateTabs,
+    updateNodeResults,
+    updateEdgeResults,
+    updateNodeSearch,
+    updateEdgeSearch,
+  } = useSearchOption() as IUseSearchOptions;
   const { activeTabs } = searchOptions as SearchOptions;
+  const { graph } = useContext(GraphRefContext);
+  const { centerCanvas, clearAllStates } = useGraphBehaviors(graph);
 
   const onTabChange = ({ activeKey }: TActiveKey) => {
+    if (activeTabs === activeKey) {
+      return;
+    }
+
+    if (activeKey === 'nodes') {
+      updateNodeSearch([]);
+      updateEdgeResults([]);
+    }
+
+    if (activeKey === 'edges') {
+      updateEdgeSearch([]);
+      updateNodeResults([]);
+    }
+
     updateTabs(activeKey);
+    clearAllStates();
+    centerCanvas();
   };
 
   return (

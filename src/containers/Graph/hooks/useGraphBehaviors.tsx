@@ -6,11 +6,11 @@ import { isBigDataSet } from '../../../utils/utils';
 const useGraphBehaviors = (graph: IGraph) => {
   const clearAllStates = useCallback(() => {
     graph.getNodes().forEach((node: INode) => {
-      graph.clearItemStates(node, ['inactive', 'active']);
+      graph.clearItemStates(node, ['inactive', 'active', 'hover']);
     });
 
     graph.getEdges().forEach((edge: IEdge) => {
-      graph.clearItemStates(edge, ['inactive', 'active']);
+      graph.clearItemStates(edge, ['inactive', 'active', 'hover']);
     });
   }, [graph]);
 
@@ -75,6 +75,7 @@ const useGraphBehaviors = (graph: IGraph) => {
     resetNodeEdgeStates,
     centerCanvas,
     getViewCenterPoint,
+    clearAllStates,
   };
 };
 

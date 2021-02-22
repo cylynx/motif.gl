@@ -21,18 +21,16 @@ const ItemResults: FC<ItemResultsProps> = ({ nodes, edges }) => {
       paddingLeft={px8}
       paddingBottom={px8}
     >
-      {nodes.map((node: Node) => {
-        return <NodeInfoAccordion key={node.id} results={node} expanded />;
-      })}
-      {edges.map((edgeInfo: EdgeInformation) => {
-        return (
-          <EdgeInfoAccordion
-            key={edgeInfo.edge.id}
-            results={edgeInfo}
-            expanded={false}
-          />
-        );
-      })}
+      {nodes.map((node: Node) => (
+        <Block marginBottom='scale300' key={node.id}>
+          <NodeInfoAccordion results={node} expanded />
+        </Block>
+      ))}
+      {edges.map((edgeInfo: EdgeInformation) => (
+        <Block marginBottom='scale300' key={edgeInfo.edge.id}>
+          <EdgeInfoAccordion results={edgeInfo} expanded={false} />
+        </Block>
+      ))}
     </Block>
   );
 };
