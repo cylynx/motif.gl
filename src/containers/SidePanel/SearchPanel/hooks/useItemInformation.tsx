@@ -41,6 +41,7 @@ const useItemInformation = () => {
 
     return {
       title,
+      key: id,
       content: tableContent,
       expanded,
     };

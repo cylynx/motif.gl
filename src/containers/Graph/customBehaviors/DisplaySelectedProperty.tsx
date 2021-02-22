@@ -54,8 +54,6 @@ const DisplaySelectedProperty = (): null => {
         },
       );
 
-      updateEdgeResults(edgeInformation);
-
       const sourceAndTargets: string[] = uniq([...sources, ...targets]);
 
       // obtain selected nodes
@@ -74,6 +72,7 @@ const DisplaySelectedProperty = (): null => {
           return searchNodes(nodeID);
         });
 
+      updateEdgeResults(edgeInformation);
       updateNodeResults(selectedNodes);
     };
 

@@ -35,25 +35,24 @@ const NodeInfoAccordion: FC<NodeInformationProps> = ({
         },
         Header: {
           style: ({ $theme }) => ({
-            ...$theme.typography.ParagraphSmall,
-            textTransform: 'capitalize',
             paddingLeft: $theme.sizing.scale500,
             paddingRight: $theme.sizing.scale300,
             paddingTop: $theme.sizing.scale200,
             paddingBottom: $theme.sizing.scale200,
             backgroundColor: $theme.colors.backgroundSecondary,
-            color: $theme.colors.backgroundInverseSecondary,
+            color: $theme.colors.contentSecondary,
             borderBottomStyle: 'none',
             fontWeight: 600,
+            fontSize: '12px',
           }),
         },
-
         ToggleIcon: {
           component: () => {
             return <Icon.ChevronDown />;
           },
         },
       }}
+      key={nodeItem.key}
       items={[nodeItem]}
     />
   );

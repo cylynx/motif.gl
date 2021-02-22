@@ -51,8 +51,8 @@ export const MiniDropdownListItemStyle = ({ $theme }: { $theme: Theme }) => ({
   marginLeft: $theme.sizing.scale100,
   marginRight: $theme.sizing.scale100,
   fontSize: '12px',
-  paddingLeft: $theme.sizing.scale200,
-  paddingRight: $theme.sizing.scale200,
+  paddingLeft: $theme.sizing.scale300,
+  paddingRight: $theme.sizing.scale300,
   paddingTop: $theme.sizing.scale200,
   paddingBottom: $theme.sizing.scale200,
 });

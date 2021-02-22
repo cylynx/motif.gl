@@ -16,6 +16,8 @@ import {
   HiOutlineCamera,
   HiOutlineFilter,
   HiOutlineSearch,
+  HiChevronLeft,
+  HiChevronRight,
 } from 'react-icons/hi';
 import {
   BiLayer,
@@ -90,6 +92,26 @@ export const ChevronUp = ({ children, size = 16, ...rest }: IconBaseProps) => (
   <HiChevronUp size={size} {...rest}>
     {children}
   </HiChevronUp>
+);
+
+export const ChevronRight = ({
+  children,
+  size = 16,
+  ...rest
+}: IconBaseProps) => (
+  <HiChevronRight size={size} {...rest}>
+    {children}
+  </HiChevronRight>
+);
+
+export const ChevronLeft = ({
+  children,
+  size = 16,
+  ...rest
+}: IconBaseProps) => (
+  <HiChevronLeft size={size} {...rest}>
+    {children}
+  </HiChevronLeft>
 );
 
 export const Plus = ({ children, size = 16, ...rest }: IconBaseProps) => (

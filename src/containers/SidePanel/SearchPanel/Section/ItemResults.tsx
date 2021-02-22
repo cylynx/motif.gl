@@ -5,7 +5,6 @@ import { Node, EdgeInformation } from '../../../../redux/graph';
 import EdgeInfoAccordion from '../Components/EdgeInfoAccordion';
 
 const px8 = 'scale300';
-const px16 = 'scale600';
 
 export type ItemResultsProps = {
   nodes: Node[];
@@ -15,12 +14,9 @@ export type ItemResultsProps = {
 const ItemResults: FC<ItemResultsProps> = ({ nodes, edges }) => {
   return (
     <Block
-      backgroundColor='backgroundTertiary'
-      paddingTop={px16}
-      paddingRight={px8}
-      paddingLeft={px8}
+      marginTop={px8}
       paddingBottom={px8}
-      $style={{ maxHeight: '65vh', overflowY: 'auto' }}
+      $style={{ maxHeight: '73vh', overflowY: 'auto' }}
     >
       {nodes.map((node: Node) => (
         <Block marginBottom='scale500' key={node.id}>

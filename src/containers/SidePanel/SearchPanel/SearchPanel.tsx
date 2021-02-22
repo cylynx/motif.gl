@@ -1,10 +1,9 @@
-import React, { useMemo, Fragment } from 'react';
+import React, { useMemo } from 'react';
 
 import { Block } from 'baseui/block';
-import Header from '../Header';
 import MainSection from './Section/MainSection';
 import ItemResults from './Section/ItemResults';
-import PaginationLabel from './Components/PaginationLabel';
+import ItemPagination from './Components/ItemPagination';
 import useSearchOption from './hooks/useSearchOption';
 import { SearchOptions } from '../../../redux/graph';
 import PropertyDisplaySelection from './Components/PropertyDisplaySelection';
@@ -16,6 +15,14 @@ const SearchPanel = () => {
   const isResultEmpty: boolean = useMemo(() => {
     return results.nodes.length === 0 && results.edges.length === 0;
   }, [results]);
+
+  const nodeResultLength: number = useMemo(() => {
+    return results.nodes.length;
+  }, [results.nodes]);
+
+  const edgeResultLength: number = useMemo(() => {
+    return results.edges.length;
+  }, [results.edges]);
 
   return (
     <Block>
@@ -33,8 +40,11 @@ const SearchPanel = () => {
           >
             <PropertyDisplaySelection />
           </Block>
+          <ItemPagination
+            nodeLength={nodeResultLength}
+            edgeLength={edgeResultLength}
+          />
           <ItemResults nodes={results.nodes} edges={results.edges} />
-          <PaginationLabel results={results.nodes} />
         </Block>
       )}
     </Block>

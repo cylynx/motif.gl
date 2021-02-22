@@ -33,8 +33,8 @@ const EdgeInfoAccordion = ({
       overrides={{
         Content: {
           style: ({ $expanded, $theme }) => ({
-            paddingTop: $expanded ? $theme.sizing.scale300 : 0,
-            paddingBottom: $expanded ? $theme.sizing.scale300 : 0,
+            paddingTop: $expanded ? $theme.sizing.scale200 : 0,
+            paddingBottom: $expanded ? $theme.sizing.scale200 : 0,
             paddingLeft: $theme.sizing.scale300,
             paddingRight: $theme.sizing.scale300,
             backgroundColor: '#323742',
@@ -44,8 +44,6 @@ const EdgeInfoAccordion = ({
         },
         Header: {
           style: ({ $theme }) => ({
-            ...$theme.typography.ParagraphSmall,
-            textTransform: 'capitalize',
             paddingLeft: $theme.sizing.scale500,
             paddingRight: $theme.sizing.scale300,
             paddingTop: $theme.sizing.scale200,
@@ -54,6 +52,7 @@ const EdgeInfoAccordion = ({
             color: $theme.colors.backgroundInverseSecondary,
             borderBottomStyle: 'none',
             fontWeight: 600,
+            fontSize: '12px',
           }),
         },
         ToggleIcon: {
