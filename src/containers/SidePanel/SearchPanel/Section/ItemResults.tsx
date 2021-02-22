@@ -22,12 +22,12 @@ const ItemResults: FC<ItemResultsProps> = ({ nodes, edges }) => {
       paddingBottom={px8}
     >
       {nodes.map((node: Node) => (
-        <Block marginBottom='scale300' key={node.id}>
-          <NodeInfoAccordion results={node} expanded />
+        <Block marginBottom='scale500' key={node.id}>
+          <NodeInfoAccordion results={node} expanded={false} />
         </Block>
       ))}
       {edges.map((edgeInfo: EdgeInformation) => (
-        <Block marginBottom='scale300' key={edgeInfo.edge.id}>
+        <Block marginBottom='scale500' key={edgeInfo.edge.id}>
           <EdgeInfoAccordion results={edgeInfo} expanded={false} />
         </Block>
       ))}

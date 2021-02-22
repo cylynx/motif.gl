@@ -1,14 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Value } from 'baseui/select';
 import {
-  SearchOptionPayload,
   GraphSlices,
   GraphSelectors,
-  EdgeNode,
   GraphAttribute,
+  SearchOptionPayload,
   SearchResultPayload,
   Node,
-  Edge,
   EdgeInformation,
 } from '../../../../redux/graph';
 import { IUseSearchOptions } from '../types';
@@ -54,15 +52,6 @@ const useSearchOption = (): IUseSearchOptions => {
     dispatch(GraphSlices.updateEdgeResults(payload));
   };
 
-  const updateSearchResults = (results: EdgeNode[]): void => {
-    const payload: SearchOptionPayload = {
-      key: 'results',
-      value: results,
-    };
-
-    dispatch(GraphSlices.updateSearchOptions(payload));
-  };
-
   const updateTabs = (activeTab: GraphAttribute): void => {
     const payload: SearchOptionPayload = {
       key: 'activeTabs',
@@ -76,7 +65,6 @@ const useSearchOption = (): IUseSearchOptions => {
     searchOptions,
     updateNodeSearch,
     updateEdgeSearch,
-    updateSearchResults,
     updateTabs,
     updateNodeResults,
     updateEdgeResults,

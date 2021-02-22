@@ -13,7 +13,6 @@ const useItemInformation = () => {
         display='flex'
         justifyContent='center'
         $style={{ textTransform: 'capitalize' }}
-        key={id}
       >
         [Node] {id}
       </Block>
@@ -35,14 +34,13 @@ const useItemInformation = () => {
     );
 
     const tableContent: JSX.Element = (
-      <table id={id} style={{ fontSize: '12px' }} key={id}>
+      <table style={{ fontSize: '12px' }}>
         <tbody>{tableRows}</tbody>
       </table>
     );
 
     return {
       title,
-      key: id,
       content: tableContent,
       expanded,
     };
@@ -56,7 +54,6 @@ const useItemInformation = () => {
         display='flex'
         justifyContent='center'
         $style={{ textTransform: 'capitalize' }}
-        key={id}
       >
         [Edge] {id}
       </Block>
