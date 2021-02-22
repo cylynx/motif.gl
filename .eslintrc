@@ -55,6 +55,7 @@
     "arrow-parens": 1,
     "comma-dangle": 1,
     "no-shadow": "off",
+    "no-useless-return": "off",
     "max-len": [
       "warn",
       {

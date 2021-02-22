@@ -1,4 +1,5 @@
 import { Value } from 'baseui/select';
+import { NodeConfig } from '@antv/graphin';
 import { EdgeNode, GraphAttribute, SearchOptions } from '../../../redux/graph';
 
 export type TActiveKey = {
@@ -11,4 +12,5 @@ export interface IUseSearchOptions {
   updateEdgeSearch: (value: Value) => void;
   updateSearchResults: (results: EdgeNode[]) => void;
   updateTabs: (activeTab: GraphAttribute) => void;
+  displayNodeInformation: (nodeConfigs: NodeConfig[]) => void;
 }

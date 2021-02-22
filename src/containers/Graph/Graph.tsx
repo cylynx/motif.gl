@@ -16,6 +16,7 @@ import './styles/graphin.css';
 import DisplayTooltips from './customBehaviors/DisplayTooltips';
 import ActivateEdgeRelations from './customBehaviors/ActivateEdgeRelations';
 import ActivateNodeRelations from './customBehaviors/ActivateNodeRelations';
+import DisplaySelectedProperty from './customBehaviors/DisplaySelectedProperty';
 
 export type GraphProps = {
   setTooltip: (tooltip: TooltipProps) => void;
@@ -48,9 +49,10 @@ const Graph = React.forwardRef<Graphin, GraphProps>(({ setTooltip }, ref) => {
       <DisplayTooltips setTooltip={setTooltip} />
       <ActivateNodeRelations />
       <ActivateEdgeRelations />
-      <LassoSelect trigger='alt' />
+      <LassoSelect trigger='alt' includeEdges />
       <ClickSelect trigger='shift' />
-      <BrushSelect trigger='shift' />
+      <BrushSelect trigger='shift' includeEdges />
+      <DisplaySelectedProperty />
     </Graphin>
   );
 });

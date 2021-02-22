@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Value } from 'baseui/select';
+import { NodeConfig } from '@antv/graphin';
 import {
   SearchOptionPayload,
   GraphSlices,
@@ -52,12 +53,17 @@ const useSearchOption = (): IUseSearchOptions => {
     dispatch(GraphSlices.updateSearchOptions(payload));
   };
 
+  const displayNodeInformation = (nodeConfigs: NodeConfig[]) => {
+    console.log(nodeConfigs);
+  };
+
   return {
     searchOptions,
     updateNodeSearch,
     updateEdgeSearch,
     updateSearchResults,
     updateTabs,
+    displayNodeInformation,
   };
 };
 
