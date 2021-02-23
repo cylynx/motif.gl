@@ -18,6 +18,7 @@ import {
   HiOutlineSearch,
   HiChevronLeft,
   HiChevronRight,
+  HiOutlineArrowNarrowDown,
 } from 'react-icons/hi';
 import {
   BiLayer,
@@ -278,4 +279,10 @@ export const Rocket = ({ children, size = 16, ...rest }: IconBaseProps) => (
   <BiRocket size={size} {...rest}>
     {children}
   </BiRocket>
+);
+
+export const ArrowDown = ({ children, size = 16, ...rest }: IconBaseProps) => (
+  <HiOutlineArrowNarrowDown size={size} {...rest}>
+    {children}
+  </HiOutlineArrowNarrowDown>
 );

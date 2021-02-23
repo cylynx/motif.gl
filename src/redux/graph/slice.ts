@@ -63,6 +63,7 @@ export const updateAll = (
     state.nodeSelection = initialState.nodeSelection;
     state.edgeSelection = initialState.edgeSelection;
     state.filterOptions = initialState.filterOptions;
+    state.searchOptions = initialState.searchOptions;
   }
 };
 
@@ -304,7 +305,7 @@ const graph = createSlice({
       Object.assign(state.searchOptions.results, { edges: value });
     },
     resetSearchOptions(state) {
-      Object.assign(state.searchOptions, initialState);
+      Object.assign(state.searchOptions, initialState.searchOptions);
     },
   },
 });

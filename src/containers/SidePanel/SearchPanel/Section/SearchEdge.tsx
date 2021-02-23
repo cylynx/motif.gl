@@ -23,12 +23,17 @@ import {
 const SearchEdge = () => {
   const { edgeOptions, searchEdges, searchNodes } = useGraphSearch();
   const { graph } = useContext(GraphRefContext);
-  const { centerCanvas, getViewCenterPoint } = useGraphBehaviors(graph);
+  const {
+    centerCanvas,
+    getViewCenterPoint,
+    clearEdgeHoverState,
+  } = useGraphBehaviors(graph);
 
   const {
     searchOptions,
     updateEdgeSearch,
     updateEdgeResults,
+    updateNodeResults,
   } = useSearchOption() as IUseSearchOptions;
   const { edgeSearchCase } = searchOptions as SearchOptions;
 
@@ -58,6 +63,7 @@ const SearchEdge = () => {
       targetNode,
     };
 
+    updateNodeResults([]);
     updateEdgeResults([edgeItemProperty]);
 
     graph.setAutoPaint(false);
@@ -69,14 +75,8 @@ const SearchEdge = () => {
     graph.setAutoPaint(true);
   };
 
-  const clearEdgeHoverState = () => {
-    graph.findAllByState('edge', 'selected').forEach((edge: IEdge) => {
-      graph.clearItemStates(edge, ['selected']);
-    });
-  };
-
   const setEdgeToHoverState = (edge: IEdge) => {
-    graph.setItemState(edge, 'selected', true);
+    graph.setItemState(edge, 'hover', true);
   };
 
   const centerEdge = (edge: IEdge) => {

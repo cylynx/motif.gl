@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, Fragment } from 'react';
 import { Tab, Tabs } from 'baseui/tabs';
 import { Theme } from 'baseui/theme';
 
+import { Block } from 'baseui/block';
 import { IUseSearchOptions, TActiveKey } from '../types';
 import SearchEdge from './SearchEdge';
 import SearchNode from './SearchNode';
@@ -45,35 +46,17 @@ const TabBarStyle = ({ $theme }: { $theme: Theme }) => ({
 });
 
 const MainSection = () => {
-  const {
-    searchOptions,
-    updateTabs,
-    updateNodeResults,
-    updateEdgeResults,
-    updateNodeSearch,
-    updateEdgeSearch,
-  } = useSearchOption() as IUseSearchOptions;
+  const { searchOptions, updateTabs } = useSearchOption() as IUseSearchOptions;
   const { activeTabs } = searchOptions as SearchOptions;
   const { graph } = useContext(GraphRefContext);
-  const { centerCanvas, clearAllStates } = useGraphBehaviors(graph);
+  const { centerCanvas } = useGraphBehaviors(graph);
 
   const onTabChange = ({ activeKey }: TActiveKey) => {
     if (activeTabs === activeKey) {
       return;
     }
 
-    if (activeKey === 'nodes') {
-      updateNodeSearch([]);
-      updateEdgeResults([]);
-    }
-
-    if (activeKey === 'edges') {
-      updateEdgeSearch([]);
-      updateNodeResults([]);
-    }
-
     updateTabs(activeKey);
-    clearAllStates();
     centerCanvas();
   };
 
@@ -94,10 +77,10 @@ const MainSection = () => {
         },
       }}
     >
-      <Tab key='nodes' title='Node'>
+      <Tab key='nodes' title={<Block as='span'>Nodes</Block>}>
         <SearchNode />
       </Tab>
-      <Tab key='edges' title='Edge'>
+      <Tab key='edges' title={<Block as='span'>Edges</Block>}>
         <SearchEdge />
       </Tab>
     </Tabs>

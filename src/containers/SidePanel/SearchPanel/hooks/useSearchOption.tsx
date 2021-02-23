@@ -106,6 +106,10 @@ const useSearchOption = (): IUseSearchOptions => {
     dispatch(GraphSlices.updateSearchOptions(payload));
   };
 
+  const resetSearchOptions = () => {
+    dispatch(GraphSlices.resetSearchOptions());
+  };
+
   return {
     searchOptions,
     updateNodeSearch,
@@ -116,6 +120,7 @@ const useSearchOption = (): IUseSearchOptions => {
     updatePagination,
     nextPage,
     previousPage,
+    resetSearchOptions,
   };
 };
 

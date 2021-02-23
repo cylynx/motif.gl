@@ -5,10 +5,15 @@ import {
   GraphinContextType,
   IG6GraphEvent,
 } from '@antv/graphin';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { IUserEdge } from '@antv/graphin/lib/typings/type';
 import uniq from 'lodash/uniq';
 import { EdgeInformation, GraphSelectors, Node } from '../../../redux/graph';
+import {
+  WidgetSlices,
+  WidgetSelectors,
+  WidgetState,
+} from '../../../redux/widget';
 import useGraphSearch from '../../SidePanel/SearchPanel/hooks/useGraphSearch';
 import useSearchOption from '../../SidePanel/SearchPanel/hooks/useSearchOption';
 import { ITEM_PER_PAGE } from '../../../constants/widget-units';
@@ -24,6 +29,10 @@ const DisplaySelectedProperty = (): null => {
   const graphVisible = useSelector((state) =>
     GraphSelectors.getGraphVisible(state),
   );
+  const widget: WidgetState = useSelector((state) =>
+    WidgetSelectors.getWidget(state),
+  );
+  const dispatch = useDispatch();
 
   const sources: string[] = [];
   const targets: string[] = [];
@@ -110,6 +119,10 @@ const DisplaySelectedProperty = (): null => {
         selectedEdgesLength,
       );
       setPagination(selectedNodesLength, selectedEdgesLength);
+
+      if (widget.main !== 'search') {
+        dispatch(WidgetSlices.updateWidget({ key: 'main', id: 'search' }));
+      }
     };
 
     graph.on('nodeselectchange', displayPropertyInformation);
@@ -117,7 +130,7 @@ const DisplaySelectedProperty = (): null => {
     return (): void => {
       graph.off('nodeselectchange', displayPropertyInformation);
     };
-  }, [graph, graphVisible]);
+  }, [graph, graphVisible, widget.main]);
 
   return null;
 };

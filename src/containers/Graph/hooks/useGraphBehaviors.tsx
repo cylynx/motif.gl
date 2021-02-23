@@ -70,12 +70,26 @@ const useGraphBehaviors = (graph: IGraph) => {
     graph.translate(viewCenter.x - groupCenter.x, viewCenter.y - groupCenter.y);
   }, []);
 
+  const clearNodeHoverState = () => {
+    graph.findAllByState('node', 'hover').forEach((node: INode) => {
+      graph.clearItemStates(node, ['hover']);
+    });
+  };
+
+  const clearEdgeHoverState = () => {
+    graph.findAllByState('node', 'hover').forEach((node: INode) => {
+      graph.clearItemStates(node, ['hover']);
+    });
+  };
+
   return {
     disableAllNodeEdges,
     resetNodeEdgeStates,
     centerCanvas,
     getViewCenterPoint,
     clearAllStates,
+    clearNodeHoverState,
+    clearEdgeHoverState,
   };
 };
 

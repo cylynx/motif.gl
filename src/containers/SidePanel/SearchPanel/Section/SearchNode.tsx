@@ -19,12 +19,17 @@ import {
 const SearchNode = () => {
   const { nodeOptions, searchNodes } = useGraphSearch();
   const { graph } = useContext(GraphRefContext);
-  const { centerCanvas, getViewCenterPoint } = useGraphBehaviors(graph);
+  const {
+    centerCanvas,
+    getViewCenterPoint,
+    clearNodeHoverState,
+  } = useGraphBehaviors(graph);
 
   const {
     searchOptions,
     updateNodeSearch,
     updateNodeResults,
+    updateEdgeResults,
   } = useSearchOption();
   const { nodeSearchCase } = searchOptions as SearchOptions;
 
@@ -44,6 +49,7 @@ const SearchNode = () => {
     const [{ id: nodeId }] = value;
     const result: Node = searchNodes(nodeId as string);
     updateNodeResults([result]);
+    updateEdgeResults([]);
 
     const node = graph.findById(nodeId as string) as INode;
     graph.setAutoPaint(false);
@@ -58,6 +64,10 @@ const SearchNode = () => {
   const centerNode = (node: INode) => {
     const viewCenter = getViewCenterPoint();
 
+    if (graph.getZoom() <= 0.75) {
+      graph.zoomTo(1.0, viewCenter);
+    }
+
     const nodeBBox = node.getCanvasBBox();
     const dx = (viewCenter.x - nodeBBox.centerX) * graph.getZoom();
     const dy = (viewCenter.y - nodeBBox.centerY) * graph.getZoom();
@@ -65,13 +75,7 @@ const SearchNode = () => {
   };
 
   const setNodeToHoverState = (node: INode) => {
-    graph.setItemState(node, 'selected', true);
-  };
-
-  const clearNodeHoverState = () => {
-    graph.findAllByState('node', 'selected').forEach((node: INode) => {
-      graph.clearItemStates(node, ['selected']);
-    });
+    graph.setItemState(node, 'hover', true);
   };
 
   return (

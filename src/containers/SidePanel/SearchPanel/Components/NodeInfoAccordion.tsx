@@ -31,21 +31,16 @@ const NodeInfoAccordion: FC<NodeInformationProps> = ({
             backgroundColor: '#323742',
             color: $theme.colors.mono200,
             borderBottomWidth: 0,
-            borderBottomLeftRadius: $theme.sizing.scale300,
-            borderBottomRightRadius: $theme.sizing.scale300,
           }),
         },
         Header: {
-          style: ({ $expanded, $theme }) => ({
+          style: ({ $theme }) => ({
             paddingLeft: $theme.sizing.scale500,
             paddingRight: $theme.sizing.scale300,
             paddingTop: $theme.sizing.scale200,
             paddingBottom: $theme.sizing.scale200,
             backgroundColor: $theme.colors.backgroundSecondary,
-            borderTopLeftRadius: $theme.sizing.scale200,
-            borderTopRightRadius: $theme.sizing.scale200,
-            borderBottomLeftRadius: $expanded ? 0 : $theme.sizing.scale300,
-            borderBottomRightRadius: $expanded ? 0 : $theme.sizing.scale300,
+
             color: $theme.colors.contentSecondary,
             borderBottomStyle: 'none',
             fontWeight: 600,

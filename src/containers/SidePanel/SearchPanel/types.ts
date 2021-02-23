@@ -24,4 +24,5 @@ export interface IUseSearchOptions {
   ) => void;
   nextPage: () => void;
   previousPage: () => void;
+  resetSearchOptions: () => void;
 }
