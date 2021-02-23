@@ -1,19 +1,19 @@
 import React from 'react';
 import { Block } from 'baseui/block';
-import { Node, Edge } from '../../../../redux/graph';
+import { Node, Edge, NodeItemType } from '../../../../redux/graph';
 import { flattenObject } from '../../../../redux/graph/processors/data';
 import { removeEmptyValueInObject } from '../../../../utils/data-utils';
 
 const useItemInformation = () => {
-  const createNodeItem = (node: Node, expanded: boolean) => {
+  const createNodeItem = (
+    node: Node,
+    expanded: boolean,
+    type: NodeItemType = 'normal',
+  ) => {
     const { id, comboId, style, defaultStyle, ...omittedResult } = node;
 
     const title: JSX.Element = (
-      <Block
-        display='flex'
-        justifyContent='center'
-        $style={{ textTransform: 'capitalize' }}
-      >
+      <Block display='flex' justifyContent='center'>
         [Node] {id}
       </Block>
     );
@@ -41,7 +41,7 @@ const useItemInformation = () => {
 
     return {
       title,
-      key: id,
+      key: `${id}-${type}`,
       content: tableContent,
       expanded,
     };

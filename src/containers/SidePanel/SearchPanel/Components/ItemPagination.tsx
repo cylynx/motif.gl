@@ -18,15 +18,19 @@ const ItemPagination: FC<ItemPaginationProps> = ({
   nodeLength,
   edgeLength,
 }) => {
-  const { searchOptions } = useSearchOption() as IUseSearchOptions;
+  const {
+    searchOptions,
+    nextPage,
+    previousPage,
+  } = useSearchOption() as IUseSearchOptions;
   const {
     currentPage,
     totalPage,
-    totalItems,
   } = searchOptions.pagination as SearchOptPagination;
 
   const endIndex = currentPage * ITEM_PER_PAGE;
   const startIndex = endIndex - ITEM_PER_PAGE + 1;
+  const totalItems = nodeLength + edgeLength;
   const endText = endIndex < totalItems ? endIndex : totalItems;
 
   const isPreviousButtonDisplay = useMemo(() => {
@@ -44,13 +48,8 @@ const ItemPagination: FC<ItemPaginationProps> = ({
       return '0 Item';
     }
 
-    const totalItems = nodeLength + edgeLength;
-
     return `${startIndex}-${endText} of ${totalItems}`;
-  }, [nodeLength, edgeLength]);
-
-  const onLeftClick = () => {};
-  const onRightClick = () => {};
+  }, [currentPage, nodeLength, edgeLength]);
 
   return (
     <Block
@@ -84,52 +83,48 @@ const ItemPagination: FC<ItemPaginationProps> = ({
         </ParagraphXSmall>
 
         <Block>
-          {isPreviousButtonDisplay && (
-            <Button
-              onClick={onLeftClick}
-              kind={KIND.secondary}
-              size={SIZE.compact}
-              disabled={false}
-              overrides={{
-                BaseButton: {
-                  style: ({ $theme }: { $theme: Theme }) => ({
-                    paddingTop: $theme.sizing.scale0,
-                    paddingBottom: $theme.sizing.scale0,
-                    paddingRight: $theme.sizing.scale0,
-                    paddingLeft: $theme.sizing.scale0,
-                    borderTopLeftRadius: $theme.sizing.scale200,
-                    borderBottomLeftRadius: $theme.sizing.scale200,
-                    marginRight: $theme.sizing.scale0,
-                  }),
-                },
-              }}
-            >
-              <Icon.ChevronLeft />
-            </Button>
-          )}
+          <Button
+            onClick={previousPage}
+            kind={KIND.secondary}
+            size={SIZE.compact}
+            disabled={!isPreviousButtonDisplay}
+            overrides={{
+              BaseButton: {
+                style: ({ $theme }: { $theme: Theme }) => ({
+                  paddingTop: $theme.sizing.scale0,
+                  paddingBottom: $theme.sizing.scale0,
+                  paddingRight: $theme.sizing.scale0,
+                  paddingLeft: $theme.sizing.scale0,
+                  borderTopLeftRadius: $theme.sizing.scale200,
+                  borderBottomLeftRadius: $theme.sizing.scale200,
+                  marginRight: $theme.sizing.scale0,
+                }),
+              },
+            }}
+          >
+            <Icon.ChevronLeft />
+          </Button>
 
-          {isNextButtonDisplay && (
-            <Button
-              onClick={onRightClick}
-              kind={KIND.secondary}
-              size={SIZE.compact}
-              disabled={false}
-              overrides={{
-                BaseButton: {
-                  style: ({ $theme }: { $theme: Theme }) => ({
-                    paddingTop: $theme.sizing.scale0,
-                    paddingBottom: $theme.sizing.scale0,
-                    paddingRight: $theme.sizing.scale0,
-                    paddingLeft: $theme.sizing.scale0,
-                    borderTopRightRadius: $theme.sizing.scale200,
-                    borderBottomRightRadius: $theme.sizing.scale200,
-                  }),
-                },
-              }}
-            >
-              <Icon.ChevronRight />
-            </Button>
-          )}
+          <Button
+            onClick={nextPage}
+            kind={KIND.secondary}
+            size={SIZE.compact}
+            disabled={!isNextButtonDisplay}
+            overrides={{
+              BaseButton: {
+                style: ({ $theme }: { $theme: Theme }) => ({
+                  paddingTop: $theme.sizing.scale0,
+                  paddingBottom: $theme.sizing.scale0,
+                  paddingRight: $theme.sizing.scale0,
+                  paddingLeft: $theme.sizing.scale0,
+                  borderTopRightRadius: $theme.sizing.scale200,
+                  borderBottomRightRadius: $theme.sizing.scale200,
+                }),
+              },
+            }}
+          >
+            <Icon.ChevronRight />
+          </Button>
         </Block>
       </Block>
     </Block>

@@ -15,6 +15,7 @@ const ItemResults: FC = () => {
       paddingBottom='scale300'
       paddingLeft='scale550'
       paddingRight='scale550'
+      paddingTop='scale300'
       marginTop='scale500'
       position='absolute'
       top={0}

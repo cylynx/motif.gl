@@ -22,4 +22,6 @@ export interface IUseSearchOptions {
     totalItems: number,
     totalPage: number,
   ) => void;
+  nextPage: () => void;
+  previousPage: () => void;
 }

@@ -17,7 +17,7 @@ const EdgeInfoAccordion = ({
   const { createNodeItem, createEdgeItem } = useItemInformation();
 
   const sourceNodeItem = useMemo(() => {
-    return createNodeItem(sourceNode, expanded);
+    return createNodeItem(sourceNode, expanded, 'source');
   }, [sourceNode]);
 
   const edgeItem = useMemo(() => {
@@ -25,7 +25,7 @@ const EdgeInfoAccordion = ({
   }, []);
 
   const targetNodeItem = useMemo(() => {
-    return createNodeItem(targetNode, expanded);
+    return createNodeItem(targetNode, expanded, 'target');
   }, [targetNode]);
 
   return (

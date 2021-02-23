@@ -78,6 +78,34 @@ const useSearchOption = (): IUseSearchOptions => {
     dispatch(GraphSlices.updateSearchOptions(payload));
   };
 
+  const nextPage = () => {
+    const { currentPage, totalPage, totalItems } = searchOptions.pagination;
+    const payload: SearchOptionPayload = {
+      key: 'pagination',
+      value: {
+        currentPage: currentPage + 1,
+        totalPage,
+        totalItems,
+      },
+    };
+
+    dispatch(GraphSlices.updateSearchOptions(payload));
+  };
+
+  const previousPage = () => {
+    const { currentPage, totalPage, totalItems } = searchOptions.pagination;
+    const payload: SearchOptionPayload = {
+      key: 'pagination',
+      value: {
+        currentPage: currentPage - 1,
+        totalPage,
+        totalItems,
+      },
+    };
+
+    dispatch(GraphSlices.updateSearchOptions(payload));
+  };
+
   return {
     searchOptions,
     updateNodeSearch,
@@ -86,6 +114,8 @@ const useSearchOption = (): IUseSearchOptions => {
     updateNodeResults,
     updateEdgeResults,
     updatePagination,
+    nextPage,
+    previousPage,
   };
 };
 

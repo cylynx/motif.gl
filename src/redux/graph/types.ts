@@ -122,6 +122,7 @@ export interface Accessors {
 }
 
 export type ArrowOptions = 'none' | 'display';
+export type NodeItemType = 'source' | 'target' | 'normal';
 
 export type EdgeWidthFixed = {
   id: 'fixed';
