@@ -16,7 +16,15 @@ const ItemResults: FC<ItemResultsProps> = ({ nodes, edges }) => {
     <Block
       marginTop={px8}
       paddingBottom={px8}
-      $style={{ maxHeight: '73vh', overflowY: 'auto' }}
+      paddingLeft={px8}
+      paddingRight={px8}
+      position='absolute'
+      top='28px'
+      bottom='28px'
+      right={0}
+      left={0}
+      width='auto'
+      $style={{ overflowY: 'auto' }}
     >
       {nodes.map((node: Node) => (
         <Block marginBottom='scale500' key={node.id}>

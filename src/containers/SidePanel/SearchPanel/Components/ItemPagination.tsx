@@ -29,69 +29,65 @@ const ItemPagination: FC<ItemPaginationProps> = ({
   return (
     <Block
       color='primary300'
-      display='flex'
-      paddingRight='scale300'
-      paddingLeft='scale300'
-      paddingTop='scale100'
-      paddingBottom='scale100'
-      backgroundColor='backgroundSecondary'
-      justifyContent='space-between'
-      overrides={{
-        Block: {
-          style: ({ $theme }: { $theme: Theme }) => ({
-            borderBottomLeftRadius: $theme.sizing.scale300,
-            borderBottomRightRadius: $theme.sizing.scale300,
-            borderTopLeftRadius: $theme.sizing.scale300,
-            borderTopRightRadius: $theme.sizing.scale300,
-          }),
-        },
-      }}
+      backgroundColor='#080808'
+      position='absolute'
+      width='100%'
+      bottom='0'
     >
-      <LabelXSmall
-        color='contentSecondary'
-        alignContent='center'
+      <Block
         paddingTop='scale100'
+        paddingBottom='scale100'
+        paddingRight='scale300'
+        paddingLeft='scale300'
+        justifyContent='space-between'
+        display='flex'
       >
-        Showing result {displayText}
-      </LabelXSmall>
-
-      <Block>
-        <Button
-          onClick={() => alert('prev')}
-          kind={KIND.secondary}
-          size={SIZE.compact}
-          disabled={false}
-          overrides={{
-            BaseButton: {
-              style: ({ $theme }: { $theme: Theme }) => ({
-                padding: $theme.sizing.scale0,
-                borderTopLeftRadius: $theme.sizing.scale200,
-                borderBottomLeftRadius: $theme.sizing.scale200,
-                marginRight: $theme.sizing.scale0,
-              }),
-            },
-          }}
+        <LabelXSmall
+          color='contentSecondary'
+          alignContent='center'
+          paddingTop='scale100'
         >
-          <Icon.ChevronLeft />
-        </Button>
+          Showing result {displayText}
+        </LabelXSmall>
 
-        <Button
-          onClick={() => alert('right')}
-          kind={KIND.secondary}
-          size={SIZE.compact}
-          disabled={false}
-          overrides={{
-            BaseButton: {
-              style: ({ $theme }: { $theme: Theme }) => ({
-                padding: $theme.sizing.scale0,
-                borderTopRightRadius: $theme.sizing.scale200,
-                borderBottomRightRadius: $theme.sizing.scale200,
-              }),
-            },
-          }}
-        >
-          <Icon.ChevronRight />
-        </Button>
+        <Block>
+          <Button
+            onClick={() => alert('prev')}
+            kind={KIND.secondary}
+            size={SIZE.compact}
+            disabled={false}
+            overrides={{
+              BaseButton: {
+                style: ({ $theme }: { $theme: Theme }) => ({
+                  padding: $theme.sizing.scale0,
+                  borderTopLeftRadius: $theme.sizing.scale200,
+                  borderBottomLeftRadius: $theme.sizing.scale200,
+                  marginRight: $theme.sizing.scale0,
+                }),
+              },
+            }}
+          >
+            <Icon.ChevronLeft />
+          </Button>
+
+          <Button
+            onClick={() => alert('right')}
+            kind={KIND.secondary}
+            size={SIZE.compact}
+            disabled={false}
+            overrides={{
+              BaseButton: {
+                style: ({ $theme }: { $theme: Theme }) => ({
+                  padding: $theme.sizing.scale0,
+                  borderTopRightRadius: $theme.sizing.scale200,
+                  borderBottomRightRadius: $theme.sizing.scale200,
+                }),
+              },
+            }}
+          >
+            <Icon.ChevronRight />
+          </Button>
+        </Block>
       </Block>
     </Block>
   );

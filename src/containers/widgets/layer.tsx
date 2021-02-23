@@ -30,7 +30,8 @@ export const BottomRightLayer: FC = ({ children }) => (
   </Block>
 );
 
-export const LeftLayer: FC = ({ children }) => {
+type LeftLayerProps = { padding?: boolean };
+export const LeftLayer: FC<LeftLayerProps> = ({ children, padding = true }) => {
   return (
     <Block
       position='fixed'
@@ -38,10 +39,10 @@ export const LeftLayer: FC = ({ children }) => {
       bottom='0px'
       left={SIDE_NAVBAR_WIDTH}
       width='310px'
-      paddingTop='scale600'
-      paddingBottom='scale200'
-      paddingLeft='scale550'
-      paddingRight='scale550'
+      paddingTop={padding ? 'scale600' : 0}
+      paddingBottom={padding ? 'scale200' : 0}
+      paddingLeft={padding ? 'scale550' : 0}
+      paddingRight={padding ? 'scale550' : 0}
       backgroundColor='backgroundPrimary'
       overflow='auto'
     >

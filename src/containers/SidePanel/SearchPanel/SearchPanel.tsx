@@ -25,26 +25,33 @@ const SearchPanel = () => {
   }, [results.edges]);
 
   return (
-    <Block>
-      <MainSection />
+    <Block position='absolute' height='100%' width='inherit'>
+      <Block
+        paddingLeft='scale550'
+        paddingRight='scale550'
+        paddingTop='scale550'
+        paddingBottom='scale200'
+      >
+        <MainSection />
+      </Block>
 
       {isResultEmpty === false && (
-        <Block marginTop='scale600'>
+        <Block position='relative' height='calc(100% - 100px)'>
           <Block
             marginTop='scale200'
             marginBottom='scale200'
             display='flex'
             justifyContent='flex-end'
-            paddingLeft='scale50'
-            paddingRight='scale50'
+            paddingLeft='scale550'
+            paddingRight='scale550'
           >
             <PropertyDisplaySelection />
           </Block>
+          <ItemResults nodes={results.nodes} edges={results.edges} />
           <ItemPagination
             nodeLength={nodeResultLength}
             edgeLength={edgeResultLength}
           />
-          <ItemResults nodes={results.nodes} edges={results.edges} />
         </Block>
       )}
     </Block>
