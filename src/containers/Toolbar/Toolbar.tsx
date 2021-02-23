@@ -8,6 +8,7 @@ import { GraphSlices } from '../../redux/graph';
 import ToolbarButton, { ToolbarItem } from './ToolbarButton';
 import SettingsPopover from './SettingsPopover';
 import LegendPopover from './LegendPopover';
+import useGraphBehaviors from '../Graph/hooks/useGraphBehaviors';
 
 const MIN_ZOOM = 0.1;
 const MAX_ZOOM = 10;
@@ -24,6 +25,7 @@ const Toolbar = () => {
   const { graph } = graphRef;
   const graphContainer = document.getElementById('graphin-container');
   const dispatch = useDispatch();
+  const { centerCanvas } = useGraphBehaviors(graph);
 
   const toggleFullScreen = () => {
     // Exit will be handled by the esc key (no button is available)
@@ -42,6 +44,11 @@ const Toolbar = () => {
       y: graph.getHeight() / 2,
     };
     graph.zoomTo(newZoom, centerPoint);
+  };
+
+  const onClearClick = () => {
+    dispatch(GraphSlices.resetState());
+    centerCanvas();
   };
 
   const menuItems: ToolbarItem[] = [
@@ -107,7 +114,7 @@ const Toolbar = () => {
       icon: <Icon.X size={18} />,
       isDisabled: false,
       popoverContent: null,
-      onClick: () => dispatch(GraphSlices.resetState()),
+      onClick: () => onClearClick(),
     },
   ];
 

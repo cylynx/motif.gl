@@ -56,8 +56,18 @@ const DisplaySelectedProperty = (): null => {
     return edgeInformation.length;
   };
 
-  const setSelectedNodes = (nodes: INode[]): number => {
+  const setSelectedNodes = (nodes: INode[], edgeLength: number): number => {
     const sourceAndTargets: string[] = uniq([...sources, ...targets]);
+
+    if (edgeLength === 0) {
+      const selectedNodes = nodes.map((node: INode) => {
+        const nodeID: string = node.get('model').id;
+        return searchNodes(nodeID);
+      });
+
+      updateNodeResults(selectedNodes);
+      return selectedNodes.length;
+    }
 
     const selectedNodes: Node[] = nodes
       .filter((node: INode) => {
@@ -95,7 +105,10 @@ const DisplaySelectedProperty = (): null => {
 
       if (selectNodeWithMouseEvent.length === 0) return;
       const selectedEdgesLength = setSelectedEdges(selectEdgeWithMouseEvent);
-      const selectedNodesLength = setSelectedNodes(selectNodeWithMouseEvent);
+      const selectedNodesLength = setSelectedNodes(
+        selectNodeWithMouseEvent,
+        selectedEdgesLength,
+      );
       setPagination(selectedNodesLength, selectedEdgesLength);
     };
 
