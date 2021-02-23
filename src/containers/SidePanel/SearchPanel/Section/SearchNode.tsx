@@ -12,7 +12,6 @@ import useGraphBehaviors from '../../../Graph/hooks/useGraphBehaviors';
 import useSearchOption from '../hooks/useSearchOption';
 import {
   ControlContainerStyle,
-  DropdownContainer,
   DropdownListItem,
   DropdownStyle,
 } from '../Styles/SelectStyle';
@@ -66,12 +65,12 @@ const SearchNode = () => {
   };
 
   const setNodeToHoverState = (node: INode) => {
-    graph.setItemState(node, 'hover', true);
+    graph.setItemState(node, 'selected', true);
   };
 
   const clearNodeHoverState = () => {
-    graph.findAllByState('node', 'hover').forEach((node: INode) => {
-      graph.clearItemStates(node, ['hover']);
+    graph.findAllByState('node', 'selected').forEach((node: INode) => {
+      graph.clearItemStates(node, ['selected']);
     });
   };
 

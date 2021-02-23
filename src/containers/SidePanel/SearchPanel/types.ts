@@ -1,6 +1,5 @@
 import { Value } from 'baseui/select';
 import {
-  EdgeNode,
   GraphAttribute,
   SearchOptions,
   Node,

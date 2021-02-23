@@ -1,13 +1,11 @@
 import React, { useMemo } from 'react';
 
 import { Block } from 'baseui/block';
-import { Theme } from 'baseui/theme';
 import MainSection from './Section/MainSection';
 import ItemResults from './Section/ItemResults';
 import ItemPagination from './Components/ItemPagination';
 import useSearchOption from './hooks/useSearchOption';
 import { SearchOptions } from '../../../redux/graph';
-import PropertyDisplaySelection from './Components/PropertyDisplaySelection';
 
 const SearchPanel = () => {
   const { searchOptions } = useSearchOption();
@@ -37,17 +35,7 @@ const SearchPanel = () => {
       </Block>
 
       {isResultEmpty === false && (
-        <Block position='relative' height='calc(100% - 100px)'>
-          <Block
-            marginTop='scale200'
-            marginBottom='scale200'
-            display='flex'
-            justifyContent='flex-end'
-            paddingLeft='scale550'
-            paddingRight='scale550'
-          >
-            <PropertyDisplaySelection />
-          </Block>
+        <Block position='relative' height='calc(100% - 94px)'>
           <ItemResults nodes={results.nodes} edges={results.edges} />
           <ItemPagination
             nodeLength={nodeResultLength}

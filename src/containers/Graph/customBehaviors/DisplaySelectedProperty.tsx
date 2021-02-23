@@ -81,7 +81,7 @@ const DisplaySelectedProperty = (): null => {
     return (): void => {
       graph.off('nodeselectchange', displayPropertyInformation);
     };
-  }, [graphVisible]);
+  }, [graph, graphVisible]);
 
   return null;
 };

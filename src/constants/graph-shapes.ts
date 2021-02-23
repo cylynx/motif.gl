@@ -66,7 +66,7 @@ export const DEFAULT_NODE_STYLE = {
         opacity: nodeOpacity,
       },
       halo: {
-        visible: false,
+        visible: true,
       },
     },
     inactive: {

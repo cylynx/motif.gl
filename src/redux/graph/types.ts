@@ -207,7 +207,6 @@ export interface SearchOptions {
   nodeSearchCase: Value;
   edgeSearchCase: Value;
   results: ItemProperties;
-  selectionDisplay: GraphAttribute | 'all';
 }
 
 export type SearchOptionPayload = {

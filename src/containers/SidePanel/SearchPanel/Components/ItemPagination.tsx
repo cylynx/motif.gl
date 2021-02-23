@@ -26,6 +26,9 @@ const ItemPagination: FC<ItemPaginationProps> = ({
     return `${totalItems}-${totalItems} of ${totalItems}`;
   }, [nodeLength, edgeLength]);
 
+  const onLeftClick = () => {};
+  const onRightClick = () => {};
+
   return (
     <Block
       color='primary300'
@@ -59,14 +62,17 @@ const ItemPagination: FC<ItemPaginationProps> = ({
 
         <Block>
           <Button
-            onClick={() => alert('prev')}
+            onClick={onLeftClick}
             kind={KIND.secondary}
             size={SIZE.compact}
             disabled={false}
             overrides={{
               BaseButton: {
                 style: ({ $theme }: { $theme: Theme }) => ({
-                  padding: $theme.sizing.scale0,
+                  paddingTop: $theme.sizing.scale0,
+                  paddingBottom: $theme.sizing.scale0,
+                  paddingRight: $theme.sizing.scale0,
+                  paddingLeft: $theme.sizing.scale0,
                   borderTopLeftRadius: $theme.sizing.scale200,
                   borderBottomLeftRadius: $theme.sizing.scale200,
                   marginRight: $theme.sizing.scale0,
@@ -78,14 +84,17 @@ const ItemPagination: FC<ItemPaginationProps> = ({
           </Button>
 
           <Button
-            onClick={() => alert('right')}
+            onClick={onRightClick}
             kind={KIND.secondary}
             size={SIZE.compact}
             disabled={false}
             overrides={{
               BaseButton: {
                 style: ({ $theme }: { $theme: Theme }) => ({
-                  padding: $theme.sizing.scale0,
+                  paddingTop: $theme.sizing.scale0,
+                  paddingBottom: $theme.sizing.scale0,
+                  paddingRight: $theme.sizing.scale0,
+                  paddingLeft: $theme.sizing.scale0,
                   borderTopRightRadius: $theme.sizing.scale200,
                   borderBottomRightRadius: $theme.sizing.scale200,
                 }),

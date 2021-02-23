@@ -70,13 +70,13 @@ const SearchEdge = () => {
   };
 
   const clearEdgeHoverState = () => {
-    graph.findAllByState('edge', 'hover').forEach((edge: IEdge) => {
-      graph.clearItemStates(edge, ['hover']);
+    graph.findAllByState('edge', 'selected').forEach((edge: IEdge) => {
+      graph.clearItemStates(edge, ['selected']);
     });
   };
 
   const setEdgeToHoverState = (edge: IEdge) => {
-    graph.setItemState(edge, 'hover', true);
+    graph.setItemState(edge, 'selected', true);
   };
 
   const centerEdge = (edge: IEdge) => {

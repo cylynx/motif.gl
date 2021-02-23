@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Select, SIZE, OnChangeParams, Value, Option } from 'baseui/select';
+import React, { useMemo } from 'react';
+import { Select, SIZE, OnChangeParams, Option } from 'baseui/select';
 import {
   ControlContainerStyle,
   MiniRootStyle,
@@ -7,6 +7,9 @@ import {
   DropdownStyle,
   MiniDropdownListItemStyle,
 } from '../Styles/SelectStyle';
+import useSearchOption from '../hooks/useSearchOption';
+import { IUseSearchOptions } from '../types';
+import { SelectionDisplay } from '../../../../redux/graph';
 
 const displayOptions: Option[] = [
   { label: 'All', id: 'all' },
@@ -15,12 +18,29 @@ const displayOptions: Option[] = [
 ];
 
 const PropertyDisplaySelection = () => {
-  const [value, setValue] = useState<Value>([{ label: 'All', id: 'all' }]);
+  const {
+    searchOptions,
+    updateSelectionDisplay,
+  } = useSearchOption() as IUseSearchOptions;
+  const { selectionDisplay } = searchOptions;
+
+  const selectedOption: Option = useMemo(() => {
+    return displayOptions.find(
+      (option: Option) => option.id === selectionDisplay,
+    );
+  }, [selectionDisplay]);
+
+  const onSelectChange = (params: OnChangeParams): void => {
+    const [selectedOption] = params.value;
+    const { id } = selectedOption as Option;
+    updateSelectionDisplay(id as SelectionDisplay);
+  };
+
   return (
     <Select
       size={SIZE.mini}
       options={displayOptions}
-      value={value}
+      value={[selectedOption]}
       backspaceRemoves={false}
       backspaceClearsInputValue={false}
       clearable={false}
@@ -30,7 +50,7 @@ const PropertyDisplaySelection = () => {
       onBlurResetsInput={false}
       searchable={false}
       required
-      onChange={(params: OnChangeParams) => setValue(params.value)}
+      onChange={onSelectChange}
       overrides={{
         Root: {
           style: MiniRootStyle,
