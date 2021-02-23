@@ -12,10 +12,10 @@ import debounce from 'lodash/debounce';
 
 export type AsyncSingleSelectProps = {
   options: Value;
-  labelKey: string;
-  valueKey: string;
   onChange: (params: OnChangeParams) => any;
   value: Value;
+  labelKey?: string;
+  valueKey?: string;
   placeholder?: string;
   overrides?: SelectOverrides;
 };

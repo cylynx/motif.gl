@@ -5,6 +5,7 @@ import { LabelSmall } from 'baseui/typography';
 import { Select } from 'baseui/select';
 import { Input } from 'baseui/input';
 import { Slider } from '../ui';
+import AsyncSingleSelect from '../AsyncSingleSelect';
 
 export type NestedFormData = {
   id: string;
@@ -86,7 +87,7 @@ const cleanGetValues = (obj: any, mainKey: string) => {
   ],
 };
  * @param {{ data: NestedFormData }} { data = testData }
- * @return {JSX.Element} 
+ * @return {JSX.Element}
  */
 const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
   const { callback, labelPosition } = data;
@@ -160,7 +161,7 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
             const { id, label, type, value, ...rest } = d;
             let parsedValue =
               // eslint-disable-next-line no-nested-ternary
-              type === 'select'
+              type === 'select' || type === 'asyncSelect'
                 ? d.options.find((x: any) => x.id === value)
                   ? [d.options.find((x: any) => x.id === value)]
                   : []
@@ -203,6 +204,17 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
                           size='compact'
                           clearable={false}
                           maxDropdownHeight='300px'
+                          {...rest}
+                        />
+                      );
+                    }
+                    if (type === 'asyncSelect') {
+                      component = (
+                        <AsyncSingleSelect
+                          onChange={(params) =>
+                            handleChange(params.value, onChange)
+                          }
+                          value={value}
                           {...rest}
                         />
                       );
