@@ -8,6 +8,10 @@ import { flattenObject } from '../../../../redux/graph/processors/data';
 import { removeEmptyValueInObject } from '../../../../utils/data-utils';
 import * as Icon from '../../../../components/Icons';
 
+/**
+ * This component is leave for future implementation for better UI/UX.
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental
 const EdgeShape = () => {
   return (
     <Block top='-14px' left='4px' position='absolute'>
