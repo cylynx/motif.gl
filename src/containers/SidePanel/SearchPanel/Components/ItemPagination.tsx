@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import { LabelXSmall } from 'baseui/typography';
+import { ParagraphXSmall } from 'baseui/typography';
 import { Block } from 'baseui/block';
 import { Button, KIND, SIZE } from 'baseui/button';
 import { Theme } from 'baseui/theme';
@@ -29,26 +29,33 @@ const ItemPagination: FC<ItemPaginationProps> = ({
   return (
     <Block
       color='primary300'
-      backgroundColor='#080808'
+      backgroundColor='backgroundSecondary'
       position='absolute'
       width='100%'
       bottom='0'
+      overrides={{
+        Block: {
+          style: ({ $theme }: { $theme: Theme }) => ({
+            boxShadow: `-4px 2px 6px 2px ${$theme.colors.backgroundInverseSecondary}`,
+          }),
+        },
+      }}
     >
       <Block
-        paddingTop='scale100'
-        paddingBottom='scale100'
+        paddingTop='scale300'
+        paddingBottom='scale300'
         paddingRight='scale300'
         paddingLeft='scale300'
         justifyContent='space-between'
         display='flex'
       >
-        <LabelXSmall
+        <ParagraphXSmall
           color='contentSecondary'
-          alignContent='center'
-          paddingTop='scale100'
+          marginTop='0'
+          marginBottom='0'
         >
           Showing result {displayText}
-        </LabelXSmall>
+        </ParagraphXSmall>
 
         <Block>
           <Button

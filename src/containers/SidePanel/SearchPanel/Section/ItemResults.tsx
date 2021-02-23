@@ -20,7 +20,7 @@ const ItemResults: FC<ItemResultsProps> = ({ nodes, edges }) => {
       paddingRight={px8}
       position='absolute'
       top='28px'
-      bottom='28px'
+      bottom='35px'
       right={0}
       left={0}
       width='auto'

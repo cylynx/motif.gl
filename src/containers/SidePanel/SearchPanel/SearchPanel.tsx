@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { Block } from 'baseui/block';
+import { Theme } from 'baseui/theme';
 import MainSection from './Section/MainSection';
 import ItemResults from './Section/ItemResults';
 import ItemPagination from './Components/ItemPagination';
