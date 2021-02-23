@@ -19,11 +19,9 @@ import {
 const SearchNode = () => {
   const { nodeOptions, searchNodes } = useGraphSearch();
   const { graph } = useContext(GraphRefContext);
-  const {
-    centerCanvas,
-    getViewCenterPoint,
-    clearNodeHoverState,
-  } = useGraphBehaviors(graph);
+  const { centerCanvas, clearNodeHoverState, centerItem } = useGraphBehaviors(
+    graph,
+  );
 
   const {
     searchOptions,
@@ -56,22 +54,9 @@ const SearchNode = () => {
     clearNodeHoverState();
     setNodeToHoverState(node);
     centerCanvas();
-    centerNode(node);
+    centerItem(node);
     graph.paint();
     graph.setAutoPaint(true);
-  };
-
-  const centerNode = (node: INode) => {
-    const viewCenter = getViewCenterPoint();
-
-    if (graph.getZoom() <= 0.75) {
-      graph.zoomTo(1.0, viewCenter);
-    }
-
-    const nodeBBox = node.getCanvasBBox();
-    const dx = (viewCenter.x - nodeBBox.centerX) * graph.getZoom();
-    const dy = (viewCenter.y - nodeBBox.centerY) * graph.getZoom();
-    graph.translate(dx, dy);
   };
 
   const setNodeToHoverState = (node: INode) => {

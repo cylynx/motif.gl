@@ -52,9 +52,9 @@ export const DEFAULT_NODE_STYLE = {
     strokeOpacity: nodeOpacity,
   },
   halo: {
-    lineWidth: 2,
+    lineWidth: 4,
     opacity: nodeOpacity - 0.2,
-    fillOpacity: nodeOpacity - 0.8,
+    fillOpacity: nodeOpacity - 0.5,
     strokeOpacity: nodeOpacity - 0.5,
     shadowBlur: 2,
   },
@@ -130,10 +130,16 @@ export const DEFAULT_EDGE_STYLE = {
       keyshape: {
         lineWidth: edgeLineWidth + 0.5,
       },
+      halo: {
+        visible: false,
+      },
     },
     hover: {
       keyshape: {
         lineWidth: edgeLineWidth + 1,
+      },
+      halo: {
+        visible: true,
       },
     },
     disabled: {
@@ -145,11 +151,17 @@ export const DEFAULT_EDGE_STYLE = {
         lineWidth: edgeLineWidth - 0.5,
         stroke: '#ddd',
       },
+      halo: {
+        visible: false,
+      },
     },
     active: {
       keyshape: {
         stroke: edgeLineColor.dark,
         lineWidth: edgeLineWidth + 1,
+      },
+      halo: {
+        visible: false,
       },
     },
     inactive: {
@@ -161,6 +173,9 @@ export const DEFAULT_EDGE_STYLE = {
         stroke: grey.normal,
         strokeOpacity: edgeOpacity - 0.3,
         opacity: edgeOpacity - 0.3,
+      },
+      halo: {
+        visible: false,
       },
     },
   },

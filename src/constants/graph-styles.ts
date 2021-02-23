@@ -66,8 +66,11 @@ export const defaultEdge: { style: Partial<EdgeStyle> } = {
   style: {
     halo: {
       lineWidth: DEFAULT_EDGE_STYLE.lineWidth + 1,
-      opacity: 0.5,
       cursor: 'pointer',
+      shadowColor: '#000000',
+      shadowBlur: 4,
+      shadowOffsetX: 4,
+      shadowOffsetY: 4,
       visible: false,
     },
     label: {

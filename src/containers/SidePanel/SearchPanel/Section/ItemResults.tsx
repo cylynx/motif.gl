@@ -1,10 +1,13 @@
-import React, { FC } from 'react';
+import React, { FC, useContext, MouseEvent } from 'react';
 import { Block, BlockOverrides } from 'baseui/block';
 import { useSelector } from 'react-redux';
 import { Theme } from 'baseui/theme';
+import { INode, IEdge } from '@antv/g6';
 import NodeInfoAccordion from '../Components/NodeInfoAccordion';
 import { Node, EdgeInformation, GraphSelectors } from '../../../../redux/graph';
 import EdgeInfoAccordion from '../Components/EdgeInfoAccordion';
+import GraphRefContext from '../../../Graph/context';
+import useGraphBehaviors from '../../../Graph/hooks/useGraphBehaviors';
 
 const itemBlockOverrides: BlockOverrides = {
   Block: {
@@ -25,6 +28,59 @@ const ItemResults: FC = () => {
     GraphSelectors.getPaginateItems(state),
   );
 
+  const { graph } = useContext(GraphRefContext);
+  const {
+    centerCanvas,
+    clearNodeHoverState,
+    centerItem,
+    clearEdgeHoverState,
+  } = useGraphBehaviors(graph);
+
+  const onNodeMouseEnter = (
+    event: MouseEvent<HTMLDivElement>,
+    nodeId: string,
+  ) => {
+    event.stopPropagation();
+    const node = graph.findById(nodeId) as INode;
+    graph.setAutoPaint(false);
+
+    graph.setItemState(node, 'hover', true);
+    centerCanvas();
+    centerItem(node);
+    graph.paint();
+    graph.setAutoPaint(true);
+  };
+
+  const onEdgeMouseEnter = (
+    event: MouseEvent<HTMLDivElement>,
+    edgeId: string,
+  ) => {
+    event.stopPropagation();
+    const edge = graph.findById(edgeId) as IEdge;
+    const sourceNode = edge.getSource();
+    const targetNode = edge.getTarget();
+
+    graph.setAutoPaint(false);
+
+    graph.setItemState(edge, 'hover', true);
+    graph.setItemState(sourceNode, 'hover', true);
+    graph.setItemState(targetNode, 'hover', true);
+    centerCanvas();
+    centerItem(edge);
+    graph.paint();
+    graph.setAutoPaint(true);
+  };
+
+  const onMouseLeave = (event: MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+
+    graph.setAutoPaint(false);
+    clearNodeHoverState();
+    clearEdgeHoverState();
+    graph.paint();
+    graph.setAutoPaint(true);
+  };
+
   return (
     <Block
       paddingBottom='scale300'
@@ -41,22 +97,30 @@ const ItemResults: FC = () => {
       $style={{ overflowY: 'auto', scrollbarWidth: 'thin' }}
     >
       {edges.map((edgeInfo: EdgeInformation) => (
-        <Block
-          marginBottom='scale550'
+        <div
           key={edgeInfo.edge.id}
-          overrides={itemBlockOverrides}
+          onMouseLeave={onMouseLeave}
+          onMouseEnter={(event) => onEdgeMouseEnter(event, edgeInfo.edge.id)}
         >
-          <EdgeInfoAccordion results={edgeInfo} expanded={false} />
-        </Block>
+          <Block
+            marginBottom='scale550'
+            key={edgeInfo.edge.id}
+            overrides={itemBlockOverrides}
+          >
+            <EdgeInfoAccordion results={edgeInfo} expanded={false} />
+          </Block>
+        </div>
       ))}
       {nodes.map((node: Node) => (
-        <Block
-          marginBottom='scale550'
+        <div
           key={node.id}
-          overrides={itemBlockOverrides}
+          onMouseEnter={(event) => onNodeMouseEnter(event, node.id)}
+          onMouseLeave={onMouseLeave}
         >
-          <NodeInfoAccordion results={node} expanded={false} />
-        </Block>
+          <Block marginBottom='scale550' overrides={itemBlockOverrides}>
+            <NodeInfoAccordion results={node} expanded={false} />
+          </Block>
+        </div>
       ))}
     </Block>
   );

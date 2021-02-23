@@ -77,9 +77,22 @@ const useGraphBehaviors = (graph: IGraph) => {
   };
 
   const clearEdgeHoverState = () => {
-    graph.findAllByState('node', 'hover').forEach((node: INode) => {
-      graph.clearItemStates(node, ['hover']);
+    graph.findAllByState('edge', 'hover').forEach((edge: IEdge) => {
+      graph.clearItemStates(edge, ['hover']);
     });
+  };
+
+  const centerItem = (item: INode | IEdge) => {
+    const viewCenter = getViewCenterPoint();
+
+    if (graph.getZoom() <= 0.75) {
+      graph.zoomTo(1.0, viewCenter);
+    }
+
+    const itemBBox = item.getCanvasBBox();
+    const dx = (viewCenter.x - itemBBox.centerX) * graph.getZoom();
+    const dy = (viewCenter.y - itemBBox.centerY) * graph.getZoom();
+    graph.translate(dx, dy);
   };
 
   return {
@@ -90,6 +103,7 @@ const useGraphBehaviors = (graph: IGraph) => {
     clearAllStates,
     clearNodeHoverState,
     clearEdgeHoverState,
+    centerItem,
   };
 };
 
