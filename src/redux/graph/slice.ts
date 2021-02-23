@@ -94,9 +94,13 @@ const initialState: GraphState = {
   filterOptions: {},
   searchOptions: {
     activeTabs: 'nodes',
-    selectionDisplay: 'all',
     nodeSearchCase: [],
     edgeSearchCase: [],
+    pagination: {
+      currentPage: 1,
+      totalPage: 0,
+      totalItems: 0,
+    },
     results: {
       nodes: [],
       edges: [],

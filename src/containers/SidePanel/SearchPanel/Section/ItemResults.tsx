@@ -1,15 +1,15 @@
 import React, { FC } from 'react';
 import { Block } from 'baseui/block';
+import { useSelector } from 'react-redux';
 import NodeInfoAccordion from '../Components/NodeInfoAccordion';
-import { Node, EdgeInformation } from '../../../../redux/graph';
+import { Node, EdgeInformation, GraphSelectors } from '../../../../redux/graph';
 import EdgeInfoAccordion from '../Components/EdgeInfoAccordion';
 
-export type ItemResultsProps = {
-  nodes: Node[];
-  edges: EdgeInformation[];
-};
+const ItemResults: FC = () => {
+  const { nodes, edges } = useSelector((state) =>
+    GraphSelectors.getPaginateItems(state),
+  );
 
-const ItemResults: FC<ItemResultsProps> = ({ nodes, edges }) => {
   return (
     <Block
       paddingBottom='scale300'

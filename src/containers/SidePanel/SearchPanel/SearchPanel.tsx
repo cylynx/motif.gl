@@ -36,7 +36,7 @@ const SearchPanel = () => {
 
       {isResultEmpty === false && (
         <Block position='relative' height='calc(100% - 94px)'>
-          <ItemResults nodes={results.nodes} edges={results.edges} />
+          <ItemResults />
           <ItemPagination
             nodeLength={nodeResultLength}
             edgeLength={edgeResultLength}

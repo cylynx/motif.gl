@@ -3,6 +3,7 @@ import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
 import set from 'lodash/set';
 import has from 'lodash/has';
+import slice from 'lodash/slice';
 
 import { Option } from 'baseui/select';
 import { isWithinInterval } from 'date-fns';
@@ -25,7 +26,11 @@ import {
   TimeRange,
   GraphAttribute,
   TimeSeries,
+  SearchOptPagination,
+  ItemProperties,
 } from '../../../redux/graph/types';
+
+import { ITEM_PER_PAGE } from '../../../constants/widget-units';
 
 type MinMax = {
   min: number;
@@ -670,6 +675,11 @@ const connectNodes = (filteredEdges: Edge[], nodes: Node[]): Node[] => {
   return associatedNodes;
 };
 
+/**
+ * Format label style in order to fix the node label bugs.
+ * @param {EdgeNode} obj
+ * @return {void}
+ */
 export const formatLabelStyle = (obj: EdgeNode): void => {
   const LABEL_KEY = 'label';
   const isObjHasLabel: boolean = has(obj, LABEL_KEY);
@@ -681,4 +691,73 @@ export const formatLabelStyle = (obj: EdgeNode): void => {
       },
     });
   }
+};
+
+let nodeStartIndex = 0;
+/**
+ * Prioritize display edges in search panel with pagination's payload
+ * @param {ItemProperties} selectedItems
+ * @param {SearchOptPagination} pagination
+ * @return {ItemProperties}
+ */
+export const paginateItems = (
+  selectedItems: ItemProperties,
+  pagination: SearchOptPagination,
+): ItemProperties => {
+  const { nodes, edges } = selectedItems;
+  const { currentPage } = pagination;
+
+  const edgesLength = edges.length;
+  const nodesLength = nodes.length;
+  const lastRange = currentPage * ITEM_PER_PAGE;
+  const firstRange = lastRange - ITEM_PER_PAGE;
+  const edgePages = Math.ceil(edgesLength / ITEM_PER_PAGE);
+
+  // return paginated nodes if no edges are selected
+  if (edgesLength === 0) {
+    const currentNodes = slice(nodes, firstRange, lastRange);
+    return {
+      nodes: currentNodes,
+      edges: [],
+    };
+  }
+
+  const currentEdges = slice(edges, firstRange, lastRange);
+
+  // return edges if no nodes are selected
+  if (nodesLength === 0) {
+    return {
+      nodes: [],
+      edges: currentEdges,
+    };
+  }
+
+  const remainingNodeSlotAfterDisplayEdge = lastRange - edgesLength;
+  const isEdgesFinishDisplay = remainingNodeSlotAfterDisplayEdge > 0;
+
+  // return edges if yet to finish display all the edges
+  if (isEdgesFinishDisplay === false) {
+    return { nodes: [], edges: currentEdges };
+  }
+
+  // display remaining number of nodes based on the remaining slots of item per page.
+  if (remainingNodeSlotAfterDisplayEdge < ITEM_PER_PAGE) {
+    nodeStartIndex = remainingNodeSlotAfterDisplayEdge;
+    const currentNodes = slice(nodes, 0, nodeStartIndex);
+    return {
+      nodes: currentNodes,
+      edges: currentEdges,
+    };
+  }
+
+  // display only nodes after all the edges are display
+  const endNodeRange =
+    nodeStartIndex * (ITEM_PER_PAGE * (currentPage - edgePages));
+  const startNodeRange = endNodeRange - ITEM_PER_PAGE;
+
+  const currentNodes = slice(nodes, startNodeRange, endNodeRange);
+  return {
+    nodes: currentNodes,
+    edges: [],
+  };
 };

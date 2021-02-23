@@ -202,16 +202,12 @@ export type GraphAttribute = 'nodes' | 'edges';
 export type TimeRange = [number, number];
 export type TimeSeries = Array<[number, number]> | [];
 
-export interface SearchOptions {
-  activeTabs: GraphAttribute;
-  nodeSearchCase: Value;
-  edgeSearchCase: Value;
-  results: ItemProperties;
-}
-
+/** --------------------------------------------
+ *  Search Panels
+ ** -------------------------------------------- */
 export type SearchOptionPayload = {
   key: keyof SearchOptions;
-  value: GraphAttribute | Value | EdgeNode[];
+  value: GraphAttribute | Value | EdgeNode[] | SearchOptPagination;
 };
 
 export type EdgeInformation = {
@@ -228,3 +224,16 @@ export type ItemProperties = {
 export type SearchResultPayload = {
   value: Node[] | EdgeInformation[];
 };
+
+export type SearchOptPagination = {
+  currentPage: number;
+  totalPage: number;
+  totalItems: number;
+};
+export interface SearchOptions {
+  activeTabs: GraphAttribute;
+  nodeSearchCase: Value;
+  edgeSearchCase: Value;
+  results: ItemProperties;
+  pagination: SearchOptPagination;
+}

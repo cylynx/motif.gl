@@ -8,10 +8,13 @@ import {
   FilterOptions,
   GraphState,
   SearchOptions,
+  ItemProperties,
+  SearchOptPagination,
 } from './types';
 import {
   deriveVisibleGraph,
   filterGraph,
+  paginateItems,
 } from '../../containers/Graph/styles/utils';
 
 const getGraph = (state: any): GraphState => state.investigate.graph.present;
@@ -24,6 +27,18 @@ const getFilterOptions = (state: any): FilterOptions =>
   getGraph(state).filterOptions;
 const getSearchOptions = (state: any): SearchOptions =>
   getGraph(state).searchOptions;
+const getSelectedItems = (state: any): ItemProperties =>
+  getSearchOptions(state).results;
+const getItemsPagination = (state: any): SearchOptPagination =>
+  getSearchOptions(state).pagination;
+
+const getPaginateItems = createSelector(
+  [getSelectedItems, getItemsPagination],
+  (selectedItems: ItemProperties, pagination: SearchOptPagination) => {
+    const paginatedItems = paginateItems(selectedItems, pagination);
+    return paginatedItems;
+  },
+);
 
 // Selector to perform filter on graph datas
 const getGraphFiltered = createSelector(
@@ -57,6 +72,7 @@ export {
   getStyleOptions,
   getFilterOptions,
   getSearchOptions,
+  getPaginateItems,
   getGraphFiltered,
   getGraphVisible,
 };

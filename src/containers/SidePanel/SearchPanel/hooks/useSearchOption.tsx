@@ -61,6 +61,23 @@ const useSearchOption = (): IUseSearchOptions => {
     dispatch(GraphSlices.updateSearchOptions(payload));
   };
 
+  const updatePagination = (
+    currentPage: number,
+    totalItems: number,
+    totalPage: number,
+  ) => {
+    const payload: SearchOptionPayload = {
+      key: 'pagination',
+      value: {
+        currentPage,
+        totalPage,
+        totalItems,
+      },
+    };
+
+    dispatch(GraphSlices.updateSearchOptions(payload));
+  };
+
   return {
     searchOptions,
     updateNodeSearch,
@@ -68,6 +85,7 @@ const useSearchOption = (): IUseSearchOptions => {
     updateTabs,
     updateNodeResults,
     updateEdgeResults,
+    updatePagination,
   };
 };
 

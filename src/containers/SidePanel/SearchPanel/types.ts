@@ -17,4 +17,9 @@ export interface IUseSearchOptions {
   updateTabs: (activeTab: GraphAttribute) => void;
   updateNodeResults: (node: Node[]) => void;
   updateEdgeResults: (edge: EdgeInformation[]) => void;
+  updatePagination: (
+    currentPage: number,
+    totalItems: number,
+    totalPage: number,
+  ) => void;
 }
