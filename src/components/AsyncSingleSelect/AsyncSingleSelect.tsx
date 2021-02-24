@@ -18,6 +18,7 @@ export type AsyncSingleSelectProps = {
   valueKey?: string;
   placeholder?: string;
   overrides?: SelectOverrides;
+  type?: TYPE[keyof TYPE];
 };
 
 const AsyncSingleSelect: FC<AsyncSingleSelectProps> = ({
@@ -28,6 +29,8 @@ const AsyncSingleSelect: FC<AsyncSingleSelectProps> = ({
   value,
   placeholder = '',
   overrides,
+  type = TYPE.search,
+  ...rest
 }) => {
   const [asyncOptions, setAsyncOptions] = useState<Option[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -64,13 +67,14 @@ const AsyncSingleSelect: FC<AsyncSingleSelectProps> = ({
       valueKey={valueKey}
       placeholder={placeholder}
       maxDropdownHeight='300px'
-      type={TYPE.search}
+      type={type}
       onChange={onChange}
       value={value}
       onInputChange={onInputChange}
       openOnClick={false}
       overrides={overrides}
       size='compact'
+      {...rest}
     />
   );
 };

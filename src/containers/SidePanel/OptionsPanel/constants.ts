@@ -154,12 +154,11 @@ export const layoutForm: NestedFormData = {
     {
       id: 'focusNode',
       label: 'Focus Node',
-      type: 'select',
+      type: 'asyncSelect',
       value: '',
       options: [{ id: '', label: '' }],
       labelKey: 'label',
       valueKey: 'id',
-      placeholder: 'Select a Node ID',
     },
   ],
 };

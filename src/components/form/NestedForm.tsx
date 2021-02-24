@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
-import { Select } from 'baseui/select';
+import { Select, TYPE } from 'baseui/select';
 import { Input } from 'baseui/input';
 import { Slider } from '../ui';
 import AsyncSingleSelect from '../AsyncSingleSelect';
@@ -211,10 +211,16 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
                     if (type === 'asyncSelect') {
                       component = (
                         <AsyncSingleSelect
-                          onChange={(params) =>
-                            handleChange(params.value, onChange)
-                          }
+                          onChange={(params) => {
+                            if (params.value.length === 0) {
+                              handleChange(value, onChange);
+                              return;
+                            }
+                            handleChange(params.value, onChange);
+                          }}
                           value={value}
+                          clearable={false}
+                          maxDropdownHeight='300px'
                           {...rest}
                         />
                       );
