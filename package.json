@@ -17,7 +17,7 @@
     "build": "tsdx build --target node --tsconfig ./tsconfig.prod.json",
     "prepare": "tsdx build --target node",
     "lint": "tsdx lint",
-    "test": "tsdx test",
+    "test": "tsdx test --config jest.config.js --no-cache",
     "test:watch": "tsdx test --watchAll",
     "test:coverage": "tsdx test --coverage --watchAll=false",
     "size": "size-limit",
@@ -38,14 +38,6 @@
     "*.+(js|jsx|ts|tsx|json|css|md)": [
       "prettier --write"
     ]
-  },
-  "jest": {
-    "testPathIgnorePatterns": [
-      "cypress"
-    ],
-    "moduleNameMapper": {
-      "\\.(css|less)$": "identity-obj-proxy"
-    }
   },
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
@@ -141,6 +133,7 @@
     "@types/styletron-react": "^5.0.2",
     "@types/styletron-standard": "^2.0.0",
     "@types/webpack": "^4.41.26",
+    "babel-jest": "^26.6.3",
     "babel-loader": "^8.2.2",
     "baseui": "^9.103.0",
     "css-loader": "^3.6.0",
@@ -151,6 +144,7 @@
     "eslint-plugin-import": "2.22.1",
     "husky": "^4.2.1",
     "identity-obj-proxy": "^3.0.0",
+    "jsdom-worker": "^0.2.1",
     "less-loader": "^8.0.0",
     "lint-staged": "^10.0.3",
     "mini-css-extract-plugin": "^0.9.0",

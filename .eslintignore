@@ -6,3 +6,5 @@ node_modules/
 *.min.js
 commitlint.config.js
 tsdx.config.js
+babel.config.js
+jest.config.js
