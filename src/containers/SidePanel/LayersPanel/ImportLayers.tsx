@@ -19,6 +19,7 @@ import {
   Node,
   Edge,
 } from '../../../redux/graph';
+import useNodeStyle from '../../../redux/graph/hooks/useNodeStyle';
 
 const StyledText = ({ children }: { children: React.ReactNode }) => (
   <ParagraphSmall
@@ -123,6 +124,7 @@ const LayerDetailed = ({
 
 const ImportLayers = () => {
   const dispatch = useDispatch();
+  const { switchToFixNodeColor } = useNodeStyle();
   const graphList = useSelector((state) => GraphSelectors.getGraphList(state));
 
   const importItems = graphList.map((graph: GraphData, index: number) => {
@@ -147,6 +149,7 @@ const ImportLayers = () => {
 
   const onDelete = (index: number) => {
     dispatch(deleteGraphList(index));
+    switchToFixNodeColor();
   };
 
   const onChangeVisibility = (index: number, isVisible: boolean) => {

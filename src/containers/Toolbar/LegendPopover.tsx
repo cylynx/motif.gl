@@ -9,6 +9,7 @@ import { LabelSmall, ParagraphSmall } from 'baseui/typography';
 import { GraphSelectors, GraphSlices } from '../../redux/graph';
 import { CATEGORICAL_COLOR } from '../../constants/colors';
 import { DEFAULT_NODE_STYLE } from '../../constants/graph-shapes';
+import useNodeStyle from '../../redux/graph/hooks/useNodeStyle';
 
 const MAX_LEGEND_SIZE = CATEGORICAL_COLOR.length;
 
@@ -49,6 +50,7 @@ const Legend = ({ data }: { data: { [_: string]: string } }) => {
 
 const LegendPopover = () => {
   const dispatch = useDispatch();
+  const { switchToFixNodeColor } = useNodeStyle();
   const nodeStyle = useSelector(
     (state) => GraphSelectors.getStyleOptions(state).nodeStyle,
   );
@@ -77,10 +79,7 @@ const LegendPopover = () => {
 
   const switchToFixedColor = (e: React.MouseEvent): void => {
     e.preventDefault();
-    const dispatchData = {
-      color: { id: 'fixed', value: DEFAULT_NODE_STYLE.color },
-    };
-    dispatch(GraphSlices.changeNodeStyle(dispatchData));
+    switchToFixNodeColor();
   };
 
   return (

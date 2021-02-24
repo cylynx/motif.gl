@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { Block } from 'baseui/block';
-import MainSection from './Section/MainSection';
+import SearchTabs from './Section/SearchTabs';
 import ItemResults from './Section/ItemResults';
 import ItemPagination from './Components/ItemPagination';
 import useSearchOption from './hooks/useSearchOption';
@@ -31,7 +31,7 @@ const SearchPanel = () => {
         paddingTop='scale550'
         paddingBottom='scale200'
       >
-        <MainSection />
+        <SearchTabs />
       </Block>
 
       {isResultEmpty === false && (

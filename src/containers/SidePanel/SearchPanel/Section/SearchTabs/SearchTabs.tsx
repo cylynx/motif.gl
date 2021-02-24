@@ -3,13 +3,13 @@ import { Tab, Tabs } from 'baseui/tabs';
 import { Theme } from 'baseui/theme';
 
 import { Block } from 'baseui/block';
-import { IUseSearchOptions, TActiveKey } from '../types';
+import { IUseSearchOptions, TActiveKey } from '../../types';
 import SearchEdge from './SearchEdge';
 import SearchNode from './SearchNode';
-import useSearchOption from '../hooks/useSearchOption';
-import { SearchOptions } from '../../../../redux/graph';
-import { GraphRefContext } from '../../../Graph';
-import useGraphBehaviors from '../../../Graph/hooks/useGraphBehaviors';
+import useSearchOption from '../../hooks/useSearchOption';
+import { SearchOptions } from '../../../../../redux/graph';
+import { GraphRefContext } from '../../../../Graph';
+import useGraphBehaviors from '../../../../Graph/hooks/useGraphBehaviors';
 
 const TabContentStyle = ({ $theme }: { $theme: Theme }) => ({
   paddingTop: $theme.sizing.scale100,
@@ -45,7 +45,7 @@ const TabBarStyle = ({ $theme }: { $theme: Theme }) => ({
   backgroundColor: $theme.colors.backgroundSecondary,
 });
 
-const MainSection = () => {
+const SearchTabs = () => {
   const { searchOptions, updateTabs } = useSearchOption() as IUseSearchOptions;
   const { activeTabs } = searchOptions as SearchOptions;
   const { graph } = useContext(GraphRefContext);
@@ -87,4 +87,4 @@ const MainSection = () => {
   );
 };
 
-export default MainSection;
+export default SearchTabs;

@@ -9,6 +9,7 @@ import ToolbarButton, { ToolbarItem } from './ToolbarButton';
 import SettingsPopover from './SettingsPopover';
 import LegendPopover from './LegendPopover';
 import useGraphBehaviors from '../Graph/hooks/useGraphBehaviors';
+import useNodeStyle from '../../redux/graph/hooks/useNodeStyle';
 
 const MIN_ZOOM = 0.1;
 const MAX_ZOOM = 10;
@@ -26,6 +27,7 @@ const Toolbar = () => {
   const graphContainer = document.getElementById('graphin-container');
   const dispatch = useDispatch();
   const { centerCanvas } = useGraphBehaviors(graph);
+  const { switchToFixNodeColor } = useNodeStyle();
 
   const toggleFullScreen = () => {
     // Exit will be handled by the esc key (no button is available)
@@ -48,6 +50,7 @@ const Toolbar = () => {
 
   const onClearClick = () => {
     dispatch(GraphSlices.resetState());
+    switchToFixNodeColor();
     centerCanvas();
   };
 

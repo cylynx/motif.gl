@@ -2,23 +2,23 @@ import React, { useContext } from 'react';
 import { Block } from 'baseui/block';
 import { OnChangeParams } from 'baseui/select';
 import { IEdge } from '@antv/g6';
-import useGraphSearch from '../hooks/useGraphSearch';
+import useGraphSearch from '../../hooks/useGraphSearch';
 import {
   Edge,
   Node,
   EdgeInformation,
   SearchOptions,
-} from '../../../../redux/graph';
-import AsyncSingleSelect from '../../../../components/AsyncSingleSelect';
-import { GraphRefContext } from '../../../Graph';
-import useGraphBehaviors from '../../../Graph/hooks/useGraphBehaviors';
-import useSearchOption from '../hooks/useSearchOption';
-import { IUseSearchOptions } from '../types';
+} from '../../../../../redux/graph';
+import AsyncSingleSelect from '../../../../../components/AsyncSingleSelect';
+import { GraphRefContext } from '../../../../Graph';
+import useGraphBehaviors from '../../../../Graph/hooks/useGraphBehaviors';
+import useSearchOption from '../../hooks/useSearchOption';
+import { IUseSearchOptions } from '../../types';
 import {
   ControlContainerStyle,
   DropdownListItem,
   DropdownStyle,
-} from '../Styles/SelectStyle';
+} from '../../Styles/SelectStyle';
 
 const SearchEdge = () => {
   const { edgeOptions, searchEdges, searchNodes } = useGraphSearch();

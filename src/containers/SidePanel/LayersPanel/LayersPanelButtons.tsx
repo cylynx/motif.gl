@@ -8,6 +8,7 @@ import { GraphSlices } from '../../../redux/graph';
 import { UISlices } from '../../../redux/ui';
 import ToggleTokens from '../../../components/ToggleTokens';
 import * as Icon from '../../../components/Icons';
+import useNodeStyle from '../../../redux/graph/hooks/useNodeStyle';
 
 export const ToggleAllButton = ({
   selected,
@@ -55,12 +56,14 @@ export const ImportDataButton = () => {
 
 export const ClearDataButton = () => {
   const dispatch = useDispatch();
+  const { switchToFixNodeColor } = useNodeStyle();
   const { graph } = useContext(GraphRefContext);
   const { centerCanvas } = useGraphBehaviors(graph);
   const onClickClearAll = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    centerCanvas();
     dispatch(GraphSlices.resetState());
+    switchToFixNodeColor();
+    centerCanvas();
   };
 
   return (

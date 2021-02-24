@@ -5,7 +5,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import isUndefined from 'lodash/isUndefined';
 import { Draft } from 'immer';
-import { DEFAULT_NODE_STYLE } from '../../constants/graph-shapes';
 import * as LAYOUT from '../../constants/layout-options';
 import { combineProcessedData } from '../../containers/Graph/styles/utils';
 import { generateDefaultColorMap } from '../../containers/Graph/styles/StyleNodes';
@@ -82,10 +81,6 @@ const initialState: GraphState = {
         id: 'fixed',
         value: 20,
       },
-      color: {
-        id: 'fixed',
-        value: DEFAULT_NODE_STYLE.color,
-      },
     },
     edgeStyle: {
       width: {
@@ -135,6 +130,7 @@ const graph = createSlice({
       // Only reset data state
       newGraphState.accessors = state.accessors;
       newGraphState.styleOptions = state.styleOptions;
+
       return newGraphState;
     },
     updateGraphList(

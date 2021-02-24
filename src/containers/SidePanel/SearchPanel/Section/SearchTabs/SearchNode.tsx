@@ -4,17 +4,17 @@ import { INode } from '@antv/g6';
 import { Block } from 'baseui/block';
 import { OnChangeParams } from 'baseui/select';
 
-import AsyncSingleSelect from '../../../../components/AsyncSingleSelect';
-import useGraphSearch from '../hooks/useGraphSearch';
-import { Node, SearchOptions } from '../../../../redux/graph';
-import { GraphRefContext } from '../../../Graph';
-import useGraphBehaviors from '../../../Graph/hooks/useGraphBehaviors';
-import useSearchOption from '../hooks/useSearchOption';
+import AsyncSingleSelect from '../../../../../components/AsyncSingleSelect';
+import useGraphSearch from '../../hooks/useGraphSearch';
+import { Node, SearchOptions } from '../../../../../redux/graph';
+import { GraphRefContext } from '../../../../Graph';
+import useGraphBehaviors from '../../../../Graph/hooks/useGraphBehaviors';
+import useSearchOption from '../../hooks/useSearchOption';
 import {
   ControlContainerStyle,
   DropdownListItem,
   DropdownStyle,
-} from '../Styles/SelectStyle';
+} from '../../Styles/SelectStyle';
 
 const SearchNode = () => {
   const { nodeOptions, searchNodes } = useGraphSearch();
