@@ -183,9 +183,6 @@ export const BankData = (): Promise<GraphData> =>
         title: 'Banking Connections',
       });
 
-      data[0].nodes.forEach((node: IUserNode) => {
-        Object.assign(node, { style: { label: { value: ' ' } } });
-      });
       return data;
     });
 
@@ -204,9 +201,6 @@ export const MiserablesData = () =>
         },
       };
 
-      newData.nodes.forEach((node: IUserNode) => {
-        Object.assign(node, { style: { label: { value: ' ' } } });
-      });
       return newData;
     });
 
@@ -220,10 +214,6 @@ export const NetworkData = () =>
         node.degree = 0;
         node.style = {};
         styleNodeSize(node.style, 6);
-
-        // set label values
-        const labelStyle: Partial<NodeStyle['label']> = { value: node.olabel };
-        node.style.label = labelStyle;
 
         data.edges.forEach((edge: IUserEdge) => {
           if (edge.source === node.id || edge.target === node.id) {
@@ -262,7 +252,6 @@ export const AAData = () => {
         const source = nodeIdMap.get(e.source);
         const target = nodeIdMap.get(e.target);
         const keyshape: Partial<EdgeStyle>['keyshape'] = {};
-        const label: Partial<EdgeStyle>['label'] = {};
         source.outDegree++;
         target.inDegree++;
         source.degree++;
@@ -272,9 +261,6 @@ export const AAData = () => {
           lineWidth: 0.3,
           stroke: 'grey',
         });
-
-        Object.assign(label, { value: ' ' });
-        Object.assign(e.style, { keyshape, label });
       });
       mapNodeSize(nodes, 'degree', [2, 20]);
       data.metadata = {

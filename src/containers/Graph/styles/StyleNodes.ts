@@ -52,9 +52,6 @@ export const styleNodes = (
       styleNodeLabel(node, nodeStyle, label);
     }
 
-    // const iconSize: number =
-    //   (size as NodeSizeFixed)?.value ??
-    //   (size as NodeSizeDegree | NodeSizeProperty).range[1];
     styleNodeIcon(node, nodeStyle, color);
 
     Object.assign(node, {

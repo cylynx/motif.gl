@@ -1,7 +1,9 @@
-import React, { MouseEvent } from 'react';
+import React, { MouseEvent, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
+import useGraphBehaviors from '../../Graph/hooks/useGraphBehaviors';
+import { GraphRefContext } from '../../Graph';
 import { GraphSlices } from '../../../redux/graph';
 import { UISlices } from '../../../redux/ui';
 import ToggleTokens from '../../../components/ToggleTokens';
@@ -53,8 +55,11 @@ export const ImportDataButton = () => {
 
 export const ClearDataButton = () => {
   const dispatch = useDispatch();
+  const { graph } = useContext(GraphRefContext);
+  const { centerCanvas } = useGraphBehaviors(graph);
   const onClickClearAll = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    centerCanvas();
     dispatch(GraphSlices.resetState());
   };
 

@@ -41,10 +41,12 @@ const AsyncSingleSelect: FC<AsyncSingleSelectProps> = ({
 
       setIsLoading(true);
       setTimeout(() => {
-        const nextOptions = options.filter((option: Option) => {
-          const optionLabel = option.label as string;
-          return optionLabel.toLowerCase().includes(term.toLowerCase());
-        });
+        const nextOptions = options
+          .filter((option: Option) => {
+            const optionLabel = option.label as string;
+            return optionLabel.toLowerCase().includes(term.toLowerCase());
+          })
+          .slice(0, 10);
         setAsyncOptions(nextOptions);
         setIsLoading(false);
       }, 500);

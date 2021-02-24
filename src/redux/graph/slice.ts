@@ -65,7 +65,6 @@ export const updateAll = (
     state.edgeSelection = initialState.edgeSelection;
     state.filterOptions = initialState.filterOptions;
     state.searchOptions = initialState.searchOptions;
-    state.styleOptions = initialState.styleOptions;
   }
 };
 
