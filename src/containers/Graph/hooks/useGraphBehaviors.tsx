@@ -4,6 +4,9 @@ import { IEdge, INode, IGraph } from '@antv/g6';
 import { isBigDataSet } from '../../../utils/utils';
 
 const useGraphBehaviors = (graph: IGraph) => {
+  /**
+   * We will not clear the selected states as it is required for Search Panel interaction.
+   */
   const clearAllStates = useCallback(() => {
     graph.getNodes().forEach((node: INode) => {
       graph.clearItemStates(node, ['inactive', 'active', 'hover']);
@@ -82,6 +85,18 @@ const useGraphBehaviors = (graph: IGraph) => {
     });
   };
 
+  const clearNodeSelectedState = () => {
+    graph.findAllByState('node', 'selected').forEach((node: INode) => {
+      graph.clearItemStates(node, ['selected']);
+    });
+  };
+
+  const clearEdgeSelectedState = () => {
+    graph.findAllByState('edge', 'selected').forEach((edge: IEdge) => {
+      graph.clearItemStates(edge, ['selected']);
+    });
+  };
+
   const centerItem = (item: INode | IEdge) => {
     const viewCenter = getViewCenterPoint();
 
@@ -103,6 +118,8 @@ const useGraphBehaviors = (graph: IGraph) => {
     clearAllStates,
     clearNodeHoverState,
     clearEdgeHoverState,
+    clearNodeSelectedState,
+    clearEdgeSelectedState,
     centerItem,
   };
 };

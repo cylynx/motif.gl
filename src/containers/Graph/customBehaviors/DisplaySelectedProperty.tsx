@@ -50,7 +50,7 @@ const DisplaySelectedProperty = (): null => {
         const sourceNode = searchNodes(sourceID);
 
         const targetID: string = selectedEdge.getTarget().getID();
-        targets.push(sourceID);
+        targets.push(targetID);
         const targetNode = searchNodes(targetID);
 
         return {

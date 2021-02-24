@@ -5,6 +5,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import isUndefined from 'lodash/isUndefined';
 import { Draft } from 'immer';
+import { DEFAULT_NODE_STYLE } from '../../constants/graph-shapes';
 import * as LAYOUT from '../../constants/layout-options';
 import { combineProcessedData } from '../../containers/Graph/styles/utils';
 import { generateDefaultColorMap } from '../../containers/Graph/styles/StyleNodes';
@@ -64,6 +65,7 @@ export const updateAll = (
     state.edgeSelection = initialState.edgeSelection;
     state.filterOptions = initialState.filterOptions;
     state.searchOptions = initialState.searchOptions;
+    state.styleOptions = initialState.styleOptions;
   }
 };
 
@@ -80,6 +82,10 @@ const initialState: GraphState = {
       size: {
         id: 'fixed',
         value: 20,
+      },
+      color: {
+        id: 'fixed',
+        value: DEFAULT_NODE_STYLE.color,
       },
     },
     edgeStyle: {

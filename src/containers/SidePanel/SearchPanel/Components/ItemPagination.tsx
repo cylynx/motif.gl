@@ -34,7 +34,11 @@ const ItemPagination: FC<ItemPaginationProps> = ({
   } = searchOptions.pagination as SearchOptPagination;
 
   const { graph } = useContext(GraphRefContext);
-  const { centerCanvas } = useGraphBehaviors(graph);
+  const {
+    centerCanvas,
+    clearNodeSelectedState,
+    clearEdgeSelectedState,
+  } = useGraphBehaviors(graph);
 
   const endIndex = currentPage * ITEM_PER_PAGE;
   const startIndex = endIndex - ITEM_PER_PAGE + 1;
@@ -60,6 +64,8 @@ const ItemPagination: FC<ItemPaginationProps> = ({
   }, [currentPage, nodeLength, edgeLength]);
 
   const clearButtonClick = () => {
+    clearNodeSelectedState();
+    clearEdgeSelectedState();
     centerCanvas();
     resetSearchOptions();
   };

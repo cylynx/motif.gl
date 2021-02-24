@@ -33,7 +33,6 @@ export const styleNodes = (
     styleNodeSizeByProp(data, nodeStyleOptions.size);
   }
 
-  // For perf reasons, batch style operations which require a single loop through nodes
   data.nodes.forEach((node: Node) => {
     const nodeStyle: Partial<NodeStyle> = node.style ?? {};
 
