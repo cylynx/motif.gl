@@ -1,4 +1,4 @@
-import React, { useContext, Fragment } from 'react';
+import React, { useContext } from 'react';
 import { Tab, Tabs } from 'baseui/tabs';
 import { Theme } from 'baseui/theme';
 
