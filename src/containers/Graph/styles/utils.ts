@@ -432,19 +432,19 @@ type FieldTypes = (keyof typeof ALL_FIELD_TYPES)[];
 const allFields = Object.keys(ALL_FIELD_TYPES) as FieldTypes;
 
 /**
- * Returns field name of which has type which matches the given type array
+ * Returns field which has type which matches the given type array
  *
  * @param {Field[]} fields
  * @param {FieldTypes} [typeArray=allFields]
  *
- * @return {string[]}
+ * @return {Field[]}
  */
-export const getFieldNames = (
+export const getField = (
   fields: Field[],
   typeArray: FieldTypes = allFields,
-): string[] =>
+): Field[] =>
   // @ts-ignore
-  fields.filter((f) => typeArray.includes(f.type)).map((f) => f.name);
+  fields.filter((f) => typeArray.includes(f.type));
 
 type FilterArray = [string, FilterCriteria];
 

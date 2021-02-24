@@ -16,11 +16,24 @@ const OptionsLayout = () => {
     (state) => GraphSelectors.getGraph(state).styleOptions.layout,
   );
 
+  const { layoutFields } = useSelector((state) =>
+    GraphSelectors.getGraphFieldsOptions(state),
+  );
+
+  const nodeIds = useSelector((state) =>
+    GraphSelectors.getGraphVisibleNodeOptions(state),
+  );
+
   const layoutOptions = { layout: { id: layout.type, ...layout } };
 
   const updateLayout = (data: any) => dispatch(GraphSlices.changeLayout(data));
 
-  const formData = genNestedForm(layoutForm, layoutOptions, updateLayout);
+  const formData = genNestedForm(layoutForm, layoutOptions, updateLayout, {
+    'grid[1].options': layoutFields,
+    'concentric[1].options': layoutFields,
+    'radial[2].options': nodeIds,
+    'radial[2].value': nodeIds[0]?.id || '',
+  });
 
   return (
     <Accordion

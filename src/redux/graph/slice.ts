@@ -146,14 +146,28 @@ const graph = createSlice({
     deleteGraphList(state, action: PayloadAction<number>) {
       const { graphList } = state;
       graphList.splice(action.payload, 1);
-      // Loop through graphList to generate new graphData
+      // Loop through graphList to generate new graphData and update node / edge selection
       let graphData;
+      const existingNodeFields: string[] = ['id'];
+      const existingEdgeFields: string[] = ['id', 'source', 'target'];
       for (const data of graphList) {
         if (data?.metadata?.visible !== false) {
           graphData = combineProcessedData(data as GraphData, graphData);
         }
+        for (const field of data.metadata.fields.nodes) {
+          existingNodeFields.push(field.name);
+        }
+        for (const field of data.metadata.fields.edges) {
+          existingEdgeFields.push(field.name);
+        }
       }
       updateAll(state, graphData);
+      state.edgeSelection = state.edgeSelection.filter((f) =>
+        existingEdgeFields.includes(f.id),
+      );
+      state.nodeSelection = state.nodeSelection.filter((f) =>
+        existingNodeFields.includes(f.id),
+      );
     },
     changeVisibilityGraphList(
       state,

@@ -6,7 +6,7 @@ import { Button } from 'baseui/button';
 import { FormControl } from 'baseui/form-control';
 import { Select } from 'baseui/select';
 import { LabelSmall, ParagraphSmall } from 'baseui/typography';
-import { GraphSelectors, GraphSlices, GraphUtils } from '../../redux/graph';
+import { GraphSelectors, GraphSlices } from '../../redux/graph';
 import { CATEGORICAL_COLOR } from '../../constants/colors';
 import { DEFAULT_NODE_STYLE } from '../../constants/graph-shapes';
 
@@ -66,14 +66,8 @@ const LegendPopover = () => {
     selectValue = [];
   }
 
-  const graphFields = useSelector(
-    (state) => GraphSelectors.getGraphFlatten(state).metadata.fields,
-  );
-
-  const nodeOptions = GraphUtils.getFieldNames(graphFields.nodes).map(
-    (x: string) => {
-      return { id: x, label: x };
-    },
+  const { allNodeFields } = useSelector((state) =>
+    GraphSelectors.getGraphFieldsOptions(state),
   );
 
   const updateNodeStyle = (data: any): void => {
@@ -94,7 +88,7 @@ const LegendPopover = () => {
       <FormControl label='Legend Selection'>
         <Select
           id='legendSelection'
-          options={nodeOptions}
+          options={allNodeFields}
           onChange={(params: any) => updateNodeStyle(params.value)}
           size='compact'
           clearable={false}

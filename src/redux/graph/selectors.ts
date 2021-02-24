@@ -1,4 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
+import { Option } from 'baseui/select';
 import produce from 'immer';
 import {
   Accessors,
@@ -15,6 +16,7 @@ import {
   deriveVisibleGraph,
   filterGraph,
   paginateItems,
+  getField,
 } from '../../containers/Graph/styles/utils';
 
 const getGraph = (state: any): GraphState => state.investigate.graph.present;
@@ -40,7 +42,7 @@ const getPaginateItems = createSelector(
   },
 );
 
-// Selector to perform filter on graph datas
+/** Selector to get graph data after it is filtered */
 const getGraphFiltered = createSelector(
   [getGraphFlatten, getFilterOptions],
   (graphFlatten: GraphData, filterOptions: FilterOptions) => {
@@ -52,7 +54,7 @@ const getGraphFiltered = createSelector(
   },
 );
 
-// Selector to derive visible data
+/** Selector to derive visible data */
 const getGraphVisible = createSelector(
   [getGraphFiltered, getStyleOptions],
   (graphFiltered: GraphData, styleOptions: StyleOptions) => {
@@ -61,6 +63,67 @@ const getGraphVisible = createSelector(
     });
 
     return graphVisible;
+  },
+);
+
+/** Selector to derive visible node ids */
+const getGraphVisibleNodeOptions = createSelector(
+  [getGraphVisible],
+  (graphVisible: GraphData) => {
+    const nodeIdOptions: Option[] = graphVisible.nodes.map((n) => {
+      return { id: n.id, label: n.id };
+    });
+    return nodeIdOptions;
+  },
+);
+
+/** Selector to get node fields as select options */
+const getGraphFieldsOptions = createSelector(
+  [getGraphFlatten],
+  (graphFlatten: GraphData) => {
+    const graphFields = graphFlatten.metadata.fields;
+
+    const allNodeFields: Option[] = [{ id: 'id', label: 'id' }];
+    const numericNodeFields: Option[] = [];
+    const allEdgeFields: Option[] = [{ id: 'id', label: 'id' }];
+    const numericEdgeFields: Option[] = [];
+    const layoutFields: Option[] = [
+      { id: 'id', label: 'id' },
+      { id: 'degree', label: 'degree' },
+    ];
+
+    getField(graphFields.nodes).forEach(({ name, type }) => {
+      if (name !== 'id' && name !== 'none') {
+        allNodeFields.push({ id: name, label: name });
+      }
+      if (name !== 'id' && name !== 'degree') {
+        layoutFields.push({ id: name, label: name });
+      }
+      if (type === 'integer' || type === 'real') {
+        numericNodeFields.push({ id: name, label: name });
+      }
+    });
+    const nodeLabelFields = [...allNodeFields, { id: 'none', label: 'none' }];
+
+    getField(graphFields.edges).forEach(({ name, type }) => {
+      if (name !== 'id' && name !== 'none') {
+        allEdgeFields.push({ id: name, label: name });
+      }
+      if (type === 'integer' || type === 'real') {
+        numericEdgeFields.push({ id: name, label: name });
+      }
+    });
+    const edgeLabelFields = [...allEdgeFields, { id: 'none', label: 'none' }];
+
+    return {
+      allNodeFields,
+      layoutFields,
+      nodeLabelFields,
+      numericNodeFields,
+      allEdgeFields,
+      edgeLabelFields,
+      numericEdgeFields,
+    };
   },
 );
 
@@ -75,4 +138,6 @@ export {
   getPaginateItems,
   getGraphFiltered,
   getGraphVisible,
+  getGraphVisibleNodeOptions,
+  getGraphFieldsOptions,
 };
