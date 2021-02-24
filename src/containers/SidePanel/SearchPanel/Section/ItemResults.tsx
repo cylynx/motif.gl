@@ -13,11 +13,7 @@ const itemBlockOverrides: BlockOverrides = {
   Block: {
     style: ({ $theme }: { $theme: Theme }) => ({
       ':hover': {
-        boxShadow: `0px 0px 10px 2px ${$theme.colors.contentInverseSecondary}`,
-        borderTopLeftRadius: $theme.sizing.scale200,
-        borderTopRightRadius: $theme.sizing.scale200,
-        borderBottomLeftRadius: $theme.sizing.scale200,
-        borderBottomRightRadius: $theme.sizing.scale200,
+        outline: `${$theme.colors.primaryA} solid ${$theme.sizing.scale0}`,
       },
     }),
   },
@@ -102,11 +98,7 @@ const ItemResults: FC = () => {
           onMouseLeave={onMouseLeave}
           onMouseEnter={(event) => onEdgeMouseEnter(event, edgeInfo.edge.id)}
         >
-          <Block
-            marginBottom='scale550'
-            key={edgeInfo.edge.id}
-            overrides={itemBlockOverrides}
-          >
+          <Block marginBottom='scale550' overrides={itemBlockOverrides}>
             <EdgeInfoAccordion results={edgeInfo} expanded={false} />
           </Block>
         </div>
