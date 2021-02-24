@@ -22,7 +22,7 @@ describe('String Filters', () => {
 
     it('should perform filter with one variable', () => {
       // perform selection
-      cy.selectFilterSelection('data.label{enter}', 'first');
+      cy.selectFilterSelection('label{enter}', 'first');
       cy.filterMultiString('node-0{enter}');
 
       // switch to layer panel
@@ -40,7 +40,7 @@ describe('String Filters', () => {
 
     it('should perform filter with multi variable', () => {
       // perform selection
-      cy.selectFilterSelection('data.label{enter}', 'first');
+      cy.selectFilterSelection('label{enter}', 'first');
       cy.filterMultiString('node-0{enter}node-1{enter}');
 
       // switch to layer panel

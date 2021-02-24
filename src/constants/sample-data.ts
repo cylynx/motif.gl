@@ -1,8 +1,13 @@
 /* eslint-disable no-restricted-properties */
 /* eslint-disable no-param-reassign */
 
-import { EdgeStyle, NodeStyle, Utils } from '@antv/graphin';
-import { IUserEdge, IUserNode } from '@antv/graphin/lib/typings/type';
+import {
+  EdgeStyle,
+  NodeStyle,
+  Utils,
+  IUserNode,
+  IUserEdge,
+} from '@antv/graphin';
 import { GraphData, GraphList } from '../redux/graph';
 import {
   mapNodeSize,

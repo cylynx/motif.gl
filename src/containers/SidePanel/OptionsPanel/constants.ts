@@ -157,6 +157,9 @@ export const layoutForm: NestedFormData = {
       type: 'select',
       value: '',
       options: [{ id: '', label: '' }],
+      labelKey: 'label',
+      valueKey: 'id',
+      placeholder: 'Select a Node ID',
     },
   ],
 };

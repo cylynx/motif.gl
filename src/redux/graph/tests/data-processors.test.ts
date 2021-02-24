@@ -12,7 +12,6 @@ import {
   processNodeEdgeCsv,
   processEdgeListCsv,
 } from '../processors/data';
-import { DEFAULT_EDGE_STYLE } from '../../../constants/graph-shapes';
 
 describe('Parsing json to csv', () => {
   it('should contain the right number of rows (including header)', async () => {
