@@ -9,7 +9,6 @@ import {
   EdgeInformation,
   SearchOptions,
 } from '../../../../../redux/graph';
-import AsyncSingleSelect from '../../../../../components/AsyncSingleSelect';
 import { GraphRefContext } from '../../../../Graph';
 import useGraphBehaviors from '../../../../Graph/hooks/useGraphBehaviors';
 import useSearchOption from '../../hooks/useSearchOption';
@@ -19,6 +18,7 @@ import {
   DropdownListItem,
   DropdownStyle,
 } from '../../Styles/SelectStyle';
+import BatchSingleSelect from '../../../../../components/BatchSingleSelect';
 
 const SearchEdge = () => {
   const { edgeOptions, searchEdges, searchNodes } = useGraphSearch();
@@ -79,13 +79,14 @@ const SearchEdge = () => {
 
   return (
     <Block>
-      <AsyncSingleSelect
+      <BatchSingleSelect
         options={edgeOptions}
         labelKey='label'
         valueKey='id'
         placeholder='Type ID to find an edge'
         onChange={onSearchChange}
         value={edgeSearchCase}
+        maxDropdownHeight='300px'
         overrides={{
           ControlContainer: {
             style: ControlContainerStyle,

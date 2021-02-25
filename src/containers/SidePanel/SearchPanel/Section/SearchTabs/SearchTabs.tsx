@@ -32,16 +32,10 @@ const TabStyle = ({
   borderBottom: `2px solid ${$active ? '#06a2a2' : 'transparent'}`,
   ':hover': {
     backgroundColor: $theme.colors.backgroundTertiary,
-    borderTopLeftRadius: $theme.sizing.scale200,
-    borderTopRightRadius: $theme.sizing.scale200,
   },
 });
 
 const TabBarStyle = ({ $theme }: { $theme: Theme }) => ({
-  borderBottomLeftRadius: $theme.sizing.scale500,
-  borderBottomRightRadius: $theme.sizing.scale500,
-  borderTopLeftRadius: $theme.sizing.scale500,
-  borderTopRightRadius: $theme.sizing.scale500,
   backgroundColor: $theme.colors.backgroundSecondary,
 });
 

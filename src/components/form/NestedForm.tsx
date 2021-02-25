@@ -5,7 +5,7 @@ import { LabelSmall } from 'baseui/typography';
 import { Select, TYPE } from 'baseui/select';
 import { Input } from 'baseui/input';
 import { Slider } from '../ui';
-import AsyncSingleSelect from '../AsyncSingleSelect';
+import BatchSingleSelect from '../BatchSingleSelect';
 
 export type NestedFormData = {
   id: string;
@@ -161,7 +161,7 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
             const { id, label, type, value, ...rest } = d;
             let parsedValue =
               // eslint-disable-next-line no-nested-ternary
-              type === 'select' || type === 'asyncSelect'
+              type === 'select' || type === 'batchSelect'
                 ? d.options.find((x: any) => x.id === value)
                   ? [d.options.find((x: any) => x.id === value)]
                   : []
@@ -208,19 +208,19 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
                         />
                       );
                     }
-                    if (type === 'asyncSelect') {
+                    if (type === 'batchSelect') {
                       component = (
-                        <AsyncSingleSelect
+                        <BatchSingleSelect
                           onChange={(params) => {
+                            console.log(params.value);
                             if (params.value.length === 0) {
-                              handleChange(value, onChange);
                               return;
                             }
                             handleChange(params.value, onChange);
                           }}
                           value={value}
-                          clearable={false}
                           maxDropdownHeight='300px'
+                          type={TYPE.select}
                           {...rest}
                         />
                       );

@@ -1,10 +1,8 @@
 import React, { useContext } from 'react';
 import { INode } from '@antv/g6';
 
-import { Block } from 'baseui/block';
 import { OnChangeParams } from 'baseui/select';
 
-import AsyncSingleSelect from '../../../../../components/AsyncSingleSelect';
 import useGraphSearch from '../../hooks/useGraphSearch';
 import { Node, SearchOptions } from '../../../../../redux/graph';
 import { GraphRefContext } from '../../../../Graph';
@@ -15,6 +13,7 @@ import {
   DropdownListItem,
   DropdownStyle,
 } from '../../Styles/SelectStyle';
+import BatchSingleSelect from '../../../../../components/BatchSingleSelect';
 
 const SearchNode = () => {
   const { nodeOptions, searchNodes } = useGraphSearch();
@@ -64,28 +63,27 @@ const SearchNode = () => {
   };
 
   return (
-    <Block>
-      <AsyncSingleSelect
-        options={nodeOptions}
-        labelKey='label'
-        valueKey='id'
-        placeholder='Type ID to find a node'
-        onChange={onSearchChange}
-        value={nodeSearchCase}
-        overrides={{
-          ControlContainer: {
-            style: ControlContainerStyle,
-          },
-          Dropdown: {
-            style: DropdownStyle,
-          },
-
-          DropdownListItem: {
-            style: DropdownListItem,
-          },
-        }}
-      />
-    </Block>
+    <BatchSingleSelect
+      options={nodeOptions}
+      labelKey='label'
+      valueKey='id'
+      placeholder='Type ID to find a node'
+      onChange={onSearchChange}
+      value={nodeSearchCase}
+      size='compact'
+      maxDropdownHeight='300px'
+      overrides={{
+        ControlContainer: {
+          style: ControlContainerStyle,
+        },
+        Dropdown: {
+          style: DropdownStyle,
+        },
+        DropdownListItem: {
+          style: DropdownListItem,
+        },
+      }}
+    />
   );
 };
 
