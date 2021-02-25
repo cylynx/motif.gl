@@ -81,18 +81,12 @@ describe('Layout Options', () => {
     it('should change radius', () => {
       const arrows = '{rightarrow}'.repeat(1);
       const controllerName: string = 'unitRadius';
-      const formDefaults = findDefaultFromLayoutForm(
-        form.layoutForm,
-        type,
-        controllerName,
-      );
-      const { max } = formDefaults;
 
       cy.react('Controller', { props: { name: controllerName } }).type(arrows);
 
       cy.getReact('Graphin')
         .getProps(`layout.${controllerName}`)
-        .should('deep.equal', max / 2);
+        .should('be.within', 248, 251);
     });
 
     it('should change node spacing', () => {
@@ -158,18 +152,12 @@ describe('Layout Options', () => {
     it('should change vertical spacing', () => {
       const arrows = '{rightarrow}'.repeat(1);
       const controllerName: string = 'rankSep';
-      const formDefaults = findDefaultFromLayoutForm(
-        form.layoutForm,
-        type,
-        controllerName,
-      );
-      const { max } = formDefaults;
 
       cy.react('Controller', { props: { name: controllerName } }).type(arrows);
 
       cy.getReact('Graphin')
         .getProps(`layout.${controllerName}`)
-        .should('deep.equal', max / 2);
+        .should('be.within', 248, 251);
     });
 
     it('should change horizontal spacing', () => {
@@ -250,7 +238,7 @@ describe('Layout Options', () => {
 
       cy.getReact('Graphin')
         .getProps(`layout.${controllerName}`)
-        .should('deep.equal', startRadius - modifyValue);
+        .should('be.within', 248, 251);
     });
 
     it('should change end radius', () => {
@@ -262,7 +250,7 @@ describe('Layout Options', () => {
 
       cy.getReact('Graphin')
         .getProps(`layout.${controllerName}`)
-        .should('deep.equal', endRadius - modifyValue);
+        .should('be.within', 248, 251);
     });
 
     it('should change angle ratio', () => {
