@@ -108,6 +108,10 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
 
   // For parent component, need to return new child defaults
   const handleChangeParent = (value: any, onChange: (v: any) => void) => {
+    if (value.length === 0) {
+      return;
+    }
+
     onChange(value);
     const results: any = {};
     results.id = value[0].id;
@@ -212,13 +216,13 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
                       component = (
                         <BatchSingleSelect
                           onChange={(params) => {
-                            console.log(params.value);
                             if (params.value.length === 0) {
                               return;
                             }
                             handleChange(params.value, onChange);
                           }}
                           value={value}
+                          clearable={false}
                           maxDropdownHeight='300px'
                           type={TYPE.select}
                           {...rest}

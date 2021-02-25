@@ -9,11 +9,17 @@ import { LabelXSmall } from 'baseui/typography';
 const LIST_ITEM_HEIGHT = 36;
 const MAX_LIST_HEIGHT = 300;
 
-const ListItem = withStyle(StyledDropdownListItem, () => ({
+const ListItem = withStyle(StyledDropdownListItem, ({ $theme }) => ({
   paddingTop: 0,
   paddingBottom: 0,
   display: 'flex',
   alignItems: 'center',
+  ':hover': {
+    backgroundColor: $theme.colors.mono700,
+  },
+  ':focus': {
+    backgroundColor: $theme.colors.mono700,
+  },
 }));
 
 const FixedSizeListItem = ({
