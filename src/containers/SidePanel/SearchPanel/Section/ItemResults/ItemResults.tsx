@@ -3,11 +3,11 @@ import { Block, BlockOverrides } from 'baseui/block';
 import { useSelector } from 'react-redux';
 import { Theme } from 'baseui/theme';
 import { INode, IEdge } from '@antv/g6';
-import NodeInfoAccordion from '../Components/NodeInfoAccordion';
-import { Node, EdgeInformation, GraphSelectors } from '../../../../redux/graph';
-import EdgeInfoAccordion from '../Components/EdgeInfoAccordion';
-import GraphRefContext from '../../../Graph/context';
-import useGraphBehaviors from '../../../Graph/hooks/useGraphBehaviors';
+import { GraphSelectors } from '../../../../../redux/graph';
+import GraphRefContext from '../../../../Graph/context';
+import useGraphBehaviors from '../../../../Graph/hooks/useGraphBehaviors';
+import NodeResults from './NodeResults';
+import EdgeResults from './EdgeResults';
 
 const itemBlockOverrides: BlockOverrides = {
   Block: {
@@ -92,28 +92,19 @@ const ItemResults: FC = () => {
       width='auto'
       $style={{ overflowY: 'auto', scrollbarWidth: 'thin' }}
     >
-      {edges.map((edgeInfo: EdgeInformation) => (
-        <div
-          key={edgeInfo.edge.id}
-          onMouseLeave={onMouseLeave}
-          onMouseEnter={(event) => onEdgeMouseEnter(event, edgeInfo.edge.id)}
-        >
-          <Block marginBottom='scale550' overrides={itemBlockOverrides}>
-            <EdgeInfoAccordion results={edgeInfo} expanded={false} />
-          </Block>
-        </div>
-      ))}
-      {nodes.map((node: Node) => (
-        <div
-          key={node.id}
-          onMouseEnter={(event) => onNodeMouseEnter(event, node.id)}
-          onMouseLeave={onMouseLeave}
-        >
-          <Block marginBottom='scale550' overrides={itemBlockOverrides}>
-            <NodeInfoAccordion results={node} expanded={false} />
-          </Block>
-        </div>
-      ))}
+      <EdgeResults
+        edges={edges}
+        overrides={itemBlockOverrides}
+        onMouseEnter={onEdgeMouseEnter}
+        onMouseLeave={onMouseLeave}
+      />
+
+      <NodeResults
+        nodes={nodes}
+        overrides={itemBlockOverrides}
+        onMouseEnter={onNodeMouseEnter}
+        onMouseLeave={onMouseLeave}
+      />
     </Block>
   );
 };

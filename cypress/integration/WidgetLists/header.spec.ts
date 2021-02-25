@@ -4,9 +4,6 @@ describe('Header', () => {
   before(() => {
     cy.visit('/');
     cy.waitForReact(5000);
-
-    // // close modal
-    // cy.get('button[aria-label="Close"]').click();
   });
 
   it('should render successfully', () => {

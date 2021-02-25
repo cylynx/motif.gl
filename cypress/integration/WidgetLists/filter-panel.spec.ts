@@ -1,5 +1,4 @@
 import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
-import { SIDE_NAVBAR_WIDTH } from '../../../src/constants/widget-units';
 
 describe('Filter Panel', () => {
   before(() => {
