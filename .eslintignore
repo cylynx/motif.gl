@@ -2,9 +2,6 @@ coverage/
 cypress/
 dist/
 node_modules/
-.snapshots/
-*.min.js
 commitlint.config.js
 tsdx.config.js
-babel.config.js
-jest.config.js
+
