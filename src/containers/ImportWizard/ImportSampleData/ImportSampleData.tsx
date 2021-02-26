@@ -1,5 +1,5 @@
 import React, { MouseEvent } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'baseui/button';
 import { Block } from 'baseui/block';
 import { Cell } from 'baseui/layout-grid';
@@ -9,10 +9,12 @@ import { FlushedGrid } from '../../../components/ui';
 import { UISlices } from '../../../redux/ui';
 import {
   GraphSlices,
+  GraphSelectors,
   GraphThunks,
   JsonImport,
   Accessors,
 } from '../../../redux/graph';
+import useNodeStyle from '../../../redux/graph/hooks/useNodeStyle';
 
 export enum SampleData {
   SIMPLE_GRAPH,
@@ -115,6 +117,10 @@ const ImportSampleData = (): JSX.Element => {
 
 const StyledItem = ({ item }: { item: SampleDataItem }): JSX.Element => {
   const dispatch = useDispatch();
+  const nodeOptions = useSelector(
+    (state) => GraphSelectors.getStyleOptions(state).nodeStyle,
+  );
+  const { switchToFixNodeColor } = useNodeStyle();
 
   const trySampleData = (
     item: SampleDataItem,
@@ -122,6 +128,10 @@ const StyledItem = ({ item }: { item: SampleDataItem }): JSX.Element => {
   ): void => {
     e.preventDefault();
     dispatch(UISlices.closeModal());
+
+    if (nodeOptions.color.id === 'legend') {
+      switchToFixNodeColor();
+    }
 
     // These two datasets come with x-y coordinates
     if (item.key === SampleData.AA || item.key === SampleData.NETWORK) {

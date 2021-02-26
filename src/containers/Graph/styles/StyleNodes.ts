@@ -298,9 +298,12 @@ export const styleNodeColor = (
 
   const { variable, mapping } = option as NodeColorLegend;
   const variableProperty: string | unknown = get(node, variable);
+  const grey = normalizeColor(GREY);
 
   if (variableProperty) {
     const nodeColor = normalizeColor(mapping[variableProperty as string]);
+    console.log(variableProperty);
+    console.log(nodeColor);
 
     Object.assign(nodeStyle, {
       keyshape: Object.assign(nodeKeyShape, {
@@ -316,7 +319,6 @@ export const styleNodeColor = (
     return;
   }
 
-  const grey = normalizeColor(GREY);
   Object.assign(nodeStyle, {
     keyshape: Object.assign(nodeKeyShape, {
       fill: grey.dark,

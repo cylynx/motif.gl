@@ -238,3 +238,7 @@ export interface SearchOptions {
   results: ItemProperties;
   pagination: SearchOptPagination;
 }
+
+export interface TExportData {
+  data: GraphData;
+}

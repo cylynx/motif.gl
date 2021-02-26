@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Button } from 'baseui/button';
 import { Input } from 'baseui/input';
@@ -18,8 +18,10 @@ import {
   Accessors,
   GraphList,
   GraphThunks,
+  GraphSelectors,
 } from '../../../redux/graph';
 import { UISlices, UIThunks, UIConstants } from '../../../redux/ui';
+import useNodeStyle from '../../../redux/graph/hooks/useNodeStyle';
 
 type FormValues = {
   dataType: { label: string; id: string }[];
@@ -40,6 +42,11 @@ const ImportLocalFile = () => {
   const dispatch = useDispatch();
   const batchFileRef = useRef<ImportFormat[]>(null);
   const singleFileRef = useRef<ImportFormat>(null);
+
+  const nodeOptions = useSelector(
+    (state) => GraphSelectors.getStyleOptions(state).nodeStyle,
+  );
+  const { switchToFixNodeColor } = useNodeStyle();
 
   const [isUploading, setIsUploading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -195,6 +202,10 @@ const ImportLocalFile = () => {
   const onSubmitForm: SubmitHandler<FormValues> = (data, e) => {
     e.preventDefault();
     const { dataType, ...accessors } = data;
+
+    if (nodeOptions.color.id === 'legend') {
+      switchToFixNodeColor();
+    }
 
     // remove accessor keys with empty string
     Object.keys(accessors as Accessors)

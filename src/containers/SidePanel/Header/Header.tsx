@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import html2canvas from 'html2canvas';
 
 import { Block } from 'baseui/block';
@@ -8,6 +8,7 @@ import { GraphSelectors, GraphList } from '../../../redux/graph';
 import * as Icon from '../../../components/Icons';
 import Editable from '../../../components/Editable';
 import HeaderButton, { HeaderButtonProp } from './HeaderButton';
+import GraphRefContext from '../../Graph/context';
 
 const Header = () => {
   const name: string = useSelector((state) => UISelectors.getUI(state).name);
@@ -15,6 +16,7 @@ const Header = () => {
     GraphSelectors.getGraphList(state),
   );
   const dispatch = useDispatch();
+  const { graph } = useContext(GraphRefContext);
 
   const onChangeName = useCallback(
     (text: string) => dispatch(UISlices.setName(text)),
@@ -38,19 +40,24 @@ const Header = () => {
     });
   }, [isCanvasHasGraph]);
 
-  const exportJSON = useCallback(
-    (json: GraphList) => {
-      const contentType = 'application/json;charset=utf-8;';
-      const jsonInfo: string = JSON.stringify(json);
-      const file: HTMLAnchorElement = document.createElement('a');
-      file.download = 'graph.json';
-      file.href = `data:${contentType},${encodeURIComponent(jsonInfo)}`;
-      document.body.appendChild(file);
-      file.click();
-      document.body.removeChild(file);
-    },
-    [exportGraph],
-  );
+  // const exportJSON = useCallback(
+  //   (json: GraphList) => {
+  //     const contentType = 'application/json;charset=utf-8;';
+  //     const jsonInfo: string = JSON.stringify(json);
+  //     const file: HTMLAnchorElement = document.createElement('a');
+  //     file.download = 'graph.json';
+  //     file.href = `data:${contentType},${encodeURIComponent(jsonInfo)}`;
+  //     document.body.appendChild(file);
+  //     file.click();
+  //     document.body.removeChild(file);
+  //   },
+  //   [exportGraph],
+  // );
+
+  const exportJSON = () => {
+    const sampleGraph = graph.toDataURL();
+    console.log(sampleGraph);
+  };
 
   const headerButtons: HeaderButtonProp[] = useMemo(
     () => [
@@ -66,7 +73,7 @@ const Header = () => {
         name: 'Save',
         icon: <Icon.Save />,
         isDisabled: false,
-        onClick: () => exportJSON(exportGraph),
+        onClick: () => exportJSON(),
       },
     ],
     [dispatch, exportPNG, exportJSON, exportGraph],
