@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Button } from 'baseui/button';
@@ -8,7 +8,9 @@ import { FileUploader } from 'baseui/file-uploader';
 import { FormControl } from 'baseui/form-control';
 import { Select } from 'baseui/select';
 import { Hide, Show } from 'baseui/icon';
+import isEqual from 'lodash/isEqual';
 
+import { NodeStyle } from '@antv/graphin';
 import {
   EdgeListCsv,
   ImportFormat,
@@ -18,10 +20,14 @@ import {
   Accessors,
   GraphThunks,
   GraphSelectors,
+  GraphSlices,
   TLoadFormat,
+  StyleOptions,
+  NodeStyleOptions,
 } from '../../../redux/graph';
 import { UISlices, UIThunks, UIConstants } from '../../../redux/ui';
 import useNodeStyle from '../../../redux/graph/hooks/useNodeStyle';
+import ConfirmationModal from '../../../components/ConfirmationModal';
 
 type FormValues = {
   dataType: { label: string; id: string }[];
@@ -42,11 +48,19 @@ const ImportLocalFile = () => {
   const dispatch = useDispatch();
   const batchFileRef = useRef<ImportFormat[]>(null);
   const singleFileRef = useRef<ImportFormat>(null);
-
-  const nodeOptions = useSelector(
-    (state) => GraphSelectors.getStyleOptions(state).nodeStyle,
-  );
+  const dataContainStyleRef = useRef<boolean>(false);
+  const [confirmModalOpen, setConfirmModalOpen] = useState<boolean>(false);
   const { switchToFixNodeColor } = useNodeStyle();
+
+  const styleOptions: StyleOptions = useSelector((state) =>
+    GraphSelectors.getStyleOptions(state),
+  );
+
+  const isStyleOptionModified: boolean = useMemo(() => {
+    console.log(GraphSlices.initialState.styleOptions);
+    console.log(styleOptions);
+    return !isEqual(GraphSlices.initialState.styleOptions, styleOptions);
+  }, [styleOptions, GraphSlices.initialState.styleOptions]);
 
   const [isUploading, setIsUploading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -58,6 +72,8 @@ const ImportLocalFile = () => {
       edgeTarget: 'target',
     },
   });
+
+  const nodeOptions: NodeStyleOptions = styleOptions.nodeStyle;
 
   const watchDataType = watch('dataType');
   const isButtonDisabled =
@@ -104,6 +120,11 @@ const ImportLocalFile = () => {
           const jsonFileContents: JsonImport[] = fileContents.map(
             (content: string) => {
               const jsonGraphList: TLoadFormat = JSON.parse(content);
+
+              if (jsonGraphList.style) {
+                dataContainStyleRef.current = true;
+              }
+
               return {
                 data: jsonGraphList,
                 type: 'json',
@@ -113,6 +134,7 @@ const ImportLocalFile = () => {
 
           batchFileRef.current = jsonFileContents;
           setFileNames(acceptedFileNames);
+          setIsUploading(false);
           return;
         }
 
@@ -129,6 +151,7 @@ const ImportLocalFile = () => {
 
           batchFileRef.current = csvFileContents;
           setFileNames(acceptedFileNames);
+          setIsUploading(false);
           return;
         }
 
@@ -155,6 +178,7 @@ const ImportLocalFile = () => {
 
             singleFileRef.current = nodeEdgeContent;
             setFileNames(acceptedFileNames);
+            setIsUploading(false);
             return;
           }
 
@@ -171,25 +195,27 @@ const ImportLocalFile = () => {
 
             singleFileRef.current = nodeEdgeContent;
             setFileNames(acceptedFileNames);
+            setIsUploading(false);
             return;
           }
 
           setErrorMessage(
             `Please ensure the node file includes 'node' and edge file 'edge'`,
           );
+          setIsUploading(false);
           return;
         }
 
         setErrorMessage(
           'Please ensure the correct number of files are uploaded and correctly labelled',
         );
+        setIsUploading(false);
       })
       .catch(() =>
         dispatch(
           UIThunks.show('The file provided is not readable', 'negative'),
         ),
       );
-    setIsUploading(false);
   };
 
   const onDropRejected = () => {
@@ -207,27 +233,34 @@ const ImportLocalFile = () => {
       switchToFixNodeColor();
     }
 
+    if (
+      isStyleOptionModified === true &&
+      dataContainStyleRef.current === true
+    ) {
+      setConfirmModalOpen(true);
+    }
+
     // remove accessor keys with empty string
-    Object.keys(accessors as Accessors)
-      .filter((k) => accessors[k] === '')
-      .map((k) => delete accessors[k]);
-
-    const selectedDataType: string = watchDataType[0].id;
-    if (selectedDataType === 'nodeEdgeCsv') {
-      dispatch(
-        GraphThunks.importNodeEdgeData(singleFileRef.current, accessors),
-      );
-    }
-
-    if (selectedDataType === 'edgeListCsv') {
-      dispatch(GraphThunks.importEdgeListData(batchFileRef.current, accessors));
-    }
-
-    if (selectedDataType === 'json') {
-      dispatch(GraphThunks.importJsonData(batchFileRef.current, accessors));
-    }
-
-    dispatch(UISlices.closeModal());
+    // Object.keys(accessors as Accessors)
+    //   .filter((k) => accessors[k] === '')
+    //   .map((k) => delete accessors[k]);
+    //
+    // const selectedDataType: string = watchDataType[0].id;
+    // if (selectedDataType === 'nodeEdgeCsv') {
+    //   dispatch(
+    //     GraphThunks.importNodeEdgeData(singleFileRef.current, accessors),
+    //   );
+    // }
+    //
+    // if (selectedDataType === 'edgeListCsv') {
+    //   dispatch(GraphThunks.importEdgeListData(batchFileRef.current, accessors));
+    // }
+    //
+    // if (selectedDataType === 'json') {
+    //   dispatch(GraphThunks.importJsonData(batchFileRef.current, accessors));
+    // }
+    //
+    // dispatch(UISlices.closeModal());
   };
 
   return (
@@ -271,6 +304,31 @@ const ImportLocalFile = () => {
           </Button>
         </Block>
       </form>
+      <ConfirmationModal
+        onClose={() => setConfirmModalOpen(false)}
+        isOpen={confirmModalOpen}
+        onReject={() => setConfirmModalOpen(false)}
+        onAccept={() => console.log('hello')}
+        header={
+          <Block
+            as='span'
+            overrides={{
+              Block: {
+                style: {
+                  textTransform: 'capitalize',
+                },
+              },
+            }}
+          >
+            Overwrite existing styles?
+          </Block>
+        }
+        body={
+          <Block as='span'>
+            We found your import data contains previous style configurations.
+          </Block>
+        }
+      />
     </Fragment>
   );
 };

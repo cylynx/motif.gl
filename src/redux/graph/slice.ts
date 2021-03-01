@@ -18,6 +18,10 @@ import {
   SearchOptionPayload,
   SearchResultPayload,
 } from './types';
+import {
+  DEFAULT_NODE_STYLE,
+  PRIMARY_NODE_COLOR,
+} from '../../constants/graph-shapes';
 
 export const updateSelections = (state: Draft<GraphState>, data: GraphData) => {
   const currentNodeFields = state.nodeSelection.map((x) => x.id);
@@ -77,6 +81,10 @@ const initialState: GraphState = {
   styleOptions: {
     layout: LAYOUT.CONCENTRIC_DEFAULT,
     nodeStyle: {
+      color: {
+        id: 'fixed',
+        value: DEFAULT_NODE_STYLE.color,
+      },
       size: {
         id: 'fixed',
         value: 20,
