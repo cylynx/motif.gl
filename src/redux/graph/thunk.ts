@@ -124,7 +124,7 @@ export const importEdgeListData = (
  *
  * @param {ImportFormat[]} importData - array of graphData objects
  * @param {ImportAccessors} importAccessors [importAccessors=null] to customize node Id / edge Id / edge source or target
- * @param {boolean} overwriteStyles
+ * @param {boolean} overwriteStyles - overwrite the existing graph styles
  *
  * @return Promise
  */
@@ -140,6 +140,7 @@ export const importJsonData = (
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
   const filterOptions: FilterOptions = getFilterOptions(getState());
+  let isDataPossessStyle = false;
   let styleOptions: StyleOptions = getStyleOptions(getState());
 
   const batchDataPromises = importData.map((graphData: ImportFormat) => {
@@ -147,6 +148,7 @@ export const importJsonData = (
 
     // obtain the latest style options in the import file.
     if (importStyleOption) {
+      isDataPossessStyle = true;
       styleOptions = importStyleOption;
     }
 
@@ -157,11 +159,12 @@ export const importJsonData = (
     .then((graphDataArr: GraphList[]) => {
       const graphData: GraphList = flatten(graphDataArr);
 
-      if (overwriteStyles) {
+      processResponse(dispatch, graphList, mainAccessors, graphData);
+
+      if (isDataPossessStyle && overwriteStyles) {
         dispatch(updateStyleOption(styleOptions));
       }
 
-      processResponse(dispatch, graphList, mainAccessors, graphData);
       showImportDataToast(dispatch, filterOptions);
     })
     .catch((err: Error) => {
