@@ -17,7 +17,7 @@ import { extractIntegerFromString } from '../../utils/data-utils';
 
 export const BottomRightLayer: FC = ({ children }) => (
   <Block
-    position='fixed'
+    position='absolute'
     bottom='10px'
     right='10px'
     width='500px'
@@ -34,7 +34,7 @@ type LeftLayerProps = { padding?: boolean };
 export const LeftLayer: FC<LeftLayerProps> = ({ children, padding = true }) => {
   return (
     <Block
-      position='fixed'
+      position='absolute'
       top='0px'
       bottom='0px'
       left={SIDE_NAVBAR_WIDTH}
@@ -56,7 +56,7 @@ export const TopRightLayer: FC = ({ children }) => {
     <Block
       display='flex'
       flexDirection='column'
-      position='fixed'
+      position='absolute'
       top='10px'
       right='10px'
     >

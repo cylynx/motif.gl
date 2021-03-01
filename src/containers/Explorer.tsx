@@ -152,6 +152,13 @@ const Explorer = (props: ExplorerProps) => {
         // remove warnings in the console.
         unstable_ModalBackdropScroll
         size={SIZE.auto}
+        overrides={{
+          Root: {
+            style: () => ({
+              position: 'absolute',
+            }),
+          },
+        }}
       >
         <ModalBody>
           {modal.isOpen && modal.content === 'import' ? (
@@ -173,7 +180,7 @@ const Explorer = (props: ExplorerProps) => {
       <WidgetContainer graphRef={graphRef} theme={secondaryTheme || theme}>
         <SideNavBars />
         {loading && <Loader />}
-        {tooltip && <UserTooltip tooltip={tooltip} />}
+        {tooltip && <UserTooltip tooltip={{ ...tooltip, leftLayerWidth }} />}
         {activeWidgetList.length > 0 &&
           activeWidgetList.map((item) => (
             <Block key={item.id}>{item.widget}</Block>

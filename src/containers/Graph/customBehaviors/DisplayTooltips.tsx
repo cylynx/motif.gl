@@ -9,7 +9,7 @@ import { TooltipProps } from '../../Tooltip/Tooltip';
 import { interactionStates } from '../../../constants/graph-shapes';
 
 export type DisplayTooltipProps = {
-  setTooltip: (tooltip: TooltipProps) => void;
+  setTooltip: (tooltip: Partial<TooltipProps>) => void;
 };
 
 const DisplayTooltip = ({ setTooltip }: DisplayTooltipProps): any => {
@@ -28,11 +28,12 @@ const DisplayTooltip = ({ setTooltip }: DisplayTooltipProps): any => {
       graph.setItemState(item, 'selected', true);
 
       const node = item.get('model');
-      const { clientX, clientY } = e;
+      const point = graph.getPointByClient(e.clientX, e.clientY);
+      const { x, y } = graph.getCanvasByPoint(point.x, point.y);
       setTooltip({
         id: node.id,
-        x: clientX,
-        y: clientY,
+        x,
+        y,
         type: 'node',
       });
     }
@@ -46,12 +47,13 @@ const DisplayTooltip = ({ setTooltip }: DisplayTooltipProps): any => {
       graph.clearItemStates(item, interactionStates);
       graph.setItemState(item, 'selected', true);
 
-      const { clientX, clientY } = e;
       const edge = item.get('model');
+      const point = graph.getPointByClient(e.clientX, e.clientY);
+      const { x, y } = graph.getCanvasByPoint(point.x, point.y);
       setTooltip({
         id: edge.id,
-        x: clientX,
-        y: clientY,
+        x,
+        y,
         type: 'edge',
       });
     }
