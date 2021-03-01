@@ -16,9 +16,9 @@ import {
   NodeEdgeCsv,
   NodeEdgeDataType,
   Accessors,
-  GraphList,
   GraphThunks,
   GraphSelectors,
+  TLoadFormat,
 } from '../../../redux/graph';
 import { UISlices, UIThunks, UIConstants } from '../../../redux/ui';
 import useNodeStyle from '../../../redux/graph/hooks/useNodeStyle';
@@ -103,7 +103,7 @@ const ImportLocalFile = () => {
         if (fileExtension === 'json' && selectedDataType === 'json') {
           const jsonFileContents: JsonImport[] = fileContents.map(
             (content: string) => {
-              const jsonGraphList: GraphList = JSON.parse(content);
+              const jsonGraphList: TLoadFormat = JSON.parse(content);
               return {
                 data: jsonGraphList,
                 type: 'json',

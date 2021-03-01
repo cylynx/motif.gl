@@ -191,6 +191,9 @@ const graph = createSlice({
     addQuery(state, action: PayloadAction<GraphData>) {
       state.graphList.push(action.payload);
     },
+    updateStyleOption(state, action: PayloadAction<StyleOptions>) {
+      Object.assign(state.styleOptions, action.payload);
+    },
     changeOptions(state, action: PayloadAction<{ key: string; value: any }>) {
       const { key, value } = action.payload;
       state.styleOptions[key] = value;
@@ -333,6 +336,7 @@ export const {
   deleteGraphList,
   changeVisibilityGraphList,
   addQuery,
+  updateStyleOption,
   changeOptions,
   changeLayout,
   changeNodeStyle,

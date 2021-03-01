@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import html2canvas from 'html2canvas';
 
 import { Block } from 'baseui/block';
@@ -8,12 +8,11 @@ import {
   GraphSelectors,
   GraphList,
   StyleOptions,
-  TExportData,
+  TLoadFormat,
 } from '../../../redux/graph';
 import * as Icon from '../../../components/Icons';
 import Editable from '../../../components/Editable';
 import HeaderButton, { HeaderButtonProp } from './HeaderButton';
-import GraphRefContext from '../../Graph/context';
 
 const Header = () => {
   const name: string = useSelector((state) => UISelectors.getUI(state).name);
@@ -24,7 +23,6 @@ const Header = () => {
     GraphSelectors.getStyleOptions(state),
   );
   const dispatch = useDispatch();
-  const { graph } = useContext(GraphRefContext);
 
   const onChangeName = useCallback(
     (text: string) => dispatch(UISlices.setName(text)),
@@ -49,7 +47,7 @@ const Header = () => {
   }, [isCanvasHasGraph]);
 
   const exportJSON = () => {
-    const exportData: TExportData = {
+    const exportData: TLoadFormat = {
       data: graphList,
       style: styleOptions,
     };

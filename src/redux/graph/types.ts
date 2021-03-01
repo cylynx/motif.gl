@@ -70,7 +70,7 @@ export type NodeEdgeDataType = {
 };
 
 export type JsonImport = {
-  data: GraphData | GraphList | void;
+  data: GraphData | TLoadFormat | void;
   type: 'json';
 };
 
@@ -243,7 +243,7 @@ export interface SearchOptions {
  *  Export and Import Data
  ** ============================== */
 
-export interface TExportData {
+export interface TLoadFormat {
   data: GraphList;
   style: StyleOptions;
 }

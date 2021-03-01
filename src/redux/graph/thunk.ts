@@ -2,9 +2,9 @@ import some from 'lodash/some';
 import isUndefined from 'lodash/isUndefined';
 import flatten from 'lodash/flatten';
 import isEmpty from 'lodash/isEmpty';
-import { getFilterOptions, getGraph } from './selectors';
+import { getFilterOptions, getGraph, getStyleOptions } from './selectors';
 
-import { addQuery, processGraphResponse } from './slice';
+import { addQuery, processGraphResponse, updateStyleOption } from './slice';
 import {
   importEdgeListCsv,
   importNodeEdgeCsv,
@@ -18,6 +18,8 @@ import {
   GraphList,
   GraphData,
   FilterOptions,
+  TLoadFormat,
+  StyleOptions,
 } from './types';
 
 import { UISlices, UIThunks } from '../ui';
@@ -61,7 +63,7 @@ const processResponse = (
  *  2. Filter Option is empty, display success toast.
  *
  * @param {any} dispatch
- * @param {Graph.FilterOptions} filterOptions
+ * @param {FilterOptions} filterOptions
  *
  * @return {void}
  */
@@ -136,9 +138,16 @@ export const importJsonData = (
   const { graphList, accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
   const filterOptions: FilterOptions = getFilterOptions(getState());
+  let styleOptions: StyleOptions = getStyleOptions(getState());
 
   const batchDataPromises = importData.map((graphData: ImportFormat) => {
-    const { data } = graphData;
+    const { data, style: importStyleOption } = graphData.data as TLoadFormat;
+
+    // obtain the latest style options in the import file.
+    if (!importStyleOption) {
+      styleOptions = importStyleOption;
+    }
+
     return importJson(data as GraphList, accessors);
   });
 
@@ -146,6 +155,7 @@ export const importJsonData = (
     .then((graphDataArr: GraphList[]) => {
       const graphData: GraphList = flatten(graphDataArr);
       processResponse(dispatch, graphList, mainAccessors, graphData);
+      dispatch(updateStyleOption(styleOptions));
       showImportDataToast(dispatch, filterOptions);
     })
     .catch((err: Error) => {
