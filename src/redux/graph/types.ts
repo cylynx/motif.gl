@@ -239,6 +239,11 @@ export interface SearchOptions {
   pagination: SearchOptPagination;
 }
 
+/** ==============================
+ *  Export and Import Data
+ ** ============================== */
+
 export interface TExportData {
-  data: GraphData;
+  data: GraphList;
+  style: StyleOptions;
 }
