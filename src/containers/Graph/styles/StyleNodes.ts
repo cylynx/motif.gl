@@ -224,7 +224,6 @@ export const styleNodeFontSize = (
 ): void => {
   const labelStyle: Partial<NodeStyle['label']> = nodeStyle.label ?? {
     position: 'bottom',
-    stroke: '#000000',
   };
   Object.assign(labelStyle, { fontSize });
   Object.assign(nodeStyle, { label: labelStyle });

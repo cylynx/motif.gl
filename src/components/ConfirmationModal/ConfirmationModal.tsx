@@ -27,7 +27,12 @@ const ConfirmationModal: FC<ConfirmationModalProps> = ({
   body,
 }): JSX.Element => {
   return (
-    <Modal onClose={onClose} isOpen={isOpen} unstable_ModalBackdropScroll>
+    <Modal
+      onClose={onClose}
+      isOpen={isOpen}
+      unstable_ModalBackdropScroll
+      closeable={false}
+    >
       <ModalHeader>{header}</ModalHeader>
       {body && <ModalBody>{body}</ModalBody>}
       <ModalFooter>
