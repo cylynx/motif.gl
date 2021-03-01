@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UISelectors, UISlices } from '../../../redux/ui';
 import {
   GraphSelectors,
-  GraphList,
   StyleOptions,
   TLoadFormat,
+  GraphList,
 } from '../../../redux/graph';
 import * as Icon from '../../../components/Icons';
 import Editable from '../../../components/Editable';
@@ -19,6 +19,7 @@ const Header = () => {
   const graphList: GraphList = useSelector((state) =>
     GraphSelectors.getGraphList(state),
   );
+
   const styleOptions: StyleOptions = useSelector((state) =>
     GraphSelectors.getStyleOptions(state),
   );
@@ -46,7 +47,7 @@ const Header = () => {
     });
   }, [isCanvasHasGraph]);
 
-  const exportJSON = () => {
+  const exportJSON = (graphList: GraphList, styleOptions: StyleOptions) => {
     const exportData: TLoadFormat = {
       data: graphList,
       style: styleOptions,
@@ -76,10 +77,10 @@ const Header = () => {
         name: 'Save',
         icon: <Icon.Save />,
         isDisabled: false,
-        onClick: () => exportJSON(),
+        onClick: () => exportJSON(graphList, styleOptions),
       },
     ],
-    [dispatch, exportPNG, exportJSON, graphList],
+    [dispatch, exportPNG, exportJSON, graphList, styleOptions],
   );
 
   return useMemo(
@@ -103,7 +104,7 @@ const Header = () => {
         </Block>
       </Block>
     ),
-    [name, onChangeName, isCanvasHasGraph],
+    [name, onChangeName, isCanvasHasGraph, styleOptions],
   );
 };
 

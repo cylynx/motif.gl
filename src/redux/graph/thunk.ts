@@ -144,7 +144,7 @@ export const importJsonData = (
     const { data, style: importStyleOption } = graphData.data as TLoadFormat;
 
     // obtain the latest style options in the import file.
-    if (!importStyleOption) {
+    if (importStyleOption) {
       styleOptions = importStyleOption;
     }
 
@@ -154,8 +154,9 @@ export const importJsonData = (
   return Promise.all(batchDataPromises)
     .then((graphDataArr: GraphList[]) => {
       const graphData: GraphList = flatten(graphDataArr);
-      processResponse(dispatch, graphList, mainAccessors, graphData);
+
       dispatch(updateStyleOption(styleOptions));
+      processResponse(dispatch, graphList, mainAccessors, graphData);
       showImportDataToast(dispatch, filterOptions);
     })
     .catch((err: Error) => {
