@@ -124,12 +124,14 @@ export const importEdgeListData = (
  *
  * @param {ImportFormat[]} importData - array of graphData objects
  * @param {ImportAccessors} importAccessors [importAccessors=null] to customize node Id / edge Id / edge source or target
+ * @param {boolean} overwriteStyles
  *
  * @return Promise
  */
 export const importJsonData = (
   importData: ImportFormat[],
   importAccessors: ImportAccessors = null,
+  overwriteStyles = false,
 ) => (dispatch: any, getState: any) => {
   if (Array.isArray(importData) === false) {
     throw new Error('Provided import data is not an array');
@@ -155,7 +157,10 @@ export const importJsonData = (
     .then((graphDataArr: GraphList[]) => {
       const graphData: GraphList = flatten(graphDataArr);
 
-      dispatch(updateStyleOption(styleOptions));
+      if (overwriteStyles) {
+        dispatch(updateStyleOption(styleOptions));
+      }
+
       processResponse(dispatch, graphList, mainAccessors, graphData);
       showImportDataToast(dispatch, filterOptions);
     })

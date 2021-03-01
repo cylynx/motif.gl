@@ -1,6 +1,11 @@
 import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import {
+  Controller,
+  SubmitHandler,
+  UnpackNestedValue,
+  useForm,
+} from 'react-hook-form';
 import { Button } from 'baseui/button';
 import { Input } from 'baseui/input';
 import { Block } from 'baseui/block';
@@ -10,7 +15,6 @@ import { Select } from 'baseui/select';
 import { Hide, Show } from 'baseui/icon';
 import isEqual from 'lodash/isEqual';
 
-import { NodeStyle } from '@antv/graphin';
 import {
   EdgeListCsv,
   ImportFormat,
@@ -49,6 +53,7 @@ const ImportLocalFile = () => {
   const batchFileRef = useRef<ImportFormat[]>(null);
   const singleFileRef = useRef<ImportFormat>(null);
   const dataContainStyleRef = useRef<boolean>(false);
+  const formValueRef = useRef<UnpackNestedValue<FormValues>>(null);
   const [confirmModalOpen, setConfirmModalOpen] = useState<boolean>(false);
   const { switchToFixNodeColor } = useNodeStyle();
 
@@ -57,8 +62,6 @@ const ImportLocalFile = () => {
   );
 
   const isStyleOptionModified: boolean = useMemo(() => {
-    console.log(GraphSlices.initialState.styleOptions);
-    console.log(styleOptions);
     return !isEqual(GraphSlices.initialState.styleOptions, styleOptions);
   }, [styleOptions, GraphSlices.initialState.styleOptions]);
 
@@ -227,40 +230,70 @@ const ImportLocalFile = () => {
 
   const onSubmitForm: SubmitHandler<FormValues> = (data, e) => {
     e.preventDefault();
-    const { dataType, ...accessors } = data;
 
     if (nodeOptions.color.id === 'legend') {
       switchToFixNodeColor();
     }
 
-    if (
-      isStyleOptionModified === true &&
-      dataContainStyleRef.current === true
-    ) {
+    formValueRef.current = data;
+    if (isStyleOptionModified && dataContainStyleRef.current) {
       setConfirmModalOpen(true);
+      return;
     }
 
-    // remove accessor keys with empty string
-    // Object.keys(accessors as Accessors)
-    //   .filter((k) => accessors[k] === '')
-    //   .map((k) => delete accessors[k]);
-    //
-    // const selectedDataType: string = watchDataType[0].id;
-    // if (selectedDataType === 'nodeEdgeCsv') {
-    //   dispatch(
-    //     GraphThunks.importNodeEdgeData(singleFileRef.current, accessors),
-    //   );
-    // }
-    //
-    // if (selectedDataType === 'edgeListCsv') {
-    //   dispatch(GraphThunks.importEdgeListData(batchFileRef.current, accessors));
-    // }
-    //
-    // if (selectedDataType === 'json') {
-    //   dispatch(GraphThunks.importJsonData(batchFileRef.current, accessors));
-    // }
-    //
-    // dispatch(UISlices.closeModal());
+    if (
+      isStyleOptionModified === false &&
+      dataContainStyleRef.current === true
+    ) {
+      performImportData(true);
+      return;
+    }
+
+    performImportData(false);
+  };
+
+  const performImportData = (overwriteStyle: boolean) => {
+    const {
+      dataType,
+      ...accessors
+    } = formValueRef.current as UnpackNestedValue<FormValues>;
+
+    Object.keys(accessors as Accessors)
+      .filter((k) => accessors[k] === '')
+      .map((k) => delete accessors[k]);
+
+    const selectedDataType: string = watchDataType[0].id;
+    if (selectedDataType === 'nodeEdgeCsv') {
+      dispatch(
+        GraphThunks.importNodeEdgeData(singleFileRef.current, accessors),
+      );
+    }
+
+    if (selectedDataType === 'edgeListCsv') {
+      dispatch(GraphThunks.importEdgeListData(batchFileRef.current, accessors));
+    }
+
+    if (selectedDataType === 'json') {
+      dispatch(
+        GraphThunks.importJsonData(
+          batchFileRef.current,
+          accessors,
+          overwriteStyle,
+        ),
+      );
+    }
+
+    dispatch(UISlices.closeModal());
+  };
+
+  const onConfirmModalReject = () => {
+    setConfirmModalOpen(false);
+    performImportData(false);
+  };
+
+  const onConfirmModalApprove = () => {
+    setConfirmModalOpen(false);
+    performImportData(true);
   };
 
   return (
@@ -305,10 +338,10 @@ const ImportLocalFile = () => {
         </Block>
       </form>
       <ConfirmationModal
-        onClose={() => setConfirmModalOpen(false)}
+        onClose={onConfirmModalReject}
         isOpen={confirmModalOpen}
-        onReject={() => setConfirmModalOpen(false)}
-        onAccept={() => console.log('hello')}
+        onReject={onConfirmModalReject}
+        onAccept={onConfirmModalApprove}
         header={
           <Block
             as='span'
@@ -325,7 +358,7 @@ const ImportLocalFile = () => {
         }
         body={
           <Block as='span'>
-            We found your import data contains previous style configurations.
+            We found your import data contains another style configurations.
           </Block>
         }
       />
