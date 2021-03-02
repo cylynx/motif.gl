@@ -45,12 +45,11 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => (
     display='flex'
     flexDirection='column'
     alignItems='center'
-    position='fixed'
+    position='absolute'
     top='0%'
     left='0%'
     width={SIDE_NAVBAR_WIDTH}
     height='100%'
-    paddingBottom='20px'
     backgroundColor='backgroundSecondary'
     data-testid='side-navbar'
   >

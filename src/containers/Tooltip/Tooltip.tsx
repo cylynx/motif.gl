@@ -9,12 +9,15 @@ import {
   Edge,
   Node,
 } from '../../redux/graph';
+import { extractIntegerFromString } from '../../utils/data-utils';
+import { SIDE_NAVBAR_WIDTH } from '../../constants/widget-units';
 
 export type TooltipProps = null | {
   id: string;
   x: number;
   y: number;
   type: 'edge' | 'node';
+  leftLayerWidth: string;
 };
 
 export const StyledInner = styled('div', ({ $theme }) => ({
@@ -30,6 +33,10 @@ export const StyledInner = styled('div', ({ $theme }) => ({
 }));
 
 const Tooltip = ({ tooltip }: { tooltip: TooltipProps }) => {
+  const leftLayerWidthPx: number = extractIntegerFromString(
+    tooltip.leftLayerWidth,
+  );
+  const sideNavbarWidthPx: number = extractIntegerFromString(SIDE_NAVBAR_WIDTH);
   const graphFlatten = useSelector(
     (state) => GraphSelectors.getGraph(state).graphFlatten,
   );
@@ -70,7 +77,8 @@ const Tooltip = ({ tooltip }: { tooltip: TooltipProps }) => {
     <StyledInner
       style={{
         position: 'absolute',
-        left: tooltip.x,
+        // Adjust for the side navbar and panel (if open)
+        left: tooltip.x + leftLayerWidthPx + sideNavbarWidthPx,
         top: tooltip.y,
       }}
     >
