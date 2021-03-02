@@ -24,34 +24,16 @@ import { UISlices, UIThunks } from '../ui';
 
 type ImportAccessors = Accessors | null;
 
-const checkNewData = (graphList: GraphList, newData: GraphData): boolean => {
-  if (isUndefined(newData.metadata)) {
-    // eslint-disable-next-line no-param-reassign
-    newData.metadata = {
-      key: 'abc',
-    };
-  }
-  const graphListKeys = graphList.map((graph) => graph.metadata.key);
-  return newData && !some(graphListKeys, (key) => key === newData.metadata.key);
-};
-
 const processResponse = (
   dispatch: any,
-  graphList: GraphList,
   accessors: Accessors,
   newData: GraphData | GraphList,
 ) => {
   dispatch(UISlices.fetchBegin());
   for (const data of Array.isArray(newData) ? newData : [newData]) {
-    // Check edges for new data as it might just be repeated
-    if (checkNewData(graphList, data)) {
-      dispatch(addQuery(data));
-      dispatch(processGraphResponse({ data, accessors }));
-      dispatch(UISlices.fetchDone());
-    } else {
-      dispatch(UISlices.fetchDone());
-      throw new Error('Data has already imported');
-    }
+    dispatch(addQuery(data));
+    dispatch(processGraphResponse({ data, accessors }));
+    dispatch(UISlices.fetchDone());
   }
 };
 
@@ -96,7 +78,7 @@ export const importEdgeListData = (
     throw new Error('importData parameter must be array');
   }
 
-  const { graphList, accessors: mainAccessors } = getGraph(getState());
+  const { accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
   const filterOptions: FilterOptions = getFilterOptions(getState());
 
@@ -107,7 +89,7 @@ export const importEdgeListData = (
 
   return Promise.all(batchDataPromises)
     .then((graphData: GraphList) => {
-      processResponse(dispatch, graphList, mainAccessors, graphData);
+      processResponse(dispatch, mainAccessors, graphData);
       showImportDataToast(dispatch, filterOptions);
     })
     .catch((err: Error) => {
@@ -133,7 +115,7 @@ export const importJsonData = (
     throw new Error('Provided import data is not an array');
   }
 
-  const { graphList, accessors: mainAccessors } = getGraph(getState());
+  const { accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
   const filterOptions: FilterOptions = getFilterOptions(getState());
 
@@ -145,7 +127,7 @@ export const importJsonData = (
   return Promise.all(batchDataPromises)
     .then((graphDataArr: GraphList[]) => {
       const graphData: GraphList = flatten(graphDataArr);
-      processResponse(dispatch, graphList, mainAccessors, graphData);
+      processResponse(dispatch, mainAccessors, graphData);
       showImportDataToast(dispatch, filterOptions);
     })
     .catch((err: Error) => {
@@ -172,7 +154,7 @@ export const importNodeEdgeData = (
   }
 
   const { data } = importData;
-  const { graphList, accessors: mainAccessors } = getGraph(getState());
+  const { accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
   const filterOptions: FilterOptions = getFilterOptions(getState());
 
@@ -186,7 +168,7 @@ export const importNodeEdgeData = (
 
   return newData
     .then((graphData: GraphData) => {
-      processResponse(dispatch, graphList, mainAccessors, graphData);
+      processResponse(dispatch, mainAccessors, graphData);
       showImportDataToast(dispatch, filterOptions);
     })
     .catch((err: Error) => {
@@ -218,7 +200,7 @@ export const importSingleJsonData = (
 
   return newData
     .then((graphData: GraphList) => {
-      processResponse(dispatch, graphList, mainAccessors, graphData);
+      processResponse(dispatch, mainAccessors, graphData);
       showImportDataToast(dispatch, filterOptions);
     })
     .catch((err: Error) => {

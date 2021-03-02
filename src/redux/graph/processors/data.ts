@@ -22,6 +22,7 @@ export const ALL_FIELD_TYPES = {
   string: 'string',
   timestamp: 'timestamp',
   array: 'array',
+  time: 'time',
 };
 
 export const DATASET_FORMATS = {
@@ -547,6 +548,7 @@ export const analyzerTypeToFieldType = (aType: string): string => {
     case DATE:
       return ALL_FIELD_TYPES.date;
     case TIME:
+      return ALL_FIELD_TYPES.time;
     case DATETIME:
       return ALL_FIELD_TYPES.timestamp;
     case FLOAT:

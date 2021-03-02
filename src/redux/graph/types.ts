@@ -180,6 +180,7 @@ export type FilterCriteria = {
   range?: [number, number];
   caseSearch?: Value;
   analyzerType?: string;
+  type?: string;
   selection?: SelectVariableOption[];
   stringOptions?: Value;
   histogram?: HistogramProp;
