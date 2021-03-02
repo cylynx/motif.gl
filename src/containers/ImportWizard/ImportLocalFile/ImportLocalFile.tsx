@@ -64,7 +64,6 @@ const ImportLocalFile = () => {
     return !isEqual(GraphSlices.initialState.styleOptions, styleOptions);
   }, [styleOptions, GraphSlices.initialState.styleOptions]);
 
-  const [isUploading, setIsUploading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [fileNames, setFileNames] = useState<string[]>(null);
   const { register, watch, control, handleSubmit } = useForm<FormValues>({
@@ -92,16 +91,11 @@ const ImportLocalFile = () => {
     setFileNames(null);
   }, [watchDataType]);
 
-  const onCancel = () => {
-    setIsUploading(false);
-  };
-
   const onRetry = () => {
     setErrorMessage('');
   };
 
   const onDropAccepted = (acceptedFiles: File[]) => {
-    setIsUploading(true);
     const acceptedFileNames: string[] = acceptedFiles.map((f) => f.name);
     const fileExts = acceptedFiles.map((f) => f.name.split('.').pop());
 
@@ -138,7 +132,6 @@ const ImportLocalFile = () => {
 
           batchFileRef.current = jsonFileContents;
           setFileNames(acceptedFileNames);
-          setIsUploading(false);
           return;
         }
 
@@ -155,7 +148,6 @@ const ImportLocalFile = () => {
 
           batchFileRef.current = csvFileContents;
           setFileNames(acceptedFileNames);
-          setIsUploading(false);
           return;
         }
 
@@ -182,7 +174,6 @@ const ImportLocalFile = () => {
 
             singleFileRef.current = nodeEdgeContent;
             setFileNames(acceptedFileNames);
-            setIsUploading(false);
             return;
           }
 
@@ -199,21 +190,18 @@ const ImportLocalFile = () => {
 
             singleFileRef.current = nodeEdgeContent;
             setFileNames(acceptedFileNames);
-            setIsUploading(false);
             return;
           }
 
           setErrorMessage(
             `Please ensure the node file includes 'node' and edge file 'edge'`,
           );
-          setIsUploading(false);
           return;
         }
 
         setErrorMessage(
           'Please ensure the correct number of files are uploaded and correctly labelled',
         );
-        setIsUploading(false);
       })
       .catch(() =>
         dispatch(
@@ -319,11 +307,9 @@ const ImportLocalFile = () => {
         <FileUploader
           accept={watchDataType[0].id === 'json' ? '.json' : '.csv'}
           multiple
-          onCancel={onCancel}
           onRetry={onRetry}
           onDropAccepted={onDropAccepted}
           onDropRejected={onDropRejected}
-          progressMessage={isUploading && 'Uploading... Hang tight'}
           errorMessage={errorMessage}
         />
         <Block>

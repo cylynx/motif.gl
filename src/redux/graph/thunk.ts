@@ -121,6 +121,8 @@ export const importEdgeListData = (
 /**
  *
  * Thunk to add data to graph - processes JSON and add to graphList
+ * 1. apply the latest style options in the import file.
+ * 2. changing layout must occurs before load graph's data
  *
  * @param {ImportFormat[]} importData - array of graphData objects
  * @param {ImportAccessors} importAccessors [importAccessors=null] to customize node Id / edge Id / edge source or target
@@ -146,7 +148,6 @@ export const importJsonData = (
   const batchDataPromises = importData.map((graphData: ImportFormat) => {
     const { data, style: importStyleOption } = graphData.data as TLoadFormat;
 
-    // obtain the latest style options in the import file.
     if (importStyleOption) {
       isDataPossessStyle = true;
       styleOptions = importStyleOption;
@@ -164,7 +165,6 @@ export const importJsonData = (
       }
 
       processResponse(dispatch, graphList, mainAccessors, graphData);
-
       showImportDataToast(dispatch, filterOptions);
     })
     .catch((err: Error) => {
