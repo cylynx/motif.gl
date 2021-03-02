@@ -34,7 +34,6 @@ export const ACCEPTED_ANALYZER_TYPES = [
   AnalyzerDatatypes.DATE,
   AnalyzerDatatypes.TIME,
   AnalyzerDatatypes.DATETIME,
-  AnalyzerDatatypes.NUMBER,
   AnalyzerDatatypes.INT,
   AnalyzerDatatypes.FLOAT,
   AnalyzerDatatypes.BOOLEAN,
@@ -444,10 +443,12 @@ export const getFieldsFromData = (
   );
   const { fieldByIndex } = renameDuplicateFields(fieldOrder);
   const result: Field[] = [];
-  for (const [index, field] of fieldOrder.entries()) {
+
+  fieldOrder.forEach((field, index) => {
     const name = fieldByIndex[index];
     const fieldMeta = metadata.find((m: any) => m.key === field);
-    // Excludes undefiend type, restricted fields and style / defaultStyle fields
+
+    // Excludes undefined type, restricted fields and style / defaultStyle fields
     if (
       typeof fieldMeta !== 'undefined' &&
       !name.includes('style.') &&
@@ -464,6 +465,7 @@ export const getFieldsFromData = (
           [],
           { ignoredDataTypes: IGNORE_DATA_TYPES },
         );
+
         // Only push if array is non-empty
         if (arrayMetadata.length > 0) {
           result.push({
@@ -482,7 +484,48 @@ export const getFieldsFromData = (
         });
       }
     }
-  }
+  });
+
+  // for (const [index, field] of fieldOrder.entries()) {
+  //   const name = fieldByIndex[index];
+  //   const fieldMeta = metadata.find((m: any) => m.key === field);
+  //
+  //   // Excludes undefined type, restricted fields and style / defaultStyle fields
+  //   if (
+  //     typeof fieldMeta !== 'undefined' &&
+  //     !name.includes('style.') &&
+  //     !name.includes('defaultStyle.')
+  //   ) {
+  //     const { type, format } = fieldMeta || {};
+  //     const fieldType = analyzerTypeToFieldType(type);
+  //     if (fieldType === 'array') {
+  //       // Check first value of the array
+  //       const arrayMetadata = Analyzer.computeColMeta(
+  //         data.map((x) => {
+  //           return { arrayValue: x[name][0] };
+  //         }),
+  //         [],
+  //         { ignoredDataTypes: IGNORE_DATA_TYPES },
+  //       );
+  //       // Only push if array is non-empty
+  //       if (arrayMetadata.length > 0) {
+  //         result.push({
+  //           name,
+  //           format,
+  //           type: `array<${analyzerTypeToFieldType(arrayMetadata[0].type)}>`,
+  //           analyzerType: type,
+  //         });
+  //       }
+  //     } else {
+  //       result.push({
+  //         name,
+  //         format,
+  //         type: fieldType,
+  //         analyzerType: type,
+  //       });
+  //     }
+  //   }
+  // }
   return result;
 };
 
