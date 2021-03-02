@@ -206,12 +206,16 @@ describe('add-data-thunk.test.js', () => {
       it('should not overwrite styles if data has no style', async () => {
         // input
         const jsonOneWithoutStyle = {
-          data: jsonDataOne.data,
+          data: {
+            data: jsonDataOne.data.data,
+          },
           type: jsonDataOne.type,
         };
 
         const jsonTwoWithoutStyle = {
-          data: jsonDataTwo.data,
+          data: {
+            data: jsonDataTwo.data.data,
+          },
           type: jsonDataTwo.type,
         };
 
