@@ -159,11 +159,11 @@ export const importJsonData = (
     .then((graphDataArr: GraphList[]) => {
       const graphData: GraphList = flatten(graphDataArr);
 
-      processResponse(dispatch, graphList, mainAccessors, graphData);
-
       if (isDataPossessStyle && overwriteStyles) {
         dispatch(updateStyleOption(styleOptions));
       }
+
+      processResponse(dispatch, graphList, mainAccessors, graphData);
 
       showImportDataToast(dispatch, filterOptions);
     })

@@ -7,12 +7,10 @@ import {
   useForm,
 } from 'react-hook-form';
 import { Button } from 'baseui/button';
-import { Input } from 'baseui/input';
 import { Block } from 'baseui/block';
 import { FileUploader } from 'baseui/file-uploader';
 import { FormControl } from 'baseui/form-control';
 import { Select } from 'baseui/select';
-import { Hide, Show } from 'baseui/icon';
 import isEqual from 'lodash/isEqual';
 
 import {
@@ -32,6 +30,7 @@ import {
 import { UISlices, UIThunks, UIConstants } from '../../../redux/ui';
 import useNodeStyle from '../../../redux/graph/hooks/useNodeStyle';
 import ConfirmationModal from '../../../components/ConfirmationModal';
+import AdditionalOptions from './AdditionalOptions';
 
 type FormValues = {
   dataType: { label: string; id: string }[];
@@ -88,6 +87,8 @@ const ImportLocalFile = () => {
   useEffect(() => {
     batchFileRef.current = null;
     singleFileRef.current = null;
+    formValueRef.current = null;
+    dataContainStyleRef.current = null;
     setFileNames(null);
   }, [watchDataType]);
 
@@ -363,75 +364,6 @@ const ImportLocalFile = () => {
         }
       />
     </Fragment>
-  );
-};
-
-const AdditionalOptions = ({ register }: { register: any }) => {
-  const [showOptions, setshowOptions] = useState(false);
-  const icon = showOptions ? <Hide /> : <Show />;
-  const buttonContents = showOptions
-    ? 'Hide options'
-    : 'Configure Id, Source, Target mapping';
-  return (
-    <Block marginTop='12px'>
-      <Button
-        onClick={() => setshowOptions((value) => !value)}
-        startEnhancer={icon}
-        kind='minimal'
-        size='mini'
-        type='button'
-      >
-        {buttonContents}
-      </Button>
-      <Block marginTop='12px' display={showOptions ? 'block' : 'none'}>
-        <Block display='flex' justifyContent='space-between'>
-          <Block width='48%'>
-            <FormControl label='Node ID Field'>
-              <Input
-                name='nodeID'
-                size='compact'
-                inputRef={register}
-                placeholder='id'
-              />
-            </FormControl>
-          </Block>
-          <Block width='48%'>
-            <FormControl label='Edge ID Field'>
-              <Input
-                name='edgeID'
-                size='compact'
-                inputRef={register}
-                placeholder='id'
-              />
-            </FormControl>
-          </Block>
-        </Block>
-        <Block display='flex' justifyContent='space-between'>
-          <Block width='48%'>
-            <FormControl label='Source Field'>
-              <Input
-                name='edgeSource'
-                size='compact'
-                inputRef={register}
-                placeholder='source'
-                required
-              />
-            </FormControl>
-          </Block>
-          <Block width='48%'>
-            <FormControl label='Target Field'>
-              <Input
-                name='edgeTarget'
-                size='compact'
-                inputRef={register}
-                placeholder='target'
-                required
-              />
-            </FormControl>
-          </Block>
-        </Block>
-      </Block>
-    </Block>
   );
 };
 
