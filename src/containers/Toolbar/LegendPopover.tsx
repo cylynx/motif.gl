@@ -8,7 +8,6 @@ import { Select } from 'baseui/select';
 import { LabelSmall, ParagraphSmall } from 'baseui/typography';
 import { GraphSelectors, GraphSlices } from '../../redux/graph';
 import { CATEGORICAL_COLOR } from '../../constants/colors';
-import { DEFAULT_NODE_STYLE } from '../../constants/graph-shapes';
 import useNodeStyle from '../../redux/graph/hooks/useNodeStyle';
 
 const MAX_LEGEND_SIZE = CATEGORICAL_COLOR.length;

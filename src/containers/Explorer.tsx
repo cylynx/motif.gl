@@ -17,7 +17,6 @@ import { Modal, ModalBody, SIZE } from 'baseui/modal';
 
 import { ToasterContainer, PLACEMENT } from 'baseui/toast';
 import Graphin from '@antv/graphin';
-import { PRIMARY_COLOR } from '../constants/colors';
 import { Loader } from '../components/ui';
 import DataTable from './DataTable';
 import { defaultWidgetList } from './widgets';
@@ -69,20 +68,13 @@ export const WidgetContainer = (props: WidgetContainerProps) => {
   return null;
 };
 
-const defaultNodeStyle: StyleOptions['nodeStyle'] = {
-  color: {
-    id: 'fixed',
-    value: PRIMARY_COLOR,
-  },
-};
-
 const Explorer = (props: ExplorerProps) => {
   const {
     name,
     accessors,
     overrides,
     secondaryTheme,
-    styleOptions = { nodeStyle: defaultNodeStyle },
+    styleOptions = GraphSlices.initialState.styleOptions,
   } = props;
   const graphRef = useRef<Graphin>(null);
   const [tooltip, setTooltip] = useState(null);

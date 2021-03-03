@@ -6,6 +6,7 @@ describe('Navigation', () => {
 
   it('should open Modal when the page initialized', () => {
     cy.getReact('Modal')
+      .nthNode(0)
       .getProps('isOpen')
       .should('eq', true);
   });

@@ -1,13 +1,17 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  Controller,
+  SubmitHandler,
+  UnpackNestedValue,
+  useForm,
+} from 'react-hook-form';
 import { Button } from 'baseui/button';
-import { Input } from 'baseui/input';
 import { Block } from 'baseui/block';
 import { FileUploader } from 'baseui/file-uploader';
 import { FormControl } from 'baseui/form-control';
 import { Select } from 'baseui/select';
-import { Hide, Show } from 'baseui/icon';
+import isEqual from 'lodash/isEqual';
 
 import {
   EdgeListCsv,
@@ -16,10 +20,17 @@ import {
   NodeEdgeCsv,
   NodeEdgeDataType,
   Accessors,
-  GraphList,
   GraphThunks,
+  GraphSelectors,
+  GraphSlices,
+  TLoadFormat,
+  StyleOptions,
+  NodeStyleOptions,
 } from '../../../redux/graph';
 import { UISlices, UIThunks, UIConstants } from '../../../redux/ui';
+import useNodeStyle from '../../../redux/graph/hooks/useNodeStyle';
+import ConfirmationModal from '../../../components/ConfirmationModal';
+import AdditionalOptions from './AdditionalOptions';
 
 type FormValues = {
   dataType: { label: string; id: string }[];
@@ -40,8 +51,19 @@ const ImportLocalFile = () => {
   const dispatch = useDispatch();
   const batchFileRef = useRef<ImportFormat[]>(null);
   const singleFileRef = useRef<ImportFormat>(null);
+  const dataContainStyleRef = useRef<boolean>(false);
+  const formValueRef = useRef<UnpackNestedValue<FormValues>>(null);
+  const [confirmModalOpen, setConfirmModalOpen] = useState<boolean>(false);
+  const { switchToFixNodeColor } = useNodeStyle();
 
-  const [isUploading, setIsUploading] = useState(false);
+  const styleOptions: StyleOptions = useSelector((state) =>
+    GraphSelectors.getStyleOptions(state),
+  );
+
+  const isStyleOptionModified: boolean = useMemo(() => {
+    return !isEqual(GraphSlices.initialState.styleOptions, styleOptions);
+  }, [styleOptions, GraphSlices.initialState.styleOptions]);
+
   const [errorMessage, setErrorMessage] = useState('');
   const [fileNames, setFileNames] = useState<string[]>(null);
   const { register, watch, control, handleSubmit } = useForm<FormValues>({
@@ -51,6 +73,8 @@ const ImportLocalFile = () => {
       edgeTarget: 'target',
     },
   });
+
+  const nodeOptions: NodeStyleOptions = styleOptions.nodeStyle;
 
   const watchDataType = watch('dataType');
   const isButtonDisabled =
@@ -62,19 +86,16 @@ const ImportLocalFile = () => {
   useEffect(() => {
     batchFileRef.current = null;
     singleFileRef.current = null;
+    formValueRef.current = null;
+    dataContainStyleRef.current = null;
     setFileNames(null);
   }, [watchDataType]);
-
-  const onCancel = () => {
-    setIsUploading(false);
-  };
 
   const onRetry = () => {
     setErrorMessage('');
   };
 
   const onDropAccepted = (acceptedFiles: File[]) => {
-    setIsUploading(true);
     const acceptedFileNames: string[] = acceptedFiles.map((f) => f.name);
     const fileExts = acceptedFiles.map((f) => f.name.split('.').pop());
 
@@ -96,7 +117,12 @@ const ImportLocalFile = () => {
         if (fileExtension === 'json' && selectedDataType === 'json') {
           const jsonFileContents: JsonImport[] = fileContents.map(
             (content: string) => {
-              const jsonGraphList: GraphList = JSON.parse(content);
+              const jsonGraphList: TLoadFormat = JSON.parse(content);
+
+              if (jsonGraphList.style) {
+                dataContainStyleRef.current = true;
+              }
+
               return {
                 data: jsonGraphList,
                 type: 'json',
@@ -182,7 +208,6 @@ const ImportLocalFile = () => {
           UIThunks.show('The file provided is not readable', 'negative'),
         ),
       );
-    setIsUploading(false);
   };
 
   const onDropRejected = () => {
@@ -194,9 +219,34 @@ const ImportLocalFile = () => {
 
   const onSubmitForm: SubmitHandler<FormValues> = (data, e) => {
     e.preventDefault();
-    const { dataType, ...accessors } = data;
 
-    // remove accessor keys with empty string
+    if (nodeOptions.color.id === 'legend') {
+      switchToFixNodeColor();
+    }
+
+    formValueRef.current = data;
+    if (isStyleOptionModified && dataContainStyleRef.current) {
+      setConfirmModalOpen(true);
+      return;
+    }
+
+    if (
+      isStyleOptionModified === false &&
+      dataContainStyleRef.current === true
+    ) {
+      performImportData(true);
+      return;
+    }
+
+    performImportData(false);
+  };
+
+  const performImportData = (overwriteStyle: boolean) => {
+    const {
+      dataType,
+      ...accessors
+    } = formValueRef.current as UnpackNestedValue<FormValues>;
+
     Object.keys(accessors as Accessors)
       .filter((k) => accessors[k] === '')
       .map((k) => delete accessors[k]);
@@ -213,10 +263,26 @@ const ImportLocalFile = () => {
     }
 
     if (selectedDataType === 'json') {
-      dispatch(GraphThunks.importJsonData(batchFileRef.current, accessors));
+      dispatch(
+        GraphThunks.importJsonData(
+          batchFileRef.current,
+          accessors,
+          overwriteStyle,
+        ),
+      );
     }
 
     dispatch(UISlices.closeModal());
+  };
+
+  const onConfirmModalReject = () => {
+    setConfirmModalOpen(false);
+    performImportData(false);
+  };
+
+  const onConfirmModalApprove = () => {
+    setConfirmModalOpen(false);
+    performImportData(true);
   };
 
   return (
@@ -232,6 +298,7 @@ const ImportLocalFile = () => {
                 value={value}
                 options={importOptions}
                 clearable={false}
+                searchable={false}
                 onChange={(data: any) => onChange(data.value)}
                 placeholder='Select Import Data Type'
               />
@@ -241,11 +308,9 @@ const ImportLocalFile = () => {
         <FileUploader
           accept={watchDataType[0].id === 'json' ? '.json' : '.csv'}
           multiple
-          onCancel={onCancel}
           onRetry={onRetry}
           onDropAccepted={onDropAccepted}
           onDropRejected={onDropRejected}
-          progressMessage={isUploading && 'Uploading... Hang tight'}
           errorMessage={errorMessage}
         />
         <Block>
@@ -260,76 +325,32 @@ const ImportLocalFile = () => {
           </Button>
         </Block>
       </form>
+      <ConfirmationModal
+        onClose={onConfirmModalReject}
+        isOpen={confirmModalOpen}
+        onReject={onConfirmModalReject}
+        onAccept={onConfirmModalApprove}
+        header={
+          <Block
+            as='span'
+            overrides={{
+              Block: {
+                style: {
+                  textTransform: 'capitalize',
+                },
+              },
+            }}
+          >
+            Overwrite existing styles?
+          </Block>
+        }
+        body={
+          <Block as='span'>
+            Import file styles differ from currently applied styles.
+          </Block>
+        }
+      />
     </Fragment>
-  );
-};
-
-const AdditionalOptions = ({ register }: { register: any }) => {
-  const [showOptions, setshowOptions] = useState(false);
-  const icon = showOptions ? <Hide /> : <Show />;
-  const buttonContents = showOptions
-    ? 'Hide options'
-    : 'Configure Id, Source, Target mapping';
-  return (
-    <Block marginTop='12px'>
-      <Button
-        onClick={() => setshowOptions((value) => !value)}
-        startEnhancer={icon}
-        kind='minimal'
-        size='mini'
-        type='button'
-      >
-        {buttonContents}
-      </Button>
-      <Block marginTop='12px' display={showOptions ? 'block' : 'none'}>
-        <Block display='flex' justifyContent='space-between'>
-          <Block width='48%'>
-            <FormControl label='Node ID Field'>
-              <Input
-                name='nodeID'
-                size='compact'
-                inputRef={register}
-                placeholder='id'
-              />
-            </FormControl>
-          </Block>
-          <Block width='48%'>
-            <FormControl label='Edge ID Field'>
-              <Input
-                name='edgeID'
-                size='compact'
-                inputRef={register}
-                placeholder='id'
-              />
-            </FormControl>
-          </Block>
-        </Block>
-        <Block display='flex' justifyContent='space-between'>
-          <Block width='48%'>
-            <FormControl label='Source Field'>
-              <Input
-                name='edgeSource'
-                size='compact'
-                inputRef={register}
-                placeholder='source'
-                required
-              />
-            </FormControl>
-          </Block>
-          <Block width='48%'>
-            <FormControl label='Target Field'>
-              <Input
-                name='edgeTarget'
-                size='compact'
-                inputRef={register}
-                placeholder='target'
-                required
-              />
-            </FormControl>
-          </Block>
-        </Block>
-      </Block>
-    </Block>
   );
 };
 

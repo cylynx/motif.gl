@@ -27,7 +27,7 @@ const Toolbar = () => {
   const graphContainer = document.getElementById('graphin-container');
   const dispatch = useDispatch();
   const { centerCanvas } = useGraphBehaviors(graph);
-  const { switchToFixNodeColor } = useNodeStyle();
+  const { nodeStyle, switchToFixNodeColor } = useNodeStyle();
 
   const toggleFullScreen = () => {
     // Exit will be handled by the esc key (no button is available)
@@ -50,8 +50,11 @@ const Toolbar = () => {
 
   const onClearClick = () => {
     dispatch(GraphSlices.resetState());
-    switchToFixNodeColor();
     centerCanvas();
+
+    if (nodeStyle.color.id === 'legend') {
+      switchToFixNodeColor();
+    }
   };
 
   const menuItems: ToolbarItem[] = [

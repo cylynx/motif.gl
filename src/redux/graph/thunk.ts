@@ -1,10 +1,8 @@
-import some from 'lodash/some';
-import isUndefined from 'lodash/isUndefined';
 import flatten from 'lodash/flatten';
 import isEmpty from 'lodash/isEmpty';
-import { getFilterOptions, getGraph } from './selectors';
+import { getFilterOptions, getGraph, getStyleOptions } from './selectors';
 
-import { addQuery, processGraphResponse } from './slice';
+import { addQuery, processGraphResponse, updateStyleOption } from './slice';
 import {
   importEdgeListCsv,
   importNodeEdgeCsv,
@@ -18,6 +16,8 @@ import {
   GraphList,
   GraphData,
   FilterOptions,
+  TLoadFormat,
+  StyleOptions,
 } from './types';
 
 import { UISlices, UIThunks } from '../ui';
@@ -43,7 +43,7 @@ const processResponse = (
  *  2. Filter Option is empty, display success toast.
  *
  * @param {any} dispatch
- * @param {Graph.FilterOptions} filterOptions
+ * @param {FilterOptions} filterOptions
  *
  * @return {void}
  */
@@ -101,15 +101,19 @@ export const importEdgeListData = (
 /**
  *
  * Thunk to add data to graph - processes JSON and add to graphList
+ * 1. apply the latest style options in the import file.
+ * 2. changing layout must occurs before load graph's data
  *
  * @param {ImportFormat[]} importData - array of graphData objects
  * @param {ImportAccessors} importAccessors [importAccessors=null] to customize node Id / edge Id / edge source or target
+ * @param {boolean} overwriteStyles - overwrite the existing graph styles
  *
  * @return Promise
  */
 export const importJsonData = (
   importData: ImportFormat[],
   importAccessors: ImportAccessors = null,
+  overwriteStyles = false,
 ) => (dispatch: any, getState: any) => {
   if (Array.isArray(importData) === false) {
     throw new Error('Provided import data is not an array');
@@ -118,15 +122,28 @@ export const importJsonData = (
   const { accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
   const filterOptions: FilterOptions = getFilterOptions(getState());
+  let isDataPossessStyle = false;
+  let styleOptions: StyleOptions = getStyleOptions(getState());
 
   const batchDataPromises = importData.map((graphData: ImportFormat) => {
-    const { data } = graphData;
+    const { data, style: importStyleOption } = graphData.data as TLoadFormat;
+
+    if (importStyleOption) {
+      isDataPossessStyle = true;
+      styleOptions = importStyleOption;
+    }
+
     return importJson(data as GraphList, accessors);
   });
 
   return Promise.all(batchDataPromises)
     .then((graphDataArr: GraphList[]) => {
       const graphData: GraphList = flatten(graphDataArr);
+
+      if (isDataPossessStyle && overwriteStyles) {
+        dispatch(updateStyleOption(styleOptions));
+      }
+
       processResponse(dispatch, mainAccessors, graphData);
       showImportDataToast(dispatch, filterOptions);
     })
@@ -192,7 +209,7 @@ export const importSingleJsonData = (
   }
 
   const { data } = importData;
-  const { graphList, accessors: mainAccessors } = getGraph(getState());
+  const { accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
   const filterOptions: FilterOptions = getFilterOptions(getState());
 

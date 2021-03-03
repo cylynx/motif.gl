@@ -83,7 +83,7 @@ describe('Edge Style Filter', () => {
 
     it('should adjust with property (user defined)', async () => {
       const edgeSizeType = 'property';
-      const selectedVariable = 'is_foreign_source';
+      const selectedVariable = 'amount';
       const controllerName = 'range';
 
       changeWidthType('Property');
@@ -149,25 +149,25 @@ describe('Edge Style Filter', () => {
         });
     };
 
-    it('should display line when None', async () => {
+    it('should display line when None', () => {
       const selectedPatternField = 'none';
       changePatternField(selectedPatternField);
       assertEdgePattern(selectedPatternField);
     });
 
-    it('should display Dot', async () => {
+    it('should display Dot', () => {
       const selectedPatternField = 'dot';
       changePatternField(selectedPatternField);
       assertEdgePattern(selectedPatternField);
     });
 
-    it('should display Dash', async () => {
+    it('should display Dash', () => {
       const selectedPatternField = 'dash';
       changePatternField(selectedPatternField);
       assertEdgePattern(selectedPatternField);
     });
 
-    it('should display Dash Dot', async () => {
+    it('should display Dash Dot', () => {
       const selectedPatternField = 'dash-dot';
       changePatternField(selectedPatternField);
       assertEdgePattern(selectedPatternField);
@@ -199,7 +199,7 @@ describe('Edge Style Filter', () => {
       cy.react('Controller', {
         props: { name: controllerName },
       })
-        .first()
+        .last()
         .type(`${type}{enter}`);
     };
 
@@ -209,7 +209,7 @@ describe('Edge Style Filter', () => {
       expect(edgeArrow).to.deep.equal(type);
     };
 
-    it.skip('should hide arrow', async () => {
+    it('should hide arrow', async () => {
       const selectedValue = 'none';
       changeArrow(selectedValue);
       await assertReduxValue(selectedValue);
@@ -225,7 +225,7 @@ describe('Edge Style Filter', () => {
         });
     });
 
-    it.skip('should display arrow', async () => {
+    it('should display arrow', async () => {
       const selectedValue = 'display';
       changeArrow(selectedValue);
       await assertReduxValue(selectedValue);

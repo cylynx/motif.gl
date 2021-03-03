@@ -20,12 +20,6 @@ describe('Search Panel', function() {
       .should('exist');
   });
 
-  it('should render beside Left Navigation Bar', () => {
-    cy.getReact('LeftLayer')
-      .getReact('SearchPanel')
-      .should('exist');
-  });
-
   it('should render Search Tabs successfully', () => {
     cy.getReact('SearchTabs').should('exist');
   });

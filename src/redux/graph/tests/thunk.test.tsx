@@ -6,14 +6,18 @@ import cloneDeep from 'lodash/cloneDeep';
 import flatten from 'lodash/flatten';
 import { render } from '@testing-library/react';
 import { ToasterContainer } from 'baseui/toast';
-import { RootState } from '../../investigate/types';
 import {
   importEdgeListData,
   importJsonData,
   importNodeEdgeData,
   importSingleJsonData,
 } from '../thunk';
-import { initialState, addQuery, processGraphResponse } from '../slice';
+import {
+  initialState,
+  addQuery,
+  processGraphResponse,
+  updateStyleOption,
+} from '../slice';
 import {
   importJson,
   importNodeEdgeCsv,
@@ -21,6 +25,10 @@ import {
 } from '../processors/import';
 import { fetchBegin, fetchDone, updateToast } from '../../ui/slice';
 import { SimpleEdge } from '../../../constants/sample-data';
+import { RootState } from '../../investigate';
+import { ImportFormat, TLoadFormat } from '../types';
+import * as LAYOUT from '../../../constants/layout-options';
+import { DEFAULT_NODE_STYLE } from '../../../constants/graph-shapes';
 
 const mockStore = configureStore([thunk]);
 const getStore = (): RootState => {
@@ -38,41 +46,88 @@ const getStore = (): RootState => {
 };
 
 describe('add-data-thunk.test.js', () => {
-  const jsonDataOne = {
-    data: {
-      nodes: [{ id: 'node-1' }, { id: 'node-2' }],
-      edges: [{ id: 'edge-1', source: 'node-1', target: 'node-2' }],
-      metadata: {
-        key: 123,
-      },
-    },
-    type: 'json',
-  };
-  const jsonDataTwo = {
-    data: {
-      nodes: [{ id: 'node-3' }, { id: 'node-4' }],
-      edges: [{ id: 'edge-2', source: 'node-3s', target: 'node-4' }],
-      metadata: {
-        key: 234,
-      },
-    },
-    type: 'json',
-  };
-
   beforeEach(() => {
     render(<ToasterContainer />);
   });
 
   describe('importJsonData', () => {
+    const jsonDataOne = {
+      data: {
+        data: {
+          nodes: [{ id: 'node-1' }, { id: 'node-2' }],
+          edges: [{ id: 'edge-1', source: 'node-1', target: 'node-2' }],
+          metadata: {
+            key: 123,
+          },
+        },
+        style: {
+          layout: LAYOUT.RADIAL_DEFAULT,
+          nodeStyle: {
+            color: {
+              id: 'fixed',
+              value: DEFAULT_NODE_STYLE.color,
+            },
+            size: {
+              id: 'fixed',
+              value: 30,
+            },
+          },
+          edgeStyle: {
+            width: {
+              id: 'fixed',
+              value: 2,
+            },
+            label: 'none',
+          },
+          resetView: true,
+          groupEdges: false,
+        },
+      },
+      type: 'json',
+    };
+    const jsonDataTwo = {
+      data: {
+        data: {
+          nodes: [{ id: 'node-3' }, { id: 'node-4' }],
+          edges: [{ id: 'edge-2', source: 'node-3', target: 'node-4' }],
+          metadata: {
+            key: 234,
+          },
+        },
+        style: {
+          layout: { type: 'graphin-force' },
+          nodeStyle: {
+            color: { value: 'orange', id: 'fixed' },
+            size: { value: 47, id: 'fixed' },
+            label: 'id',
+          },
+          edgeStyle: {
+            width: { id: 'fixed', value: 1 },
+            label: 'source',
+            pattern: 'dot',
+            fontSize: 16,
+            arrow: 'none',
+          },
+          resetView: true,
+          groupEdges: false,
+        },
+      },
+      type: 'json',
+    };
+
     const store = mockStore(getStore());
+
+    afterEach(() => {
+      store.clearActions();
+    });
 
     it('should receive array of importData and process graph responses accurately', async () => {
       // input
       const importDataArr = [jsonDataOne, jsonDataTwo];
 
       // processes
-      const batchDataPromises = importDataArr.map((graphData) => {
-        const { data } = graphData;
+      const batchDataPromises = importDataArr.map((graphData: ImportFormat) => {
+        const { data } = graphData.data as TLoadFormat;
         return importJson(data, initialState.accessors);
       });
 
@@ -98,9 +153,160 @@ describe('add-data-thunk.test.js', () => {
       ];
 
       // assertions
-      await store.dispatch(importJsonData(importDataArr));
+      await store.dispatch(
+        importJsonData(importDataArr, initialState.accessors),
+      );
       expect(store.getActions()).toEqual(expectedActions);
     });
+
+    it('should display different success message in toast with filter applied', async () => {
+      const currentStore = getStore();
+      Object.assign(currentStore.investigate.graph.present.filterOptions, {
+        value: 'something',
+      });
+
+      const modifiedStore = mockStore(currentStore);
+
+      // input
+      const importDataArr = [jsonDataOne, jsonDataTwo];
+
+      // processes
+      const batchDataPromises = importDataArr.map((graphData: ImportFormat) => {
+        const { data } = graphData.data as TLoadFormat;
+        return importJson(data, initialState.accessors);
+      });
+
+      const graphDataArr = await Promise.all(batchDataPromises);
+      const [firstGraphData, secondGraphData] = flatten(graphDataArr);
+
+      // expected results
+      const expectedActions = [
+        fetchBegin(),
+        addQuery(firstGraphData),
+        processGraphResponse({
+          data: firstGraphData,
+          accessors: initialState.accessors,
+        }),
+        fetchDone(),
+        addQuery(secondGraphData),
+        processGraphResponse({
+          data: secondGraphData,
+          accessors: initialState.accessors,
+        }),
+        fetchDone(),
+        updateToast('toast-0'),
+      ];
+
+      // assertions
+      await modifiedStore.dispatch(
+        importJsonData(importDataArr, initialState.accessors),
+      );
+      expect(modifiedStore.getActions()).toEqual(expectedActions);
+    });
+
+    it('should overwrite styles with the last file', async () => {
+      // input
+      const importDataArr = [jsonDataOne, jsonDataTwo];
+      let { styleOptions } = initialState;
+
+      // processes
+      const batchDataPromises = importDataArr.map((graphData: ImportFormat) => {
+        const { data, style } = graphData.data as TLoadFormat;
+
+        if (style) {
+          styleOptions = style;
+        }
+
+        return importJson(data, initialState.accessors);
+      });
+
+      const graphDataArr = await Promise.all(batchDataPromises);
+      const [firstGraphData, secondGraphData] = flatten(graphDataArr);
+
+      // expected results
+      const expectedActions = [
+        updateStyleOption(styleOptions),
+        fetchBegin(),
+        addQuery(firstGraphData),
+        processGraphResponse({
+          data: firstGraphData,
+          accessors: initialState.accessors,
+        }),
+        fetchDone(),
+        addQuery(secondGraphData),
+        processGraphResponse({
+          data: secondGraphData,
+          accessors: initialState.accessors,
+        }),
+        fetchDone(),
+        updateToast('toast-0'),
+      ];
+
+      // assertions
+      await store.dispatch(
+        importJsonData(importDataArr, initialState.accessors, true),
+      );
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+
+    it('should not overwrite styles if data has no style', async () => {
+      // input
+      const jsonOneWithoutStyle = {
+        data: {
+          data: jsonDataOne.data.data,
+        },
+        type: jsonDataOne.type,
+      };
+
+      const jsonTwoWithoutStyle = {
+        data: {
+          data: jsonDataTwo.data.data,
+        },
+        type: jsonDataTwo.type,
+      };
+
+      const importDataArr = [jsonOneWithoutStyle, jsonTwoWithoutStyle];
+      let { styleOptions } = initialState;
+
+      // processes
+      const batchDataPromises = importDataArr.map((graphData: ImportFormat) => {
+        const { data, style } = graphData.data as TLoadFormat;
+
+        if (style) {
+          styleOptions = style;
+        }
+
+        return importJson(data, initialState.accessors);
+      });
+
+      const graphDataArr = await Promise.all(batchDataPromises);
+      const [firstGraphData, secondGraphData] = flatten(graphDataArr);
+
+      // expected results
+      const expectedActions = [
+        fetchBegin(),
+        addQuery(firstGraphData),
+        processGraphResponse({
+          data: firstGraphData,
+          accessors: initialState.accessors,
+        }),
+        fetchDone(),
+        addQuery(secondGraphData),
+        processGraphResponse({
+          data: secondGraphData,
+          accessors: initialState.accessors,
+        }),
+        fetchDone(),
+        updateToast('toast-0'),
+      ];
+
+      // assertions
+      await store.dispatch(
+        importJsonData(importDataArr, initialState.accessors, true),
+      );
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+
     it('should throw error if importData parameter is not array', async () => {
       // assertions
       expect(importJsonData(jsonDataOne)).toThrow(Error);
@@ -120,7 +326,7 @@ describe('add-data-thunk.test.js', () => {
       type: 'nodeEdgeCsv',
     };
 
-    it('should receive importData as object and process graph responses accurately', async () => {
+    it('should receive importNodeEdgeData as object and process graph responses accurately', async () => {
       const store = mockStore(getStore());
       const { nodeData, edgeData } = sampleNodeEdgeData.data;
       const { accessors } = initialState;
@@ -149,8 +355,8 @@ describe('add-data-thunk.test.js', () => {
       );
       expect(store.getActions()).toEqual(expectedActions);
     });
-    it('should throw errors if importData parameter is array', async () => {
-      const importDataArr = [jsonDataOne, jsonDataTwo];
+    it('should throw errors if importNodeEdgeData parameter is array', async () => {
+      const importDataArr = [sampleNodeEdgeData];
       await expect(importNodeEdgeData(importDataArr)).toThrow(Error);
     });
 

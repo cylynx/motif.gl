@@ -2,7 +2,18 @@ import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleDat
 
 describe('Multiple Selection', () => {
   const graphinEl = 'Graphin';
-  beforeEach(() => {
+
+  const deleteButtonClick = () => {
+    cy.react('Button', {
+      props: {
+        'data-testid': 'filter-selection-header:delete',
+      },
+    })
+      .nthNode(0)
+      .click();
+  };
+
+  before(() => {
     cy.visit('/');
     cy.waitForReact(5000);
 
@@ -11,17 +22,18 @@ describe('Multiple Selection', () => {
 
     // import sample data by clicking bank
     cy.importSampleData(SampleData.BANK);
+    cy.switchPanel('filters');
   });
 
   describe('Double Strings filter', () => {
     beforeEach(() => {
       // switch to filter panel
-      cy.switchPanel('filters');
       cy.react('AddFilterButton').click();
     });
 
     afterEach(() => {
-      cy.react('ClearDataButton').click();
+      deleteButtonClick();
+      deleteButtonClick();
     });
 
     it('Single - Single combination', () => {
@@ -33,9 +45,6 @@ describe('Multiple Selection', () => {
       cy.react('AddFilterButton').click();
       cy.selectFilterSelection('id{enter}', 'last');
       cy.filterMultiString('customer_81{enter}', 'last');
-
-      // switch to layer panel
-      cy.switchPanel('layers');
 
       // results
       cy.getReact(graphinEl)
@@ -57,9 +66,6 @@ describe('Multiple Selection', () => {
       cy.selectFilterSelection('id{enter}', 'last');
       cy.filterMultiString('customer_81{enter}customer_55{enter}', 'last');
 
-      // switch to layer panel
-      cy.switchPanel('layers');
-
       // results
       cy.getReact(graphinEl)
         .getProps('data.nodes')
@@ -80,9 +86,6 @@ describe('Multiple Selection', () => {
       cy.selectFilterSelection('id{enter}', 'last');
       cy.filterMultiString('customer_81{enter}customer_55{enter}', 'last');
 
-      // switch to layer panel
-      cy.switchPanel('layers');
-
       // results
       cy.getReact(graphinEl)
         .getProps('data.nodes')
@@ -96,13 +99,13 @@ describe('Multiple Selection', () => {
 
   describe('Triple Strings filter', () => {
     beforeEach(() => {
-      // switch to filter panel
-      cy.switchPanel('filters');
       cy.react('AddFilterButton').click();
     });
 
     afterEach(() => {
-      cy.react('ClearDataButton').click();
+      deleteButtonClick();
+      deleteButtonClick();
+      deleteButtonClick();
     });
 
     it('Double - Double - Double combination', () => {
@@ -120,9 +123,6 @@ describe('Multiple Selection', () => {
       cy.selectFilterSelection('icon{enter}', 'last');
       cy.filterMultiString('account_box{enter}-{enter}', 'last');
 
-      // switch to layer panel
-      cy.switchPanel('layers');
-
       // results
       cy.getReact(graphinEl)
         .getProps('data.nodes')
@@ -136,14 +136,12 @@ describe('Multiple Selection', () => {
 
   describe('Numeric and String filter', () => {
     beforeEach(() => {
-      // switch to filter panel
-      cy.switchPanel('filters');
-
       cy.react('AddFilterButton').click();
     });
 
     afterEach(() => {
-      cy.react('ClearDataButton').click();
+      deleteButtonClick();
+      deleteButtonClick();
     });
 
     it('Numeric - Single String combination', () => {
@@ -154,9 +152,6 @@ describe('Multiple Selection', () => {
       cy.react('AddFilterButton').click();
       cy.selectFilterSelection('id{enter}', 'last');
       cy.filterMultiString('customer_901{enter}', 'last');
-
-      // switch to layer panel
-      cy.switchPanel('layers');
 
       // results
       cy.getReact(graphinEl)
@@ -177,9 +172,6 @@ describe('Multiple Selection', () => {
       cy.selectFilterSelection('id{enter}', 'last');
       cy.filterMultiString('customer_901{enter}customer_902{enter}', 'last');
 
-      // switch to layer panel
-      cy.switchPanel('layers');
-
       // results
       cy.getReact(graphinEl)
         .getProps('data.nodes')
@@ -193,14 +185,7 @@ describe('Multiple Selection', () => {
 
   describe('Numeric and Numeric filter', () => {
     beforeEach(() => {
-      // switch to filter panel
-      cy.switchPanel('filters');
-
       cy.react('AddFilterButton').click();
-    });
-
-    afterEach(() => {
-      cy.react('ClearDataButton').click();
     });
 
     it('Double Numeric combination', () => {
@@ -211,9 +196,6 @@ describe('Multiple Selection', () => {
       cy.react('AddFilterButton').click();
       cy.selectFilterSelection('is_different_bank{enter}', 'last');
 
-      // switch to layer panel
-      cy.switchPanel('layers');
-
       // results
       cy.getReact(graphinEl)
         .getProps('data.nodes')
@@ -222,6 +204,9 @@ describe('Multiple Selection', () => {
       cy.getReact(graphinEl)
         .getProps('data.edges')
         .should('have.length', 14);
+
+      deleteButtonClick();
+      deleteButtonClick();
     });
 
     it('Triple Numeric combination', () => {
@@ -236,9 +221,6 @@ describe('Multiple Selection', () => {
       cy.react('AddFilterButton').click();
       cy.selectFilterSelection('risk_score{enter}', 'last');
 
-      // switch to layer panel
-      cy.switchPanel('layers');
-
       // results
       cy.getReact(graphinEl)
         .getProps('data.nodes')
@@ -247,19 +229,21 @@ describe('Multiple Selection', () => {
       cy.getReact(graphinEl)
         .getProps('data.edges')
         .should('have.length', 0);
+
+      deleteButtonClick();
+      deleteButtonClick();
+      deleteButtonClick();
     });
   });
 
   describe('Numeric and String filter', () => {
     beforeEach(() => {
-      // switch to filter panel
-      cy.switchPanel('filters');
-
       cy.react('AddFilterButton').click();
     });
 
     afterEach(() => {
-      cy.react('ClearDataButton').click();
+      deleteButtonClick();
+      deleteButtonClick();
     });
 
     it('Numeric - Single String combination', () => {
@@ -270,9 +254,6 @@ describe('Multiple Selection', () => {
       cy.react('AddFilterButton').click();
       cy.selectFilterSelection('id{enter}', 'last');
       cy.filterMultiString('customer_901{enter}', 'last');
-
-      // switch to layer panel
-      cy.switchPanel('layers');
 
       // results
       cy.getReact(graphinEl)
@@ -287,13 +268,12 @@ describe('Multiple Selection', () => {
 
   describe('String and DateTime filter', () => {
     beforeEach(() => {
-      // switch to filter panel
-      cy.switchPanel('filters');
       cy.react('AddFilterButton').click();
     });
 
     afterEach(() => {
-      cy.react('ClearDataButton').click();
+      deleteButtonClick();
+      deleteButtonClick();
     });
 
     it('Single String - DateTime combination', () => {
@@ -304,9 +284,6 @@ describe('Multiple Selection', () => {
       cy.react('AddFilterButton').click();
       cy.selectFilterSelection('icon{enter}', 'last');
       cy.filterMultiString('account_balance{enter}', 'last');
-
-      // switch to layer panel
-      cy.switchPanel('layers');
 
       // results
       cy.getReact(graphinEl)
@@ -327,9 +304,6 @@ describe('Multiple Selection', () => {
       cy.selectFilterSelection('icon{enter}', 'last');
       cy.filterMultiString('account_box{enter}-{enter}', 'last');
 
-      // switch to layer panel
-      cy.switchPanel('layers');
-
       // results
       cy.getReact(graphinEl)
         .getProps('data.nodes')
@@ -343,14 +317,12 @@ describe('Multiple Selection', () => {
 
   describe('String and Time filter', () => {
     beforeEach(() => {
-      // switch to filter panel
-      cy.switchPanel('filters');
-
       cy.react('AddFilterButton').click();
     });
 
     afterEach(() => {
-      cy.react('ClearDataButton').click();
+      deleteButtonClick();
+      deleteButtonClick();
     });
 
     it('Single String - Time combination', () => {
@@ -361,9 +333,6 @@ describe('Multiple Selection', () => {
       cy.react('AddFilterButton').click();
       cy.selectFilterSelection('icon{enter}', 'last');
       cy.filterMultiString('account_balance{enter}', 'last');
-
-      // switch to layer panel
-      cy.switchPanel('layers');
 
       // results
       cy.getReact(graphinEl)
@@ -384,9 +353,6 @@ describe('Multiple Selection', () => {
       cy.selectFilterSelection('icon{enter}', 'last');
       cy.filterMultiString('account_balance{enter}-{enter}', 'last');
 
-      // switch to layer panel
-      cy.switchPanel('layers');
-
       // results
       cy.getReact(graphinEl)
         .getProps('data.nodes')
@@ -400,13 +366,12 @@ describe('Multiple Selection', () => {
 
   describe('String and Date filter', () => {
     beforeEach(() => {
-      // switch to filter panel
-      cy.switchPanel('filters');
       cy.react('AddFilterButton').click();
     });
 
     afterEach(() => {
-      cy.react('ClearDataButton').click();
+      deleteButtonClick();
+      deleteButtonClick();
     });
 
     it('Single String - Date combination', () => {
@@ -417,9 +382,6 @@ describe('Multiple Selection', () => {
       cy.react('AddFilterButton').click();
       cy.selectFilterSelection('icon{enter}', 'last');
       cy.filterMultiString('account_balance{enter}', 'last');
-
-      // switch to layer panel
-      cy.switchPanel('layers');
 
       // results
       cy.getReact(graphinEl)
@@ -439,9 +401,6 @@ describe('Multiple Selection', () => {
       cy.react('AddFilterButton').click();
       cy.selectFilterSelection('icon{enter}', 'last');
       cy.filterMultiString('account_balance{enter}-{enter}', 'last');
-
-      // switch to layer panel
-      cy.switchPanel('layers');
 
       // results
       cy.getReact(graphinEl)

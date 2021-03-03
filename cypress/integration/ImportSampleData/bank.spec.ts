@@ -17,8 +17,6 @@ describe('Import Bank Connections', () => {
     })
       .find('Button')
       .click();
-
-    cy.wait(500);
   });
 
   it('should display layout in Concentric', () => {
