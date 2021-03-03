@@ -345,7 +345,7 @@ const ImportLocalFile = () => {
         }
         body={
           <Block as='span'>
-            We found your import data contains another style configurations.
+            Import file styles differ from currently applied styles.
           </Block>
         }
       />
