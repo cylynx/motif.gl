@@ -59,6 +59,16 @@ export const ClearDataButton = () => {
   const { nodeStyle, switchToFixNodeColor } = useNodeStyle();
   const { graph } = useContext(GraphRefContext);
   const { centerCanvas } = useGraphBehaviors(graph);
+
+  /**
+   * Reset all the graph states when all data list are deleted.
+   *
+   * https://github.com/cylynx/motif.gl/pull/73#issuecomment-789393660
+   * 1. Switch to original node colour when node style is legend to prevent crash.
+   *
+   * @param {MouseEvent<HTMLButtonElement>} e
+   * @return {void}
+   */
   const onClickClearAll = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(GraphSlices.resetState());

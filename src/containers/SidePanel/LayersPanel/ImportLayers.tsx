@@ -152,6 +152,15 @@ const ImportLayers = () => {
     dispatch(updateGraphList({ from: oldIndex, to: newIndex }));
   };
 
+  /**
+   * Delete single data list.
+   *
+   * https://github.com/cylynx/motif.gl/pull/73#issuecomment-789393660
+   * 1. Switch to original node colour when node style is legend to prevent crash.
+   *
+   * @param {number} index
+   * @return {void}
+   */
   const onDelete = (index: number) => {
     dispatch(deleteGraphList(index));
     resetSearchOptions();
