@@ -1,9 +1,12 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { DEFAULT_NODE_STYLE } from '../../../constants/graph-shapes';
-import { GraphSlices } from '../index';
+import { GraphSelectors, GraphSlices } from '../index';
 
 const useNodeStyle = () => {
   const dispatch = useDispatch();
+  const nodeStyle = useSelector(
+    (state) => GraphSelectors.getStyleOptions(state).nodeStyle,
+  );
 
   const switchToFixNodeColor = () => {
     const dispatchData = {
@@ -12,7 +15,7 @@ const useNodeStyle = () => {
     dispatch(GraphSlices.changeNodeStyle(dispatchData));
   };
 
-  return { switchToFixNodeColor };
+  return { nodeStyle, switchToFixNodeColor };
 };
 
 export default useNodeStyle;

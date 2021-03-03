@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useMemo } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
@@ -18,6 +18,7 @@ import {
   GraphData,
   Node,
   Edge,
+  GraphList,
 } from '../../../redux/graph';
 import useNodeStyle from '../../../redux/graph/hooks/useNodeStyle';
 import useSearchOption from '../SearchPanel/hooks/useSearchOption';
@@ -125,9 +126,11 @@ const LayerDetailed = ({
 
 const ImportLayers = () => {
   const dispatch = useDispatch();
-  const { switchToFixNodeColor } = useNodeStyle();
+  const { nodeStyle, switchToFixNodeColor } = useNodeStyle();
   const { resetSearchOptions } = useSearchOption();
-  const graphList = useSelector((state) => GraphSelectors.getGraphList(state));
+  const graphList: GraphList = useSelector((state) =>
+    GraphSelectors.getGraphList(state),
+  );
 
   const importItems = graphList.map((graph: GraphData, index: number) => {
     let title = `import ${index}`;
@@ -152,7 +155,10 @@ const ImportLayers = () => {
   const onDelete = (index: number) => {
     dispatch(deleteGraphList(index));
     resetSearchOptions();
-    switchToFixNodeColor();
+
+    if (nodeStyle.color.id === 'legend') {
+      switchToFixNodeColor();
+    }
   };
 
   const onChangeVisibility = (index: number, isVisible: boolean) => {

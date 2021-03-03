@@ -56,14 +56,17 @@ export const ImportDataButton = () => {
 
 export const ClearDataButton = () => {
   const dispatch = useDispatch();
-  const { switchToFixNodeColor } = useNodeStyle();
+  const { nodeStyle, switchToFixNodeColor } = useNodeStyle();
   const { graph } = useContext(GraphRefContext);
   const { centerCanvas } = useGraphBehaviors(graph);
   const onClickClearAll = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(GraphSlices.resetState());
-    switchToFixNodeColor();
     centerCanvas();
+
+    if (nodeStyle.color.id === 'legend') {
+      switchToFixNodeColor();
+    }
   };
 
   return (
