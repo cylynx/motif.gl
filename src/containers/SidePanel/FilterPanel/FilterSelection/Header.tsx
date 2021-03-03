@@ -26,31 +26,29 @@ const Header: FC<FilterSelectionHeaderProps> = ({
   const ButtonGroupMemo = useMemo(
     (): JSX.Element => (
       <Block paddingLeft='scale100'>
-        <ButtonGroup>
-          <Button
-            data-testid='filter-selection-header:delete'
-            size='mini'
-            kind='minimal'
-            $as='div'
-            onClick={onDeleteBtnClick}
-            overrides={{
-              BaseButton: {
-                style: ({ $theme }: { $theme: Theme }) => ({
-                  paddingTop: $theme.sizing.scale400,
-                  paddingRight: $theme.sizing.scale400,
-                  paddingBottom: $theme.sizing.scale400,
-                  paddingLeft: $theme.sizing.scale400,
-                  backgroundColor: $theme.colors.backgroundTertiary,
-                  ':hover': {
-                    backgroundColor: colors.red500,
-                  },
-                }),
-              },
-            }}
-          >
-            <Icon.Trash />
-          </Button>
-        </ButtonGroup>
+        <Button
+          data-testid='filter-selection-header:delete'
+          size='mini'
+          kind='minimal'
+          $as='div'
+          onClick={onDeleteBtnClick}
+          overrides={{
+            BaseButton: {
+              style: ({ $theme }: { $theme: Theme }) => ({
+                paddingTop: $theme.sizing.scale400,
+                paddingRight: $theme.sizing.scale400,
+                paddingBottom: $theme.sizing.scale400,
+                paddingLeft: $theme.sizing.scale400,
+                backgroundColor: $theme.colors.backgroundTertiary,
+                ':hover': {
+                  backgroundColor: colors.red500,
+                },
+              }),
+            },
+          }}
+        >
+          <Icon.Trash />
+        </Button>
       </Block>
     ),
     [onDeleteBtnClick],
