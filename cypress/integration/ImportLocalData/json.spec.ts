@@ -6,6 +6,8 @@ import {
   StyleOptions,
 } from '../../../src/redux/graph';
 
+const jsonDatasetRootPath = 'LocalFiles/Json';
+
 describe('Import Single Local File', () => {
   const getGraphStates = (): Promise<GraphState> => {
     return new Promise((resolve) => {
@@ -35,9 +37,9 @@ describe('Import Single Local File', () => {
     cy.react('ClearDataButton').click();
   });
 
-  const circleWithoutStyles = 'LocalFiles/Json/circle-without-styles.json';
-  const circleWithStyles = 'LocalFiles/Json/circle-with-styles.json';
-  const gridWithStyles = 'LocalFiles/Json/grid-with-styles.json';
+  const circleWithoutStyles = `${jsonDatasetRootPath}/circle-without-styles.json`;
+  const circleWithStyles = `${jsonDatasetRootPath}/circle-with-styles.json`;
+  const gridWithStyles = `${jsonDatasetRootPath}/grid-with-styles.json`;
 
   describe('Local Files Import', () => {
     it('should import one file successfully', () => {

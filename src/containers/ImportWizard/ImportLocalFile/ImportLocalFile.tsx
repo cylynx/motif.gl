@@ -298,6 +298,7 @@ const ImportLocalFile = () => {
                 value={value}
                 options={importOptions}
                 clearable={false}
+                searchable={false}
                 onChange={(data: any) => onChange(data.value)}
                 placeholder='Select Import Data Type'
               />
