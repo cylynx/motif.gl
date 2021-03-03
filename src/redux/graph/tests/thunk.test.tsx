@@ -159,6 +159,51 @@ describe('add-data-thunk.test.js', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
 
+    it('should display different success message in toast with filter applied', async () => {
+      const currentStore = getStore();
+      Object.assign(currentStore.investigate.graph.present.filterOptions, {
+        value: 'something',
+      });
+
+      const modifiedStore = mockStore(currentStore);
+
+      // input
+      const importDataArr = [jsonDataOne, jsonDataTwo];
+
+      // processes
+      const batchDataPromises = importDataArr.map((graphData: ImportFormat) => {
+        const { data } = graphData.data as TLoadFormat;
+        return importJson(data, initialState.accessors);
+      });
+
+      const graphDataArr = await Promise.all(batchDataPromises);
+      const [firstGraphData, secondGraphData] = flatten(graphDataArr);
+
+      // expected results
+      const expectedActions = [
+        fetchBegin(),
+        addQuery(firstGraphData),
+        processGraphResponse({
+          data: firstGraphData,
+          accessors: initialState.accessors,
+        }),
+        fetchDone(),
+        addQuery(secondGraphData),
+        processGraphResponse({
+          data: secondGraphData,
+          accessors: initialState.accessors,
+        }),
+        fetchDone(),
+        updateToast('toast-0'),
+      ];
+
+      // assertions
+      await modifiedStore.dispatch(
+        importJsonData(importDataArr, initialState.accessors),
+      );
+      expect(modifiedStore.getActions()).toEqual(expectedActions);
+    });
+
     it('should overwrite styles with the last file', async () => {
       // input
       const importDataArr = [jsonDataOne, jsonDataTwo];
