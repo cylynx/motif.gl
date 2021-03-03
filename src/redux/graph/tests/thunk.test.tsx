@@ -117,6 +117,10 @@ describe('add-data-thunk.test.js', () => {
 
     const store = mockStore(getStore());
 
+    afterEach(() => {
+      store.clearActions();
+    });
+
     it('should receive array of importData and process graph responses accurately', async () => {
       // input
       const importDataArr = [jsonDataOne, jsonDataTwo];
@@ -155,113 +159,107 @@ describe('add-data-thunk.test.js', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
 
-    describe('Overwrite Styles', () => {
-      it('should overwrite styles with the last file', async () => {
-        // input
-        const importDataArr = [jsonDataOne, jsonDataTwo];
-        let { styleOptions } = initialState;
+    it('should overwrite styles with the last file', async () => {
+      // input
+      const importDataArr = [jsonDataOne, jsonDataTwo];
+      let { styleOptions } = initialState;
 
-        // processes
-        const batchDataPromises = importDataArr.map(
-          (graphData: ImportFormat) => {
-            const { data, style } = graphData.data as TLoadFormat;
+      // processes
+      const batchDataPromises = importDataArr.map((graphData: ImportFormat) => {
+        const { data, style } = graphData.data as TLoadFormat;
 
-            if (style) {
-              styleOptions = style;
-            }
+        if (style) {
+          styleOptions = style;
+        }
 
-            return importJson(data, initialState.accessors);
-          },
-        );
-
-        const graphDataArr = await Promise.all(batchDataPromises);
-        const [firstGraphData, secondGraphData] = flatten(graphDataArr);
-
-        // expected results
-        const expectedActions = [
-          updateStyleOption(styleOptions),
-          fetchBegin(),
-          addQuery(firstGraphData),
-          processGraphResponse({
-            data: firstGraphData,
-            accessors: initialState.accessors,
-          }),
-          fetchDone(),
-          addQuery(secondGraphData),
-          processGraphResponse({
-            data: secondGraphData,
-            accessors: initialState.accessors,
-          }),
-          fetchDone(),
-          updateToast('toast-0'),
-        ];
-
-        // assertions
-        await store.dispatch(
-          importJsonData(importDataArr, initialState.accessors, true),
-        );
-        expect(store.getActions()).toEqual(expectedActions);
+        return importJson(data, initialState.accessors);
       });
 
-      it('should not overwrite styles if data has no style', async () => {
-        // input
-        const jsonOneWithoutStyle = {
-          data: {
-            data: jsonDataOne.data.data,
-          },
-          type: jsonDataOne.type,
-        };
+      const graphDataArr = await Promise.all(batchDataPromises);
+      const [firstGraphData, secondGraphData] = flatten(graphDataArr);
 
-        const jsonTwoWithoutStyle = {
-          data: {
-            data: jsonDataTwo.data.data,
-          },
-          type: jsonDataTwo.type,
-        };
+      // expected results
+      const expectedActions = [
+        updateStyleOption(styleOptions),
+        fetchBegin(),
+        addQuery(firstGraphData),
+        processGraphResponse({
+          data: firstGraphData,
+          accessors: initialState.accessors,
+        }),
+        fetchDone(),
+        addQuery(secondGraphData),
+        processGraphResponse({
+          data: secondGraphData,
+          accessors: initialState.accessors,
+        }),
+        fetchDone(),
+        updateToast('toast-0'),
+      ];
 
-        const importDataArr = [jsonOneWithoutStyle, jsonTwoWithoutStyle];
-        let { styleOptions } = initialState;
+      // assertions
+      await store.dispatch(
+        importJsonData(importDataArr, initialState.accessors, true),
+      );
+      expect(store.getActions()).toEqual(expectedActions);
+    });
 
-        // processes
-        const batchDataPromises = importDataArr.map(
-          (graphData: ImportFormat) => {
-            const { data, style } = graphData.data as TLoadFormat;
+    it('should not overwrite styles if data has no style', async () => {
+      // input
+      const jsonOneWithoutStyle = {
+        data: {
+          data: jsonDataOne.data.data,
+        },
+        type: jsonDataOne.type,
+      };
 
-            if (style) {
-              styleOptions = style;
-            }
+      const jsonTwoWithoutStyle = {
+        data: {
+          data: jsonDataTwo.data.data,
+        },
+        type: jsonDataTwo.type,
+      };
 
-            return importJson(data, initialState.accessors);
-          },
-        );
+      const importDataArr = [jsonOneWithoutStyle, jsonTwoWithoutStyle];
+      let { styleOptions } = initialState;
 
-        const graphDataArr = await Promise.all(batchDataPromises);
-        const [firstGraphData, secondGraphData] = flatten(graphDataArr);
+      // processes
+      const batchDataPromises = importDataArr.map((graphData: ImportFormat) => {
+        const { data, style } = graphData.data as TLoadFormat;
 
-        // expected results
-        const expectedActions = [
-          fetchBegin(),
-          addQuery(firstGraphData),
-          processGraphResponse({
-            data: firstGraphData,
-            accessors: initialState.accessors,
-          }),
-          fetchDone(),
-          addQuery(secondGraphData),
-          processGraphResponse({
-            data: secondGraphData,
-            accessors: initialState.accessors,
-          }),
-          fetchDone(),
-          updateToast('toast-0'),
-        ];
+        if (style) {
+          styleOptions = style;
+        }
 
-        // assertions
-        await store.dispatch(
-          importJsonData(importDataArr, initialState.accessors, true),
-        );
-        expect(store.getActions()).toEqual(expectedActions);
+        return importJson(data, initialState.accessors);
       });
+
+      const graphDataArr = await Promise.all(batchDataPromises);
+      const [firstGraphData, secondGraphData] = flatten(graphDataArr);
+
+      // expected results
+      const expectedActions = [
+        fetchBegin(),
+        addQuery(firstGraphData),
+        processGraphResponse({
+          data: firstGraphData,
+          accessors: initialState.accessors,
+        }),
+        fetchDone(),
+        addQuery(secondGraphData),
+        processGraphResponse({
+          data: secondGraphData,
+          accessors: initialState.accessors,
+        }),
+        fetchDone(),
+        updateToast('toast-0'),
+      ];
+
+      // assertions
+      await store.dispatch(
+        importJsonData(importDataArr, initialState.accessors, true),
+      );
+      expect(store.getActions()).toEqual(expectedActions);
     });
 
     it('should throw error if importData parameter is not array', async () => {
