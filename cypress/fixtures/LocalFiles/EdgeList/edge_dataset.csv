@@ -1,0 +1,5 @@
+id,relation,source,target
+txn1,works,jason,cylynx
+txn2,works,timothy,cylynx
+txn3,abc,cylynx,timothy
+txn4,says hi to,swan,cylynx

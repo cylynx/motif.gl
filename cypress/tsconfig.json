@@ -6,7 +6,12 @@
     "lib": ["es5", "dom"],
     "isolatedModules": false,
     "noEmit": false,
-    "types": ["cypress", "node", "cypress-react-selector"]
+    "types": [
+      "cypress",
+      "node",
+      "cypress-react-selector",
+      "cypress-file-upload"
+    ]
   },
   "include": ["./**/*.ts"],
   "exclude": ["node_modules"]

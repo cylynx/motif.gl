@@ -1,4 +1,3 @@
-/// <reference types="cypress" />
 import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
 
 describe('Import American Airlines', () => {
@@ -14,7 +13,7 @@ describe('Import American Airlines', () => {
     // import sample data
     cy.importSampleData(SampleData.AA);
 
-    cy.wait(3500);
+    cy.wait(2000);
   });
 
   it('should display layout as x y coordinate', () => {

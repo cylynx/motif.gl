@@ -1,0 +1,185 @@
+{
+  "data": [
+    {
+      "nodes": [
+        { "id": "node-0", "label": "node-0" },
+        { "id": "node-1", "label": "node-1" },
+        { "id": "node-2", "label": "node-2" },
+        { "id": "node-3", "label": "node-3" },
+        { "id": "node-4", "label": "node-4" },
+        { "id": "node-5", "label": "node-5" },
+        { "id": "node-6", "label": "node-6" },
+        { "id": "node-7", "label": "node-7" },
+        { "id": "node-8", "label": "node-8" },
+        { "id": "node-9", "label": "node-9" }
+      ],
+      "edges": [
+        {
+          "source": "node-0",
+          "target": "node-0",
+          "numeric": 3,
+          "id": "IriF-S-Fgy"
+        },
+        {
+          "source": "node-0",
+          "target": "node-1",
+          "numeric": 9,
+          "id": "8aYMj4G_UG"
+        },
+        {
+          "source": "node-0",
+          "target": "node-2",
+          "numeric": 3,
+          "id": "O_ajMOR2sY"
+        },
+        {
+          "source": "node-0",
+          "target": "node-3",
+          "numeric": 2,
+          "id": "CKJh59MMdo"
+        },
+        {
+          "source": "node-0",
+          "target": "node-4",
+          "numeric": 4,
+          "id": "Xvdy7xiajp"
+        },
+        {
+          "source": "node-0",
+          "target": "node-5",
+          "numeric": 2,
+          "id": "EPYawfMiRK"
+        },
+        {
+          "source": "node-0",
+          "target": "node-6",
+          "numeric": 9,
+          "id": "XKNWj3r3Rv"
+        },
+        {
+          "source": "node-0",
+          "target": "node-7",
+          "numeric": 7,
+          "id": "HO2qbSqBw7"
+        },
+        {
+          "source": "node-0",
+          "target": "node-8",
+          "numeric": 4,
+          "id": "9sLdwJyL3E"
+        },
+        {
+          "source": "node-1",
+          "target": "node-0",
+          "numeric": 9,
+          "id": "_IW1NqvLXs"
+        },
+        {
+          "source": "node-2",
+          "target": "node-0",
+          "numeric": 8,
+          "id": "s4hXFXRrfE"
+        },
+        {
+          "source": "node-3",
+          "target": "node-0",
+          "numeric": 1,
+          "id": "Ob7cBGs3kA"
+        },
+        {
+          "source": "node-4",
+          "target": "node-0",
+          "numeric": 4,
+          "id": "GMIlDqRJum"
+        },
+        {
+          "source": "node-5",
+          "target": "node-0",
+          "numeric": 5,
+          "id": "_vk510--al"
+        },
+        {
+          "source": "node-6",
+          "target": "node-0",
+          "numeric": 3,
+          "id": "n83VVeppT6"
+        },
+        {
+          "source": "node-7",
+          "target": "node-0",
+          "numeric": 9,
+          "id": "i9O7DSu3hoO"
+        },
+        {
+          "source": "node-8",
+          "target": "node-0",
+          "numeric": 8,
+          "id": "-aZQo-lbUJI"
+        },
+        {
+          "source": "node-9",
+          "target": "node-0",
+          "numeric": 1,
+          "id": "Ff7wW6g04Gm"
+        }
+      ],
+      "metadata": {
+        "title": "Circle Data",
+        "fields": {
+          "nodes": [
+            {
+              "name": "id",
+              "format": "",
+              "type": "string",
+              "analyzerType": "STRING"
+            },
+            {
+              "name": "label",
+              "format": "",
+              "type": "string",
+              "analyzerType": "STRING"
+            }
+          ],
+          "edges": [
+            {
+              "name": "source",
+              "format": "",
+              "type": "string",
+              "analyzerType": "STRING"
+            },
+            {
+              "name": "target",
+              "format": "",
+              "type": "string",
+              "analyzerType": "STRING"
+            },
+            {
+              "name": "numeric",
+              "format": "",
+              "type": "integer",
+              "analyzerType": "INT"
+            }
+          ]
+        },
+        "key": "8auS8ZAiH"
+      }
+    }
+  ],
+  "style": {
+    "layout": { "type": "graphin-force" },
+    "nodeStyle": {
+      "color": { "value": "orange", "id": "fixed" },
+      "size": { "value": 47, "id": "fixed" },
+      "label": "id"
+    },
+    "edgeStyle": {
+      "width": { "id": "fixed", "value": 1 },
+      "label": "source",
+      "pattern": "dot",
+      "fontSize": 16,
+      "arrow": "none"
+    },
+    "resetView": true,
+    "groupEdges": false
+  }
+}

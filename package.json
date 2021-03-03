@@ -159,6 +159,7 @@
     "baseui": "^9.103.0",
     "css-loader": "^3.6.0",
     "cypress": "^6.4.0",
+    "cypress-file-upload": "^5.0.2",
     "cypress-react-selector": "^2.3.6",
     "eslint-config-airbnb-typescript": "^8.0.2",
     "eslint-plugin-baseui": "^9.103.0",

@@ -36,10 +36,16 @@ const ConfirmationModal: FC<ConfirmationModalProps> = ({
       <ModalHeader>{header}</ModalHeader>
       {body && <ModalBody>{body}</ModalBody>}
       <ModalFooter>
-        <ModalButton kind='tertiary' onClick={onReject}>
+        <ModalButton
+          kind='tertiary'
+          onClick={onReject}
+          data-testid='confirmation-modal:reject'
+        >
           No
         </ModalButton>
-        <ModalButton onClick={onAccept}>Yes</ModalButton>
+        <ModalButton onClick={onAccept} data-testid='confirmation-modal:accept'>
+          Yes
+        </ModalButton>
       </ModalFooter>
     </Modal>
   );
