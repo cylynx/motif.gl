@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState } from 'react';
-import { Value } from 'baseui/select';
+import { OnChangeParams, Value } from 'baseui/select';
 import { Block } from 'baseui/block';
 import debounce from 'lodash/debounce';
 import Header from './Header';
@@ -45,7 +45,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
         return;
       }
 
-      const { id, from, analyzerType } = obj;
+      const { id, from, analyzerType, format } = obj;
 
       // update redux filter options
       const filterCriteria: FilterCriteria = {
@@ -70,6 +70,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
           graphFlatten[from],
           (x) => x[id],
           analyzerType,
+          format,
         );
 
         const histogramProp: HistogramProp = {
@@ -146,7 +147,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
         options={filterAttribute.stringOptions ?? []}
         placeholder='Enter a value'
         data-testid='filter-selection:string-select'
-        onChange={onStringSelect}
+        onChange={(params: OnChangeParams) => onStringSelect(params.value)}
       />
     );
   };

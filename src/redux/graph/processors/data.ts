@@ -475,6 +475,18 @@ export const getFieldsFromData = (
             analyzerType: type,
           });
         }
+      }
+      // (x|X) is a timestamp format and convert analyzerType to DATETIME
+      else if (
+        fieldType === ALL_FIELD_TYPES.time &&
+        (format === 'x' || format === 'X')
+      ) {
+        result.push({
+          name,
+          format,
+          type: ALL_FIELD_TYPES.timestamp,
+          analyzerType: AnalyzerDatatypes.DATETIME,
+        });
       } else {
         result.push({
           name,
@@ -486,46 +498,6 @@ export const getFieldsFromData = (
     }
   });
 
-  // for (const [index, field] of fieldOrder.entries()) {
-  //   const name = fieldByIndex[index];
-  //   const fieldMeta = metadata.find((m: any) => m.key === field);
-  //
-  //   // Excludes undefined type, restricted fields and style / defaultStyle fields
-  //   if (
-  //     typeof fieldMeta !== 'undefined' &&
-  //     !name.includes('style.') &&
-  //     !name.includes('defaultStyle.')
-  //   ) {
-  //     const { type, format } = fieldMeta || {};
-  //     const fieldType = analyzerTypeToFieldType(type);
-  //     if (fieldType === 'array') {
-  //       // Check first value of the array
-  //       const arrayMetadata = Analyzer.computeColMeta(
-  //         data.map((x) => {
-  //           return { arrayValue: x[name][0] };
-  //         }),
-  //         [],
-  //         { ignoredDataTypes: IGNORE_DATA_TYPES },
-  //       );
-  //       // Only push if array is non-empty
-  //       if (arrayMetadata.length > 0) {
-  //         result.push({
-  //           name,
-  //           format,
-  //           type: `array<${analyzerTypeToFieldType(arrayMetadata[0].type)}>`,
-  //           analyzerType: type,
-  //         });
-  //       }
-  //     } else {
-  //       result.push({
-  //         name,
-  //         format,
-  //         type: fieldType,
-  //         analyzerType: type,
-  //       });
-  //     }
-  //   }
-  // }
   return result;
 };
 

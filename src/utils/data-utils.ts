@@ -174,12 +174,14 @@ export const unixTimeConverter = (
  * @param {any[]} data
  * @param {Accessor} [valueAccessor] function to access data
  * @param {string} type
+ * @param {string} format
  * @returns {TimeRangeFieldDomain} Object with domain, step, mappedValue, histogram and enlargedHistogram
  */
 export const getFieldDomain = (
   data: any[],
   valueAccessor?: Accessor,
   type?: string,
+  format?: string,
 ): TimeRangeFieldDomain => {
   // to avoid converting string format time to epoch
   // every time we compare we store a value mapped to int in filter domain
@@ -197,7 +199,10 @@ export const getFieldDomain = (
     }
   }
 
-  if (type === 'DATETIME' || type === 'DATE' || type === 'TIME') {
+  if (
+    (type === 'DATETIME' || type === 'DATE' || type === 'TIME') &&
+    format.toLowerCase() !== 'x'
+  ) {
     mappedValue = mappedValue.map((dt: string) => unixTimeConverter(dt, type));
   }
 
@@ -218,11 +223,21 @@ export const getFieldDomain = (
     }
 
     if (type === 'DATETIME' || type === 'DATE' || type === 'TIME') {
-      const HOURS_IN_MILLISECONDS: number = 60 * 60 * 1000;
-      const newMinRange: number = minRange - HOURS_IN_MILLISECONDS;
-      const newMaxRange: number = maxRange + HOURS_IN_MILLISECONDS;
-      step = newMaxRange - newMinRange;
-      domain = [newMinRange, newMaxRange];
+      if (format !== 'X') {
+        const HOURS_IN_MILLISECONDS: number = 60 * 60 * 1000;
+        const newMinRange: number = minRange - HOURS_IN_MILLISECONDS;
+        const newMaxRange: number = maxRange + HOURS_IN_MILLISECONDS;
+        step = newMaxRange - newMinRange;
+        domain = [newMinRange, newMaxRange];
+      }
+
+      if (format === 'X') {
+        const HOURS_IN_MILLISECONDS: number = 60 * 60 * 1000 * 1000;
+        const newMinRange: number = minRange - HOURS_IN_MILLISECONDS;
+        const newMaxRange: number = maxRange + HOURS_IN_MILLISECONDS;
+        step = newMaxRange - newMinRange;
+        domain = [newMinRange, newMaxRange];
+      }
     }
   }
 

@@ -20,6 +20,7 @@ export type TypeProps =
   | 'array'
   | 'nodes'
   | 'edges'
+  | 'time'
   | string;
 
 export type TagDataProps = {
@@ -72,6 +73,14 @@ export const getIcon = (type: TypeProps) => {
         <Icon.Symbol
           size={16}
           color={colors.blue400}
+          style={{ paddingRight: '8px' }}
+        />
+      );
+    case 'time':
+      return (
+        <Icon.Time
+          size={14}
+          color={colors.green400}
           style={{ paddingRight: '8px' }}
         />
       );

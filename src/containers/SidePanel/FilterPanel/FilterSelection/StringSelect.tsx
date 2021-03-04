@@ -1,11 +1,11 @@
 import React from 'react';
-import { Value } from 'baseui/select';
+import { OnChangeParams, Value } from 'baseui/select';
 import { Block } from 'baseui/block';
 import { LabelXSmall } from 'baseui/typography';
-import MultiStringSelect from '../../../../components/MultiStringSelect';
+import BatchSingleSelect from '../../../../components/BatchSingleSelect';
 
 type StringSelectType = {
-  onChange?: (params: Value) => void;
+  onChange?: (params: OnChangeParams) => void;
   value: Value;
   options: Value;
   placeholder?: string;
@@ -31,7 +31,7 @@ const StringSelect = ({
       >
         values in
       </LabelXSmall>
-      <MultiStringSelect
+      <BatchSingleSelect
         placeholder={placeholder}
         value={value}
         options={options}

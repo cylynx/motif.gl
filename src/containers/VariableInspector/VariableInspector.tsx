@@ -193,6 +193,7 @@ const VariableInspector = () => {
           graphVisible[obj.from],
           (x) => x[obj.id],
           obj.analyzerType,
+          obj.format,
         );
         setSelection([obj]);
         setHistogramProp({

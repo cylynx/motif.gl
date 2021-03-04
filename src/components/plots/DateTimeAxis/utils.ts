@@ -19,7 +19,7 @@ import {
 export const generateDateTimeTicks = (
   scale: ScaleTime<number, number>,
 ): Date[] => {
-  const tickCounts: number = 3;
+  const tickCounts = 3;
   const ticksValues: Date[] = scale.ticks(tickCounts);
 
   return ticksValues;
