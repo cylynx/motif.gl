@@ -31,6 +31,9 @@ const NodeInfoAccordion: FC<NodeInformationProps> = ({
             backgroundColor: '#323742',
             color: $theme.colors.mono200,
             borderBottomWidth: 0,
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
           }),
         },
         Header: {
@@ -40,7 +43,6 @@ const NodeInfoAccordion: FC<NodeInformationProps> = ({
             paddingTop: $theme.sizing.scale200,
             paddingBottom: $theme.sizing.scale200,
             backgroundColor: $theme.colors.backgroundSecondary,
-
             color: $theme.colors.contentSecondary,
             borderBottomStyle: 'none',
             fontWeight: 600,

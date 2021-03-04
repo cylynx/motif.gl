@@ -40,6 +40,9 @@ const EdgeInfoAccordion = ({
             backgroundColor: '#323742',
             color: $theme.colors.mono200,
             borderBottomWidth: 0,
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
           }),
         },
         Header: {

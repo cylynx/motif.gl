@@ -88,6 +88,7 @@ const VirtualDropdown = React.forwardRef((props: any, ref) => {
           data[index].props.item.id
         }
         itemSize={LIST_ITEM_HEIGHT}
+        style={{ overflowX: 'hidden' }}
       >
         {FixedSizeListItem}
       </FixedSizeList>

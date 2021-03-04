@@ -94,7 +94,21 @@ const useItemInformation = () => {
     const title: JSX.Element = (
       <Block display='flex' justifyContent='center'>
         <NodeShape fill={fill} borderColor={borderColor} />
-        <Block as='span' marginLeft='scale300' color='contentTertiary'>
+        <Block
+          as='span'
+          marginLeft='scale300'
+          color='contentTertiary'
+          overrides={{
+            Block: {
+              style: {
+                maxWidth: '240px',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+              },
+            },
+          }}
+        >
           {id}
         </Block>
       </Block>
@@ -116,7 +130,21 @@ const useItemInformation = () => {
         <Block as='span' marginTop='scale0'>
           <Icon.ArrowDown size={14} />
         </Block>
-        <Block as='span' marginLeft='scale300' color='contentTertiary'>
+        <Block
+          as='span'
+          marginLeft='scale300'
+          color='contentTertiary'
+          overrides={{
+            Block: {
+              style: {
+                maxWidth: '240px',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+              },
+            },
+          }}
+        >
           {id}
         </Block>
       </Block>
