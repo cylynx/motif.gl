@@ -170,7 +170,11 @@ const RangePlot = ({
           <NumericAxis domain={range} width={width} />
         )}
         {(dataType === 'DATETIME' || dataType === 'DATE') && (
-          <DateTimeAxis domain={range} width={width} />
+          <DateTimeAxis
+            domain={range}
+            width={width}
+            xAxisFormat={xAxisFormat}
+          />
         )}
         {dataType === 'TIME' && <TimeAxis domain={range} width={width} />}
       </Block>

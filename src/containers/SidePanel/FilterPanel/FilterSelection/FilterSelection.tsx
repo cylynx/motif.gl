@@ -78,6 +78,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
           step,
           data: histogram,
           dataType: analyzerType,
+          format,
         };
 
         filterCriteria.histogram = histogramProp;

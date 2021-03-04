@@ -39,7 +39,7 @@ export const dateTimeMultiFormat = (date: Date, dateFormat: string): string => {
  * 4. days - format in (12:20 PM)
  * 5. weeks - format in (14/12/20)
  * 6. months - format in (12/20)
- * 7. years - format in (2020)
+ * 7. years - format in (12/20)
  * 8. only date - format in (14/12/20 12:20:50 PM)
  *
  * @param {Date[]} dateArr
@@ -54,7 +54,7 @@ export const dateTimeFormatDeterminer = (dateArr: any): string => {
   const secondDate = dateArr[dateArr.length - 1];
   const yearDiff = differenceInCalendarYears(secondDate, firstDate);
   if (yearDiff >= 1) {
-    return 'Y';
+    return 'MM/yy';
   }
 
   const monthDiff = differenceInCalendarMonths(secondDate, firstDate);

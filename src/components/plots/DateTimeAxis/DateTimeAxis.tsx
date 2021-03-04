@@ -3,15 +3,16 @@ import { styled } from 'baseui';
 import { scaleUtc } from 'd3-scale';
 import { axisBottom } from 'd3-axis';
 import { select } from 'd3-selection';
-import { format } from "date-fns"; 
+import { format } from 'date-fns';
 import { generateDateTimeTicks, dateTimeFormatDeterminer } from './utils';
 
 const MINIMUM_WIDTH = 300;
 const MINIMUM_HEIGHT = 20;
 type AxisRef = SVGSVGElement | null;
-type DateTimeAxisProps = {
+export type DateTimeAxisProps = {
   width?: number;
   height?: number;
+  xAxisFormat?: string;
   domain: [number, number];
 };
 
@@ -25,6 +26,7 @@ const DateTimeAxis: FC<DateTimeAxisProps> = ({
   domain,
   width = MINIMUM_WIDTH,
   height = MINIMUM_HEIGHT,
+  xAxisFormat,
 }) => {
   const axis = useRef<AxisRef>(null);
 
@@ -32,7 +34,19 @@ const DateTimeAxis: FC<DateTimeAxisProps> = ({
     const renderAxis = () => {
       if (axis.current === null) return;
 
-      const scale = scaleUtc().domain(domain).range([0, width]).nice();
+      let scaleDomain = domain;
+
+      if (xAxisFormat === 'x') {
+        let [startRange, endRange] = domain;
+        startRange *= 1000;
+        endRange *= 1000;
+        scaleDomain = [startRange, endRange];
+      }
+
+      const scale = scaleUtc()
+        .domain(scaleDomain)
+        .range([0, width])
+        .nice();
       const tickValues: Date[] = generateDateTimeTicks(scale);
       const dateTimeFormat: string = dateTimeFormatDeterminer(tickValues);
 
@@ -59,5 +73,4 @@ const DateTimeAxis: FC<DateTimeAxisProps> = ({
   );
 };
 
-export type { DateTimeAxisProps };
 export default DateTimeAxis;
