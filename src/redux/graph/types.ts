@@ -185,6 +185,7 @@ export type FilterCriteria = {
   stringOptions?: Value;
   histogram?: HistogramProp;
   isFilterReady?: boolean;
+  format?: string;
 };
 
 export interface FilterOptions {

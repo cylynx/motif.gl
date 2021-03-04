@@ -1,6 +1,6 @@
 import { bisectLeft, extent, histogram as d3Histogram, ticks } from 'd3-array';
 import Decimal from 'decimal.js';
-import { parseISO } from 'date-fns';
+import { isMatch, isValid, parse, parseISO } from 'date-fns';
 
 export const ONE_SECOND = 1000;
 export const ONE_MINUTE = ONE_SECOND * 60;
@@ -149,23 +149,44 @@ export type TimeRangeFieldDomain = {
  * Helper function to parse string date and convert to unix millisecond.
  * parsing is done using date-fns parseISO
  *
- * @param {string} str
+ * @param value - date string or timestamp
  * @param {('DATETIME' | 'DATE' | 'TIME')} type
+ * @param format - datetime format to be parsed
  * @return {*}
  */
 export const unixTimeConverter = (
-  str: string,
+  value: string | number,
   type: 'DATETIME' | 'DATE' | 'TIME',
+  format: string,
 ) => {
-  if (type === 'DATETIME' || type === 'DATE') {
-    return parseISO(str).getTime();
-  }
   if (type === 'TIME') {
     return parseISO(
-      `${new Date().toISOString().slice(0, 10)} ${str}`,
+      `${new Date().toISOString().slice(0, 10)} ${value}`,
     ).getTime();
   }
-  return null;
+
+  // DATETIME | VALUE
+  const unixTimestampFormat = 'x';
+  const msUnixTimestampFormat = 'X';
+  if (format === msUnixTimestampFormat || format === unixTimestampFormat) {
+    return value as number;
+  }
+
+  const dateString = value as string;
+  const parsedDate = parseISO(dateString).getTime();
+
+  const isValidDate = isValid(parsedDate);
+  if (isValidDate) return parsedDate;
+
+  // Prevent use capital D and Y to format dates
+  // https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
+  const dateFormat = format.replaceAll('D', 'd').replaceAll('Y', 'y');
+  const isDateFormatMatch: boolean = isMatch(dateString, dateFormat);
+  if (isDateFormatMatch === false) {
+    return null;
+  }
+
+  return parse(dateString, dateFormat, new Date()).getTime();
 };
 
 /**
@@ -199,11 +220,10 @@ export const getFieldDomain = (
     }
   }
 
-  if (
-    (type === 'DATETIME' || type === 'DATE' || type === 'TIME') &&
-    format.toLowerCase() !== 'x'
-  ) {
-    mappedValue = mappedValue.map((dt: string) => unixTimeConverter(dt, type));
+  if (type === 'DATETIME' || type === 'DATE' || type === 'TIME') {
+    mappedValue = mappedValue.map((dt: string) =>
+      unixTimeConverter(dt, type, format),
+    );
   }
 
   let domain = getLinearDomain(mappedValue);

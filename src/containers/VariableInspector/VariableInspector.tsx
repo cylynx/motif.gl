@@ -129,7 +129,7 @@ const VariableInspector = () => {
     (val) => {
       setValue(val);
       const { graph } = graphRef;
-      const { from, id, analyzerType } = selection[0];
+      const { from, id, analyzerType, format } = selection[0];
       const isDateTime: boolean = dateTimeAnalyzerTypes.includes(analyzerType);
 
       graph.setAutoPaint(false);
@@ -138,7 +138,7 @@ const VariableInspector = () => {
           let prop = get(node, id);
 
           if (isDateTime) {
-            prop = unixTimeConverter(prop, analyzerType);
+            prop = unixTimeConverter(prop, analyzerType, format);
           }
 
           const [startRange, endRange] = val;
@@ -157,10 +157,10 @@ const VariableInspector = () => {
           if (isDateTime) {
             if (Array.isArray(prop)) {
               prop = prop.map((el: string) =>
-                unixTimeConverter(el, analyzerType),
+                unixTimeConverter(el, analyzerType, format),
               );
             } else {
-              prop = unixTimeConverter(prop, analyzerType);
+              prop = unixTimeConverter(prop, analyzerType, format);
             }
           }
 

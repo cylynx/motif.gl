@@ -551,6 +551,7 @@ const filterGraphEdgeNodes = (
         caseSearch,
         analyzerType,
         range,
+        format,
       } = criteria as FilterCriteria;
 
       if (analyzerType === 'STRING') {
@@ -587,6 +588,7 @@ const filterGraphEdgeNodes = (
           const timeInUnix: number = unixTimeConverter(
             get(node, id) as string,
             analyzerType,
+            format,
           );
           const dateTime: Date = new Date(timeInUnix);
           const startInterval: Date = new Date(startDate);
