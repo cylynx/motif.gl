@@ -63,11 +63,23 @@ const Tooltip = ({ tooltip }: { tooltip: TooltipProps }) => {
   );
 
   const contents = Object.entries(properties).map(([key, value]) => (
-    <Block key={key} display='flex' flexWrap marginTop='8px' marginBottom='8px'>
+    <Block key={key} display='flex' flexWrap>
       <Block paddingRight='12px' marginTop='0' marginBottom='0'>
         <b>{`${key}:`}</b>
       </Block>
-      <Block marginTop='0' marginBottom='0'>
+      <Block
+        marginTop='0'
+        marginBottom='0'
+        overrides={{
+          Block: {
+            style: {
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            },
+          },
+        }}
+      >
         {value}
       </Block>
     </Block>
@@ -80,6 +92,9 @@ const Tooltip = ({ tooltip }: { tooltip: TooltipProps }) => {
         // Adjust for the side navbar and panel (if open)
         left: tooltip.x + leftLayerWidthPx + sideNavbarWidthPx,
         top: tooltip.y,
+        padding: '8px 10px',
+        fontSize: '14px',
+        lineHeight: '15px',
       }}
     >
       {contents}
