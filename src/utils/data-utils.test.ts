@@ -1,4 +1,4 @@
-import { parseISO } from 'date-fns';
+import { parse, parseISO } from 'date-fns';
 import { unixTimeConverter } from './data-utils';
 
 describe('Data Utilities', () => {
@@ -10,7 +10,7 @@ describe('Data Utilities', () => {
 
       const unixTime = unixTimeConverter(value, type, format);
 
-      const expectedMsUnixTimestamp = 1577901600000;
+      const expectedMsUnixTimestamp = parseISO(value).getTime();
       expect(unixTime).toEqual(expectedMsUnixTimestamp);
     });
 
@@ -33,8 +33,13 @@ describe('Data Utilities', () => {
       const type = 'DATE';
       const value = '04/20/2020';
 
+      const expectedMsUnixTimestamp = parse(
+        value,
+        'M/d/yyyy',
+        new Date(),
+      ).getTime();
+
       const unixTime = unixTimeConverter(value, type, format);
-      const expectedMsUnixTimestamp = 1587312000000;
 
       expect(unixTime).toEqual(expectedMsUnixTimestamp);
     });

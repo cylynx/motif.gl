@@ -164,7 +164,7 @@ export const unixTimeConverter = (
     ).getTime();
   }
 
-  // DATETIME | VALUE
+  // DATETIME | DATE
   const unixTimestampFormat = 'x';
   const msUnixTimestampFormat = 'X';
   if (format === msUnixTimestampFormat || format === unixTimestampFormat) {
