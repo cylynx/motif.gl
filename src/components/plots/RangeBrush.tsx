@@ -43,9 +43,8 @@ const getHandlePath = (props) => {
     const h = 39;
     const w = 4.5;
     const y = (props.height - h) / 2;
-    return `M${0.5 * x},${y}c${2.5 * x},0,${w * x},2,${w * x},${w}v${
-      h - w * 2
-    }c0,2.5,${-2 * x},${w},${-w * x},${w}V${y}z`;
+    return `M${0.5 * x},${y}c${2.5 * x},0,${w * x},2,${w * x},${w}v${h -
+      w * 2}c0,2.5,${-2 * x},${w},${-w * x},${w}V${y}z`;
   };
 };
 

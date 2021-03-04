@@ -147,7 +147,6 @@ export type TimeRangeFieldDomain = {
 
 /**
  * Helper function to parse string date and convert to unix millisecond.
- * parsing is done using date-fns parseISO
  *
  * @param value - date string or timestamp
  * @param {('DATETIME' | 'DATE' | 'TIME')} type
@@ -180,7 +179,7 @@ export const unixTimeConverter = (
 
   // Prevent use capital D and Y to format dates
   // https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
-  const dateFormat = format.replaceAll('D', 'd').replaceAll('Y', 'y');
+  const dateFormat = format.replace(/D/gi, 'd').replace(/Y/gi, 'y');
   const isDateFormatMatch: boolean = isMatch(dateString, dateFormat);
   if (isDateFormatMatch === false) {
     return null;
