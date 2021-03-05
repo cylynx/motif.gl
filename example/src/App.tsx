@@ -3,8 +3,14 @@ import React from 'react';
 import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
 import { BaseProvider } from 'baseui';
-import Motif, { MotifDarkTheme, MotifLightTheme } from 'motif.gl';
+import Motif, {
+  MotifLightTheme,
+  MotifDarkTheme,
+  ImportLocalFile,
+  ImportSampleData,
+} from 'motif.gl';
 import { Provider } from 'react-redux';
+import Query from './Query';
 import store from './redux-store';
 import 'motif.gl/dist/index.css';
 
@@ -22,17 +28,25 @@ const App = () => {
             accessors={{
               // getters below are for simple edge
               nodeID: 'id',
-              nodeType: 'data.type',
               // edgeID: 'id',
-              edgeSource: 'from',
-              edgeTarget: 'to',
+              edgeSource: 'source',
+              edgeTarget: 'target',
             }}
-            // overrides={
-            //   {
-            // Tabs: [{ title: 'Test', key: 'test', component: <div>hi</div> }],
-            // Tooltip,
-            //   }
-            // }
+            overrides={{
+              Tabs: [
+                { title: 'File', key: 'file', component: <ImportLocalFile /> },
+                {
+                  title: 'Sample Data',
+                  key: 'sample-data',
+                  component: <ImportSampleData />,
+                },
+                {
+                  title: 'Banking API',
+                  key: 'banking-api',
+                  component: <Query />,
+                },
+              ],
+            }}
           />
         </Provider>
       </BaseProvider>
