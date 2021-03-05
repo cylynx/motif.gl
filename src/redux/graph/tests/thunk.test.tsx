@@ -26,7 +26,7 @@ import {
 import { fetchBegin, fetchDone, updateToast } from '../../ui/slice';
 import { SimpleEdge } from '../../../constants/sample-data';
 import { RootState } from '../../investigate';
-import { ImportFormat, TLoadFormat } from '../types';
+import { GraphList, ImportFormat, TLoadFormat } from '../types';
 import * as LAYOUT from '../../../constants/layout-options';
 import { DEFAULT_NODE_STYLE } from '../../../constants/graph-shapes';
 
@@ -112,6 +112,37 @@ describe('add-data-thunk.test.js', () => {
           groupEdges: false,
         },
       },
+      type: 'json',
+    };
+
+    const INGJsonDataOne = {
+      data: {
+        nodes: [{ id: 'node-3' }, { id: 'node-4' }],
+        edges: [{ id: 'edge-2', source: 'node-3', target: 'node-4' }],
+        metadata: {
+          key: 234,
+        },
+      },
+      type: 'json',
+    };
+
+    const INGJsonDataTwo = {
+      data: [
+        {
+          nodes: [{ id: 'node-3' }, { id: 'node-4' }],
+          edges: [{ id: 'edge-2', source: 'node-3', target: 'node-4' }],
+          metadata: {
+            key: 234,
+          },
+        },
+        {
+          nodes: [{ id: 'node-1' }, { id: 'node-2' }],
+          edges: [{ id: 'edge-1', source: 'node-1', target: 'node-2' }],
+          metadata: {
+            key: 123,
+          },
+        },
+      ],
       type: 'json',
     };
 
@@ -305,6 +336,96 @@ describe('add-data-thunk.test.js', () => {
         importJsonData(importDataArr, initialState.accessors, true),
       );
       expect(store.getActions()).toEqual(expectedActions);
+    });
+
+    describe('Simple format for backward compatibility of ING project', () => {
+      it('should import with single file contains two graph lists', async () => {
+        // input
+        const importDataArr = [INGJsonDataTwo];
+
+        // processes
+        const batchDataPromises = importDataArr.map(
+          (graphData: ImportFormat) => {
+            const { data } = graphData;
+            return importJson(data as GraphList, initialState.accessors);
+          },
+        );
+
+        const graphDataArr = await Promise.all(batchDataPromises);
+        const [firstGraphData, secondGraphData] = flatten(graphDataArr);
+
+        // expected results
+        const expectedActions = [
+          fetchBegin(),
+          addQuery(firstGraphData),
+          processGraphResponse({
+            data: firstGraphData,
+            accessors: initialState.accessors,
+          }),
+          fetchDone(),
+          addQuery(secondGraphData),
+          processGraphResponse({
+            data: secondGraphData,
+            accessors: initialState.accessors,
+          }),
+          fetchDone(),
+          updateToast('toast-0'),
+        ];
+
+        // assertions
+        await store.dispatch(
+          importJsonData(importDataArr, initialState.accessors),
+        );
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+
+      it('should import with two files contain three graph lists', async () => {
+        // input
+        const importDataArr = [INGJsonDataOne, INGJsonDataTwo];
+
+        // processes
+        const batchDataPromises = importDataArr.map(
+          (graphData: ImportFormat) => {
+            const { data } = graphData;
+            return importJson(data as GraphList, initialState.accessors);
+          },
+        );
+
+        const graphDataArr = await Promise.all(batchDataPromises);
+        const [firstGraphData, secondGraphData, thirdGraphData] = flatten(
+          graphDataArr,
+        );
+
+        // expected results
+        const expectedActions = [
+          fetchBegin(),
+          addQuery(firstGraphData),
+          processGraphResponse({
+            data: firstGraphData,
+            accessors: initialState.accessors,
+          }),
+          fetchDone(),
+          addQuery(secondGraphData),
+          processGraphResponse({
+            data: secondGraphData,
+            accessors: initialState.accessors,
+          }),
+          fetchDone(),
+          addQuery(thirdGraphData),
+          processGraphResponse({
+            data: thirdGraphData,
+            accessors: initialState.accessors,
+          }),
+          fetchDone(),
+          updateToast('toast-0'),
+        ];
+
+        // assertions
+        await store.dispatch(
+          importJsonData(importDataArr, initialState.accessors),
+        );
+        expect(store.getActions()).toEqual(expectedActions);
+      });
     });
 
     it('should throw error if importData parameter is not array', async () => {

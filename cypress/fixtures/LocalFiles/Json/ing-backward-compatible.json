@@ -1,0 +1,70 @@
+[
+  {
+    "nodes": [
+      { "id": "node-0", "label": "node-0", "numeric": 40 },
+      { "id": "node-1", "label": "node-1", "numeric": 23 },
+      { "id": "node-2", "label": "node-2", "numeric": 91 },
+      { "id": "node-3", "label": "node-3", "numeric": 2 },
+      { "id": "node-4", "label": "node-4", "numeric": 52 },
+      { "id": "node-5", "label": "node-5", "numeric": 63 },
+      { "id": "node-6", "label": "node-6", "numeric": 50 },
+      { "id": "node-7", "label": "node-7", "numeric": 2 },
+      { "id": "node-8", "label": "node-8", "numeric": 29 },
+      { "id": "node-9", "label": "node-9", "numeric": 9 },
+      { "id": "node-10", "label": "node-10", "numeric": 74 },
+      { "id": "node-11", "label": "node-11", "numeric": 41 },
+      { "id": "node-12", "label": "node-12", "numeric": 20 },
+      { "id": "node-13", "label": "node-13", "numeric": 10 },
+      { "id": "node-14", "label": "node-14", "numeric": 13 }
+    ],
+    "edges": [
+      { "source": "node-9", "target": "node-0", "id": "44ZUAcTAFN" },
+      { "source": "node-2", "target": "node-0", "id": "XgE6Qotp3O" },
+      { "source": "node-1", "target": "node-13", "id": "l3IFCPiJcZ" },
+      { "source": "node-4", "target": "node-7", "id": "7pJ1pFj8GM" },
+      { "source": "node-14", "target": "node-7", "id": "JrFgr17iUR" },
+      { "source": "node-9", "target": "node-2", "id": "6YrHOjiYgi" },
+      { "source": "node-10", "target": "node-6", "id": "FUY8_Bek6I" }
+    ],
+    "metadata": {
+      "title": "Random Data",
+      "fields": {
+        "nodes": [
+          {
+            "name": "id",
+            "format": "",
+            "type": "string",
+            "analyzerType": "STRING"
+          },
+          {
+            "name": "label",
+            "format": "",
+            "type": "string",
+            "analyzerType": "STRING"
+          },
+          {
+            "name": "numeric",
+            "format": "",
+            "type": "integer",
+            "analyzerType": "INT"
+          }
+        ],
+        "edges": [
+          {
+            "name": "source",
+            "format": "",
+            "type": "string",
+            "analyzerType": "STRING"
+          },
+          {
+            "name": "target",
+            "format": "",
+            "type": "string",
+            "analyzerType": "STRING"
+          }
+        ]
+      },
+      "key": "_sE3vaCbg"
+    }
+  }
+]
