@@ -126,13 +126,20 @@ export const importJsonData = (
   let styleOptions: StyleOptions = getStyleOptions(getState());
 
   const batchDataPromises = importData.map((graphData: ImportFormat) => {
-    const { data, style: importStyleOption } = graphData.data as TLoadFormat;
+    const { data: dataWithStyle } = graphData.data as TLoadFormat;
 
-    if (importStyleOption) {
-      isDataPossessStyle = true;
-      styleOptions = importStyleOption;
+    if (dataWithStyle) {
+      const { style: importStyleOption } = graphData.data as TLoadFormat;
+
+      if (importStyleOption) {
+        isDataPossessStyle = true;
+        styleOptions = importStyleOption;
+      }
+
+      return importJson(dataWithStyle as GraphList, accessors);
     }
 
+    const { data } = graphData;
     return importJson(data as GraphList, accessors);
   });
 
