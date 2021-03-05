@@ -1,128 +1,17 @@
-import React, { Fragment, useMemo } from 'react';
+import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
-import { Button } from 'baseui/button';
-import { LabelSmall, ParagraphSmall } from 'baseui/typography';
 import DndList from '../../../components/DndList';
 import {
-  updateGraphList,
-  deleteGraphList,
   changeVisibilityGraphList,
+  deleteGraphList,
+  updateGraphList,
 } from '../../../redux/graph/slice';
-import { openDataTableModal } from '../../../redux/ui/slice';
-import { Statistic } from '../../../components/ui';
-import {
-  GraphSelectors,
-  GraphUtils,
-  GraphData,
-  Node,
-  Edge,
-  GraphList,
-} from '../../../redux/graph';
+import { GraphData, GraphList, GraphSelectors } from '../../../redux/graph';
 import useNodeStyle from '../../../redux/graph/hooks/useNodeStyle';
 import useSearchOption from '../SearchPanel/hooks/useSearchOption';
-
-const StyledText = ({ children }: { children: React.ReactNode }) => (
-  <ParagraphSmall
-    marginLeft='scale200'
-    marginBottom={0}
-    marginTop='scale200'
-    color='contentSecondary'
-    overrides={{
-      Block: {
-        style: {
-          textTransform: 'capitalize',
-        },
-      },
-    }}
-  >
-    {children}
-  </ParagraphSmall>
-);
-
-const LayerDetailed = ({
-  graph,
-  index,
-}: {
-  graph: GraphData;
-  index: number;
-}) => {
-  const dispatch = useDispatch();
-  const graphVisible = useSelector((state) =>
-    GraphSelectors.getGraphVisible(state),
-  );
-  const accessors = useSelector((state) => GraphSelectors.getAccessors(state));
-  const visibleNodeList = graphVisible.nodes.map((x: Node) => x.id);
-  const visibleEdgeList = graphVisible.edges.map((x: Edge) => x.id);
-  const hiddenNodes = graph.nodes.filter(
-    (x) => !visibleNodeList.includes(x.id),
-  );
-  const hiddenEdges = graph.edges.filter(
-    (x) => !visibleEdgeList.includes(x.id),
-  );
-  const nodeTypeMap = accessors.nodeType
-    ? GraphUtils.countProperty(graph.nodes, accessors.nodeType)
-    : null;
-  const edgeTypeMap = accessors.edgeType
-    ? GraphUtils.countProperty(graph.edges, accessors.edgeType)
-    : null;
-
-  return (
-    <Fragment>
-      <Block display='flex' justifyContent='space-between'>
-        <Block>
-          <Statistic
-            value={graph.nodes.length}
-            label='Nodes:'
-            subtitle={`${hiddenNodes.length} hidden`}
-            size='medium'
-          />
-          <LabelSmall marginTop='scale600'>Types:</LabelSmall>
-          {nodeTypeMap &&
-            Object.entries(nodeTypeMap).map(([key, value]) => (
-              <StyledText key={key}>{`${value} x ${key}`}</StyledText>
-            ))}
-          {!nodeTypeMap && <StyledText>No Node Types.</StyledText>}
-          <Block marginTop='scale600' />
-          <Button
-            kind='primary'
-            size='mini'
-            onClick={() =>
-              dispatch(openDataTableModal(`table_graphList_${index}_nodes`))
-            }
-          >
-            View Node Data
-          </Button>
-        </Block>
-        <Block>
-          <Statistic
-            value={graph.edges.length}
-            label='Edges:'
-            subtitle={`${hiddenEdges.length} hidden`}
-            size='medium'
-          />
-          <LabelSmall marginTop='scale600'>Types:</LabelSmall>
-          {edgeTypeMap &&
-            Object.entries(edgeTypeMap).map(([key, value]) => (
-              <StyledText key={key}>{`${value} x ${key}`}</StyledText>
-            ))}
-          {!edgeTypeMap && <StyledText>No Edge Types.</StyledText>}
-          <Block marginTop='scale600' />
-          <Button
-            kind='primary'
-            size='mini'
-            onClick={() =>
-              dispatch(openDataTableModal(`table_graphList_${index}_edges`))
-            }
-          >
-            View Edge Data
-          </Button>
-        </Block>
-      </Block>
-    </Fragment>
-  );
-};
+import LayerDetailed from './LayerDetailed';
 
 const ImportLayers = () => {
   const dispatch = useDispatch();

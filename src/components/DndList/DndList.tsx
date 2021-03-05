@@ -117,6 +117,23 @@ export const ShowMoreButton = ({ onClick, ...rest }: ActionButton) => {
   );
 };
 
+export const TableButton = ({ onClick, ...rest }: ActionButton) => {
+  return (
+    <SimpleTooltip tooltip='Display Node/Edge Information'>
+      <Button
+        size='mini'
+        shape='round'
+        kind='minimal'
+        $as='div'
+        onClick={onClick}
+        {...rest}
+      >
+        <Icon.Table />
+      </Button>
+    </SimpleTooltip>
+  );
+};
+
 export const DndContainer = ({
   item,
   onDelete,
@@ -126,7 +143,8 @@ export const DndContainer = ({
   const { key, isVisible, title } = item;
   const ButtonGroup = () => (
     // applied a fixed width to allow button group align horizontally without affected by long title
-    <Block width='84px'>
+    <Block width='112px'>
+      <TableButton onClick={() => console.log('datatable')} />
       <VisibilityButton
         isVisible={isVisible}
         onClick={() => onChangeVisibility(key, !isVisible)}
