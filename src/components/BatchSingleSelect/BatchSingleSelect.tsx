@@ -21,6 +21,7 @@ export type BatchSingleSelectProps = {
   size?: SIZE[keyof SIZE];
   maxDropdownHeight?: string;
   clearable?: boolean;
+  multi?: boolean;
   [x: string]: any;
 };
 const BatchSingleSelect: FC<BatchSingleSelectProps> = ({
@@ -35,6 +36,7 @@ const BatchSingleSelect: FC<BatchSingleSelectProps> = ({
   size = 'compact',
   type = TYPE.search,
   maxDropdownHeight = '300px',
+  multi = false,
   ...rest
 }) => {
   useEffect(() => {
@@ -56,6 +58,7 @@ const BatchSingleSelect: FC<BatchSingleSelectProps> = ({
       type={type}
       maxDropdownHeight={maxDropdownHeight}
       clearable={clearable}
+      multi={multi}
       {...rest}
     />
   );

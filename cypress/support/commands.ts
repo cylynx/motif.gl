@@ -54,7 +54,7 @@ const filterMultiString = (
         'data-testid': 'filter-selection:string-select',
       },
     })
-    .react('MultiStringSelect');
+    .react('BatchSingleSelect');
 
   if (type === 'first') {
     filterMultiString.first();

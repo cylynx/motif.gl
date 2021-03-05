@@ -36,6 +36,7 @@ const StringSelect = ({
         value={value}
         options={options}
         onChange={onChange}
+        multi
       />
     </Block>
   );
