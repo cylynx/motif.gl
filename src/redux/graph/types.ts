@@ -70,7 +70,7 @@ export type NodeEdgeDataType = {
 };
 
 export type JsonImport = {
-  data: GraphData | TLoadFormat | void;
+  data: GraphData | TLoadFormat | GraphList | void;
   type: 'json';
 };
 

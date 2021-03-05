@@ -195,7 +195,7 @@ export const importNodeEdgeData = (
 };
 
 /**
- * Thunk to add single json data into graph
+ * Thunk to add single json data into graph.
  *
  * @param {JsonImport} importData
  * @param {ImportAccessors} importAccessors [importAccessors=null] - to customize node Id / edge Id / edge source or target
