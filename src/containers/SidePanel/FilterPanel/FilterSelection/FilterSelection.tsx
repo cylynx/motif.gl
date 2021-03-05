@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import { OnChangeParams, Value } from 'baseui/select';
 import { Block } from 'baseui/block';
 import debounce from 'lodash/debounce';
@@ -131,8 +131,12 @@ const FilterSelection: FC<FilterSelectionProps> = ({
     deleteFilter(idx);
   }, [selectOptions, graphFlatten]);
 
-  const renderBody = (dataType: string): JSX.Element => {
-    if (dataType !== 'STRING') {
+  const selection = useMemo(() => {
+    const { analyzerType } = filterAttribute;
+
+    if (!analyzerType) return null;
+
+    if (analyzerType !== 'STRING') {
       return (
         <RangePlot
           histogram={filterAttribute.histogram}
@@ -151,7 +155,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
         onChange={(params: OnChangeParams) => onStringSelect(params.value)}
       />
     );
-  };
+  }, [filterAttribute]);
 
   return (
     <Block marginBottom='scale500'>
@@ -161,8 +165,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
         selection={filterAttribute.selection}
         onDeleteBtnClick={onDeleteBtnClick}
       />
-      {Object.keys(filterAttribute).length !== 0 &&
-        renderBody(filterAttribute.analyzerType)}
+      {selection}
     </Block>
   );
 };

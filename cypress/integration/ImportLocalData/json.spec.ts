@@ -40,6 +40,7 @@ describe('Import Single Local File', () => {
   const circleWithoutStyles = `${jsonDatasetRootPath}/circle-without-styles.json`;
   const circleWithStyles = `${jsonDatasetRootPath}/circle-with-styles.json`;
   const gridWithStyles = `${jsonDatasetRootPath}/grid-with-styles.json`;
+  const ingBackwardCompatible = `${jsonDatasetRootPath}/ing-backward-compatible.json`;
 
   describe('Local Files Import', () => {
     it('should import one file successfully', () => {
@@ -68,6 +69,35 @@ describe('Import Single Local File', () => {
           const { edges, nodes } = graph;
           expect(edges.length).to.deep.equal(18);
           expect(nodes.length).to.deep.equal(10);
+        });
+    });
+
+    it('should import one ING project compatibility file format successfully', () => {
+      cy.get('input[type="file"]').attachFile(ingBackwardCompatible);
+      cy.get('button[type="submit"]').click();
+
+      cy.getReact('Graphin')
+        .getProps('data')
+        .then((graph: GraphData) => {
+          const { edges, nodes } = graph;
+          expect(edges.length).to.deep.equal(7);
+          expect(nodes.length).to.deep.equal(15);
+        });
+    });
+
+    it('should import combination of different formats', () => {
+      cy.get('input[type="file"]').attachFile([
+        ingBackwardCompatible,
+        circleWithoutStyles,
+      ]);
+      cy.get('button[type="submit"]').click();
+
+      cy.getReact('Graphin')
+        .getProps('data')
+        .then((graph: GraphData) => {
+          const { edges, nodes } = graph;
+          expect(edges.length).to.deep.equal(25);
+          expect(nodes.length).to.deep.equal(15);
         });
     });
   });

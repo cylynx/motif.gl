@@ -103,6 +103,7 @@ export const importEdgeListData = (
  * Thunk to add data to graph - processes JSON and add to graphList
  * 1. apply the latest style options in the import file.
  * 2. changing layout must occurs before load graph's data
+ * 3. allow original graphin format to import for backward compatibility of ING project.
  *
  * @param {ImportFormat[]} importData - array of graphData objects
  * @param {ImportAccessors} importAccessors [importAccessors=null] to customize node Id / edge Id / edge source or target
@@ -126,13 +127,20 @@ export const importJsonData = (
   let styleOptions: StyleOptions = getStyleOptions(getState());
 
   const batchDataPromises = importData.map((graphData: ImportFormat) => {
-    const { data, style: importStyleOption } = graphData.data as TLoadFormat;
+    const { data: dataWithStyle } = graphData.data as TLoadFormat;
 
-    if (importStyleOption) {
-      isDataPossessStyle = true;
-      styleOptions = importStyleOption;
+    if (dataWithStyle) {
+      const { style: importStyleOption } = graphData.data as TLoadFormat;
+
+      if (importStyleOption) {
+        isDataPossessStyle = true;
+        styleOptions = importStyleOption;
+      }
+
+      return importJson(dataWithStyle as GraphList, accessors);
     }
 
+    const { data } = graphData;
     return importJson(data as GraphList, accessors);
   });
 
@@ -195,7 +203,7 @@ export const importNodeEdgeData = (
 };
 
 /**
- * Thunk to add single json data into graph
+ * Thunk to add single json data into graph.
  *
  * @param {JsonImport} importData
  * @param {ImportAccessors} importAccessors [importAccessors=null] - to customize node Id / edge Id / edge source or target

@@ -182,26 +182,43 @@ const RangePlot = ({
     [range, dataType],
   );
 
+  const SliderMemo = useMemo(() => {
+    let [startRange, endRange] = range;
+    let [startValue, endValue] = value;
+
+    const MS_UNIX_TIMESTAMP = 'X';
+    if (xAxisFormat === MS_UNIX_TIMESTAMP) {
+      startRange /= 1000;
+      endRange /= 1000;
+      startValue /= 1000;
+      endValue /= 1000;
+    }
+
+    return (
+      <Block marginTop='-15px'>
+        <Slider
+          value={[startValue, endValue]}
+          min={startRange}
+          max={endRange}
+          step={step}
+          onChange={({ value }: { value: [number, number] }) =>
+            onChangeSlider(value)
+          }
+          onFinalChange={({ value }: { value: [number, number] }) =>
+            onFinalChangeSlider(value)
+          }
+          showThumbValue={false}
+          showTickBar={false}
+        />
+      </Block>
+    );
+  }, [value, range, xAxisFormat]);
+
   return (
     <Block display='flex' justifyContent='center'>
       <Block height={`${height}px`} width={`${width}px`}>
         <HistogramPlot histogram={histogram} {...commonProps} />
-        <Block marginTop='-15px'>
-          <Slider
-            value={value}
-            min={range[0]}
-            max={range[1]}
-            step={step}
-            onChange={({ value }: { value: [number, number] }) =>
-              onChangeSlider(value)
-            }
-            onFinalChange={({ value }: { value: [number, number] }) =>
-              onFinalChangeSlider(value)
-            }
-            showThumbValue={false}
-            showTickBar={false}
-          />
-        </Block>
+        {SliderMemo}
         {XAxisMemo}
       </Block>
     </Block>
