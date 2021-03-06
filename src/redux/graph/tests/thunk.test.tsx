@@ -115,7 +115,7 @@ describe('add-data-thunk.test.js', () => {
       type: 'json',
     };
 
-    const INGJsonDataOne = {
+    const simpleGraphOne = {
       data: {
         nodes: [{ id: 'node-3' }, { id: 'node-4' }],
         edges: [{ id: 'edge-2', source: 'node-3', target: 'node-4' }],
@@ -126,7 +126,7 @@ describe('add-data-thunk.test.js', () => {
       type: 'json',
     };
 
-    const INGJsonDataTwo = {
+    const simpleGraphTwo = {
       data: [
         {
           nodes: [{ id: 'node-3' }, { id: 'node-4' }],
@@ -338,10 +338,10 @@ describe('add-data-thunk.test.js', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
 
-    describe('Simple format for backward compatibility of ING project', () => {
+    describe('Simple Graph Format', () => {
       it('should import with single file contains two graph lists', async () => {
         // input
-        const importDataArr = [INGJsonDataTwo];
+        const importDataArr = [simpleGraphTwo];
 
         // processes
         const batchDataPromises = importDataArr.map(
@@ -381,7 +381,7 @@ describe('add-data-thunk.test.js', () => {
 
       it('should import with two files contain three graph lists', async () => {
         // input
-        const importDataArr = [INGJsonDataOne, INGJsonDataTwo];
+        const importDataArr = [simpleGraphOne, simpleGraphTwo];
 
         // processes
         const batchDataPromises = importDataArr.map(

@@ -103,7 +103,7 @@ export const importEdgeListData = (
  * Thunk to add data to graph - processes JSON and add to graphList
  * 1. apply the latest style options in the import file.
  * 2. changing layout must occurs before load graph's data
- * 3. allow original graphin format to import for backward compatibility of ING project.
+ * 3. allow original graphin format to import for backward compatibility
  *
  * @param {ImportFormat[]} importData - array of graphData objects
  * @param {ImportAccessors} importAccessors [importAccessors=null] to customize node Id / edge Id / edge source or target
