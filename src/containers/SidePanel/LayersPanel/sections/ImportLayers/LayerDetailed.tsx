@@ -8,6 +8,7 @@ import {
   Node,
 } from '../../../../../redux/graph';
 import GraphStatistics from '../../components/GraphStatistics';
+import GroupEdges from '../GroupEdges';
 
 type LayerDetailProps = { graph: GraphData };
 const LayerDetailed = ({ graph }: LayerDetailProps) => {
@@ -24,20 +25,26 @@ const LayerDetailed = ({ graph }: LayerDetailProps) => {
   );
 
   return (
-    <Block
-      display='flex'
-      justifyContent='space-between'
-      paddingLeft='scale300'
-      paddingRight='scale300'
-    >
-      <GraphStatistics
-        nodeLength={graph.nodes.length}
-        edgeLength={graph.edges.length}
-        hiddenNodeLength={hiddenNodes.length}
-        hiddenEdgeLength={hiddenEdges.length}
-        size='medium'
-      />
-    </Block>
+    <>
+      <Block
+        display='flex'
+        justifyContent='space-between'
+        paddingLeft='scale300'
+        paddingRight='scale300'
+      >
+        <GraphStatistics
+          nodeLength={graph.nodes.length}
+          edgeLength={graph.edges.length}
+          hiddenNodeLength={hiddenNodes.length}
+          hiddenEdgeLength={hiddenEdges.length}
+          size='medium'
+        />
+      </Block>
+
+      <Block marginTop='scale200'>
+        <GroupEdges />
+      </Block>
+    </>
   );
 };
 
