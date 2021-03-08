@@ -2,15 +2,19 @@ import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
-import DndList from '../../../components/DndList';
+import DndList from '../../../../../components/DndList';
 import {
   changeVisibilityGraphList,
   deleteGraphList,
   updateGraphList,
-} from '../../../redux/graph/slice';
-import { GraphData, GraphList, GraphSelectors } from '../../../redux/graph';
-import useNodeStyle from '../../../redux/graph/hooks/useNodeStyle';
-import useSearchOption from '../SearchPanel/hooks/useSearchOption';
+} from '../../../../../redux/graph/slice';
+import {
+  GraphData,
+  GraphList,
+  GraphSelectors,
+} from '../../../../../redux/graph';
+import useNodeStyle from '../../../../../redux/graph/hooks/useNodeStyle';
+import useSearchOption from '../../../SearchPanel/hooks/useSearchOption';
 import LayerDetailed from './LayerDetailed';
 
 const ImportLayers = () => {
@@ -33,7 +37,7 @@ const ImportLayers = () => {
         typeof graph.metadata?.visible === 'undefined'
           ? true
           : graph.metadata?.visible,
-      children: <LayerDetailed graph={graph} index={index} />,
+      children: <LayerDetailed graph={graph} />,
     };
   });
 
