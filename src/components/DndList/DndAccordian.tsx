@@ -91,7 +91,13 @@ class DndAccordian extends React.Component<
   };
 
   render() {
-    const { overrides = {}, items, onChange, removable } = this.props;
+    const {
+      overrides = {},
+      items,
+      onChange,
+      removable,
+      onMouseOrTouchStart,
+    } = this.props;
     const {
       Root: RootOverride,
       List: ListOverride,
