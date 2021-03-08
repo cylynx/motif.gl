@@ -21,10 +21,6 @@ const SettingsPopover = () => {
     layout,
   } = useSelector((state) => GraphSelectors.getStyleOptions(state));
 
-  const graphFields = useSelector(
-    (state) => GraphSelectors.getGraph(state).graphFlatten.metadata.fields,
-  );
-
   const { numericNodeFields, numericEdgeFields } = useSelector((state) =>
     GraphSelectors.getGraphFieldsOptions(state),
   );

@@ -317,8 +317,7 @@ const ImportLocalFile = () => {
           {fileNames &&
             fileNames.map((name) => <Block key={name}>{name}</Block>)}
         </Block>
-
-        <AdditionalOptions register={register} />
+        {fileNames && <AdditionalOptions register={register} />}
         <Block marginTop='10px' display='flex' justifyContent='flex-end'>
           <Button type='submit' disabled={isButtonDisabled}>
             Import Data
