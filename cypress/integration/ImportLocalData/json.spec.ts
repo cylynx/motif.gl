@@ -40,7 +40,7 @@ describe('Import Single Local File', () => {
   const circleWithoutStyles = `${jsonDatasetRootPath}/circle-without-styles.json`;
   const circleWithStyles = `${jsonDatasetRootPath}/circle-with-styles.json`;
   const gridWithStyles = `${jsonDatasetRootPath}/grid-with-styles.json`;
-  const ingBackwardCompatible = `${jsonDatasetRootPath}/ing-backward-compatible.json`;
+  const simpleGraph = `${jsonDatasetRootPath}/simple-graph.json`;
 
   describe('Local Files Import', () => {
     it('should import one file successfully', () => {
@@ -72,8 +72,8 @@ describe('Import Single Local File', () => {
         });
     });
 
-    it('should import one ING project compatibility file format successfully', () => {
-      cy.get('input[type="file"]').attachFile(ingBackwardCompatible);
+    it('should import one simple graph format successfully', () => {
+      cy.get('input[type="file"]').attachFile(simpleGraph);
       cy.get('button[type="submit"]').click();
 
       cy.getReact('Graphin')
@@ -87,7 +87,7 @@ describe('Import Single Local File', () => {
 
     it('should import combination of different formats', () => {
       cy.get('input[type="file"]').attachFile([
-        ingBackwardCompatible,
+        simpleGraph,
         circleWithoutStyles,
       ]);
       cy.get('button[type="submit"]').click();
