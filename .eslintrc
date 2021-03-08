@@ -13,7 +13,7 @@
     "node": true
   },
   "parserOptions": {
-    "project": "./tsconfig.json",
+    "project": "./**/tsconfig.json",
     "ecmaVersion": 2020,
     "ecmaFeatures": {
       "legacyDecorators": true,
