@@ -2,8 +2,10 @@ import React, { useState, MouseEvent } from 'react';
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
 import { Theme } from 'baseui/theme';
+import { useDispatch } from 'react-redux';
 import * as Icon from '../Icons';
 import { SimpleTooltip } from '../ui';
+import { UISlices } from '../../redux/ui';
 
 import DndAccordian from './DndAccordian';
 
@@ -25,6 +27,7 @@ export type DndContainerProps = {
   onDelete: (index: number) => void;
   onChangeVisibility: (index: number, isVisible: boolean) => void;
   toggleActive: (key: number) => void;
+  onDatatableClick: (key: number) => void;
   item: DndItem;
 };
 
@@ -138,13 +141,14 @@ export const DndContainer = ({
   item,
   onDelete,
   onChangeVisibility,
+  onDatatableClick,
   toggleActive,
 }: DndContainerProps) => {
   const { key, isVisible, title } = item;
   const ButtonGroup = () => (
     // applied a fixed width to allow button group align horizontally without affected by long title
     <Block width='112px'>
-      <TableButton onClick={() => console.log('datatable')} />
+      <TableButton onClick={() => onDatatableClick(key)} />
       <VisibilityButton
         isVisible={isVisible}
         onClick={() => onChangeVisibility(key, !isVisible)}
@@ -197,6 +201,7 @@ const DndList = ({
   onDelete,
 }: DndListProps) => {
   const [expanded, setExpanded] = useState([]);
+  const dispatch = useDispatch();
 
   const onChange = ({
     oldIndex,
@@ -220,6 +225,10 @@ const DndList = ({
   const onDeleteItem = (key: number): void => {
     onDelete(key);
     setExpanded(expanded.filter((x) => x !== key));
+  };
+
+  const displayTabularData = (index: number): void => {
+    dispatch(UISlices.openDataTableModal(`table_${index}`));
   };
 
   return (
@@ -256,6 +265,7 @@ const DndList = ({
                   item={$value}
                   onDelete={onDeleteItem}
                   onChangeVisibility={onChangeVisibility}
+                  onDatatableClick={displayTabularData}
                   toggleActive={onExpand}
                 />
               </Block>
