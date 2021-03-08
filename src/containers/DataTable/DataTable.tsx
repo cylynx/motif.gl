@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Tabs, Tab } from 'baseui/tabs';
+import { Tabs, Tab } from 'baseui/tabs-motion';
 import { useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
 import { StatefulDataTable } from 'baseui/data-table';
@@ -10,7 +10,6 @@ import {
   GraphSelectors,
 } from '../../redux/graph';
 import { graphData2Columns } from './utils';
-import { TabBarStyle, TabContentStyle, TabStyle } from './styles';
 
 export type TActiveKey = {
   activeKey: GraphAttribute;
@@ -44,29 +43,14 @@ const DatatableModal: FC<DataTableModalProps> = ({ dataKey }) => {
   const [edgeRows, edgeColumns] = tabularData('edges');
 
   return (
-    <Tabs
-      activeKey={activeKey}
-      onChange={onTabChange}
-      overrides={{
-        Tab: {
-          // @ts-ignore
-          style: TabStyle,
-        },
-        TabContent: {
-          style: TabContentStyle,
-        },
-        TabBar: {
-          style: TabBarStyle,
-        },
-      }}
-    >
+    <Tabs activeKey={activeKey} onChange={onTabChange}>
       <Tab key='nodes' title='Nodes'>
-        <Block height='600px' width='800px' paddingBottom='scale300'>
+        <Block height='600px' width='800px' paddingBottom='scale100'>
           <StatefulDataTable columns={nodeColumns} rows={nodeRows} />
         </Block>
       </Tab>
       <Tab key='edges' title='Edges'>
-        <Block height='600px' width='800px' paddingBottom='scale300'>
+        <Block height='600px' width='800px' paddingBottom='scale100'>
           <StatefulDataTable columns={edgeColumns} rows={edgeRows} />
         </Block>
       </Tab>
