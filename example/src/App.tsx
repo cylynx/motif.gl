@@ -1,4 +1,5 @@
 // @ts-nocheck
+/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
@@ -17,15 +18,13 @@ const App = () => {
         <Provider store={store}>
           <Motif
             name='Motif'
-            currency='ETH'
             secondaryTheme={MotifDarkTheme}
             accessors={{
               // getters below are for simple edge
               nodeID: 'id',
-              nodeType: 'data.type',
               // edgeID: 'id',
-              edgeSource: 'from',
-              edgeTarget: 'to',
+              edgeSource: 'source',
+              edgeTarget: 'target',
             }}
             // overrides={
             //   {
