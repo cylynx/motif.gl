@@ -3,6 +3,7 @@ import { Block } from 'baseui/block';
 import { Checkbox, STYLE_TYPE, LABEL_PLACEMENT } from 'baseui/checkbox';
 import { LabelXSmall } from 'baseui/typography';
 import { OnChangeParams, Select, Value, SIZE } from 'baseui/select';
+import AddAttributesButton from '../../components/AddAttributesButton';
 
 const GroupEdges = () => {
   const [groupEdge, setGroupEdge] = useState(false);
@@ -42,7 +43,7 @@ const GroupEdges = () => {
                   ...$theme.typography.LabelSmall,
                   fontSize: $theme.sizing.scale500,
                   paddingRight: $theme.sizing.scale0,
-                  paddingTop: $theme.sizing.scale0,
+                  paddingTop: $theme.sizing.scale100,
                 }),
               },
             }}
@@ -171,12 +172,27 @@ const GroupEdges = () => {
           <Block width='30px' />
 
           <Block display='flex' flex='1'>
-            <select id='hello' style={{ padding: '8px' }}>
-              <option value='1'>One</option>
-              <option value='2'>Two</option>
-            </select>
+            <Select
+              size={SIZE.mini}
+              clearable={false}
+              options={[
+                { label: 'AliceBlue', id: '#F0F8FF' },
+                { label: 'AntiqueWhite', id: '#FAEBD7' },
+                { label: 'Aqua', id: '#00FFFF' },
+                { label: 'Aquamarine', id: '#7FFFD4' },
+                { label: 'Azure', id: '#F0FFFF' },
+                { label: 'Beige', id: '#F5F5DC' },
+              ]}
+              value={value}
+              placeholder='Select color'
+              onChange={onSelectChange}
+            />
           </Block>
         </Block>
+      </Block>
+
+      <Block marginTop='scale200'>
+        <AddAttributesButton onClick={(e) => console.log(e)} />
       </Block>
     </Block>
   );
