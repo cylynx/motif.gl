@@ -42,6 +42,7 @@ export const importJson = async (
  *
  * @param {string} csv
  * @param {<Accessors} accessors
+ * @param {boolean} groupEdges
  * @param {string} metadataKey = null
  *
  * @return {Promise<GraphData>}
@@ -49,6 +50,7 @@ export const importJson = async (
 export const importEdgeListCsv = async (
   csv: string,
   accessors: Accessors,
+  groupEdges: boolean,
   metadataKey: string = null,
 ): Promise<GraphData> => {
   const { edgeSource, edgeTarget } = accessors;
@@ -56,6 +58,7 @@ export const importEdgeListCsv = async (
     csv,
     edgeSource,
     edgeTarget,
+    groupEdges,
     metadataKey,
   );
   if (processedData.nodes.length < 1 || processedData.edges.length < 1) {

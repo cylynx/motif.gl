@@ -6,7 +6,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import isUndefined from 'lodash/isUndefined';
 import { Draft } from 'immer';
 import * as LAYOUT from '../../constants/layout-options';
-import { combineProcessedData } from '../../containers/Graph/styles/utils';
+import {
+  combineProcessedData,
+  groupEdges,
+} from '../../containers/Graph/styles/utils';
 import { generateDefaultColorMap } from '../../containers/Graph/styles/StyleNodes';
 import {
   Accessors,
@@ -17,11 +20,20 @@ import {
   Layout,
   SearchOptionPayload,
   SearchResultPayload,
-  AddQueryPayload,
 } from './types';
 import { DEFAULT_NODE_STYLE } from '../../constants/graph-shapes';
 
-export const updateSelections = (state: Draft<GraphState>, data: GraphData) => {
+/**
+ * Perform update on node and edge selections.
+ *
+ * @param state
+ * @param data
+ * @return {void}
+ */
+export const updateSelections = (
+  state: Draft<GraphState>,
+  data: GraphData,
+): void => {
   const currentNodeFields = state.nodeSelection.map((x) => x.id);
   const currentEdgeFields = state.edgeSelection.map((x) => x.id);
   for (const field of data.metadata.fields.nodes) {
@@ -194,10 +206,8 @@ const graph = createSlice({
         graphFlatten: graphData ?? initialState.graphFlatten,
       });
     },
-    addQuery(state, action: PayloadAction<AddQueryPayload>) {
-      const { graphData, groupEdges } = action.payload;
-      console.log(groupEdges);
-      state.graphList.push(graphData);
+    addQuery(state, action: PayloadAction<GraphData>) {
+      state.graphList.push(action.payload);
     },
     updateStyleOption(state, action: PayloadAction<StyleOptions>) {
       Object.assign(state.styleOptions, action.payload);
@@ -263,6 +273,18 @@ const graph = createSlice({
     ) {
       const { data } = action.payload;
       const { graphFlatten } = state;
+
+      if (data.metadata.groupEdges.toggle) {
+        const groupData = groupEdges(data);
+        const graphData = combineProcessedData(
+          groupData,
+          graphFlatten as GraphData,
+        );
+        updateAll(state, graphData);
+        updateSelections(state, groupData);
+        return;
+      }
+
       const graphData = combineProcessedData(data, graphFlatten as GraphData);
       updateAll(state, graphData);
       updateSelections(state, data);

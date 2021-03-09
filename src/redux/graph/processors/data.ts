@@ -6,7 +6,7 @@ import get from 'lodash/get';
 // @ts-ignore
 import { Analyzer, DATA_TYPES as AnalyzerDatatypes } from 'type-analyzer';
 import { notNullorUndefined } from '../../../utils/data-utils';
-import { Edge, Field, GraphData, Metadata, Node } from '../types';
+import { Edge, Field, GraphData, GroupEdges, Metadata, Node } from '../types';
 
 type RowData = {
   [key: string]: any;
@@ -165,6 +165,7 @@ export const processNodeEdgeCsv = async (
  * @param {string} edgeCsv
  * @param {string} [edgeSourceAccessor='source']
  * @param {string} [edgeTargetAccessor='target']
+ * @param {boolean} groupEdges
  * @param {*} [key=shortid.generate()]
  * @return {*}  {Promise<Graph.GraphData>}
  */
@@ -172,6 +173,7 @@ export const processEdgeListCsv = async (
   edgeCsv: string,
   edgeSourceAccessor = 'source',
   edgeTargetAccessor = 'target',
+  groupEdges: boolean,
   key = shortid.generate(),
 ): Promise<GraphData> => {
   const { fields: edgeFields, json: edgeJson } = await processCsvData(edgeCsv);
@@ -185,10 +187,16 @@ export const processEdgeListCsv = async (
     return { id: node };
   });
 
+  const groupEdgeConfig: GroupEdges = {
+    toggle: groupEdges,
+  };
+
   const graphMetadata: Metadata = {
     fields: { nodes: [], edges: edgeFields },
     key,
+    groupEdges: groupEdgeConfig,
   };
+
   return {
     nodes: nodeJson,
     edges: edgeJson as Edge[],

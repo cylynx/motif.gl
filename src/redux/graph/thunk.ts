@@ -28,11 +28,10 @@ const processResponse = (
   dispatch: any,
   accessors: Accessors,
   newData: GraphData | GraphList,
-  groupEdges = true,
 ) => {
   dispatch(UISlices.fetchBegin());
   for (const data of Array.isArray(newData) ? newData : [newData]) {
-    dispatch(addQuery({ graphData: data, groupEdges }));
+    dispatch(addQuery(data));
     dispatch(processGraphResponse({ data, accessors }));
     dispatch(UISlices.fetchDone());
   }
@@ -87,12 +86,17 @@ export const importEdgeListData = (
 
   const batchDataPromises = importData.map((graphData: ImportFormat) => {
     const { data } = graphData;
-    return importEdgeListCsv(data as string, accessors, metadataKey);
+    return importEdgeListCsv(
+      data as string,
+      accessors,
+      groupEdges,
+      metadataKey,
+    );
   });
 
   return Promise.all(batchDataPromises)
     .then((graphData: GraphList) => {
-      processResponse(dispatch, mainAccessors, graphData, groupEdges);
+      processResponse(dispatch, mainAccessors, graphData);
       showImportDataToast(dispatch, filterOptions);
     })
     .catch((err: Error) => {

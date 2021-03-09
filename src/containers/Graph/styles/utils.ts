@@ -284,8 +284,10 @@ export const applyStyle = (data: GraphData, options: StyleOptions): void => {
 export const groupEdges = (data: GraphData): GraphData => {
   // const newEdges = combineEdges(data.edges);
   // eslint-disable-next-line no-param-reassign
-  data.edges = combineEdges(data.edges, data.metadata.fields.edges);
-  return data;
+  const groupedEdges = combineEdges(data.edges, data.metadata.fields.edges);
+  const modData = { ...data };
+  Object.assign(modData, { edges: groupedEdges });
+  return modData;
 };
 
 /**
@@ -299,11 +301,7 @@ export const deriveVisibleGraph = (
   graphData: GraphData,
   styleOptions: StyleOptions,
 ): GraphData => {
-  if (styleOptions.groupEdges) {
-    applyStyle(groupEdges(graphData), styleOptions);
-  } else {
-    applyStyle(graphData, styleOptions);
-  }
+  applyStyle(graphData, styleOptions);
 
   return graphData;
 };
