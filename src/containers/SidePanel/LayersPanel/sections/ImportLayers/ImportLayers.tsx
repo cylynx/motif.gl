@@ -2,17 +2,13 @@ import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
-import { Theme } from 'baseui/theme';
 import {
-  changeVisibilityGraphList,
-  deleteGraphList,
-  updateGraphList,
-} from '../../../../../redux/graph/slice';
-import {
+  GraphSlices,
   GraphData,
   GraphList,
   GraphSelectors,
 } from '../../../../../redux/graph';
+
 import useNodeStyle from '../../../../../redux/graph/hooks/useNodeStyle';
 import useSearchOption from '../../../SearchPanel/hooks/useSearchOption';
 import LayerDetailed from './LayerDetailed';
@@ -39,7 +35,7 @@ const ImportLayers = () => {
    * @return {void}
    */
   const onDelete = (index: number) => {
-    dispatch(deleteGraphList(index));
+    dispatch(GraphSlices.deleteGraphList(index));
     resetSearchOptions();
 
     if (nodeStyle.color.id === 'legend') {
@@ -48,7 +44,7 @@ const ImportLayers = () => {
   };
 
   const onChangeVisibility = (index: number, isVisible: boolean) => {
-    dispatch(changeVisibilityGraphList({ index, isVisible }));
+    dispatch(GraphSlices.changeVisibilityGraphList({ index, isVisible }));
   };
 
   const displayTabularData = (index: number): void => {

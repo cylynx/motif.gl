@@ -28,10 +28,11 @@ const processResponse = (
   dispatch: any,
   accessors: Accessors,
   newData: GraphData | GraphList,
+  groupEdges = true,
 ) => {
   dispatch(UISlices.fetchBegin());
   for (const data of Array.isArray(newData) ? newData : [newData]) {
-    dispatch(addQuery(data));
+    dispatch(addQuery({ graphData: data, groupEdges }));
     dispatch(processGraphResponse({ data, accessors }));
     dispatch(UISlices.fetchDone());
   }
@@ -64,6 +65,7 @@ const showImportDataToast = (
  * Thunk to add data to graph - processes CSV and add to graphList
  *
  * @param {ImportFormat[]} importData - array of graphData objects
+ * @param groupEdges - determine whether should group the edges.
  * @param {ImportAccessors} importAccessors = null
  * @param {string} metadataKey = null
  *
@@ -71,6 +73,7 @@ const showImportDataToast = (
  */
 export const importEdgeListData = (
   importData: ImportFormat[],
+  groupEdges = true,
   importAccessors: ImportAccessors = null,
   metadataKey: string = null,
 ) => (dispatch: any, getState: any) => {
@@ -89,7 +92,7 @@ export const importEdgeListData = (
 
   return Promise.all(batchDataPromises)
     .then((graphData: GraphList) => {
-      processResponse(dispatch, mainAccessors, graphData);
+      processResponse(dispatch, mainAccessors, graphData, groupEdges);
       showImportDataToast(dispatch, filterOptions);
     })
     .catch((err: Error) => {

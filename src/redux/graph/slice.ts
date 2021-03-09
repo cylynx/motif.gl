@@ -17,11 +17,9 @@ import {
   Layout,
   SearchOptionPayload,
   SearchResultPayload,
+  AddQueryPayload,
 } from './types';
-import {
-  DEFAULT_NODE_STYLE,
-  PRIMARY_NODE_COLOR,
-} from '../../constants/graph-shapes';
+import { DEFAULT_NODE_STYLE } from '../../constants/graph-shapes';
 
 export const updateSelections = (state: Draft<GraphState>, data: GraphData) => {
   const currentNodeFields = state.nodeSelection.map((x) => x.id);
@@ -196,8 +194,10 @@ const graph = createSlice({
         graphFlatten: graphData ?? initialState.graphFlatten,
       });
     },
-    addQuery(state, action: PayloadAction<GraphData>) {
-      state.graphList.push(action.payload);
+    addQuery(state, action: PayloadAction<AddQueryPayload>) {
+      const { graphData, groupEdges } = action.payload;
+      console.log(groupEdges);
+      state.graphList.push(graphData);
     },
     updateStyleOption(state, action: PayloadAction<StyleOptions>) {
       Object.assign(state.styleOptions, action.payload);

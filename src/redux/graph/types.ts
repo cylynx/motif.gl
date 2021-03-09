@@ -92,14 +92,31 @@ export type GraphFields = {
   edges: Field[];
 };
 
+/** ======================================
+ *  Graph's Metadata - Group Edges
+ ** ====================================== */
+export type GroupEdgeType = 'all' | 'type';
+export type GroupEdgeFields = {
+  [key: string]: string[];
+};
+export type GroupEdges = {
+  toggle?: boolean;
+  type?: GroupEdgeType;
+  fields?: GroupEdgeFields;
+};
+
 export interface Metadata {
   key?: number | string;
   fields?: GraphFields;
-  search_size?: number;
-  retrieved_size?: number;
   title?: string;
   visible?: boolean;
+  groupEdges?: GroupEdges;
 }
+
+export type AddQueryPayload = {
+  graphData: GraphData;
+  groupEdges: boolean;
+};
 
 export interface GraphData {
   nodes: Node[];

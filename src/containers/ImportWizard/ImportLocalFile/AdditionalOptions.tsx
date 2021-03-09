@@ -1,21 +1,46 @@
-import React, { FormEvent, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { Hide, Show } from 'baseui/icon';
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
 import { FormControl } from 'baseui/form-control';
 import { Input } from 'baseui/input';
 import { Checkbox, LABEL_PLACEMENT, STYLE_TYPE } from 'baseui/checkbox';
-import useGroupEdges from '../../SidePanel/LayersPanel/hooks/useGroupEdges';
+import { Controller, ControllerRenderProps } from 'react-hook-form';
 
-type AdditionalOptionsProps = { register: any };
-const AdditionalOptions = ({ register }: AdditionalOptionsProps) => {
+type AdditionalOptionsProps = { register: any; control: any };
+const AdditionalOptions = ({ register, control }: AdditionalOptionsProps) => {
   const [showOptions, setshowOptions] = useState(false);
-  const { groupEdges, toggle } = useGroupEdges();
 
   const icon = showOptions ? <Hide /> : <Show />;
 
-  const onCheckboxChange = (_: FormEvent<HTMLInputElement>) => {
-    toggle();
+  const groupEdgeToggle = (
+    props: ControllerRenderProps<Record<string, any>>,
+  ) => {
+    const { onChange, value } = props;
+    const onCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
+      onChange(e.target.checked);
+    };
+
+    return (
+      <Checkbox
+        ariaLabel='Group Edges'
+        name='groupEdges'
+        checked={value}
+        onChange={onCheckboxChange}
+        checkmarkType={STYLE_TYPE.toggle_round}
+        labelPlacement={LABEL_PLACEMENT.left}
+        overrides={{
+          Label: {
+            style: ({ $theme }) => ({
+              fontSize: $theme.sizing.scale500,
+              paddingRight: $theme.sizing.scale0,
+            }),
+          },
+        }}
+      >
+        Group Edges
+      </Checkbox>
+    );
   };
 
   const buttonContents = showOptions
@@ -37,22 +62,11 @@ const AdditionalOptions = ({ register }: AdditionalOptionsProps) => {
         </Block>
 
         <Block paddingTop='scale100'>
-          <Checkbox
-            checked={groupEdges}
-            onChange={onCheckboxChange}
-            checkmarkType={STYLE_TYPE.toggle_round}
-            labelPlacement={LABEL_PLACEMENT.left}
-            overrides={{
-              Label: {
-                style: ({ $theme }) => ({
-                  fontSize: $theme.sizing.scale500,
-                  paddingRight: $theme.sizing.scale0,
-                }),
-              },
-            }}
-          >
-            Group Edge
-          </Checkbox>
+          <Controller
+            control={control}
+            name='groupEdges'
+            render={groupEdgeToggle}
+          />
         </Block>
       </Block>
       <Block marginTop='12px' display={showOptions ? 'block' : 'none'}>
