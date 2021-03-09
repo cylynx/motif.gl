@@ -17,11 +17,11 @@ const GroupEdges = () => {
   };
 
   return (
-    <>
+    <Block paddingLeft='scale400' paddingRight='scale400'>
       <Block
         display='flex'
         justifyContent='space-between'
-        marginTop='scale700'
+        marginTop='scale300'
         overrides={{
           Block: {
             style: ({ $theme }) => ({
@@ -30,7 +30,7 @@ const GroupEdges = () => {
           },
         }}
       >
-        <Block paddingTop='scale100'>
+        <Block paddingTop='scale100' display='flex' flex='1'>
           <Checkbox
             checked={groupEdge}
             onChange={onCheckboxChange}
@@ -52,16 +52,20 @@ const GroupEdges = () => {
         </Block>
 
         <LabelXSmall
-          width='20px'
+          width='30px'
           paddingTop='scale300'
-          overrides={{ Block: { style: { textTransform: 'capitalize' } } }}
+          overrides={{
+            Block: {
+              style: { textTransform: 'capitalize', textAlign: 'center' },
+            },
+          }}
           marginTop='0'
           marginBottom='0'
         >
           by
         </LabelXSmall>
 
-        <Block>
+        <Block display='flex' flex='1'>
           <Select
             size={SIZE.mini}
             clearable={false}
@@ -102,7 +106,7 @@ const GroupEdges = () => {
           marginTop='scale200'
           justifyContent='space-between'
         >
-          <Block>
+          <Block display='flex' flex='1'>
             <Select
               size={SIZE.mini}
               clearable={false}
@@ -120,9 +124,9 @@ const GroupEdges = () => {
             />
           </Block>
 
-          <Block width='20px' />
+          <Block width='30px' />
 
-          <Block>
+          <Block display='flex' flex='1'>
             <Select
               size={SIZE.mini}
               clearable={false}
@@ -146,7 +150,7 @@ const GroupEdges = () => {
           marginTop='scale200'
           justifyContent='space-between'
         >
-          <Block>
+          <Block display='flex' flex='1'>
             <Select
               size={SIZE.mini}
               clearable={false}
@@ -164,9 +168,9 @@ const GroupEdges = () => {
             />
           </Block>
 
-          <Block width='20px' />
+          <Block width='30px' />
 
-          <Block>
+          <Block display='flex' flex='1'>
             <select id='hello' style={{ padding: '8px' }}>
               <option value='1'>One</option>
               <option value='2'>Two</option>
@@ -174,7 +178,7 @@ const GroupEdges = () => {
           </Block>
         </Block>
       </Block>
-    </>
+    </Block>
   );
 };
 

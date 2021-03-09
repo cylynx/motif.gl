@@ -48,7 +48,7 @@ const LayersPanel = () => {
         <ImportDataButton />
       </Block>
       <ImportLayers />
-      <Block marginBottom='scale1000' />
+      <Block marginBottom='scale300' />
     </Fragment>
   );
 };

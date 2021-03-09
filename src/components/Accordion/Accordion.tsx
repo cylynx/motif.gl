@@ -16,7 +16,7 @@ export type AccordionProps = {
 };
 
 export type AccordionItem = {
-  key?: string;
+  key?: string | number;
   title: React.ReactNode;
   content: React.ReactNode;
   expanded?: boolean;

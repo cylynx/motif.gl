@@ -41,7 +41,7 @@ const LayerDetailed = ({ graph }: LayerDetailProps) => {
         />
       </Block>
 
-      <Block marginTop='scale200'>
+      <Block marginTop='scale650'>
         <GroupEdges />
       </Block>
     </>

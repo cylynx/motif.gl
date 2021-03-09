@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
-import DndList from '../../../../../components/DndList';
+import { Theme } from 'baseui/theme';
 import {
   changeVisibilityGraphList,
   deleteGraphList,
@@ -17,6 +17,10 @@ import useNodeStyle from '../../../../../redux/graph/hooks/useNodeStyle';
 import useSearchOption from '../../../SearchPanel/hooks/useSearchOption';
 import LayerDetailed from './LayerDetailed';
 
+import DataListAccordion from '../../components/DataListAccordion/DataListAccordion';
+import AccordionPanel from '../../components/DataListAccordion/AccordionPanel';
+import { UISlices } from '../../../../../redux/ui';
+
 const ImportLayers = () => {
   const dispatch = useDispatch();
   const { nodeStyle, switchToFixNodeColor } = useNodeStyle();
@@ -24,26 +28,6 @@ const ImportLayers = () => {
   const graphList: GraphList = useSelector((state) =>
     GraphSelectors.getGraphList(state),
   );
-
-  const importItems = graphList.map((graph: GraphData, index: number) => {
-    let title = `import ${index}`;
-    if (graph.metadata?.title) {
-      title = graph.metadata.title;
-    }
-    return {
-      key: index,
-      title,
-      isVisible:
-        typeof graph.metadata?.visible === 'undefined'
-          ? true
-          : graph.metadata?.visible,
-      children: <LayerDetailed graph={graph} />,
-    };
-  });
-
-  const onChangeOrder = (oldIndex: number, newIndex: number) => {
-    dispatch(updateGraphList({ from: oldIndex, to: newIndex }));
-  };
 
   /**
    * Delete single data list.
@@ -67,14 +51,39 @@ const ImportLayers = () => {
     dispatch(changeVisibilityGraphList({ index, isVisible }));
   };
 
-  return (
-    <Block overflow='auto'>
-      <DndList
-        items={importItems}
-        onChangeOrder={onChangeOrder}
+  const displayTabularData = (index: number): void => {
+    dispatch(UISlices.openDataTableModal(`table_${index}`));
+  };
+
+  const items = graphList.map((graph: GraphData, index: number) => {
+    const titleText: string = graph.metadata?.title ?? `import ${index}`;
+    const isVisible: boolean = graph.metadata?.visible ?? true;
+
+    const title = (
+      <AccordionPanel
+        key={index}
+        index={index}
+        onDatatableClick={displayTabularData}
         onChangeVisibility={onChangeVisibility}
         onDelete={onDelete}
+        title={titleText}
+        isVisible={isVisible}
       />
+    );
+
+    const content = <LayerDetailed graph={graph} />;
+
+    return {
+      key: index,
+      title,
+      content,
+      expanded: false,
+    };
+  });
+
+  return (
+    <Block overflow='auto' marginTop='scale300'>
+      <DataListAccordion items={items} />
     </Block>
   );
 };

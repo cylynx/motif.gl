@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux';
 import * as Icon from '../Icons';
 import { SimpleTooltip } from '../ui';
 import { UISlices } from '../../redux/ui';
-
 import DndAccordian from './DndAccordian';
 
 export type DndItem = {
