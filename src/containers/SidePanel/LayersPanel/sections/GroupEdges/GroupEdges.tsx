@@ -17,7 +17,7 @@ const GroupEdges = () => {
   };
 
   return (
-    <Block paddingLeft='scale400' paddingRight='scale400'>
+    <Block paddingLeft='scale300' paddingRight='scale300'>
       <Block
         display='flex'
         justifyContent='space-between'
@@ -30,7 +30,7 @@ const GroupEdges = () => {
           },
         }}
       >
-        <Block paddingTop='scale100' display='flex' flex='1'>
+        <Block paddingTop='3px' display='flex' flex='1'>
           <Checkbox
             checked={groupEdge}
             onChange={onCheckboxChange}
@@ -39,7 +39,7 @@ const GroupEdges = () => {
             overrides={{
               Label: {
                 style: ({ $theme }) => ({
-                  ...$theme.typography.ParagraphSmall,
+                  ...$theme.typography.LabelSmall,
                   fontSize: $theme.sizing.scale500,
                   paddingRight: $theme.sizing.scale0,
                   paddingTop: $theme.sizing.scale0,

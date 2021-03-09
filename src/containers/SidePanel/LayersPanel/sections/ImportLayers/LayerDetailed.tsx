@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import React from 'react';
 import { Block } from 'baseui/block';
+import { styled } from 'baseui';
 import {
   Edge,
   GraphData,
@@ -9,6 +10,13 @@ import {
 } from '../../../../../redux/graph';
 import GraphStatistics from '../../components/GraphStatistics';
 import GroupEdges from '../GroupEdges';
+
+const StyledHr = styled('hr', ({ $theme }) => ({
+  borderColor: $theme.colors.mono700,
+  borderWidth: '1px',
+  borderStyle: 'solid',
+  marginTop: $theme.sizing.scale500,
+}));
 
 type LayerDetailProps = { graph: GraphData };
 const LayerDetailed = ({ graph }: LayerDetailProps) => {
@@ -41,7 +49,9 @@ const LayerDetailed = ({ graph }: LayerDetailProps) => {
         />
       </Block>
 
-      <Block marginTop='scale650'>
+      <StyledHr />
+
+      <Block marginTop='scale300'>
         <GroupEdges />
       </Block>
     </>

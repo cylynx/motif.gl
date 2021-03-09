@@ -5,8 +5,8 @@ import * as Icon from '../../../../../components/Icons';
 
 type DataListAccordionProps = { items: AccordionItem[] };
 
-type THeaderStyle = { $theme: Theme };
-const HeaderStyle = ({ $theme }: THeaderStyle) => ({
+type TNormalStyle = { $theme: Theme };
+const HeaderStyle = ({ $theme }: TNormalStyle) => ({
   ...$theme.typography.LabelSmall,
   paddingTop: $theme.sizing.scale200,
   paddingLeft: $theme.sizing.scale500,
