@@ -21,6 +21,7 @@ import {
 } from './types';
 
 import { UISlices, UIThunks } from '../ui';
+import { groupEdges } from '../../containers/Graph/styles/utils';
 
 type ImportAccessors = Accessors | null;
 
@@ -30,11 +31,27 @@ const processResponse = (
   newData: GraphData | GraphList,
 ) => {
   dispatch(UISlices.fetchBegin());
-  for (const data of Array.isArray(newData) ? newData : [newData]) {
-    dispatch(addQuery(data));
-    dispatch(processGraphResponse({ data, accessors }));
-    dispatch(UISlices.fetchDone());
-  }
+
+  // ensure the graph must be in array formats.
+  const graphList: GraphList = Array.isArray(newData) ? newData : [newData];
+
+  graphList.forEach((graphData: GraphData) => {
+    // appends graph data into graph list.
+    dispatch(addQuery(graphData));
+
+    // create a new copies of object to modify immutable objects.
+    let modData = graphData;
+
+    // perform group edges based on user preferences during data importation.
+    if (graphData.metadata.groupEdges.toggle) {
+      modData = groupEdges(graphData);
+    }
+
+    // combine new graph data with existing graph data to form graph flattens.
+    dispatch(processGraphResponse({ data: modData, accessors }));
+  });
+
+  dispatch(UISlices.fetchDone());
 };
 
 /**
@@ -113,6 +130,7 @@ export const importEdgeListData = (
  * 3. allow original graphin format to import for backward compatibility
  *
  * @param {ImportFormat[]} importData - array of graphData objects
+ * @param {boolean} groupEdges - decides whether graph's edges shall be grouped.
  * @param {ImportAccessors} importAccessors [importAccessors=null] to customize node Id / edge Id / edge source or target
  * @param {boolean} overwriteStyles - overwrite the existing graph styles
  *
@@ -120,6 +138,7 @@ export const importEdgeListData = (
  */
 export const importJsonData = (
   importData: ImportFormat[],
+  groupEdges = true,
   importAccessors: ImportAccessors = null,
   overwriteStyles = false,
 ) => (dispatch: any, getState: any) => {
@@ -144,11 +163,11 @@ export const importJsonData = (
         styleOptions = importStyleOption;
       }
 
-      return importJson(dataWithStyle as GraphList, accessors);
+      return importJson(dataWithStyle as GraphList, accessors, groupEdges);
     }
 
     const { data } = graphData;
-    return importJson(data as GraphList, accessors);
+    return importJson(data as GraphList, accessors, groupEdges);
   });
 
   return Promise.all(batchDataPromises)
@@ -213,10 +232,12 @@ export const importNodeEdgeData = (
  * Thunk to add single json data into graph.
  *
  * @param {JsonImport} importData
+ * @param {boolean} groupEdges [groupEdges=true] - group graph's edges
  * @param {ImportAccessors} importAccessors [importAccessors=null] - to customize node Id / edge Id / edge source or target
  */
 export const importSingleJsonData = (
   importData: JsonImport,
+  groupEdges = true,
   importAccessors: ImportAccessors = null,
 ) => (dispatch: any, getState: any): Promise<void> => {
   if (Array.isArray(importData)) {
@@ -228,7 +249,11 @@ export const importSingleJsonData = (
   const accessors = { ...mainAccessors, ...importAccessors };
   const filterOptions: FilterOptions = getFilterOptions(getState());
 
-  const newData: Promise<GraphList> = importJson(data as GraphData, accessors);
+  const newData: Promise<GraphList> = importJson(
+    data as GraphData,
+    accessors,
+    groupEdges,
+  );
 
   return newData
     .then((graphData: GraphList) => {

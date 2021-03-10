@@ -274,17 +274,6 @@ const graph = createSlice({
       const { data } = action.payload;
       const { graphFlatten } = state;
 
-      if (data.metadata.groupEdges.toggle) {
-        const groupData = groupEdges(data);
-        const graphData = combineProcessedData(
-          groupData,
-          graphFlatten as GraphData,
-        );
-        updateAll(state, graphData);
-        updateSelections(state, groupData);
-        return;
-      }
-
       const graphData = combineProcessedData(data, graphFlatten as GraphData);
       updateAll(state, graphData);
       updateSelections(state, data);

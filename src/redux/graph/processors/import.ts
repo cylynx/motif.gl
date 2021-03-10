@@ -3,12 +3,7 @@ import get from 'lodash/get';
 import shortid from 'shortid';
 
 import { Node, Edge, GraphList, GraphData, Accessors } from '../types';
-import {
-  processJson,
-  processNodeEdgeCsv,
-  processEdgeListCsv,
-  validateMotifJson,
-} from './data';
+import { processJson, processNodeEdgeCsv, processEdgeListCsv } from './data';
 
 /**
  * Initial function to process json object with node, edge fields or motif json to required format
@@ -16,19 +11,22 @@ import {
  *
  * @param {GraphList|GraphData} json
  * @param {Accessors} accessors
+ * @param groupEdges - decides whether the graph's edge shall be grouped.
  * @return {Promise<GraphList>}
  */
 export const importJson = async (
   json: GraphList | GraphData,
   accessors: Accessors,
+  groupEdges: boolean,
 ): Promise<GraphList> => {
-  const results = [];
-  const jsonArray = Array.isArray(json) ? json : [json];
-  for (const data of jsonArray) {
-    if (validateMotifJson(data)) return jsonArray;
+  const results: GraphList = [];
+  const graphList: GraphList = Array.isArray(json) ? json : [json];
+
+  for (const data of graphList) {
     // eslint-disable-next-line no-await-in-loop
     const processedData = await processJson(
       data,
+      groupEdges,
       data?.key || data?.metadata?.key,
     );
     results.push(addRequiredFieldsJson(processedData, accessors));

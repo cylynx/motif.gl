@@ -77,10 +77,10 @@ export const PARSE_FIELD_VALUE_FROM_STRING = {
 /**
  * Quick check to test whether json has the keys required of GraphData type
  *
- * @param {*} json
- * @return {*} {boolean}
+ * @param {GraphData} json
+ * @return {boolean}
  */
-export const validateMotifJson = (json: any): boolean => {
+export const validateMotifJson = (json: GraphData): boolean => {
   if (
     json.nodes &&
     json.edges &&
@@ -88,6 +88,7 @@ export const validateMotifJson = (json: any): boolean => {
     json.metadata.fields &&
     json.metadata.fields.nodes &&
     json.metadata.fields.edges &&
+    json.metadata.groupEdges &&
     json.metadata.key
   ) {
     return true;
@@ -98,12 +99,14 @@ export const validateMotifJson = (json: any): boolean => {
 /**
  * Process json data, output a promise GraphData object with field information in metadata.
  *
- * @param {*} json
+ * @param {GraphData} json
+ * @param {boolean} groupEdges
  * @param {*} [key=shortid.generate()] Either an accessor string or the key itself
- * @return {*}  {Promise<Graph.GraphData>}
+ * @return {*}  {Promise<GraphData>}
  */
 export const processJson = async (
-  json: any,
+  json: GraphData,
+  groupEdges: boolean,
   key: string | number = shortid.generate(),
 ): Promise<GraphData> => {
   if (validateMotifJson(json)) return json;
@@ -117,10 +120,16 @@ export const processJson = async (
     const { fields: edgeFields, json: edgeJson } = await processCsvData(
       edgeCsv as string,
     );
+
+    const groupEdgeConfig: GroupEdges = {
+      toggle: groupEdges,
+    };
+
     const graphMetadata = {
       ...json?.metadata,
       fields: { nodes: nodeFields, edges: edgeFields },
       key: get(json, key, key),
+      groupEdges: groupEdgeConfig,
     };
     return {
       nodes: nodeJson as Node[],

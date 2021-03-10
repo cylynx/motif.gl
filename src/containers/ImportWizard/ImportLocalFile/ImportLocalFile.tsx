@@ -277,6 +277,7 @@ const ImportLocalFile = () => {
       dispatch(
         GraphThunks.importJsonData(
           batchFileRef.current,
+          groupEdges,
           accessors,
           overwriteStyle,
         ),
