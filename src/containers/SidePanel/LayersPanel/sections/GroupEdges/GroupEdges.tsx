@@ -24,6 +24,13 @@ const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
     getGraphFieldsOptions(state),
   );
 
+  const edgeFields = useMemo(() => {
+    return allEdgeFields.filter(
+      (option: Option) =>
+        !['id', 'source', 'target'].includes(option.id as string),
+    );
+  }, [allEdgeFields]);
+
   const existingFields = useMemo(
     () =>
       Object.entries(groupEdges.fields ?? {}).map((data) => {
@@ -34,15 +41,18 @@ const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
   );
 
   const unselectedFields: Value = useMemo(() => {
-    return allEdgeFields.filter(
+    return edgeFields.filter(
       (edgeField: Option) => !existingFields.includes(edgeField.id as string),
     );
-  }, [allEdgeFields, existingFields]);
+  }, [edgeFields, existingFields]);
 
   const isAllowAddFields: boolean = useMemo(() => {
     // does not contains any field
     const { fields } = groupEdges;
     if (!fields) return true;
+
+    // all the fields already selected, doesn't require to add fields.
+    if (unselectedFields.length === 0) return false;
 
     // values is empty do not allow to add field
     const isValuesEmpty = Object.entries(fields).some(
@@ -52,9 +62,6 @@ const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
       },
     );
     if (!isValuesEmpty) return true;
-
-    // all the fields already selected, doesn't require to add fields.
-    if (unselectedFields.length !== 0) return true;
 
     return false;
   }, [groupEdges.fields]);
@@ -91,7 +98,7 @@ const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
   const addFields = () => {
     // there is no existing fields, create a field with edge fields.
     if (existingFields.length === 0) {
-      const [firstOption] = allEdgeFields;
+      const [firstOption] = edgeFields;
       updateFields(firstOption.id as string);
       return;
     }
@@ -128,6 +135,7 @@ const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
       {groupEdges.type === 'type' && (
         <>
           <AggregateFields
+            edgeFields={edgeFields}
             fields={groupEdges.fields}
             onFieldChange={onFieldChange}
             onAggregateChange={onAggregateChange}

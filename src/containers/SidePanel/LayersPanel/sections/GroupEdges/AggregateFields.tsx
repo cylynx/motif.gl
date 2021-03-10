@@ -1,18 +1,8 @@
 import React, { useMemo, FC } from 'react';
 import { Block } from 'baseui/block';
 import { LabelXSmall } from 'baseui/typography';
-import { useSelector } from 'react-redux';
 import { Select, SIZE, Option, OnChangeParams, Value } from 'baseui/select';
-import {
-  GroupEdgeFields,
-  GroupEdges,
-  GroupEdgeType,
-  NumericAggregations,
-  StringAggregations,
-} from '../../../../../redux/graph';
-import { RootState } from '../../../../../redux/investigate';
-import { getGraphFieldsOptions } from '../../../../../redux/graph/selectors';
-import AddAttributesButton from '../../components/AddAttributesButton';
+import { GroupEdges } from '../../../../../redux/graph';
 
 const NUMERIC_AGGREGATIONS: Value = [
   {
@@ -67,19 +57,17 @@ const FieldLabels = () =>
   );
 
 type AggregateFieldsProps = {
+  edgeFields: Value;
   fields: GroupEdges['fields'];
   onFieldChange: (params: OnChangeParams, uniqueFieldId: string) => any;
   onAggregateChange: (params: OnChangeParams, uniqueFieldId: string) => any;
 };
 const AggregateFields: FC<AggregateFieldsProps> = ({
+  edgeFields,
   fields = {},
   onFieldChange,
   onAggregateChange,
 }) => {
-  const { allEdgeFields } = useSelector((state: RootState) =>
-    getGraphFieldsOptions(state),
-  );
-
   const determineAggregationOpt = (type: string): Value => {
     if (type === 'integer' || type === 'real') {
       return NUMERIC_AGGREGATIONS;
@@ -92,7 +80,7 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
     const [uniqueFieldId, fieldAndAggregration] = data;
     const { field, aggregation } = fieldAndAggregration;
 
-    const fieldValue: Value = allEdgeFields.filter(
+    const fieldValue: Value = edgeFields.filter(
       (edgeField: Option) => edgeField.id === field,
     );
 
@@ -117,7 +105,7 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
             searchable={false}
             clearable={false}
             escapeClearsValue={false}
-            options={allEdgeFields}
+            options={edgeFields}
             value={fieldValue}
             maxDropdownHeight='300px'
             onChange={(params: OnChangeParams) =>

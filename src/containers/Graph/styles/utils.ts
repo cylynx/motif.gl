@@ -282,8 +282,6 @@ export const applyStyle = (data: GraphData, options: StyleOptions): void => {
  * @return {*}  {GraphData}
  */
 export const groupEdges = (data: GraphData): GraphData => {
-  // const newEdges = combineEdges(data.edges);
-  // eslint-disable-next-line no-param-reassign
   const groupedEdges = combineEdges(data.edges, data.metadata.fields.edges);
   const modData = { ...data };
   Object.assign(modData, { edges: groupedEdges });
