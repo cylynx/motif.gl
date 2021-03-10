@@ -259,7 +259,11 @@ const ImportLocalFile = () => {
     const selectedDataType: string = watchDataType[0].id;
     if (selectedDataType === 'nodeEdgeCsv') {
       dispatch(
-        GraphThunks.importNodeEdgeData(singleFileRef.current, accessors),
+        GraphThunks.importNodeEdgeData(
+          singleFileRef.current,
+          groupEdges,
+          accessors,
+        ),
       );
     }
 

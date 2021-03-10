@@ -119,6 +119,7 @@ export const importEdgeListData = (
     .catch((err: Error) => {
       const { message } = err;
       dispatch(UIThunks.show(message, 'negative'));
+      dispatch(UISlices.fetchDone());
     });
 };
 
@@ -184,6 +185,7 @@ export const importJsonData = (
     .catch((err: Error) => {
       const { message } = err;
       dispatch(UIThunks.show(message, 'negative'));
+      dispatch(UISlices.fetchDone());
     });
 };
 
@@ -191,12 +193,14 @@ export const importJsonData = (
  * Thunk to add data to graph - processed CSV with node and edge and add to graph List
  *
  * @param {ImportFormat} importData - single graphData object
+ * @param {boolean} groupEdges - group graph's edges
  * @param {ImportAccessors} importAccessors [importAccessors=null] - to customize node Id / edge Id / edge source or target
  * @param {number} metadataKey [metadataKey=null]
  * @return {Promise<GraphData>}
  */
 export const importNodeEdgeData = (
   importData: ImportFormat,
+  groupEdges = true,
   importAccessors: ImportAccessors = null,
   metadataKey: string = null,
 ) => (dispatch: any, getState: any) => {
@@ -214,6 +218,7 @@ export const importNodeEdgeData = (
     nodeData,
     edgeData,
     accessors,
+    groupEdges,
     metadataKey,
   );
 
@@ -225,6 +230,7 @@ export const importNodeEdgeData = (
     .catch((err: Error) => {
       const { message } = err;
       dispatch(UIThunks.show(message, 'negative'));
+      dispatch(UISlices.fetchDone());
     });
 };
 
@@ -263,5 +269,6 @@ export const importSingleJsonData = (
     .catch((err: Error) => {
       const { message } = err;
       dispatch(UIThunks.show(message, 'negative'));
+      dispatch(UISlices.fetchDone());
     });
 };

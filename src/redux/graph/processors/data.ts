@@ -147,20 +147,29 @@ export const processJson = async (
  *
  * @param {string} nodeCsv
  * @param {string} edgeCsv
+ * @param {boolean} groupEdges
  * @param {*} [key=shortid.generate()]
  * @return {*}  {Promise<Graph.GraphData>}
  */
 export const processNodeEdgeCsv = async (
   nodeCsv: string,
   edgeCsv: string,
+  groupEdges: boolean,
   key = shortid.generate(),
 ): Promise<GraphData> => {
   const { fields: nodeFields, json: nodeJson } = await processCsvData(nodeCsv);
   const { fields: edgeFields, json: edgeJson } = await processCsvData(edgeCsv);
+
+  const groupEdgeConfig: GroupEdges = {
+    toggle: groupEdges,
+  };
+
   const graphMetadata: Metadata = {
     fields: { nodes: nodeFields, edges: edgeFields },
     key,
+    groupEdges: groupEdgeConfig,
   };
+
   return {
     nodes: nodeJson as Node[],
     edges: edgeJson as Edge[],

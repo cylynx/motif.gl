@@ -59,6 +59,7 @@ export const importEdgeListCsv = async (
     groupEdges,
     metadataKey,
   );
+
   if (processedData.nodes.length < 1 || processedData.edges.length < 1) {
     throw new Error('process Csv Data Failed: CSV is empty');
   }
@@ -72,6 +73,7 @@ export const importEdgeListCsv = async (
  * @param {string} nodeCsv
  * @param {string} edgeCsv
  * @param {Accessors} accessors
+ * @param {boolean} groupEdges
  * @param {string} metadataKey [metadataKey=null]
  *
  * @return {Promise<GraphData>}
@@ -80,9 +82,15 @@ export const importNodeEdgeCsv = async (
   nodeCsv: string,
   edgeCsv: string,
   accessors: Accessors,
+  groupEdges: boolean,
   metadataKey: string = null,
 ): Promise<GraphData> => {
-  const processedData = await processNodeEdgeCsv(nodeCsv, edgeCsv, metadataKey);
+  const processedData = await processNodeEdgeCsv(
+    nodeCsv,
+    edgeCsv,
+    groupEdges,
+    metadataKey,
+  );
   if (processedData.nodes.length < 1) {
     throw new Error('process Csv Data Failed: CSV is empty');
   }
