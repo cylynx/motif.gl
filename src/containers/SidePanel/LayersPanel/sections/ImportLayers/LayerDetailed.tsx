@@ -18,8 +18,8 @@ const StyledHr = styled('hr', ({ $theme }) => ({
   marginTop: $theme.sizing.scale500,
 }));
 
-type LayerDetailProps = { graph: GraphData };
-const LayerDetailed = ({ graph }: LayerDetailProps) => {
+type LayerDetailProps = { graph: GraphData; index: number };
+const LayerDetailed = ({ graph, index }: LayerDetailProps) => {
   const graphVisible = useSelector((state) =>
     GraphSelectors.getGraphVisible(state),
   );
@@ -52,7 +52,7 @@ const LayerDetailed = ({ graph }: LayerDetailProps) => {
       <StyledHr />
 
       <Block marginTop='scale300'>
-        <GroupEdges />
+        <GroupEdges graphListIndex={index} />
       </Block>
     </>
   );

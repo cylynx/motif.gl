@@ -30,7 +30,7 @@ const AddAttributesButton: FC<AddAttributesButtonProps> = ({ onClick }) => {
         },
       }}
     >
-      Add Attributes
+      Add Fields
     </Button>
   );
 };

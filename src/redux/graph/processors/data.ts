@@ -121,9 +121,7 @@ export const processJson = async (
       edgeCsv as string,
     );
 
-    const groupEdgeConfig: GroupEdges = {
-      toggle: groupEdges,
-    };
+    const groupEdgeConfig: GroupEdges = applyGroupEdges(groupEdges);
 
     const graphMetadata = {
       ...json?.metadata,
@@ -160,9 +158,7 @@ export const processNodeEdgeCsv = async (
   const { fields: nodeFields, json: nodeJson } = await processCsvData(nodeCsv);
   const { fields: edgeFields, json: edgeJson } = await processCsvData(edgeCsv);
 
-  const groupEdgeConfig: GroupEdges = {
-    toggle: groupEdges,
-  };
+  const groupEdgeConfig: GroupEdges = applyGroupEdges(groupEdges);
 
   const graphMetadata: Metadata = {
     fields: { nodes: nodeFields, edges: edgeFields },
@@ -205,9 +201,7 @@ export const processEdgeListCsv = async (
     return { id: node };
   });
 
-  const groupEdgeConfig: GroupEdges = {
-    toggle: groupEdges,
-  };
+  const groupEdgeConfig: GroupEdges = applyGroupEdges(groupEdges);
 
   const graphMetadata: Metadata = {
     fields: { nodes: [], edges: edgeFields },
@@ -613,4 +607,22 @@ export const analyzerTypeToFieldType = (aType: string): string => {
       console.warn(`Unsupported analyzer type: ${aType}`);
       return ALL_FIELD_TYPES.string;
   }
+};
+
+/**
+ * Applies group edge onto metadata on every single imports.
+ *
+ * @param toggle
+ * @return {void}
+ */
+const applyGroupEdges = (toggle: boolean): GroupEdges => {
+  const groupEdgeConfig: GroupEdges = {
+    toggle,
+  };
+
+  if (toggle) {
+    groupEdgeConfig.type = 'all';
+  }
+
+  return groupEdgeConfig;
 };

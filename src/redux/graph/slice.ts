@@ -20,6 +20,7 @@ import {
   Layout,
   SearchOptionPayload,
   SearchResultPayload,
+  GroupEdgePayload,
 } from './types';
 import { DEFAULT_NODE_STYLE } from '../../constants/graph-shapes';
 
@@ -344,6 +345,20 @@ const graph = createSlice({
     resetSearchOptions(state) {
       Object.assign(state.searchOptions, initialState.searchOptions);
     },
+    setGroupEdgeOptions(state, action: PayloadAction<GroupEdgePayload>) {
+      const { index, key, value } = action.payload;
+      Object.assign(state.graphList[index].metadata.groupEdges, {
+        [key]: value,
+      });
+    },
+    removeGroupEdgeOptions(state, action: PayloadAction<number>) {
+      const graphGroupEdgeConfig =
+        state.graphList[action.payload].metadata.groupEdges;
+      const { type, ...res } = graphGroupEdgeConfig;
+      Object.assign(state.graphList[action.payload].metadata, {
+        groupEdges: res,
+      });
+    },
   },
 });
 
@@ -374,6 +389,8 @@ export const {
   resetSearchOptions,
   updateNodeResults,
   updateEdgeResults,
+  setGroupEdgeOptions,
+  removeGroupEdgeOptions,
 } = graph.actions;
 
 export default graph.reducer;

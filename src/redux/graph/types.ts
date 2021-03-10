@@ -113,9 +113,14 @@ export interface Metadata {
   groupEdges?: GroupEdges;
 }
 
-export type AddQueryPayload = {
-  graphData: GraphData;
-  groupEdges: boolean;
+export type GroupEdgePayload = {
+  index: number;
+  key: 'toggle' | 'type';
+  value: boolean | GroupEdgeType;
+};
+
+export type DeleteGroupEdgePayload = {
+  index: number;
 };
 
 export interface GraphData {

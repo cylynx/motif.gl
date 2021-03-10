@@ -1,20 +1,29 @@
-import React, { FormEvent, useState } from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
 import { Block } from 'baseui/block';
-import { Checkbox, STYLE_TYPE, LABEL_PLACEMENT } from 'baseui/checkbox';
 import { LabelXSmall } from 'baseui/typography';
-import { OnChangeParams, Select, Value, SIZE } from 'baseui/select';
+import { OnChangeParams, Select, Value, SIZE, Option } from 'baseui/select';
 import AddAttributesButton from '../../components/AddAttributesButton';
+import useGroupEdges from '../../hooks/useGroupEdges';
+import ToggleWithTypes from './ToggleWithTypes';
+import { GroupEdgeType } from '../../../../../redux/graph';
 
-const GroupEdges = () => {
-  const [groupEdge, setGroupEdge] = useState(false);
+type GroupEdgesProps = { graphListIndex: number };
+const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
+  const { groupEdges, toggle, changeType } = useGroupEdges(graphListIndex);
   const [value, setValue] = useState<Value>([]);
 
-  const onCheckboxChange = (e: FormEvent<HTMLInputElement>) => {
-    setGroupEdge(e.currentTarget.checked);
+  const onCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
+    toggle(e.target.checked);
   };
 
   const onSelectChange = (params: OnChangeParams) => {
     setValue(params.value);
+  };
+
+  const onTypeChange = (params: OnChangeParams) => {
+    const [firstValue] = params.value as Value;
+    const { id } = firstValue as Option;
+    changeType(id as GroupEdgeType);
   };
 
   return (
@@ -31,58 +40,12 @@ const GroupEdges = () => {
           },
         }}
       >
-        <Block paddingTop='3px' display='flex' flex='1'>
-          <Checkbox
-            checked={groupEdge}
-            onChange={onCheckboxChange}
-            checkmarkType={STYLE_TYPE.toggle_round}
-            labelPlacement={LABEL_PLACEMENT.left}
-            overrides={{
-              Label: {
-                style: ({ $theme }) => ({
-                  ...$theme.typography.LabelSmall,
-                  fontSize: $theme.sizing.scale500,
-                  paddingRight: $theme.sizing.scale0,
-                  paddingTop: $theme.sizing.scale100,
-                }),
-              },
-            }}
-          >
-            Group Edge
-          </Checkbox>
-        </Block>
-
-        <LabelXSmall
-          width='30px'
-          paddingTop='scale300'
-          overrides={{
-            Block: {
-              style: { textTransform: 'capitalize', textAlign: 'center' },
-            },
-          }}
-          marginTop='0'
-          marginBottom='0'
-        >
-          by
-        </LabelXSmall>
-
-        <Block display='flex' flex='1'>
-          <Select
-            size={SIZE.mini}
-            clearable={false}
-            options={[
-              { label: 'AliceBlue', id: '#F0F8FF' },
-              { label: 'AntiqueWhite', id: '#FAEBD7' },
-              { label: 'Aqua', id: '#00FFFF' },
-              { label: 'Aquamarine', id: '#7FFFD4' },
-              { label: 'Azure', id: '#F0FFFF' },
-              { label: 'Beige', id: '#F5F5DC' },
-            ]}
-            value={value}
-            placeholder='Select color'
-            onChange={onSelectChange}
-          />
-        </Block>
+        <ToggleWithTypes
+          toggle={groupEdges.toggle}
+          type={groupEdges.type}
+          onTypeChange={onTypeChange}
+          onToggleChange={onCheckboxChange}
+        />
       </Block>
 
       <Block marginTop='scale500'>

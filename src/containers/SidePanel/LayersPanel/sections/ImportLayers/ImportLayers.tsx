@@ -67,7 +67,7 @@ const ImportLayers = () => {
       />
     );
 
-    const content = <LayerDetailed graph={graph} />;
+    const content = <LayerDetailed graph={graph} index={index} />;
 
     return {
       key: index,
