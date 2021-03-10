@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useMemo } from 'react';
+import shortid from 'shortid';
 import {
+  FieldAndAggregation,
   GraphList,
   GraphSelectors,
   GraphSlices,
@@ -68,7 +70,30 @@ const useGroupEdges = (graphIndex: number) => {
     dispatch(GraphSlices.removeGroupEdgeOptions(graphIndex));
   };
 
-  return { groupEdges, toggle, changeType };
+  const updateFields = (value: string, uniqueFieldId = shortid.generate()) => {
+    dispatch(
+      GraphSlices.updateGroupEdgeField({
+        index: graphIndex,
+        fieldId: uniqueFieldId,
+        value,
+      }),
+    );
+  };
+
+  const updateAggregates = (
+    value: FieldAndAggregation['aggregation'],
+    uniqueFieldId: string,
+  ) => {
+    dispatch(
+      GraphSlices.updateGroupEdgeAggregate({
+        index: graphIndex,
+        fieldId: uniqueFieldId,
+        value,
+      }),
+    );
+  };
+
+  return { groupEdges, toggle, changeType, updateFields, updateAggregates };
 };
 
 export default useGroupEdges;

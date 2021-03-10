@@ -94,23 +94,23 @@ const getGraphFieldsOptions = createSelector(
 
     getField(graphFields.nodes).forEach(({ name, type }) => {
       if (name !== 'id' && name !== 'none') {
-        allNodeFields.push({ id: name, label: name });
+        allNodeFields.push({ id: name, label: name, type });
       }
       if (name !== 'id' && name !== 'degree') {
-        layoutFields.push({ id: name, label: name });
+        layoutFields.push({ id: name, label: name, type });
       }
       if (type === 'integer' || type === 'real') {
-        numericNodeFields.push({ id: name, label: name });
+        numericNodeFields.push({ id: name, label: name, type });
       }
     });
     const nodeLabelFields = [...allNodeFields, { id: 'none', label: 'none' }];
 
     getField(graphFields.edges).forEach(({ name, type }) => {
       if (name !== 'id' && name !== 'none') {
-        allEdgeFields.push({ id: name, label: name });
+        allEdgeFields.push({ id: name, label: name, type });
       }
       if (type === 'integer' || type === 'real') {
-        numericEdgeFields.push({ id: name, label: name });
+        numericEdgeFields.push({ id: name, label: name, type });
       }
     });
     const edgeLabelFields = [...allEdgeFields, { id: 'none', label: 'none' }];

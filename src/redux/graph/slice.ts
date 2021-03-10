@@ -6,10 +6,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import isUndefined from 'lodash/isUndefined';
 import { Draft } from 'immer';
 import * as LAYOUT from '../../constants/layout-options';
-import {
-  combineProcessedData,
-  groupEdges,
-} from '../../containers/Graph/styles/utils';
+import { combineProcessedData } from '../../containers/Graph/styles/utils';
 import { generateDefaultColorMap } from '../../containers/Graph/styles/StyleNodes';
 import {
   Accessors,
@@ -21,6 +18,8 @@ import {
   SearchOptionPayload,
   SearchResultPayload,
   GroupEdgePayload,
+  UpdateGroupEdgeFieldPayload,
+  FieldAndAggregation,
 } from './types';
 import { DEFAULT_NODE_STYLE } from '../../constants/graph-shapes';
 
@@ -352,11 +351,50 @@ const graph = createSlice({
       });
     },
     removeGroupEdgeOptions(state, action: PayloadAction<number>) {
-      const graphGroupEdgeConfig =
-        state.graphList[action.payload].metadata.groupEdges;
-      const { type, ...res } = graphGroupEdgeConfig;
+      const { groupEdges } = state.graphList[action.payload].metadata;
+      const { type, ...res } = groupEdges;
       Object.assign(state.graphList[action.payload].metadata, {
         groupEdges: res,
+      });
+    },
+    updateGroupEdgeField(
+      state,
+      action: PayloadAction<UpdateGroupEdgeFieldPayload>,
+    ) {
+      const { index, fieldId, value } = action.payload;
+
+      const groupEdgeFields =
+        state.graphList[index].metadata.groupEdges.fields ?? {};
+
+      const fieldAndAggregation: FieldAndAggregation = {
+        field: value as string,
+        aggregation: [],
+      };
+
+      Object.assign(groupEdgeFields, {
+        [fieldId]: fieldAndAggregation,
+      });
+
+      Object.assign(state.graphList[index].metadata.groupEdges, {
+        fields: groupEdgeFields,
+      });
+    },
+    updateGroupEdgeAggregate(
+      state,
+      action: PayloadAction<UpdateGroupEdgeFieldPayload>,
+    ) {
+      const { index, fieldId, value } = action.payload;
+
+      // retrieve the specific aggregation fields from graph list.
+      const aggregationField =
+        state.graphList[index].metadata.groupEdges.fields[fieldId];
+
+      // assign the value into the aggregation fields
+      Object.assign(aggregationField, { aggregation: value });
+
+      // update specific aggreation fields in specific graph list
+      Object.assign(state.graphList[index].metadata.groupEdges.fields, {
+        [fieldId]: aggregationField,
       });
     },
   },
@@ -391,6 +429,8 @@ export const {
   updateEdgeResults,
   setGroupEdgeOptions,
   removeGroupEdgeOptions,
+  updateGroupEdgeField,
+  updateGroupEdgeAggregate,
 } = graph.actions;
 
 export default graph.reducer;
