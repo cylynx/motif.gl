@@ -7,6 +7,7 @@ import {
   GraphList,
   GraphSelectors,
   GraphSlices,
+  GraphThunks,
   GroupEdgePayload,
   GroupEdges,
 } from '../../../../redux/graph';
@@ -42,10 +43,12 @@ const useGroupEdges = (graphIndex: number) => {
 
     if (value) {
       changeType('all');
+      dispatch(GraphThunks.groupEdgesWithAggregation(graphIndex));
       return;
     }
 
     resetState();
+    dispatch(GraphThunks.groupEdgesWithAggregation(graphIndex));
   };
 
   /**

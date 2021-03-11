@@ -61,7 +61,7 @@ const GroupByFields = ({
         },
       }}
     >
-      <Block paddingTop='3px' display='flex' flex='1'>
+      <Block display='flex' flex='1'>
         <Checkbox
           checked={toggle}
           onChange={onToggleChange}

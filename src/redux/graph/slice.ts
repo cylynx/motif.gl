@@ -414,6 +414,9 @@ const graph = createSlice({
         fields: res,
       });
     },
+    updateGraphFlatten(state, action: PayloadAction<GraphData>) {
+      Object.assign(state.graphFlatten, action.payload);
+    },
   },
 });
 
@@ -449,6 +452,7 @@ export const {
   updateGroupEdgeField,
   updateGroupEdgeAggregate,
   deleteGroupEdgeField,
+  updateGraphFlatten,
 } = graph.actions;
 
 export default graph.reducer;

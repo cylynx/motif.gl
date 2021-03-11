@@ -2,7 +2,12 @@ import flatten from 'lodash/flatten';
 import isEmpty from 'lodash/isEmpty';
 import { getFilterOptions, getGraph, getStyleOptions } from './selectors';
 
-import { addQuery, processGraphResponse, updateStyleOption } from './slice';
+import {
+  updateGraphFlatten,
+  addQuery,
+  processGraphResponse,
+  updateStyleOption,
+} from './slice';
 import {
   importEdgeListCsv,
   importNodeEdgeCsv,
@@ -18,10 +23,14 @@ import {
   FilterOptions,
   TLoadFormat,
   StyleOptions,
+  GraphState,
 } from './types';
 
 import { UISlices, UIThunks } from '../ui';
-import { groupEdges } from '../../containers/Graph/styles/utils';
+import {
+  groupEdgesForImportation,
+  groupEdgesWithConfiguration,
+} from './processors/group-edges';
 
 type ImportAccessors = Accessors | null;
 
@@ -44,7 +53,7 @@ const processResponse = (
 
     // perform group edges based on user preferences during data importation.
     if (graphData.metadata.groupEdges.toggle) {
-      modData = groupEdges(graphData);
+      modData = groupEdgesForImportation(graphData);
     }
 
     // combine new graph data with existing graph data to form graph flattens.
@@ -271,4 +280,27 @@ export const importSingleJsonData = (
       dispatch(UIThunks.show(message, 'negative'));
       dispatch(UISlices.fetchDone());
     });
+};
+
+/**
+ * Perform group edges based on preferences.
+ *
+ * @param {number} graphIndex - identify specific graph list to perform edge aggregations
+ */
+export const groupEdgesWithAggregation = (graphIndex: number) => (
+  dispatch: any,
+  getState: any,
+) => {
+  const { graphList, graphFlatten }: GraphState = getGraph(getState());
+  const selectedGraphList: GraphData = graphList[graphIndex];
+
+  const { groupEdges } = selectedGraphList.metadata;
+
+  const newGraphData = groupEdgesWithConfiguration(
+    selectedGraphList,
+    graphFlatten,
+    groupEdges,
+  );
+
+  dispatch(updateGraphFlatten(newGraphData));
 };
