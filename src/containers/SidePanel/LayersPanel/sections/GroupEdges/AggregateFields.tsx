@@ -2,7 +2,11 @@ import React, { useMemo, FC } from 'react';
 import { Block } from 'baseui/block';
 import { LabelXSmall } from 'baseui/typography';
 import { Select, SIZE, Option, OnChangeParams, Value } from 'baseui/select';
+import { Theme } from 'baseui/theme';
+import { colors } from 'baseui/tokens';
+import { Button } from 'baseui/button';
 import { GroupEdges } from '../../../../../redux/graph';
+import * as Icon from '../../../../../components/Icons';
 
 const NUMERIC_AGGREGATIONS: Value = [
   {
@@ -41,16 +45,8 @@ const STRING_AGGREGATIONS: Value = [
 const FieldLabels = () =>
   useMemo(
     () => (
-      <Block display='flex' marginTop='scale200' justifyContent='space-between'>
-        <Block>
-          <LabelXSmall>Field</LabelXSmall>
-        </Block>
-
-        <Block width='20px' />
-
-        <Block>
-          <LabelXSmall>Aggregation</LabelXSmall>
-        </Block>
+      <Block marginTop='scale200'>
+        <LabelXSmall>Field with Aggregations</LabelXSmall>
       </Block>
     ),
     [],
@@ -93,13 +89,8 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
     });
 
     return (
-      <Block
-        display='flex'
-        marginTop='scale200'
-        justifyContent='space-between'
-        key={uniqueFieldId}
-      >
-        <Block width='100%'>
+      <Block marginTop='scale500' key={uniqueFieldId}>
+        <Block display='flex'>
           <Select
             size={SIZE.mini}
             searchable={false}
@@ -112,11 +103,35 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
               onFieldChange(params, uniqueFieldId)
             }
           />
+
+          <Block marginLeft='scale200'>
+            <Button
+              data-testid='aggregate-fields:delete'
+              size='compact'
+              kind='minimal'
+              $as='div'
+              onClick={() => console.log('delete button')}
+              overrides={{
+                BaseButton: {
+                  style: ({ $theme }: { $theme: Theme }) => ({
+                    paddingTop: '7px',
+                    paddingRight: $theme.sizing.scale300,
+                    paddingBottom: $theme.sizing.scale300,
+                    paddingLeft: $theme.sizing.scale300,
+                    backgroundColor: $theme.colors.backgroundTertiary,
+                    ':hover': {
+                      backgroundColor: colors.red500,
+                    },
+                  }),
+                },
+              }}
+            >
+              <Icon.Trash />
+            </Button>
+          </Block>
         </Block>
 
-        <Block width='30px' />
-
-        <Block width='100%'>
+        <Block width='100%' marginTop='scale100'>
           <Select
             size={SIZE.mini}
             searchable={false}
@@ -125,6 +140,7 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
             multi
             options={aggregationOpt}
             value={aggregationValue}
+            placeholder='Click to Select Aggregations...'
             maxDropdownHeight='300px'
             onChange={(params: OnChangeParams) =>
               onAggregateChange(params, uniqueFieldId)

@@ -350,11 +350,11 @@ const graph = createSlice({
         [key]: value,
       });
     },
-    removeGroupEdgeOptions(state, action: PayloadAction<number>) {
-      const { groupEdges } = state.graphList[action.payload].metadata;
-      const { type, ...res } = groupEdges;
+    resetGroupEdgeOptions(state, action: PayloadAction<number>) {
       Object.assign(state.graphList[action.payload].metadata, {
-        groupEdges: res,
+        groupEdges: {
+          toggle: false,
+        },
       });
     },
     updateGroupEdgeField(
@@ -428,7 +428,7 @@ export const {
   updateNodeResults,
   updateEdgeResults,
   setGroupEdgeOptions,
-  removeGroupEdgeOptions,
+  resetGroupEdgeOptions,
   updateGroupEdgeField,
   updateGroupEdgeAggregate,
 } = graph.actions;

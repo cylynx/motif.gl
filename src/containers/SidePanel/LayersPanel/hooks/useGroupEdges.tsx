@@ -45,7 +45,7 @@ const useGroupEdges = (graphIndex: number) => {
       return;
     }
 
-    deleteType();
+    resetState();
   };
 
   /**
@@ -66,8 +66,8 @@ const useGroupEdges = (graphIndex: number) => {
     dispatch(GraphSlices.setGroupEdgeOptions(params));
   };
 
-  const deleteType = () => {
-    dispatch(GraphSlices.removeGroupEdgeOptions(graphIndex));
+  const resetState = () => {
+    dispatch(GraphSlices.resetGroupEdgeOptions(graphIndex));
   };
 
   const updateFields = (value: string, uniqueFieldId = shortid.generate()) => {
