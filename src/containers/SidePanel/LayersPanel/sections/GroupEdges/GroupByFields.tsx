@@ -85,7 +85,7 @@ const GroupByFields = ({
       </Block>
 
       {toggle && (
-        <Block marginTop='scale200'>
+        <Block marginTop='scale100'>
           <Select
             size={SIZE.mini}
             searchable={false}
