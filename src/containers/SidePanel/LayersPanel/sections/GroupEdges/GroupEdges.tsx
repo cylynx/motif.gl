@@ -4,8 +4,8 @@ import { OnChangeParams, Value, Option } from 'baseui/select';
 import { useSelector } from 'react-redux';
 import AddAttributesButton from '../../components/AddAttributesButton';
 import useGroupEdges from '../../hooks/useGroupEdges';
-import ToggleWithTypes from './ToggleWithTypes';
-import { FieldAndAggregation, GroupEdgeType } from '../../../../../redux/graph';
+import GroupByFields from './GroupByFields';
+import { FieldAndAggregation } from '../../../../../redux/graph';
 import AggregateFields from './AggregateFields';
 import { RootState } from '../../../../../redux/investigate';
 import { getGraphFieldsOptions } from '../../../../../redux/graph/selectors';
@@ -18,6 +18,7 @@ const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
     changeType,
     updateFields,
     updateAggregates,
+    deleteFields,
   } = useGroupEdges(graphListIndex);
 
   const { allEdgeFields } = useSelector((state: RootState) =>
@@ -73,7 +74,7 @@ const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
   const onTypeChange = (params: OnChangeParams) => {
     const [firstValue] = params.value as Value;
     const { id } = firstValue as Option;
-    changeType(id as GroupEdgeType);
+    changeType(id as string);
   };
 
   const onFieldChange = (params: OnChangeParams, uniqueFieldId: string) => {
@@ -110,39 +111,32 @@ const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
     updateFields(firstOption.id as string);
   };
 
+  const removeField = (fieldIndex: string) => {
+    deleteFields(fieldIndex);
+  };
+
   return (
     <Block paddingLeft='scale300' paddingRight='scale300'>
-      <Block
-        display='flex'
-        justifyContent='space-between'
-        marginTop='scale300'
-        overrides={{
-          Block: {
-            style: ({ $theme }) => ({
-              ...$theme.typography.ParagraphSmall,
-            }),
-          },
-        }}
-      >
-        <ToggleWithTypes
-          toggle={groupEdges.toggle}
-          type={groupEdges.type}
-          onTypeChange={onTypeChange}
-          onToggleChange={onCheckboxChange}
-        />
-      </Block>
+      <GroupByFields
+        toggle={groupEdges.toggle}
+        type={groupEdges.type}
+        edgeFields={edgeFields}
+        onTypeChange={onTypeChange}
+        onToggleChange={onCheckboxChange}
+      />
 
-      {groupEdges.type === 'type' && (
+      {groupEdges.toggle && (
         <>
           <AggregateFields
             edgeFields={edgeFields}
             fields={groupEdges.fields}
             onFieldChange={onFieldChange}
             onAggregateChange={onAggregateChange}
+            onDeleteClick={removeField}
           />
 
           {isAllowAddFields && (
-            <Block marginTop='scale200'>
+            <Block marginTop='scale100'>
               <AddAttributesButton onClick={() => addFields()} />
             </Block>
           )}

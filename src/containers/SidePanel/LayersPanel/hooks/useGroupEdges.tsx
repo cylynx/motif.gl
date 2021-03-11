@@ -2,13 +2,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useMemo } from 'react';
 import shortid from 'shortid';
 import {
+  DeleteGroupEdgeFieldPayload,
   FieldAndAggregation,
   GraphList,
   GraphSelectors,
   GraphSlices,
   GroupEdgePayload,
   GroupEdges,
-  GroupEdgeType,
 } from '../../../../redux/graph';
 import { RootState } from '../../../../redux/investigate';
 
@@ -56,7 +56,7 @@ const useGroupEdges = (graphIndex: number) => {
    * @param value
    * @return {void}
    */
-  const changeType = (value: GroupEdgeType) => {
+  const changeType = (value: string) => {
     const params: GroupEdgePayload = {
       index: graphIndex,
       key: 'type',
@@ -93,7 +93,22 @@ const useGroupEdges = (graphIndex: number) => {
     );
   };
 
-  return { groupEdges, toggle, changeType, updateFields, updateAggregates };
+  const deleteFields = (uniqueFieldId: string) => {
+    const params: DeleteGroupEdgeFieldPayload = {
+      graphIndex,
+      fieldIndex: uniqueFieldId,
+    };
+    dispatch(GraphSlices.deleteGroupEdgeField(params));
+  };
+
+  return {
+    groupEdges,
+    toggle,
+    changeType,
+    updateFields,
+    updateAggregates,
+    deleteFields,
+  };
 };
 
 export default useGroupEdges;

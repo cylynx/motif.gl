@@ -95,7 +95,6 @@ export type GraphFields = {
 /** ======================================
  *  Graph's Metadata - Group Edges
  ** ====================================== */
-export type GroupEdgeType = 'all' | 'type';
 export type NumericAggregations = 'min' | 'max' | 'average' | 'count' | 'sum';
 export type StringAggregations = 'first' | 'last' | 'most_frequent';
 export type FieldAndAggregation = {
@@ -107,7 +106,7 @@ export type GroupEdgeFields = {
 };
 export type GroupEdges = {
   toggle?: boolean;
-  type?: GroupEdgeType;
+  type?: string;
   fields?: GroupEdgeFields;
 };
 
@@ -122,11 +121,12 @@ export interface Metadata {
 export type GroupEdgePayload = {
   index: number;
   key: 'toggle' | 'type';
-  value: boolean | GroupEdgeType;
+  value: boolean | string;
 };
 
-export type DeleteGroupEdgePayload = {
-  index: number;
+export type DeleteGroupEdgeFieldPayload = {
+  graphIndex: number;
+  fieldIndex: string;
 };
 
 export type UpdateGroupEdgeFieldPayload = {

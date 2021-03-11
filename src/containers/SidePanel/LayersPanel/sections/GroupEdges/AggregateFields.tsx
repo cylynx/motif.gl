@@ -57,12 +57,14 @@ type AggregateFieldsProps = {
   fields: GroupEdges['fields'];
   onFieldChange: (params: OnChangeParams, uniqueFieldId: string) => any;
   onAggregateChange: (params: OnChangeParams, uniqueFieldId: string) => any;
+  onDeleteClick: (uniqueFieldId: string) => any;
 };
 const AggregateFields: FC<AggregateFieldsProps> = ({
   edgeFields,
   fields = {},
   onFieldChange,
   onAggregateChange,
+  onDeleteClick,
 }) => {
   const determineAggregationOpt = (type: string): Value => {
     if (type === 'integer' || type === 'real') {
@@ -72,7 +74,7 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
     return STRING_AGGREGATIONS;
   };
 
-  const fieldsWithAggregation = Object.entries(fields).map((data) => {
+  const fieldsWithAggregation = Object.entries(fields).map((data, index) => {
     const [uniqueFieldId, fieldAndAggregration] = data;
     const { field, aggregation } = fieldAndAggregration;
 
@@ -89,7 +91,10 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
     });
 
     return (
-      <Block marginTop='scale500' key={uniqueFieldId}>
+      <Block
+        marginTop={index === 0 ? 'scale200' : 'scale600'}
+        key={uniqueFieldId}
+      >
         <Block display='flex'>
           <Select
             size={SIZE.mini}
@@ -110,7 +115,7 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
               size='compact'
               kind='minimal'
               $as='div'
-              onClick={() => console.log('delete button')}
+              onClick={() => onDeleteClick(uniqueFieldId)}
               overrides={{
                 BaseButton: {
                   style: ({ $theme }: { $theme: Theme }) => ({
@@ -152,7 +157,7 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
   });
 
   return (
-    <Block marginTop='scale500'>
+    <Block marginTop='scale600'>
       <FieldLabels />
 
       {fieldsWithAggregation}

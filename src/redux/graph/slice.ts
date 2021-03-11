@@ -20,6 +20,7 @@ import {
   GroupEdgePayload,
   UpdateGroupEdgeFieldPayload,
   FieldAndAggregation,
+  DeleteGroupEdgeFieldPayload,
 } from './types';
 import { DEFAULT_NODE_STYLE } from '../../constants/graph-shapes';
 
@@ -397,6 +398,22 @@ const graph = createSlice({
         [fieldId]: aggregationField,
       });
     },
+    deleteGroupEdgeField(
+      state,
+      action: PayloadAction<DeleteGroupEdgeFieldPayload>,
+    ) {
+      const { graphIndex, fieldIndex } = action.payload;
+
+      // remove specific fields from the group edge list.
+      const { [fieldIndex]: removedValue, ...res } = state.graphList[
+        graphIndex
+      ].metadata.groupEdges.fields;
+
+      // assign the removed fields into the redux states
+      Object.assign(state.graphList[graphIndex].metadata.groupEdges, {
+        fields: res,
+      });
+    },
   },
 });
 
@@ -431,6 +448,7 @@ export const {
   resetGroupEdgeOptions,
   updateGroupEdgeField,
   updateGroupEdgeAggregate,
+  deleteGroupEdgeField,
 } = graph.actions;
 
 export default graph.reducer;
