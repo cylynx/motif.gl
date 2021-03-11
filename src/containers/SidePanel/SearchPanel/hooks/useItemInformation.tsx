@@ -3,6 +3,7 @@ import { Block } from 'baseui/block';
 import { NodeStyle } from '@antv/graphin';
 import { darken } from 'polished';
 import { Theme } from 'baseui/theme';
+import shortid from 'shortid';
 import { Node, Edge, NodeItemType, EdgeNode } from '../../../../redux/graph';
 import { flattenObject } from '../../../../redux/graph/processors/data';
 import { removeEmptyValueInObject } from '../../../../utils/data-utils';
@@ -152,7 +153,7 @@ const useItemInformation = () => {
 
     return {
       title,
-      key: id,
+      key: `${id}-${shortid.generate()}`,
       content: <TableContent results={omittedResult} />,
       expanded,
     };

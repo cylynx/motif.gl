@@ -1,12 +1,20 @@
-import { isEmpty } from 'lodash';
-import { Edge, GraphData, GraphList, GroupEdges } from '../types';
+import { isEmpty, get } from 'lodash';
+import { Edge, GraphData, GroupEdgeFields, GroupEdges } from '../types';
 
 type GroupEdgeCandidates = Record<string, Edge[]>;
-const duplicateDictionary = (data: GraphData): GroupEdgeCandidates => {
+const duplicateDictionary = (
+  data: GraphData,
+  type = '',
+): GroupEdgeCandidates => {
+  const generateIdentifier = (edge: Edge, type: string): string => {
+    const { source, target } = edge;
+    const edgeValue = get(edge, type, '');
+    return `${source}-${target}@${edgeValue}`;
+  };
+
   const dictionary = {};
   data.edges.reduce((acc: Map<string, Edge>, edge: Edge) => {
-    const { source, target } = edge;
-    const identifier = `${source}-${target}`;
+    const identifier = generateIdentifier(edge, type);
 
     if (acc.has(identifier)) {
       const matchEdge = acc.get(identifier);
@@ -50,12 +58,11 @@ const aggregateGroupEdges = (
   return Object.entries(groupEdgesCandidates).map((value) => {
     const [uniqueIdentifier, groupEdgeCandidate] = value;
     const [firstEdge] = groupEdgeCandidate as Edge[];
-    const { source, target } = firstEdge as Edge;
+    // const { source, target } = firstEdge as Edge;
 
     return {
-      id: uniqueIdentifier,
-      source,
-      target,
+      id: `${uniqueIdentifier}`,
+      ...firstEdge,
     };
   });
 };
@@ -116,8 +123,9 @@ export const groupEdgesForImportation = (data: GraphData): GraphData => {
 const groupEdgesWithConfig = (
   graphData: GraphData,
   graphFlatten: GraphData,
+  type: string,
 ) => {
-  const groupEdgesCandidates = duplicateDictionary(graphData);
+  const groupEdgesCandidates = duplicateDictionary(graphData, type);
   if (isEmpty(groupEdgesCandidates)) return graphFlatten;
 
   const edgeIdsForRemoval = obtainGroupEdgeIds(groupEdgesCandidates);
@@ -151,9 +159,9 @@ export const groupEdgesWithConfiguration = (
   graphFlatten: GraphData,
   groupEdgesConfig: GroupEdges,
 ): GraphData => {
-  const { toggle } = groupEdgesConfig;
+  const { toggle, type } = groupEdgesConfig;
   if (toggle) {
-    return groupEdgesWithConfig(graphData, graphFlatten);
+    return groupEdgesWithConfig(graphData, graphFlatten, type);
   }
 
   return revertGroupEdge(graphData, graphFlatten);

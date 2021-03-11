@@ -43,11 +43,15 @@ const useGroupEdges = (graphIndex: number) => {
 
     if (value) {
       changeType('all');
-      dispatch(GraphThunks.groupEdgesWithAggregation(graphIndex));
+      performGroupEdges();
       return;
     }
 
     resetState();
+    performGroupEdges();
+  };
+
+  const performGroupEdges = () => {
     dispatch(GraphThunks.groupEdgesWithAggregation(graphIndex));
   };
 
@@ -67,10 +71,12 @@ const useGroupEdges = (graphIndex: number) => {
     };
 
     dispatch(GraphSlices.setGroupEdgeOptions(params));
+    performGroupEdges();
   };
 
   const resetState = () => {
     dispatch(GraphSlices.resetGroupEdgeOptions(graphIndex));
+    performGroupEdges();
   };
 
   const updateFields = (value: string, uniqueFieldId = shortid.generate()) => {
