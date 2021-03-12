@@ -253,7 +253,7 @@ export const importNodeEdgeData = (
 export const importSingleJsonData = (
   importData: JsonImport,
   importAccessors: ImportAccessors = null,
-  groupEdges = true,
+  groupEdges = false,
 ) => (dispatch: any, getState: any): Promise<void> => {
   if (Array.isArray(importData)) {
     throw new Error('importData parameter must be an object');
