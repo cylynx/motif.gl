@@ -9,9 +9,15 @@ import {
 import {
   average,
   count,
+  max,
   min,
   sum,
 } from '../../../utils/edge-aggregations/numeric-aggregates';
+import {
+  first,
+  last,
+  mostFrequent,
+} from '../../../utils/edge-aggregations/string-aggregates';
 
 type GroupEdgeCandidates = Record<string, Edge[]>;
 const duplicateDictionary = (
@@ -87,7 +93,7 @@ const performAggregation = (
       }
 
       if (aggregation.includes('max' as never)) {
-        const largestValue: number = min(edgeCandidates, field);
+        const largestValue: number = max(edgeCandidates, field);
         set(acc, `Max ${field}`, largestValue);
       }
 
@@ -104,6 +110,21 @@ const performAggregation = (
       if (aggregation.includes('average' as never)) {
         const averageValue: number = average(edgeCandidates, field);
         set(acc, `Average ${field}`, averageValue);
+      }
+
+      if (aggregation.includes('first' as never)) {
+        const firstValue: string = first(edgeCandidates, field);
+        set(acc, `First ${field}`, firstValue);
+      }
+
+      if (aggregation.includes('last' as never)) {
+        const lastValue: string = last(edgeCandidates, field);
+        set(acc, `Last ${field}`, lastValue);
+      }
+
+      if (aggregation.includes('most_frequent' as never)) {
+        const lastValue: string = mostFrequent(edgeCandidates, field);
+        set(acc, `Most Frequent ${field}`, lastValue);
       }
 
       return acc;
