@@ -100,6 +100,7 @@ const useGroupEdges = (graphIndex: number) => {
         value,
       }),
     );
+    performGroupEdges();
   };
 
   const deleteFields = (uniqueFieldId: string) => {
@@ -108,6 +109,7 @@ const useGroupEdges = (graphIndex: number) => {
       fieldIndex: uniqueFieldId,
     };
     dispatch(GraphSlices.deleteGroupEdgeField(params));
+    performGroupEdges();
   };
 
   return {

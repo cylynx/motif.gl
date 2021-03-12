@@ -104,6 +104,7 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
             options={edgeFields}
             value={fieldValue}
             maxDropdownHeight='300px'
+            overrides={{ Root: { style: { maxWidth: '243px' } } }}
             onChange={(params: OnChangeParams) =>
               onFieldChange(params, uniqueFieldId)
             }
