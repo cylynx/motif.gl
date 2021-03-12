@@ -1,6 +1,5 @@
 import { Block, BlockOverrides } from 'baseui/block';
 import React, { MouseEvent } from 'react';
-import shortid from 'shortid';
 import { EdgeInformation } from '../../../../../redux/graph';
 import EdgeInfoAccordion from '../../Components/EdgeInfoAccordion';
 
@@ -17,21 +16,17 @@ const EdgeResults = ({
   onMouseEnter,
   onMouseLeave,
 }: EdgeResultsProps) => {
-  return (
-    <>
-      {edges.map((edgeInfo: EdgeInformation) => (
-        <div
-          key={`${edgeInfo.edge.id}-${shortid.generate()}`}
-          onMouseLeave={onMouseLeave}
-          onMouseEnter={(event) => onMouseEnter(event, edgeInfo.edge.id)}
-        >
-          <Block marginBottom='scale550' overrides={overrides}>
-            <EdgeInfoAccordion results={edgeInfo} expanded={false} />
-          </Block>
-        </div>
-      ))}
-    </>
-  );
+  return edges.map((edgeInfo: EdgeInformation) => (
+    <div
+      key={edgeInfo.edge.id}
+      onMouseLeave={onMouseLeave}
+      onMouseEnter={(event) => onMouseEnter(event, edgeInfo.edge.id)}
+    >
+      <Block marginBottom='scale550' overrides={overrides}>
+        <EdgeInfoAccordion results={edgeInfo} expanded={false} />
+      </Block>
+    </div>
+  ));
 };
 
 export default EdgeResults;

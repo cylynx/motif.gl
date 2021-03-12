@@ -1,4 +1,5 @@
 import { isEmpty, get, set } from 'lodash';
+import shortid from 'shortid';
 import {
   Edge,
   FieldAndAggregation,
@@ -147,7 +148,7 @@ const aggregateGroupEdges = (
     );
 
     return {
-      id: uniqueIdentifier,
+      id: `${uniqueIdentifier}-${shortid.generate()}`,
       source,
       target,
       ...aggregationFields,

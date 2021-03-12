@@ -16,21 +16,17 @@ const NodeResults = ({
   onMouseEnter,
   onMouseLeave,
 }: NodeResultsProps) => {
-  return (
-    <Block>
-      {nodes.map((node: Node) => (
-        <div
-          key={node.id}
-          onMouseEnter={(event) => onMouseEnter(event, node.id)}
-          onMouseLeave={onMouseLeave}
-        >
-          <Block marginBottom='scale550' overrides={overrides}>
-            <NodeInfoAccordion results={node} expanded={false} />
-          </Block>
-        </div>
-      ))}
-    </Block>
-  );
+  return nodes.map((node: Node) => (
+    <div
+      key={node.id}
+      onMouseEnter={(event) => onMouseEnter(event, node.id)}
+      onMouseLeave={onMouseLeave}
+    >
+      <Block marginBottom='scale550' overrides={overrides}>
+        <NodeInfoAccordion results={node} expanded={false} />
+      </Block>
+    </div>
+  ));
 };
 
 export default NodeResults;
