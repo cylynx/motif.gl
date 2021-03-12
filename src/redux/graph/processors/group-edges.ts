@@ -2,12 +2,16 @@ import { isEmpty, get, set } from 'lodash';
 import {
   Edge,
   FieldAndAggregation,
-  StringAggregations,
-  NumericAggregations,
   GraphData,
   GroupEdgeFields,
   GroupEdges,
 } from '../types';
+import {
+  average,
+  count,
+  min,
+  sum,
+} from '../../../utils/edge-aggregations/numeric-aggregates';
 
 type GroupEdgeCandidates = Record<string, Edge[]>;
 const duplicateDictionary = (
@@ -77,19 +81,29 @@ const performAggregation = (
     (acc: AggregationFields, aggregationList: FieldAndAggregation) => {
       const { field, aggregation } = aggregationList;
 
-      if (
-        (aggregation as NumericAggregations[]).includes(
-          'min' as NumericAggregations,
-        )
-      ) {
-        // eslint-disable-next-line array-callback-return,consistent-return
-        const fieldsValue: number[] = edgeCandidates.map((edge: Edge) => {
-          const property = get(edge, field);
-          if (property) return property;
-        });
+      if (aggregation.includes('min' as never)) {
+        const smallestValue: number = min(edgeCandidates, field);
+        set(acc, `Min ${field}`, smallestValue);
+      }
 
-        const minimumValue: number = Math.min(...fieldsValue);
-        set(acc, `Min ${field}`, minimumValue);
+      if (aggregation.includes('max' as never)) {
+        const largestValue: number = min(edgeCandidates, field);
+        set(acc, `Max ${field}`, largestValue);
+      }
+
+      if (aggregation.includes('sum' as never)) {
+        const sumValue: number = sum(edgeCandidates, field);
+        set(acc, `Sum ${field}`, sumValue);
+      }
+
+      if (aggregation.includes('count' as never)) {
+        const countValue: number = count(edgeCandidates, field);
+        set(acc, `Count ${field}`, countValue);
+      }
+
+      if (aggregation.includes('average' as never)) {
+        const averageValue: number = average(edgeCandidates, field);
+        set(acc, `Average ${field}`, averageValue);
       }
 
       return acc;

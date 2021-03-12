@@ -23,6 +23,10 @@ const NUMERIC_AGGREGATIONS: Value = [
   },
   {
     id: 'count',
+    label: 'Count',
+  },
+  {
+    id: 'sum',
     label: 'Sum',
   },
 ];

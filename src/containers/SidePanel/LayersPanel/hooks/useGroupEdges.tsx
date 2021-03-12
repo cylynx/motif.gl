@@ -10,6 +10,7 @@ import {
   GraphThunks,
   GroupEdgePayload,
   GroupEdges,
+  UpdateGroupEdgeFieldPayload,
 } from '../../../../redux/graph';
 import { RootState } from '../../../../redux/investigate';
 
@@ -87,19 +88,19 @@ const useGroupEdges = (graphIndex: number) => {
         value,
       }),
     );
+    performGroupEdges();
   };
 
   const updateAggregates = (
     value: FieldAndAggregation['aggregation'],
     uniqueFieldId: string,
   ) => {
-    dispatch(
-      GraphSlices.updateGroupEdgeAggregate({
-        index: graphIndex,
-        fieldId: uniqueFieldId,
-        value,
-      }),
-    );
+    const params: UpdateGroupEdgeFieldPayload = {
+      index: graphIndex,
+      fieldId: uniqueFieldId,
+      value,
+    };
+    dispatch(GraphSlices.updateGroupEdgeAggregate(params));
     performGroupEdges();
   };
 

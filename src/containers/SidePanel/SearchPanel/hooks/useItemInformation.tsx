@@ -124,7 +124,16 @@ const useItemInformation = () => {
   };
 
   const createEdgeItem = (edge: Edge, expanded = false) => {
-    const { id, comboId, style, defaultStyle, ...omittedResult } = edge;
+    // only display metadata that are useful for the users.
+    const {
+      id,
+      comboId,
+      style,
+      defaultStyle,
+      source,
+      target,
+      ...omittedResult
+    } = edge;
 
     const title: JSX.Element = (
       <Block display='flex' justifyContent='center'>
