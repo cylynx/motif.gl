@@ -16,17 +16,21 @@ const EdgeResults = ({
   onMouseEnter,
   onMouseLeave,
 }: EdgeResultsProps) => {
-  return edges.map((edgeInfo: EdgeInformation) => (
-    <div
-      key={edgeInfo.edge.id}
-      onMouseLeave={onMouseLeave}
-      onMouseEnter={(event) => onMouseEnter(event, edgeInfo.edge.id)}
-    >
-      <Block marginBottom='scale550' overrides={overrides}>
-        <EdgeInfoAccordion results={edgeInfo} expanded={false} />
-      </Block>
-    </div>
-  ));
+  return (
+    <>
+      {edges.map((edgeInfo: EdgeInformation) => (
+        <div
+          key={edgeInfo.edge.id}
+          onMouseLeave={onMouseLeave}
+          onMouseEnter={(event) => onMouseEnter(event, edgeInfo.edge.id)}
+        >
+          <Block marginBottom='scale550' overrides={overrides}>
+            <EdgeInfoAccordion results={edgeInfo} expanded={false} />
+          </Block>
+        </div>
+      ))}
+    </>
+  );
 };
 
 export default EdgeResults;
