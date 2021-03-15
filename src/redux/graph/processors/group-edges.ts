@@ -110,7 +110,8 @@ const performAggregation = (
 
       if (aggregation.includes('average' as never)) {
         const averageValue: number = average(edgeCandidates, field);
-        set(acc, `Average ${field}`, averageValue);
+        const fixPrecision: string = Number(averageValue).toPrecision(5);
+        set(acc, `Average ${field}`, fixPrecision);
       }
 
       if (aggregation.includes('first' as never)) {
