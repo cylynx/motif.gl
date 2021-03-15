@@ -202,8 +202,6 @@ export interface Layout {
 
 export interface StyleOptions {
   layout?: Layout;
-  resetView?: boolean;
-  groupEdges?: boolean;
   nodeStyle?: NodeStyleOptions;
   edgeStyle?: EdgeStyleOptions;
 }

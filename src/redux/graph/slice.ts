@@ -108,8 +108,6 @@ const initialState: GraphState = {
       },
       label: 'none',
     },
-    resetView: true,
-    groupEdges: false,
   },
   filterOptions: {},
   searchOptions: {
@@ -213,10 +211,7 @@ const graph = createSlice({
     updateStyleOption(state, action: PayloadAction<StyleOptions>) {
       Object.assign(state.styleOptions, action.payload);
     },
-    changeOptions(state, action: PayloadAction<{ key: string; value: any }>) {
-      const { key, value } = action.payload;
-      state.styleOptions[key] = value;
-    },
+
     changeLayout(
       state,
       action: PayloadAction<{
@@ -429,7 +424,6 @@ export const {
   changeVisibilityGraphList,
   addQuery,
   updateStyleOption,
-  changeOptions,
   changeLayout,
   changeNodeStyle,
   changeEdgeStyle,
