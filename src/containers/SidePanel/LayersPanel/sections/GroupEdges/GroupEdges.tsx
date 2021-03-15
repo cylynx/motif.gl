@@ -5,10 +5,14 @@ import { useSelector } from 'react-redux';
 import AddAttributesButton from '../../components/AddAttributesButton';
 import useGroupEdges from '../../hooks/useGroupEdges';
 import GroupByFields from './GroupByFields';
-import { FieldAndAggregation } from '../../../../../redux/graph';
+import {
+  Field,
+  FieldAndAggregation,
+  GraphList,
+} from '../../../../../redux/graph';
 import AggregateFields from './AggregateFields';
 import { RootState } from '../../../../../redux/investigate';
-import { getGraphFieldsOptions } from '../../../../../redux/graph/selectors';
+import { getGraphList } from '../../../../../redux/graph/selectors';
 
 type GroupEdgesProps = { graphListIndex: number };
 const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
@@ -21,15 +25,26 @@ const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
     deleteFields,
   } = useGroupEdges(graphListIndex);
 
-  const { allEdgeFields } = useSelector((state: RootState) =>
-    getGraphFieldsOptions(state),
+  const graphList: GraphList = useSelector((state: RootState) =>
+    getGraphList(state),
   );
+  const { edges: allEdgeFields } = graphList[graphListIndex].metadata.fields;
 
   const edgeFields = useMemo(() => {
-    return allEdgeFields.filter(
-      (option: Option) =>
-        !['id', 'source', 'target'].includes(option.id as string),
-    );
+    return allEdgeFields
+      .filter(
+        (option: Field) =>
+          !['id', 'source', 'target'].includes(option.name as string),
+      )
+      .map((option: Field) => {
+        const { name, type, analyzerType } = option;
+        return {
+          id: name,
+          label: name,
+          type,
+          analyzerType,
+        };
+      });
   }, [allEdgeFields]);
 
   const existingFields = useMemo(
