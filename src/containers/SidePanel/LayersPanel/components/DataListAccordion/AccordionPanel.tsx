@@ -1,21 +1,26 @@
-import React, { FC, MouseEvent, ReactNode } from 'react';
+import React, { FC, MouseEvent, ReactNode, useCallback } from 'react';
 import { Button } from 'baseui/button';
 import { Block } from 'baseui/block';
+import debounce from 'lodash/debounce';
 import { SimpleTooltip } from '../../../../../components/ui';
 import * as Icon from '../../../../../components/Icons';
 import { ActionButton } from '../../../../../components/DndList';
 
-const VisibilityButton = ({
-  onClick: onClickVisibility,
-  isVisible,
-  ...rest
-}: ActionButton) => {
+const VisibilityButton = ({ onClick, isVisible, ...rest }: ActionButton) => {
   const toggleVisibility = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    if (onClickVisibility) {
-      onClickVisibility();
-    }
+    onToggleDebounce();
   };
+
+  // toggle the graph's visibility rapidly will cause graphin to crash
+  // apply `debounce` to postpone the mouse event's execution
+  // https://github.com/cylynx/motif.gl/issues/76
+  const onToggleDebounce = useCallback(
+    debounce(() => {
+      onClick();
+    }, 150),
+    [onClick],
+  );
 
   return (
     <SimpleTooltip tooltip={isVisible ? 'Hide Layer' : 'Show Layer'}>
