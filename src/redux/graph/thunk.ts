@@ -53,7 +53,10 @@ const processResponse = (
 
     // perform group edges based on user preferences during data importation.
     if (graphData.metadata.groupEdges.toggle) {
-      modData = groupEdgesForImportation(graphData);
+      modData = groupEdgesForImportation(
+        graphData,
+        graphData.metadata.groupEdges,
+      );
     }
 
     // combine new graph data with existing graph data to form graph flattens.

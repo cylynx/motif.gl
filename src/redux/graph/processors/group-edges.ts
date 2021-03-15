@@ -193,14 +193,20 @@ const produceGraphWithoutGroupEdges = (
  * Combine edges and replace edges with the new one
  *
  * @param {GraphData} data
+ * @param {GroupEdges} groupEdgeConfig [groupEdgeConfig={}]
  * @return {GraphData}
  */
-export const groupEdgesForImportation = (data: GraphData): GraphData => {
-  const groupEdgesCandidates = duplicateDictionary(data);
+export const groupEdgesForImportation = (
+  data: GraphData,
+  groupEdgeConfig: GroupEdges = {},
+): GraphData => {
+  const { type, fields } = groupEdgeConfig;
+
+  const groupEdgesCandidates = duplicateDictionary(data, type);
   if (isEmpty(groupEdgesCandidates)) return data;
 
   const edgeIdsForRemoval = obtainGroupEdgeIds(groupEdgesCandidates);
-  const groupedEdges = aggregateGroupEdges(groupEdgesCandidates);
+  const groupedEdges = aggregateGroupEdges(groupEdgesCandidates, fields);
   const graphData = produceGraphWithGroupEdges(
     data,
     edgeIdsForRemoval,
