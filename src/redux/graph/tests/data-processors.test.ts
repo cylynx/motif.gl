@@ -218,16 +218,19 @@ describe('Process json data', () => {
     await expect(processJson({ nodals: 'a', edges: 'b' })).rejects.toThrow();
   });
   it('should return the exact object if all the main keys are there', async () => {
-    const results = await processJson(testJson);
+    const groupEdgeToggle = false;
+    const results = await processJson(testJson, groupEdgeToggle);
     expect(results).toMatchObject(testJson);
   });
   it('should retain custom metadata field', async () => {
-    const results = await processJson(testJson);
+    const groupEdgeToggle = false;
+    const results = await processJson(testJson, groupEdgeToggle);
     expect(results.metadata).toHaveProperty('customField');
     expect(results.metadata.customField).toEqual('hello');
   });
   it('should return the json object parsed, with the added metadata', async () => {
-    const results = await processJson(TriangleJSON()[0]);
+    const groupEdgeToggle = false;
+    const results = await processJson(TriangleJSON()[0], groupEdgeToggle);
     expect(results.metadata.key).not.toBeNull();
     expect(results.metadata.fields.nodes).not.toBeNull();
     expect(results.metadata.fields.edges).not.toBeNull();

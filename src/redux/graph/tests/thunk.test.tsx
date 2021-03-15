@@ -79,8 +79,6 @@ describe('add-data-thunk.test.js', () => {
             },
             label: 'none',
           },
-          resetView: true,
-          groupEdges: false,
         },
       },
       type: 'json',
@@ -108,8 +106,6 @@ describe('add-data-thunk.test.js', () => {
             fontSize: 16,
             arrow: 'none',
           },
-          resetView: true,
-          groupEdges: false,
         },
       },
       type: 'json',
@@ -155,15 +151,22 @@ describe('add-data-thunk.test.js', () => {
     it('should receive array of importData and process graph responses accurately', async () => {
       // input
       const importDataArr = [jsonDataOne, jsonDataTwo];
+      const groupEdgeToggle = false;
 
       // processes
       const batchDataPromises = importDataArr.map((graphData: ImportFormat) => {
         const { data } = graphData.data as TLoadFormat;
-        return importJson(data, initialState.accessors);
+        return importJson(data, initialState.accessors, groupEdgeToggle);
       });
 
       const graphDataArr = await Promise.all(batchDataPromises);
       const [firstGraphData, secondGraphData] = flatten(graphDataArr);
+
+      // group edge configuration arrangements
+      const groupEdgeToggle = false;
+      const groupEdgeConfig = { availability: false, toggle: groupEdgeToggle };
+      Object.assign(firstGraphData.metadata.groupEdges, groupEdgeConfig);
+      Object.assign(secondGraphData.metadata.groupEdges, groupEdgeConfig);
 
       // expected results
       const expectedActions = [
@@ -173,7 +176,6 @@ describe('add-data-thunk.test.js', () => {
           data: firstGraphData,
           accessors: initialState.accessors,
         }),
-        fetchDone(),
         addQuery(secondGraphData),
         processGraphResponse({
           data: secondGraphData,
@@ -185,7 +187,7 @@ describe('add-data-thunk.test.js', () => {
 
       // assertions
       await store.dispatch(
-        importJsonData(importDataArr, initialState.accessors),
+        importJsonData(importDataArr, groupEdgeToggle, initialState.accessors),
       );
       expect(store.getActions()).toEqual(expectedActions);
     });
@@ -200,15 +202,22 @@ describe('add-data-thunk.test.js', () => {
 
       // input
       const importDataArr = [jsonDataOne, jsonDataTwo];
+      const groupEdgeToggle = false;
 
       // processes
       const batchDataPromises = importDataArr.map((graphData: ImportFormat) => {
         const { data } = graphData.data as TLoadFormat;
-        return importJson(data, initialState.accessors);
+        return importJson(data, initialState.accessors, groupEdgeToggle);
       });
 
       const graphDataArr = await Promise.all(batchDataPromises);
       const [firstGraphData, secondGraphData] = flatten(graphDataArr);
+
+      // group edge configuration arrangements
+      const groupEdgeToggle = false;
+      const groupEdgeConfig = { availability: false, toggle: groupEdgeToggle };
+      firstGraphData.metadata.groupEdges = groupEdgeConfig;
+      secondGraphData.metadata.groupEdges = groupEdgeConfig;
 
       // expected results
       const expectedActions = [
@@ -218,7 +227,6 @@ describe('add-data-thunk.test.js', () => {
           data: firstGraphData,
           accessors: initialState.accessors,
         }),
-        fetchDone(),
         addQuery(secondGraphData),
         processGraphResponse({
           data: secondGraphData,
@@ -230,7 +238,7 @@ describe('add-data-thunk.test.js', () => {
 
       // assertions
       await modifiedStore.dispatch(
-        importJsonData(importDataArr, initialState.accessors),
+        importJsonData(importDataArr, groupEdgeToggle, initialState.accessors),
       );
       expect(modifiedStore.getActions()).toEqual(expectedActions);
     });
@@ -239,6 +247,7 @@ describe('add-data-thunk.test.js', () => {
       // input
       const importDataArr = [jsonDataOne, jsonDataTwo];
       let { styleOptions } = initialState;
+      const groupEdgeToggle = false;
 
       // processes
       const batchDataPromises = importDataArr.map((graphData: ImportFormat) => {
@@ -248,11 +257,16 @@ describe('add-data-thunk.test.js', () => {
           styleOptions = style;
         }
 
-        return importJson(data, initialState.accessors);
+        return importJson(data, initialState.accessors, groupEdgeToggle);
       });
 
       const graphDataArr = await Promise.all(batchDataPromises);
       const [firstGraphData, secondGraphData] = flatten(graphDataArr);
+
+      // group edge configuration arrangements
+      const groupEdgeConfig = { availability: false, toggle: groupEdgeToggle };
+      firstGraphData.metadata.groupEdges = groupEdgeConfig;
+      secondGraphData.metadata.groupEdges = groupEdgeConfig;
 
       // expected results
       const expectedActions = [
@@ -263,7 +277,6 @@ describe('add-data-thunk.test.js', () => {
           data: firstGraphData,
           accessors: initialState.accessors,
         }),
-        fetchDone(),
         addQuery(secondGraphData),
         processGraphResponse({
           data: secondGraphData,
@@ -275,7 +288,12 @@ describe('add-data-thunk.test.js', () => {
 
       // assertions
       await store.dispatch(
-        importJsonData(importDataArr, initialState.accessors, true),
+        importJsonData(
+          importDataArr,
+          groupEdgeToggle,
+          initialState.accessors,
+          true,
+        ),
       );
       expect(store.getActions()).toEqual(expectedActions);
     });
@@ -296,6 +314,8 @@ describe('add-data-thunk.test.js', () => {
         type: jsonDataTwo.type,
       };
 
+      const groupEdgeToggle = false;
+
       const importDataArr = [jsonOneWithoutStyle, jsonTwoWithoutStyle];
       let { styleOptions } = initialState;
 
@@ -307,11 +327,16 @@ describe('add-data-thunk.test.js', () => {
           styleOptions = style;
         }
 
-        return importJson(data, initialState.accessors);
+        return importJson(data, initialState.accessors, groupEdgeToggle);
       });
 
       const graphDataArr = await Promise.all(batchDataPromises);
       const [firstGraphData, secondGraphData] = flatten(graphDataArr);
+
+      // group edge configuration arrangements
+      const groupEdgeConfig = { availability: false, toggle: groupEdgeToggle };
+      firstGraphData.metadata.groupEdges = groupEdgeConfig;
+      secondGraphData.metadata.groupEdges = groupEdgeConfig;
 
       // expected results
       const expectedActions = [
@@ -321,7 +346,6 @@ describe('add-data-thunk.test.js', () => {
           data: firstGraphData,
           accessors: initialState.accessors,
         }),
-        fetchDone(),
         addQuery(secondGraphData),
         processGraphResponse({
           data: secondGraphData,
@@ -333,7 +357,12 @@ describe('add-data-thunk.test.js', () => {
 
       // assertions
       await store.dispatch(
-        importJsonData(importDataArr, initialState.accessors, true),
+        importJsonData(
+          importDataArr,
+          groupEdgeToggle,
+          initialState.accessors,
+          true,
+        ),
       );
       expect(store.getActions()).toEqual(expectedActions);
     });
@@ -342,17 +371,30 @@ describe('add-data-thunk.test.js', () => {
       it('should import with single file contains two graph lists', async () => {
         // input
         const importDataArr = [simpleGraphTwo];
+        const groupEdgeToggle = false;
 
         // processes
         const batchDataPromises = importDataArr.map(
           (graphData: ImportFormat) => {
             const { data } = graphData;
-            return importJson(data as GraphList, initialState.accessors);
+            return importJson(
+              data as GraphList,
+              initialState.accessors,
+              groupEdgeToggle,
+            );
           },
         );
 
         const graphDataArr = await Promise.all(batchDataPromises);
         const [firstGraphData, secondGraphData] = flatten(graphDataArr);
+
+        // group edge configuration arrangements
+        const groupEdgeConfig = {
+          availability: false,
+          toggle: groupEdgeToggle,
+        };
+        firstGraphData.metadata.groupEdges = groupEdgeConfig;
+        secondGraphData.metadata.groupEdges = groupEdgeConfig;
 
         // expected results
         const expectedActions = [
@@ -362,7 +404,6 @@ describe('add-data-thunk.test.js', () => {
             data: firstGraphData,
             accessors: initialState.accessors,
           }),
-          fetchDone(),
           addQuery(secondGraphData),
           processGraphResponse({
             data: secondGraphData,
@@ -374,7 +415,11 @@ describe('add-data-thunk.test.js', () => {
 
         // assertions
         await store.dispatch(
-          importJsonData(importDataArr, initialState.accessors),
+          importJsonData(
+            importDataArr,
+            groupEdgeToggle,
+            initialState.accessors,
+          ),
         );
         expect(store.getActions()).toEqual(expectedActions);
       });
@@ -382,12 +427,17 @@ describe('add-data-thunk.test.js', () => {
       it('should import with two files contain three graph lists', async () => {
         // input
         const importDataArr = [simpleGraphOne, simpleGraphTwo];
+        const groupEdgeToggle = false;
 
         // processes
         const batchDataPromises = importDataArr.map(
           (graphData: ImportFormat) => {
             const { data } = graphData;
-            return importJson(data as GraphList, initialState.accessors);
+            return importJson(
+              data as GraphList,
+              initialState.accessors,
+              groupEdgeToggle,
+            );
           },
         );
 
@@ -395,6 +445,15 @@ describe('add-data-thunk.test.js', () => {
         const [firstGraphData, secondGraphData, thirdGraphData] = flatten(
           graphDataArr,
         );
+
+        // group edge configuration arrangements
+        const groupEdgeConfig = {
+          availability: false,
+          toggle: groupEdgeToggle,
+        };
+        firstGraphData.metadata.groupEdges = groupEdgeConfig;
+        secondGraphData.metadata.groupEdges = groupEdgeConfig;
+        thirdGraphData.metadata.groupEdges = groupEdgeConfig;
 
         // expected results
         const expectedActions = [
@@ -404,13 +463,11 @@ describe('add-data-thunk.test.js', () => {
             data: firstGraphData,
             accessors: initialState.accessors,
           }),
-          fetchDone(),
           addQuery(secondGraphData),
           processGraphResponse({
             data: secondGraphData,
             accessors: initialState.accessors,
           }),
-          fetchDone(),
           addQuery(thirdGraphData),
           processGraphResponse({
             data: thirdGraphData,
@@ -422,7 +479,11 @@ describe('add-data-thunk.test.js', () => {
 
         // assertions
         await store.dispatch(
-          importJsonData(importDataArr, initialState.accessors),
+          importJsonData(
+            importDataArr,
+            groupEdgeToggle,
+            initialState.accessors,
+          ),
         );
         expect(store.getActions()).toEqual(expectedActions);
       });
@@ -452,13 +513,19 @@ describe('add-data-thunk.test.js', () => {
       const { nodeData, edgeData } = sampleNodeEdgeData.data;
       const { accessors } = initialState;
       const metadataKey = '123';
+      const groupEdgeToggle = false;
 
       const data = await importNodeEdgeCsv(
         nodeData,
         edgeData,
         accessors,
+        groupEdgeToggle,
         metadataKey,
       );
+
+      // group edge configurations
+      const groupEdgeConfig = { toggle: groupEdgeToggle, availability: false };
+      Object.assign(data.metadata.groupEdges, groupEdgeConfig);
 
       const expectedActions = [
         fetchBegin(),
@@ -472,7 +539,12 @@ describe('add-data-thunk.test.js', () => {
       ];
 
       await store.dispatch(
-        importNodeEdgeData(sampleNodeEdgeData, accessors, metadataKey),
+        importNodeEdgeData(
+          sampleNodeEdgeData,
+          groupEdgeToggle,
+          accessors,
+          metadataKey,
+        ),
       );
       expect(store.getActions()).toEqual(expectedActions);
     });
@@ -514,15 +586,21 @@ describe('add-data-thunk.test.js', () => {
     it('should receive importData as array and process graph responses accurately', async () => {
       // input
       const importDataArr = [firstEdgeListCsv, secondEdgeListCsv];
+      const groupEdgeToggle = false;
 
       // processes
       const batchDataPromises = importDataArr.map((graphData) => {
         const { data } = graphData;
-        return importEdgeListCsv(data, initialState.accessors);
+        return importEdgeListCsv(data, initialState.accessors, groupEdgeToggle);
       });
 
       const graphDataArr = await Promise.all(batchDataPromises);
       const [firstGraphData, secondGraphData] = graphDataArr;
+
+      // group edge configurations
+      const groupEdgeConfig = { toggle: groupEdgeToggle, availability: false };
+      Object.assign(firstGraphData.metadata.groupEdges, groupEdgeConfig);
+      Object.assign(secondGraphData.metadata.groupEdges, groupEdgeConfig);
 
       // expected results
       const expectedActions = [
@@ -532,7 +610,6 @@ describe('add-data-thunk.test.js', () => {
           data: firstGraphData,
           accessors: initialState.accessors,
         }),
-        fetchDone(),
         addQuery(secondGraphData),
         processGraphResponse({
           data: secondGraphData,
@@ -544,7 +621,11 @@ describe('add-data-thunk.test.js', () => {
 
       // assertions
       await store.dispatch(
-        importEdgeListData(importDataArr, initialState.accessors),
+        importEdgeListData(
+          importDataArr,
+          groupEdgeToggle,
+          initialState.accessors,
+        ),
       );
       expect(store.getActions()).toEqual(expectedActions);
     });
@@ -577,10 +658,20 @@ describe('add-data-thunk.test.js', () => {
       // input
       const data = SimpleEdge();
       const importData = { data, type: 'json' };
+      const groupEdgeToggle = false;
 
       // processes
-      const processedJsonData = await importJson(data, initialState.accessors);
+      const processedJsonData = await importJson(
+        data,
+        initialState.accessors,
+        groupEdgeToggle,
+      );
       const [objectData] = processedJsonData;
+
+      // group edge configurations
+      const groupEdgeToggle = false;
+      const groupEdgeConfig = { toggle: groupEdgeToggle, availability: false };
+      objectData.metadata.groupEdges = groupEdgeConfig;
 
       // expected results
       const expectedActions = [
@@ -594,7 +685,7 @@ describe('add-data-thunk.test.js', () => {
         updateToast('toast-0'),
       ];
 
-      await store.dispatch(importSingleJsonData(importData));
+      await store.dispatch(importSingleJsonData(importData, groupEdgeToggle));
       expect(store.getActions()).toEqual(expectedActions);
     });
 
