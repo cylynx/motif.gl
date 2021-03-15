@@ -73,7 +73,7 @@ const ImportLayers = () => {
       key: index,
       title,
       content,
-      expanded: false,
+      expanded: true,
     };
   });
 
