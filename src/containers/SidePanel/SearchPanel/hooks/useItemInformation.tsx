@@ -4,6 +4,7 @@ import { NodeStyle } from '@antv/graphin';
 import { darken } from 'polished';
 import { Theme } from 'baseui/theme';
 import shortid from 'shortid';
+import { LabelXSmall } from 'baseui/typography';
 import { Node, Edge, NodeItemType, EdgeNode } from '../../../../redux/graph';
 import { flattenObject } from '../../../../redux/graph/processors/data';
 import { removeEmptyValueInObject } from '../../../../utils/data-utils';
@@ -59,7 +60,7 @@ const NodeShape = ({ fill, borderColor }: NodeShapeProps) => {
 
 type TableContentProps = { results: Partial<EdgeNode> };
 const TableContent = ({ results }: TableContentProps) => {
-  const tableRows: JSX.Element[] = useMemo(() => {
+  const contentRows: JSX.Element[] = useMemo(() => {
     const properties = flattenObject(results);
     removeEmptyValueInObject(properties);
 
@@ -67,18 +68,25 @@ const TableContent = ({ results }: TableContentProps) => {
       const [key, value] = property as [string, any];
 
       return (
-        <tr key={key}>
-          <th style={{ width: '40%', textTransform: 'lowercase' }}>{key}</th>
-          <td style={{ width: '60%', verticalAlign: 'top' }}>{value}</td>
-        </tr>
+        <Block key={key} display='flex' flexWrap marginBottom='scale100'>
+          <Block
+            paddingRight='scale200'
+            marginTop='0'
+            marginBottom='0'
+            $style={{ fontWeight: 600 }}
+          >
+            {key}:
+          </Block>
+          <Block $style={{ verticalAlign: 'top' }}>{value}</Block>
+        </Block>
       );
     });
   }, [results]);
 
   return (
-    <table style={{ fontSize: '12px' }}>
-      <tbody>{tableRows}</tbody>
-    </table>
+    <Block overrides={{ Block: { style: { fontSize: '12px' } } }}>
+      {contentRows}
+    </Block>
   );
 };
 
