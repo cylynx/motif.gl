@@ -73,6 +73,11 @@ const DeleteButton = ({
 };
 
 const TableButton = ({ onClick, ...rest }: ActionButton) => {
+  const onDatatableClick = (event: MouseEvent<HTMLButtonElement>): void => {
+    event.stopPropagation();
+    onClick();
+  };
+
   return (
     <SimpleTooltip tooltip='Display Node/Edge Information'>
       <Button
@@ -80,7 +85,7 @@ const TableButton = ({ onClick, ...rest }: ActionButton) => {
         shape='round'
         kind='minimal'
         $as='div'
-        onClick={onClick}
+        onClick={onDatatableClick}
         {...rest}
       >
         <Icon.Table />
