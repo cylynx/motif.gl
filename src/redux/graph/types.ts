@@ -106,6 +106,9 @@ export type GroupEdgeFields = {
 };
 export type GroupEdges = {
   toggle?: boolean;
+
+  /* determine whether graph has duplicate connectivity */
+  availability?: boolean;
   type?: string;
   fields?: GroupEdgeFields;
 };
@@ -134,6 +137,8 @@ export type UpdateGroupEdgeFieldPayload = {
   fieldId: string;
   value: string | FieldAndAggregation['aggregation'];
 };
+
+export type GroupEdgeCandidates = Record<string, Edge[]>;
 
 export interface GraphData {
   nodes: Node[];

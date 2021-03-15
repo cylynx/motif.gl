@@ -82,8 +82,8 @@ const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
     return false;
   }, [groupEdges.fields]);
 
-  const onCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
-    toggle(e.target.checked);
+  const onCheckboxChange = (isGroupEdge: boolean) => {
+    toggle(isGroupEdge);
   };
 
   const onTypeChange = (params: OnChangeParams) => {
@@ -133,6 +133,7 @@ const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
   return (
     <Block paddingLeft='scale300' paddingRight='scale300'>
       <GroupByFields
+        disabled={!groupEdges.availability}
         toggle={groupEdges.toggle}
         type={groupEdges.type}
         edgeFields={edgeFields}

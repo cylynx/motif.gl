@@ -5,8 +5,18 @@ import shortid from 'shortid';
 import get from 'lodash/get';
 // @ts-ignore
 import { Analyzer, DATA_TYPES as AnalyzerDatatypes } from 'type-analyzer';
+import { isEmpty } from 'lodash';
 import { notNullorUndefined } from '../../../utils/data-utils';
-import { Edge, Field, GraphData, GroupEdges, Metadata, Node } from '../types';
+import {
+  Edge,
+  Field,
+  GraphData,
+  GroupEdgeCandidates,
+  GroupEdges,
+  Metadata,
+  Node,
+} from '../types';
+import { duplicateDictionary } from './group-edges';
 
 type RowData = {
   [key: string]: any;
@@ -121,7 +131,11 @@ export const processJson = async (
       edgeCsv as string,
     );
 
-    const groupEdgeConfig: GroupEdges = applyGroupEdges(groupEdges);
+    const groupEdgeConfig: GroupEdges = applyGroupEdges(
+      groupEdges,
+      nodeJson as Node[],
+      edgeJson as Edge[],
+    );
 
     const graphMetadata = {
       ...json?.metadata,
@@ -158,7 +172,11 @@ export const processNodeEdgeCsv = async (
   const { fields: nodeFields, json: nodeJson } = await processCsvData(nodeCsv);
   const { fields: edgeFields, json: edgeJson } = await processCsvData(edgeCsv);
 
-  const groupEdgeConfig: GroupEdges = applyGroupEdges(groupEdges);
+  const groupEdgeConfig: GroupEdges = applyGroupEdges(
+    groupEdges,
+    nodeJson as Node[],
+    edgeJson as Edge[],
+  );
 
   const graphMetadata: Metadata = {
     fields: { nodes: nodeFields, edges: edgeFields },
@@ -201,7 +219,11 @@ export const processEdgeListCsv = async (
     return { id: node };
   });
 
-  const groupEdgeConfig: GroupEdges = applyGroupEdges(groupEdges);
+  const groupEdgeConfig: GroupEdges = applyGroupEdges(
+    groupEdges,
+    nodeJson as Node[],
+    edgeJson as Edge[],
+  );
 
   const graphMetadata: Metadata = {
     fields: { nodes: [], edges: edgeFields },
@@ -613,11 +635,25 @@ export const analyzerTypeToFieldType = (aType: string): string => {
  * Applies group edge onto metadata on every single imports.
  *
  * @param toggle
+ * @param nodeJson
+ * @param edgeJson
  * @return {void}
  */
-const applyGroupEdges = (toggle: boolean): GroupEdges => {
+const applyGroupEdges = (
+  toggle: boolean,
+  nodeJson: Node[],
+  edgeJson: Edge[],
+): GroupEdges => {
+  // identify whether graph edges contain duplicate connectivity.
+  const graphData: GraphData = { nodes: nodeJson, edges: edgeJson };
+  const duplicateConnectivity: GroupEdgeCandidates = duplicateDictionary(
+    graphData,
+  );
+  const isDatasetCanGroupEdge = !isEmpty(duplicateConnectivity);
+
   const groupEdgeConfig: GroupEdges = {
     toggle,
+    availability: isDatasetCanGroupEdge,
   };
 
   if (toggle) {

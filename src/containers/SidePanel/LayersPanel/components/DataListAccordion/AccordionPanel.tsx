@@ -18,7 +18,7 @@ const VisibilityButton = ({ onClick, isVisible, ...rest }: ActionButton) => {
   const onToggleDebounce = useCallback(
     debounce(() => {
       onClick();
-    }, 150),
+    }, 250),
     [onClick],
   );
 

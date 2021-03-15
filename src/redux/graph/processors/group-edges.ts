@@ -6,6 +6,7 @@ import {
   GraphData,
   GroupEdgeFields,
   GroupEdges,
+  GroupEdgeCandidates,
 } from '../types';
 import {
   average,
@@ -20,8 +21,7 @@ import {
   mostFrequent,
 } from '../../../utils/edge-aggregations/string-aggregates';
 
-type GroupEdgeCandidates = Record<string, Edge[]>;
-const duplicateDictionary = (
+export const duplicateDictionary = (
   data: GraphData,
   type = '',
 ): GroupEdgeCandidates => {
@@ -29,15 +29,15 @@ const duplicateDictionary = (
     const { source, target } = edge;
 
     if (type === 'all') {
-      return `group-${source}->${target}`;
+      return `${source}->${target}`;
     }
 
     const edgeValue = get(edge, type, '');
     if (edgeValue !== '') {
-      return `group-${source}->${target}@${type}`;
+      return `${source}->${target}@${type}`;
     }
 
-    return `group-${source}->${target}`;
+    return `${source}->${target}`;
   };
 
   const dictionary = {};

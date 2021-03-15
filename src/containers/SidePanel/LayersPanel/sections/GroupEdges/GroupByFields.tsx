@@ -1,14 +1,16 @@
-import React, { ChangeEvent, useMemo } from 'react';
+import React, { ChangeEvent, useCallback, useMemo } from 'react';
 import { Block } from 'baseui/block';
 import { Checkbox, LABEL_PLACEMENT, STYLE_TYPE } from 'baseui/checkbox';
 import { LabelXSmall } from 'baseui/typography';
-import { Select, SIZE, OnChangeParams, Value, Option } from 'baseui/select';
+import { Select, SIZE, OnChangeParams, Option } from 'baseui/select';
+import debounce from 'lodash/debounce';
 
 type GroupByFieldsProps = {
+  disabled: boolean;
   toggle: boolean;
   type: undefined | string;
   edgeFields: Option[];
-  onToggleChange: (e: ChangeEvent<HTMLInputElement>) => any;
+  onToggleChange: (toggle: boolean) => any;
   onTypeChange: (params: OnChangeParams) => any;
 };
 
@@ -33,6 +35,7 @@ const ByLabel = () =>
   );
 
 const GroupByFields = ({
+  disabled,
   toggle,
   type,
   edgeFields,
@@ -51,6 +54,18 @@ const GroupByFields = ({
     return groupEdgeFields.find((option: Option) => option.id === type) ?? [];
   }, [type]);
 
+  const onCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
+    onToggleChangeDebounce(e.target.checked);
+  };
+
+  // prevent user spam click on the checkbox and cause application freeze.
+  const onToggleChangeDebounce = useCallback(
+    debounce((toggle: boolean) => {
+      onToggleChange(toggle);
+    }, 250),
+    [],
+  );
+
   return (
     <Block
       overrides={{
@@ -63,8 +78,9 @@ const GroupByFields = ({
     >
       <Block display='flex' flex='1'>
         <Checkbox
+          disabled={disabled}
           checked={toggle}
-          onChange={onToggleChange}
+          onChange={onCheckboxChange}
           checkmarkType={STYLE_TYPE.toggle_round}
           labelPlacement={LABEL_PLACEMENT.left}
           overrides={{

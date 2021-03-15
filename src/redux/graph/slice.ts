@@ -347,9 +347,13 @@ const graph = createSlice({
       });
     },
     resetGroupEdgeOptions(state, action: PayloadAction<number>) {
+      const { availability } = state.graphList[
+        action.payload
+      ].metadata.groupEdges;
       Object.assign(state.graphList[action.payload].metadata, {
         groupEdges: {
           toggle: false,
+          availability,
         },
       });
     },
