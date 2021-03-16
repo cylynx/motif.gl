@@ -140,9 +140,10 @@ export const processJson = async (
     const graphMetadata = {
       ...json?.metadata,
       fields: { nodes: nodeFields, edges: edgeFields },
-      key: get(json, key, key),
+      key: get(json, 'metadata.key', key),
       groupEdges: groupEdgeConfig,
     };
+
     return {
       nodes: nodeJson as Node[],
       edges: edgeJson as Edge[],
@@ -260,9 +261,9 @@ export const json2csv = async (json: any): Promise<string | void> => {
  * Column names with '.' will be treated as a nested object
  *
  * @param {string} csv
- * @return {*}
+ * @return {Promise<void | any[]>}
  */
-export const csv2json = async (csv: string) => {
+export const csv2json = async (csv: string): Promise<void | any[]> => {
   const json = converter
     .csv2jsonAsync(csv)
     .then()

@@ -119,6 +119,9 @@ export interface Metadata {
   title?: string;
   visible?: boolean;
   groupEdges?: GroupEdges;
+
+  // allow adding custom fields
+  [key: string]: any;
 }
 
 export type GroupEdgePayload = {
