@@ -14,24 +14,24 @@ import {
 import { Edge, GraphData, Node } from '../types';
 
 describe('Parsing json to csv', () => {
-  // it('should contain the right number of rows (including header)', async () => {
-  //   const nodeCsv = await json2csv(TriangleJSON()[0].nodes);
-  //   const edgeCsv = await json2csv(TriangleJSON()[0].edges);
-  //   expect(nodeCsv.split('\n')).toHaveLength(4);
-  //   expect(edgeCsv.split('\n')).toHaveLength(4);
-  // });
-  // it('should contain id at root level', async () => {
-  //   const nodeCsv = await json2csv(TriangleJSON()[0].nodes);
-  //   const edgeCsv = await json2csv(TriangleJSON()[0].edges);
-  //   expect(nodeCsv).toContain('id');
-  //   expect(edgeCsv).toContain('id');
-  // });
-  // it('should contain nested style fields', async () => {
-  //   const nodeCsv = await json2csv(TriangleJSON()[0].nodes);
-  //   const edgeCsv = await json2csv(TriangleJSON()[0].edges);
-  //   expect(nodeCsv).toContain('style.keyshape.size');
-  //   expect(edgeCsv).toContain('style.keyshape.endArrow');
-  // });
+  it('should contain the right number of rows (including header)', async () => {
+    const nodeCsv = (await json2csv(TriangleJSON()[0].nodes)) as string;
+    const edgeCsv = (await json2csv(TriangleJSON()[0].edges)) as string;
+    expect(nodeCsv.split('\n')).toHaveLength(4);
+    expect(edgeCsv.split('\n')).toHaveLength(4);
+  });
+  it('should contain id at root level', async () => {
+    const nodeCsv = await json2csv(TriangleJSON()[0].nodes);
+    const edgeCsv = await json2csv(TriangleJSON()[0].edges);
+    expect(nodeCsv).toContain('id');
+    expect(edgeCsv).toContain('id');
+  });
+  it('should contain nested style fields', async () => {
+    const nodeCsv = await json2csv(TriangleJSON()[0].nodes);
+    const edgeCsv = await json2csv(TriangleJSON()[0].edges);
+    expect(nodeCsv).toContain('style.keyshape.size');
+    expect(edgeCsv).toContain('style.keyshape.endArrow');
+  });
 });
 
 const testCsv = `id,data.value,data.blk_ts_unix,source,target,style.keyshape.endArrow
