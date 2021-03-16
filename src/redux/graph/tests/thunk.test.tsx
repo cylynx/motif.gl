@@ -29,6 +29,7 @@ import { RootState } from '../../investigate';
 import { GraphList, ImportFormat, TLoadFormat } from '../types';
 import * as LAYOUT from '../../../constants/layout-options';
 import { DEFAULT_NODE_STYLE } from '../../../constants/graph-shapes';
+import { groupEdgesForImportation } from '../processors/group-edges';
 
 const mockStore = configureStore([thunk]);
 const getStore = (): RootState => {
@@ -489,6 +490,133 @@ describe('add-data-thunk.test.js', () => {
       });
     });
 
+    describe('Group Edge Aggregations', () => {
+      const simpleGraphWithGroupEdge = {
+        data: {
+          nodes: [{ id: 'node-3' }, { id: 'node-4' }],
+          edges: [
+            { id: 'edge-2', source: 'node-3', target: 'node-4' },
+            { id: 'edge-3', source: 'node-3', target: 'node-4' },
+          ],
+          metadata: {
+            key: 234,
+          },
+        },
+        type: 'json',
+      };
+
+      it('should determine whether graph possess duplicate connectivity', async () => {
+        // arrange
+        const importDataArr = [simpleGraphWithGroupEdge];
+        const groupEdgeToggle = false;
+
+        // act
+        const batchDataPromises = importDataArr.map(
+          (graphData: ImportFormat) => {
+            const { data } = graphData;
+            return importJson(
+              data as GraphList,
+              initialState.accessors,
+              groupEdgeToggle,
+            );
+          },
+        );
+
+        const graphDataArr = await Promise.all(batchDataPromises);
+        const [firstGraphData] = flatten(graphDataArr);
+
+        // group edge configuration arrangements
+        const groupEdgeConfig = {
+          availability: true,
+          toggle: groupEdgeToggle,
+        };
+        firstGraphData.metadata.groupEdges = groupEdgeConfig;
+
+        // expected results
+        const expectedActions = [
+          fetchBegin(),
+          addQuery(firstGraphData),
+          processGraphResponse({
+            data: firstGraphData,
+            accessors: initialState.accessors,
+          }),
+          fetchDone(),
+          updateToast('toast-0'),
+        ];
+
+        // assertions
+        await store.dispatch(
+          importJsonData(
+            importDataArr,
+            groupEdgeToggle,
+            initialState.accessors,
+          ),
+        );
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+
+      it('should perform group edge during importation', async () => {
+        // arrange
+        const importDataArr = [simpleGraphWithGroupEdge];
+        const groupEdgeToggle = true;
+
+        // act
+        const batchDataPromises = importDataArr.map(
+          (graphData: ImportFormat) => {
+            const { data } = graphData;
+            return importJson(
+              data as GraphList,
+              initialState.accessors,
+              groupEdgeToggle,
+            );
+          },
+        );
+
+        const graphDataArr = await Promise.all(batchDataPromises);
+        const [firstGraphData] = flatten(graphDataArr);
+
+        // group edge configuration arrangements
+        const groupEdgeConfig = {
+          availability: true,
+          toggle: groupEdgeToggle,
+          type: 'all',
+        };
+        firstGraphData.metadata.groupEdges = groupEdgeConfig;
+        const modData = groupEdgesForImportation(
+          firstGraphData,
+          firstGraphData.metadata.groupEdge,
+        );
+
+        // expected results
+        const expectedActions = [
+          fetchBegin(),
+          addQuery(firstGraphData),
+          processGraphResponse({
+            data: modData,
+            accessors: initialState.accessors,
+          }),
+          fetchDone(),
+          updateToast('toast-0'),
+        ];
+
+        // assertions
+        await store.dispatch(
+          importJsonData(
+            importDataArr,
+            groupEdgeToggle,
+            initialState.accessors,
+          ),
+        );
+
+        // perform assertion except process graph response due to random numbers.
+        store.getActions().forEach((actions, index) => {
+          if (actions.type !== 'graph/processGraphResponse') {
+            expect(actions).toEqual(expectedActions[index]);
+          }
+        });
+      });
+    });
+
     it('should throw error if importData parameter is not array', async () => {
       // assertions
       expect(importJsonData(jsonDataOne)).toThrow(Error);
@@ -724,6 +852,104 @@ describe('add-data-thunk.test.js', () => {
       const importData = { data: invalidData, type: 'json' };
 
       await expect(importSingleJsonData(importData)).toThrow(Error);
+    });
+  });
+
+  describe('groupEdgesWithAggregation', () => {
+    const simpleGraphWithGroupEdge = {
+      nodes: [{ id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' }],
+      edges: [
+        {
+          source: 'a',
+          target: 'b',
+          id: 'a-b1',
+          numeric: 1,
+          value: 'first',
+          date: '19-05-1996',
+        },
+        {
+          source: 'a',
+          target: 'b',
+          id: 'a-b2',
+          numeric: 2,
+          value: 'Last',
+          date: '20-05-1996',
+        },
+        {
+          source: 'a',
+          target: 'b',
+          id: 'a-b3',
+          numeric: 2,
+          value: 'last',
+          date: '20-05-1996',
+        },
+        { source: 'a', target: 'b', id: 'a-b4' },
+        {
+          source: 'a',
+          target: 'b',
+          id: 'a-b5',
+          value: 'last',
+          date: '21-05-1996',
+        },
+        { source: 'c', target: 'd', id: 'c-d1', numeric: 1 },
+        { source: 'c', target: 'd', id: 'c-d2', numeric: 2 },
+        { source: 'c', target: 'd', id: 'c-d3', numeric: 2 },
+        { source: 'c', target: 'd', id: 'c-d4' },
+      ],
+      key: 'QoFR2RwSM',
+      groupEdges: {
+        toggle: true,
+        availability: true,
+        type: 'numeric',
+        fields: {
+          'Y_-ZK2S3P': {
+            field: 'numeric',
+            aggregation: ['min', 'max', 'average', 'count', 'sum'],
+          },
+          _8X9zGku9b: {
+            field: 'value',
+            aggregation: ['first', 'last', 'most_frequent'],
+          },
+          vVENjKDSxE: {
+            field: 'date',
+            aggregation: ['first', 'last', 'most_frequent'],
+          },
+        },
+      },
+    };
+
+    it.skip('should group by all', async () => {
+      // input
+      const importData = { data: simpleGraphWithGroupEdge, type: 'json' };
+      const groupEdgeToggle = true;
+
+      // processes
+      const processedJsonData = await importJson(
+        data,
+        initialState.accessors,
+        groupEdgeToggle,
+      );
+      const [objectData] = processedJsonData;
+
+      // group edge configurations
+      const groupEdgeToggle = false;
+      const groupEdgeConfig = { toggle: groupEdgeToggle, availability: false };
+      objectData.metadata.groupEdges = groupEdgeConfig;
+
+      // expected results
+      const expectedActions = [
+        fetchBegin(),
+        addQuery(objectData),
+        processGraphResponse({
+          data: objectData,
+          accessors: initialState.accessors,
+        }),
+        fetchDone(),
+        updateToast('toast-0'),
+      ];
+
+      await store.dispatch(importSingleJsonData(importData, groupEdgeToggle));
+      expect(store.getActions()).toEqual(expectedActions);
     });
   });
 });
