@@ -30,6 +30,7 @@ const ImportLayers = () => {
    *
    * https://github.com/cylynx/motif.gl/pull/73#issuecomment-789393660
    * 1. Switch to original node colour when node style is legend to prevent crash.
+   * 2. Reset search results in search panel to prevent errors.
    *
    * @param {number} index
    * @return {void}
@@ -45,6 +46,7 @@ const ImportLayers = () => {
 
   const onChangeVisibility = (index: number, isVisible: boolean) => {
     dispatch(GraphSlices.changeVisibilityGraphList({ index, isVisible }));
+    resetSearchOptions();
   };
 
   const displayTabularData = (index: number): void => {

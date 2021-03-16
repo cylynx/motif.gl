@@ -13,6 +13,7 @@ import {
 import AggregateFields from './AggregateFields';
 import { RootState } from '../../../../../redux/investigate';
 import { getGraphList } from '../../../../../redux/graph/selectors';
+import useSearchOption from '../../../SearchPanel/hooks/useSearchOption';
 
 type GroupEdgesProps = { graphListIndex: number };
 const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
@@ -24,6 +25,8 @@ const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
     updateAggregates,
     deleteFields,
   } = useGroupEdges(graphListIndex);
+
+  const { resetSearchOptions } = useSearchOption();
 
   const graphList: GraphList = useSelector((state: RootState) =>
     getGraphList(state),
@@ -84,6 +87,7 @@ const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
 
   const onCheckboxChange = (isGroupEdge: boolean) => {
     toggle(isGroupEdge);
+    resetSearchOptions();
   };
 
   const onTypeChange = (params: OnChangeParams) => {
