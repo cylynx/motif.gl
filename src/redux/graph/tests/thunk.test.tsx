@@ -7,6 +7,7 @@ import flatten from 'lodash/flatten';
 import { render } from '@testing-library/react';
 import { ToasterContainer } from 'baseui/toast';
 import {
+  groupEdgesWithAggregation,
   importEdgeListData,
   importJsonData,
   importNodeEdgeData,
@@ -17,6 +18,7 @@ import {
   addQuery,
   processGraphResponse,
   updateStyleOption,
+  updateGraphFlatten,
 } from '../slice';
 import {
   importJson,
@@ -26,10 +28,20 @@ import {
 import { fetchBegin, fetchDone, updateToast } from '../../ui/slice';
 import { SimpleEdge } from '../../../constants/sample-data';
 import { RootState } from '../../investigate';
-import { GraphList, ImportFormat, TLoadFormat } from '../types';
+import {
+  Edge,
+  GraphData,
+  GraphList,
+  ImportFormat,
+  TLoadFormat,
+} from '../types';
 import * as LAYOUT from '../../../constants/layout-options';
 import { DEFAULT_NODE_STYLE } from '../../../constants/graph-shapes';
-import { groupEdgesForImportation } from '../processors/group-edges';
+import {
+  groupEdgesForImportation,
+  groupEdgesWithConfiguration,
+} from '../processors/group-edges';
+import { getGraph } from '../selectors';
 
 const mockStore = configureStore([thunk]);
 const getStore = (): RootState => {
@@ -896,60 +908,74 @@ describe('add-data-thunk.test.js', () => {
         { source: 'c', target: 'd', id: 'c-d3', numeric: 2 },
         { source: 'c', target: 'd', id: 'c-d4' },
       ],
-      key: 'QoFR2RwSM',
-      groupEdges: {
-        toggle: true,
-        availability: true,
-        type: 'numeric',
-        fields: {
-          'Y_-ZK2S3P': {
-            field: 'numeric',
-            aggregation: ['min', 'max', 'average', 'count', 'sum'],
-          },
-          _8X9zGku9b: {
-            field: 'value',
-            aggregation: ['first', 'last', 'most_frequent'],
-          },
-          vVENjKDSxE: {
-            field: 'date',
-            aggregation: ['first', 'last', 'most_frequent'],
+      metadata: {
+        key: 'QoFR2RwSM',
+        groupEdges: {
+          toggle: true,
+          availability: true,
+          type: 'numeric',
+          fields: {
+            'Y_-ZK2S3P': {
+              field: 'numeric',
+              aggregation: ['min', 'max', 'average', 'count', 'sum'],
+            },
+            _8X9zGku9b: {
+              field: 'value',
+              aggregation: ['first', 'last', 'most_frequent'],
+            },
+            vVENjKDSxE: {
+              field: 'date',
+              aggregation: ['first', 'last', 'most_frequent'],
+            },
           },
         },
       },
     };
 
-    it.skip('should group by all', async () => {
-      // input
-      const importData = { data: simpleGraphWithGroupEdge, type: 'json' };
-      const groupEdgeToggle = true;
+    const importedGraphState = (): RootState => {
+      const store = {
+        investigate: {
+          ui: {},
+          widget: {},
+          graph: {
+            present: {
+              graphList: [simpleGraphWithGroupEdge],
+              graphFlatten: simpleGraphWithGroupEdge,
+            },
+          },
+        },
+      };
+      return store;
+    };
+    const store = mockStore(importedGraphState());
 
-      // processes
-      const processedJsonData = await importJson(
-        data,
-        initialState.accessors,
-        groupEdgeToggle,
+    it('should group by all', async () => {
+      const { graphList, graphFlatten } = getGraph(store.getState());
+      const graphIndex = 0;
+      const selectedGraphList: GraphData = graphList[graphIndex];
+
+      const { groupEdges } = selectedGraphList.metadata;
+
+      const newGraphData = groupEdgesWithConfiguration(
+        selectedGraphList,
+        graphFlatten,
+        groupEdges,
       );
-      const [objectData] = processedJsonData;
 
-      // group edge configurations
-      const groupEdgeToggle = false;
-      const groupEdgeConfig = { toggle: groupEdgeToggle, availability: false };
-      objectData.metadata.groupEdges = groupEdgeConfig;
+      await store.dispatch(groupEdgesWithAggregation(graphIndex));
 
-      // expected results
-      const expectedActions = [
-        fetchBegin(),
-        addQuery(objectData),
-        processGraphResponse({
-          data: objectData,
-          accessors: initialState.accessors,
-        }),
-        fetchDone(),
-        updateToast('toast-0'),
-      ];
+      store.getActions().forEach((actions) => {
+        const { payload } = actions;
+        const { nodes, edges, metadata } = payload;
+        expect(nodes).toEqual(newGraphData.nodes);
+        expect(metadata).toEqual(newGraphData.metadata);
 
-      await store.dispatch(importSingleJsonData(importData, groupEdgeToggle));
-      expect(store.getActions()).toEqual(expectedActions);
+        edges.forEach((edge: Edge, index: number) => {
+          const { id, ...results } = edge;
+          const { id, ...expected } = newGraphData.edges[index];
+          expect(results).toEqual(expected);
+        });
+      });
     });
   });
 });

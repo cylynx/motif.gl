@@ -211,7 +211,6 @@ const graph = createSlice({
     updateStyleOption(state, action: PayloadAction<StyleOptions>) {
       Object.assign(state.styleOptions, action.payload);
     },
-
     changeLayout(
       state,
       action: PayloadAction<{
