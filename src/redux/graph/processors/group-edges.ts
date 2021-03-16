@@ -21,6 +21,14 @@ import {
   mostFrequent,
 } from '../../../utils/edge-aggregations/string-aggregates';
 
+type AggregationFields = Record<string, number | string>;
+
+/**
+ * Obtain the duplicate edge connectivity in graph
+ *
+ * @param {GraphData} data - graph data
+ * @param {string} type - group by type
+ */
 export const duplicateDictionary = (
   data: GraphData,
   type = '',
@@ -58,6 +66,12 @@ export const duplicateDictionary = (
   return dictionary;
 };
 
+/**
+ * Return edges id as array value from group edge candidates.
+ *
+ * @param groupEdgeCandidates
+ * @return {string[]}
+ */
 const obtainGroupEdgeIds = (
   groupEdgeCandidates: GroupEdgeCandidates,
 ): string[] => {
@@ -71,13 +85,25 @@ const obtainGroupEdgeIds = (
   );
 };
 
-const obtainGroupedEdges = (graphFlatten: GraphData) => {
+/**
+ * Return grouped edge found in graph data.
+ *
+ * @param graphFlatten
+ * @return {string[]}
+ */
+const obtainGroupedEdges = (graphFlatten: GraphData): string[] => {
   return graphFlatten.edges
     .filter((edge: Edge) => edge.id.toLowerCase().includes('group'))
     .map((edge: Edge) => edge.id);
 };
 
-type AggregationFields = Record<string, number | string>;
+/**
+ * Perform aggregation on group edges with given fields.
+ *
+ * @param {Edge[]} edgeCandidates - edge with duplicate connectivity for grouping
+ * @param {GroupEdgeFields} fields - property with aggregation methods
+ * @return {AggregationFields}
+ */
 const performAggregation = (
   edgeCandidates: Edge[],
   fields: GroupEdgeFields,
@@ -135,6 +161,13 @@ const performAggregation = (
   );
 };
 
+/**
+ * Aggregate specific edge with given aggregate's field
+ *
+ * @param groupEdgesCandidates - edges to perform aggregations
+ * @param fields - aggregation methods on specific fields
+ * @return {Edge[]} - grouped edges
+ */
 const aggregateGroupEdges = (
   groupEdgesCandidates: GroupEdgeCandidates,
   fields: GroupEdgeFields = {},
@@ -157,6 +190,15 @@ const aggregateGroupEdges = (
   });
 };
 
+/**
+ * 1. Remove existing edge from current graph data with duplicate connectivity (same source and target)
+ * 2. Append grouped edge into the graph data
+ *
+ * @param data - existing graph data
+ * @param edgeIdsForRemoval - edge id with duplicate connectivity required to be removed from graph
+ * @param groupedEdges - grouped edge ready to append into current graph
+ * @return {GraphData} - graph with grouped edges
+ */
 const produceGraphWithGroupEdges = (
   data: GraphData,
   edgeIdsForRemoval: string[],
@@ -174,6 +216,15 @@ const produceGraphWithGroupEdges = (
   return modData;
 };
 
+/**
+ * 1. Remove grouped edge from graph data.
+ * 2. Append edges with duplicate connectivity into the graph
+ *
+ * @param graphData - original graph list without grouped edges
+ * @param graphFlatten - current graph data with combination of graph list
+ * @param edgeIdsForRemoval - group edges' id for removal
+ * @return {GraphData} - graph data without group edges
+ */
 const produceGraphWithoutGroupEdges = (
   graphData: GraphData,
   graphFlatten: GraphData,
@@ -190,11 +241,17 @@ const produceGraphWithoutGroupEdges = (
 };
 
 /**
- * Combine edges and replace edges with the new one
+ * Perform group edges during data importation, used in:
+ * 1. Import Sample Data
+ * 2. Import Local File
  *
- * @param {GraphData} data
- * @param {GroupEdges} groupEdgeConfig [groupEdgeConfig={}]
- * @return {GraphData}
+ * Shall Perform Aggregation based on
+ * 1. configuration retrieve from the saved files
+ * 2. user preferences (toggle) during import data
+ *
+ * @param {GraphData} data - graph data
+ * @param {GroupEdges} groupEdgeConfig [groupEdgeConfig={}] - group edge configuration found in every graph list
+ * @return {GraphData} - graph data with grouped edges
  */
 export const groupEdgesForImportation = (
   data: GraphData,
@@ -216,6 +273,24 @@ export const groupEdgesForImportation = (
   return graphData;
 };
 
+/**
+ * Perform group edge based on user preferences in graph list, used in:
+ * 1. Toggle in Graph List
+ * 2. Aggregation fields
+ *
+ * Shall perform aggregation based on:
+ * 1. toggle value
+ * 2. aggregation fields input in data list accordion.
+ *
+ * This function supports:
+ * 1. Convert group edge graph to original graph
+ * 2. Convert original graph to group edge graph
+ *
+ * @param graphData - selected graph list to perform aggregation
+ * @param graphFlatten - existing graph with combination of graph list
+ * @param groupEdgesConfig - list of aggregations to be perform on graph list
+ * @return {GraphData} - graph combined with grouped edges.
+ */
 export const groupEdgesWithConfiguration = (
   graphData: GraphData,
   graphFlatten: GraphData,

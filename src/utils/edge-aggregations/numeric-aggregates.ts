@@ -1,4 +1,3 @@
-import { get } from 'lodash';
 import { IUserEdge } from '@antv/graphin';
 import { mapCollectionFields } from '../data-utils';
 

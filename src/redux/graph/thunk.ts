@@ -286,9 +286,10 @@ export const importSingleJsonData = (
 };
 
 /**
- * Perform group edges based on preferences.
+ * Perform group edges based on preferences and graph edge configurations.
  *
  * @param {number} graphIndex - identify specific graph list to perform edge aggregations
+ * @return {void}
  */
 export const groupEdgesWithAggregation = (graphIndex: number) => (
   dispatch: any,
