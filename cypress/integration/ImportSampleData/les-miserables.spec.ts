@@ -43,6 +43,7 @@ describe('Import Les Misérables', () => {
     cy.getReact('Statistic', {
       props: { 'data-testid': 'nodes-count' },
     })
+      .nthNode(0)
       .getProps('value')
       .should('deep.eq', 77);
   });
@@ -51,24 +52,21 @@ describe('Import Les Misérables', () => {
     cy.getReact('Statistic', {
       props: { 'data-testid': 'edges-count' },
     })
+      .nthNode(0)
       .getProps('value')
       .should('deep.eq', 254);
   });
 
   it('should display one row for data list', () => {
-    cy.getReact('DndList')
+    cy.getReact('DataListAccordion')
       .getProps('items')
       .should('have.length', 1);
   });
 
   it('should display data list name [Les Miserables]', () => {
-    cy.getReact('DndList')
-      .getProps('items')
-      .should(($els: DndItem[]) => {
-        const isRandomDataExist = $els.find(
-          (el) => el.title === 'Les Miserables',
-        );
-        expect(isRandomDataExist.isVisible).to.be.true;
-      });
+    cy.getReact('AccordionPanel')
+      .nthNode(0)
+      .getProps('title')
+      .should('deep.eq', 'Les Miserables');
   });
 });

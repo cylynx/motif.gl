@@ -1,12 +1,20 @@
 import React, { FC, MouseEvent, ReactNode, useCallback } from 'react';
-import { Button } from 'baseui/button';
+import { Button, ButtonProps } from 'baseui/button';
 import { Block } from 'baseui/block';
 import debounce from 'lodash/debounce';
 import { SimpleTooltip } from '../../../../../components/ui';
 import * as Icon from '../../../../../components/Icons';
-import { ActionButton } from '../../../../../components/DndList';
 
-const VisibilityButton = ({ onClick, isVisible, ...rest }: ActionButton) => {
+type VisibilityButtonProps = {
+  onClick: () => any;
+  isVisible: boolean;
+  [key: string]: any;
+};
+const VisibilityButton = ({
+  onClick,
+  isVisible,
+  ...rest
+}: VisibilityButtonProps) => {
   const toggleVisibility = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     onToggleDebounce();
@@ -38,13 +46,18 @@ const VisibilityButton = ({ onClick, isVisible, ...rest }: ActionButton) => {
   );
 };
 
+type DeleteButtonProps = {
+  onClick: () => any;
+  shape: ButtonProps['shape'];
+  tooltip: ReactNode;
+  [key: string]: any;
+};
 const DeleteButton = ({
   onClick: onClickDelete,
   shape,
   tooltip,
-  padding,
   ...rest
-}: ActionButton) => {
+}: DeleteButtonProps) => {
   const toggleDelete = (e: MouseEvent<HTMLButtonElement>): void => {
     e.stopPropagation();
     if (onClickDelete) {
@@ -77,7 +90,8 @@ const DeleteButton = ({
   );
 };
 
-const TableButton = ({ onClick, ...rest }: ActionButton) => {
+type TableButtonProps = { onClick: () => any; [key: string]: any };
+const TableButton = ({ onClick, ...rest }: TableButtonProps) => {
   const onDatatableClick = (event: MouseEvent<HTMLButtonElement>): void => {
     event.stopPropagation();
     onClick();

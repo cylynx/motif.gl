@@ -1,5 +1,5 @@
 import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
-import { DndItem } from '../../../src/components/DndList';
+import { AccordionItem } from '../../../src/components/Accordion';
 
 describe('Import Bank Connections', () => {
   before(() => {
@@ -41,6 +41,7 @@ describe('Import Bank Connections', () => {
     cy.getReact('Statistic', {
       props: { 'data-testid': 'nodes-count' },
     })
+      .nthNode(0)
       .getProps('value')
       .should('deep.eq', 17);
   });
@@ -49,24 +50,21 @@ describe('Import Bank Connections', () => {
     cy.getReact('Statistic', {
       props: { 'data-testid': 'edges-count' },
     })
+      .nthNode(0)
       .getProps('value')
       .should('deep.eq', 23);
   });
 
   it('should display one row for data list', () => {
-    cy.getReact('DndList')
+    cy.getReact('DataListAccordion')
       .getProps('items')
       .should('have.length', 1);
   });
 
-  it('should display data list name [banking-connections]', () => {
-    cy.getReact('DndList')
-      .getProps('items')
-      .should(($els: DndItem[]) => {
-        const isRandomDataExist = $els.find(
-          (el: DndItem) => el.title === 'Banking Connections',
-        );
-        expect(isRandomDataExist.isVisible).to.be.true;
-      });
+  it('should display data list name [Banking Connections]', () => {
+    cy.getReact('AccordionPanel')
+      .nthNode(0)
+      .getProps('title')
+      .should('deep.eq', 'Banking Connections');
   });
 });
