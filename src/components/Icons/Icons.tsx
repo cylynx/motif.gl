@@ -38,6 +38,7 @@ import {
   BiPause,
   BiReset,
   BiRocket,
+  BiTable,
 } from 'react-icons/bi';
 import { BsSlash } from 'react-icons/bs';
 import { VscSymbolKey, VscCircleOutline } from 'react-icons/vsc';
@@ -285,4 +286,10 @@ export const ArrowDown = ({ children, size = 16, ...rest }: IconBaseProps) => (
   <HiOutlineArrowNarrowDown size={size} {...rest}>
     {children}
   </HiOutlineArrowNarrowDown>
+);
+
+export const Table = ({ children, size = 16, ...rest }: IconBaseProps) => (
+  <BiTable size={size} {...rest}>
+    {children}
+  </BiTable>
 );

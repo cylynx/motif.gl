@@ -5,8 +5,18 @@ import shortid from 'shortid';
 import get from 'lodash/get';
 // @ts-ignore
 import { Analyzer, DATA_TYPES as AnalyzerDatatypes } from 'type-analyzer';
+import { isEmpty } from 'lodash';
 import { notNullorUndefined } from '../../../utils/data-utils';
-import { Edge, Field, GraphData, Metadata, Node } from '../types';
+import {
+  Edge,
+  Field,
+  GraphData,
+  GroupEdgeCandidates,
+  GroupEdges,
+  Metadata,
+  Node,
+} from '../types';
+import { duplicateDictionary } from './group-edges';
 
 type RowData = {
   [key: string]: any;
@@ -77,10 +87,10 @@ export const PARSE_FIELD_VALUE_FROM_STRING = {
 /**
  * Quick check to test whether json has the keys required of GraphData type
  *
- * @param {*} json
- * @return {*} {boolean}
+ * @param {GraphData} json
+ * @return {boolean}
  */
-export const validateMotifJson = (json: any): boolean => {
+export const validateMotifJson = (json: GraphData): boolean => {
   if (
     json.nodes &&
     json.edges &&
@@ -88,6 +98,7 @@ export const validateMotifJson = (json: any): boolean => {
     json.metadata.fields &&
     json.metadata.fields.nodes &&
     json.metadata.fields.edges &&
+    json.metadata.groupEdges &&
     json.metadata.key
   ) {
     return true;
@@ -98,12 +109,14 @@ export const validateMotifJson = (json: any): boolean => {
 /**
  * Process json data, output a promise GraphData object with field information in metadata.
  *
- * @param {*} json
+ * @param {GraphData} json
+ * @param {boolean} groupEdges
  * @param {*} [key=shortid.generate()] Either an accessor string or the key itself
- * @return {*}  {Promise<Graph.GraphData>}
+ * @return {*}  {Promise<GraphData>}
  */
 export const processJson = async (
-  json: any,
+  json: GraphData,
+  groupEdges: boolean,
   key: string | number = shortid.generate(),
 ): Promise<GraphData> => {
   if (validateMotifJson(json)) return json;
@@ -117,11 +130,20 @@ export const processJson = async (
     const { fields: edgeFields, json: edgeJson } = await processCsvData(
       edgeCsv as string,
     );
+
+    const groupEdgeConfig: GroupEdges = applyGroupEdges(
+      groupEdges,
+      nodeJson as Node[],
+      edgeJson as Edge[],
+    );
+
     const graphMetadata = {
       ...json?.metadata,
       fields: { nodes: nodeFields, edges: edgeFields },
-      key: get(json, key, key),
+      key: get(json, 'metadata.key', key),
+      groupEdges: groupEdgeConfig,
     };
+
     return {
       nodes: nodeJson as Node[],
       edges: edgeJson as Edge[],
@@ -138,20 +160,31 @@ export const processJson = async (
  *
  * @param {string} nodeCsv
  * @param {string} edgeCsv
+ * @param {boolean} groupEdges
  * @param {*} [key=shortid.generate()]
  * @return {*}  {Promise<Graph.GraphData>}
  */
 export const processNodeEdgeCsv = async (
   nodeCsv: string,
   edgeCsv: string,
+  groupEdges: boolean,
   key = shortid.generate(),
 ): Promise<GraphData> => {
   const { fields: nodeFields, json: nodeJson } = await processCsvData(nodeCsv);
   const { fields: edgeFields, json: edgeJson } = await processCsvData(edgeCsv);
+
+  const groupEdgeConfig: GroupEdges = applyGroupEdges(
+    groupEdges,
+    nodeJson as Node[],
+    edgeJson as Edge[],
+  );
+
   const graphMetadata: Metadata = {
     fields: { nodes: nodeFields, edges: edgeFields },
     key,
+    groupEdges: groupEdgeConfig,
   };
+
   return {
     nodes: nodeJson as Node[],
     edges: edgeJson as Edge[],
@@ -165,6 +198,7 @@ export const processNodeEdgeCsv = async (
  * @param {string} edgeCsv
  * @param {string} [edgeSourceAccessor='source']
  * @param {string} [edgeTargetAccessor='target']
+ * @param {boolean} groupEdges
  * @param {*} [key=shortid.generate()]
  * @return {*}  {Promise<Graph.GraphData>}
  */
@@ -172,6 +206,7 @@ export const processEdgeListCsv = async (
   edgeCsv: string,
   edgeSourceAccessor = 'source',
   edgeTargetAccessor = 'target',
+  groupEdges: boolean,
   key = shortid.generate(),
 ): Promise<GraphData> => {
   const { fields: edgeFields, json: edgeJson } = await processCsvData(edgeCsv);
@@ -185,10 +220,18 @@ export const processEdgeListCsv = async (
     return { id: node };
   });
 
+  const groupEdgeConfig: GroupEdges = applyGroupEdges(
+    groupEdges,
+    nodeJson as Node[],
+    edgeJson as Edge[],
+  );
+
   const graphMetadata: Metadata = {
     fields: { nodes: [], edges: edgeFields },
     key,
+    groupEdges: groupEdgeConfig,
   };
+
   return {
     nodes: nodeJson,
     edges: edgeJson as Edge[],
@@ -218,9 +261,9 @@ export const json2csv = async (json: any): Promise<string | void> => {
  * Column names with '.' will be treated as a nested object
  *
  * @param {string} csv
- * @return {*}
+ * @return {Promise<void | any[]>}
  */
-export const csv2json = async (csv: string) => {
+export const csv2json = async (csv: string): Promise<void | any[]> => {
   const json = converter
     .csv2jsonAsync(csv)
     .then()
@@ -587,4 +630,36 @@ export const analyzerTypeToFieldType = (aType: string): string => {
       console.warn(`Unsupported analyzer type: ${aType}`);
       return ALL_FIELD_TYPES.string;
   }
+};
+
+/**
+ * Applies group edge onto metadata on every single imports.
+ *
+ * @param toggle
+ * @param nodeJson
+ * @param edgeJson
+ * @return {void}
+ */
+const applyGroupEdges = (
+  toggle: boolean,
+  nodeJson: Node[],
+  edgeJson: Edge[],
+): GroupEdges => {
+  // identify whether graph edges contain duplicate connectivity.
+  const graphData: GraphData = { nodes: nodeJson, edges: edgeJson };
+  const duplicateConnectivity: GroupEdgeCandidates = duplicateDictionary(
+    graphData,
+  );
+  const isDatasetCanGroupEdge = !isEmpty(duplicateConnectivity);
+
+  const groupEdgeConfig: GroupEdges = {
+    toggle,
+    availability: isDatasetCanGroupEdge,
+  };
+
+  if (toggle) {
+    groupEdgeConfig.type = 'all';
+  }
+
+  return groupEdgeConfig;
 };

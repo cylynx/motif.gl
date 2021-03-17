@@ -1,6 +1,7 @@
 import { bisectLeft, extent, histogram as d3Histogram, ticks } from 'd3-array';
 import Decimal from 'decimal.js';
 import { isMatch, isValid, parse, parseISO } from 'date-fns';
+import { get } from 'lodash';
 
 export const ONE_SECOND = 1000;
 export const ONE_MINUTE = ONE_SECOND * 60;
@@ -391,7 +392,6 @@ export function normalizeSliderValue(
 
 /**
  * round the value to step for the slider
- * @type {typeof import('./data-utils').roundValToStep}
  * @param minValue
  * @param step
  * @param val
@@ -469,4 +469,36 @@ export const removeEmptyValueInObject = (object: Record<string, any>): void => {
       delete object[key];
     }
   });
+};
+
+/**
+ * Obtain the collection of values with given fields.
+ *
+ * 1. Eliminates undefined values
+ * 2. Convert edge list to field collection
+ *
+ * Attempt to perform Step 1. and 2. with single loop
+ * for performance optimization.
+ *
+ * @param collections
+ * @param field
+ * @return {any[]}
+ */
+export const mapCollectionFields = (
+  collections: any[],
+  field: string,
+): any[] => {
+  const fieldsValues: any[] = collections.reduce(
+    (acc: any[], collection: any) => {
+      const property = get(collection, field);
+      if (property !== undefined) {
+        acc.push(property);
+      }
+
+      return acc;
+    },
+    [],
+  );
+
+  return fieldsValues;
 };

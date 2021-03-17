@@ -40,7 +40,8 @@ describe('Import Single Local File', () => {
   const circleWithoutStyles = `${jsonDatasetRootPath}/circle-without-styles.json`;
   const circleWithStyles = `${jsonDatasetRootPath}/circle-with-styles.json`;
   const gridWithStyles = `${jsonDatasetRootPath}/grid-with-styles.json`;
-  const ingBackwardCompatible = `${jsonDatasetRootPath}/ing-backward-compatible.json`;
+  const simpleGraph = `${jsonDatasetRootPath}/simple-graph.json`;
+  const customGroupEdgeGraph = `${jsonDatasetRootPath}/custom-grouped-edge-graph.json`;
 
   describe('Local Files Import', () => {
     it('should import one file successfully', () => {
@@ -72,8 +73,8 @@ describe('Import Single Local File', () => {
         });
     });
 
-    it('should import one ING project compatibility file format successfully', () => {
-      cy.get('input[type="file"]').attachFile(ingBackwardCompatible);
+    it('should import one simple graph format successfully', () => {
+      cy.get('input[type="file"]').attachFile(simpleGraph);
       cy.get('button[type="submit"]').click();
 
       cy.getReact('Graphin')
@@ -87,7 +88,7 @@ describe('Import Single Local File', () => {
 
     it('should import combination of different formats', () => {
       cy.get('input[type="file"]').attachFile([
-        ingBackwardCompatible,
+        simpleGraph,
         circleWithoutStyles,
       ]);
       cy.get('button[type="submit"]').click();
@@ -137,8 +138,6 @@ describe('Import Single Local File', () => {
           fontSize: 16,
           arrow: 'none',
         },
-        resetView: true,
-        groupEdges: false,
       };
 
       expect(styleOptions).to.deep.equal(expectedOutput);
@@ -179,8 +178,6 @@ describe('Import Single Local File', () => {
           fontSize: 16,
           arrow: 'none',
         },
-        resetView: true,
-        groupEdges: false,
       };
 
       expect(styleOptions).to.deep.equal(expectedOutput);
@@ -222,11 +219,88 @@ describe('Import Single Local File', () => {
           fontSize: 16,
           arrow: 'none',
         },
-        resetView: true,
-        groupEdges: false,
       };
 
       expect(styleOptions).to.deep.equal(expectedOutput);
+    });
+  });
+
+  describe('Single File with Group Edge Configurations', () => {
+    const expectedGroupEdgeOutput = {
+      toggle: true,
+      availability: true,
+      type: 'numeric',
+      fields: {
+        'Y_-ZK2S3P': {
+          field: 'numeric',
+          aggregation: ['min', 'max', 'average', 'count', 'sum'],
+        },
+        _8X9zGku9b: {
+          field: 'value',
+          aggregation: ['first', 'last', 'most_frequent'],
+        },
+        vVENjKDSxE: {
+          field: 'date',
+          aggregation: ['first', 'last', 'most_frequent'],
+        },
+      },
+    };
+
+    beforeEach(() => {
+      cy.get('input[type="file"]').attachFile(customGroupEdgeGraph);
+      cy.get('button[type="submit"]').click();
+    });
+
+    it('application should obtain the group edge configurations', () => {
+      cy.getReact('LayerDetailed')
+        .nthNode(0)
+        .getProps('graph')
+        .then((graph: GraphData) => {
+          const { edges, nodes, metadata } = graph;
+
+          expect(edges.length).to.deep.equal(9);
+          expect(nodes.length).to.deep.equal(4);
+          expect(metadata.groupEdges).to.deep.equal(expectedGroupEdgeOutput);
+        });
+    });
+
+    it('statistic should display correct information', () => {
+      cy.getReact('GraphStatistics')
+        .nthNode(1)
+        .getProps()
+        .then((props) => {
+          const {
+            edgeLength,
+            hiddenEdgeLength,
+            hiddenNodeLength,
+            nodeLength,
+          } = props;
+
+          expect(nodeLength).to.deep.equal(4);
+          expect(edgeLength).to.deep.equal(4);
+          expect(hiddenNodeLength).to.deep.equal(0);
+          expect(hiddenEdgeLength).to.deep.equal(5);
+        });
+    });
+
+    it('group by values should follows import data', () => {
+      cy.getReact('GroupByFields')
+        .nthNode(0)
+        .getProps()
+        .then((props) => {
+          const { toggle, type, disabled } = props;
+
+          expect(toggle).to.deep.equal(true);
+          expect(type).to.deep.equal('numeric');
+          expect(disabled).to.deep.equal(false);
+        });
+    });
+
+    it('fields with aggregations should render according to import data', () => {
+      cy.getReact('AggregateFields')
+        .nthNode(0)
+        .getProps('fields')
+        .should('deep.eq', expectedGroupEdgeOutput['fields']);
     });
   });
 });

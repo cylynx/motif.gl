@@ -1,6 +1,5 @@
 import React, { FC, MouseEvent, useMemo } from 'react';
 import { Block } from 'baseui/block';
-import { ButtonGroup } from 'baseui/button-group';
 import { Button } from 'baseui/button';
 import { colors } from 'baseui/tokens';
 import { Theme } from 'baseui/theme';

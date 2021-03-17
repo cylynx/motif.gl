@@ -1,5 +1,4 @@
 import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
-import { DndItem } from '../../../src/components/DndList';
 
 describe('Import Random + Circle', () => {
   before(() => {
@@ -41,6 +40,7 @@ describe('Import Random + Circle', () => {
     cy.getReact('Statistic', {
       props: { 'data-testid': 'nodes-count' },
     })
+      .nthNode(0)
       .getProps('value')
       .should('deep.eq', 15);
   });
@@ -49,31 +49,28 @@ describe('Import Random + Circle', () => {
     cy.getReact('Statistic', {
       props: { 'data-testid': 'edges-count' },
     })
+      .nthNode(0)
       .getProps('value')
       .should('deep.eq', 25);
   });
 
   it('should display two row for data list', () => {
-    cy.getReact('DndList')
+    cy.getReact('DataListAccordion')
       .getProps('items')
       .should('have.length', 2);
   });
 
   it('should display data list name [Random Data]', () => {
-    cy.getReact('DndList')
-      .getProps('items')
-      .should(($els: DndItem[]) => {
-        const isRandomDataExist = $els.find((el) => el.title === 'Random Data');
-        expect(isRandomDataExist.isVisible).to.be.true;
-      });
+    cy.getReact('AccordionPanel')
+      .nthNode(0)
+      .getProps('title')
+      .should('deep.eq', 'Random Data');
   });
 
   it('should display data list name [Circle Data]', () => {
-    cy.getReact('DndList')
-      .getProps('items')
-      .should(($els: DndItem[]) => {
-        const isRandomDataExist = $els.find((el) => el.title === 'Circle Data');
-        expect(isRandomDataExist.isVisible).to.be.true;
-      });
+    cy.getReact('AccordionPanel')
+      .nthNode(1)
+      .getProps('title')
+      .should('deep.eq', 'Circle Data');
   });
 });

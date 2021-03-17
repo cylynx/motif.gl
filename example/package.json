@@ -24,9 +24,6 @@
     "@types/react": "file:../node_modules/@types/react",
     "@types/react-dom": "file:../node_modules/@types/react-dom"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "browserslist": {
     "production": [
       ">0.2%",

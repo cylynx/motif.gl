@@ -17,11 +17,14 @@ import {
   filterGraph,
   paginateItems,
   getField,
+  combineProcessedData,
 } from '../../containers/Graph/styles/utils';
 
 const getGraph = (state: any): GraphState => state.investigate.graph.present;
 const getAccessors = (state: any): Accessors => getGraph(state).accessors;
 const getGraphList = (state: any): GraphList => getGraph(state).graphList;
+
+// obtain the grouped edges graph flatten
 const getGraphFlatten = (state: any): GraphData => getGraph(state).graphFlatten;
 const getStyleOptions = (state: any): StyleOptions =>
   getGraph(state).styleOptions;
@@ -94,23 +97,23 @@ const getGraphFieldsOptions = createSelector(
 
     getField(graphFields.nodes).forEach(({ name, type }) => {
       if (name !== 'id' && name !== 'none') {
-        allNodeFields.push({ id: name, label: name });
+        allNodeFields.push({ id: name, label: name, type });
       }
       if (name !== 'id' && name !== 'degree') {
-        layoutFields.push({ id: name, label: name });
+        layoutFields.push({ id: name, label: name, type });
       }
       if (type === 'integer' || type === 'real') {
-        numericNodeFields.push({ id: name, label: name });
+        numericNodeFields.push({ id: name, label: name, type });
       }
     });
     const nodeLabelFields = [...allNodeFields, { id: 'none', label: 'none' }];
 
     getField(graphFields.edges).forEach(({ name, type }) => {
       if (name !== 'id' && name !== 'none') {
-        allEdgeFields.push({ id: name, label: name });
+        allEdgeFields.push({ id: name, label: name, type });
       }
       if (type === 'integer' || type === 'real') {
-        numericEdgeFields.push({ id: name, label: name });
+        numericEdgeFields.push({ id: name, label: name, type });
       }
     });
     const edgeLabelFields = [...allEdgeFields, { id: 'none', label: 'none' }];
@@ -127,6 +130,26 @@ const getGraphFieldsOptions = createSelector(
   },
 );
 
+// obtain the ungroup edges graph flatten
+const getUngroupedGraphFlatten = createSelector(
+  [getGraphList],
+  (graphList: GraphList) => {
+    let ungroupedGraphFlatten: GraphData = {
+      nodes: [],
+      edges: [],
+      metadata: { fields: { nodes: [], edges: [] } },
+    };
+    graphList.forEach((graphData: GraphData) => {
+      ungroupedGraphFlatten = combineProcessedData(
+        graphData,
+        ungroupedGraphFlatten,
+      );
+    });
+
+    return ungroupedGraphFlatten;
+  },
+);
+
 export {
   getGraph,
   getAccessors,
@@ -140,4 +163,5 @@ export {
   getGraphVisible,
   getGraphVisibleNodeOptions,
   getGraphFieldsOptions,
+  getUngroupedGraphFlatten,
 };

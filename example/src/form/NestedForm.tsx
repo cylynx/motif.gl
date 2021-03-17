@@ -120,7 +120,6 @@ const NestedForm = ({ data }: { data: NestedFormData }) => {
 
   return (
     <Fragment>
-      <form>
         <Block
           display={labelPosition === 'left' ? 'flex' : 'block'}
           marginBottom={labelPosition === 'left' ? 'scale100' : 0}
@@ -236,7 +235,6 @@ const NestedForm = ({ data }: { data: NestedFormData }) => {
               </Block>
             );
           })}
-      </form>
     </Fragment>
   );
 };
