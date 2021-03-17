@@ -101,6 +101,7 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
       >
         <Block display='flex'>
           <Select
+            data-testid='aggregate-fields:field'
             size={SIZE.mini}
             searchable={false}
             clearable={false}
@@ -143,6 +144,7 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
 
         <Block width='100%' marginTop='scale100'>
           <Select
+            data-testid='aggregate-fields:aggregate'
             size={SIZE.mini}
             searchable={false}
             clearable={false}

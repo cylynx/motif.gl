@@ -1,5 +1,4 @@
 import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
-import { AccordionItem } from '../../../src/components/Accordion';
 
 describe('Import Bank Connections', () => {
   before(() => {
@@ -11,12 +10,8 @@ describe('Import Bank Connections', () => {
     // switch tabs to sample data
     cy.switchTab('sample-data');
 
-    // import sample data by clicking random graph
-    cy.react('Cell', {
-      props: { 'data-testid': SampleData.BANK },
-    })
-      .find('Button')
-      .click();
+    // import sample data by clicking bank datasets
+    cy.importSampleData(SampleData.BANK);
   });
 
   it('should display layout in Concentric', () => {

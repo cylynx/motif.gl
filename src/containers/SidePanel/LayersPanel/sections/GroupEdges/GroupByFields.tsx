@@ -103,6 +103,7 @@ const GroupByFields = ({
       {toggle && (
         <Block marginTop='scale100'>
           <Select
+            data-testid='group-by-fields:select'
             size={SIZE.mini}
             searchable={false}
             clearable={false}
