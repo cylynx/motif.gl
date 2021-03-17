@@ -38,6 +38,13 @@ const LayerDetailed = ({ graph, index }: LayerDetailProps) => {
       );
   }, [graphFlatten.edges, graphNodeIds]);
 
+  // obtain the nodes that belongs to this dataframe
+  const currentGraphNodes = useMemo(() => {
+    return graphFlatten.nodes.filter((node: Node) =>
+      graphNodeIds.includes(node.id),
+    );
+  }, [graphFlatten.nodes]);
+
   // obtain the edges that belongs to this dataframe
   const currentGraphEdges = useMemo(() => {
     return graphFlatten.edges.filter((edge: Edge) =>
@@ -46,9 +53,9 @@ const LayerDetailed = ({ graph, index }: LayerDetailProps) => {
   }, [graphFlatten.edges]);
 
   // compute the information for statistics
-  const visibleNodeLength = graphNodeIds.length;
+  const visibleNodeLength = currentGraphNodes.length;
   const visibleEdgeLength = currentGraphEdges.length + currentGroupEdges.length;
-  const hiddenNodeLength = 0;
+  const hiddenNodeLength = graphNodeIds.length - currentGraphNodes.length;
   const hiddenEdgeLength = graphEdgeIds.length - visibleEdgeLength;
 
   return (

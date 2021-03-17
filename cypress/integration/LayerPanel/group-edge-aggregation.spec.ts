@@ -6,23 +6,9 @@ describe('Group Edge Aggregations', () => {
   before(() => {
     cy.visit('/');
     cy.waitForReact();
-
-    // close modal
-    // cy.get('button[aria-label="Close"]').click();
-
     cy.switchTab('sample-data');
     cy.importSampleData(SampleData.BANK);
   });
-
-  // beforeEach(() => {
-  //   cy.react('ImportDataButton').click();
-  //   cy.switchTab('sample-data');
-  //   cy.importSampleData(SampleData.BANK);
-  // });
-  //
-  // afterEach(() => {
-  //   cy.react('ClearDataButton').click();
-  // });
 
   describe('Group Edges Toggle', () => {
     it('should determine whether graph data is groupable', () => {
@@ -204,6 +190,20 @@ describe('Group Edge Aggregations', () => {
           const valueId = values.map((value: Option) => value.id);
           expect(valueId).to.deep.equal(['first', 'last']);
         });
+    });
+
+    it('should remove the fields', () => {
+      cy.react('Button', {
+        props: {
+          'data-testid': 'aggregate-fields:delete',
+        },
+      })
+        .last()
+        .click();
+
+      fieldSelect().should('not.exist');
+      deleteButton().should('not.exist');
+      aggregateSelect().should('not.exist');
     });
   });
 });
