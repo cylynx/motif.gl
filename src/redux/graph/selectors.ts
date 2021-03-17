@@ -17,11 +17,14 @@ import {
   filterGraph,
   paginateItems,
   getField,
+  combineProcessedData,
 } from '../../containers/Graph/styles/utils';
 
 const getGraph = (state: any): GraphState => state.investigate.graph.present;
 const getAccessors = (state: any): Accessors => getGraph(state).accessors;
 const getGraphList = (state: any): GraphList => getGraph(state).graphList;
+
+// obtain the grouped edges graph flatten
 const getGraphFlatten = (state: any): GraphData => getGraph(state).graphFlatten;
 const getStyleOptions = (state: any): StyleOptions =>
   getGraph(state).styleOptions;
@@ -127,6 +130,26 @@ const getGraphFieldsOptions = createSelector(
   },
 );
 
+// obtain the ungroup edges graph flatten
+const getUngroupedGraphFlatten = createSelector(
+  [getGraphList],
+  (graphList: GraphList) => {
+    let ungroupedGraphFlatten: GraphData = {
+      nodes: [],
+      edges: [],
+      metadata: { fields: { nodes: [], edges: [] } },
+    };
+    graphList.forEach((graphData: GraphData) => {
+      ungroupedGraphFlatten = combineProcessedData(
+        graphData,
+        ungroupedGraphFlatten,
+      );
+    });
+
+    return ungroupedGraphFlatten;
+  },
+);
+
 export {
   getGraph,
   getAccessors,
@@ -140,4 +163,5 @@ export {
   getGraphVisible,
   getGraphVisibleNodeOptions,
   getGraphFieldsOptions,
+  getUngroupedGraphFlatten,
 };

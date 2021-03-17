@@ -14,15 +14,18 @@ import GraphStatistics from './components/GraphStatistics';
 import PropertiesSelections from './sections/PropertiesSelection';
 
 const LayersPanel = () => {
+  const ungroupGraphFlatten = useSelector((state) => {
+    return GraphSelectors.getUngroupedGraphFlatten(state);
+  });
+
   const graphFlatten = useSelector((state) =>
     GraphSelectors.getGraphFlatten(state),
   );
-  const graphVisible = useSelector((state) =>
-    GraphSelectors.getGraphVisible(state),
-  );
 
-  const hiddenNodes = graphFlatten.nodes.length - graphVisible.nodes.length;
-  const hiddenEdges = graphFlatten.edges.length - graphVisible.edges.length;
+  const hiddenNodes =
+    ungroupGraphFlatten.nodes.length - graphFlatten.nodes.length;
+  const hiddenEdges =
+    ungroupGraphFlatten.edges.length - graphFlatten.edges.length;
 
   return (
     <Fragment>
@@ -34,8 +37,8 @@ const LayersPanel = () => {
         width='260px'
       >
         <GraphStatistics
-          nodeLength={graphVisible.nodes.length}
-          edgeLength={graphVisible.edges.length}
+          nodeLength={graphFlatten.nodes.length}
+          edgeLength={graphFlatten.edges.length}
           hiddenNodeLength={hiddenNodes}
           hiddenEdgeLength={hiddenEdges}
         />
