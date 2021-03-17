@@ -23,6 +23,7 @@ import {
   DeleteGroupEdgeFieldPayload,
 } from './types';
 import { DEFAULT_NODE_STYLE } from '../../constants/graph-shapes';
+import { groupEdgesForImportation } from './processors/group-edges';
 
 /**
  * Perform update on node and edge selections.
@@ -170,7 +171,14 @@ const graph = createSlice({
       const existingEdgeFields: string[] = ['id', 'source', 'target'];
       for (const data of graphList) {
         if (data?.metadata?.visible !== false) {
-          graphData = combineProcessedData(data as GraphData, graphData);
+          let modData = data;
+
+          // perform group edge if enable when perform data list deletion
+          if (data.metadata.groupEdges.toggle) {
+            modData = groupEdgesForImportation(data, data.metadata.groupEdges);
+          }
+
+          graphData = combineProcessedData(modData as GraphData, graphData);
         }
         for (const field of data.metadata.fields.nodes) {
           existingNodeFields.push(field.name);
@@ -197,7 +205,14 @@ const graph = createSlice({
       let graphData;
       for (const data of graphList) {
         if (data?.metadata?.visible !== false) {
-          graphData = combineProcessedData(data as GraphData, graphData);
+          let modData = data;
+
+          // perform group edge if enable when toggle against visibility
+          if (data.metadata.groupEdges.toggle) {
+            modData = groupEdgesForImportation(data, data.metadata.groupEdges);
+          }
+
+          graphData = combineProcessedData(modData as GraphData, graphData);
         }
       }
 
