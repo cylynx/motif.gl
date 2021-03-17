@@ -1,7 +1,6 @@
 import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
 import { Field } from '../../../src/redux/graph';
-
-const jsonDatasetRootPath = 'LocalFiles/Json';
+import { Option } from 'baseui/select';
 
 describe('Group Edge Aggregations', () => {
   before(() => {
@@ -88,30 +87,123 @@ describe('Group Edge Aggregations', () => {
   });
 
   describe('Fields With Aggregations', () => {
-    it('should add a field after Add Attribute button is clicked', () => {
-      cy.react('AddAttributesButton').click();
-
-      cy.getReact('Select', {
+    const fieldSelect = () => {
+      return cy.getReact('Select', {
         props: {
           'data-testid': 'aggregate-fields:field',
         },
-      }).should('exist');
+      });
+    };
 
-      cy.getReact('Button', {
+    const deleteButton = () => {
+      return cy.getReact('Button', {
         props: {
           'data-testid': 'aggregate-fields:delete',
         },
-      }).should('exist');
+      });
+    };
 
-      cy.getReact('Select', {
+    const aggregateSelect = () => {
+      return cy.getReact('Select', {
         props: {
           'data-testid': 'aggregate-fields:aggregate',
         },
-      }).should('exist');
+      });
+    };
+
+    it('should add a field after Add Attribute button is clicked', () => {
+      cy.react('AddAttributesButton').click();
+
+      fieldSelect().should('exist');
+      deleteButton().should('exist');
+      aggregateSelect().should('exist');
     });
 
     it('Add Attribute Button should not display if aggregation is not set', () => {
       cy.getReact('AddAttributesButton').should('not.exist');
+    });
+
+    it('should suggest numeric aggregations to selected field', () => {
+      cy.react('Select', {
+        props: {
+          'data-testid': 'aggregate-fields:field',
+        },
+      })
+        .last()
+        .click();
+      cy.get('li[role="option"]')
+        .contains('amount')
+        .click();
+
+      aggregateSelect()
+        .nthNode(0)
+        .getProps('options')
+        .then((options) => {
+          const optionsField = options.map((option: Option) => option.id);
+          expect(optionsField).to.deep.equal([
+            'min',
+            'max',
+            'average',
+            'count',
+            'sum',
+          ]);
+        });
+    });
+
+    it('should suggest string aggregations to selected field', () => {
+      cy.react('Select', {
+        props: {
+          'data-testid': 'aggregate-fields:field',
+        },
+      })
+        .last()
+        .click();
+      cy.get('li[role="option"]')
+        .contains('date')
+        .click();
+
+      aggregateSelect()
+        .nthNode(0)
+        .getProps('options')
+        .then((options) => {
+          const optionsField = options.map((option: Option) => option.id);
+          expect(optionsField).to.deep.equal([
+            'first',
+            'last',
+            'most_frequent',
+          ]);
+        });
+    });
+
+    it('should apply multiple aggregations onto the group edges', () => {
+      cy.react('Select', {
+        props: {
+          'data-testid': 'aggregate-fields:aggregate',
+        },
+      })
+        .last()
+        .click();
+      cy.get('li[role="option"]')
+        .contains('First')
+        .click();
+      cy.react('Select', {
+        props: {
+          'data-testid': 'aggregate-fields:aggregate',
+        },
+      })
+        .last()
+        .click();
+      cy.get('li[role="option"]')
+        .contains('Last')
+        .click();
+
+      aggregateSelect()
+        .nthNode(0)
+        .getProps('value')
+        .then((values) => {
+          const valueId = values.map((value: Option) => value.id);
+          expect(valueId).to.deep.equal(['first', 'last']);
+        });
     });
   });
 });
