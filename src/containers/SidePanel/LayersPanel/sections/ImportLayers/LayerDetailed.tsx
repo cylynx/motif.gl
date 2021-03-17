@@ -1,10 +1,11 @@
 import { useSelector } from 'react-redux';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Block } from 'baseui/block';
 import { styled } from 'baseui';
 import {
   Edge,
   GraphData,
+  GraphList,
   GraphSelectors,
   Node,
 } from '../../../../../redux/graph';
@@ -20,17 +21,35 @@ const StyledHr = styled('hr', ({ $theme }) => ({
 
 type LayerDetailProps = { graph: GraphData; index: number };
 const LayerDetailed = ({ graph, index }: LayerDetailProps) => {
-  const graphVisible = useSelector((state) =>
-    GraphSelectors.getGraphVisible(state),
+  const graphFlatten = useSelector((state) =>
+    GraphSelectors.getGraphFlatten(state),
   );
-  const visibleNodeList = graphVisible.nodes.map((x: Node) => x.id);
-  const visibleEdgeList = graphVisible.edges.map((x: Edge) => x.id);
-  const hiddenNodes = graph.nodes.filter(
-    (x) => !visibleNodeList.includes(x.id),
-  );
-  const hiddenEdges = graph.edges.filter(
-    (x) => !visibleEdgeList.includes(x.id),
-  );
+
+  const graphNodeIds: string[] = graph.nodes.map((x: Node) => x.id);
+  const graphEdgeIds: string[] = graph.edges.map((x: Edge) => x.id);
+
+  // obtain the group edges that belongs to this dataframe
+  const currentGroupEdges = useMemo(() => {
+    return graphFlatten.edges
+      .filter((e: Edge) => e.id.includes('group'))
+      .filter(
+        (e: Edge) =>
+          graphNodeIds.includes(e.source) && graphNodeIds.includes(e.target),
+      );
+  }, [graphFlatten.edges, graphNodeIds]);
+
+  // obtain the edges that belongs to this dataframe
+  const currentGraphEdges = useMemo(() => {
+    return graphFlatten.edges.filter((edge: Edge) =>
+      graphEdgeIds.includes(edge.id),
+    );
+  }, [graphFlatten.edges]);
+
+  // compute the information for statistics
+  const visibleNodeLength = graphNodeIds.length;
+  const visibleEdgeLength = currentGraphEdges.length + currentGroupEdges.length;
+  const hiddenNodeLength = 0;
+  const hiddenEdgeLength = graphEdgeIds.length - visibleEdgeLength;
 
   return (
     <>
@@ -41,10 +60,10 @@ const LayerDetailed = ({ graph, index }: LayerDetailProps) => {
         paddingRight='scale300'
       >
         <GraphStatistics
-          nodeLength={graph.nodes.length}
-          edgeLength={graph.edges.length}
-          hiddenNodeLength={hiddenNodes.length}
-          hiddenEdgeLength={hiddenEdges.length}
+          nodeLength={visibleNodeLength}
+          edgeLength={visibleEdgeLength}
+          hiddenNodeLength={hiddenNodeLength}
+          hiddenEdgeLength={hiddenEdgeLength}
           size='medium'
         />
       </Block>
