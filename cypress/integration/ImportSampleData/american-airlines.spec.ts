@@ -38,6 +38,7 @@ describe('Import American Airlines', () => {
     cy.getReact('Statistic', {
       props: { 'data-testid': 'nodes-count' },
     })
+      .nthNode(0)
       .getProps('value')
       .should('deep.eq', 235);
   });
@@ -46,6 +47,7 @@ describe('Import American Airlines', () => {
     cy.getReact('Statistic', {
       props: { 'data-testid': 'edges-count' },
     })
+      .nthNode(0)
       .getProps('value')
       .should('deep.eq', 1298);
   });

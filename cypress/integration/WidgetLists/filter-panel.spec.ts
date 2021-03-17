@@ -57,41 +57,15 @@ describe('Filter Panel', () => {
 
     it('should be enable when data is present', () => {
       // open layer panels
-      cy.react('Block', {
-        props: {
-          'data-testid': 'layers',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'layers', group: 'main' },
-        })
-        .click();
-
-      cy.react('LayersPanel')
-        .react('ImportDataButton')
-        .click();
-
+      cy.switchPanel('layers');
+      cy.react('ImportDataButton').click();
       cy.switchTab('sample-data');
 
       // import sample data by clicking random graph
-      cy.react('Cell', {
-        props: { 'data-testid': SampleData.CIRCLE_GRAPH },
-      })
-        .find('Button')
-        .click();
+      cy.importSampleData(SampleData.CIRCLE_GRAPH);
 
       // open filter panels by clicking sidebar
-      cy.react('Block', {
-        props: {
-          'data-testid': 'filters',
-        },
-        exact: true,
-      })
-        .react('IconButton', {
-          props: { id: 'filters', group: 'main' },
-        })
-        .click();
+      cy.switchPanel('filters');
 
       cy.getReact('FilterPanel')
         .getReact('AddFilterButton')

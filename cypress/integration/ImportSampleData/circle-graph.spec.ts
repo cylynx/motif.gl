@@ -1,5 +1,5 @@
 import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
-import { DndItem } from '../../../src/components/DndList';
+import { AccordionItem } from '../../../src/components/Accordion';
 
 describe('Import Circle Graph', () => {
   before(() => {
@@ -41,6 +41,7 @@ describe('Import Circle Graph', () => {
     cy.getReact('Statistic', {
       props: { 'data-testid': 'nodes-count' },
     })
+      .nthNode(0)
       .getProps('value')
       .should('deep.eq', 10);
   });
@@ -49,22 +50,21 @@ describe('Import Circle Graph', () => {
     cy.getReact('Statistic', {
       props: { 'data-testid': 'edges-count' },
     })
+      .nthNode(0)
       .getProps('value')
       .should('deep.eq', 18);
   });
 
   it('should display one row for data list', () => {
-    cy.getReact('DndList')
+    cy.getReact('DataListAccordion')
       .getProps('items')
       .should('have.length', 1);
   });
 
   it('should display data list name [Circle Data]', () => {
-    cy.getReact('DndList')
-      .getProps('items')
-      .should(($els: DndItem[]) => {
-        const isRandomDataExist = $els.find((el) => el.title === 'Circle Data');
-        expect(isRandomDataExist.isVisible).to.be.true;
-      });
+    cy.getReact('AccordionPanel')
+      .nthNode(0)
+      .getProps('title')
+      .should('deep.eq', 'Circle Data');
   });
 });

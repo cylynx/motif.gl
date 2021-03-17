@@ -28,6 +28,7 @@ import {
   TimeSeries,
   SearchOptPagination,
   ItemProperties,
+  GroupEdges,
 } from '../../../redux/graph/types';
 
 import { ITEM_PER_PAGE } from '../../../constants/widget-units';
@@ -69,43 +70,6 @@ export const getMinMaxValue = (data: GraphData, edgeWidth: string): MinMax => {
     min: Math.min(...(arrValue as number[])),
     max: Math.max(...(arrValue as number[])),
   };
-};
-
-/**
- * Group edges based on common source, target into a single edge with the attributes as arrays
- *
- * @param {Edge[]} edges
- * @param {Field[]} fields
- * @return {*}  {Edge[]}
- */
-export const combineEdges = (edges: Edge[], fields: Field[]): Edge[] => {
-  const modEdges = [
-    ...edges
-      .reduce((r, o) => {
-        const key = `${o.source}-${o.target}`;
-        const item = r.get(key) || {
-          id: o.id,
-          source: o.source,
-          target: o.target,
-          defaultStyle: {},
-          data: {},
-          // count underlying edges
-          edgeCount: 0,
-        };
-        // combine edge properties to array exclude id, source and target
-        fields
-          .filter((field) => !['id', 'source', 'target'].includes(field.name))
-          .map((field) => field.name)
-          .forEach((field) => {
-            if (isUndefined(get(item, field))) set(item, field, []);
-            get(item, field).push(get(o, field));
-          });
-        item.edgeCount += 1;
-        return r.set(key, item);
-      }, new Map())
-      .values(),
-  ];
-  return modEdges;
 };
 
 /**
@@ -276,19 +240,6 @@ export const applyStyle = (data: GraphData, options: StyleOptions): void => {
 };
 
 /**
- * Combine edges and replace edges with the new one
- *
- * @param {GraphData} data
- * @return {*}  {GraphData}
- */
-export const groupEdges = (data: GraphData): GraphData => {
-  // const newEdges = combineEdges(data.edges);
-  // eslint-disable-next-line no-param-reassign
-  data.edges = combineEdges(data.edges, data.metadata.fields.edges);
-  return data;
-};
-
-/**
  * Get visible graph by applying appropriate style
  *
  * @param {GraphData} graphData
@@ -299,11 +250,7 @@ export const deriveVisibleGraph = (
   graphData: GraphData,
   styleOptions: StyleOptions,
 ): GraphData => {
-  if (styleOptions.groupEdges) {
-    applyStyle(groupEdges(graphData), styleOptions);
-  } else {
-    applyStyle(graphData, styleOptions);
-  }
+  applyStyle(graphData, styleOptions);
 
   return graphData;
 };

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { TriangleJSON } from '../../../constants/sample-data';
 import {
   json2csv,
@@ -12,11 +11,12 @@ import {
   processNodeEdgeCsv,
   processEdgeListCsv,
 } from '../processors/data';
+import { Edge, GraphData, Node } from '../types';
 
 describe('Parsing json to csv', () => {
   it('should contain the right number of rows (including header)', async () => {
-    const nodeCsv = await json2csv(TriangleJSON()[0].nodes);
-    const edgeCsv = await json2csv(TriangleJSON()[0].edges);
+    const nodeCsv = (await json2csv(TriangleJSON()[0].nodes)) as string;
+    const edgeCsv = (await json2csv(TriangleJSON()[0].edges)) as string;
     expect(nodeCsv.split('\n')).toHaveLength(4);
     expect(edgeCsv.split('\n')).toHaveLength(4);
   });
@@ -53,7 +53,7 @@ describe('Parsing csv to json', () => {
   });
   it('should contain all the relevant id fields', async () => {
     const edgeJson = await csv2json(testCsv);
-    expect(edgeJson.map((x) => x.id)).toMatchObject([
+    expect((edgeJson as Edge[]).map((x: Edge) => x.id)).toMatchObject([
       'txn a-b',
       'txn b-c',
       'txn c-b',
@@ -67,19 +67,34 @@ describe('Parsing csv to json', () => {
   });
   it('should be the same when converted from json to csv to json', async () => {
     const edgeCsv = await json2csv(TriangleJSON()[0].edges);
-    const edgeJson = await csv2json(edgeCsv);
+    const edgeJson = await csv2json(edgeCsv as string);
     expect(edgeJson).toMatchObject(TriangleJSON()[0].edges);
   });
   it('should return a GraphData object with valid metadata', async () => {
-    const output = await processNodeEdgeCsv(nodeCsv, testCsv);
-    expect(output).toHaveProperty('nodes', 'edges', 'metadata');
+    const toggleGroupEdge = false;
+    const output = await processNodeEdgeCsv(
+      nodeCsv as string,
+      testCsv as string,
+      toggleGroupEdge,
+    );
+    expect(output).toHaveProperty('nodes');
+    expect(output).toHaveProperty('edges');
+    expect(output).toHaveProperty('metadata');
     expect(output.metadata.fields.nodes).toHaveLength(2);
     expect(output.metadata.fields.edges).toHaveLength(5);
   });
   it('should return distinct nodes in an edgelist csv format', async () => {
-    const output = await processEdgeListCsv(testCsv);
-    const nodeIds = output.nodes.map((n) => n.id);
-    expect(output).toHaveProperty('nodes', 'edges', 'metadata');
+    const toggleGroupEdge = false;
+    const output = await processEdgeListCsv(
+      testCsv as string,
+      'source',
+      'target',
+      toggleGroupEdge,
+    );
+    const nodeIds = output.nodes.map((n: Node) => n.id);
+    expect(output).toHaveProperty('nodes');
+    expect(output).toHaveProperty('edges');
+    expect(output).toHaveProperty('metadata');
     expect(nodeIds).toMatchObject(['a', 'b', 'c']);
   });
 });
@@ -120,7 +135,7 @@ describe('Process csv data to required json format', () => {
   it('should get correct samples', async () => {
     const edgeJson = await csv2json(testCsv);
     const headerRow = testCsv.split('\n')[0].split(',');
-    const sample = getSampleForTypeAnalyze(headerRow, edgeJson);
+    const sample = getSampleForTypeAnalyze(headerRow, edgeJson as Edge[]);
     const firstEdgeFlatten = flattenObject(edgeJson[0]);
     expect(sample).toHaveLength(3);
     expect(sample[0]).toMatchObject(firstEdgeFlatten);
@@ -128,7 +143,7 @@ describe('Process csv data to required json format', () => {
   it('should exclude restricted columns (id, target, source, style, defaultStyle) when generating fields', async () => {
     const edgeJson = await csv2json(testCsv);
     const headerRow = testCsv.split('\n')[0].split(',');
-    const sample = getSampleForTypeAnalyze(headerRow, edgeJson);
+    const sample = getSampleForTypeAnalyze(headerRow, edgeJson as Edge[]);
     const fields = getFieldsFromData(sample, headerRow);
     expect(fields.map((x) => x.name)).toMatchObject([
       'id',
@@ -142,7 +157,7 @@ describe('Process csv data to required json format', () => {
     const edgeJson = await csv2json(complexCsv);
     cleanUpValue(edgeJson);
     const headerRow = complexCsv.split('\n')[0].split(',');
-    const sample = getSampleForTypeAnalyze(headerRow, edgeJson);
+    const sample = getSampleForTypeAnalyze(headerRow, edgeJson as Edge[]);
     const fields = getFieldsFromData(sample, headerRow);
     expect(fields.map((x) => x.type)).toMatchObject([
       'string',
@@ -158,7 +173,7 @@ describe('Process csv data to required json format', () => {
     const edgeJson = await csv2json(arrayCsv);
     cleanUpValue(edgeJson);
     const headerRow = arrayCsv.split('\n')[0].split(',');
-    const sample = getSampleForTypeAnalyze(headerRow, edgeJson);
+    const sample = getSampleForTypeAnalyze(headerRow, edgeJson as Edge[]);
     const fields = getFieldsFromData(sample, headerRow);
     expect(fields.map((x) => x.type)).toMatchObject([
       'string',
@@ -169,7 +184,7 @@ describe('Process csv data to required json format', () => {
     ]);
   });
   it('should parse the dataset correctly', async () => {
-    const edgeJson = await csv2json(testCsv);
+    const edgeJson = (await csv2json(testCsv)) as Edge[];
     cleanUpValue(edgeJson);
     const headerRow = testCsv.split('\n')[0].split(',');
     const sample = getSampleForTypeAnalyze(headerRow, edgeJson);
@@ -181,69 +196,108 @@ describe('Process csv data to required json format', () => {
   });
 });
 
-export const SimpleEdge = {
-  udf: undefined,
-  nodes: [
-    {
-      id: 'a',
-    },
-    {
-      id: 'b',
-    },
-  ],
-  edges: [
-    {
-      id: 'txn a-b',
-      source: 'a',
-      target: 'b',
-    },
-  ],
-};
-
 const testJson = {
-  nodes: 'a',
-  edges: 'b',
+  nodes: [{ id: 'a' }, { id: 'b' }],
+  edges: [{ id: 'a-b', source: 'a', target: 'b' }],
   metadata: {
     customField: 'hello',
     key: 10,
-    fields: {
-      nodes: 'a',
-      edges: 'c',
-    },
   },
 };
 
 describe('Process json data', () => {
-  it('should throw if no nodes or edges is in the json', async () => {
-    await expect(processJson({ nodals: 'a', edges: 'b' })).rejects.toThrow();
+  describe('Fault Tolerance', () => {
+    it('should throw if no nodes or edges is in the json', async () => {
+      const groupEdgeToggle = false;
+
+      // assign wrong data format to trigger error conditions
+      // @ts-ignore
+      const errorJson: GraphData = { nodals: 'a', edges: 'b' };
+      await expect(processJson(errorJson, groupEdgeToggle)).rejects.toThrow();
+    });
+
+    it('should not parse undefined fields', async () => {
+      const testJsonWithUdf = {
+        ...testJson,
+
+        // @ts-ignore
+        udf: undefined,
+      };
+      const groupEdgeToggle = false;
+      const results = await processJson(testJsonWithUdf, groupEdgeToggle);
+      expect(results.metadata.fields).not.toHaveProperty('udf');
+    });
   });
-  it('should return the exact object if all the main keys are there', async () => {
-    const results = await processJson(testJson);
-    expect(results).toMatchObject(testJson);
-  });
-  it('should retain custom metadata field', async () => {
-    const results = await processJson(testJson);
-    expect(results.metadata).toHaveProperty('customField');
-    expect(results.metadata.customField).toEqual('hello');
-  });
-  it('should return the json object parsed, with the added metadata', async () => {
-    const results = await processJson(TriangleJSON()[0]);
-    expect(results.metadata.key).not.toBeNull();
-    expect(results.metadata.fields.nodes).not.toBeNull();
-    expect(results.metadata.fields.edges).not.toBeNull();
-  });
-  it('should return metadata with the correct number of fields for nodes and edges', async () => {
-    const results = await processJson(TriangleJSON()[0]);
-    const { nodes: nodeFields, edges: edgeFields } = results.metadata.fields;
-    expect(nodeFields).toHaveLength(4);
-    expect(edgeFields).toHaveLength(5);
-  });
-  it('should not parse undefined fields', async () => {
-    const results = await processJson(SimpleEdge);
-    expect(results.metadata.fields).not.toHaveProperty('udf');
-  });
-  it('should include a key in metadata if not specified', async () => {
-    const results = await processJson(SimpleEdge);
-    expect(results.metadata).toHaveProperty('key');
+
+  describe('Accuracy', () => {
+    let results: GraphData;
+    beforeEach(async () => {
+      const groupEdgeToggle = false;
+      results = await processJson(testJson, groupEdgeToggle);
+    });
+
+    afterEach(() => {
+      results = undefined;
+    });
+
+    it('should return the exact object if all the main keys are there', () => {
+      results.metadata.groupEdges = { toggle: false, availability: false };
+      Object.assign(results.metadata, {
+        groupEdges: { toggle: false, availability: false },
+        fields: {
+          nodes: [
+            { analyzerType: 'STRING', format: '', name: 'id', type: 'string' },
+          ],
+          edges: [
+            {
+              analyzerType: 'STRING',
+              format: '',
+              name: 'id',
+              type: 'string',
+            },
+            {
+              analyzerType: 'STRING',
+              format: '',
+              name: 'source',
+              type: 'string',
+            },
+            {
+              analyzerType: 'STRING',
+              format: '',
+              name: 'target',
+              type: 'string',
+            },
+          ],
+        },
+      });
+
+      expect(results).toMatchObject(testJson);
+    });
+
+    it('should retain custom metadata field', () => {
+      const { metadata } = results;
+      expect(metadata).toHaveProperty('customField');
+      expect(metadata).toHaveProperty('groupEdges');
+      expect(metadata).toHaveProperty('fields');
+      expect(metadata.customField).toEqual('hello');
+    });
+
+    it('should return the json object parsed, with the added metadata', () => {
+      const { metadata } = results;
+      expect(metadata.key).not.toBeNull();
+      expect(metadata.groupEdges).not.toBeNull();
+      expect(metadata.fields.nodes).not.toBeNull();
+      expect(metadata.fields.edges).not.toBeNull();
+    });
+
+    it('should return metadata with the correct number of fields for nodes and edges', () => {
+      const { nodes: nodeFields, edges: edgeFields } = results.metadata.fields;
+      expect(nodeFields).toHaveLength(1);
+      expect(edgeFields).toHaveLength(3);
+    });
+
+    it('should include a key in metadata if not specified', () => {
+      expect(results.metadata).toHaveProperty('key');
+    });
   });
 });
