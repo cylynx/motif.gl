@@ -93,7 +93,7 @@ const getGraphFieldsOptions = createSelector(
     ];
 
     getField(graphFields.nodes).forEach(({ name, type }) => {
-      if (name !== 'id' && name !== 'none') {
+      if (name !== 'id' && name !== '-') {
         allNodeFields.push({ id: name, label: name });
       }
       if (name !== 'id' && name !== 'degree') {
@@ -103,17 +103,17 @@ const getGraphFieldsOptions = createSelector(
         numericNodeFields.push({ id: name, label: name });
       }
     });
-    const nodeLabelFields = [...allNodeFields, { id: 'none', label: 'none' }];
+    const nodeLabelFields = [...allNodeFields, { id: '-', label: '-' }];
 
     getField(graphFields.edges).forEach(({ name, type }) => {
-      if (name !== 'id' && name !== 'none') {
+      if (name !== 'id' && name !== '-') {
         allEdgeFields.push({ id: name, label: name });
       }
       if (type === 'integer' || type === 'real') {
         numericEdgeFields.push({ id: name, label: name });
       }
     });
-    const edgeLabelFields = [...allEdgeFields, { id: 'none', label: 'none' }];
+    const edgeLabelFields = [...allEdgeFields, { id: '-', label: '-' }];
 
     return {
       allNodeFields,
