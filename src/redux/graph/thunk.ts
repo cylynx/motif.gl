@@ -30,7 +30,7 @@ import { UISlices, UIThunks } from '../ui';
 import {
   groupEdgesForImportation,
   groupEdgesWithConfiguration,
-} from './processors/group-edges';
+} from '../../utils/edge-aggregations/group-edges';
 
 type ImportAccessors = Accessors | null;
 
@@ -183,22 +183,21 @@ export const importJsonData = (
     return importJson(data as GraphList, accessors, groupEdges);
   });
 
-  return Promise.all(batchDataPromises)
-    .then((graphDataArr: GraphList[]) => {
-      const graphData: GraphList = flatten(graphDataArr);
+  return Promise.all(batchDataPromises).then((graphDataArr: GraphList[]) => {
+    const graphData: GraphList = flatten(graphDataArr);
 
-      if (isDataPossessStyle && overwriteStyles) {
-        dispatch(updateStyleOption(styleOptions));
-      }
+    if (isDataPossessStyle && overwriteStyles) {
+      dispatch(updateStyleOption(styleOptions));
+    }
 
-      processResponse(dispatch, mainAccessors, graphData);
-      showImportDataToast(dispatch, filterOptions);
-    })
-    .catch((err: Error) => {
-      const { message } = err;
-      dispatch(UIThunks.show(message, 'negative'));
-      dispatch(UISlices.fetchDone());
-    });
+    processResponse(dispatch, mainAccessors, graphData);
+    showImportDataToast(dispatch, filterOptions);
+  });
+  // .catch((err: Error) => {
+  //   const { message } = err;
+  //   dispatch(UIThunks.show(message, 'negative'));
+  //   dispatch(UISlices.fetchDone());
+  // });
 };
 
 /**

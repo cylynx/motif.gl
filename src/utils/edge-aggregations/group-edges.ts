@@ -1,4 +1,4 @@
-import { isEmpty, get, set } from 'lodash';
+import { isEmpty, get, set, cloneDeep } from 'lodash';
 import shortid from 'shortid';
 import {
   Edge,
@@ -7,19 +7,17 @@ import {
   GroupEdgeFields,
   GroupEdges,
   GroupEdgeCandidates,
-} from '../types';
+  NumericAggregations,
+  StringAggregations,
+  Field,
+} from '../../redux/graph/types';
+import { average, count, max, min, sum } from './numeric-aggregates';
+import { first, last, mostFrequent } from './string-aggregates';
+import { removeDuplicates } from '../data-utils';
 import {
-  average,
-  count,
-  max,
-  min,
-  sum,
-} from '../../../utils/edge-aggregations/numeric-aggregates';
-import {
-  first,
-  last,
-  mostFrequent,
-} from '../../../utils/edge-aggregations/string-aggregates';
+  NUMERIC_AGGREGATIONS,
+  STRING_AGGREGATIONS,
+} from '../../constants/widget-units';
 
 type AggregationFields = Record<string, number | string>;
 
@@ -115,44 +113,48 @@ const performAggregation = (
       const { field, aggregation } = aggregationList;
 
       if (aggregation.includes('min' as never)) {
-        const smallestValue: number = min(edgeCandidates, field);
-        set(acc, `Min ${field}`, smallestValue);
+        const smallestValue: number | string = min(edgeCandidates, field);
+        set(acc, `min ${field}`, smallestValue);
       }
 
       if (aggregation.includes('max' as never)) {
-        const largestValue: number = max(edgeCandidates, field);
-        set(acc, `Max ${field}`, largestValue);
+        const largestValue: number | string = max(edgeCandidates, field);
+        set(acc, `max ${field}`, largestValue);
       }
 
       if (aggregation.includes('sum' as never)) {
-        const sumValue: number = sum(edgeCandidates, field);
-        set(acc, `Sum ${field}`, sumValue);
+        const sumValue: number | string = sum(edgeCandidates, field);
+        set(acc, `sum ${field}`, sumValue);
       }
 
       if (aggregation.includes('count' as never)) {
         const countValue: number = count(edgeCandidates, field);
-        set(acc, `Count ${field}`, countValue);
+        set(acc, `count ${field}`, countValue);
       }
 
       if (aggregation.includes('average' as never)) {
-        const averageValue: number = average(edgeCandidates, field);
-        const fixPrecision: string = Number(averageValue).toPrecision(5);
-        set(acc, `Average ${field}`, fixPrecision);
+        let averageValue: number | string = average(edgeCandidates, field);
+
+        if (typeof averageValue === 'number') {
+          averageValue = Number(averageValue).toPrecision(5);
+        }
+
+        set(acc, `average ${field}`, averageValue);
       }
 
       if (aggregation.includes('first' as never)) {
         const firstValue: string = first(edgeCandidates, field);
-        set(acc, `First ${field}`, firstValue);
+        set(acc, `first ${field}`, firstValue);
       }
 
       if (aggregation.includes('last' as never)) {
         const lastValue: string = last(edgeCandidates, field);
-        set(acc, `Last ${field}`, lastValue);
+        set(acc, `last ${field}`, lastValue);
       }
 
       if (aggregation.includes('most_frequent' as never)) {
         const lastValue: string = mostFrequent(edgeCandidates, field);
-        set(acc, `Most Frequent ${field}`, lastValue);
+        set(acc, `most_frequent ${field}`, lastValue);
       }
 
       return acc;
@@ -241,6 +243,63 @@ const produceGraphWithoutGroupEdges = (
 };
 
 /**
+ * Append aggregate fields into metadata edge's fields to display in:
+ * 1. Variable Inspector
+ * 2. Edge Selection
+ *
+ * @param graphData
+ * @param groupEdgeField
+ * @return {GraphData}
+ */
+const appendAggregateMetadataFields = (
+  graphData: GraphData,
+  groupEdgeField: GroupEdgeFields = {},
+): GraphData => {
+  const { edges: edgeFields } = graphData.metadata.fields;
+
+  // compute edge aggregate fields ready to append into graph's edge field
+  const edgeAggregateFields: Field[] = Object.values(groupEdgeField).reduce(
+    (accumulateField: Field[], fieldsWithAggr: FieldAndAggregation) => {
+      const { field, aggregation } = fieldsWithAggr;
+
+      const edgeAggregateField: Field[] = (aggregation as (
+        | NumericAggregations
+        | StringAggregations
+      )[]).map((aggr) => {
+        const aggregateField = `${aggr} ${field}`;
+
+        const oriEdgeField: Field = edgeFields.find(
+          (edgeField: Field) => edgeField.name === field,
+        );
+
+        const { format, type, analyzerType } = oriEdgeField;
+
+        return {
+          name: aggregateField,
+          format,
+          type,
+          analyzerType,
+        };
+      });
+
+      return [...accumulateField, ...edgeAggregateField];
+    },
+    [],
+  );
+
+  // combine edge fields with aggregate fields
+  const combinedEdgeField = removeDuplicates(
+    [...edgeFields, ...edgeAggregateFields],
+    'name',
+  ) as Field[];
+
+  const modData = cloneDeep(graphData);
+  Object.assign(modData.metadata.fields.edges, combinedEdgeField);
+
+  return modData;
+};
+
+/**
  * Perform group edges during data importation, used in:
  * 1. Import Sample Data
  * 2. Import Local File
@@ -264,11 +323,12 @@ export const groupEdgesForImportation = (
 
   const edgeIdsForRemoval = obtainGroupEdgeIds(groupEdgesCandidates);
   const groupedEdges = aggregateGroupEdges(groupEdgesCandidates, fields);
-  const graphData = produceGraphWithGroupEdges(
+  const graphWithGroupEdges = produceGraphWithGroupEdges(
     data,
     edgeIdsForRemoval,
     groupedEdges,
   );
+  const graphData = appendAggregateMetadataFields(graphWithGroupEdges, fields);
 
   return graphData;
 };

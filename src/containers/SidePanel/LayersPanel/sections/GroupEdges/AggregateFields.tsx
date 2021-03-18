@@ -7,44 +7,10 @@ import { colors } from 'baseui/tokens';
 import { Button } from 'baseui/button';
 import { GroupEdges } from '../../../../../redux/graph';
 import * as Icon from '../../../../../components/Icons';
-
-const NUMERIC_AGGREGATIONS: Value = [
-  {
-    id: 'min',
-    label: 'Min',
-  },
-  {
-    id: 'max',
-    label: 'Max',
-  },
-  {
-    id: 'average',
-    label: 'Average',
-  },
-  {
-    id: 'count',
-    label: 'Count',
-  },
-  {
-    id: 'sum',
-    label: 'Sum',
-  },
-];
-
-const STRING_AGGREGATIONS: Value = [
-  {
-    id: 'first',
-    label: 'First',
-  },
-  {
-    id: 'last',
-    label: 'Last',
-  },
-  {
-    id: 'most_frequent',
-    label: 'Most Frequent',
-  },
-];
+import {
+  NUMERIC_AGGREGATIONS,
+  STRING_AGGREGATIONS,
+} from '../../../../../constants/widget-units';
 
 const FieldLabels = () =>
   useMemo(

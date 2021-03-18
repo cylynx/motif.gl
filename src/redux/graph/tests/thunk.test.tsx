@@ -18,7 +18,6 @@ import {
   addQuery,
   processGraphResponse,
   updateStyleOption,
-  updateGraphFlatten,
 } from '../slice';
 import {
   importJson,
@@ -40,7 +39,7 @@ import { DEFAULT_NODE_STYLE } from '../../../constants/graph-shapes';
 import {
   groupEdgesForImportation,
   groupEdgesWithConfiguration,
-} from '../processors/group-edges';
+} from '../../../utils/edge-aggregations/group-edges';
 import { getGraph } from '../selectors';
 
 const mockStore = configureStore([thunk]);

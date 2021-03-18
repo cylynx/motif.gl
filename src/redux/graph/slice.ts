@@ -6,8 +6,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import isUndefined from 'lodash/isUndefined';
 import { Draft } from 'immer';
 import * as LAYOUT from '../../constants/layout-options';
-import { combineProcessedData } from '../../containers/Graph/styles/utils';
 import { generateDefaultColorMap } from '../../containers/Graph/styles/StyleNodes';
+import { combineProcessedData } from '../../utils/data-utils';
 import {
   Accessors,
   FilterCriteria,
@@ -23,7 +23,7 @@ import {
   DeleteGroupEdgeFieldPayload,
 } from './types';
 import { DEFAULT_NODE_STYLE } from '../../constants/graph-shapes';
-import { groupEdgesForImportation } from './processors/group-edges';
+import { groupEdgesForImportation } from '../../utils/edge-aggregations/group-edges';
 
 /**
  * Perform update on node and edge selections.
