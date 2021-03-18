@@ -2,7 +2,6 @@ import { bisectLeft, extent, histogram as d3Histogram, ticks } from 'd3-array';
 import Decimal from 'decimal.js';
 import { isMatch, isValid, parse, parseISO } from 'date-fns';
 import { get } from 'lodash';
-import { Edge, Field, GraphData, Node } from '../redux/graph';
 
 export const ONE_SECOND = 1000;
 export const ONE_MINUTE = ONE_SECOND * 60;
@@ -502,59 +501,4 @@ export const mapCollectionFields = (
   );
 
   return fieldsValues;
-};
-
-/**
- * Combines processed data by removing duplicate nodes and edges
- *
- * @param {GraphData} newData
- * @param {GraphData} oldData
- * @return {*}  {GraphData}
- */
-export const combineProcessedData = (
-  newData: GraphData,
-  oldData: GraphData,
-): GraphData => {
-  if (oldData) {
-    const modData = { ...oldData };
-    modData.nodes = removeDuplicates(
-      [...newData.nodes, ...oldData.nodes],
-      'id',
-    ) as Node[];
-    modData.edges = removeDuplicates(
-      [...newData.edges, ...oldData.edges],
-      'id',
-    ) as Edge[];
-    // Get unique fields metadata
-    modData.metadata.fields.nodes = removeDuplicates(
-      [...newData.metadata.fields.nodes, ...oldData.metadata.fields.nodes],
-      'name',
-    ) as Field[];
-    modData.metadata.fields.edges = removeDuplicates(
-      [...newData.metadata.fields.edges, ...oldData.metadata.fields.edges],
-      'name',
-    ) as Field[];
-    return modData;
-  }
-  return newData;
-};
-
-/**
- * Remove duplicates from array by checking on prop
- *
- * @param {(Node[] | Edge[] | [])} myArr
- * @param {string} prop
- * @return {Node[] | Edge[] | Field[]}
- */
-export const removeDuplicates = (
-  myArr: Node[] | Edge[] | Field[] | [],
-  prop: string,
-): Node[] | Edge[] | Field[] => {
-  const seen = new Set();
-  const filteredArr = myArr.filter((el) => {
-    const duplicate = seen.has(el[prop]);
-    seen.add(el[prop]);
-    return !duplicate;
-  });
-  return filteredArr;
 };

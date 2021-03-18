@@ -16,7 +16,7 @@ import {
   Metadata,
   Node,
 } from '../types';
-import { duplicateDictionary } from '../../../utils/edge-aggregations/group-edges';
+import { duplicateDictionary } from './group-edges';
 
 type RowData = {
   [key: string]: any;

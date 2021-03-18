@@ -17,8 +17,8 @@ import {
   filterGraph,
   paginateItems,
   getField,
+  combineProcessedData,
 } from '../../containers/Graph/styles/utils';
-import { combineProcessedData } from '../../utils/data-utils';
 
 const getGraph = (state: any): GraphState => state.investigate.graph.present;
 const getAccessors = (state: any): Accessors => getGraph(state).accessors;

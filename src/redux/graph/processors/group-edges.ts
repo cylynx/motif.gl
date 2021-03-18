@@ -10,16 +10,35 @@ import {
   NumericAggregations,
   StringAggregations,
   Field,
-} from '../../redux/graph/types';
-import { average, count, max, min, sum } from './numeric-aggregates';
-import { first, last, mostFrequent } from './string-aggregates';
-import { removeDuplicates } from '../data-utils';
+  Node,
+} from '../types';
 import {
-  NUMERIC_AGGREGATIONS,
-  STRING_AGGREGATIONS,
-} from '../../constants/widget-units';
+  average,
+  count,
+  max,
+  min,
+  sum,
+} from '../../../utils/edge-aggregations/numeric-aggregates';
+import {
+  first,
+  last,
+  mostFrequent,
+} from '../../../utils/edge-aggregations/string-aggregates';
 
 type AggregationFields = Record<string, number | string>;
+
+const removeDuplicates = (
+  myArr: Node[] | Edge[] | Field[] | [],
+  prop: string,
+): Node[] | Edge[] | Field[] => {
+  const seen = new Set();
+  const filteredArr = myArr.filter((el) => {
+    const duplicate = seen.has(el[prop]);
+    seen.add(el[prop]);
+    return !duplicate;
+  });
+  return filteredArr;
+};
 
 /**
  * Obtain the duplicate edge connectivity in graph

@@ -30,7 +30,7 @@ import { UISlices, UIThunks } from '../ui';
 import {
   groupEdgesForImportation,
   groupEdgesWithConfiguration,
-} from '../../utils/edge-aggregations/group-edges';
+} from './processors/group-edges';
 
 type ImportAccessors = Accessors | null;
 

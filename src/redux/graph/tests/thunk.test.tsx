@@ -39,7 +39,7 @@ import { DEFAULT_NODE_STYLE } from '../../../constants/graph-shapes';
 import {
   groupEdgesForImportation,
   groupEdgesWithConfiguration,
-} from '../../../utils/edge-aggregations/group-edges';
+} from '../processors/group-edges';
 import { getGraph } from '../selectors';
 
 const mockStore = configureStore([thunk]);
