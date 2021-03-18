@@ -2,9 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormControl } from 'baseui/form-control';
 import { OnChangeParams, Select } from 'baseui/select';
-import { Checkbox } from 'baseui/checkbox';
 import { Block } from 'baseui/block';
-import { TriGrid } from '../../components/ui';
 import { GraphSlices, GraphSelectors } from '../../redux/graph';
 
 import * as LAYOUT from '../../constants/layout-options';
@@ -13,16 +11,8 @@ import { nodeSizeForm, edgeWidthForm } from '../SidePanel/OptionsPanel';
 
 const SettingsPopover = () => {
   const dispatch = useDispatch();
-  const {
-    nodeStyle,
-    edgeStyle,
-    resetView,
-    groupEdges,
-    layout,
-  } = useSelector((state) => GraphSelectors.getStyleOptions(state));
-
-  const graphFields = useSelector(
-    (state) => GraphSelectors.getGraph(state).graphFlatten.metadata.fields,
+  const { nodeStyle, edgeStyle, layout } = useSelector((state) =>
+    GraphSelectors.getStyleOptions(state),
   );
 
   const { numericNodeFields, numericEdgeFields } = useSelector((state) =>
@@ -31,13 +21,6 @@ const SettingsPopover = () => {
 
   const findID = (options: { label: string; id: string }[], id: string) =>
     options.find((x) => x.id === id);
-
-  const onChangeOptions = (
-    key: string,
-    newValue: boolean | string | number,
-  ) => {
-    dispatch(GraphSlices.changeOptions({ key, value: newValue }));
-  };
 
   const updateNodeStyle = (data: any) =>
     dispatch(GraphSlices.changeNodeStyle(data));
@@ -79,27 +62,6 @@ const SettingsPopover = () => {
             numericEdgeFields.length > 0 ? numericEdgeFields[0].id : null,
           labelPosition: 'top',
         })}
-      />
-      <TriGrid
-        startComponent={
-          <Checkbox
-            checked={resetView}
-            onChange={() => onChangeOptions('resetView', !resetView)}
-            labelPlacement='right'
-          >
-            Reset View
-          </Checkbox>
-        }
-        midComponent={
-          <Checkbox
-            checked={groupEdges}
-            onChange={() => onChangeOptions('groupEdges', !groupEdges)}
-            labelPlacement='right'
-          >
-            Group Edges
-          </Checkbox>
-        }
-        span={[6, 6]}
       />
     </Block>
   );

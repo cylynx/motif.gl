@@ -63,7 +63,7 @@ const Tooltip = ({ tooltip }: { tooltip: TooltipProps }) => {
   );
 
   const contents = Object.entries(properties).map(([key, value]) => (
-    <Block key={key} display='flex' flexWrap>
+    <Block key={key} display='flex' flexWrap marginBottom='scale100'>
       <Block paddingRight='12px' marginTop='0' marginBottom='0'>
         <b>{`${key}:`}</b>
       </Block>

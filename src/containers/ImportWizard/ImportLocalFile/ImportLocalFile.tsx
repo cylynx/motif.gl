@@ -36,6 +36,7 @@ type FormValues = {
   dataType: { label: string; id: string }[];
   nodeID?: string;
   edgeID?: string;
+  groupEdges: boolean;
   edgeSource: string;
   edgeTarget: string;
 };
@@ -71,6 +72,9 @@ const ImportLocalFile = () => {
       dataType: [importOptions[0]],
       edgeSource: 'source',
       edgeTarget: 'target',
+
+      // always default group edges with true for better experiences.
+      groupEdges: true,
     },
   });
 
@@ -244,6 +248,7 @@ const ImportLocalFile = () => {
   const performImportData = (overwriteStyle: boolean) => {
     const {
       dataType,
+      groupEdges,
       ...accessors
     } = formValueRef.current as UnpackNestedValue<FormValues>;
 
@@ -254,18 +259,29 @@ const ImportLocalFile = () => {
     const selectedDataType: string = watchDataType[0].id;
     if (selectedDataType === 'nodeEdgeCsv') {
       dispatch(
-        GraphThunks.importNodeEdgeData(singleFileRef.current, accessors),
+        GraphThunks.importNodeEdgeData(
+          singleFileRef.current,
+          groupEdges,
+          accessors,
+        ),
       );
     }
 
     if (selectedDataType === 'edgeListCsv') {
-      dispatch(GraphThunks.importEdgeListData(batchFileRef.current, accessors));
+      dispatch(
+        GraphThunks.importEdgeListData(
+          batchFileRef.current,
+          groupEdges,
+          accessors,
+        ),
+      );
     }
 
     if (selectedDataType === 'json') {
       dispatch(
         GraphThunks.importJsonData(
           batchFileRef.current,
+          groupEdges,
           accessors,
           overwriteStyle,
         ),
@@ -317,8 +333,9 @@ const ImportLocalFile = () => {
           {fileNames &&
             fileNames.map((name) => <Block key={name}>{name}</Block>)}
         </Block>
-
-        <AdditionalOptions register={register} />
+        {fileNames && (
+          <AdditionalOptions register={register} control={control} />
+        )}
         <Block marginTop='10px' display='flex' justifyContent='flex-end'>
           <Button type='submit' disabled={isButtonDisabled}>
             Import Data

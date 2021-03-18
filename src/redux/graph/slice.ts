@@ -17,13 +17,25 @@ import {
   Layout,
   SearchOptionPayload,
   SearchResultPayload,
+  GroupEdgePayload,
+  UpdateGroupEdgeFieldPayload,
+  FieldAndAggregation,
+  DeleteGroupEdgeFieldPayload,
 } from './types';
-import {
-  DEFAULT_NODE_STYLE,
-  PRIMARY_NODE_COLOR,
-} from '../../constants/graph-shapes';
+import { DEFAULT_NODE_STYLE } from '../../constants/graph-shapes';
+import { groupEdgesForImportation } from './processors/group-edges';
 
-export const updateSelections = (state: Draft<GraphState>, data: GraphData) => {
+/**
+ * Perform update on node and edge selections.
+ *
+ * @param state
+ * @param data
+ * @return {void}
+ */
+export const updateSelections = (
+  state: Draft<GraphState>,
+  data: GraphData,
+): void => {
   const currentNodeFields = state.nodeSelection.map((x) => x.id);
   const currentEdgeFields = state.edgeSelection.map((x) => x.id);
   for (const field of data.metadata.fields.nodes) {
@@ -97,8 +109,6 @@ const initialState: GraphState = {
       },
       label: '-',
     },
-    resetView: true,
-    groupEdges: false,
   },
   filterOptions: {},
   searchOptions: {
@@ -161,7 +171,14 @@ const graph = createSlice({
       const existingEdgeFields: string[] = ['id', 'source', 'target'];
       for (const data of graphList) {
         if (data?.metadata?.visible !== false) {
-          graphData = combineProcessedData(data as GraphData, graphData);
+          let modData = data;
+
+          // perform group edge if enable when perform data list deletion
+          if (data.metadata.groupEdges.toggle) {
+            modData = groupEdgesForImportation(data, data.metadata.groupEdges);
+          }
+
+          graphData = combineProcessedData(modData as GraphData, graphData);
         }
         for (const field of data.metadata.fields.nodes) {
           existingNodeFields.push(field.name);
@@ -188,7 +205,14 @@ const graph = createSlice({
       let graphData;
       for (const data of graphList) {
         if (data?.metadata?.visible !== false) {
-          graphData = combineProcessedData(data as GraphData, graphData);
+          let modData = data;
+
+          // perform group edge if enable when toggle against visibility
+          if (data.metadata.groupEdges.toggle) {
+            modData = groupEdgesForImportation(data, data.metadata.groupEdges);
+          }
+
+          graphData = combineProcessedData(modData as GraphData, graphData);
         }
       }
 
@@ -201,10 +225,6 @@ const graph = createSlice({
     },
     updateStyleOption(state, action: PayloadAction<StyleOptions>) {
       Object.assign(state.styleOptions, action.payload);
-    },
-    changeOptions(state, action: PayloadAction<{ key: string; value: any }>) {
-      const { key, value } = action.payload;
-      state.styleOptions[key] = value;
     },
     changeLayout(
       state,
@@ -269,7 +289,6 @@ const graph = createSlice({
         updateAll(state, graphData);
         updateSelections(state, data);
       }
-      // const graphData = combineProcessedData(data, graphFlatten as GraphData);
     },
     setAccessors(state, action: PayloadAction<Accessors>) {
       state.accessors = action.payload;
@@ -337,6 +356,82 @@ const graph = createSlice({
     resetSearchOptions(state) {
       Object.assign(state.searchOptions, initialState.searchOptions);
     },
+    setGroupEdgeOptions(state, action: PayloadAction<GroupEdgePayload>) {
+      const { index, key, value } = action.payload;
+      Object.assign(state.graphList[index].metadata.groupEdges, {
+        [key]: value,
+      });
+    },
+    resetGroupEdgeOptions(state, action: PayloadAction<number>) {
+      const { availability } = state.graphList[
+        action.payload
+      ].metadata.groupEdges;
+      Object.assign(state.graphList[action.payload].metadata, {
+        groupEdges: {
+          toggle: false,
+          availability,
+        },
+      });
+    },
+    updateGroupEdgeField(
+      state,
+      action: PayloadAction<UpdateGroupEdgeFieldPayload>,
+    ) {
+      const { index, fieldId, value } = action.payload;
+
+      const groupEdgeFields =
+        state.graphList[index].metadata.groupEdges.fields ?? {};
+
+      const fieldAndAggregation: FieldAndAggregation = {
+        field: value as string,
+        aggregation: [],
+      };
+
+      Object.assign(groupEdgeFields, {
+        [fieldId]: fieldAndAggregation,
+      });
+
+      Object.assign(state.graphList[index].metadata.groupEdges, {
+        fields: groupEdgeFields,
+      });
+    },
+    updateGroupEdgeAggregate(
+      state,
+      action: PayloadAction<UpdateGroupEdgeFieldPayload>,
+    ) {
+      const { index, fieldId, value } = action.payload;
+
+      // retrieve the specific aggregation fields from graph list.
+      const aggregationField =
+        state.graphList[index].metadata.groupEdges.fields[fieldId];
+
+      // assign the value into the aggregation fields
+      Object.assign(aggregationField, { aggregation: value });
+
+      // update specific aggreation fields in specific graph list
+      Object.assign(state.graphList[index].metadata.groupEdges.fields, {
+        [fieldId]: aggregationField,
+      });
+    },
+    deleteGroupEdgeField(
+      state,
+      action: PayloadAction<DeleteGroupEdgeFieldPayload>,
+    ) {
+      const { graphIndex, fieldIndex } = action.payload;
+
+      // remove specific fields from the group edge list.
+      const { [fieldIndex]: removedValue, ...res } = state.graphList[
+        graphIndex
+      ].metadata.groupEdges.fields;
+
+      // assign the removed fields into the redux states
+      Object.assign(state.graphList[graphIndex].metadata.groupEdges, {
+        fields: res,
+      });
+    },
+    updateGraphFlatten(state, action: PayloadAction<GraphData>) {
+      Object.assign(state.graphFlatten, action.payload);
+    },
   },
 });
 
@@ -349,7 +444,6 @@ export const {
   changeVisibilityGraphList,
   addQuery,
   updateStyleOption,
-  changeOptions,
   changeLayout,
   changeNodeStyle,
   changeEdgeStyle,
@@ -367,6 +461,12 @@ export const {
   resetSearchOptions,
   updateNodeResults,
   updateEdgeResults,
+  setGroupEdgeOptions,
+  resetGroupEdgeOptions,
+  updateGroupEdgeField,
+  updateGroupEdgeAggregate,
+  deleteGroupEdgeField,
+  updateGraphFlatten,
 } = graph.actions;
 
 export default graph.reducer;

@@ -2,13 +2,13 @@ import React, { MouseEvent, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
-import useGraphBehaviors from '../../Graph/hooks/useGraphBehaviors';
-import { GraphRefContext } from '../../Graph';
-import { GraphSlices } from '../../../redux/graph';
-import { UISlices } from '../../../redux/ui';
-import ToggleTokens from '../../../components/ToggleTokens';
-import * as Icon from '../../../components/Icons';
-import useNodeStyle from '../../../redux/graph/hooks/useNodeStyle';
+import useGraphBehaviors from '../../../Graph/hooks/useGraphBehaviors';
+import { GraphRefContext } from '../../../Graph';
+import { GraphSlices } from '../../../../redux/graph';
+import { UISlices } from '../../../../redux/ui';
+import ToggleTokens from '../../../../components/ToggleTokens';
+import * as Icon from '../../../../components/Icons';
+import useNodeStyle from '../../../../redux/graph/hooks/useNodeStyle';
 
 export const ToggleAllButton = ({
   selected,

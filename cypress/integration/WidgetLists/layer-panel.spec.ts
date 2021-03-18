@@ -47,6 +47,7 @@ describe('Layer Panels', () => {
           'data-testid': 'nodes-count',
         },
       })
+      .nthNode(0)
       .should('exist');
 
     cy.getReact('LayersPanel')
@@ -113,7 +114,7 @@ describe('Layer Panels', () => {
       .getReact('ImportLayers')
       .should('exist');
 
-    cy.getReact('DndList')
+    cy.getReact('DataListAccordion')
       .getProps('items')
       .should('have.length', 0);
   });

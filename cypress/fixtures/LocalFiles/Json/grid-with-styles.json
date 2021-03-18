@@ -188,8 +188,6 @@
       "pattern": "dot",
       "fontSize": 16,
       "arrow": "none"
-    },
-    "resetView": true,
-    "groupEdges": false
+    }
   }
 }

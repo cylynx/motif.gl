@@ -17,7 +17,7 @@ const NodeResults = ({
   onMouseLeave,
 }: NodeResultsProps) => {
   return (
-    <Block>
+    <>
       {nodes.map((node: Node) => (
         <div
           key={node.id}
@@ -29,7 +29,7 @@ const NodeResults = ({
           </Block>
         </div>
       ))}
-    </Block>
+    </>
   );
 };
 

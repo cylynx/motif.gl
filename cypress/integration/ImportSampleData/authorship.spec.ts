@@ -42,6 +42,7 @@ describe('Import Authorship', () => {
     cy.getReact('Statistic', {
       props: { 'data-testid': 'nodes-count' },
     })
+      .nthNode(0)
       .getProps('value')
       .should('deep.eq', 1589);
   });
@@ -50,6 +51,7 @@ describe('Import Authorship', () => {
     cy.getReact('Statistic', {
       props: { 'data-testid': 'edges-count' },
     })
+      .nthNode(0)
       .getProps('value')
       .should('deep.eq', 2742);
   });

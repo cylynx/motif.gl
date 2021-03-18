@@ -1,19 +1,15 @@
 // @ts-nocheck
 import React from 'react';
 import get from 'lodash/get';
-import { useSelector } from 'react-redux';
-import { Block } from 'baseui/block';
-import {
-  StatefulDataTable,
-  BooleanColumn,
-  NumericalColumn,
-  StringColumn,
-  CustomColumn,
-} from 'baseui/data-table';
 import { DATA_TYPES as AnalyzerDataTypes } from 'type-analyzer';
 import { format } from 'date-fns';
-import { GraphSelectors } from '../../redux/graph';
-import * as Graph from '../Graph/types';
+import {
+  BooleanColumn,
+  CustomColumn,
+  NumericalColumn,
+  StringColumn,
+} from 'baseui/data-table';
+import { Field } from '../../redux/graph';
 
 export const FIELDS_COLUMN_MAP = {
   [AnalyzerDataTypes.BOOLEAN]: (title, mapDataToValue) =>
@@ -78,8 +74,13 @@ export const FIELDS_COLUMN_MAP = {
     }),
 };
 
-export const graphData2Columns = (fields: Graph.Field[]) => {
-  const columns: Graph.Field[] = fields.map((field: Graph.Field) => {
+/**
+ * Convert graph data to datatable columns
+ *
+ * @param fields
+ */
+export const graphData2Columns = (fields: Field[]) => {
+  const columns: Field[] = fields.map((field: Field) => {
     const { analyzerType, name } = field;
 
     if (analyzerType === AnalyzerDataTypes.DATE) {
@@ -87,7 +88,7 @@ export const graphData2Columns = (fields: Graph.Field[]) => {
         const dateProperty: string | undefined = get(data, name);
         if (!dateProperty) return '';
 
-        return dateTimeProperty;
+        return dateProperty;
       });
     }
 
@@ -136,31 +137,3 @@ export const graphData2Columns = (fields: Graph.Field[]) => {
 
   return columns;
 };
-
-const DataTable = ({ dataKey }: { dataKey: string }) => {
-  // e.g. table_graphList_1_nodes
-  const [, key, index, types] = dataKey.split('_');
-
-  const graphData: Graph.GraphData = useSelector((state) => {
-    if (key === 'graphList') {
-      return GraphSelectors.getGraph(state).graphList[Number(index)];
-    }
-
-    return GraphSelectors.getGraph(state)[key];
-  });
-
-  const rows = graphData[types].map((r: Graph.EdgeNode) => ({
-    id: r.id,
-    data: r,
-  }));
-
-  const columns = graphData2Columns(graphData.metadata.fields[types]);
-
-  return (
-    <Block height='600px' width='800px' paddingBottom='18px'>
-      <StatefulDataTable columns={columns} rows={rows} />
-    </Block>
-  );
-};
-
-export default DataTable;

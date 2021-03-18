@@ -92,14 +92,56 @@ export type GraphFields = {
   edges: Field[];
 };
 
+/** ======================================
+ *  Graph's Metadata - Group Edges
+ ** ====================================== */
+export type NumericAggregations = 'min' | 'max' | 'average' | 'count' | 'sum';
+export type StringAggregations = 'first' | 'last' | 'most_frequent';
+export type FieldAndAggregation = {
+  field: string;
+  aggregation: (NumericAggregations | StringAggregations)[] | [];
+};
+export type GroupEdgeFields = {
+  [key: string]: FieldAndAggregation;
+};
+export type GroupEdges = {
+  toggle?: boolean;
+
+  /* determine whether graph has duplicate connectivity */
+  availability?: boolean;
+  type?: string;
+  fields?: GroupEdgeFields;
+};
+
 export interface Metadata {
   key?: number | string;
   fields?: GraphFields;
-  search_size?: number;
-  retrieved_size?: number;
   title?: string;
   visible?: boolean;
+  groupEdges?: GroupEdges;
+
+  // allow adding custom fields
+  [key: string]: any;
 }
+
+export type GroupEdgePayload = {
+  index: number;
+  key: 'toggle' | 'type';
+  value: boolean | string;
+};
+
+export type DeleteGroupEdgeFieldPayload = {
+  graphIndex: number;
+  fieldIndex: string;
+};
+
+export type UpdateGroupEdgeFieldPayload = {
+  index: number;
+  fieldId: string;
+  value: string | FieldAndAggregation['aggregation'];
+};
+
+export type GroupEdgeCandidates = Record<string, Edge[]>;
 
 export interface GraphData {
   nodes: Node[];
@@ -168,8 +210,6 @@ export interface Layout {
 
 export interface StyleOptions {
   layout?: Layout;
-  resetView?: boolean;
-  groupEdges?: boolean;
   nodeStyle?: NodeStyleOptions;
   edgeStyle?: EdgeStyleOptions;
 }
