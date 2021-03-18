@@ -263,9 +263,13 @@ const graph = createSlice({
     ) {
       const { data } = action.payload;
       const { graphFlatten } = state;
-      const graphData = combineProcessedData(data, graphFlatten as GraphData);
-      updateAll(state, graphData);
-      updateSelections(state, data);
+      let graphData;
+      if (data?.metadata?.visible !== false) {
+        graphData = combineProcessedData(data, graphFlatten as GraphData);
+        updateAll(state, graphData);
+        updateSelections(state, data);
+      }
+      // const graphData = combineProcessedData(data, graphFlatten as GraphData);
     },
     setAccessors(state, action: PayloadAction<Accessors>) {
       state.accessors = action.payload;
