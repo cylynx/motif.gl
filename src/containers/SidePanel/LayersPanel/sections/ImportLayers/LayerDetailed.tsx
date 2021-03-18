@@ -52,8 +52,6 @@ const LayerDetailed = ({ graph, index }: LayerDetailProps) => {
     );
   }, [graphFlatten.edges]);
 
-  console.log(graphNodeIds.length, currentGraphNodes.length);
-
   // compute the information for statistics
   const visibleNodeLength = currentGraphNodes.length;
   const visibleEdgeLength = currentGraphEdges.length + currentGroupEdges.length;

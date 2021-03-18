@@ -10,6 +10,7 @@
 }
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 ::-webkit-scrollbar {
+  height: 5px;
   width: 5px;
 }
 ::-webkit-scrollbar-track {
