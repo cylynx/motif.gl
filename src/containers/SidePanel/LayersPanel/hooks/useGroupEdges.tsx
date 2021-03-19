@@ -25,6 +25,14 @@ const useGroupEdges = (graphIndex: number) => {
     return graphList[graphIndex].metadata.groupEdges;
   }, [graphIndex, graphList]);
 
+  const performGroupEdges = () => {
+    dispatch(GraphThunks.groupEdgesWithAggregation(graphIndex));
+  };
+
+  const computeEdgeSelection = () => {
+    dispatch(GraphThunks.computeEdgeSelection());
+  };
+
   /**
    * toggle group edge functionality with given value.
    * 1. enable - display 'all' as group type default.
@@ -50,10 +58,7 @@ const useGroupEdges = (graphIndex: number) => {
 
     resetState();
     performGroupEdges();
-  };
-
-  const performGroupEdges = () => {
-    dispatch(GraphThunks.groupEdgesWithAggregation(graphIndex));
+    computeEdgeSelection();
   };
 
   /**
@@ -73,11 +78,13 @@ const useGroupEdges = (graphIndex: number) => {
 
     dispatch(GraphSlices.setGroupEdgeOptions(params));
     performGroupEdges();
+    computeEdgeSelection();
   };
 
   const resetState = () => {
     dispatch(GraphSlices.resetGroupEdgeOptions(graphIndex));
     performGroupEdges();
+    computeEdgeSelection();
   };
 
   const updateFields = (value: string, uniqueFieldId = shortid.generate()) => {
@@ -89,6 +96,7 @@ const useGroupEdges = (graphIndex: number) => {
       }),
     );
     performGroupEdges();
+    computeEdgeSelection();
   };
 
   const updateAggregates = (
@@ -102,6 +110,7 @@ const useGroupEdges = (graphIndex: number) => {
     };
     dispatch(GraphSlices.updateGroupEdgeAggregate(params));
     performGroupEdges();
+    computeEdgeSelection();
   };
 
   const deleteFields = (uniqueFieldId: string) => {
@@ -111,6 +120,7 @@ const useGroupEdges = (graphIndex: number) => {
     };
     dispatch(GraphSlices.deleteGroupEdgeField(params));
     performGroupEdges();
+    computeEdgeSelection();
   };
 
   return {
@@ -120,6 +130,7 @@ const useGroupEdges = (graphIndex: number) => {
     updateFields,
     updateAggregates,
     deleteFields,
+    computeEdgeSelection,
   };
 };
 

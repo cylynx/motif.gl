@@ -4,10 +4,10 @@ import { getFilterOptions, getGraph, getStyleOptions } from './selectors';
 
 import {
   updateGraphFlatten,
-  updateEdgeSelection,
   addQuery,
   processGraphResponse,
   updateStyleOption,
+  overwriteEdgeSelection,
 } from './slice';
 import {
   importEdgeListCsv,
@@ -25,13 +25,17 @@ import {
   TLoadFormat,
   StyleOptions,
   GraphState,
+  Field,
+  Selection,
 } from './types';
 
 import { UISlices, UIThunks } from '../ui';
 import {
+  aggregateMetadataFields,
   groupEdgesForImportation,
   groupEdgesWithConfiguration,
 } from './processors/group-edges';
+import { removeDuplicates } from '../../containers/Graph/styles/utils';
 
 type ImportAccessors = Accessors | null;
 
@@ -307,4 +311,54 @@ export const groupEdgesWithAggregation = (graphIndex: number) => (
   );
 
   dispatch(updateGraphFlatten(newGraphData));
+};
+
+export const computeEdgeSelection = () => (dispatch: any, getState: any) => {
+  const { graphList, edgeSelection }: GraphState = getGraph(getState());
+
+  // obtain the combined aggregated edge fields of entire graph.
+  const combinedAggregatedEdgeFields: Field[][] = graphList.reduce(
+    (acc: Field[][], graphData: GraphData) => {
+      const { metadata } = graphData;
+
+      const edgeAggregateFields: Field[] = aggregateMetadataFields(
+        graphData,
+        metadata.groupEdges.fields,
+      );
+
+      const combinedEdgeField = removeDuplicates(
+        [...metadata.fields.edges, ...edgeAggregateFields],
+        'name',
+      ) as Field[];
+
+      acc.push(combinedEdgeField);
+      return acc;
+    },
+    [],
+  );
+
+  // map the aggregated edge fields as edge selections
+  const flattenEdgeFields: Field[] = flatten(combinedAggregatedEdgeFields);
+  const uniqueEdgeFields = removeDuplicates(
+    flattenEdgeFields,
+    'name',
+  ) as Field[];
+  const computedEdgeSelection: Selection[] = uniqueEdgeFields.map(
+    (edgeField: Field) => {
+      const { name, type } = edgeField;
+      const existingSelection = edgeSelection.find(
+        (selection: Selection) => selection.id === edgeField.name,
+      );
+      const isSelected: boolean = existingSelection?.selected ?? false;
+
+      return {
+        id: name,
+        label: name,
+        type,
+        selected: isSelected,
+      };
+    },
+  );
+
+  dispatch(overwriteEdgeSelection(computedEdgeSelection));
 };

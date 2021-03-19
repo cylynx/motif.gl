@@ -258,54 +258,6 @@ const produceGraphWithoutGroupEdges = (
 };
 
 /**
- * Combine graph metadata edge fields with aggregated fields.
- * 1. Variable Inspector
- * 2. Edge Selection
- *
- * @param graphData
- * @param groupEdgeField
- * @return {Field[]}
- */
-const aggregateMetadataFields = (
-  graphData: GraphData,
-  groupEdgeField: GroupEdgeFields = {},
-): Field[] => {
-  const { edges: edgeFields } = graphData.metadata.fields;
-
-  // compute edge aggregate fields ready to append into graph's edge field
-  const edgeAggregateFields: Field[] = Object.values(groupEdgeField).reduce(
-    (accumulateField: Field[], fieldsWithAggr: FieldAndAggregation) => {
-      const { field, aggregation } = fieldsWithAggr;
-
-      const edgeAggregateField: Field[] = (aggregation as (
-        | NumericAggregations
-        | StringAggregations
-      )[]).map((aggr) => {
-        const aggregateField = `${aggr} ${field}`;
-
-        const oriEdgeField: Field = edgeFields.find(
-          (edgeField: Field) => edgeField.name === field,
-        );
-
-        const { format, type, analyzerType } = oriEdgeField;
-
-        return {
-          name: aggregateField,
-          format,
-          type,
-          analyzerType,
-        };
-      });
-
-      return [...accumulateField, ...edgeAggregateField];
-    },
-    [],
-  );
-
-  return edgeAggregateFields;
-};
-
-/**
  * Perform group edges during data importation, used in:
  * 1. Import Sample Data
  * 2. Import Local File
@@ -412,23 +364,7 @@ export const groupEdgesWithConfiguration = (
       groupedEdges,
     );
 
-    // obtain the aggregate metadata fields
-    const edgeAggregateFields: Field[] = aggregateMetadataFields(
-      graphData,
-      fields,
-    );
-
-    // combine metadata edge fields with aggregate edge fields
-    const combinedEdgeField: Field[] = combineEdgeFields(
-      [...ungroupedGraph.metadata.fields.edges, ...edgeAggregateFields],
-      'name',
-    );
-
-    // append the edge fields into graphData
-    const modData = cloneDeep(graphWithGroupEdges);
-    Object.assign(modData.metadata.fields, { edges: combinedEdgeField });
-
-    return modData;
+    return graphWithGroupEdges;
   };
 
   const revertGroupEdge = (graphData: GraphData, graphFlatten: GraphData) => {
@@ -444,14 +380,7 @@ export const groupEdgesWithConfiguration = (
       edgeIdsForRemoval,
     );
 
-    // revert the metadata fields based on the edge list
-    const modData = cloneDeep(combinedGraphData);
-
-    Object.assign(modData.metadata.fields, {
-      edges: graphData.metadata.fields.edges,
-    });
-
-    return modData;
+    return combinedGraphData;
   };
 
   const { toggle, type, fields } = groupEdgesConfig;
@@ -460,4 +389,53 @@ export const groupEdgesWithConfiguration = (
   }
 
   return revertGroupEdge(graphData, graphFlatten);
+};
+
+/**
+ * Combine graph metadata edge fields with aggregated fields.
+ * 1. Variable Inspector
+ * 2. Edge Selection
+ *
+ * @param graphData
+ * @param groupEdgeField
+ * @return {Field[]}
+ */
+export const aggregateMetadataFields = (
+  graphData: GraphData,
+  groupEdgeField: GroupEdgeFields = {},
+): Field[] => {
+  const { edges: edgeFields } = graphData.metadata.fields;
+  if (isEmpty(groupEdgeField)) return edgeFields;
+
+  // compute edge aggregate fields ready to append into graph's edge field
+  const edgeAggregateFields: Field[] = Object.values(groupEdgeField).reduce(
+    (accumulateField: Field[], fieldsWithAggr: FieldAndAggregation) => {
+      const { field, aggregation } = fieldsWithAggr;
+
+      const edgeAggregateField: Field[] = (aggregation as (
+        | NumericAggregations
+        | StringAggregations
+      )[]).map((aggr) => {
+        const aggregateField = `${aggr} ${field}`;
+
+        const oriEdgeField: Field = edgeFields.find(
+          (edgeField: Field) => edgeField.name === field,
+        );
+
+        const { format, type, analyzerType } = oriEdgeField;
+
+        return {
+          name: aggregateField,
+          format,
+          type,
+          analyzerType,
+        };
+      });
+
+      return [...accumulateField, ...edgeAggregateField];
+    },
+    [],
+  );
+
+  return edgeAggregateFields;
 };
