@@ -160,7 +160,6 @@ export const styleEdgeWidthByProp = (
   option: EdgeWidth,
 ): void => {
   if (option.id === 'property' && option.variable) {
-    console.log('hi');
     mapEdgeWidth(data.edges, option.variable, option.range);
   }
 };
