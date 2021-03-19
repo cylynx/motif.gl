@@ -4,6 +4,7 @@ import { getFilterOptions, getGraph, getStyleOptions } from './selectors';
 
 import {
   updateGraphFlatten,
+  updateEdgeSelection,
   addQuery,
   processGraphResponse,
   updateStyleOption,

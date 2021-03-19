@@ -20,6 +20,8 @@ import {
   UpdateGroupEdgeFieldPayload,
   FieldAndAggregation,
   DeleteGroupEdgeFieldPayload,
+  Field,
+  Selection,
 } from './types';
 import { DEFAULT_NODE_STYLE } from '../../constants/graph-shapes';
 import { groupEdgesForImportation } from './processors/group-edges';
@@ -430,6 +432,29 @@ const graph = createSlice({
     },
     updateGraphFlatten(state, action: PayloadAction<GraphData>) {
       Object.assign(state.graphFlatten, action.payload);
+
+      const { edges: edgeFields } = action.payload.metadata.fields;
+
+      if (edgeFields.length !== state.edgeSelection.length) {
+        const updatedEdgeSelection: Selection[] = edgeFields.map(
+          (edgeField: Field) => {
+            const { name, type } = edgeField;
+
+            const existingSelection = state.edgeSelection.find(
+              (selection: Selection) => selection.id === name,
+            );
+            const isSelected = existingSelection?.selected ?? false;
+
+            return {
+              label: name,
+              id: name,
+              type,
+              selected: isSelected,
+            };
+          },
+        );
+        state.edgeSelection = updatedEdgeSelection;
+      }
     },
   },
 });

@@ -10,7 +10,6 @@ import {
   NumericAggregations,
   StringAggregations,
   Field,
-  Node,
 } from '../types';
 import {
   average,
@@ -26,6 +25,16 @@ import {
 } from '../../../utils/edge-aggregations/string-aggregates';
 
 type AggregationFields = Record<string, number | string>;
+
+const combineEdgeFields = (myArr: Field[], prop: string): Field[] => {
+  const seen = new Set();
+  const filteredArr = myArr.filter((el) => {
+    const duplicate = seen.has(el[prop]);
+    seen.add(el[prop]);
+    return !duplicate;
+  });
+  return filteredArr;
+};
 
 /**
  * Obtain the duplicate edge connectivity in graph
@@ -249,28 +258,18 @@ const produceGraphWithoutGroupEdges = (
 };
 
 /**
- * Append aggregate fields into metadata edge's fields to display in:
+ * Combine graph metadata edge fields with aggregated fields.
  * 1. Variable Inspector
  * 2. Edge Selection
  *
  * @param graphData
  * @param groupEdgeField
- * @return {GraphData}
+ * @return {Field[]}
  */
-const appendAggregateMetadataFields = (
+const aggregateMetadataFields = (
   graphData: GraphData,
   groupEdgeField: GroupEdgeFields = {},
-): GraphData => {
-  const removeDuplicateFields = (myArr: Field[], prop: string): Field[] => {
-    const seen = new Set();
-    const filteredArr = myArr.filter((el) => {
-      const duplicate = seen.has(el[prop]);
-      seen.add(el[prop]);
-      return !duplicate;
-    });
-    return filteredArr;
-  };
-
+): Field[] => {
   const { edges: edgeFields } = graphData.metadata.fields;
 
   // compute edge aggregate fields ready to append into graph's edge field
@@ -303,16 +302,7 @@ const appendAggregateMetadataFields = (
     [],
   );
 
-  // combine edge fields with aggregate fields
-  const combinedEdgeField: Field[] = removeDuplicateFields(
-    [...edgeFields, ...edgeAggregateFields],
-    'name',
-  );
-
-  const modData = cloneDeep(graphData);
-  Object.assign(modData.metadata.fields.edges, combinedEdgeField);
-
-  return modData;
+  return edgeAggregateFields;
 };
 
 /**
@@ -344,9 +334,25 @@ export const groupEdgesForImportation = (
     edgeIdsForRemoval,
     groupedEdges,
   );
-  const graphData = appendAggregateMetadataFields(graphWithGroupEdges, fields);
 
-  return graphData;
+  if (isEmpty(fields) === false) {
+    const edgeAggregateFields: Field[] = aggregateMetadataFields(
+      graphWithGroupEdges,
+      fields,
+    );
+    // combine edge fields with aggregate fields
+    const combinedEdgeField: Field[] = combineEdgeFields(
+      [...data.metadata.fields.edges, ...edgeAggregateFields],
+      'name',
+    );
+
+    const modData = cloneDeep(graphWithGroupEdges);
+    Object.assign(modData.metadata.fields.edges, combinedEdgeField);
+
+    return modData;
+  }
+
+  return graphWithGroupEdges;
 };
 
 /**
@@ -400,13 +406,29 @@ export const groupEdgesWithConfiguration = (
     );
 
     // remove duplicate edges and combine the grouped edges with current graph.
-    const combinedGraphData: GraphData = produceGraphWithGroupEdges(
+    const graphWithGroupEdges: GraphData = produceGraphWithGroupEdges(
       ungroupedGraph,
       edgeIdsForRemoval,
       groupedEdges,
     );
 
-    return combinedGraphData;
+    // obtain the aggregate metadata fields
+    const edgeAggregateFields: Field[] = aggregateMetadataFields(
+      graphData,
+      fields,
+    );
+
+    // combine metadata edge fields with aggregate edge fields
+    const combinedEdgeField: Field[] = combineEdgeFields(
+      [...ungroupedGraph.metadata.fields.edges, ...edgeAggregateFields],
+      'name',
+    );
+
+    // append the edge fields into graphData
+    const modData = cloneDeep(graphWithGroupEdges);
+    Object.assign(modData.metadata.fields, { edges: combinedEdgeField });
+
+    return modData;
   };
 
   const revertGroupEdge = (graphData: GraphData, graphFlatten: GraphData) => {
@@ -422,7 +444,14 @@ export const groupEdgesWithConfiguration = (
       edgeIdsForRemoval,
     );
 
-    return combinedGraphData;
+    // revert the metadata fields based on the edge list
+    const modData = cloneDeep(combinedGraphData);
+
+    Object.assign(modData.metadata.fields, {
+      edges: graphData.metadata.fields.edges,
+    });
+
+    return modData;
   };
 
   const { toggle, type, fields } = groupEdgesConfig;
