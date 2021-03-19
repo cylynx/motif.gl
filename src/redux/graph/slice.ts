@@ -170,24 +170,25 @@ const graph = createSlice({
       const existingNodeFields: string[] = ['id'];
       const existingEdgeFields: string[] = ['id', 'source', 'target'];
       for (const data of graphList) {
-        if (data?.metadata?.visible !== false) {
-          let modData = data;
-
+        let modData = data;
+        if (modData?.metadata?.visible !== false) {
           // perform group edge if enable when perform data list deletion
-          if (data.metadata.groupEdges.toggle) {
+          if (modData.metadata.groupEdges.toggle) {
             modData = groupEdgesForImportation(data, data.metadata.groupEdges);
           }
 
           graphData = combineProcessedData(modData as GraphData, graphData);
         }
-        for (const field of data.metadata.fields.nodes) {
+        for (const field of modData.metadata.fields.nodes) {
           existingNodeFields.push(field.name);
         }
-        for (const field of data.metadata.fields.edges) {
+        for (const field of modData.metadata.fields.edges) {
           existingEdgeFields.push(field.name);
         }
       }
       updateAll(state, graphData);
+
+      // update node and edge selection with existing fields
       state.edgeSelection = state.edgeSelection.filter((f) =>
         existingEdgeFields.includes(f.id),
       );

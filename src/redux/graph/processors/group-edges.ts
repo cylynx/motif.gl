@@ -27,19 +27,6 @@ import {
 
 type AggregationFields = Record<string, number | string>;
 
-const removeDuplicates = (
-  myArr: Node[] | Edge[] | Field[] | [],
-  prop: string,
-): Node[] | Edge[] | Field[] => {
-  const seen = new Set();
-  const filteredArr = myArr.filter((el) => {
-    const duplicate = seen.has(el[prop]);
-    seen.add(el[prop]);
-    return !duplicate;
-  });
-  return filteredArr;
-};
-
 /**
  * Obtain the duplicate edge connectivity in graph
  *
@@ -274,6 +261,16 @@ const appendAggregateMetadataFields = (
   graphData: GraphData,
   groupEdgeField: GroupEdgeFields = {},
 ): GraphData => {
+  const removeDuplicateFields = (myArr: Field[], prop: string): Field[] => {
+    const seen = new Set();
+    const filteredArr = myArr.filter((el) => {
+      const duplicate = seen.has(el[prop]);
+      seen.add(el[prop]);
+      return !duplicate;
+    });
+    return filteredArr;
+  };
+
   const { edges: edgeFields } = graphData.metadata.fields;
 
   // compute edge aggregate fields ready to append into graph's edge field
@@ -307,10 +304,10 @@ const appendAggregateMetadataFields = (
   );
 
   // combine edge fields with aggregate fields
-  const combinedEdgeField = removeDuplicates(
+  const combinedEdgeField: Field[] = removeDuplicateFields(
     [...edgeFields, ...edgeAggregateFields],
     'name',
-  ) as Field[];
+  );
 
   const modData = cloneDeep(graphData);
   Object.assign(modData.metadata.fields.edges, combinedEdgeField);
