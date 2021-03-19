@@ -1,5 +1,7 @@
 import { mapCollectionFields } from '../data-utils';
 
+const noValueString = 'no-values';
+
 /**
  * Obtain the first item in the collection
  *
@@ -11,7 +13,7 @@ export const first = (collection: any[], field: string): any => {
   const fieldsValues: any[] = mapCollectionFields(collection, field);
 
   if (fieldsValues.length === 0) {
-    return 'no values';
+    return noValueString;
   }
 
   const [firstItem] = fieldsValues;
@@ -30,7 +32,7 @@ export const last = (collection: any[], field: string): any => {
   const fieldsValues: any[] = mapCollectionFields(collection, field);
 
   if (fieldsValues.length === 0) {
-    return 'no values';
+    return noValueString;
   }
 
   const lastItem: string = fieldsValues[fieldsValues.length - 1];
@@ -52,7 +54,7 @@ export const last = (collection: any[], field: string): any => {
 export const mostFrequent = (collection: any[], field: string): string => {
   const fieldsValues: any[] = mapCollectionFields(collection, field);
   if (fieldsValues.length === 0) {
-    return 'no values';
+    return noValueString;
   }
 
   // use Map() to count the items for string and integer

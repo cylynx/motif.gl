@@ -241,6 +241,8 @@ const VariableInspector = () => {
     [selection, nodeOptions, edgeOptions, onChangeSelected],
   );
 
+  console.log(histogramProp);
+
   return (
     <Fragment>
       <Block display='flex' height='50px'>

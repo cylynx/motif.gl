@@ -652,9 +652,16 @@ const applyGroupEdges = (
   );
   const isDatasetCanGroupEdge = !isEmpty(duplicateConnectivity);
 
+  if (isDatasetCanGroupEdge === false) {
+    return {
+      toggle: false,
+      availability: false,
+    };
+  }
+
   const groupEdgeConfig: GroupEdges = {
     toggle,
-    availability: isDatasetCanGroupEdge,
+    availability: true,
   };
 
   if (toggle) {

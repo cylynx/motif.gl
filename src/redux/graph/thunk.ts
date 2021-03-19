@@ -1,5 +1,6 @@
 import flatten from 'lodash/flatten';
 import isEmpty from 'lodash/isEmpty';
+import cloneDeep from 'lodash/cloneDeep';
 import { getFilterOptions, getGraph, getStyleOptions } from './selectors';
 
 import {
@@ -310,12 +311,6 @@ export const groupEdgesWithAggregation = (graphIndex: number) => (
     groupEdges,
   );
 
-  dispatch(updateGraphFlatten(newGraphData));
-};
-
-export const computeEdgeSelection = () => (dispatch: any, getState: any) => {
-  const { graphList, edgeSelection }: GraphState = getGraph(getState());
-
   // obtain the combined aggregated edge fields of entire graph.
   const combinedAggregatedEdgeFields: Field[][] = graphList.reduce(
     (acc: Field[][], graphData: GraphData) => {
@@ -343,7 +338,29 @@ export const computeEdgeSelection = () => (dispatch: any, getState: any) => {
     flattenEdgeFields,
     'name',
   ) as Field[];
-  const computedEdgeSelection: Selection[] = uniqueEdgeFields.map(
+
+  const modData = cloneDeep(newGraphData);
+
+  Object.assign(modData.metadata.fields, {
+    edges: uniqueEdgeFields,
+  });
+
+  dispatch(updateGraphFlatten(modData));
+};
+
+/**
+ * Update edge selections based on group edge configurations.
+ *
+ * @return {void}
+ */
+export const computeEdgeSelection = () => (
+  dispatch: any,
+  getState: any,
+): void => {
+  const { graphFlatten, edgeSelection }: GraphState = getGraph(getState());
+  const { edges: edgeFields } = graphFlatten.metadata.fields;
+
+  const computedEdgeSelection: Selection[] = edgeFields.map(
     (edgeField: Field) => {
       const { name, type } = edgeField;
       const existingSelection = edgeSelection.find(

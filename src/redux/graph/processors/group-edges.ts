@@ -129,17 +129,26 @@ const performAggregation = (
 
       if (aggregation.includes('min' as never)) {
         const smallestValue: number | string = min(edgeCandidates, field);
-        set(acc, `min ${field}`, smallestValue);
+
+        if (smallestValue !== 'no-values') {
+          set(acc, `min ${field}`, smallestValue);
+        }
       }
 
       if (aggregation.includes('max' as never)) {
         const largestValue: number | string = max(edgeCandidates, field);
-        set(acc, `max ${field}`, largestValue);
+
+        if (largestValue !== 'no-values') {
+          set(acc, `max ${field}`, largestValue);
+        }
       }
 
       if (aggregation.includes('sum' as never)) {
         const sumValue: number | string = sum(edgeCandidates, field);
-        set(acc, `sum ${field}`, sumValue);
+
+        if (sumValue !== 'no-values') {
+          set(acc, `sum ${field}`, sumValue);
+        }
       }
 
       if (aggregation.includes('count' as never)) {
@@ -150,26 +159,34 @@ const performAggregation = (
       if (aggregation.includes('average' as never)) {
         let averageValue: number | string = average(edgeCandidates, field);
 
-        if (typeof averageValue === 'number') {
+        if (averageValue !== 'no-values') {
           averageValue = Number(averageValue).toPrecision(5);
+          set(acc, `average ${field}`, parseFloat(averageValue));
         }
-
-        set(acc, `average ${field}`, averageValue);
       }
 
       if (aggregation.includes('first' as never)) {
         const firstValue: string = first(edgeCandidates, field);
-        set(acc, `first ${field}`, firstValue);
+
+        if (firstValue !== 'no-values') {
+          set(acc, `first ${field}`, firstValue);
+        }
       }
 
       if (aggregation.includes('last' as never)) {
         const lastValue: string = last(edgeCandidates, field);
-        set(acc, `last ${field}`, lastValue);
+
+        if (lastValue !== 'no-values') {
+          set(acc, `last ${field}`, lastValue);
+        }
       }
 
       if (aggregation.includes('most_frequent' as never)) {
-        const lastValue: string = mostFrequent(edgeCandidates, field);
-        set(acc, `most_frequent ${field}`, lastValue);
+        const mostFrequentValue: string = mostFrequent(edgeCandidates, field);
+
+        if (mostFrequentValue !== 'no-values') {
+          set(acc, `most_frequent ${field}`, mostFrequentValue);
+        }
       }
 
       return acc;

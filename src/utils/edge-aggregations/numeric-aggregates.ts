@@ -1,6 +1,7 @@
 import { IUserEdge } from '@antv/graphin';
 import { mapCollectionFields } from '../data-utils';
 
+const noValueString = 'no-values';
 /**
  * Returns the lowest-valued edge fields.
  *
@@ -15,7 +16,7 @@ export const min = (
   const fieldsValues: number[] = mapCollectionFields(graphEdges, field);
 
   if (fieldsValues.length === 0) {
-    return 'no values';
+    return noValueString;
   }
 
   const minimumValue: number = Math.min(...fieldsValues);
@@ -36,7 +37,7 @@ export const max = (
   const fieldsValues: number[] = mapCollectionFields(graphEdges, field);
 
   if (fieldsValues.length === 0) {
-    return 'no values';
+    return noValueString;
   }
 
   const largestValue: number = Math.max(...fieldsValues);
@@ -57,7 +58,7 @@ export const sum = (
   const fieldsValues: number[] = mapCollectionFields(graphEdges, field);
 
   if (fieldsValues.length === 0) {
-    return 'no values';
+    return noValueString;
   }
 
   const sumValue: number = fieldsValues.reduce(
@@ -96,7 +97,7 @@ export const average = (
   const fieldsValues: number[] = mapCollectionFields(graphEdges, field);
 
   if (fieldsValues.length === 0) {
-    return 'no values';
+    return noValueString;
   }
 
   // cannot perform division with zero
