@@ -111,7 +111,7 @@ describe('Edge Style Filter', () => {
     };
 
     it('should not display label when None', async () => {
-      const selectedLabelField = 'none';
+      const selectedLabelField = '-';
       changeLabelField(selectedLabelField);
 
       const edgeStyle = await getEdgeStyleFromReduxStore();
@@ -149,10 +149,19 @@ describe('Edge Style Filter', () => {
         });
     };
 
-    it('should display line when None', () => {
+    it('should display Line when None', () => {
       const selectedPatternField = 'none';
       changePatternField(selectedPatternField);
-      assertEdgePattern(selectedPatternField);
+
+      // https://github.com/cylynx/motif.gl/pull/86
+      // setting default linewidth if there are no dropdown variables
+      cy.getReact('Graphin')
+        .getProps('data.edges.0')
+        .then((edge: Edge) => {
+          const { lineWidth } = edge.style.keyshape;
+
+          expect(lineWidth).to.deep.equal(3.8338044591773945);
+        });
     });
 
     it('should display Dot', () => {

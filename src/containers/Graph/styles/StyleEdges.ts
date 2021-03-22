@@ -35,6 +35,14 @@ export const styleEdges = (
   data.edges.forEach((edge: IUserEdge) => {
     const edgeStyle: Partial<EdgeStyle> = edge.style ?? {};
 
+    // If no property is found, set edge width to default
+    if (
+      edgeStyleOptions.width.id === 'property' &&
+      !edgeStyleOptions.width.variable
+    ) {
+      styleLineWidth(edgeStyle, DEFAULT_EDGE_STYLE.lineWidth);
+    }
+
     if (edgeStyleOptions.width && edgeStyleOptions.width.id === 'fixed') {
       styleLineWidth(edgeStyle, edgeStyleOptions.width.value);
     }

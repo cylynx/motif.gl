@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useCallback, useMemo } from 'react';
 import { Block } from 'baseui/block';
 import { Checkbox, LABEL_PLACEMENT, STYLE_TYPE } from 'baseui/checkbox';
-import { LabelXSmall } from 'baseui/typography';
+import { LabelSmall } from 'baseui/typography';
 import { Select, SIZE, OnChangeParams, Option } from 'baseui/select';
 import debounce from 'lodash/debounce';
 
@@ -17,7 +17,7 @@ type GroupByFieldsProps = {
 const ByLabel = () =>
   useMemo(
     () => (
-      <LabelXSmall
+      <LabelSmall
         width='30px'
         paddingTop='5px'
         overrides={{
@@ -29,7 +29,7 @@ const ByLabel = () =>
         marginBottom='0'
       >
         by
-      </LabelXSmall>
+      </LabelSmall>
     ),
     [],
   );
@@ -87,7 +87,7 @@ const GroupByFields = ({
             Label: {
               style: ({ $theme }) => ({
                 ...$theme.typography.LabelSmall,
-                fontSize: $theme.sizing.scale500,
+                // fontSize: $theme.sizing.scale500,
                 paddingRight: $theme.sizing.scale0,
                 paddingTop: $theme.sizing.scale100,
               }),
@@ -104,7 +104,7 @@ const GroupByFields = ({
         <Block marginTop='scale100'>
           <Select
             data-testid='group-by-fields:select'
-            size={SIZE.mini}
+            size={SIZE.compact}
             searchable={false}
             clearable={false}
             maxDropdownHeight='300px'

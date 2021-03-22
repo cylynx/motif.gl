@@ -39,6 +39,7 @@ const Slider = (props: SliderProps) => {
               borderRightColor: $theme.colors.mono400,
               borderTopColor: $theme.colors.mono400,
               borderBottomColor: $theme.colors.mono400,
+              zIndex: 0,
             };
           },
         },
