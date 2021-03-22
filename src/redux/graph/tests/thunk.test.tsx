@@ -7,6 +7,7 @@ import flatten from 'lodash/flatten';
 import { render } from '@testing-library/react';
 import { ToasterContainer } from 'baseui/toast';
 import {
+  computeEdgeSelection,
   groupEdgesWithAggregation,
   importEdgeListData,
   importJsonData,
@@ -18,6 +19,7 @@ import {
   addQuery,
   processGraphResponse,
   updateStyleOption,
+  overwriteEdgeSelection,
 } from '../slice';
 import {
   importJson,
@@ -25,7 +27,10 @@ import {
   importEdgeListCsv,
 } from '../processors/import';
 import { fetchBegin, fetchDone, updateToast } from '../../ui/slice';
-import { SimpleEdge } from '../../../constants/sample-data';
+import {
+  SimpleEdge,
+  SimpleGraphWithGroupEdge,
+} from '../../../constants/sample-data';
 import { RootState } from '../../investigate';
 import {
   Edge,
@@ -33,6 +38,7 @@ import {
   GraphData,
   GraphList,
   ImportFormat,
+  Selection,
   TLoadFormat,
 } from '../types';
 import * as LAYOUT from '../../../constants/layout-options';
@@ -868,117 +874,291 @@ describe('add-data-thunk.test.js', () => {
   });
 
   describe('groupEdgesWithAggregation', () => {
-    const simpleGraphWithGroupEdge = {
-      nodes: [{ id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' }],
-      edges: [
-        {
-          source: 'a',
-          target: 'b',
-          id: 'a-b1',
-          numeric: 1,
-          value: 'first',
-          date: '19-05-1996',
-        },
-        {
-          source: 'a',
-          target: 'b',
-          id: 'a-b2',
-          numeric: 2,
-          value: 'Last',
-          date: '20-05-1996',
-        },
-        {
-          source: 'a',
-          target: 'b',
-          id: 'a-b3',
-          numeric: 2,
-          value: 'last',
-          date: '20-05-1996',
-        },
-        { source: 'a', target: 'b', id: 'a-b4' },
-        {
-          source: 'a',
-          target: 'b',
-          id: 'a-b5',
-          value: 'last',
-          date: '21-05-1996',
-        },
-        { source: 'c', target: 'd', id: 'c-d1', numeric: 1 },
-        { source: 'c', target: 'd', id: 'c-d2', numeric: 2 },
-        { source: 'c', target: 'd', id: 'c-d3', numeric: 2 },
-        { source: 'c', target: 'd', id: 'c-d4' },
-      ],
-      metadata: {
-        key: 'QoFR2RwSM',
-        fields: {
-          nodes: [
-            {
-              name: 'id',
-              format: '',
-              type: 'string',
-              analyzerType: 'string',
-            },
-          ],
-          edges: [
-            {
-              name: 'id',
-              format: '',
-              type: 'string',
-              analyzerType: 'string',
-            },
-            {
-              name: 'source',
-              format: '',
-              type: 'string',
-              analyzerType: 'string',
-            },
-            {
-              name: 'target',
-              format: '',
-              type: 'string',
-              analyzerType: 'string',
-            },
-            {
-              name: 'numeric',
-              format: '',
-              type: 'integer',
-              analyzerType: 'INT',
-            },
-            {
-              name: 'value',
-              format: '',
-              type: 'string',
-              analyzerType: 'STRING',
-            },
-            {
-              name: 'date',
-              format: '',
-              type: 'string',
-              analyzerType: 'STRING',
-            },
-          ],
-        },
-        groupEdges: {
-          toggle: true,
-          availability: true,
-          type: 'numeric',
-          fields: {
-            'Y_-ZK2S3P': {
-              field: 'numeric',
-              aggregation: ['min', 'max', 'average', 'count', 'sum'],
-            },
-            _8X9zGku9b: {
-              field: 'value',
-              aggregation: ['first', 'last', 'most_frequent'],
-            },
-            vVENjKDSxE: {
-              field: 'date',
-              aggregation: ['first', 'last', 'most_frequent'],
+    describe('Group By All', () => {
+      const simpleGraphWithGroupEdge = SimpleGraphWithGroupEdge();
+
+      const importedGraphState = (): RootState => {
+        const store = {
+          investigate: {
+            ui: {},
+            widget: {},
+            graph: {
+              present: {
+                graphList: [simpleGraphWithGroupEdge],
+                graphFlatten: simpleGraphWithGroupEdge,
+              },
             },
           },
-        },
+        };
+        return store;
+      };
+
+      const store = mockStore(importedGraphState());
+      const graphIndex = 0;
+      let newGraphData = {};
+      beforeEach(() => {
+        const { graphList, graphFlatten } = getGraph(store.getState());
+        const selectedGraphList: GraphData = graphList[graphIndex];
+
+        const { groupEdges } = selectedGraphList.metadata;
+
+        newGraphData = groupEdgesWithConfiguration(
+          selectedGraphList,
+          graphFlatten,
+          groupEdges,
+        );
+      });
+
+      afterEach(() => {
+        store.clearActions();
+      });
+
+      it('should display the correct title and visibility', async () => {
+        await store.dispatch(groupEdgesWithAggregation(graphIndex));
+
+        store.getActions().forEach((actions) => {
+          const { payload } = actions;
+          const { nodes, metadata } = payload;
+          expect(nodes).toEqual(newGraphData.nodes);
+
+          const { visible, title } = metadata;
+          expect(visible).toEqual(newGraphData.visible);
+          expect(title).toEqual(newGraphData.title);
+        });
+      });
+
+      it('should compute the correct grouped edges', async () => {
+        await store.dispatch(groupEdgesWithAggregation(graphIndex));
+
+        store.getActions().forEach((actions) => {
+          const { payload } = actions;
+          const { edges } = payload;
+
+          edges.forEach((edge: Edge, index: number) => {
+            const { id, ...results } = edge;
+            const { id, ...expected } = newGraphData.edges[index];
+            expect(results).toEqual(expected);
+          });
+        });
+      });
+
+      it('should derive the correct group edge configurations', async () => {
+        await store.dispatch(groupEdgesWithAggregation(graphIndex));
+
+        store.getActions().forEach((actions) => {
+          const { payload } = actions;
+          const { metadata } = payload;
+
+          const { groupEdges } = metadata;
+          expect(groupEdges).toEqual(newGraphData.metadata.groupEdges);
+        });
+      });
+
+      it('should display the correct edge properties', async () => {
+        await store.dispatch(groupEdgesWithAggregation(graphIndex));
+
+        const aggregatedEdgeFields: Field[] = [
+          {
+            analyzerType: 'INT',
+            format: '',
+            name: 'min numeric',
+            type: 'integer',
+          },
+          {
+            analyzerType: 'INT',
+            format: '',
+            name: 'max numeric',
+            type: 'integer',
+          },
+          {
+            analyzerType: 'INT',
+            format: '',
+            name: 'average numeric',
+            type: 'integer',
+          },
+          {
+            analyzerType: 'INT',
+            format: '',
+            name: 'count numeric',
+            type: 'integer',
+          },
+          {
+            analyzerType: 'INT',
+            format: '',
+            name: 'sum numeric',
+            type: 'integer',
+          },
+          {
+            analyzerType: 'STRING',
+            format: '',
+            name: 'first value',
+            type: 'string',
+          },
+          {
+            analyzerType: 'STRING',
+            format: '',
+            name: 'last value',
+            type: 'string',
+          },
+          {
+            analyzerType: 'STRING',
+            format: '',
+            name: 'most_frequent value',
+            type: 'string',
+          },
+          {
+            analyzerType: 'STRING',
+            format: '',
+            name: 'first date',
+            type: 'string',
+          },
+          {
+            analyzerType: 'STRING',
+            format: '',
+            name: 'last date',
+            type: 'string',
+          },
+          {
+            analyzerType: 'STRING',
+            format: '',
+            name: 'most_frequent date',
+            type: 'string',
+          },
+        ];
+
+        const uniqueEdgeFields = [
+          ...newGraphData.metadata.fields.edges,
+          ...aggregatedEdgeFields,
+        ];
+
+        const modData = cloneDeep(newGraphData);
+
+        Object.assign(modData.metadata.fields, {
+          edges: uniqueEdgeFields,
+        });
+
+        store.getActions().forEach((actions) => {
+          const { payload } = actions;
+          const { metadata } = payload;
+
+          const { fields } = metadata;
+          expect(fields.edges).toEqual(modData.metadata.fields.edges);
+        });
+      });
+    });
+  });
+
+  describe('computeEdgeSelection', () => {
+    const simpleGraphWithGroupEdge = SimpleGraphWithGroupEdge();
+    const aggregatedEdgeFields: Field[] = [
+      {
+        name: 'id',
+        format: '',
+        type: 'string',
+        analyzerType: 'string',
       },
-    };
+      {
+        name: 'source',
+        format: '',
+        type: 'string',
+        analyzerType: 'string',
+      },
+      {
+        name: 'target',
+        format: '',
+        type: 'string',
+        analyzerType: 'string',
+      },
+      {
+        name: 'numeric',
+        format: '',
+        type: 'integer',
+        analyzerType: 'INT',
+      },
+      {
+        name: 'value',
+        format: '',
+        type: 'string',
+        analyzerType: 'STRING',
+      },
+      {
+        name: 'date',
+        format: '',
+        type: 'string',
+        analyzerType: 'STRING',
+      },
+
+      {
+        analyzerType: 'INT',
+        format: '',
+        name: 'min numeric',
+        type: 'integer',
+      },
+      {
+        analyzerType: 'INT',
+        format: '',
+        name: 'max numeric',
+        type: 'integer',
+      },
+      {
+        analyzerType: 'INT',
+        format: '',
+        name: 'average numeric',
+        type: 'integer',
+      },
+      {
+        analyzerType: 'INT',
+        format: '',
+        name: 'count numeric',
+        type: 'integer',
+      },
+      {
+        analyzerType: 'INT',
+        format: '',
+        name: 'sum numeric',
+        type: 'integer',
+      },
+      {
+        analyzerType: 'STRING',
+        format: '',
+        name: 'first value',
+        type: 'string',
+      },
+      {
+        analyzerType: 'STRING',
+        format: '',
+        name: 'last value',
+        type: 'string',
+      },
+      {
+        analyzerType: 'STRING',
+        format: '',
+        name: 'most_frequent value',
+        type: 'string',
+      },
+      {
+        analyzerType: 'STRING',
+        format: '',
+        name: 'first date',
+        type: 'string',
+      },
+      {
+        analyzerType: 'STRING',
+        format: '',
+        name: 'last date',
+        type: 'string',
+      },
+      {
+        analyzerType: 'STRING',
+        format: '',
+        name: 'most_frequent date',
+        type: 'string',
+      },
+    ];
+
+    Object.assign(simpleGraphWithGroupEdge.metadata.fields, {
+      edges: aggregatedEdgeFields,
+    });
 
     const importedGraphState = (): RootState => {
       const store = {
@@ -987,120 +1167,66 @@ describe('add-data-thunk.test.js', () => {
           widget: {},
           graph: {
             present: {
-              graphList: [simpleGraphWithGroupEdge],
               graphFlatten: simpleGraphWithGroupEdge,
+              edgeSelection: [
+                {
+                  label: 'id',
+                  id: 'id',
+                  type: 'string',
+                  selected: true,
+                },
+                {
+                  label: 'source',
+                  id: 'source',
+                  type: 'string',
+                  selected: true,
+                },
+                {
+                  label: 'target',
+                  id: 'target',
+                  type: 'string',
+                  selected: true,
+                },
+              ],
             },
           },
         },
       };
       return store;
     };
+
     const store = mockStore(importedGraphState());
 
-    it('should group by all', async () => {
-      const { graphList, graphFlatten } = getGraph(store.getState());
-      const graphIndex = 0;
-      const selectedGraphList: GraphData = graphList[graphIndex];
+    beforeEach(() => {
+      store.dispatch(computeEdgeSelection());
+    });
 
-      const { groupEdges } = selectedGraphList.metadata;
+    afterEach(() => {
+      store.clearActions();
+    });
 
-      const newGraphData = groupEdgesWithConfiguration(
-        selectedGraphList,
-        graphFlatten,
-        groupEdges,
-      );
+    it('should append edge selection based on edge fields', () => {
+      const { edgeSelection, graphFlatten } = getGraph(store.getState());
+      const { edges: edgeFields } = graphFlatten.metadata.fields;
 
-      const aggregatedEdgeFields: Field[] = [
-        {
-          analyzerType: 'INT',
-          format: '',
-          name: 'min numeric',
-          type: 'integer',
-        },
-        {
-          analyzerType: 'INT',
-          format: '',
-          name: 'max numeric',
-          type: 'integer',
-        },
-        {
-          analyzerType: 'INT',
-          format: '',
-          name: 'average numeric',
-          type: 'integer',
-        },
-        {
-          analyzerType: 'INT',
-          format: '',
-          name: 'count numeric',
-          type: 'integer',
-        },
-        {
-          analyzerType: 'INT',
-          format: '',
-          name: 'sum numeric',
-          type: 'integer',
-        },
-        {
-          analyzerType: 'STRING',
-          format: '',
-          name: 'first value',
-          type: 'string',
-        },
-        {
-          analyzerType: 'STRING',
-          format: '',
-          name: 'last value',
-          type: 'string',
-        },
-        {
-          analyzerType: 'STRING',
-          format: '',
-          name: 'most_frequent value',
-          type: 'string',
-        },
-        {
-          analyzerType: 'STRING',
-          format: '',
-          name: 'first date',
-          type: 'string',
-        },
-        {
-          analyzerType: 'STRING',
-          format: '',
-          name: 'last date',
-          type: 'string',
-        },
-        {
-          analyzerType: 'STRING',
-          format: '',
-          name: 'most_frequent date',
-          type: 'string',
-        },
-      ];
+      const computedEdgeSelection = edgeFields.map((edgeField: Field) => {
+        const { name, type } = edgeField;
+        const existingSelection = edgeSelection.find(
+          (selection: Selection) => selection.id === edgeField.name,
+        );
+        const isSelected: boolean = existingSelection?.selected ?? false;
 
-      const uniqueEdgeFields = [
-        ...newGraphData.metadata.fields.edges,
-        ...aggregatedEdgeFields,
-      ];
-
-      Object.assign(newGraphData.metadata.fields, {
-        edges: uniqueEdgeFields,
+        return {
+          id: name,
+          label: name,
+          type,
+          selected: isSelected,
+        };
       });
-      await store.dispatch(groupEdgesWithAggregation(graphIndex));
 
-      store.getActions().forEach((actions) => {
-        const { payload } = actions;
-        const { nodes, edges, metadata } = payload;
-        expect(nodes).toEqual(newGraphData.nodes);
-        expect(metadata).toEqual(newGraphData.metadata);
+      const expectedActions = [overwriteEdgeSelection(computedEdgeSelection)];
 
-        edges.forEach((edge: Edge, index: number) => {
-          const { id, ...results } = edge;
-          const { id, ...expected } = newGraphData.edges[index];
-          expect(results).toEqual(expected);
-        });
-      });
+      expect(store.getActions()).toEqual(expectedActions);
     });
   });
 });
