@@ -21,6 +21,16 @@ export type NestedFormData = {
 };
 type NestedFormProps = { id?: string; data: NestedFormData };
 
+const SelectFieldPopoverOverrides = {
+  props: {
+    overrides: {
+      Body: {
+        style: () => ({ zIndex: 1 }),
+      },
+    },
+  },
+};
+
 const cleanGetValues = (obj: any, mainKey: string) => {
   const results: any = {};
   Object.entries(obj).forEach(([key, value]) => {
@@ -156,6 +166,9 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
                 clearable={false}
                 value={value}
                 maxDropdownHeight='300px'
+                overrides={{
+                  Popover: SelectFieldPopoverOverrides,
+                }}
               />
             )}
           />
@@ -208,6 +221,9 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
                           size='compact'
                           clearable={false}
                           maxDropdownHeight='300px'
+                          overrides={{
+                            Popover: SelectFieldPopoverOverrides,
+                          }}
                           {...rest}
                         />
                       );
@@ -225,6 +241,9 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
                           clearable={false}
                           maxDropdownHeight='300px'
                           type={TYPE.select}
+                          overrides={{
+                            Popover: SelectFieldPopoverOverrides,
+                          }}
                           {...rest}
                         />
                       );
