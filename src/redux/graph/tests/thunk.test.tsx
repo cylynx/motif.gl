@@ -29,6 +29,7 @@ import { SimpleEdge } from '../../../constants/sample-data';
 import { RootState } from '../../investigate';
 import {
   Edge,
+  Field,
   GraphData,
   GraphList,
   ImportFormat,
@@ -909,6 +910,54 @@ describe('add-data-thunk.test.js', () => {
       ],
       metadata: {
         key: 'QoFR2RwSM',
+        fields: {
+          nodes: [
+            {
+              name: 'id',
+              format: '',
+              type: 'string',
+              analyzerType: 'string',
+            },
+          ],
+          edges: [
+            {
+              name: 'id',
+              format: '',
+              type: 'string',
+              analyzerType: 'string',
+            },
+            {
+              name: 'source',
+              format: '',
+              type: 'string',
+              analyzerType: 'string',
+            },
+            {
+              name: 'target',
+              format: '',
+              type: 'string',
+              analyzerType: 'string',
+            },
+            {
+              name: 'numeric',
+              format: '',
+              type: 'integer',
+              analyzerType: 'INT',
+            },
+            {
+              name: 'value',
+              format: '',
+              type: 'string',
+              analyzerType: 'STRING',
+            },
+            {
+              name: 'date',
+              format: '',
+              type: 'string',
+              analyzerType: 'STRING',
+            },
+          ],
+        },
         groupEdges: {
           toggle: true,
           availability: true,
@@ -961,6 +1010,83 @@ describe('add-data-thunk.test.js', () => {
         groupEdges,
       );
 
+      const aggregatedEdgeFields: Field[] = [
+        {
+          analyzerType: 'INT',
+          format: '',
+          name: 'min numeric',
+          type: 'integer',
+        },
+        {
+          analyzerType: 'INT',
+          format: '',
+          name: 'max numeric',
+          type: 'integer',
+        },
+        {
+          analyzerType: 'INT',
+          format: '',
+          name: 'average numeric',
+          type: 'integer',
+        },
+        {
+          analyzerType: 'INT',
+          format: '',
+          name: 'count numeric',
+          type: 'integer',
+        },
+        {
+          analyzerType: 'INT',
+          format: '',
+          name: 'sum numeric',
+          type: 'integer',
+        },
+        {
+          analyzerType: 'STRING',
+          format: '',
+          name: 'first value',
+          type: 'string',
+        },
+        {
+          analyzerType: 'STRING',
+          format: '',
+          name: 'last value',
+          type: 'string',
+        },
+        {
+          analyzerType: 'STRING',
+          format: '',
+          name: 'most_frequent value',
+          type: 'string',
+        },
+        {
+          analyzerType: 'STRING',
+          format: '',
+          name: 'first date',
+          type: 'string',
+        },
+        {
+          analyzerType: 'STRING',
+          format: '',
+          name: 'last date',
+          type: 'string',
+        },
+        {
+          analyzerType: 'STRING',
+          format: '',
+          name: 'most_frequent date',
+          type: 'string',
+        },
+      ];
+
+      const uniqueEdgeFields = [
+        ...newGraphData.metadata.fields.edges,
+        ...aggregatedEdgeFields,
+      ];
+
+      Object.assign(newGraphData.metadata.fields, {
+        edges: uniqueEdgeFields,
+      });
       await store.dispatch(groupEdgesWithAggregation(graphIndex));
 
       store.getActions().forEach((actions) => {
