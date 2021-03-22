@@ -200,7 +200,11 @@ const VariableInspector = () => {
         );
 
         setSelection([obj]);
-        if (fieldDomain === false) return;
+        if (fieldDomain === false) {
+          setHistogramProp({});
+          setValue([]);
+          return;
+        }
 
         const { domain, step, histogram } = fieldDomain as TimeRangeFieldDomain;
         setHistogramProp({
