@@ -131,11 +131,11 @@ export const processJson = async (
       edgeCsv as string,
     );
 
-    const groupEdgeConfig: GroupEdges = applyGroupEdges(
-      groupEdges,
-      nodeJson as Node[],
-      edgeJson as Edge[],
-    );
+    // group edge configuration is not found in the graph data,
+    // apply the group edge based on user input
+    const groupEdgeConfig: GroupEdges =
+      json.metadata.groupEdges ??
+      applyGroupEdges(groupEdges, nodeJson as Node[], edgeJson as Edge[]);
 
     const graphMetadata = {
       ...json?.metadata,
