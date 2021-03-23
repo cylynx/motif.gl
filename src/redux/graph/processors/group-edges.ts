@@ -55,7 +55,7 @@ export const duplicateDictionary = (
 
     const edgeValue = get(edge, type, '');
     if (edgeValue !== '') {
-      return `${source}->${target}@${type}`;
+      return `${source}->${target}@${edgeValue}`;
     }
 
     return `${source}->${target}`;
