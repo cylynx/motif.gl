@@ -35,6 +35,7 @@ describe('Group Edge Aggregations', () => {
     it('should contains all the edge fields', () => {
       const expectedEdgeFields = [
         'amount',
+        'balance',
         'category',
         'date',
         'is_foreign_source',

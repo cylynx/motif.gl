@@ -278,9 +278,9 @@ describe('Import Single Local File', () => {
           } = props;
 
           expect(nodeLength).to.deep.equal(4);
-          expect(edgeLength).to.deep.equal(4);
+          expect(edgeLength).to.deep.equal(6);
           expect(hiddenNodeLength).to.deep.equal(0);
-          expect(hiddenEdgeLength).to.deep.equal(5);
+          expect(hiddenEdgeLength).to.deep.equal(3);
         });
     });
 
