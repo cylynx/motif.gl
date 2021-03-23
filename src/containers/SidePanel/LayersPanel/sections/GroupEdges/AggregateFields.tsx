@@ -25,6 +25,7 @@ const FieldLabels = () =>
 type AggregateFieldsProps = {
   edgeFields: Value;
   fields: GroupEdges['fields'];
+  type: GroupEdges['type'];
   onFieldChange: (params: OnChangeParams, uniqueFieldId: string) => any;
   onAggregateChange: (params: OnChangeParams, uniqueFieldId: string) => any;
   onDeleteClick: (uniqueFieldId: string) => any;

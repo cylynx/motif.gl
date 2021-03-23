@@ -1,5 +1,6 @@
 import { isEmpty, get, set, cloneDeep } from 'lodash';
 import shortid from 'shortid';
+import { group } from 'd3-array';
 import {
   Edge,
   FieldAndAggregation,
@@ -199,11 +200,13 @@ const performAggregation = (
  * Aggregate specific edge with given aggregate's field
  *
  * @param groupEdgesCandidates - edges to perform aggregations
+ * @param type - display the aggregated fields without the need to perform aggregations
  * @param fields - aggregation methods on specific fields
  * @return {Edge[]} - grouped edges
  */
 const aggregateGroupEdges = (
   groupEdgesCandidates: GroupEdgeCandidates,
+  type: string,
   fields: GroupEdgeFields = {},
 ): Edge[] => {
   return Object.entries(groupEdgesCandidates).map((value) => {
@@ -215,10 +218,13 @@ const aggregateGroupEdges = (
       fields,
     );
 
+    const groupByFields = get(firstEdge, type, '');
+
     return {
       id: `group-${shortid.generate()}`,
       source,
       target,
+      [type]: groupByFields,
       ...aggregationFields,
     };
   });
@@ -309,9 +315,13 @@ export const groupEdgesForImportation = (
   const groupEdgesCandidates = duplicateDictionary(data, type);
   if (isEmpty(groupEdgesCandidates)) return data;
 
-  const edgeIdsForRemoval = obtainGroupEdgeIds(groupEdgesCandidates);
-  const groupedEdges = aggregateGroupEdges(groupEdgesCandidates, fields);
-  const graphWithGroupEdges = produceGraphWithGroupEdges(
+  const edgeIdsForRemoval: string[] = obtainGroupEdgeIds(groupEdgesCandidates);
+  const groupedEdges: Edge[] = aggregateGroupEdges(
+    groupEdgesCandidates,
+    type,
+    fields,
+  );
+  const graphWithGroupEdges: GraphData = produceGraphWithGroupEdges(
     data,
     edgeIdsForRemoval,
     groupedEdges,
@@ -385,6 +395,7 @@ export const groupEdgesWithConfiguration = (
     // produce grouped edge with aggregations fields.
     const groupedEdges: Edge[] = aggregateGroupEdges(
       groupEdgesCandidates,
+      type,
       fields,
     );
 

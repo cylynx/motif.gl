@@ -8,6 +8,7 @@ import {
   GraphSelectors,
   GraphSlices,
   GraphThunks,
+  GroupEdgeFields,
   GroupEdgePayload,
   GroupEdges,
   UpdateGroupEdgeFieldPayload,
@@ -66,6 +67,10 @@ const useGroupEdges = (graphIndex: number) => {
    * 1. all - group all the edges
    * 2. types - group edges based on specific types.
    *
+   * The field in aggregation should not possess the option selected by group by types.
+   * By changing the group by types, we will verify whether aggregation fields
+   * possess the selected types and delete the mentioned fields once it is found.
+   *
    * @param value
    * @return {void}
    */
@@ -77,6 +82,23 @@ const useGroupEdges = (graphIndex: number) => {
     };
 
     dispatch(GraphSlices.setGroupEdgeOptions(params));
+
+    const groupEdgeFields: GroupEdgeFields = groupEdges.fields ?? {};
+    const isFieldHasGroupByType = Object.entries(groupEdgeFields).find(
+      (aggregateField) => {
+        const [, fieldWithAggregation] = aggregateField;
+
+        const { field } = fieldWithAggregation;
+        return field === value;
+      },
+    );
+
+    if (isFieldHasGroupByType !== undefined) {
+      const [uniqueFieldId] = isFieldHasGroupByType;
+      deleteFields(uniqueFieldId);
+      return;
+    }
+
     performGroupEdges();
     computeEdgeSelection();
   };
