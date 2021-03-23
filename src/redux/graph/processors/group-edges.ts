@@ -231,16 +231,29 @@ const aggregateGroupEdges = (
  * @param data - existing graph data
  * @param edgeIdsForRemoval - edge id with duplicate connectivity required to be removed from graph
  * @param groupedEdges - grouped edge ready to append into current graph
+ * @param fields - group edge's field configuration.
  * @return {GraphData} - graph with grouped edges
  */
 const produceGraphWithGroupEdges = (
   data: GraphData,
   edgeIdsForRemoval: string[],
   groupedEdges: Edge[],
+  fields: GroupEdgeFields = {},
 ): GraphData => {
-  const graphWithRemovedEdges = data.edges.filter(
-    (edge) => !edgeIdsForRemoval.includes(edge.id),
-  );
+  const graphWithRemovedEdges = data.edges
+    .filter((edge: Edge) => !edgeIdsForRemoval.includes(edge.id))
+    .map((edge: Edge) => {
+      const aggregationFields: AggregationFields = performAggregation(
+        [edge],
+        fields,
+      );
+
+      return {
+        ...edge,
+        ...aggregationFields,
+      };
+    });
+
   const graphWithGroupedEdges: Edge[] = [
     ...graphWithRemovedEdges,
     ...groupedEdges,
@@ -302,6 +315,7 @@ export const groupEdgesForImportation = (
     data,
     edgeIdsForRemoval,
     groupedEdges,
+    fields,
   );
 
   if (isEmpty(fields) === false) {
@@ -379,6 +393,7 @@ export const groupEdgesWithConfiguration = (
       ungroupedGraph,
       edgeIdsForRemoval,
       groupedEdges,
+      fields,
     );
 
     return graphWithGroupEdges;
