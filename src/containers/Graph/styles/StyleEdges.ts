@@ -174,7 +174,8 @@ export const styleEdgeLabel = (
     offset: DEFAULT_EDGE_STYLE.label.offset,
   };
 
-  const customLabel = get(edge, label, '').toString();
+  let customLabel = get(edge, label) ?? '';
+  customLabel = customLabel.toString();
 
   Object.assign(labelStyle, {
     value: customLabel,

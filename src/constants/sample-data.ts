@@ -375,3 +375,76 @@ export const SimpleGraphWithGroupEdge = (): GraphData => ({
     },
   },
 });
+
+export const GraphWithGroupEdge = () => ({
+  nodes: [{ id: 'a' }, { id: 'b' }],
+  edges: [
+    {
+      id: 'a-b1',
+      source: 'a',
+      target: 'b',
+      Value: 300000,
+      TokenName: 'Tether USD',
+    },
+    {
+      id: 'a-b2',
+      source: 'a',
+      target: 'b',
+      Value: 300000,
+      TokenName: 'Tether USD',
+    },
+    {
+      id: 'a-b3',
+      source: 'a',
+      target: 'b',
+      Value: 147000,
+      TokenName: 'ETH',
+    },
+    {
+      id: 'a-b4',
+      source: 'a',
+      target: 'b',
+      Value: 38000,
+      TokenName: 'Tether USD',
+    },
+    {
+      id: 'a-b5',
+      source: 'a',
+      target: 'b',
+      Value: 31000,
+      TokenName: 'Tether USD',
+    },
+  ],
+  metadata: {
+    fields: {
+      // @ts-ignore
+      nodes: [],
+      edges: [
+        {
+          name: 'source',
+          format: '',
+          type: 'string',
+          analyzerType: 'STRING',
+        },
+        {
+          name: 'target',
+          format: '',
+          type: 'string',
+          analyzerType: 'STRING',
+        },
+        {
+          name: 'Value',
+          format: '',
+          type: 'integer',
+          analyzerType: 'INT',
+        },
+        {
+          name: 'Tether USD',
+          format: '',
+          type: 'string',
+          analyzerType: 'STRING',
+        },
+      ],
+    },
+  },
+});

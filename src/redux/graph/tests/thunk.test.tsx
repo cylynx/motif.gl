@@ -1046,6 +1046,8 @@ describe('add-data-thunk.test.js', () => {
         });
       });
     });
+
+    describe('Group By Types', () => {});
   });
 
   describe('computeEdgeSelection', () => {
