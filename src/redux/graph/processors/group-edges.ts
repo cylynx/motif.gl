@@ -1,6 +1,5 @@
 import { isEmpty, get, set, cloneDeep } from 'lodash';
 import shortid from 'shortid';
-import { group } from 'd3-array';
 import {
   Edge,
   FieldAndAggregation,
