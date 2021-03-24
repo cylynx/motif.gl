@@ -109,7 +109,7 @@ const initialState: GraphState = {
         id: 'fixed',
         value: 1,
       },
-      label: 'none',
+      label: '-',
     },
   },
   filterOptions: {},
@@ -286,10 +286,12 @@ const graph = createSlice({
     ) {
       const { data } = action.payload;
       const { graphFlatten } = state;
-
-      const graphData = combineProcessedData(data, graphFlatten as GraphData);
-      updateAll(state, graphData);
-      updateSelections(state, data);
+      let graphData;
+      if (data?.metadata?.visible !== false) {
+        graphData = combineProcessedData(data, graphFlatten as GraphData);
+        updateAll(state, graphData);
+        updateSelections(state, data);
+      }
     },
     setAccessors(state, action: PayloadAction<Accessors>) {
       state.accessors = action.payload;

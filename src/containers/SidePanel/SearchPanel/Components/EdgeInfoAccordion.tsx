@@ -37,8 +37,6 @@ const EdgeInfoAccordion = ({
             paddingBottom: $expanded ? $theme.sizing.scale200 : 0,
             paddingLeft: $theme.sizing.scale300,
             paddingRight: $theme.sizing.scale300,
-            backgroundColor: '#323742',
-            color: $theme.colors.mono200,
             borderBottomWidth: 0,
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
@@ -47,15 +45,12 @@ const EdgeInfoAccordion = ({
         },
         Header: {
           style: ({ $theme }) => ({
+            ...$theme.typography.LabelSmall,
             paddingLeft: $theme.sizing.scale500,
             paddingRight: $theme.sizing.scale300,
             paddingTop: $theme.sizing.scale200,
             paddingBottom: $theme.sizing.scale200,
-            backgroundColor: $theme.colors.backgroundSecondary,
-            color: $theme.colors.backgroundInverseSecondary,
             borderBottomStyle: 'none',
-            fontWeight: 600,
-            fontSize: '12px',
           }),
         },
         ToggleIcon: {

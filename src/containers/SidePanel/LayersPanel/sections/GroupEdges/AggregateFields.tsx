@@ -1,6 +1,6 @@
 import React, { useMemo, FC } from 'react';
 import { Block } from 'baseui/block';
-import { LabelXSmall } from 'baseui/typography';
+import { LabelSmall } from 'baseui/typography';
 import { Select, SIZE, Option, OnChangeParams, Value } from 'baseui/select';
 import { Theme } from 'baseui/theme';
 import { colors } from 'baseui/tokens';
@@ -16,7 +16,7 @@ const FieldLabels = () =>
   useMemo(
     () => (
       <Block marginTop='scale200'>
-        <LabelXSmall>Field with Aggregations</LabelXSmall>
+        <LabelSmall>Aggregations</LabelSmall>
       </Block>
     ),
     [],
@@ -30,6 +30,7 @@ type AggregateFieldsProps = {
   onAggregateChange: (params: OnChangeParams, uniqueFieldId: string) => any;
   onDeleteClick: (uniqueFieldId: string) => any;
 };
+
 const AggregateFields: FC<AggregateFieldsProps> = ({
   edgeFields,
   type,
@@ -76,7 +77,7 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
           <Block display='flex'>
             <Select
               data-testid='aggregate-fields:field'
-              size={SIZE.mini}
+              size={SIZE.compact}
               searchable={false}
               clearable={false}
               escapeClearsValue={false}
@@ -99,10 +100,6 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
                 overrides={{
                   BaseButton: {
                     style: ({ $theme }: { $theme: Theme }) => ({
-                      paddingTop: '7px',
-                      paddingRight: $theme.sizing.scale300,
-                      paddingBottom: $theme.sizing.scale300,
-                      paddingLeft: $theme.sizing.scale300,
                       backgroundColor: $theme.colors.backgroundTertiary,
                       ':hover': {
                         backgroundColor: colors.red500,
@@ -114,24 +111,24 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
                 <Icon.Trash />
               </Button>
             </Block>
-          </Block>
 
-          <Block width='100%' marginTop='scale100'>
-            <Select
-              data-testid='aggregate-fields:aggregate'
-              size={SIZE.mini}
-              searchable={false}
-              clearable={false}
-              escapeClearsValue={false}
-              multi
-              options={aggregationOpt}
-              value={aggregationValue}
-              placeholder='Click to Select Aggregations...'
-              maxDropdownHeight='300px'
-              onChange={(params: OnChangeParams) =>
-                onAggregateChange(params, uniqueFieldId)
-              }
-            />
+            <Block width='100%' marginTop='scale200'>
+              <Select
+                data-testid='aggregate-fields:aggregate'
+                size={SIZE.compact}
+                searchable={false}
+                clearable={false}
+                escapeClearsValue={false}
+                multi
+                options={aggregationOpt}
+                value={aggregationValue}
+                placeholder='Click to Select Aggregations...'
+                maxDropdownHeight='300px'
+                onChange={(params: OnChangeParams) =>
+                  onAggregateChange(params, uniqueFieldId)
+                }
+              />
+            </Block>
           </Block>
         </Block>
       );
