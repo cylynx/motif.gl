@@ -111,24 +111,24 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
                 <Icon.Trash />
               </Button>
             </Block>
+          </Block>
 
-            <Block width='100%' marginTop='scale200'>
-              <Select
-                data-testid='aggregate-fields:aggregate'
-                size={SIZE.compact}
-                searchable={false}
-                clearable={false}
-                escapeClearsValue={false}
-                multi
-                options={aggregationOpt}
-                value={aggregationValue}
-                placeholder='Click to Select Aggregations...'
-                maxDropdownHeight='300px'
-                onChange={(params: OnChangeParams) =>
-                  onAggregateChange(params, uniqueFieldId)
-                }
-              />
-            </Block>
+          <Block width='100%' marginTop='scale200'>
+            <Select
+              data-testid='aggregate-fields:aggregate'
+              size={SIZE.compact}
+              searchable={false}
+              clearable={false}
+              escapeClearsValue={false}
+              multi
+              options={aggregationOpt}
+              value={aggregationValue}
+              placeholder='Click to Select Aggregations...'
+              maxDropdownHeight='300px'
+              onChange={(params: OnChangeParams) =>
+                onAggregateChange(params, uniqueFieldId)
+              }
+            />
           </Block>
         </Block>
       );
