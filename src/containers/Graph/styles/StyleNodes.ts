@@ -30,7 +30,7 @@ export const styleNodes = (
 ): void => {
   // Separated out as it cannot be done in the loop
   if (nodeStyleOptions.size && nodeStyleOptions.size.id !== 'fixed') {
-    styleNodeSizeByProp(data, nodeStyleOptions.size);
+    styleNodeSizeByProp(data, nodeStyleOptions);
   }
 
   data.nodes.forEach((node: Node) => {
@@ -41,6 +41,7 @@ export const styleNodes = (
     if (nodeStyleOptions.size && nodeStyleOptions.size.id === 'fixed') {
       const { value } = size as NodeSizeFixed;
       styleNodeSize(nodeStyle, value);
+      styleNodeIcon(node, nodeStyle, color, value);
     }
     if (nodeStyleOptions.color) {
       styleNodeColor(node, nodeStyle, color);
@@ -51,8 +52,6 @@ export const styleNodes = (
     if (nodeStyleOptions.label) {
       styleNodeLabel(node, nodeStyle, label);
     }
-
-    styleNodeIcon(node, nodeStyle, color);
 
     Object.assign(node, {
       style: nodeStyle,
@@ -111,6 +110,7 @@ export const mapNodeSize = (
   nodes: Node[],
   propertyName: string,
   visualRange: [number, number],
+  nodeStyleOptions: NodeStyleOptions,
 ): void => {
   let minp = 9999999999;
   let maxp = -9999999999;
@@ -141,6 +141,8 @@ export const mapNodeSize = (
   const rangepLength = maxp - minp;
   const rangevLength = visualRange[1] - visualRange[0];
   nodes.forEach((node: Node) => {
+    const nodeStyle: Partial<NodeStyle> = node.style ?? {};
+    const { color } = nodeStyleOptions;
     let nodeSize =
       ((Number(get(node, propertyName)) ** (1 / 3) - minp) / rangepLength) *
         rangevLength +
@@ -152,6 +154,8 @@ export const mapNodeSize = (
     Object.assign(node.style.keyshape, {
       size: nodeSize,
     });
+
+    styleNodeIcon(node, nodeStyle, color, nodeSize);
   });
 };
 
@@ -166,8 +170,9 @@ export const mapNodeSize = (
  */
 export const styleNodeSizeByProp = (
   data: GraphData,
-  option: NodeSize,
+  nodeStyleOptions: NodeStyleOptions,
 ): void => {
+  const option = nodeStyleOptions.size;
   if (option.id === 'degree') {
     data.nodes.forEach((node) => {
       node.degree = 0;
@@ -177,9 +182,9 @@ export const styleNodeSizeByProp = (
         }
       });
     });
-    mapNodeSize(data.nodes, 'degree', option.range);
+    mapNodeSize(data.nodes, 'degree', option.range, nodeStyleOptions);
   } else if (option.id === 'property' && option.variable) {
-    mapNodeSize(data.nodes, option.variable, option.range);
+    mapNodeSize(data.nodes, option.variable, option.range, nodeStyleOptions);
   }
 };
 
@@ -334,7 +339,7 @@ export const styleNodeIcon = (
   color: NodeColor,
   keyshapeSize: number = DEFAULT_NODE_STYLE.keyshape.size,
 ) => {
-  const nodePadding = 8;
+  const nodePadding = Math.round(keyshapeSize / 3);
   const iconStyle = nodeStyle.icon ?? {
     type: 'font',
     size: keyshapeSize - nodePadding,
