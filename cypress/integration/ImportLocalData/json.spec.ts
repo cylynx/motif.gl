@@ -4,6 +4,7 @@ import {
   GraphSelectors,
   GraphSlices,
   StyleOptions,
+  Field,
 } from '../../../src/redux/graph';
 
 const jsonDatasetRootPath = 'LocalFiles/Json';
@@ -277,9 +278,9 @@ describe('Import Single Local File', () => {
           } = props;
 
           expect(nodeLength).to.deep.equal(4);
-          expect(edgeLength).to.deep.equal(4);
+          expect(edgeLength).to.deep.equal(6);
           expect(hiddenNodeLength).to.deep.equal(0);
-          expect(hiddenEdgeLength).to.deep.equal(5);
+          expect(hiddenEdgeLength).to.deep.equal(3);
         });
     });
 
@@ -301,6 +302,44 @@ describe('Import Single Local File', () => {
         .nthNode(0)
         .getProps('fields')
         .should('deep.eq', expectedGroupEdgeOutput['fields']);
+    });
+
+    it('edge properties should display correct edge aggregated fields', async () => {
+      cy.react('EdgeProperties').click();
+
+      const graphState: GraphState = await getGraphStates();
+      const { edgeSelection } = graphState;
+
+      cy.getReact('EdgeProperties')
+        .nthNode(0)
+        .getProps('edgeFields')
+        .should('deep.eq', edgeSelection);
+    });
+
+    it('variable inspector should display correct selections', async () => {
+      const { graphFlatten }: GraphState = await getGraphStates();
+      const graphFields = graphFlatten.metadata.fields;
+      const validTypes = ['integer', 'real', 'timestamp', 'date'];
+
+      const nodeOptions = graphFields.edges
+        .filter((f: Field) => validTypes.includes(f.type))
+        .map((f) => {
+          const optionKey = `edges-${f.name}`;
+          return {
+            id: f.name,
+            label: f.name,
+            type: f.type,
+            analyzerType: f.analyzerType,
+            format: f.format,
+            from: 'edges',
+            optionKey,
+          };
+        });
+
+      cy.getReact('SelectVariable')
+        .nthNode(0)
+        .getProps('options.Edges')
+        .should('deep.eq', nodeOptions);
     });
   });
 });

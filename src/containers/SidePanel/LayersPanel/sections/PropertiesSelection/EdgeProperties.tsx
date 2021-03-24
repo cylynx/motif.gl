@@ -43,7 +43,7 @@ const EdgeProperties: FC<EdgePropertiesProps> = ({ haveData, edgeFields }) => {
               {haveData ? (
                 <Block display='flex'>
                   <ParagraphSmall marginTop={0}>
-                    Hint: Select node properties to display in tooltip
+                    Hint: Select edge properties to display in tooltip
                   </ParagraphSmall>
                   <ToggleAllButton
                     selected={isAllEdgeSelected}

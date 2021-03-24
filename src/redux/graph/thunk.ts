@@ -1,5 +1,6 @@
 import flatten from 'lodash/flatten';
 import isEmpty from 'lodash/isEmpty';
+import cloneDeep from 'lodash/cloneDeep';
 import { getFilterOptions, getGraph, getStyleOptions } from './selectors';
 
 import {
@@ -7,6 +8,7 @@ import {
   addQuery,
   processGraphResponse,
   updateStyleOption,
+  overwriteEdgeSelection,
 } from './slice';
 import {
   importEdgeListCsv,
@@ -24,13 +26,17 @@ import {
   TLoadFormat,
   StyleOptions,
   GraphState,
+  Field,
+  Selection,
 } from './types';
 
 import { UISlices, UIThunks } from '../ui';
 import {
+  aggregateMetadataFields,
   groupEdgesForImportation,
   groupEdgesWithConfiguration,
 } from './processors/group-edges';
+import { removeDuplicates } from '../../containers/Graph/styles/utils';
 
 type ImportAccessors = Accessors | null;
 
@@ -306,5 +312,71 @@ export const groupEdgesWithAggregation = (graphIndex: number) => (
     groupEdges,
   );
 
-  dispatch(updateGraphFlatten(newGraphData));
+  // obtain the combined aggregated edge fields of entire graph.
+  const combinedAggregatedEdgeFields: Field[][] = graphList.reduce(
+    (acc: Field[][], graphData: GraphData) => {
+      const { metadata } = graphData;
+
+      const edgeAggregateFields: Field[] = aggregateMetadataFields(
+        graphData,
+        metadata.groupEdges.fields,
+      );
+
+      const combinedEdgeField = removeDuplicates(
+        [...metadata.fields.edges, ...edgeAggregateFields],
+        'name',
+      ) as Field[];
+
+      acc.push(combinedEdgeField);
+      return acc;
+    },
+    [],
+  );
+
+  // map the aggregated edge fields as edge selections
+  const flattenEdgeFields: Field[] = flatten(combinedAggregatedEdgeFields);
+  const uniqueEdgeFields = removeDuplicates(
+    flattenEdgeFields,
+    'name',
+  ) as Field[];
+
+  const modData = cloneDeep(newGraphData);
+
+  Object.assign(modData.metadata.fields, {
+    edges: uniqueEdgeFields,
+  });
+
+  dispatch(updateGraphFlatten(modData));
+};
+
+/**
+ * Update edge selections based on group edge configurations.
+ *
+ * @return {void}
+ */
+export const computeEdgeSelection = () => (
+  dispatch: any,
+  getState: any,
+): void => {
+  const { graphFlatten, edgeSelection }: GraphState = getGraph(getState());
+  const { edges: edgeFields } = graphFlatten.metadata.fields;
+
+  const computedEdgeSelection: Selection[] = edgeFields.map(
+    (edgeField: Field) => {
+      const { name, type } = edgeField;
+      const existingSelection = edgeSelection.find(
+        (selection: Selection) => selection.id === edgeField.name,
+      );
+      const isSelected: boolean = existingSelection?.selected ?? false;
+
+      return {
+        id: name,
+        label: name,
+        type,
+        selected: isSelected,
+      };
+    },
+  );
+
+  dispatch(overwriteEdgeSelection(computedEdgeSelection));
 };

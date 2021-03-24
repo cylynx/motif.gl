@@ -1,4 +1,4 @@
-import { isEmpty, get, set } from 'lodash';
+import { isEmpty, get, set, cloneDeep } from 'lodash';
 import shortid from 'shortid';
 import {
   Edge,
@@ -7,6 +7,9 @@ import {
   GroupEdgeFields,
   GroupEdges,
   GroupEdgeCandidates,
+  NumericAggregations,
+  StringAggregations,
+  Field,
 } from '../types';
 import {
   average,
@@ -22,6 +25,16 @@ import {
 } from '../../../utils/edge-aggregations/string-aggregates';
 
 type AggregationFields = Record<string, number | string>;
+
+const combineEdgeFields = (myArr: Field[], prop: string): Field[] => {
+  const seen = new Set();
+  const filteredArr = myArr.filter((el) => {
+    const duplicate = seen.has(el[prop]);
+    seen.add(el[prop]);
+    return !duplicate;
+  });
+  return filteredArr;
+};
 
 /**
  * Obtain the duplicate edge connectivity in graph
@@ -42,7 +55,7 @@ export const duplicateDictionary = (
 
     const edgeValue = get(edge, type, '');
     if (edgeValue !== '') {
-      return `${source}->${target}@${type}`;
+      return `${source}->${target}@${edgeValue}`;
     }
 
     return `${source}->${target}`;
@@ -115,44 +128,65 @@ const performAggregation = (
       const { field, aggregation } = aggregationList;
 
       if (aggregation.includes('min' as never)) {
-        const smallestValue: number = min(edgeCandidates, field);
-        set(acc, `Min ${field}`, smallestValue);
+        const smallestValue: number | string = min(edgeCandidates, field);
+
+        if (smallestValue !== 'no-values') {
+          set(acc, `min ${field}`, smallestValue);
+        }
       }
 
       if (aggregation.includes('max' as never)) {
-        const largestValue: number = max(edgeCandidates, field);
-        set(acc, `Max ${field}`, largestValue);
+        const largestValue: number | string = max(edgeCandidates, field);
+
+        if (largestValue !== 'no-values') {
+          set(acc, `max ${field}`, largestValue);
+        }
       }
 
       if (aggregation.includes('sum' as never)) {
-        const sumValue: number = sum(edgeCandidates, field);
-        set(acc, `Sum ${field}`, sumValue);
+        const sumValue: number | string = sum(edgeCandidates, field);
+
+        if (sumValue !== 'no-values') {
+          set(acc, `sum ${field}`, sumValue);
+        }
       }
 
       if (aggregation.includes('count' as never)) {
         const countValue: number = count(edgeCandidates, field);
-        set(acc, `Count ${field}`, countValue);
+        set(acc, `count ${field}`, countValue);
       }
 
       if (aggregation.includes('average' as never)) {
-        const averageValue: number = average(edgeCandidates, field);
-        const fixPrecision: string = Number(averageValue).toPrecision(5);
-        set(acc, `Average ${field}`, fixPrecision);
+        let averageValue: number | string = average(edgeCandidates, field);
+
+        if (averageValue !== 'no-values') {
+          averageValue = Number(averageValue).toPrecision(5);
+          set(acc, `average ${field}`, parseFloat(averageValue));
+        }
       }
 
       if (aggregation.includes('first' as never)) {
         const firstValue: string = first(edgeCandidates, field);
-        set(acc, `First ${field}`, firstValue);
+
+        if (firstValue !== 'no-values') {
+          set(acc, `first ${field}`, firstValue);
+        }
       }
 
       if (aggregation.includes('last' as never)) {
         const lastValue: string = last(edgeCandidates, field);
-        set(acc, `Last ${field}`, lastValue);
+
+        if (lastValue !== 'no-values') {
+          set(acc, `last ${field}`, lastValue);
+        }
       }
 
       if (aggregation.includes('most_frequent' as never)) {
-        const lastValue: string = mostFrequent(edgeCandidates, field);
-        set(acc, `Most Frequent ${field}`, lastValue);
+        const mostFrequentValue: string = mostFrequent(edgeCandidates, field);
+
+        if (mostFrequentValue !== 'no-values') {
+          set(acc, `most_frequent ${field}`, mostFrequentValue);
+        }
       }
 
       return acc;
@@ -165,26 +199,31 @@ const performAggregation = (
  * Aggregate specific edge with given aggregate's field
  *
  * @param groupEdgesCandidates - edges to perform aggregations
+ * @param type - display the aggregated fields without the need to perform aggregations
  * @param fields - aggregation methods on specific fields
  * @return {Edge[]} - grouped edges
  */
 const aggregateGroupEdges = (
   groupEdgesCandidates: GroupEdgeCandidates,
+  type: string,
   fields: GroupEdgeFields = {},
 ): Edge[] => {
   return Object.entries(groupEdgesCandidates).map((value) => {
     const [, groupEdgeCandidate] = value;
     const [firstEdge] = groupEdgeCandidate as Edge[];
-    const { source, target } = firstEdge as Edge;
+    const { id, source, target } = firstEdge as Edge;
     const aggregationFields: AggregationFields = performAggregation(
       groupEdgeCandidate,
       fields,
     );
 
+    const groupByFields = get(firstEdge, type, '');
+
     return {
-      id: `group-${shortid.generate()}`,
+      id: `group-${id}`,
       source,
       target,
+      [type]: groupByFields,
       ...aggregationFields,
     };
   });
@@ -197,16 +236,29 @@ const aggregateGroupEdges = (
  * @param data - existing graph data
  * @param edgeIdsForRemoval - edge id with duplicate connectivity required to be removed from graph
  * @param groupedEdges - grouped edge ready to append into current graph
+ * @param fields - group edge's field configuration.
  * @return {GraphData} - graph with grouped edges
  */
 const produceGraphWithGroupEdges = (
   data: GraphData,
   edgeIdsForRemoval: string[],
   groupedEdges: Edge[],
+  fields: GroupEdgeFields = {},
 ): GraphData => {
-  const graphWithRemovedEdges = data.edges.filter(
-    (edge) => !edgeIdsForRemoval.includes(edge.id),
-  );
+  const graphWithRemovedEdges = data.edges
+    .filter((edge: Edge) => !edgeIdsForRemoval.includes(edge.id))
+    .map((edge: Edge) => {
+      const aggregationFields: AggregationFields = performAggregation(
+        [edge],
+        fields,
+      );
+
+      return {
+        ...edge,
+        ...aggregationFields,
+      };
+    });
+
   const graphWithGroupedEdges: Edge[] = [
     ...graphWithRemovedEdges,
     ...groupedEdges,
@@ -263,15 +315,37 @@ export const groupEdgesForImportation = (
   const groupEdgesCandidates = duplicateDictionary(data, type);
   if (isEmpty(groupEdgesCandidates)) return data;
 
-  const edgeIdsForRemoval = obtainGroupEdgeIds(groupEdgesCandidates);
-  const groupedEdges = aggregateGroupEdges(groupEdgesCandidates, fields);
-  const graphData = produceGraphWithGroupEdges(
+  const edgeIdsForRemoval: string[] = obtainGroupEdgeIds(groupEdgesCandidates);
+  const groupedEdges: Edge[] = aggregateGroupEdges(
+    groupEdgesCandidates,
+    type,
+    fields,
+  );
+  const graphWithGroupEdges: GraphData = produceGraphWithGroupEdges(
     data,
     edgeIdsForRemoval,
     groupedEdges,
+    fields,
   );
 
-  return graphData;
+  if (isEmpty(fields) === false) {
+    const edgeAggregateFields: Field[] = aggregateMetadataFields(
+      graphWithGroupEdges,
+      fields,
+    );
+    // combine edge fields with aggregate fields
+    const combinedEdgeField: Field[] = combineEdgeFields(
+      [...data.metadata.fields.edges, ...edgeAggregateFields],
+      'name',
+    );
+
+    const modData = cloneDeep(graphWithGroupEdges);
+    Object.assign(modData.metadata.fields.edges, combinedEdgeField);
+
+    return modData;
+  }
+
+  return graphWithGroupEdges;
 };
 
 /**
@@ -321,17 +395,19 @@ export const groupEdgesWithConfiguration = (
     // produce grouped edge with aggregations fields.
     const groupedEdges: Edge[] = aggregateGroupEdges(
       groupEdgesCandidates,
+      type,
       fields,
     );
 
     // remove duplicate edges and combine the grouped edges with current graph.
-    const combinedGraphData: GraphData = produceGraphWithGroupEdges(
+    const graphWithGroupEdges: GraphData = produceGraphWithGroupEdges(
       ungroupedGraph,
       edgeIdsForRemoval,
       groupedEdges,
+      fields,
     );
 
-    return combinedGraphData;
+    return graphWithGroupEdges;
   };
 
   const revertGroupEdge = (graphData: GraphData, graphFlatten: GraphData) => {
@@ -356,4 +432,53 @@ export const groupEdgesWithConfiguration = (
   }
 
   return revertGroupEdge(graphData, graphFlatten);
+};
+
+/**
+ * Combine graph metadata edge fields with aggregated fields.
+ * 1. Variable Inspector
+ * 2. Edge Selection
+ *
+ * @param graphData
+ * @param groupEdgeField
+ * @return {Field[]}
+ */
+export const aggregateMetadataFields = (
+  graphData: GraphData,
+  groupEdgeField: GroupEdgeFields = {},
+): Field[] => {
+  const { edges: edgeFields } = graphData.metadata.fields;
+  if (isEmpty(groupEdgeField)) return edgeFields;
+
+  // compute edge aggregate fields ready to append into graph's edge field
+  const edgeAggregateFields: Field[] = Object.values(groupEdgeField).reduce(
+    (accumulateField: Field[], fieldsWithAggr: FieldAndAggregation) => {
+      const { field, aggregation } = fieldsWithAggr;
+
+      const edgeAggregateField: Field[] = (aggregation as (
+        | NumericAggregations
+        | StringAggregations
+      )[]).map((aggr) => {
+        const aggregateField = `${aggr} ${field}`;
+
+        const oriEdgeField: Field = edgeFields.find(
+          (edgeField: Field) => edgeField.name === field,
+        );
+
+        const { format, type, analyzerType } = oriEdgeField;
+
+        return {
+          name: aggregateField,
+          format,
+          type,
+          analyzerType,
+        };
+      });
+
+      return [...accumulateField, ...edgeAggregateField];
+    },
+    [],
+  );
+
+  return edgeAggregateFields;
 };

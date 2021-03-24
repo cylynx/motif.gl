@@ -1,34 +1,32 @@
 import inRange from 'lodash/inRange';
 import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
-import set from 'lodash/set';
 import has from 'lodash/has';
 import slice from 'lodash/slice';
 
 import { Option } from 'baseui/select';
 import { isWithinInterval } from 'date-fns';
 import {
-  flattenObject,
   ALL_FIELD_TYPES,
+  flattenObject,
 } from '../../../redux/graph/processors/data';
 import { styleEdges } from './StyleEdges';
 import { styleNodes } from './StyleNodes';
 import { unixTimeConverter } from '../../../utils/data-utils';
 import {
   Edge,
-  Field,
-  FilterOptions,
-  FilterCriteria,
-  GraphData,
-  StyleOptions,
-  Node,
   EdgeNode,
-  TimeRange,
+  Field,
+  FilterCriteria,
+  FilterOptions,
   GraphAttribute,
-  TimeSeries,
-  SearchOptPagination,
+  GraphData,
   ItemProperties,
-  GroupEdges,
+  Node,
+  SearchOptPagination,
+  StyleOptions,
+  TimeRange,
+  TimeSeries,
 } from '../../../redux/graph/types';
 
 import { ITEM_PER_PAGE } from '../../../constants/widget-units';
@@ -169,61 +167,6 @@ export const datatoTS = (data: GraphData, edgeTime: string): TimeSeries =>
 export const chartRange = (timeRange: TimeRange): TimeRange => {
   const range = Math.max((timeRange[1] - timeRange[0]) / 8, 1000 * 60 * 60);
   return [timeRange[0] - range, timeRange[1] + range];
-};
-
-/**
- * Remove duplicates from array by checking on prop
- *
- * @param {(Node[] | Edge[] | [])} myArr
- * @param {string} prop
- * @return {Node[] | Edge[] | Field[]}
- */
-export const removeDuplicates = (
-  myArr: Node[] | Edge[] | Field[] | [],
-  prop: string,
-): Node[] | Edge[] | Field[] => {
-  const seen = new Set();
-  const filteredArr = myArr.filter((el) => {
-    const duplicate = seen.has(el[prop]);
-    seen.add(el[prop]);
-    return !duplicate;
-  });
-  return filteredArr;
-};
-
-/**
- * Combines processed data by removing duplicate nodes and edges
- *
- * @param {GraphData} newData
- * @param {GraphData} oldData
- * @return {*}  {GraphData}
- */
-export const combineProcessedData = (
-  newData: GraphData,
-  oldData: GraphData,
-): GraphData => {
-  if (oldData) {
-    const modData = { ...oldData };
-    modData.nodes = removeDuplicates(
-      [...newData.nodes, ...oldData.nodes],
-      'id',
-    ) as Node[];
-    modData.edges = removeDuplicates(
-      [...newData.edges, ...oldData.edges],
-      'id',
-    ) as Edge[];
-    // Get unique fields metadata
-    modData.metadata.fields.nodes = removeDuplicates(
-      [...newData.metadata.fields.nodes, ...oldData.metadata.fields.nodes],
-      'name',
-    ) as Field[];
-    modData.metadata.fields.edges = removeDuplicates(
-      [...newData.metadata.fields.edges, ...oldData.metadata.fields.edges],
-      'name',
-    ) as Field[];
-    return modData;
-  }
-  return newData;
 };
 
 /**
@@ -709,4 +652,57 @@ export const paginateItems = (
     nodes: currentNodes,
     edges: [],
   };
+};
+/**
+ * Combines processed data by removing duplicate nodes and edges
+ *
+ * @param {GraphData} newData
+ * @param {GraphData} oldData
+ * @return {*}  {GraphData}
+ */
+export const combineProcessedData = (
+  newData: GraphData,
+  oldData: GraphData,
+): GraphData => {
+  if (oldData) {
+    const modData = { ...oldData };
+    modData.nodes = removeDuplicates(
+      [...newData.nodes, ...oldData.nodes],
+      'id',
+    ) as Node[];
+    modData.edges = removeDuplicates(
+      [...newData.edges, ...oldData.edges],
+      'id',
+    ) as Edge[];
+    // Get unique fields metadata
+    modData.metadata.fields.nodes = removeDuplicates(
+      [...newData.metadata.fields.nodes, ...oldData.metadata.fields.nodes],
+      'name',
+    ) as Field[];
+    modData.metadata.fields.edges = removeDuplicates(
+      [...newData.metadata.fields.edges, ...oldData.metadata.fields.edges],
+      'name',
+    ) as Field[];
+    return modData;
+  }
+  return newData;
+};
+/**
+ * Remove duplicates from array by checking on prop
+ *
+ * @param {(Node[] | Edge[] | [])} myArr
+ * @param {string} prop
+ * @return {Node[] | Edge[] | Field[]}
+ */
+export const removeDuplicates = (
+  myArr: Node[] | Edge[] | Field[] | [],
+  prop: string,
+): Node[] | Edge[] | Field[] => {
+  const seen = new Set();
+  const filteredArr = myArr.filter((el) => {
+    const duplicate = seen.has(el[prop]);
+    seen.add(el[prop]);
+    return !duplicate;
+  });
+  return filteredArr;
 };

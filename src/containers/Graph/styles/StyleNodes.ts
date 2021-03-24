@@ -301,8 +301,6 @@ export const styleNodeColor = (
 
   if (variableProperty) {
     const nodeColor = normalizeColor(mapping[variableProperty as string]);
-    console.log(variableProperty);
-    console.log(nodeColor);
 
     Object.assign(nodeStyle, {
       keyshape: Object.assign(nodeKeyShape, {

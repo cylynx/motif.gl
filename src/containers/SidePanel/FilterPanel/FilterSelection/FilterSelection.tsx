@@ -2,6 +2,7 @@ import React, { FC, useCallback, useMemo, useState } from 'react';
 import { OnChangeParams, Value } from 'baseui/select';
 import { Block } from 'baseui/block';
 import debounce from 'lodash/debounce';
+import { ParagraphSmall } from 'baseui/typography';
 import Header from './Header';
 import RangePlot, { HistogramProp } from './RangePlot';
 import StringSelect from './StringSelect';
@@ -11,7 +12,10 @@ import {
   SelectOptions,
   SelectVariableOption,
 } from '../../../../components/SelectVariable/SelectVariable';
-import { getFieldDomain } from '../../../../utils/data-utils';
+import {
+  getFieldDomain,
+  TimeRangeFieldDomain,
+} from '../../../../utils/data-utils';
 import {
   FilterCriteria,
   GraphData,
@@ -66,12 +70,25 @@ const FilterSelection: FC<FilterSelectionProps> = ({
       }
 
       if (analyzerType !== 'STRING') {
-        const { domain, step, histogram } = getFieldDomain(
+        const fieldDomain = getFieldDomain(
           graphFlatten[from],
           (x) => x[id],
           analyzerType,
           format,
         );
+
+        if (fieldDomain === false) {
+          filterCriteria.analyzerType = null;
+          updateFilterCriteria(idx, filterCriteria);
+          return;
+        }
+
+        const { domain, step, histogram } = getFieldDomain(
+          graphFlatten[from],
+          (x) => x[id],
+          analyzerType,
+          format,
+        ) as TimeRangeFieldDomain;
 
         const histogramProp: HistogramProp = {
           domain,
@@ -157,6 +174,26 @@ const FilterSelection: FC<FilterSelectionProps> = ({
     );
   }, [filterAttribute]);
 
+  const dataNotFoundMessage = useMemo(() => {
+    const { analyzerType, selection } = filterAttribute;
+
+    if (selection !== null && analyzerType === null) {
+      return (
+        <Block
+          height='scale1200'
+          display='flex'
+          alignItems='center'
+          justifyContent='center'
+          backgroundColor='backgroundTertiary'
+        >
+          <ParagraphSmall>Data not found after edge is grouped.</ParagraphSmall>
+        </Block>
+      );
+    }
+
+    return null;
+  }, [filterAttribute]);
+
   return (
     <Block marginBottom='scale500'>
       <Header
@@ -166,6 +203,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
         onDeleteBtnClick={onDeleteBtnClick}
       />
       {selection}
+      {dataNotFoundMessage}
     </Block>
   );
 };
