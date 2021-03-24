@@ -28,6 +28,7 @@ import {
 } from '../processors/import';
 import { fetchBegin, fetchDone, updateToast } from '../../ui/slice';
 import {
+  GraphWithGroupEdge,
   SimpleEdge,
   SimpleGraphWithGroupEdge,
 } from '../../../constants/sample-data';
@@ -37,6 +38,7 @@ import {
   Field,
   GraphData,
   GraphList,
+  GroupEdges,
   ImportFormat,
   Selection,
   TLoadFormat,
@@ -933,12 +935,7 @@ describe('add-data-thunk.test.js', () => {
         store.getActions().forEach((actions) => {
           const { payload } = actions;
           const { edges } = payload;
-
-          edges.forEach((edge: Edge, index: number) => {
-            const { id, ...results } = edge;
-            const { id, ...expected } = newGraphData.edges[index];
-            expect(results).toEqual(expected);
-          });
+          expect(edges).toEqual(newGraphData.edges);
         });
       });
 
@@ -1047,7 +1044,66 @@ describe('add-data-thunk.test.js', () => {
       });
     });
 
-    describe('Group By Types', () => {});
+    describe('Group By Types', () => {
+      const graphWithGroupEdge = GraphWithGroupEdge();
+
+      const importedGraphState = (): RootState => {
+        const store = {
+          investigate: {
+            ui: {},
+            widget: {},
+            graph: {
+              present: {
+                graphList: [graphWithGroupEdge],
+                graphFlatten: graphWithGroupEdge,
+              },
+            },
+          },
+        };
+        return store;
+      };
+
+      const store = mockStore(importedGraphState());
+      const graphIndex = 0;
+      let newGraphData = {};
+      beforeEach(() => {
+        const { graphList, graphFlatten } = getGraph(store.getState());
+        const selectedGraphList: GraphData = graphList[graphIndex];
+
+        const { groupEdges } = selectedGraphList.metadata;
+
+        newGraphData = groupEdgesWithConfiguration(
+          selectedGraphList,
+          graphFlatten,
+          groupEdges,
+        );
+      });
+
+      afterEach(() => {
+        store.clearActions();
+      });
+
+      it('should compute the correct grouped edges', async () => {
+        await store.dispatch(groupEdgesWithAggregation(graphIndex));
+
+        store.getActions().forEach((actions) => {
+          const { payload } = actions;
+          const { edges } = payload;
+          expect(edges).toEqual(newGraphData.edges);
+        });
+      });
+
+      it('should derive correct group edge configuration', async () => {
+        await store.dispatch(groupEdgesWithAggregation(graphIndex));
+
+        store.getActions().forEach((actions) => {
+          const { payload } = actions;
+          const { groupEdges } = payload.metadata;
+
+          expect(groupEdges).toEqual(newGraphData.metadata.groupEdges);
+        });
+      });
+    });
   });
 
   describe('computeEdgeSelection', () => {
