@@ -9,7 +9,7 @@ describe('String Filters', () => {
         'data-testid': 'filter-selection-header:delete',
       },
     })
-      .first()
+      .nthNode(0)
       .click();
   };
 

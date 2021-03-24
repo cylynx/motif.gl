@@ -439,12 +439,27 @@ export const GraphWithGroupEdge = () => ({
           analyzerType: 'INT',
         },
         {
-          name: 'Tether USD',
+          name: 'TokenName',
           format: '',
           type: 'string',
           analyzerType: 'STRING',
         },
       ],
+    },
+    groupEdges: {
+      toggle: true,
+      availability: true,
+      type: 'TokenName',
+      fields: {
+        Or2fv2L2W: {
+          field: 'Value',
+          aggregation: ['count', 'sum', 'max'],
+        },
+        Sfdjksdf2: {
+          field: 'TokenName',
+          aggregation: ['first', 'last', 'most_frequent'],
+        },
+      },
     },
   },
 });

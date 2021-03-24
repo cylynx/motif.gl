@@ -211,7 +211,7 @@ const aggregateGroupEdges = (
   return Object.entries(groupEdgesCandidates).map((value) => {
     const [, groupEdgeCandidate] = value;
     const [firstEdge] = groupEdgeCandidate as Edge[];
-    const { source, target } = firstEdge as Edge;
+    const { id, source, target } = firstEdge as Edge;
     const aggregationFields: AggregationFields = performAggregation(
       groupEdgeCandidate,
       fields,
@@ -220,7 +220,7 @@ const aggregateGroupEdges = (
     const groupByFields = get(firstEdge, type, '');
 
     return {
-      id: `group-${shortid.generate()}`,
+      id: `group-${id}`,
       source,
       target,
       [type]: groupByFields,
