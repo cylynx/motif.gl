@@ -257,7 +257,8 @@ export const groupEdgesForImportation = (
   data: GraphData,
   groupEdgeConfig: GroupEdges = {},
 ): GraphData => {
-  const { type, fields } = groupEdgeConfig;
+  const { type, toggle, fields } = groupEdgeConfig;
+  if (toggle === false) return data;
 
   const groupEdgesCandidates = duplicateDictionary(data, type);
   if (isEmpty(groupEdgesCandidates)) return data;
