@@ -110,7 +110,6 @@ export const mapNodeSize = (
   nodes: Node[],
   propertyName: string,
   visualRange: [number, number],
-  nodeStyleOptions: NodeStyleOptions,
 ): void => {
   let minp = 9999999999;
   let maxp = -9999999999;
@@ -141,8 +140,6 @@ export const mapNodeSize = (
   const rangepLength = maxp - minp;
   const rangevLength = visualRange[1] - visualRange[0];
   nodes.forEach((node: Node) => {
-    const nodeStyle: Partial<NodeStyle> = node.style ?? {};
-    const { color } = nodeStyleOptions;
     let nodeSize =
       ((Number(get(node, propertyName)) ** (1 / 3) - minp) / rangepLength) *
         rangevLength +
@@ -154,8 +151,6 @@ export const mapNodeSize = (
     Object.assign(node.style.keyshape, {
       size: nodeSize,
     });
-
-    styleNodeIcon(node, nodeStyle, color, nodeSize);
   });
 };
 
@@ -182,10 +177,17 @@ export const styleNodeSizeByProp = (
         }
       });
     });
-    mapNodeSize(data.nodes, 'degree', option.range, nodeStyleOptions);
+    mapNodeSize(data.nodes, 'degree', option.range);
   } else if (option.id === 'property' && option.variable) {
-    mapNodeSize(data.nodes, option.variable, option.range, nodeStyleOptions);
+    mapNodeSize(data.nodes, option.variable, option.range);
   }
+
+  // Adjust icon size
+  data.nodes.forEach((node) => {
+    const nodeStyle: Partial<NodeStyle> = node.style ?? {};
+    const { color } = nodeStyleOptions;
+    styleNodeIcon(node, nodeStyle, color, nodeStyle.keyshape.size);
+  });
 };
 
 /**
