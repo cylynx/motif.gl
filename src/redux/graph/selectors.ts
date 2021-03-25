@@ -11,6 +11,7 @@ import {
   SearchOptions,
   ItemProperties,
   SearchOptPagination,
+  GroupEdges,
 } from './types';
 import {
   deriveVisibleGraph,
@@ -19,10 +20,31 @@ import {
   getField,
   combineProcessedData,
 } from '../../containers/Graph/styles/utils';
+import { groupEdgesForImportation } from './processors/group-edges';
 
 const getGraph = (state: any): GraphState => state.investigate.graph.present;
 const getAccessors = (state: any): Accessors => getGraph(state).accessors;
 const getGraphList = (state: any): GraphList => getGraph(state).graphList;
+
+// obtain the grouped edges of every single graph list with given group edge configuration.
+// created to make comparison with the ungroup graph to display hidden fields.
+//
+// this selector may not correctly memoize as the results will be different on each call
+// and perform recompute instead of returning the cached value.
+const getAggregatedGroupGraphList = (
+  state: any,
+  graphIndex: number,
+  groupEdges: GroupEdges = {},
+): GraphData => {
+  const { graphList } = getGraph(state);
+  const selectedGraphList: GraphData = graphList[graphIndex];
+
+  const graphWithGroupEdge: GraphData = groupEdgesForImportation(
+    selectedGraphList,
+    groupEdges,
+  );
+  return graphWithGroupEdge;
+};
 
 // obtain the grouped edges graph flatten
 const getGraphFlatten = (state: any): GraphData => getGraph(state).graphFlatten;
@@ -158,6 +180,7 @@ export {
   getStyleOptions,
   getFilterOptions,
   getSearchOptions,
+  getAggregatedGroupGraphList,
   getPaginateItems,
   getGraphFiltered,
   getGraphVisible,

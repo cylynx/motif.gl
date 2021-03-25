@@ -11,8 +11,8 @@ type GraphStatisticsProps = {
 const GraphStatistics: FC<GraphStatisticsProps> = ({
   nodeLength,
   edgeLength,
-  hiddenNodeLength,
-  hiddenEdgeLength,
+  hiddenNodeLength = 0,
+  hiddenEdgeLength = 0,
   size = 'large',
 }) => {
   return useMemo(
@@ -21,14 +21,14 @@ const GraphStatistics: FC<GraphStatisticsProps> = ({
         <Statistic
           value={nodeLength}
           label='Nodes:'
-          subtitle={`${hiddenNodeLength} hidden`}
+          subtitle={`${hiddenNodeLength < 0 ? 0 : hiddenNodeLength} hidden`}
           data-testid='nodes-count'
           size={size}
         />
         <Statistic
           value={edgeLength}
           label='Edges:'
-          subtitle={`${hiddenEdgeLength} hidden`}
+          subtitle={`${hiddenEdgeLength < 0 ? 0 : hiddenEdgeLength} hidden`}
           data-testid='edges-count'
           size={size}
         />
