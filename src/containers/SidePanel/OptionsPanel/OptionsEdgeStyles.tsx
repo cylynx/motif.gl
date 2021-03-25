@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useMemo } from 'react';
 
 import { Block } from 'baseui/block';
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,14 +34,25 @@ const OptionsEdgeStyles = () => {
   const updateEdgeStyle = (data: any) =>
     dispatch(GraphSlices.changeEdgeStyle(data));
 
+  const edgeWidthPropertyValue = useMemo(() => {
+    if (edgeStyle.width.id === 'property') {
+      return edgeStyle.width.variable;
+    }
+
+    if (numericEdgeFields.length > 0) {
+      return numericEdgeFields[0].id;
+    }
+
+    return null;
+  }, [numericEdgeFields, edgeStyle.width]);
+
   const edgeWidthFormData = genNestedForm(
     edgeWidthForm,
     edgeStyle,
     updateEdgeStyle,
     {
       'property[0].options': numericEdgeFields,
-      'property[0].value':
-        numericEdgeFields.length > 0 ? numericEdgeFields[0].id : null,
+      'property[0].value': edgeWidthPropertyValue,
     },
   );
 
