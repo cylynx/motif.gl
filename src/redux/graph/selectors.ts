@@ -26,18 +26,35 @@ const getGraph = (state: any): GraphState => state.investigate.graph.present;
 const getAccessors = (state: any): Accessors => getGraph(state).accessors;
 const getGraphList = (state: any): GraphList => getGraph(state).graphList;
 
-// obtain the grouped edges of every single graph list with given group edge configuration.
-// created to make comparison with the ungroup graph to display hidden fields.
-//
-// this selector may not correctly memoize as the results will be different on each call
-// and perform recompute instead of returning the cached value.
+/**
+ * obtain the grouped edges of every single graph list with given group edge configuration.
+ * created to make comparison with the ungroup graph to display hidden fields.
+ *
+ * this selector may not correctly memoize as the results will be different on each call
+ * and perform recompute instead of returning the cached value.
+ *
+ * @param state - application global states
+ * @param graphIndex - index to access specific graph data
+ * @param visible - graph visibility that determine the data should returned
+ * @param groupEdges - group edge configuration
+ * @return {GraphData}
+ */
 const getAggregatedGroupGraphList = (
   state: any,
   graphIndex: number,
+  visible: boolean,
   groupEdges: GroupEdges = {},
 ): GraphData => {
   const { graphList } = getGraph(state);
   const selectedGraphList: GraphData = graphList[graphIndex];
+
+  if (visible === false) {
+    return {
+      nodes: [],
+      edges: [],
+      metadata: selectedGraphList.metadata,
+    };
+  }
 
   const graphWithGroupEdge: GraphData = groupEdgesForImportation(
     selectedGraphList,
