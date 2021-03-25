@@ -39,8 +39,8 @@ const LayersPanel = () => {
         <GraphStatistics
           nodeLength={graphFlatten.nodes.length}
           edgeLength={graphFlatten.edges.length}
-          hiddenNodeLength={hiddenNodes}
-          hiddenEdgeLength={hiddenEdges}
+          hiddenNodeLength={hiddenNodes < 0 ? 0 : hiddenNodes}
+          hiddenEdgeLength={hiddenEdges < 0 ? 0 : hiddenEdges}
         />
       </Block>
       <PropertiesSelections />
