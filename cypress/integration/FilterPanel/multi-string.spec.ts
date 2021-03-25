@@ -71,6 +71,7 @@ describe('String Filters', () => {
     });
 
     afterEach(() => {
+      cy.wait(500);
       deleteButtonClick();
     });
 
