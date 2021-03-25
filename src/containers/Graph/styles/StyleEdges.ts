@@ -244,7 +244,6 @@ export const styleEdgeArrow = (
     return;
   }
 
-  edgeKeyShape.endArrow = DEFAULT_EDGE_STYLE.keyshape.endArrow;
   Object.assign(edgeStyle, { keyshape: edgeKeyShape });
 };
 
