@@ -1,6 +1,7 @@
 ---
 name: 'New Feature'
 about: Introduce a new functional capabilities available to the user.
+labels: feature
 ---
 
 ## Description

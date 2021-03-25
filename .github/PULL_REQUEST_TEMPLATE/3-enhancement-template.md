@@ -1,6 +1,7 @@
 ---
 name: 'Enhancement'
 about: Introduce improvements on existing features, documentation content, builds, CI or code style.
+labels: enhancement
 ---
 
 ## Description

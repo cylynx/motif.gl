@@ -1,6 +1,7 @@
 ---
 name: 'Bug Fix'
 about: Introduce bug fix to specific defects or errors.
+labels: bugs
 ---
 
 ## Description
