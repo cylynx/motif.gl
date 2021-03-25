@@ -1,16 +1,17 @@
 ---
-name: 'Bug Fix'
-about: Introduce bug fix to specific defects or errors.
+name: 'New Feature'
+about: Introduce a new functional capabilities available to the user.
+labels: feature
 ---
 
 ## Description
 
-Describe the bug fixes introduced.
+Describe the chracteristics of the new feature introduced.
 
 Example:
 
-1. Fix button not disable while field is empty.
-2. Implement exception handling on specific process to handle runtime errors.
+1. Left Click on Nodes should display tooltip in the canvas based on the position of mouse pointer.
+2. The tooltip should display the node's metadata based on the Node Selection's preferences.
 
 ## Detailed Description
 
@@ -19,8 +20,8 @@ improve/solve our existing problems.
 
 Example:
 
-1. Prevent bot traffic spamming on form submission.
-2. Prevent application crash in the browser when unexpected behavior occurs.
+1. User can view the information of specific nodes and get an idea of the variables.
+2. Describe the characteristic of node and identify the potential relationship with connected edges.
 
 ## Technical Discussion
 
