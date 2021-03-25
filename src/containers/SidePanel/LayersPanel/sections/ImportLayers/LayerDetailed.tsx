@@ -45,8 +45,8 @@ const LayerDetailed = ({ graph, index }: LayerDetailProps) => {
         <GraphStatistics
           nodeLength={visibleNodeLength}
           edgeLength={visibleEdgeLength}
-          hiddenNodeLength={hiddenNodeLength}
-          hiddenEdgeLength={hiddenEdgeLength}
+          hiddenNodeLength={hiddenNodeLength < 0 ? 0 : hiddenNodeLength}
+          hiddenEdgeLength={hiddenEdgeLength < 0 ? 0 : hiddenEdgeLength}
           size='medium'
         />
       </Block>
