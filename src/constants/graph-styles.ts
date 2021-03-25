@@ -28,6 +28,15 @@ export const nodeStateStyles: { status: NodeStyle['status'] } = {
         visible: true,
       },
     },
+    disabled: {
+      icon: {
+        type: 'font',
+        fill: grey.dark,
+        value: '',
+        fontFamily: 'Material Icons',
+        visible: true,
+      },
+    },
   },
 };
 
