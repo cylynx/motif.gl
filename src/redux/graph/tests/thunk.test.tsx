@@ -139,6 +139,7 @@ describe('add-data-thunk.test.js', () => {
         metadata: {
           key: 234,
         },
+        key: 234,
       },
       type: 'json',
     };
@@ -315,6 +316,52 @@ describe('add-data-thunk.test.js', () => {
           initialState.accessors,
           true,
         ),
+      );
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+
+    it('should import successfully without metadata', async () => {
+      const graphWithoutMetadata = simpleGraphOne;
+      delete graphWithoutMetadata.data.metadata;
+      const groupEdgeToggle = false;
+
+      const importDataArr = [graphWithoutMetadata];
+
+      // processes
+      const batchDataPromises = importDataArr.map((graphData: ImportFormat) => {
+        const { data } = graphData;
+        return importJson(
+          data as GraphList,
+          initialState.accessors,
+          groupEdgeToggle,
+        );
+      });
+
+      const graphDataArr = await Promise.all(batchDataPromises);
+      const [graphData] = flatten(graphDataArr);
+
+      // group edge configuration arrangements
+      const groupEdgeConfig = {
+        availability: false,
+        toggle: groupEdgeToggle,
+      };
+      graphData.metadata.groupEdges = groupEdgeConfig;
+
+      // expected results
+      const expectedActions = [
+        fetchBegin(),
+        addQuery(graphData),
+        processGraphResponse({
+          data: graphData,
+          accessors: initialState.accessors,
+        }),
+        fetchDone(),
+        updateToast('toast-0'),
+      ];
+
+      // assertions
+      await store.dispatch(
+        importJsonData(importDataArr, groupEdgeToggle, initialState.accessors),
       );
       expect(store.getActions()).toEqual(expectedActions);
     });
