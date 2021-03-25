@@ -47,7 +47,7 @@ describe('Data List Header', () => {
       cy.react('DeleteButton')
         .last()
         .click();
-      cy.wait(750);
+      cy.wait(1000);
 
       cy.getReact('GraphStatistics')
         .nthNode(0)
