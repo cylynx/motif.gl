@@ -86,6 +86,8 @@ export const defaultEdge: { style: Partial<EdgeStyle> } = {
       fill: DEFAULT_EDGE_STYLE.label.fill,
       fillOpacity: DEFAULT_EDGE_STYLE.opacity - 0.1,
       offset: DEFAULT_EDGE_STYLE.label.offset,
+      // @ts-ignore
+      textAlign: DEFAULT_EDGE_STYLE.label.textAlign,
     },
     keyshape: {
       strokeOpacity: DEFAULT_EDGE_STYLE.opacity,

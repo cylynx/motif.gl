@@ -111,6 +111,7 @@ export const DEFAULT_EDGE_STYLE = {
   label: {
     fill: edgeFontColor.dark,
     fontSize: 12,
+    textAlign: 'center',
     offset: [0, 5],
   },
   keyshape: {
