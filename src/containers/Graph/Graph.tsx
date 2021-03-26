@@ -31,7 +31,13 @@ const Graph = React.forwardRef<Graphin, GraphProps>(({ setTooltip }, ref) => {
     (state) => GraphSelectors.getStyleOptions(state).layout,
   );
 
-  const { DragCanvas, ClickSelect, LassoSelect, BrushSelect } = Behaviors;
+  const {
+    DragCanvas,
+    ClickSelect,
+    LassoSelect,
+    BrushSelect,
+    FontPaint,
+  } = Behaviors;
 
   return (
     <Graphin
@@ -53,6 +59,7 @@ const Graph = React.forwardRef<Graphin, GraphProps>(({ setTooltip }, ref) => {
       <ClickSelect trigger='shift' />
       <BrushSelect trigger='shift' includeEdges />
       <DisplaySelectedProperty />
+      <FontPaint />
     </Graphin>
   );
 });
