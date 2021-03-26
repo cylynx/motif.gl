@@ -1,14 +1,8 @@
 import { useSelector } from 'react-redux';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Block } from 'baseui/block';
 import { styled } from 'baseui';
-import {
-  Edge,
-  GraphData,
-  GraphList,
-  GraphSelectors,
-  Node,
-} from '../../../../../redux/graph';
+import { GraphData, GraphSelectors } from '../../../../../redux/graph';
 import GraphStatistics from '../../components/GraphStatistics';
 import GroupEdges from '../GroupEdges';
 import useGroupEdges from '../../hooks/useGroupEdges';
@@ -23,9 +17,15 @@ const StyledHr = styled('hr', ({ $theme }) => ({
 type LayerDetailProps = { graph: GraphData; index: number };
 const LayerDetailed = ({ graph, index }: LayerDetailProps) => {
   const { groupEdges } = useGroupEdges(index);
+  const { visible } = graph.metadata;
 
   const graphWithGroupEdge = useSelector((state) =>
-    GraphSelectors.getAggregatedGroupGraphList(state, index, groupEdges),
+    GraphSelectors.getAggregatedGroupGraphList(
+      state,
+      index,
+      visible,
+      groupEdges,
+    ),
   );
 
   // compute the information for statistics
