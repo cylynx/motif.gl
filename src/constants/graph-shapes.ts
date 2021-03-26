@@ -111,6 +111,7 @@ export const DEFAULT_EDGE_STYLE = {
   label: {
     fill: edgeFontColor.dark,
     fontSize: 12,
+    textAlign: 'center',
     offset: [0, 5],
   },
   keyshape: {
@@ -150,6 +151,11 @@ export const DEFAULT_EDGE_STYLE = {
       keyshape: {
         lineWidth: edgeLineWidth - 0.5,
         stroke: '#ddd',
+        endArrow: {
+          d: -1 / 2,
+          path: `M 0,0 L 4,2 L 4,-2 Z`,
+          fill: '#ddd',
+        },
       },
       halo: {
         visible: false,
