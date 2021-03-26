@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Block } from 'baseui/block';
 import { OnChangeParams, Value, Option } from 'baseui/select';
 import { useSelector } from 'react-redux';
@@ -27,13 +27,13 @@ const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
   } = useGroupEdges(graphListIndex);
 
   const { resetSearchOptions } = useSearchOption();
-
   const graphList: GraphList = useSelector((state: RootState) =>
     getGraphList(state),
   );
   const { edges: allEdgeFields } = graphList[graphListIndex].metadata.fields;
 
-  const edgeFields = useMemo(() => {
+  // this edge options are use by group by selections
+  const groupByEdgeFields = useMemo(() => {
     return allEdgeFields
       .filter(
         (option: Field) =>
@@ -50,6 +50,14 @@ const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
       });
   }, [allEdgeFields]);
 
+  // this edge options exclude the options from group by types because
+  // it's redundant to perform aggregation on the unique fields.
+  const aggregateEdgeFields: Option[] = useMemo(() => {
+    return groupByEdgeFields.filter(
+      (edgeField: Option) => edgeField.id !== (groupEdges.type ?? ''),
+    );
+  }, [groupByEdgeFields, groupEdges.type]);
+
   const existingFields = useMemo(
     () =>
       Object.entries(groupEdges.fields ?? {}).map((data) => {
@@ -60,20 +68,27 @@ const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
   );
 
   const unselectedFields: Value = useMemo(() => {
-    return edgeFields.filter(
+    return aggregateEdgeFields.filter(
       (edgeField: Option) => !existingFields.includes(edgeField.id as string),
     );
-  }, [edgeFields, existingFields]);
+  }, [aggregateEdgeFields, existingFields]);
 
+  /**
+   * Determine whether user is allow to add fields with the following conditions:
+   * 1. does not contain any fields.
+   *
+   * User is not allow to add fields with the following conditions:
+   * 1. all the fields are selected.
+   * 2. values is empty.
+   *
+   * @return {boolean}
+   */
   const isAllowAddFields: boolean = useMemo(() => {
-    // does not contains any field
     const { fields } = groupEdges;
     if (!fields) return true;
 
-    // all the fields already selected, doesn't require to add fields.
     if (unselectedFields.length === 0) return false;
 
-    // values is empty do not allow to add field
     const isValuesEmpty = Object.entries(fields).some(
       ([, fieldAggregation]) => {
         const { aggregation } = fieldAggregation as FieldAndAggregation;
@@ -115,15 +130,20 @@ const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
     );
   };
 
-  const addFields = () => {
-    // there is no existing fields, create a field with edge fields.
+  /**
+   * 1. There is no existing fields, create a field with edge options.
+   * 2. Create a field with remaining edge options that yet to be selected
+   *    to prevent repeat with existing fields in UX.
+   *
+   * @return {void}
+   */
+  const addFields = (): void => {
     if (existingFields.length === 0) {
-      const [firstOption] = edgeFields;
+      const [firstOption] = aggregateEdgeFields;
       updateFields(firstOption.id as string);
       return;
     }
 
-    // create a field with remaining edge fields that prevent repeat with existing fields.
     const [firstOption] = unselectedFields;
     if (!firstOption) return;
 
@@ -140,7 +160,7 @@ const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
         disabled={!groupEdges.availability}
         toggle={groupEdges.toggle}
         type={groupEdges.type}
-        edgeFields={edgeFields}
+        edgeFields={groupByEdgeFields}
         onTypeChange={onTypeChange}
         onToggleChange={onCheckboxChange}
       />
@@ -148,8 +168,9 @@ const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
       {groupEdges.toggle && (
         <>
           <AggregateFields
-            edgeFields={edgeFields}
+            edgeFields={aggregateEdgeFields}
             fields={groupEdges.fields}
+            type={groupEdges.type}
             onFieldChange={onFieldChange}
             onAggregateChange={onAggregateChange}
             onDeleteClick={removeField}

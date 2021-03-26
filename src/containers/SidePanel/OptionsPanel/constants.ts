@@ -189,7 +189,7 @@ export const nodeSizeForm: NestedFormData = {
       id: 'range',
       label: 'Scaling range (min - max)',
       type: 'slider',
-      value: [5, 20],
+      value: [15, 30],
       min: 1,
       max: 50,
     },
@@ -209,7 +209,7 @@ export const nodeSizeForm: NestedFormData = {
       id: 'range',
       label: 'Scaling range (min - max)',
       type: 'slider',
-      value: [5, 20],
+      value: [15, 30],
       min: 1,
       max: 50,
     },
@@ -267,8 +267,8 @@ export const nodeLabelForm: SimpleFormData = {
   label: 'Label',
   labelPosition: 'left',
   type: 'select',
-  value: 'label',
-  options: [{ id: 'label', label: 'label' }],
+  value: '-',
+  options: [{ id: '-', label: '-' }],
   callback: (data: any) => console.log(data),
 };
 
@@ -347,8 +347,8 @@ export const edgeLabelForm: SimpleFormData = {
   label: 'Label',
   labelPosition: 'left',
   type: 'select',
-  value: 'none',
-  options: [{ id: 'none', label: 'None' }],
+  value: '-',
+  options: [{ id: '-', label: '-' }],
   callback: (data: any) => console.log(data),
 };
 

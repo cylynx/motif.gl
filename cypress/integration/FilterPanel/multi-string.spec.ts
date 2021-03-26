@@ -9,7 +9,7 @@ describe('String Filters', () => {
         'data-testid': 'filter-selection-header:delete',
       },
     })
-      .first()
+      .nthNode(0)
       .click();
   };
 
@@ -71,6 +71,7 @@ describe('String Filters', () => {
     });
 
     afterEach(() => {
+      cy.wait(500);
       deleteButtonClick();
     });
 

@@ -4,7 +4,6 @@ import { NodeStyle } from '@antv/graphin';
 import { darken } from 'polished';
 import { Theme } from 'baseui/theme';
 import shortid from 'shortid';
-import { LabelXSmall } from 'baseui/typography';
 import { Node, Edge, NodeItemType, EdgeNode } from '../../../../redux/graph';
 import { flattenObject } from '../../../../redux/graph/processors/data';
 import { removeEmptyValueInObject } from '../../../../utils/data-utils';
@@ -77,17 +76,26 @@ const TableContent = ({ results }: TableContentProps) => {
           >
             {key}:
           </Block>
-          <Block $style={{ verticalAlign: 'top' }}>{value}</Block>
+          <Block
+            overrides={{
+              Block: {
+                style: {
+                  verticalAlign: 'top',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                },
+              },
+            }}
+          >
+            {value}
+          </Block>
         </Block>
       );
     });
   }, [results]);
 
-  return (
-    <Block overrides={{ Block: { style: { fontSize: '12px' } } }}>
-      {contentRows}
-    </Block>
-  );
+  return <Block>{contentRows}</Block>;
 };
 
 const useItemInformation = () => {
@@ -106,7 +114,7 @@ const useItemInformation = () => {
         <Block
           as='span'
           marginLeft='scale300'
-          color='contentTertiary'
+          color='contentSecondary'
           overrides={{
             Block: {
               style: {
@@ -151,7 +159,7 @@ const useItemInformation = () => {
         <Block
           as='span'
           marginLeft='scale300'
-          color='contentTertiary'
+          color='contentSecondary'
           overrides={{
             Block: {
               style: {

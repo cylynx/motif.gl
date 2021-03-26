@@ -7,11 +7,11 @@ import { format } from 'd3-format';
 
 import { DomainType, generateNumericTicks, NumericTicks } from './utils';
 
-const MINIMUM_WIDTH: number = 300;
-const MINIMUM_HEIGHT: number = 20;
+const MINIMUM_WIDTH = 300;
+const MINIMUM_HEIGHT = 20;
 
 type AxisRef = SVGSVGElement | null;
-type NumericAxisProps = {
+export type NumericAxisProps = {
   domain: DomainType;
   width?: number;
   height?: number;
@@ -38,7 +38,10 @@ const NumericAxis: FC<NumericAxisProps> = ({
     const renderAxis = () => {
       if (axis.current === null) return;
 
-      const scale = scaleLinear().domain(domain).range([0, width]);
+      const scale = scaleLinear()
+        .domain(domain)
+        .range([0, width]);
+
       const {
         tickValues,
         type,
@@ -53,7 +56,10 @@ const NumericAxis: FC<NumericAxisProps> = ({
       if (type === 'integer') {
         const formatValue = format('~s');
         xAxisGenerator.tickFormat((d: NumberValue) =>
-          formatValue(d).replace('k', 'K').replace('m', 'M').replace('G', 'B'),
+          formatValue(d)
+            .replace('k', 'K')
+            .replace('m', 'M')
+            .replace('G', 'B'),
         );
       }
 
@@ -81,5 +87,4 @@ const NumericAxis: FC<NumericAxisProps> = ({
   );
 };
 
-export type { NumericAxisProps };
 export default NumericAxis;

@@ -203,7 +203,7 @@ export const getFieldDomain = (
   valueAccessor?: Accessor,
   type?: string,
   format?: string,
-): TimeRangeFieldDomain => {
+): TimeRangeFieldDomain | false => {
   // to avoid converting string format time to epoch
   // every time we compare we store a value mapped to int in filter domain
 
@@ -219,6 +219,9 @@ export const getFieldDomain = (
       if (d != null) mappedValue.push(d);
     }
   }
+
+  // mapped value is undefined and empty, do not proceed.
+  if (mappedValue.length === 0) return false;
 
   if (type === 'DATETIME' || type === 'DATE' || type === 'TIME') {
     mappedValue = mappedValue.map((dt: string) =>

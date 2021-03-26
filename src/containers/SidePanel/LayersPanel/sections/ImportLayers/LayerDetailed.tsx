@@ -1,16 +1,11 @@
 import { useSelector } from 'react-redux';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Block } from 'baseui/block';
 import { styled } from 'baseui';
-import {
-  Edge,
-  GraphData,
-  GraphList,
-  GraphSelectors,
-  Node,
-} from '../../../../../redux/graph';
+import { GraphData, GraphSelectors } from '../../../../../redux/graph';
 import GraphStatistics from '../../components/GraphStatistics';
 import GroupEdges from '../GroupEdges';
+import useGroupEdges from '../../hooks/useGroupEdges';
 
 const StyledHr = styled('hr', ({ $theme }) => ({
   borderColor: $theme.colors.mono700,
@@ -21,42 +16,23 @@ const StyledHr = styled('hr', ({ $theme }) => ({
 
 type LayerDetailProps = { graph: GraphData; index: number };
 const LayerDetailed = ({ graph, index }: LayerDetailProps) => {
-  const graphFlatten = useSelector((state) =>
-    GraphSelectors.getGraphFlatten(state),
+  const { groupEdges } = useGroupEdges(index);
+  const { visible } = graph.metadata;
+
+  const graphWithGroupEdge = useSelector((state) =>
+    GraphSelectors.getAggregatedGroupGraphList(
+      state,
+      index,
+      visible,
+      groupEdges,
+    ),
   );
 
-  const graphNodeIds: string[] = graph.nodes.map((x: Node) => x.id);
-  const graphEdgeIds: string[] = graph.edges.map((x: Edge) => x.id);
-
-  // obtain the group edges that belongs to this dataframe
-  const currentGroupEdges = useMemo(() => {
-    return graphFlatten.edges
-      .filter((e: Edge) => e.id.includes('group'))
-      .filter(
-        (e: Edge) =>
-          graphNodeIds.includes(e.source) && graphNodeIds.includes(e.target),
-      );
-  }, [graphFlatten.edges, graphNodeIds]);
-
-  // obtain the nodes that belongs to this dataframe
-  const currentGraphNodes = useMemo(() => {
-    return graphFlatten.nodes.filter((node: Node) =>
-      graphNodeIds.includes(node.id),
-    );
-  }, [graphFlatten.nodes]);
-
-  // obtain the edges that belongs to this dataframe
-  const currentGraphEdges = useMemo(() => {
-    return graphFlatten.edges.filter((edge: Edge) =>
-      graphEdgeIds.includes(edge.id),
-    );
-  }, [graphFlatten.edges]);
-
   // compute the information for statistics
-  const visibleNodeLength = currentGraphNodes.length;
-  const visibleEdgeLength = currentGraphEdges.length + currentGroupEdges.length;
-  const hiddenNodeLength = graphNodeIds.length - currentGraphNodes.length;
-  const hiddenEdgeLength = graphEdgeIds.length - visibleEdgeLength;
+  const visibleNodeLength = graphWithGroupEdge.nodes.length;
+  const visibleEdgeLength = graphWithGroupEdge.edges.length;
+  const hiddenNodeLength = graph.nodes.length - visibleNodeLength;
+  const hiddenEdgeLength = graph.edges.length - visibleEdgeLength;
 
   return (
     <>

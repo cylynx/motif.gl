@@ -98,7 +98,7 @@ const TableButton = ({ onClick, ...rest }: TableButtonProps) => {
   };
 
   return (
-    <SimpleTooltip tooltip='Display Node/Edge Information'>
+    <SimpleTooltip tooltip='Node / Edge Table'>
       <Button
         size='mini'
         shape='round'

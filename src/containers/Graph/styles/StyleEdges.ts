@@ -35,6 +35,14 @@ export const styleEdges = (
   data.edges.forEach((edge: IUserEdge) => {
     const edgeStyle: Partial<EdgeStyle> = edge.style ?? {};
 
+    // If no property is found, set edge width to default
+    if (
+      edgeStyleOptions.width.id === 'property' &&
+      !edgeStyleOptions.width.variable
+    ) {
+      styleLineWidth(edgeStyle, DEFAULT_EDGE_STYLE.lineWidth);
+    }
+
     if (edgeStyleOptions.width && edgeStyleOptions.width.id === 'fixed') {
       styleLineWidth(edgeStyle, edgeStyleOptions.width.value);
     }
@@ -171,10 +179,13 @@ export const styleEdgeLabel = (
   const labelStyle: Partial<EdgeStyle['label']> = edgeStyle.label ?? {
     fill: edgeFontColor.normal,
     fontSize: DEFAULT_EDGE_STYLE.label.fontSize,
+    // @ts-ignore
+    textAlign: DEFAULT_EDGE_STYLE.label.textAlign,
     offset: DEFAULT_EDGE_STYLE.label.offset,
   };
 
-  const customLabel = get(edge, label, '').toString();
+  let customLabel = get(edge, label) ?? '';
+  customLabel = customLabel.toString();
 
   Object.assign(labelStyle, {
     value: customLabel,
@@ -235,7 +246,6 @@ export const styleEdgeArrow = (
     return;
   }
 
-  edgeKeyShape.endArrow = DEFAULT_EDGE_STYLE.keyshape.endArrow;
   Object.assign(edgeStyle, { keyshape: edgeKeyShape });
 };
 

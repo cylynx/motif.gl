@@ -8,6 +8,7 @@ import {
   GraphSelectors,
   GraphSlices,
   GraphThunks,
+  GroupEdgeFields,
   GroupEdgePayload,
   GroupEdges,
   UpdateGroupEdgeFieldPayload,
@@ -24,6 +25,14 @@ const useGroupEdges = (graphIndex: number) => {
   const groupEdges: GroupEdges = useMemo(() => {
     return graphList[graphIndex].metadata.groupEdges;
   }, [graphIndex, graphList]);
+
+  const performGroupEdges = () => {
+    dispatch(GraphThunks.groupEdgesWithAggregation(graphIndex));
+  };
+
+  const computeEdgeSelection = () => {
+    dispatch(GraphThunks.computeEdgeSelection());
+  };
 
   /**
    * toggle group edge functionality with given value.
@@ -50,16 +59,17 @@ const useGroupEdges = (graphIndex: number) => {
 
     resetState();
     performGroupEdges();
-  };
-
-  const performGroupEdges = () => {
-    dispatch(GraphThunks.groupEdgesWithAggregation(graphIndex));
+    computeEdgeSelection();
   };
 
   /**
    * change the type of group edges
    * 1. all - group all the edges
    * 2. types - group edges based on specific types.
+   *
+   * The field in aggregation should not possess the option selected by group by types.
+   * By changing the group by types, we will verify whether aggregation fields
+   * possess the selected types and delete the mentioned fields once it is found.
    *
    * @param value
    * @return {void}
@@ -72,12 +82,31 @@ const useGroupEdges = (graphIndex: number) => {
     };
 
     dispatch(GraphSlices.setGroupEdgeOptions(params));
+
+    const groupEdgeFields: GroupEdgeFields = groupEdges.fields ?? {};
+    const isFieldHasGroupByType = Object.entries(groupEdgeFields).find(
+      (aggregateField) => {
+        const [, fieldWithAggregation] = aggregateField;
+
+        const { field } = fieldWithAggregation;
+        return field === value;
+      },
+    );
+
+    if (isFieldHasGroupByType !== undefined) {
+      const [uniqueFieldId] = isFieldHasGroupByType;
+      deleteFields(uniqueFieldId);
+      return;
+    }
+
     performGroupEdges();
+    computeEdgeSelection();
   };
 
   const resetState = () => {
     dispatch(GraphSlices.resetGroupEdgeOptions(graphIndex));
     performGroupEdges();
+    computeEdgeSelection();
   };
 
   const updateFields = (value: string, uniqueFieldId = shortid.generate()) => {
@@ -89,6 +118,7 @@ const useGroupEdges = (graphIndex: number) => {
       }),
     );
     performGroupEdges();
+    computeEdgeSelection();
   };
 
   const updateAggregates = (
@@ -102,6 +132,7 @@ const useGroupEdges = (graphIndex: number) => {
     };
     dispatch(GraphSlices.updateGroupEdgeAggregate(params));
     performGroupEdges();
+    computeEdgeSelection();
   };
 
   const deleteFields = (uniqueFieldId: string) => {
@@ -111,6 +142,7 @@ const useGroupEdges = (graphIndex: number) => {
     };
     dispatch(GraphSlices.deleteGroupEdgeField(params));
     performGroupEdges();
+    computeEdgeSelection();
   };
 
   return {
@@ -120,6 +152,7 @@ const useGroupEdges = (graphIndex: number) => {
     updateFields,
     updateAggregates,
     deleteFields,
+    computeEdgeSelection,
   };
 };
 

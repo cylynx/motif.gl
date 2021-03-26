@@ -6,7 +6,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import isUndefined from 'lodash/isUndefined';
 import { Draft } from 'immer';
 import * as LAYOUT from '../../constants/layout-options';
-import { combineProcessedData } from '../../containers/Graph/styles/utils';
 import { generateDefaultColorMap } from '../../containers/Graph/styles/StyleNodes';
 import {
   Accessors,
@@ -21,9 +20,12 @@ import {
   UpdateGroupEdgeFieldPayload,
   FieldAndAggregation,
   DeleteGroupEdgeFieldPayload,
+  Field,
+  Selection,
 } from './types';
 import { DEFAULT_NODE_STYLE } from '../../constants/graph-shapes';
 import { groupEdgesForImportation } from './processors/group-edges';
+import { combineProcessedData } from '../../containers/Graph/styles/utils';
 
 /**
  * Perform update on node and edge selections.
@@ -107,7 +109,7 @@ const initialState: GraphState = {
         id: 'fixed',
         value: 1,
       },
-      label: 'none',
+      label: '-',
     },
   },
   filterOptions: {},
@@ -170,24 +172,25 @@ const graph = createSlice({
       const existingNodeFields: string[] = ['id'];
       const existingEdgeFields: string[] = ['id', 'source', 'target'];
       for (const data of graphList) {
-        if (data?.metadata?.visible !== false) {
-          let modData = data;
-
+        let modData = data;
+        if (modData?.metadata?.visible !== false) {
           // perform group edge if enable when perform data list deletion
-          if (data.metadata.groupEdges.toggle) {
+          if (modData.metadata.groupEdges.toggle) {
             modData = groupEdgesForImportation(data, data.metadata.groupEdges);
           }
 
           graphData = combineProcessedData(modData as GraphData, graphData);
         }
-        for (const field of data.metadata.fields.nodes) {
+        for (const field of modData.metadata.fields.nodes) {
           existingNodeFields.push(field.name);
         }
-        for (const field of data.metadata.fields.edges) {
+        for (const field of modData.metadata.fields.edges) {
           existingEdgeFields.push(field.name);
         }
       }
       updateAll(state, graphData);
+
+      // update node and edge selection with existing fields
       state.edgeSelection = state.edgeSelection.filter((f) =>
         existingEdgeFields.includes(f.id),
       );
@@ -283,10 +286,12 @@ const graph = createSlice({
     ) {
       const { data } = action.payload;
       const { graphFlatten } = state;
-
-      const graphData = combineProcessedData(data, graphFlatten as GraphData);
-      updateAll(state, graphData);
-      updateSelections(state, data);
+      let graphData;
+      if (data?.metadata?.visible !== false) {
+        graphData = combineProcessedData(data, graphFlatten as GraphData);
+        updateAll(state, graphData);
+        updateSelections(state, data);
+      }
     },
     setAccessors(state, action: PayloadAction<Accessors>) {
       state.accessors = action.payload;
@@ -430,6 +435,11 @@ const graph = createSlice({
     updateGraphFlatten(state, action: PayloadAction<GraphData>) {
       Object.assign(state.graphFlatten, action.payload);
     },
+    overwriteEdgeSelection(state, action: PayloadAction<Selection[]>) {
+      Object.assign(state, {
+        edgeSelection: action.payload,
+      });
+    },
   },
 });
 
@@ -465,6 +475,7 @@ export const {
   updateGroupEdgeAggregate,
   deleteGroupEdgeField,
   updateGraphFlatten,
+  overwriteEdgeSelection,
 } = graph.actions;
 
 export default graph.reducer;

@@ -11,6 +11,7 @@ import {
   SearchOptions,
   ItemProperties,
   SearchOptPagination,
+  GroupEdges,
 } from './types';
 import {
   deriveVisibleGraph,
@@ -19,10 +20,48 @@ import {
   getField,
   combineProcessedData,
 } from '../../containers/Graph/styles/utils';
+import { groupEdgesForImportation } from './processors/group-edges';
 
 const getGraph = (state: any): GraphState => state.investigate.graph.present;
 const getAccessors = (state: any): Accessors => getGraph(state).accessors;
 const getGraphList = (state: any): GraphList => getGraph(state).graphList;
+
+/**
+ * obtain the grouped edges of every single graph list with given group edge configuration.
+ * created to make comparison with the ungroup graph to display hidden fields.
+ *
+ * this selector may not correctly memoize as the results will be different on each call
+ * and perform recompute instead of returning the cached value.
+ *
+ * @param state - application global states
+ * @param graphIndex - index to access specific graph data
+ * @param visible - graph visibility that determine the data should returned
+ * @param groupEdges - group edge configuration
+ * @return {GraphData}
+ */
+const getAggregatedGroupGraphList = (
+  state: any,
+  graphIndex: number,
+  visible: boolean,
+  groupEdges: GroupEdges = {},
+): GraphData => {
+  const { graphList } = getGraph(state);
+  const selectedGraphList: GraphData = graphList[graphIndex];
+
+  if (visible === false) {
+    return {
+      nodes: [],
+      edges: [],
+      metadata: selectedGraphList.metadata,
+    };
+  }
+
+  const graphWithGroupEdge: GraphData = groupEdgesForImportation(
+    selectedGraphList,
+    groupEdges,
+  );
+  return graphWithGroupEdge;
+};
 
 // obtain the grouped edges graph flatten
 const getGraphFlatten = (state: any): GraphData => getGraph(state).graphFlatten;
@@ -96,8 +135,8 @@ const getGraphFieldsOptions = createSelector(
     ];
 
     getField(graphFields.nodes).forEach(({ name, type }) => {
-      if (name !== 'id' && name !== 'none') {
-        allNodeFields.push({ id: name, label: name, type });
+      if (name !== 'id' && name !== '-') {
+        allNodeFields.push({ id: name, label: name });
       }
       if (name !== 'id' && name !== 'degree') {
         layoutFields.push({ id: name, label: name, type });
@@ -106,17 +145,17 @@ const getGraphFieldsOptions = createSelector(
         numericNodeFields.push({ id: name, label: name, type });
       }
     });
-    const nodeLabelFields = [...allNodeFields, { id: 'none', label: 'none' }];
+    const nodeLabelFields = [...allNodeFields, { id: '-', label: '-' }];
 
     getField(graphFields.edges).forEach(({ name, type }) => {
-      if (name !== 'id' && name !== 'none') {
-        allEdgeFields.push({ id: name, label: name, type });
+      if (name !== 'id' && name !== '-') {
+        allEdgeFields.push({ id: name, label: name });
       }
       if (type === 'integer' || type === 'real') {
         numericEdgeFields.push({ id: name, label: name, type });
       }
     });
-    const edgeLabelFields = [...allEdgeFields, { id: 'none', label: 'none' }];
+    const edgeLabelFields = [...allEdgeFields, { id: '-', label: '-' }];
 
     return {
       allNodeFields,
@@ -158,6 +197,7 @@ export {
   getStyleOptions,
   getFilterOptions,
   getSearchOptions,
+  getAggregatedGroupGraphList,
   getPaginateItems,
   getGraphFiltered,
   getGraphVisible,

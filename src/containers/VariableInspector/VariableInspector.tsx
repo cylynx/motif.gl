@@ -10,10 +10,9 @@ import { useSelector } from 'react-redux';
 import get from 'lodash/get';
 import { styled } from 'baseui';
 import { Block } from 'baseui/block';
-import { LabelSmall } from 'baseui/typography';
-import { GraphinContextType } from '@antv/graphin';
-
-import { IUserNode, IUserEdge } from '@antv/graphin/lib/typings/type';
+import { LabelSmall, ParagraphSmall } from 'baseui/typography';
+import { GraphinContextType, IUserEdge, IUserNode } from '@antv/graphin';
+import isEmpty from 'lodash/isEmpty';
 import { IEdge, INode } from '@antv/g6';
 import { GraphRefContext } from '../Graph';
 import SelectVariable from '../../components/SelectVariable';
@@ -23,7 +22,11 @@ import {
   PlaybackControls,
 } from '../../components/AnimationController';
 import { Field, GraphData, GraphSelectors } from '../../redux/graph';
-import { getFieldDomain, unixTimeConverter } from '../../utils/data-utils';
+import {
+  getFieldDomain,
+  TimeRangeFieldDomain,
+  unixTimeConverter,
+} from '../../utils/data-utils';
 import { TPlotDiv, THistogramProp } from './types';
 
 const dateTimeAnalyzerTypes = ['DATETIME', 'DATE', 'TIME'];
@@ -189,13 +192,21 @@ const VariableInspector = () => {
   const onChangeSelected = useCallback(
     (obj) => {
       if (obj?.id) {
-        const { domain, step, histogram } = getFieldDomain(
+        const fieldDomain = getFieldDomain(
           graphVisible[obj.from],
           (x) => x[obj.id],
           obj.analyzerType,
           obj.format,
         );
+
         setSelection([obj]);
+        if (fieldDomain === false) {
+          setHistogramProp({});
+          setValue([]);
+          return;
+        }
+
+        const { domain, step, histogram } = fieldDomain as TimeRangeFieldDomain;
         setHistogramProp({
           domain,
           step,
@@ -267,7 +278,7 @@ const VariableInspector = () => {
           </AnimationController>
         )}
       </Block>
-      <PlotDiv $expanded={histogramProp.histogram}>
+      <PlotDiv $expanded={selection.length !== 0}>
         {histogramProp.histogram && (
           <RangePlot
             value={value as [number, number]}
@@ -278,6 +289,18 @@ const VariableInspector = () => {
             xAxisFormat={histogramProp.format}
             dataType={histogramProp.analyzerType}
           />
+        )}
+        {isEmpty(histogramProp) && selection.length !== 0 && (
+          <Block
+            height='inherit'
+            display='flex'
+            alignItems='center'
+            justifyContent='center'
+          >
+            <ParagraphSmall>
+              Data not found after edge is grouped.
+            </ParagraphSmall>
+          </Block>
         )}
       </PlotDiv>
     </Fragment>

@@ -24,9 +24,6 @@ const DisplayTooltip = ({ setTooltip }: DisplayTooltipProps): any => {
     const { shiftKey } = e.originalEvent as KeyboardEvent;
 
     if (shiftKey === false) {
-      graph.clearItemStates(item, interactionStates);
-      graph.setItemState(item, 'selected', true);
-
       const node = item.get('model');
       const point = graph.getPointByClient(e.clientX, e.clientY);
       const { x, y } = graph.getCanvasByPoint(point.x, point.y);
@@ -44,9 +41,6 @@ const DisplayTooltip = ({ setTooltip }: DisplayTooltipProps): any => {
     const { shiftKey } = e.originalEvent as KeyboardEvent;
 
     if (shiftKey === false) {
-      graph.clearItemStates(item, interactionStates);
-      graph.setItemState(item, 'selected', true);
-
       const edge = item.get('model');
       const point = graph.getPointByClient(e.clientX, e.clientY);
       const { x, y } = graph.getCanvasByPoint(point.x, point.y);
