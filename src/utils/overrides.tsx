@@ -1,20 +1,19 @@
-// @ts-nocheck
 import React from 'react';
 
-import { TooltipProps } from '../containers/Graph';
-import { WidgetItem } from '../containers/widgets';
-import { Tab } from '../containers/ImportWizard';
+import { TooltipProps } from '../containers/Tooltip';
+import { WidgetItem } from '../redux/widget';
+import { ImportTabs } from '../containers/ImportWizardModal';
 
 export interface Overrides {
-  Tabs?: Tab[];
+  Tabs?: ImportTabs[];
   Tooltip?: React.ComponentType<{ tooltip: TooltipProps }>;
   widgetList?: WidgetItem[];
 }
 
 export const getTabsOverride = (
   overrides: Overrides,
-  defaultTabs: Tab[],
-): Tab[] => {
+  defaultTabs: ImportTabs[],
+): ImportTabs[] => {
   return overrides?.Tabs || defaultTabs;
 };
 
