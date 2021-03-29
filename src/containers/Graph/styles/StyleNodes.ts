@@ -1,13 +1,12 @@
 /* eslint-disable no-param-reassign */
 import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
-import { NodeStyle } from '@antv/graphin/lib/typings/type';
+import { NodeStyle } from '@antv/graphin';
 import {
   GraphData,
   NodeStyleOptions,
   Node,
   NodeColor,
-  NodeSize,
   NodeColorFixed,
   NodeColorLegend,
   Edge,
@@ -158,8 +157,7 @@ export const mapNodeSize = (
  * Style node size based on a given method
  *
  * @param {GraphData} data
- * @param {(string | undefined)} option
- * @param {string} option
+ * @param {NodeStyleOptions} nodeStyleOptions
  *
  * @return {void}
  */
@@ -186,7 +184,8 @@ export const styleNodeSizeByProp = (
   data.nodes.forEach((node) => {
     const nodeStyle: Partial<NodeStyle> = node.style ?? {};
     const { color } = nodeStyleOptions;
-    styleNodeIcon(node, nodeStyle, color, nodeStyle.keyshape.size);
+
+    styleNodeIcon(node, nodeStyle, color, nodeStyle.keyshape?.size);
   });
 };
 
@@ -363,7 +362,6 @@ export const styleNodeIcon = (
 
   const { variable, mapping } = color as NodeColorLegend;
   const variableProperty: string | unknown = get(node, variable);
-
   if (variableProperty) {
     const nodeColor = normalizeColor(mapping[variableProperty as string]);
     iconStyle.fill = nodeColor.normal;
