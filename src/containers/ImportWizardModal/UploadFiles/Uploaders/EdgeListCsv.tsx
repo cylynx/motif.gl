@@ -1,7 +1,7 @@
 import React from 'react';
 
 const EdgeListCsv = () => {
-  return <div>Json Uploader</div>;
+  return <div>Edge List Uploader</div>;
 };
 
 export default EdgeListCsv;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const NodeEdgeCsv  = () => {
+const NodeEdgeCsv = () => {
   return <div>Node Edge Uploader</div>;
 };
 
