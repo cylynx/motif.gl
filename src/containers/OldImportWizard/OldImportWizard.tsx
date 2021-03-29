@@ -25,7 +25,7 @@ export const defaultImportTabs: Tab[] = [
   },
 ];
 
-const ImportWizard = ({ tabs }: ImportWizardProps) => {
+const OldImportWizard = ({ tabs }: ImportWizardProps) => {
   const [activeKey, setActiveKey] = useState(tabs[0].key);
   // eslint-disable-next-line no-shadow
   const onChangeTab = ({ activeKey }: { activeKey: any }) => {
@@ -46,4 +46,4 @@ const ImportWizard = ({ tabs }: ImportWizardProps) => {
   );
 };
 
-export default ImportWizard;
+export default OldImportWizard;

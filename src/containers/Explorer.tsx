@@ -13,16 +13,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useStyletron, ThemeProvider } from 'baseui';
 import { Theme } from 'baseui/theme';
 import { Block } from 'baseui/block';
-import { Modal, ModalBody, SIZE } from 'baseui/modal';
 
 import { ToasterContainer, PLACEMENT } from 'baseui/toast';
 import Graphin from '@antv/graphin';
 import { Loader } from '../components/ui';
-import DataTable from './DataTable';
+import DataTableModal from './DataTableModal';
+import ImportWizardModal from './ImportWizardModal';
 import { defaultWidgetList } from './widgets';
 import {
   Overrides,
-  getTabsOverride,
   getTooltipOverride,
   getWidgetOverride,
 } from '../utils/overrides';
@@ -32,7 +31,6 @@ import { GraphSlices, Accessors, StyleOptions } from '../redux/graph';
 import SideNavBars from './SideNavBar';
 import Graph, { GraphRefContext } from './Graph';
 import Tooltip from './Tooltip';
-import ImportWizard, { defaultImportTabs } from './ImportWizard';
 import { LEFT_LAYER_WIDTH } from '../constants/widget-units';
 import { GraphLayer } from './widgets/layer';
 
@@ -86,7 +84,6 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
 
     const [, theme] = useStyletron();
     const dispatch = useDispatch();
-    const modal = useSelector((state) => UISelectors.getUI(state).modal);
     const loading = useSelector((state) => UISelectors.getUI(state).loading);
     const widgetState = useSelector((state) =>
       WidgetSelectors.getWidget(state),
@@ -96,7 +93,6 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
     }, [widgetState]);
 
     const UserTooltip = getTooltipOverride(overrides, Tooltip);
-    const userImportTabs = getTabsOverride(overrides, defaultImportTabs);
     const widgetList = getWidgetOverride(overrides, defaultWidgetList);
     const activeWidgetList: WidgetItem[] =
       widgetList.filter((x: WidgetItem) => widgetStateIds.includes(x.id)) || [];
@@ -134,38 +130,10 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
       dispatch(GraphSlices.overrideStyles(styleOptions));
     }, [accessors, overrides?.widgetList, name]);
 
-    // UI Functions
-    const onCloseModal = () => {
-      dispatch(UISlices.closeModal());
-    };
-
     return (
       <Fragment>
-        <Modal
-          isOpen={modal.isOpen}
-          onClose={onCloseModal}
-          closeable
-          // remove warnings in the console.
-          unstable_ModalBackdropScroll
-          size={SIZE.auto}
-          overrides={{
-            Root: {
-              style: () => ({
-                position: 'absolute',
-              }),
-            },
-          }}
-        >
-          <ModalBody>
-            {modal.isOpen && modal.content === 'import' ? (
-              <ImportWizard tabs={userImportTabs} />
-            ) : modal.isOpen && modal.content.startsWith('table') ? (
-              <DataTable dataKey={modal.content} />
-            ) : (
-              modal.isOpen && modal.content
-            )}
-          </ModalBody>
-        </Modal>
+        <DataTableModal />
+        <ImportWizardModal overrides={overrides} />
         <GraphLayer
           isMainWidgetExpanded={isMainWidgetExpanded}
           leftLayerWidth={leftLayerWidth}
