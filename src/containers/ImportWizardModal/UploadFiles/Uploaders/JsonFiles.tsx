@@ -117,8 +117,8 @@ const JsonFiles = () => {
           type='submit'
           disabled={isEmptyAttachments}
           kind={KIND.primary}
-          size={SIZE.default}
-          endEnhancer={<Icon.ChevronRight size={12} />}
+          size={SIZE.compact}
+          endEnhancer={<Icon.ChevronRight size={16} />}
         >
           Continue
         </Button>
