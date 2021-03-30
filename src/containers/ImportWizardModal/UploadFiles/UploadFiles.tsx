@@ -10,7 +10,7 @@ const UploadFiles = () => {
     <Block>
       <ProgressStepper step={1} />
 
-      <Block position='relative'>
+      <Block>
         <DataTypeSelection />
       </Block>
     </Block>

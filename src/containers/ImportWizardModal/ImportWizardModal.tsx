@@ -27,6 +27,10 @@ const StyledModalHeader = withStyle(ModalHeader, ({ $theme }) => ({
   marginTop: $theme.sizing.scale600,
 }));
 
+const StyledModalBody = withStyle(ModalBody, () => ({
+  height: '90%',
+}));
+
 export type ImportWizardProps = { overrides?: Overrides };
 const ImportWizardModal: FC<ImportWizardProps> = ({ overrides }) => {
   const dispatch = useDispatch();
@@ -72,8 +76,20 @@ const ImportWizardModal: FC<ImportWizardProps> = ({ overrides }) => {
       }}
     >
       <StyledModalHeader>Add Data To Graph</StyledModalHeader>
-      <ModalBody>
-        <Tabs activeKey={activeKey} onChange={onTabChange} activateOnFocus>
+      <StyledModalBody>
+        <Tabs
+          activeKey={activeKey}
+          onChange={onTabChange}
+          activateOnFocus
+          overrides={{
+            Root: {
+              style: {
+                height: '100%',
+                position: 'relative',
+              },
+            },
+          }}
+        >
           {tabs.map((tab: ImportTabs) => (
             <Tab
               title={tab.title}
@@ -91,7 +107,7 @@ const ImportWizardModal: FC<ImportWizardProps> = ({ overrides }) => {
             </Tab>
           ))}
         </Tabs>
-      </ModalBody>
+      </StyledModalBody>
     </Modal>
   );
 };

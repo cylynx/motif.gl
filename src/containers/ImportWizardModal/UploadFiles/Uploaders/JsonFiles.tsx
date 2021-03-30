@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, useState } from 'react';
+import React, { BaseSyntheticEvent } from 'react';
 import {
   SubmitHandler,
   UnpackNestedValue,
@@ -6,14 +6,21 @@ import {
   Controller,
 } from 'react-hook-form';
 import { FileUploader } from 'baseui/file-uploader';
-import { useDispatch } from 'react-redux';
+import { Block } from 'baseui/block';
+import { Button, KIND, SIZE } from 'baseui/button';
 import { TFileContent, TFileReaderResponse } from '../types';
-import { UIThunks } from '../../../../redux/ui';
+import * as Icon from '../../../../components/Icons';
+import AttachmentList from '../../components/AttachmentList';
 
 const JsonFiles = () => {
-  const dispatch = useDispatch();
-  const [errorMessage, setErrorMessage] = useState<string>('');
-  const { watch, control, handleSubmit } = useForm({
+  const {
+    watch,
+    control,
+    handleSubmit,
+    errors,
+    setError,
+    clearErrors,
+  } = useForm({
     defaultValues: {
       dataType: 'json',
       attachments: [],
@@ -30,13 +37,15 @@ const JsonFiles = () => {
   };
 
   const onRetry = () => {
-    setErrorMessage('');
+    clearErrors('attachments');
   };
 
   const onDropRejected = () => {
-    setErrorMessage(
-      'Invalid file type. Please upload a JSON file or select the correct data type in the dropdown box.',
-    );
+    setError('attachments', {
+      type: 'manual',
+      message:
+        'Invalid file type. Please upload a JSON file or select the correct data type in the dropdown box.',
+    });
   };
 
   const onDropAccepted = (acceptedFiles: File[], onChange: any) => {
@@ -68,11 +77,12 @@ const JsonFiles = () => {
 
         onChange(jsonGraphList);
       })
-      .catch(() =>
-        dispatch(
-          UIThunks.show('The file provided is not readable', 'negative'),
-        ),
-      );
+      .catch(() => {
+        setError('attachments', {
+          type: 'manual',
+          message: 'The file provided is not readable',
+        });
+      });
   };
 
   const isEmptyAttachments: boolean = watch('attachments').length === 0;
@@ -92,11 +102,27 @@ const JsonFiles = () => {
                 onDropAccepted(acceptedOrRejected, onChange)
               }
               onDropRejected={onDropRejected}
-              errorMessage={errorMessage}
+              errorMessage={
+                errors.attachments && (errors.attachments as any).message
+              }
             />
           )
         }
       />
+
+      {isEmptyAttachments === false && <AttachmentList fileName='test.csv' />}
+
+      <Block position='absolute' bottom='0' right='0'>
+        <Button
+          type='submit'
+          disabled={isEmptyAttachments}
+          kind={KIND.primary}
+          size={SIZE.default}
+          endEnhancer={<Icon.ChevronRight size={12} />}
+        >
+          Continue
+        </Button>
+      </Block>
     </form>
   );
 };

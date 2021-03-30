@@ -7,6 +7,7 @@ import {
   HiChevronUp,
   HiOutlinePlus,
   HiCheck,
+  HiCheckCircle,
   HiX,
   HiOutlinePencil,
   HiOutlineDotsVertical,
@@ -126,6 +127,16 @@ export const Tick = ({ children, size = 16, ...rest }: IconBaseProps) => (
   <HiCheck size={size} {...rest}>
     {children}
   </HiCheck>
+);
+
+export const CheckCircle = ({
+  children,
+  size = 16,
+  ...rest
+}: IconBaseProps) => (
+  <HiCheckCircle size={size} {...rest}>
+    {children}
+  </HiCheckCircle>
 );
 
 export const X = ({ children, size = 16, ...rest }: IconBaseProps) => (
