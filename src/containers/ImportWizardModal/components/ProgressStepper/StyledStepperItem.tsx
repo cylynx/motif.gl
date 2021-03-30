@@ -1,10 +1,14 @@
 import { Theme } from 'baseui/theme';
 import { styled } from 'baseui';
 
-type StepperItemProps = { $theme?: Theme; $isActive: boolean };
+type StepperItemProps = {
+  $theme?: Theme;
+  $isActive: boolean;
+  $isDisabled: boolean;
+};
 const StyledStepperItem = styled(
   'div',
-  ({ $theme, $isActive }: StepperItemProps) => {
+  ({ $theme, $isActive, $isDisabled }: StepperItemProps) => {
     const { scale300 } = $theme.sizing;
     return {
       paddingTop: scale300,
@@ -18,7 +22,7 @@ const StyledStepperItem = styled(
       flex: 1,
       position: 'relative',
       ':hover': {
-        cursor: 'pointer',
+        cursor: $isDisabled ? 'not-allowed' : 'pointer',
       },
       ':after': {
         content: '',

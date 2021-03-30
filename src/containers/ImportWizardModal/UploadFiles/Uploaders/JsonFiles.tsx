@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent } from 'react';
+import React, { BaseSyntheticEvent, FC } from 'react';
 import {
   SubmitHandler,
   UnpackNestedValue,
@@ -8,11 +8,13 @@ import {
 import { FileUploader } from 'baseui/file-uploader';
 import { Block } from 'baseui/block';
 import { Button, KIND, SIZE } from 'baseui/button';
-import { TFileContent, TFileReaderResponse } from '../types';
+import { TFileContent, TFileReaderResponse, JsonFileForms } from '../types';
 import * as Icon from '../../../../components/Icons';
-import AttachmentList from '../../components/AttachmentList';
+import AttachmentLists from '../../components/AttachmentLists';
+import useFileContents from '../hooks/useFileContents';
 
-const JsonFiles = () => {
+type JsonFilesProps = { nextStep: () => void };
+const JsonFiles: FC<JsonFilesProps> = ({ nextStep }) => {
   const {
     watch,
     control,
@@ -20,20 +22,26 @@ const JsonFiles = () => {
     errors,
     setError,
     clearErrors,
-  } = useForm({
+    getValues,
+    setValue,
+  } = useForm<JsonFileForms>({
     defaultValues: {
-      dataType: 'json',
       attachments: [],
     },
   });
 
-  const onSubmitForm: SubmitHandler<any> = (
-    data: UnpackNestedValue<any>,
+  const { setAttachments, setDataType } = useFileContents();
+
+  const onSubmitForm: SubmitHandler<JsonFileForms> = (
+    data: UnpackNestedValue<JsonFileForms>,
     e: BaseSyntheticEvent,
   ) => {
     e.preventDefault();
 
-    console.log(data);
+    const { attachments } = data;
+    setDataType('json');
+    setAttachments(attachments);
+    nextStep();
   };
 
   const onRetry = () => {
@@ -87,6 +95,12 @@ const JsonFiles = () => {
 
   const isEmptyAttachments: boolean = watch('attachments').length === 0;
 
+  const onDeleteBtnClick = (index: number) => {
+    const fileAttachments = getValues('attachments');
+    fileAttachments.splice(index, 1);
+    setValue('attachments', fileAttachments);
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmitForm)}>
       <Controller
@@ -110,7 +124,12 @@ const JsonFiles = () => {
         }
       />
 
-      {isEmptyAttachments === false && <AttachmentList fileName='test.csv' />}
+      {isEmptyAttachments === false && (
+        <AttachmentLists
+          attachments={watch('attachments')}
+          onDeleteBtnClick={onDeleteBtnClick}
+        />
+      )}
 
       <Block position='absolute' bottom='0' right='0'>
         <Button

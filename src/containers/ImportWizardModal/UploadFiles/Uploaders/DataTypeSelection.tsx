@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Block } from 'baseui/block';
 import { FormControl } from 'baseui/form-control';
 import { OnChangeParams, Option, Select } from 'baseui/select';
@@ -9,7 +9,8 @@ import { UIConstants } from '../../../../redux/ui';
 
 const importOptions = Object.values(UIConstants.OPTIONS);
 
-const DataTypeSelection = () => {
+type DataTypeSelectionProps = { nextStep: () => void };
+const DataTypeSelection: FC<DataTypeSelectionProps> = ({ nextStep }) => {
   const [dataType, setDataType] = useState<Option>(importOptions[0]);
 
   return (
@@ -29,7 +30,7 @@ const DataTypeSelection = () => {
         />
       </FormControl>
 
-      {dataType.id === 'json' && <JsonFiles />}
+      {dataType.id === 'json' && <JsonFiles nextStep={nextStep} />}
       {dataType.id === 'edgeListCsv' && <EdgeListCsv />}
       {dataType.id === 'nodeEdgeCsv' && <NodeEdgeCsv />}
     </Block>
