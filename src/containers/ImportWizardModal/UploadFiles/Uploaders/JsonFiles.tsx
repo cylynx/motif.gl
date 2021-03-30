@@ -79,11 +79,11 @@ const JsonFiles = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmitForm)}>
-      {isEmptyAttachments && (
-        <Controller
-          name='attachments'
-          control={control}
-          render={({ onChange }) => (
+      <Controller
+        name='attachments'
+        control={control}
+        render={({ onChange }) =>
+          isEmptyAttachments && (
             <FileUploader
               accept='.json'
               multiple
@@ -94,9 +94,9 @@ const JsonFiles = () => {
               onDropRejected={onDropRejected}
               errorMessage={errorMessage}
             />
-          )}
-        />
-      )}
+          )
+        }
+      />
     </form>
   );
 };
