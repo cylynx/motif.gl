@@ -8,7 +8,11 @@ import {
 import { FileUploader } from 'baseui/file-uploader';
 import { Block } from 'baseui/block';
 import { Button, KIND, SIZE } from 'baseui/button';
-import { TFileContent, TFileReaderResponse, JsonFileForms } from '../types';
+import {
+  TFileContent,
+  TFileReaderResponse,
+  JsonFileForms,
+} from '../../../../redux/import/fileUpload';
 import * as Icon from '../../../../components/Icons';
 import AttachmentLists from '../../components/AttachmentLists';
 import useFileContents from '../hooks/useFileContents';

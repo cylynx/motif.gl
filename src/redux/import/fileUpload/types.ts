@@ -1,4 +1,4 @@
-import { Accessors, ImportFormat } from '../../../redux/graph';
+import { Accessors, ImportFormat } from '../../graph';
 
 export type TFileReaderResponse = {
   name: string;
@@ -15,15 +15,6 @@ export type TFileContentState = {
   dataType: ImportFormat['type'];
   accessors: Accessors;
   groupEdge: boolean;
-};
-
-export type TFileContentAction = {
-  type: string;
-  payload?:
-    | TFileContentState['attachments']
-    | TFileContentState['dataType']
-    | TFileContentState['accessors']
-    | TFileContentState['groupEdge'];
 };
 
 export type JsonFileForms = {

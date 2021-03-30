@@ -12,14 +12,14 @@ const Sample = () => <div>Sample</div>;
 
 const UploadFiles = () => {
   const { currentStep, setCurrentStep, nextStep } = useStepper(1, 2);
-  const { state } = useFileContents();
+  const { fileUpload } = useFileContents();
 
   const onStepChange = (step: number) => {
     setCurrentStep(step);
   };
 
   const stepperItems: StepperItems[] = useMemo(() => {
-    const isContainAttachment = state.attachments.length !== 0;
+    const isContainAttachment = fileUpload.attachments.length !== 0;
     return [
       {
         children: '1. Upload Files',
@@ -30,7 +30,7 @@ const UploadFiles = () => {
         isClickable: isContainAttachment,
       },
     ];
-  }, [state.attachments]);
+  }, [fileUpload.attachments]);
 
   return (
     <Block>
