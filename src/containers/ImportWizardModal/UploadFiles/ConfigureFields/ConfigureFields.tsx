@@ -4,11 +4,12 @@ import { Block } from 'baseui/block';
 import { OnChangeParams } from 'baseui/select';
 import { FlexGrid, FlexGridItem } from 'baseui/flex-grid';
 import { useForm, Controller } from 'react-hook-form';
-import { LabelXSmall } from 'baseui/typography';
 
+import { Button, KIND, SIZE } from 'baseui/button';
 import FormSelectWithTooltip from '../../components/FormSelectWithTooltip';
 import DataPreview from './DataPreview';
-import TablePreview from './TablePreview';
+import GroupEdgeConfiguration from './GroupEdgeConfiguration';
+import * as Icon from '../../../../components/Icons';
 
 const ConfigureFields = () => {
   const {
@@ -26,11 +27,12 @@ const ConfigureFields = () => {
       edgeID: '123',
       edgeSource: '123',
       edgeTarget: '123',
+      groupEdges: false,
     },
   });
 
   return (
-    <Block>
+    <Block marginTop='scale300'>
       <form>
         <FlexGrid flexGridColumnGap='scale300' flexGridColumnCount={4}>
           <FlexGridItem>
@@ -126,6 +128,19 @@ const ConfigureFields = () => {
         </FlexGrid>
 
         <DataPreview />
+        <GroupEdgeConfiguration control={control} />
+
+        <Block position='absolute' bottom='0' right='0'>
+          <Button
+            type='submit'
+            disabled={false}
+            kind={KIND.primary}
+            size={SIZE.compact}
+            endEnhancer={<Icon.ChevronRight size={16} />}
+          >
+            Continue
+          </Button>
+        </Block>
       </form>
     </Block>
   );

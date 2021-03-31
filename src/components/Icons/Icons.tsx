@@ -44,6 +44,7 @@ import {
 } from 'react-icons/bi';
 import { BsSlash } from 'react-icons/bs';
 import { VscSymbolKey, VscCircleOutline } from 'react-icons/vsc';
+import { AiOutlineWarning } from 'react-icons/ai';
 import { IconBaseProps } from 'react-icons';
 
 export const Node = ({ children, size = 16, ...rest }: IconBaseProps) => (
@@ -317,3 +318,13 @@ export const QuestionMarkCircle = ({
     </HiQuestionMarkCircle>
   );
 };
+
+export const WarningSign = ({
+  size = 16,
+  children,
+  ...rest
+}: IconBaseProps) => (
+  <AiOutlineWarning size={size} {...rest}>
+    {children}
+  </AiOutlineWarning>
+);

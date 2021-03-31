@@ -3,10 +3,8 @@ import { Block } from 'baseui/block';
 import { LabelXSmall } from 'baseui/typography';
 import { styled } from 'baseui';
 import { Theme } from 'baseui/theme';
-import { Button, KIND, SIZE } from 'baseui/button';
 import { GraphAttribute } from '../../../../redux/graph';
 import TablePreview from './TablePreview';
-import * as Icon from '../../../../components/Icons';
 
 type TableTabProps = { $theme?: Theme; $isActive: boolean };
 const TableTab = styled('div', ({ $theme, $isActive }: TableTabProps) => {
@@ -103,19 +101,7 @@ const DataPreview = () => {
         />
       </Block>
       <Block marginTop='scale300'>
-        <TablePreview />
-      </Block>
-
-      <Block position='absolute' bottom='0' right='0'>
-        <Button
-          type='submit'
-          disabled={false}
-          kind={KIND.primary}
-          size={SIZE.compact}
-          endEnhancer={<Icon.ChevronRight size={16} />}
-        >
-          Continue
-        </Button>
+        <TablePreview groupEdges />
       </Block>
     </Block>
   );

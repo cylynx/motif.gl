@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Table } from 'baseui/table-semantic';
 import { Theme } from 'baseui/theme';
 
@@ -34,7 +34,8 @@ const DATA: any[] = [
   ['Joe Black', 33, '100 Macquarie St., Sydney, Australia'],
 ];
 
-const TablePreview = () => {
+type TablePreviewProps = { groupEdges: boolean };
+const TablePreview: FC<TablePreviewProps> = ({ groupEdges = true }) => {
   return (
     <Table
       columns={COLUMNS}
@@ -42,11 +43,10 @@ const TablePreview = () => {
       overrides={{
         Root: {
           style: ({ $theme }: { $theme: Theme }) => ({
-            // maxHeight: '360px',
-            maxHeight: '180px',
+            maxHeight: groupEdges ? '265px' : '360px',
             '::-webkit-scrollbar': {
-              height: $theme.sizing.scale200,
-              width: $theme.sizing.scale200,
+              height: $theme.sizing.scale100,
+              width: $theme.sizing.scale100,
             },
             '::-webkit-scrollbar-track': {
               background: '#f1f1f1',
@@ -59,7 +59,10 @@ const TablePreview = () => {
         TableHeadCell: {
           style: ({ $theme }: { $theme: Theme }) => ({
             fontSize: $theme.sizing.scale500,
-            padding: `${$theme.sizing.scale200} ${$theme.sizing.scale300}`,
+            paddingTop: $theme.sizing.scale200,
+            paddingBottom: $theme.sizing.scale200,
+            paddingLeft: $theme.sizing.scale300,
+            paddingRight: $theme.sizing.scale300,
           }),
         },
         TableBodyRow: {
@@ -71,7 +74,10 @@ const TablePreview = () => {
         TableBodyCell: {
           style: ({ $theme }: { $theme: Theme }) => ({
             fontSize: $theme.sizing.scale500,
-            padding: `${$theme.sizing.scale100} ${$theme.sizing.scale300}`,
+            paddingTop: $theme.sizing.scale100,
+            paddingBottom: $theme.sizing.scale100,
+            paddingLeft: $theme.sizing.scale300,
+            paddingRight: $theme.sizing.scale300,
           }),
         },
       }}
