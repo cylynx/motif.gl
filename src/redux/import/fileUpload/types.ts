@@ -7,7 +7,7 @@ export type TFileReaderResponse = {
 
 export type TFileContent = {
   fileName: string;
-  content: ImportFormat;
+  content: ImportFormat['data'];
 };
 
 export type TFileContentState = {

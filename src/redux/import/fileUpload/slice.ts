@@ -3,8 +3,13 @@ import { TFileContentState } from './types';
 
 const initialState: TFileContentState = {
   attachments: [],
-  dataType: null,
-  accessors: { nodeID: null, edgeID: null, edgeSource: null, edgeTarget: null },
+  dataType: 'json',
+  accessors: {
+    nodeID: 'id',
+    edgeID: 'id',
+    edgeSource: 'source',
+    edgeTarget: 'target',
+  },
   groupEdge: null,
 };
 
