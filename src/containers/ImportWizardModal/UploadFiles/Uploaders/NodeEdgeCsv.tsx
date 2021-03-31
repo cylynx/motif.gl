@@ -133,7 +133,7 @@ const NodeEdgeCsv: FC<NodeEdgeCsvProps> = ({ nextStep }) => {
                     ContentMessage: {
                       component: () => (
                         <LabelSmall color={colors.gray600}>
-                          Drop Node CSV here to upload...
+                          Drop Node CSV(s) here to upload...
                         </LabelSmall>
                       ),
                     },
@@ -179,7 +179,7 @@ const NodeEdgeCsv: FC<NodeEdgeCsvProps> = ({ nextStep }) => {
                     ContentMessage: {
                       component: () => (
                         <LabelSmall color={colors.gray600}>
-                          Drop Edge CSV here to upload...
+                          Drop Edge CSV(s) here to upload...
                         </LabelSmall>
                       ),
                     },

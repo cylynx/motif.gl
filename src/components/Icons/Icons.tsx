@@ -20,6 +20,7 @@ import {
   HiChevronLeft,
   HiChevronRight,
   HiOutlineArrowNarrowDown,
+  HiQuestionMarkCircle,
 } from 'react-icons/hi';
 import {
   BiLayer,
@@ -304,3 +305,15 @@ export const Table = ({ children, size = 16, ...rest }: IconBaseProps) => (
     {children}
   </BiTable>
 );
+
+export const QuestionMarkCircle = ({
+  children,
+  size = 16,
+  ...rest
+}: IconBaseProps) => {
+  return (
+    <HiQuestionMarkCircle size={size} {...rest}>
+      {children}
+    </HiQuestionMarkCircle>
+  );
+};
