@@ -8,6 +8,7 @@ import { LabelXSmall } from 'baseui/typography';
 
 import FormSelectWithTooltip from '../../components/FormSelectWithTooltip';
 import DataPreview from './DataPreview';
+import TablePreview from './TablePreview';
 
 const ConfigureFields = () => {
   const {
