@@ -1,4 +1,5 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useMemo } from 'react';
+import { styled } from 'baseui';
 import { Block } from 'baseui/block';
 import { FormControl } from 'baseui/form-control';
 import { OnChangeParams, Option, Select } from 'baseui/select';
@@ -11,6 +12,13 @@ import useFileContents from '../hooks/useFileContents';
 import { TFileContentState } from '../../../../redux/import/fileUpload';
 
 const importOptions = Object.values(UIConstants.OPTIONS);
+
+const StyledHr = styled('hr', ({ $theme }) => ({
+  borderColor: '#E2E2E2',
+  borderWidth: '1px',
+  borderStyle: 'solid',
+  marginTop: $theme.sizing.scale300,
+}));
 
 type DataTypeSelectionProps = { nextStep: () => void };
 const DataTypeSelection: FC<DataTypeSelectionProps> = ({ nextStep }) => {
@@ -30,7 +38,10 @@ const DataTypeSelection: FC<DataTypeSelectionProps> = ({ nextStep }) => {
 
   return (
     <Block marginTop='scale600'>
-      <FormControl label='Data Type'>
+      <FormControl
+        label='Data Type'
+        overrides={{ ControlContainer: { style: { marginBottom: 0 } } }}
+      >
         <Select
           size='compact'
           value={[dataType]}
@@ -46,9 +57,11 @@ const DataTypeSelection: FC<DataTypeSelectionProps> = ({ nextStep }) => {
         />
       </FormControl>
 
+      <StyledHr />
+
       {dataType.id === 'json' && <JsonFiles nextStep={nextStep} />}
       {dataType.id === 'edgeListCsv' && <EdgeListCsv nextStep={nextStep} />}
-      {dataType.id === 'nodeEdgeCsv' && <NodeEdgeCsv />}
+      {dataType.id === 'nodeEdgeCsv' && <NodeEdgeCsv nextStep={nextStep} />}
     </Block>
   );
 };

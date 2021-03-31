@@ -10,7 +10,7 @@ import { Block } from 'baseui/block';
 import { Button, KIND, SIZE } from 'baseui/button';
 import useFileContents from '../hooks/useFileContents';
 import {
-  JsonFileForms,
+  MultipleFileForms,
   TFileContent,
   TFileReaderResponse,
 } from '../../../../redux/import/fileUpload';
@@ -36,16 +36,15 @@ const EdgeListCsv: FC<EdgeListCsvProps> = ({ nextStep }) => {
     },
   });
 
-  const { setAttachments, setDataType } = useFileContents();
+  const { setAttachments } = useFileContents();
 
-  const onSubmitForm: SubmitHandler<JsonFileForms> = (
-    data: UnpackNestedValue<JsonFileForms>,
+  const onSubmitForm: SubmitHandler<MultipleFileForms> = (
+    data: UnpackNestedValue<MultipleFileForms>,
     e: BaseSyntheticEvent,
   ) => {
     e.preventDefault();
 
     const { attachments } = data;
-    setDataType('edgeListCsv');
     setAttachments(attachments);
     nextStep();
   };

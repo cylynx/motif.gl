@@ -1,4 +1,4 @@
-import { Accessors, ImportFormat } from '../../graph';
+import { Accessors, ImportFormat, NodeEdgeDataType } from '../../graph';
 
 export type TFileReaderResponse = {
   name: string;
@@ -11,12 +11,17 @@ export type TFileContent = {
 };
 
 export type TFileContentState = {
-  attachments: TFileContent[];
+  attachments: TFileContent[] | SingleFileForms;
   dataType: ImportFormat['type'];
   accessors: Accessors;
   groupEdge: boolean;
 };
 
-export type JsonFileForms = {
+export type MultipleFileForms = {
   attachments: TFileContentState['attachments'];
+};
+
+export type SingleFileForms = {
+  nodeCsv: TFileContent[];
+  edgeCsv: TFileContent[];
 };

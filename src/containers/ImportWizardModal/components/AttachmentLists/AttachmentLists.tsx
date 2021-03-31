@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import { Block } from 'baseui/block';
 import useProgressTimer from '../ProgressStepper/hooks/useProgressTimer';
-import { TFileContent } from '../../UploadFiles/types';
+import { TFileContent } from '../../../../redux/import/fileUpload';
 import Attachment from './Attachment';
 
 export type AttachmentListsProps = {

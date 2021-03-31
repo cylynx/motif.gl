@@ -11,7 +11,7 @@ import { Button, KIND, SIZE } from 'baseui/button';
 import {
   TFileContent,
   TFileReaderResponse,
-  JsonFileForms,
+  MultipleFileForms,
 } from '../../../../redux/import/fileUpload';
 import * as Icon from '../../../../components/Icons';
 import AttachmentLists from '../../components/AttachmentLists';
@@ -28,22 +28,21 @@ const JsonFiles: FC<JsonFilesProps> = ({ nextStep }) => {
     clearErrors,
     getValues,
     setValue,
-  } = useForm<JsonFileForms>({
+  } = useForm<MultipleFileForms>({
     defaultValues: {
       attachments: [],
     },
   });
 
-  const { setAttachments, setDataType } = useFileContents();
+  const { setAttachments } = useFileContents();
 
-  const onSubmitForm: SubmitHandler<JsonFileForms> = (
-    data: UnpackNestedValue<JsonFileForms>,
+  const onSubmitForm: SubmitHandler<MultipleFileForms> = (
+    data: UnpackNestedValue<MultipleFileForms>,
     e: BaseSyntheticEvent,
   ) => {
     e.preventDefault();
 
     const { attachments } = data;
-    setDataType('json');
     setAttachments(attachments);
     nextStep();
   };
@@ -97,10 +96,11 @@ const JsonFiles: FC<JsonFilesProps> = ({ nextStep }) => {
       });
   };
 
-  const isEmptyAttachments: boolean = watch('attachments').length === 0;
+  const isEmptyAttachments: boolean =
+    (watch('attachments') as TFileContent[]).length === 0;
 
   const onDeleteBtnClick = (index: number) => {
-    const fileAttachments = getValues('attachments');
+    const fileAttachments = getValues('attachments') as TFileContent[];
     fileAttachments.splice(index, 1);
     setValue('attachments', fileAttachments);
   };
@@ -130,7 +130,7 @@ const JsonFiles: FC<JsonFilesProps> = ({ nextStep }) => {
 
       {isEmptyAttachments === false && (
         <AttachmentLists
-          attachments={watch('attachments')}
+          attachments={watch('attachments') as TFileContent[]}
           onDeleteBtnClick={onDeleteBtnClick}
         />
       )}
