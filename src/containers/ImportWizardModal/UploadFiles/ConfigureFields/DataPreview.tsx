@@ -84,7 +84,7 @@ const DataPreview = () => {
   const [activeTab, setActiveTab] = useState<GraphAttribute>('nodes');
 
   return (
-    <Block>
+    <Block marginTop='scale500'>
       <Block
         display='flex'
         justifyContent='space-between'
@@ -104,7 +104,7 @@ const DataPreview = () => {
         />
       </Block>
       <Block marginTop='scale300'>
-        <TablePreview groupEdges />
+        <TablePreview groupEdges activeTab={activeTab} />
       </Block>
     </Block>
   );

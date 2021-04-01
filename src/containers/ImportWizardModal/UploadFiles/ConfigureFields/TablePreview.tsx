@@ -1,45 +1,51 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Table } from 'baseui/table-semantic';
 import { Theme } from 'baseui/theme';
+import { uniq, flatten, isObject } from 'lodash';
+import useFileContent from '../hooks/useFileContents';
+import { EdgeNode, GraphAttribute } from '../../../../redux/graph';
 
-const COLUMNS: string[] = [
-  'Name',
-  'Age',
-  'Address',
-  'something',
-  'fishy',
-  'boolean',
-  '123123',
-  '123123',
-];
-const DATA: any[] = [
-  [
-    'Sarah Brown',
-    31,
-    '100 Broadway St., New York City, New York 123123123123123123',
-    'true',
-  ],
-  ['Jane Smith', 32, '100 Market St., San Francisco, California'],
-  ['Joe Black', 33, '100 Macquarie St., Sydney, Australia'],
-  ['Joe Black', 33, '100 Macquarie St., Sydney, Australia'],
-  ['Joe Black', 33, '100 Macquarie St., Sydney, Australia'],
-  ['Joe Black', 33, '100 Macquarie St., Sydney, Australia'],
-  ['Joe Black', 33, '100 Macquarie St., Sydney, Australia'],
-  ['Joe Black', 33, '100 Macquarie St., Sydney, Australia'],
-  ['Joe Black', 33, '100 Macquarie St., Sydney, Australia'],
-  ['Joe Black', 33, '100 Macquarie St., Sydney, Australia'],
-  ['Joe Black', 33, '100 Macquarie St., Sydney, Australia'],
-  ['Joe Black', 33, '100 Macquarie St., Sydney, Australia'],
-  ['Joe Black', 33, '100 Macquarie St., Sydney, Australia'],
-  ['Joe Black', 33, '100 Macquarie St., Sydney, Australia'],
-];
+type TablePreviewProps = { groupEdges: boolean; activeTab: GraphAttribute };
+const TablePreview: FC<TablePreviewProps> = ({
+  activeTab,
+  groupEdges = true,
+}) => {
+  const { fileUpload } = useFileContent();
 
-type TablePreviewProps = { groupEdges: boolean };
-const TablePreview: FC<TablePreviewProps> = ({ groupEdges = true }) => {
+  const graphAttributeData: EdgeNode[] = useMemo(() => {
+    return fileUpload.dataPreview[activeTab] ?? [];
+  }, [fileUpload.dataPreview, activeTab]);
+
+  const columns: string[] = useMemo(() => {
+    if (graphAttributeData.length === 0) return [];
+
+    const columnKey = graphAttributeData.map((attribute: EdgeNode) =>
+      Object.keys(attribute),
+    );
+    const flattenColumns = flatten(columnKey);
+    const uniqueColumns = uniq(flattenColumns);
+    return uniqueColumns;
+  }, [graphAttributeData]);
+
+  const data = useMemo(() => {
+    const cleanedGraphValues = graphAttributeData.map((attr: EdgeNode) =>
+      Object.values(attr).map((value) => {
+        // allow us to render objects in React :D
+        if (isObject(value)) {
+          return JSON.stringify(value);
+        }
+
+        return value;
+      }),
+    );
+
+    return cleanedGraphValues;
+  }, [graphAttributeData]);
+
   return (
     <Table
-      columns={COLUMNS}
-      data={DATA}
+      columns={columns}
+      data={data}
       overrides={{
         Root: {
           style: ({ $theme }: { $theme: Theme }) => ({

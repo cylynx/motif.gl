@@ -1,7 +1,14 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, useMemo } from 'react';
 import { FormControl } from 'baseui/form-control';
 import { Theme } from 'baseui/theme';
-import { OnChangeParams, Select, SIZE, TYPE, Value } from 'baseui/select';
+import {
+  OnChangeParams,
+  Select,
+  SIZE,
+  TYPE,
+  Value,
+  Option,
+} from 'baseui/select';
 import LabelTooltip from './LabelTooltip';
 
 export type FormSelectWithTooltipProps = {
@@ -9,7 +16,8 @@ export type FormSelectWithTooltipProps = {
   onChange: (params: OnChangeParams) => any;
   tooltipText: ReactNode;
   options: Value;
-  value: Value;
+  value: string;
+  error?: string;
 };
 
 const FormSelectWithTooltip: FC<FormSelectWithTooltipProps> = ({
@@ -18,7 +26,21 @@ const FormSelectWithTooltip: FC<FormSelectWithTooltipProps> = ({
   tooltipText,
   options,
   value,
+  error = '',
 }) => {
+  const selectedOption: Option = useMemo(() => {
+    const selectedOption: Option = options.find(
+      (option: Option) => option.id === value,
+    );
+
+    if (selectedOption === undefined) {
+      const [firstOption] = options;
+      return firstOption;
+    }
+
+    return selectedOption;
+  }, [value, options]);
+
   return (
     <FormControl
       label={<LabelTooltip text={tooltipText} />}
@@ -28,7 +50,21 @@ const FormSelectWithTooltip: FC<FormSelectWithTooltipProps> = ({
             marginBottom: $theme.sizing.scale0,
           }),
         },
+        Caption: {
+          style: {
+            position: 'absolute',
+            marginTop: 0,
+            marginBottom: 0,
+          },
+        },
+        ControlContainer: {
+          style: ({ $theme }: { $theme: Theme }) => ({
+            marginBottom: $theme.sizing.scale200,
+            position: 'relative',
+          }),
+        },
       }}
+      error={error}
     >
       <Select
         aria-label={name}
@@ -44,16 +80,9 @@ const FormSelectWithTooltip: FC<FormSelectWithTooltipProps> = ({
         onChange={onChange}
         size={SIZE.compact}
         type={TYPE.select}
-        options={
-          options ?? [
-            {
-              id: '123',
-              label: '123',
-            },
-          ]
-        }
+        options={options}
         valueKey='id'
-        value={value ?? [{ id: '123', label: '123' }]}
+        value={[selectedOption]}
       />
     </FormControl>
   );

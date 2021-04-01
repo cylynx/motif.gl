@@ -10,7 +10,7 @@ const initialState: TFileContentState = {
     edgeSource: 'source',
     edgeTarget: 'target',
   },
-  groupEdge: null,
+  groupEdge: false,
   dataPreview: {
     nodes: [],
     edges: [],
