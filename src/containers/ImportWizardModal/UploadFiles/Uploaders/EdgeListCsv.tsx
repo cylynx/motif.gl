@@ -21,6 +21,8 @@ const cleanInput = (file: string) => file.replace(/\r/g, '').trim();
 
 type EdgeListCsvProps = { nextStep: () => void };
 const EdgeListCsv: FC<EdgeListCsvProps> = ({ nextStep }) => {
+  const { fileUpload, setAttachments } = useFileContents();
+
   const {
     watch,
     control,
@@ -32,11 +34,9 @@ const EdgeListCsv: FC<EdgeListCsvProps> = ({ nextStep }) => {
     setValue,
   } = useForm({
     defaultValues: {
-      attachments: [],
+      attachments: fileUpload.attachments,
     },
   });
-
-  const { setAttachments } = useFileContents();
 
   const onSubmitForm: SubmitHandler<MultipleFileForms> = (
     data: UnpackNestedValue<MultipleFileForms>,
@@ -98,12 +98,14 @@ const EdgeListCsv: FC<EdgeListCsvProps> = ({ nextStep }) => {
       });
   };
 
-  const isEmptyAttachments: boolean = watch('attachments').length === 0;
+  const isEmptyAttachments: boolean =
+    (watch('attachments') as TFileContent[]).length === 0;
 
   const onDeleteBtnClick = (index: number) => {
-    const fileAttachments = getValues('attachments');
-    fileAttachments.splice(index, 1);
-    setValue('attachments', fileAttachments);
+    const fileAttachments = getValues('attachments') as TFileContent[];
+    const cloneFileAttachments = [...fileAttachments];
+    cloneFileAttachments.splice(index, 1);
+    setValue('attachments', cloneFileAttachments);
   };
 
   return (
@@ -131,7 +133,7 @@ const EdgeListCsv: FC<EdgeListCsvProps> = ({ nextStep }) => {
 
       {isEmptyAttachments === false && (
         <AttachmentLists
-          attachments={watch('attachments')}
+          attachments={watch('attachments') as TFileContent[]}
           onDeleteBtnClick={onDeleteBtnClick}
         />
       )}

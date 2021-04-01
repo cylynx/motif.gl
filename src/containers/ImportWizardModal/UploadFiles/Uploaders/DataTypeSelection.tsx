@@ -22,7 +22,7 @@ const StyledHr = styled('hr', ({ $theme }) => ({
 
 type DataTypeSelectionProps = { nextStep: () => void };
 const DataTypeSelection: FC<DataTypeSelectionProps> = ({ nextStep }) => {
-  const { fileUpload, setDataType } = useFileContents();
+  const { fileUpload, setDataType, resetState } = useFileContents();
 
   const dataType: Option = useMemo(() => {
     const selectedDataType = importOptions.find(
@@ -51,6 +51,7 @@ const DataTypeSelection: FC<DataTypeSelectionProps> = ({ nextStep }) => {
           onChange={(data: OnChangeParams) => {
             const [option] = data.value;
             const { id } = option as Option;
+            resetState();
             setDataType(id as TFileContentState['dataType']);
           }}
           placeholder='Select Import Data Type'
