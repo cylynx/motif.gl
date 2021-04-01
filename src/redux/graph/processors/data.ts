@@ -99,6 +99,7 @@ export const validateMotifJson = (json: GraphData): boolean => {
     json.metadata.fields.nodes &&
     json.metadata.fields.edges &&
     json.metadata.groupEdges &&
+    json.metadata.groupEdges.availability &&
     json.metadata.key
   ) {
     return true;

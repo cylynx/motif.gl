@@ -80,7 +80,8 @@ const TABLE_TABS: TableTabItem[] = [
   { key: 'nodes', label: 'Node' },
   { key: 'edges', label: 'Edge' },
 ];
-const DataPreview = () => {
+type DataPreviewProps = { isEdgeGroupable: boolean };
+const DataPreview: FC<DataPreviewProps> = ({ isEdgeGroupable }) => {
   const [activeTab, setActiveTab] = useState<GraphAttribute>('nodes');
 
   return (
@@ -104,7 +105,7 @@ const DataPreview = () => {
         />
       </Block>
       <Block marginTop='scale300'>
-        <TablePreview groupEdges activeTab={activeTab} />
+        <TablePreview isEdgeGroupable={isEdgeGroupable} activeTab={activeTab} />
       </Block>
     </Block>
   );

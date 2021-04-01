@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Block } from 'baseui/block';
+import { isEmpty } from 'lodash';
 
 import { OnChangeParams } from 'baseui/select';
 import { FlexGrid, FlexGridItem } from 'baseui/flex-grid';
@@ -14,7 +15,7 @@ import useFileContents from '../hooks/useFileContents';
 
 const ConfigureFields = () => {
   const { fileUpload, nodeFieldOptions, edgeFieldOptions } = useFileContents();
-  const { accessors, groupEdge } = fileUpload;
+  const { accessors, groupEdge, isEdgeGroupable } = fileUpload;
 
   const {
     watch,
@@ -24,7 +25,6 @@ const ConfigureFields = () => {
     setError,
     clearErrors,
     getValues,
-    setValue,
   } = useForm({
     defaultValues: {
       nodeID: accessors.nodeID,
@@ -35,6 +35,51 @@ const ConfigureFields = () => {
     },
   });
 
+  const isSubmitDisabled = isEmpty(errors) === false;
+
+  useEffect(() => {
+    clearErrors();
+    const edgeSource = getValues('edgeSource');
+    const edgeTarget = getValues('edgeTarget');
+    const edgeID = getValues('edgeID');
+
+    const isSameWithSource = edgeSource === edgeID;
+    if (isSameWithSource) {
+      setError('edgeID', {
+        type: 'manual',
+        message: 'Value must different with Source',
+      });
+      setError('edgeSource', {
+        type: 'manual',
+        message: 'Value must different with Edge ID',
+      });
+    }
+
+    const isSameWithTarget = edgeTarget === edgeID;
+    if (isSameWithTarget) {
+      setError('edgeTarget', {
+        type: 'manual',
+        message: 'Value must different with Edge ID',
+      });
+      setError('edgeID', {
+        type: 'manual',
+        message: 'Value must different with Target',
+      });
+    }
+
+    const isSameSourceAndTarget = edgeTarget === edgeID;
+    if (isSameSourceAndTarget) {
+      setError('edgeID', {
+        type: 'manual',
+        message: 'Value must different with Target',
+      });
+      setError('edgeTarget', {
+        type: 'manual',
+        message: 'Value must different with Edge ID',
+      });
+    }
+  }, [watch('edgeID'), watch('edgeSource'), watch('edgeTarget')]);
+
   const onNodeIDChange = (params: OnChangeParams, onChange: any) => {
     const [selectedOption] = params.value;
     onChange(selectedOption.id as string);
@@ -44,78 +89,18 @@ const ConfigureFields = () => {
     const [selectedOption] = params.value;
     const { id: edgeID } = selectedOption;
     onChange(edgeID as string);
-
-    const isSameWithSource = getValues('edgeSource') === edgeID;
-    if (isSameWithSource) {
-      setError('edgeID', {
-        type: 'manual',
-        message: 'Value must different with Source',
-      });
-      return;
-    }
-
-    const isSameWithTarget = getValues('edgeTarget') === edgeID;
-    if (isSameWithTarget) {
-      setError('edgeID', {
-        type: 'manual',
-        message: 'Value must different with Target',
-      });
-      return;
-    }
-
-    clearErrors('edgeID');
   };
 
   const onEdgeSourceChange = (params: OnChangeParams, onChange: any) => {
     const [selectedOption] = params.value;
     const { id: edgeSource } = selectedOption;
     onChange(edgeSource as string);
-
-    const isSameWithEdgeID = getValues('edgeID') === edgeSource;
-    if (isSameWithEdgeID) {
-      setError('edgeSource', {
-        type: 'manual',
-        message: 'Value must different with Edge ID',
-      });
-      return;
-    }
-
-    const isSameWithTarget = getValues('edgeTarget') === edgeSource;
-    if (isSameWithTarget) {
-      setError('edgeTarget', {
-        type: 'manual',
-        message: 'Value must different with Target',
-      });
-      return;
-    }
-
-    clearErrors('edgeSource');
   };
 
   const onEdgeTargetChange = (params: OnChangeParams, onChange: any) => {
     const [selectedOption] = params.value;
     const { id: edgeTarget } = selectedOption;
     onChange(edgeTarget as string);
-
-    const isSameWithEdgeID = getValues('edgeID') === edgeTarget;
-    if (isSameWithEdgeID) {
-      setError('edgeTarget', {
-        type: 'manual',
-        message: 'Value must different with Edge ID',
-      });
-      return;
-    }
-
-    const isSameWithSource = getValues('edgeSource') === edgeTarget;
-    if (isSameWithSource) {
-      setError('edgeTarget', {
-        type: 'manual',
-        message: 'Value must different with Source',
-      });
-      return;
-    }
-
-    clearErrors('edgeTarget');
   };
 
   return (
@@ -197,13 +182,13 @@ const ConfigureFields = () => {
           </FlexGridItem>
         </FlexGrid>
 
-        <DataPreview />
-        <GroupEdgeConfiguration control={control} />
+        <DataPreview isEdgeGroupable={isEdgeGroupable} />
+        {isEdgeGroupable && <GroupEdgeConfiguration control={control} />}
 
         <Block position='absolute' bottom='0' right='0'>
           <Button
             type='submit'
-            disabled={false}
+            disabled={isSubmitDisabled}
             kind={KIND.primary}
             size={SIZE.compact}
             endEnhancer={<Icon.ChevronRight size={16} />}

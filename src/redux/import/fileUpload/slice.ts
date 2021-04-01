@@ -10,12 +10,13 @@ const initialState: TFileContentState = {
     edgeSource: 'source',
     edgeTarget: 'target',
   },
-  groupEdge: false,
+  groupEdge: true,
   dataPreview: {
     nodes: [],
     edges: [],
     metadata: { fields: { nodes: [], edges: [] } },
   },
+  isEdgeGroupable: false,
 };
 
 const fileUploadSlice = createSlice({
@@ -67,6 +68,15 @@ const fileUploadSlice = createSlice({
         dataPreview: action.payload,
       };
     },
+    setIsEdgeGroupable(
+      state: TFileContentState,
+      action: PayloadAction<TFileContentState['isEdgeGroupable']>,
+    ): TFileContentState {
+      return {
+        ...state,
+        isEdgeGroupable: action.payload,
+      };
+    },
     resetState(): TFileContentState {
       return initialState;
     },
@@ -79,6 +89,7 @@ export const {
   setAccessors,
   setGroupEdge,
   setDataPreview,
+  setIsEdgeGroupable,
   resetState,
 } = fileUploadSlice.actions;
 

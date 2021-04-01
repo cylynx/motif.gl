@@ -4,7 +4,7 @@ import { TFileContent } from './types';
 import { GraphData, GraphList, TLoadFormat } from '../../graph';
 import { processPreviewJson } from '../../graph/processors/import-preview';
 import { combineProcessedData } from '../../../containers/Graph/styles/utils';
-import { setDataPreview } from './slice';
+import { setDataPreview, setIsEdgeGroupable } from './slice';
 import { show } from '../../ui/thunks';
 
 export const previewJson = (attachments: TFileContent[]) => (dispatch: any) => {
@@ -40,6 +40,14 @@ export const previewJson = (attachments: TFileContent[]) => (dispatch: any) => {
       );
 
       dispatch(setDataPreview(combinedGraphData));
+
+      // if one of the graph edge is groupable, allow user to make choice on group edge preferences
+      const isEdgeGroupable: boolean = graphList.some(
+        (graphData: GraphData) => {
+          return graphData.metadata.groupEdges.availability === true;
+        },
+      );
+      dispatch(setIsEdgeGroupable(isEdgeGroupable));
     })
     .catch((err: Error) => {
       const { message } = err;

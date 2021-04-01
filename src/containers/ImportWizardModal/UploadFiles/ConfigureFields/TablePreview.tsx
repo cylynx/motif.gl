@@ -5,10 +5,13 @@ import { uniq, flatten, isObject } from 'lodash';
 import useFileContent from '../hooks/useFileContents';
 import { EdgeNode, GraphAttribute } from '../../../../redux/graph';
 
-type TablePreviewProps = { groupEdges: boolean; activeTab: GraphAttribute };
+type TablePreviewProps = {
+  isEdgeGroupable: boolean;
+  activeTab: GraphAttribute;
+};
 const TablePreview: FC<TablePreviewProps> = ({
   activeTab,
-  groupEdges = true,
+  isEdgeGroupable = false,
 }) => {
   const { fileUpload } = useFileContent();
 
@@ -49,7 +52,7 @@ const TablePreview: FC<TablePreviewProps> = ({
       overrides={{
         Root: {
           style: ({ $theme }: { $theme: Theme }) => ({
-            maxHeight: groupEdges ? '265px' : '360px',
+            maxHeight: isEdgeGroupable ? '265px' : '360px',
             '::-webkit-scrollbar': {
               height: $theme.sizing.scale100,
               width: $theme.sizing.scale100,
