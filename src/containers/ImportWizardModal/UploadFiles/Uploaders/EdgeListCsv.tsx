@@ -16,12 +16,14 @@ import {
 } from '../../../../redux/import/fileUpload';
 import AttachmentLists from '../../components/AttachmentLists';
 import * as Icon from '../../../../components/Icons';
+import useDataPreview from '../hooks/useDataPreview';
 
 const cleanInput = (file: string) => file.replace(/\r/g, '').trim();
 
 type EdgeListCsvProps = { nextStep: () => void };
 const EdgeListCsv: FC<EdgeListCsvProps> = ({ nextStep }) => {
   const { fileUpload, setAttachments } = useFileContents();
+  const { previewEdgeList } = useDataPreview();
 
   const {
     watch,
@@ -45,7 +47,8 @@ const EdgeListCsv: FC<EdgeListCsvProps> = ({ nextStep }) => {
     e.preventDefault();
 
     const { attachments } = data;
-    setAttachments(attachments);
+    setAttachments(attachments as TFileContent[]);
+    previewEdgeList(attachments as TFileContent[]);
     nextStep();
   };
 

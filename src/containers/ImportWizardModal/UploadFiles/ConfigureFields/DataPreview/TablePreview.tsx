@@ -31,16 +31,18 @@ const TablePreview: FC<TablePreviewProps> = ({
   }, [graphAttributeData]);
 
   const data = useMemo(() => {
-    const cleanedGraphValues = graphAttributeData.map((attr: EdgeNode) =>
-      Object.values(attr).map((value) => {
-        // allow us to render objects in React :D
-        if (isObject(value)) {
-          return JSON.stringify(value);
-        }
+    const cleanedGraphValues = graphAttributeData
+      .slice(0, 50)
+      .map((attr: EdgeNode) =>
+        Object.values(attr).map((value) => {
+          // allow us to render objects in React :D
+          if (isObject(value)) {
+            return JSON.stringify(value);
+          }
 
-        return value;
-      }),
-    );
+          return value;
+        }),
+      );
 
     return cleanedGraphValues;
   }, [graphAttributeData]);

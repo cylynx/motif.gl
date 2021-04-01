@@ -687,6 +687,30 @@ export const combineProcessedData = (
   }
   return newData;
 };
+
+export const combineDataWithDuplicates = (
+  newData: GraphData,
+  oldData: GraphData,
+): GraphData => {
+  if (oldData) {
+    const modData = { ...oldData };
+    modData.nodes = [...newData.nodes, ...oldData.nodes] as Node[];
+    modData.edges = [...newData.edges, ...oldData.edges] as Edge[];
+
+    // Get unique fields metadata
+    modData.metadata.fields.nodes = removeDuplicates(
+      [...newData.metadata.fields.nodes, ...oldData.metadata.fields.nodes],
+      'name',
+    ) as Field[];
+    modData.metadata.fields.edges = removeDuplicates(
+      [...newData.metadata.fields.edges, ...oldData.metadata.fields.edges],
+      'name',
+    ) as Field[];
+    return modData;
+  }
+  return newData;
+};
+
 /**
  * Remove duplicates from array by checking on prop
  *

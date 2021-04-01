@@ -1,4 +1,3 @@
-import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import {
@@ -12,7 +11,11 @@ const UseDataPreview = () => {
     dispatch(FileUploadThunks.previewJson(attachments));
   };
 
-  return { previewJson };
+  const previewEdgeList = (attachments: TFileContent[]) => {
+    dispatch(FileUploadThunks.previewEdgeList(attachments));
+  };
+
+  return { previewJson, previewEdgeList };
 };
 
 export default UseDataPreview;

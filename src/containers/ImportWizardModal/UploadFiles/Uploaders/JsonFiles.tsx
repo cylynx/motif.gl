@@ -8,7 +8,6 @@ import {
 import { FileUploader } from 'baseui/file-uploader';
 import { Block } from 'baseui/block';
 import { Button, KIND, SIZE } from 'baseui/button';
-import { useDispatch } from 'react-redux';
 import {
   TFileContent,
   TFileReaderResponse,
