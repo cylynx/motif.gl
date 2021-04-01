@@ -24,6 +24,8 @@ const cleanInput = (file: string) => file.replace(/\r/g, '').trim();
 
 type NodeEdgeCsvProps = { nextStep: () => void };
 const NodeEdgeCsv: FC<NodeEdgeCsvProps> = ({ nextStep }) => {
+  const { fileUpload, setAttachments } = useFileContents();
+
   const {
     watch,
     control,
@@ -35,12 +37,10 @@ const NodeEdgeCsv: FC<NodeEdgeCsvProps> = ({ nextStep }) => {
     setValue,
   } = useForm<SingleFileForms>({
     defaultValues: {
-      nodeCsv: null,
-      edgeCsv: null,
+      nodeCsv: (fileUpload.attachments as SingleFileForms).nodeCsv ?? null,
+      edgeCsv: (fileUpload.attachments as SingleFileForms).edgeCsv ?? null,
     },
   });
-
-  const { setAttachments } = useFileContents();
 
   const onSubmitForm: SubmitHandler<SingleFileForms> = (
     data: UnpackNestedValue<SingleFileForms>,
