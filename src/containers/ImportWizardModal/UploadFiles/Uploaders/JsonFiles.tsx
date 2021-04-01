@@ -17,7 +17,6 @@ import {
 import * as Icon from '../../../../components/Icons';
 import AttachmentLists from '../../components/AttachmentLists';
 import useFileContents from '../hooks/useFileContents';
-import { SimpleTooltip } from '../../../../components/ui';
 
 type JsonFilesProps = { nextStep: () => void };
 const JsonFiles: FC<JsonFilesProps> = ({ nextStep }) => {
