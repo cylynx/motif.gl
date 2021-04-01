@@ -7,7 +7,6 @@ import {
 } from 'react-hook-form';
 import { FileUploader } from 'baseui/file-uploader';
 import { Block } from 'baseui/block';
-import { ParagraphXSmall } from 'baseui/typography';
 import { Button, KIND, SIZE } from 'baseui/button';
 import {
   TFileContent,
@@ -20,6 +19,8 @@ import useFileContents from '../hooks/useFileContents';
 
 type JsonFilesProps = { nextStep: () => void };
 const JsonFiles: FC<JsonFilesProps> = ({ nextStep }) => {
+  const { fileUpload, setAttachments } = useFileContents();
+
   const {
     watch,
     control,
@@ -31,19 +32,17 @@ const JsonFiles: FC<JsonFilesProps> = ({ nextStep }) => {
     setValue,
   } = useForm<MultipleFileForms>({
     defaultValues: {
-      attachments: [],
+      attachments: fileUpload.attachments,
     },
   });
 
-  const { setAttachments } = useFileContents();
-
   const onSubmitForm: SubmitHandler<MultipleFileForms> = (
-    data: UnpackNestedValue<MultipleFileForms>,
+    _: UnpackNestedValue<MultipleFileForms>,
     e: BaseSyntheticEvent,
   ) => {
     e.preventDefault();
 
-    const { attachments } = data;
+    const attachments = getValues('attachments');
     setAttachments(attachments);
     nextStep();
   };
@@ -102,8 +101,9 @@ const JsonFiles: FC<JsonFilesProps> = ({ nextStep }) => {
 
   const onDeleteBtnClick = (index: number) => {
     const fileAttachments = getValues('attachments') as TFileContent[];
-    fileAttachments.splice(index, 1);
-    setValue('attachments', fileAttachments);
+    const cloneFileAttachments = [...fileAttachments];
+    cloneFileAttachments.splice(index, 1);
+    setValue('attachments', cloneFileAttachments);
   };
 
   return (

@@ -7,7 +7,6 @@ import ProgressStepper, {
 } from '../components/ProgressStepper';
 import DataTypeSelection from './Uploaders/DataTypeSelection';
 import useFileContents from './hooks/useFileContents';
-import { SingleFileForms } from '../../../redux/import/fileUpload';
 import ConfigureFields from './ConfigureFields';
 
 const UploadFiles = () => {
@@ -19,24 +18,6 @@ const UploadFiles = () => {
   };
 
   const stepperItems: StepperItems[] = useMemo(() => {
-    const isContainAttachments = () => {
-      if (Array.isArray(fileUpload.attachments)) {
-        if (fileUpload.attachments.length !== 0) {
-          return true;
-        }
-
-        return false;
-      }
-
-      const { nodeCsv, edgeCsv } = fileUpload.attachments as SingleFileForms;
-      if (nodeCsv && edgeCsv) {
-        return true;
-      }
-
-      return false;
-    };
-
-    const isContainAttachment = isContainAttachments();
     return [
       {
         children: '1. Upload Files',
@@ -44,7 +25,7 @@ const UploadFiles = () => {
       },
       {
         children: '2. Configure Fields',
-        isClickable: isContainAttachment,
+        isClickable: false,
       },
     ];
   }, [fileUpload.attachments]);

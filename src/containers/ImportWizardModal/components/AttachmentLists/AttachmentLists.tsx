@@ -1,7 +1,6 @@
-import React, { FC, useMemo, useRef, useState } from 'react';
+import React, { FC, useRef, useState } from 'react';
 import { Block } from 'baseui/block';
 import { LabelMedium, ParagraphSmall } from 'baseui/typography';
-import useProgressTimer from '../ProgressStepper/hooks/useProgressTimer';
 import { TFileContent } from '../../../../redux/import/fileUpload';
 import Attachment from './Attachment';
 import ConfirmationModal from '../../../../components/ConfirmationModal';
@@ -15,14 +14,9 @@ const AttachmentLists: FC<AttachmentListsProps> = ({
   attachments,
   onDeleteBtnClick,
 }) => {
-  const [progress] = useProgressTimer(100, 5, 1);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const indexRef = useRef<number>(null);
   const filenameRef = useRef<string>(null);
-
-  const isProgressCompleted: boolean = useMemo(() => {
-    return progress === 100;
-  }, [[progress]]);
 
   const onModalAccept = () => {
     setModalOpen(false);
@@ -52,8 +46,6 @@ const AttachmentLists: FC<AttachmentListsProps> = ({
           <Block marginTop={index === 0 ? 0 : 'scale300'} key={key}>
             <Attachment
               fileName={fileName}
-              progressValue={progress}
-              isProgressCompleted={isProgressCompleted}
               onDeleteBtnClick={(event) => {
                 event.preventDefault();
                 openModal(index, fileName);
