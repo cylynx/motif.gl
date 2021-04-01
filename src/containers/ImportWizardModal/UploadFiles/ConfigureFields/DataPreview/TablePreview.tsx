@@ -2,8 +2,8 @@ import React, { FC, useMemo } from 'react';
 import { Table } from 'baseui/table-semantic';
 import { Theme } from 'baseui/theme';
 import { uniq, flatten, isObject } from 'lodash';
-import useFileContent from '../hooks/useFileContents';
-import { EdgeNode, GraphAttribute } from '../../../../redux/graph';
+import useFileContent from '../../hooks/useFileContents';
+import { EdgeNode, GraphAttribute } from '../../../../../redux/graph';
 
 type TablePreviewProps = {
   isEdgeGroupable: boolean;

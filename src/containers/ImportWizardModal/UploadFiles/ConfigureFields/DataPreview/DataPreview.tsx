@@ -3,7 +3,7 @@ import { Block } from 'baseui/block';
 import { LabelXSmall } from 'baseui/typography';
 import { styled } from 'baseui';
 import { Theme } from 'baseui/theme';
-import { GraphAttribute } from '../../../../redux/graph';
+import { GraphAttribute } from '../../../../../redux/graph';
 import TablePreview from './TablePreview';
 
 type TableTabProps = { $theme?: Theme; $isActive: boolean };
