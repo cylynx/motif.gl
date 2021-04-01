@@ -4,4 +4,5 @@ import reducer from "./slice";
 export * as FileUploadSlices from "./slice";
 export * as FileUploadSelectors from "./selectors";
 export * from "./types";
+export * as FileUploadThunks from "./thunk";
 export default reducer;

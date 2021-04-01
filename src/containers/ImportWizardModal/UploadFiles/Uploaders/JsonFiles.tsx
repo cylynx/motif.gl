@@ -8,6 +8,7 @@ import {
 import { FileUploader } from 'baseui/file-uploader';
 import { Block } from 'baseui/block';
 import { Button, KIND, SIZE } from 'baseui/button';
+import { useDispatch } from 'react-redux';
 import {
   TFileContent,
   TFileReaderResponse,
@@ -16,10 +17,12 @@ import {
 import * as Icon from '../../../../components/Icons';
 import AttachmentLists from '../../components/AttachmentLists';
 import useFileContents from '../hooks/useFileContents';
+import useDataPreview from '../hooks/useDataPreview';
 
 type JsonFilesProps = { nextStep: () => void };
 const JsonFiles: FC<JsonFilesProps> = ({ nextStep }) => {
   const { fileUpload, setAttachments } = useFileContents();
+  const { previewJson } = useDataPreview();
 
   const {
     watch,
@@ -42,9 +45,15 @@ const JsonFiles: FC<JsonFilesProps> = ({ nextStep }) => {
   ) => {
     e.preventDefault();
 
-    const attachments = getValues('attachments');
+    const attachments = getValues('attachments') as TFileContent[];
     setAttachments(attachments);
-    nextStep();
+
+    try {
+      previewJson(attachments);
+      nextStep();
+    } catch (err) {
+      return;
+    }
   };
 
   const onRetry = () => {

@@ -11,6 +11,11 @@ const initialState: TFileContentState = {
     edgeTarget: 'target',
   },
   groupEdge: null,
+  dataPreview: {
+    nodes: [],
+    edges: [],
+    metadata: { fields: { nodes: [], edges: [] } },
+  },
 };
 
 const fileUploadSlice = createSlice({
@@ -53,6 +58,15 @@ const fileUploadSlice = createSlice({
         groupEdge: action.payload,
       };
     },
+    setDataPreview(
+      state: TFileContentState,
+      action: PayloadAction<TFileContentState['dataPreview']>,
+    ): TFileContentState {
+      return {
+        ...state,
+        dataPreview: action.payload,
+      };
+    },
     resetState(): TFileContentState {
       return initialState;
     },
@@ -64,6 +78,7 @@ export const {
   setDataType,
   setAccessors,
   setGroupEdge,
+  setDataPreview,
   resetState,
 } = fileUploadSlice.actions;
 

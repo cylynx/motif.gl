@@ -1,4 +1,4 @@
-import { Accessors, ImportFormat, NodeEdgeDataType } from '../../graph';
+import { Accessors, GraphData, ImportFormat } from '../../graph';
 
 export type TFileReaderResponse = {
   name: string;
@@ -15,6 +15,7 @@ export type TFileContentState = {
   dataType: ImportFormat['type'];
   accessors: Accessors;
   groupEdge: boolean;
+  dataPreview: GraphData;
 };
 
 export type MultipleFileForms = {

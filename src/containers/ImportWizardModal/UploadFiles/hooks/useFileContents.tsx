@@ -4,6 +4,7 @@ import {
   FileUploadSlices,
   FileUploadSelectors,
 } from '../../../../redux/import/fileUpload';
+import { GraphData } from '../../../../redux/graph';
 
 const UseFileContent = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,10 @@ const UseFileContent = () => {
     dispatch(FileUploadSlices.setGroupEdge(groupEdge));
   };
 
+  const setDataPreview = (graphData: GraphData) => {
+    dispatch(FileUploadSlices.setDataPreview(graphData));
+  };
+
   const resetState = () => {
     dispatch(FileUploadSlices.resetState());
   };
@@ -37,6 +42,7 @@ const UseFileContent = () => {
     setDataType,
     setAccessors,
     setGroupEdge,
+    setDataPreview,
     resetState,
   };
 };

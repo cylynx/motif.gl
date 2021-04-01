@@ -640,7 +640,7 @@ export const analyzerTypeToFieldType = (aType: string): string => {
  * @param edgeJson
  * @return {void}
  */
-const applyGroupEdges = (
+export const applyGroupEdges = (
   toggle: boolean,
   nodeJson: Node[],
   edgeJson: Edge[],

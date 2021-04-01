@@ -33,7 +33,6 @@ const NodeEdgeCsv: FC<NodeEdgeCsvProps> = ({ nextStep }) => {
     errors,
     setError,
     clearErrors,
-    getValues,
     setValue,
   } = useForm<SingleFileForms>({
     defaultValues: {
