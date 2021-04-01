@@ -19,24 +19,24 @@ const UploadFiles = () => {
   };
 
   const stepperItems: StepperItems[] = useMemo(() => {
-    // const isContainAttachments = () => {
-    //   if (Array.isArray(fileUpload.attachments)) {
-    //     if (fileUpload.attachments.length !== 0) {
-    //       return true;
-    //     }
-    //
-    //     return false;
-    //   }
-    //
-    //   const { nodeCsv, edgeCsv } = fileUpload.attachments as SingleFileForms;
-    //   if (nodeCsv && edgeCsv) {
-    //     return true;
-    //   }
-    //
-    //   return false;
-    // };
+    const isContainAttachments = () => {
+      if (Array.isArray(fileUpload.attachments)) {
+        if (fileUpload.attachments.length !== 0) {
+          return true;
+        }
 
-    // const isContainAttachment = isContainAttachments();
+        return false;
+      }
+
+      const { nodeCsv, edgeCsv } = fileUpload.attachments as SingleFileForms;
+      if (nodeCsv && edgeCsv) {
+        return true;
+      }
+
+      return false;
+    };
+
+    const isContainAttachment = isContainAttachments();
     return [
       {
         children: '1. Upload Files',
@@ -44,8 +44,7 @@ const UploadFiles = () => {
       },
       {
         children: '2. Configure Fields',
-        // isClickable: isContainAttachment,
-        isClickable: true,
+        isClickable: isContainAttachment,
       },
     ];
   }, [fileUpload.attachments]);

@@ -1,15 +1,25 @@
-import { Theme } from 'baseui/theme';
 import { styled } from 'baseui';
+import { Theme } from 'baseui/theme';
 
 type StepperItemProps = {
   $theme?: Theme;
   $isActive: boolean;
   $isDisabled: boolean;
+  $isStart?: boolean;
+  $isEnd?: boolean;
 };
+
 const StyledStepperItem = styled(
   'div',
-  ({ $theme, $isActive, $isDisabled }: StepperItemProps) => {
-    const { scale300 } = $theme.sizing;
+  ({
+    $theme,
+    $isActive,
+    $isDisabled,
+    $isStart = false,
+    $isEnd = false,
+  }: StepperItemProps) => {
+    const { scale300, scale600 } = $theme.sizing;
+
     return {
       paddingTop: scale300,
       paddingBottom: scale300,
@@ -19,32 +29,47 @@ const StyledStepperItem = styled(
       color: $isActive ? '#FFFFFF' : '#AFAFAF',
       ...$theme.typography.LabelSmall,
       textAlign: 'center',
-      flex: 1,
       position: 'relative',
+      flex: '1',
       ':hover': {
         cursor: $isDisabled ? 'not-allowed' : 'pointer',
+        backgroundColor: $isDisabled ? '#F6F6F6' : 'black',
+        ':after': {
+          borderLeft: `${scale600} solid black`,
+          borderTop: `${scale600} solid white`,
+          borderBottom: `${scale600} solid white`,
+        },
+        ':before': {
+          borderLeft: `${scale600} solid ${$isDisabled ? 'white' : '#112B42'}`,
+          borderTop: `${scale600} solid ${$isDisabled ? '#F6F6F6' : 'black'}`,
+          borderBottom: `${scale600} solid ${
+            $isDisabled ? '#F6F6F6' : 'black'
+          }`,
+        },
       },
       ':after': {
-        content: '',
+        content: $isEnd ? '' : '""',
         position: 'absolute',
-        left: 0,
+        right: 0,
         bottom: 0,
         width: 0,
         height: 0,
-        borderLeft: `${scale300} solid #112B42`,
-        borderTop: `${scale300} solid transparent`,
-        borderBottom: `${scale300} solid transparent`,
+        borderLeft: `${scale600} solid ${$isDisabled ? '#F6F6F6' : '#112B42'}`,
+        borderTop: `${scale600} solid white`,
+        borderBottom: `${scale600} solid white`,
       },
       ':before': {
-        content: '',
+        content: $isStart ? '' : '""',
         position: 'absolute',
-        right: scale300,
+        left: 0,
+        right: 0,
         bottom: 0,
         width: 0,
-        height: 0,
-        borderLeft: `${scale300} solid #F6F6F6`,
-        borderTop: `${scale300} solid transparent`,
-        borderBottom: `${scale300} solid transparent`,
+        borderLeft: `${scale600} solid #FFFFFF`,
+        borderTop: `${scale600} solid ${$isDisabled ? '#F6F6F6' : '#112B42'}`,
+        borderBottom: `${scale600} solid ${
+          $isDisabled ? '#F6F6F6' : '#112B42'
+        }`,
       },
     };
   },

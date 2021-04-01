@@ -34,11 +34,16 @@ const ProgressStepper: FC<StepperProps> = ({
         const { children, isClickable } = item;
         const step = index + 1;
         const isDisabled = isClickable === false;
+        const isStart = index === 0;
+        const isEnd = index === items.length - 1;
+
         return (
           <StyledStepperItem
             key={step}
             $isActive={isStepActive(step)}
             $isDisabled={isDisabled}
+            $isStart={isStart}
+            $isEnd={isEnd}
             onClick={() => onItemClick(step, isClickable)}
           >
             {children}

@@ -16,7 +16,10 @@ const TableTab = styled('div', ({ $theme, $isActive }: TableTabProps) => {
   } = $theme.colors;
   const { scale0 } = $theme.sizing;
   return {
-    padding: $theme.sizing.scale300,
+    paddingTop: $theme.sizing.scale300,
+    paddingBottom: $theme.sizing.scale300,
+    paddingLeft: $theme.sizing.scale500,
+    paddingRight: $theme.sizing.scale500,
     color: contentPrimary,
     backgroundColor: $isActive ? backgroundSecondary : backgroundPrimary,
     borderWidth: $isActive ? scale0 : '2px',

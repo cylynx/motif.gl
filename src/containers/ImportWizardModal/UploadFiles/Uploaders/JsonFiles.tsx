@@ -7,6 +7,7 @@ import {
 } from 'react-hook-form';
 import { FileUploader } from 'baseui/file-uploader';
 import { Block } from 'baseui/block';
+import { ParagraphXSmall } from 'baseui/typography';
 import { Button, KIND, SIZE } from 'baseui/button';
 import {
   TFileContent,
@@ -16,6 +17,7 @@ import {
 import * as Icon from '../../../../components/Icons';
 import AttachmentLists from '../../components/AttachmentLists';
 import useFileContents from '../hooks/useFileContents';
+import { SimpleTooltip } from '../../../../components/ui';
 
 type JsonFilesProps = { nextStep: () => void };
 const JsonFiles: FC<JsonFilesProps> = ({ nextStep }) => {

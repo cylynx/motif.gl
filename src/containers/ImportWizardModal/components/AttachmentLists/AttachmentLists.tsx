@@ -13,7 +13,7 @@ const AttachmentLists: FC<AttachmentListsProps> = ({
   attachments,
   onDeleteBtnClick,
 }) => {
-  const [progress] = useProgressTimer(100, 25, 1);
+  const [progress] = useProgressTimer(100, 5, 1);
   const isProgressCompleted: boolean = useMemo(() => {
     return progress === 100;
   }, [[progress]]);
