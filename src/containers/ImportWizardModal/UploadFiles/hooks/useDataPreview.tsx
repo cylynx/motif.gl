@@ -2,6 +2,7 @@ import { useDispatch } from 'react-redux';
 
 import {
   FileUploadThunks,
+  SingleFileForms,
   TFileContent,
 } from '../../../../redux/import/fileUpload';
 
@@ -15,7 +16,11 @@ const UseDataPreview = () => {
     dispatch(FileUploadThunks.previewEdgeList(attachments));
   };
 
-  return { previewJson, previewEdgeList };
+  const previewNodeEdge = (attachments: SingleFileForms) => {
+    dispatch(FileUploadThunks.previewNodeEdge(attachments));
+  };
+
+  return { previewJson, previewEdgeList, previewNodeEdge };
 };
 
 export default UseDataPreview;

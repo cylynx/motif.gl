@@ -19,12 +19,14 @@ import {
 import useFileContents from '../hooks/useFileContents';
 import AttachmentLists from '../../components/AttachmentLists';
 import * as Icon from '../../../../components/Icons';
+import useDataPreview from '../hooks/useDataPreview';
 
 const cleanInput = (file: string) => file.replace(/\r/g, '').trim();
 
 type NodeEdgeCsvProps = { nextStep: () => void };
 const NodeEdgeCsv: FC<NodeEdgeCsvProps> = ({ nextStep }) => {
   const { fileUpload, setAttachments } = useFileContents();
+  const { previewNodeEdge } = useDataPreview();
 
   const {
     watch,
@@ -48,6 +50,7 @@ const NodeEdgeCsv: FC<NodeEdgeCsvProps> = ({ nextStep }) => {
     e.preventDefault();
 
     setAttachments(data);
+    previewNodeEdge(data);
     nextStep();
   };
 

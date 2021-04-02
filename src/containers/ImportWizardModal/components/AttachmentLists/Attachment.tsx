@@ -1,6 +1,6 @@
 import React, { FC, MouseEvent } from 'react';
 import { Block } from 'baseui/block';
-import { LabelSmall } from 'baseui/typography';
+import { ParagraphSmall } from 'baseui/typography';
 import { Button, KIND, SIZE, SHAPE } from 'baseui/button';
 import { colors } from 'baseui/tokens';
 import * as Icons from '../../../../components/Icons';
@@ -17,7 +17,9 @@ const Attachment: FC<AttachmentProps> = ({ fileName, onDeleteBtnClick }) => {
         backgroundColor='mono300'
         justifyContent='space-between'
       >
-        <Block
+        <ParagraphSmall
+          marginTop='0'
+          marginBottom='0'
           paddingTop='scale300'
           paddingBottom='scale300'
           paddingLeft='scale600'
@@ -25,8 +27,16 @@ const Attachment: FC<AttachmentProps> = ({ fileName, onDeleteBtnClick }) => {
           flex='1'
           display='flex'
           alignContent='center'
+          overflow='hidden'
+          overrides={{
+            Block: {
+              style: {
+                overflowWrap: 'anywhere',
+              },
+            },
+          }}
         >
-          <LabelSmall paddingTop='scale0'>{fileName}</LabelSmall>
+          <Block as='span'>{fileName}</Block>
 
           <Block
             as='span'
@@ -36,7 +46,7 @@ const Attachment: FC<AttachmentProps> = ({ fileName, onDeleteBtnClick }) => {
           >
             <Icons.CheckCircle color={colors.green400} size={16} />
           </Block>
-        </Block>
+        </ParagraphSmall>
         <Block display='flex' flex='1' maxWidth='36px' justifyContent='center'>
           <Button
             kind={KIND.tertiary}

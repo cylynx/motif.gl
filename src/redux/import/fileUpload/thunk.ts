@@ -1,10 +1,11 @@
 import flatten from 'lodash/flatten';
 import cloneDeep from 'lodash/cloneDeep';
-import { TFileContent } from './types';
+import { SingleFileForms, TFileContent } from './types';
 import { EdgeListCsv, GraphData, GraphList, TLoadFormat } from '../../graph';
 import {
   processPreviewEdgeList,
   processPreviewJson,
+  processPreviewNodeEdge,
 } from '../../graph/processors/import-preview';
 import {
   combineProcessedData,
@@ -43,7 +44,9 @@ const setEdgeGroupable = (graphList: GraphList, dispatch: any) => {
   dispatch(setIsEdgeGroupable(isEdgeGroupable));
 };
 
-export const previewJson = (attachments: TFileContent[]) => (dispatch: any) => {
+export const previewJson = (attachments: TFileContent[]) => async (
+  dispatch: any,
+) => {
   const contentPromises: Promise<GraphList>[] = attachments.map(
     (attachment: TFileContent) => {
       const { data: dataWithStyle } = attachment.content as TLoadFormat;
@@ -57,16 +60,15 @@ export const previewJson = (attachments: TFileContent[]) => (dispatch: any) => {
     },
   );
 
-  return Promise.all(contentPromises)
-    .then((graphDataArr: GraphList[]) => {
-      const graphList: GraphList = flatten(graphDataArr);
-      createPreviewData(graphList, dispatch, combineProcessedData);
-      setEdgeGroupable(graphList, dispatch);
-    })
-    .catch((err: Error) => {
-      const { message } = err;
-      dispatch(show(message, 'negative'));
-    });
+  try {
+    const graphDataArr = await Promise.all(contentPromises);
+    const graphList: GraphList = flatten(graphDataArr);
+    createPreviewData(graphList, dispatch, combineProcessedData);
+    setEdgeGroupable(graphList, dispatch);
+  } catch (err) {
+    const { message } = err;
+    dispatch(show(message, 'negative'));
+  }
 };
 
 export const previewEdgeList = (attachments: TFileContent[]) => (
@@ -86,4 +88,27 @@ export const previewEdgeList = (attachments: TFileContent[]) => (
       const { message } = err;
       dispatch(show(message, 'negative'));
     });
+};
+export const previewNodeEdge = (attachments: SingleFileForms) => async (
+  dispatch: any,
+) => {
+  const { nodeCsv, edgeCsv } = attachments as SingleFileForms;
+
+  const nodeData: string[] = nodeCsv.map(
+    (attachment: TFileContent) => attachment.content as string,
+  );
+  const edgeData: string[] = edgeCsv.map(
+    (attachment: TFileContent) => attachment.content as string,
+  );
+
+  try {
+    const graphData = await processPreviewNodeEdge(nodeData, edgeData);
+    dispatch(setDataPreview(graphData));
+
+    const { availability: isEdgeGroupable } = graphData.metadata.groupEdges;
+    dispatch(setIsEdgeGroupable(isEdgeGroupable));
+  } catch (err) {
+    const { message } = err;
+    dispatch(show(message, 'negative'));
+  }
 };
