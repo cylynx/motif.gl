@@ -21,7 +21,7 @@ const GroupEdgeConfiguration: FC<GroupEdgeConfigurationProps> = ({
     return (
       <Checkbox
         ariaLabel='Group Edges'
-        name='groupEdges'
+        name='groupEdge'
         checked={value}
         onChange={onCheckboxChange}
         checkmarkType={STYLE_TYPE.toggle_round}

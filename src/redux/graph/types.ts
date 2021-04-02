@@ -69,20 +69,9 @@ export type NodeEdgeDataType = {
   edgeData: string;
 };
 
-export type JsonImport = {
-  data: GraphData | TLoadFormat | GraphList | void;
-  type: 'json';
-};
-
-export type EdgeListCsv = {
-  data: string;
-  type: 'edgeListCsv';
-};
-
-export type NodeEdgeCsv = {
-  data: NodeEdgeDataType;
-  type: 'nodeEdgeCsv';
-};
+export type JsonImport = GraphData | TLoadFormat | GraphList | void;
+export type EdgeListCsv = string;
+export type NodeEdgeCsv = NodeEdgeDataType;
 
 export declare type Edge = IUserEdge;
 export declare type Node = IUserNode;

@@ -7,14 +7,14 @@ export type TFileReaderResponse = {
 
 export type TFileContent = {
   fileName: string;
-  content: ImportFormat['data'];
+  content: ImportFormat;
 };
 
 export type TFileContentState = {
   /** attachment uploaded with file inputs */
   attachments: TFileContent[] | SingleFileForms;
   /** type of data uploaded */
-  dataType: ImportFormat['type'];
+  dataType: 'json' | 'nodeEdgeCsv' | 'edgeListCsv';
   /** data accessors */
   accessors: Accessors;
   /** user preferences on group edges */
@@ -32,4 +32,8 @@ export type MultipleFileForms = {
 export type SingleFileForms = {
   nodeCsv: TFileContent[];
   edgeCsv: TFileContent[];
+};
+
+export type ConfigureFieldsForm = TFileContentState['accessors'] & {
+  groupEdge: boolean;
 };

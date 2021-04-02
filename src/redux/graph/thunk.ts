@@ -16,8 +16,6 @@ import {
   importJson,
 } from './processors/import';
 import {
-  ImportFormat,
-  NodeEdgeDataType,
   JsonImport,
   Accessors,
   GraphList,
@@ -28,6 +26,8 @@ import {
   GraphState,
   Field,
   Selection,
+  NodeEdgeCsv,
+  EdgeListCsv,
 } from './types';
 
 import { UISlices, UIThunks } from '../ui';
@@ -106,7 +106,7 @@ const showImportDataToast = (
  * @return void
  */
 export const importEdgeListData = (
-  importData: ImportFormat[],
+  importData: EdgeListCsv[],
   groupEdges = true,
   importAccessors: ImportAccessors = null,
   metadataKey: string = null,
@@ -119,14 +119,8 @@ export const importEdgeListData = (
   const accessors = { ...mainAccessors, ...importAccessors };
   const filterOptions: FilterOptions = getFilterOptions(getState());
 
-  const batchDataPromises = importData.map((graphData: ImportFormat) => {
-    const { data } = graphData;
-    return importEdgeListCsv(
-      data as string,
-      accessors,
-      groupEdges,
-      metadataKey,
-    );
+  const batchDataPromises = importData.map((graphData: EdgeListCsv) => {
+    return importEdgeListCsv(graphData, accessors, groupEdges, metadataKey);
   });
 
   return Promise.all(batchDataPromises)
@@ -156,7 +150,7 @@ export const importEdgeListData = (
  * @return Promise
  */
 export const importJsonData = (
-  importData: ImportFormat[],
+  importData: JsonImport[],
   groupEdges = true,
   importAccessors: ImportAccessors = null,
   overwriteStyles = false,
@@ -171,11 +165,11 @@ export const importJsonData = (
   let isDataPossessStyle = false;
   let styleOptions: StyleOptions = getStyleOptions(getState());
 
-  const batchDataPromises = importData.map((graphData: ImportFormat) => {
-    const { data: dataWithStyle } = graphData.data as TLoadFormat;
+  const batchDataPromises = importData.map((graphData: JsonImport) => {
+    const { data: dataWithStyle } = graphData as TLoadFormat;
 
     if (dataWithStyle) {
-      const { style: importStyleOption } = graphData.data as TLoadFormat;
+      const { style: importStyleOption } = graphData as TLoadFormat;
 
       if (importStyleOption) {
         isDataPossessStyle = true;
@@ -185,8 +179,11 @@ export const importJsonData = (
       return importJson(dataWithStyle as GraphList, accessors, groupEdges);
     }
 
-    const { data } = graphData;
-    return importJson(data as GraphList, accessors, groupEdges);
+    return importJson(
+      graphData as GraphList | GraphData,
+      accessors,
+      groupEdges,
+    );
   });
 
   return Promise.all(batchDataPromises)
@@ -210,14 +207,14 @@ export const importJsonData = (
 /**
  * Thunk to add data to graph - processed CSV with node and edge and add to graph List
  *
- * @param {ImportFormat} importData - single graphData object
+ * @param {NodeEdgeCsv[]} importData - single graphData object
  * @param {boolean} groupEdges - group graph's edges
  * @param {ImportAccessors} importAccessors [importAccessors=null] - to customize node Id / edge Id / edge source or target
  * @param {number} metadataKey [metadataKey=null]
  * @return {Promise<GraphData>}
  */
 export const importNodeEdgeData = (
-  importData: ImportFormat,
+  importData: NodeEdgeCsv[],
   groupEdges = true,
   importAccessors: ImportAccessors = null,
   metadataKey: string = null,
@@ -226,12 +223,11 @@ export const importNodeEdgeData = (
     throw new Error('importData parameter must not be an array');
   }
 
-  const { data } = importData;
   const { accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
   const filterOptions: FilterOptions = getFilterOptions(getState());
 
-  const { nodeData, edgeData } = data as NodeEdgeDataType;
+  const { nodeData, edgeData } = importData;
   const newData: Promise<GraphData> = importNodeEdgeCsv(
     nodeData,
     edgeData,
@@ -263,32 +259,30 @@ export const importSingleJsonData = (
   importData: JsonImport,
   importAccessors: ImportAccessors = null,
   groupEdges = false,
-) => (dispatch: any, getState: any): Promise<void> => {
+) => async (dispatch: any, getState: any): Promise<void> => {
   if (Array.isArray(importData)) {
     throw new Error('importData parameter must be an object');
   }
 
-  const { data } = importData;
   const { accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
   const filterOptions: FilterOptions = getFilterOptions(getState());
 
   const newData: Promise<GraphList> = importJson(
-    data as GraphData,
+    importData as GraphData,
     accessors,
     groupEdges,
   );
 
-  return newData
-    .then((graphData: GraphList) => {
-      processResponse(dispatch, mainAccessors, graphData);
-      showImportDataToast(dispatch, filterOptions);
-    })
-    .catch((err: Error) => {
-      const { message } = err;
-      dispatch(UIThunks.show(message, 'negative'));
-      dispatch(UISlices.fetchDone());
-    });
+  try {
+    const graphData = await newData;
+    processResponse(dispatch, mainAccessors, graphData);
+    showImportDataToast(dispatch, filterOptions);
+  } catch (err) {
+    const { message } = err;
+    dispatch(UIThunks.show(message, 'negative'));
+    dispatch(UISlices.fetchDone());
+  }
 };
 
 /**
