@@ -6,6 +6,7 @@ import get from 'lodash/get';
 // @ts-ignore
 import { Analyzer, DATA_TYPES as AnalyzerDatatypes } from 'type-analyzer';
 import { isEmpty } from 'lodash';
+import { removeDuplicates } from '../../../containers/Graph/styles/utils';
 import { notNullorUndefined } from '../../../utils/data-utils';
 import {
   Edge,
@@ -159,38 +160,81 @@ export const processJson = async (
 /**
  * Process a node and edge csv file, output a promise GraphData object with field information in metadata.
  *
- * @param {string} nodeCsv
- * @param {string} edgeCsv
+ * @param {string[]} nodeCsvs
+ * @param {string[]} edgeCsvs
  * @param {boolean} groupEdges
  * @param {*} [key=shortid.generate()]
  * @return {*}  {Promise<Graph.GraphData>}
  */
 export const processNodeEdgeCsv = async (
-  nodeCsv: string,
-  edgeCsv: string,
+  nodeCsvs: string[],
+  edgeCsvs: string[],
   groupEdges: boolean,
   key = shortid.generate(),
 ): Promise<GraphData> => {
-  const { fields: nodeFields, json: nodeJson } = await processCsvData(nodeCsv);
-  const { fields: edgeFields, json: edgeJson } = await processCsvData(edgeCsv);
+  const combineFieldsAndJson = (
+    acc: ProcessedCsv,
+    processedNode: ProcessedCsv,
+  ): ProcessedCsv => {
+    return {
+      fields: removeDuplicates(
+        [...acc.fields, ...processedNode.fields],
+        'name',
+      ) as Field[],
+      json: [...acc.json, ...processedNode.json] as Node[] | Edge[],
+    };
+  };
 
-  const groupEdgeConfig: GroupEdges = applyGroupEdges(
-    groupEdges,
-    nodeJson as Node[],
-    edgeJson as Edge[],
+  const emptyFieldsWithJson: ProcessedCsv = { fields: [], json: [] };
+  const nodeDataPromises = nodeCsvs.map((nodeCsv: string) =>
+    processCsvData(nodeCsv),
+  );
+  const edgeDataPromises = edgeCsvs.map((edgeCsv: string) =>
+    processCsvData(edgeCsv),
   );
 
-  const graphMetadata: Metadata = {
-    fields: { nodes: nodeFields, edges: edgeFields },
-    key,
-    groupEdges: groupEdgeConfig,
-  };
+  try {
+    // obtain node json and node fields from batch uploaded node csv
+    const processedNodeDatas: ProcessedCsv[] = await Promise.all(
+      nodeDataPromises,
+    );
+    const { fields: nodeFields, json: nodeJson } = processedNodeDatas.reduce(
+      combineFieldsAndJson,
+      emptyFieldsWithJson,
+    );
 
-  return {
-    nodes: nodeJson as Node[],
-    edges: edgeJson as Edge[],
-    metadata: graphMetadata,
-  };
+    // obtain edge json and edge fields from batch uploaded edge csv
+    const processedEdgeDatas: ProcessedCsv[] = await Promise.all(
+      edgeDataPromises,
+    );
+    const { fields: edgeFields, json: edgeJson } = processedEdgeDatas.reduce(
+      combineFieldsAndJson,
+      emptyFieldsWithJson,
+    );
+
+    const groupEdgeConfig: GroupEdges = applyGroupEdges(
+      groupEdges,
+      nodeJson as Node[],
+      edgeJson as Edge[],
+    );
+
+    const graphMetadata: Metadata = {
+      fields: { nodes: nodeFields, edges: edgeFields },
+      key,
+      groupEdges: groupEdgeConfig,
+    };
+
+    const graphData: GraphData = {
+      nodes: nodeJson as Node[],
+      edges: edgeJson as Edge[],
+      metadata: graphMetadata,
+    };
+
+    return graphData;
+  } catch (err) {
+    const { message } = err;
+    throw new Error(`Import Node Edge Data Error: ${message}`);
+  }
 };
 
 /**

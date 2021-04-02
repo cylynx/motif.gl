@@ -26,7 +26,6 @@ import {
   GraphState,
   Field,
   Selection,
-  NodeEdgeCsv,
   EdgeListCsv,
 } from './types';
 
@@ -37,6 +36,11 @@ import {
   groupEdgesWithConfiguration,
 } from './processors/group-edges';
 import { removeDuplicates } from '../../containers/Graph/styles/utils';
+import {
+  SingleFileForms,
+  TFileContent,
+  FileUploadSlices,
+} from '../import/fileUpload';
 
 type ImportAccessors = Accessors | null;
 
@@ -127,6 +131,8 @@ export const importEdgeListData = (
     .then((graphData: GraphList) => {
       processResponse(dispatch, mainAccessors, graphData);
       showImportDataToast(dispatch, filterOptions);
+      dispatch(FileUploadSlices.resetState());
+      dispatch(UISlices.closeModal());
     })
     .catch((err: Error) => {
       const { message } = err;
@@ -196,6 +202,8 @@ export const importJsonData = (
 
       processResponse(dispatch, mainAccessors, graphData);
       showImportDataToast(dispatch, filterOptions);
+      dispatch(FileUploadSlices.resetState());
+      dispatch(UISlices.closeModal());
     })
     .catch((err: Error) => {
       const { message } = err;
@@ -207,14 +215,14 @@ export const importJsonData = (
 /**
  * Thunk to add data to graph - processed CSV with node and edge and add to graph List
  *
- * @param {NodeEdgeCsv[]} importData - single graphData object
+ * @param {SingleFileForms} importData - attachment contains one or more node edge attachments
  * @param {boolean} groupEdges - group graph's edges
  * @param {ImportAccessors} importAccessors [importAccessors=null] - to customize node Id / edge Id / edge source or target
  * @param {number} metadataKey [metadataKey=null]
  * @return {Promise<GraphData>}
  */
 export const importNodeEdgeData = (
-  importData: NodeEdgeCsv[],
+  importData: SingleFileForms,
   groupEdges = true,
   importAccessors: ImportAccessors = null,
   metadataKey: string = null,
@@ -227,10 +235,17 @@ export const importNodeEdgeData = (
   const accessors = { ...mainAccessors, ...importAccessors };
   const filterOptions: FilterOptions = getFilterOptions(getState());
 
-  const { nodeData, edgeData } = importData;
+  const { nodeCsv: nodeContents, edgeCsv: edgeContents } = importData;
+  const nodeCsvs: string[] = nodeContents.map(
+    (nodeCsv: TFileContent) => nodeCsv.content as string,
+  );
+  const edgeCsvs: string[] = edgeContents.map(
+    (edgeCsv: TFileContent) => edgeCsv.content as string,
+  );
+
   const newData: Promise<GraphData> = importNodeEdgeCsv(
-    nodeData,
-    edgeData,
+    nodeCsvs,
+    edgeCsvs,
     accessors,
     groupEdges,
     metadataKey,
@@ -240,6 +255,8 @@ export const importNodeEdgeData = (
     .then((graphData: GraphData) => {
       processResponse(dispatch, mainAccessors, graphData);
       showImportDataToast(dispatch, filterOptions);
+      dispatch(FileUploadSlices.resetState());
+      dispatch(UISlices.closeModal());
     })
     .catch((err: Error) => {
       const { message } = err;
@@ -278,6 +295,7 @@ export const importSingleJsonData = (
     const graphData = await newData;
     processResponse(dispatch, mainAccessors, graphData);
     showImportDataToast(dispatch, filterOptions);
+    dispatch(UISlices.closeModal());
   } catch (err) {
     const { message } = err;
     dispatch(UIThunks.show(message, 'negative'));

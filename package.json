@@ -14,7 +14,7 @@
   "scripts": {
     "start": "tsdx watch --target node --noClean",
     "example": "cd ./example && npm install && echo SKIP_PREFLIGHT_CHECK=true >> .env && npm run start",
-    "build": "tsdx build --target node --tsconfig ./tsconfig.prod.json",
+    "build": "tsdx build --target node",
     "prepare": "tsdx build --target node",
     "lint": "tsdx lint",
     "test": "tsdx test",

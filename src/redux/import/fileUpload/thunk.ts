@@ -1,7 +1,12 @@
 import flatten from 'lodash/flatten';
 import cloneDeep from 'lodash/cloneDeep';
 import { SingleFileForms, TFileContent } from './types';
-import { EdgeListCsv, GraphData, GraphList, TLoadFormat } from '../../graph';
+import {
+  EdgeListCsv,
+  GraphData,
+  GraphList,
+  TLoadFormat,
+} from '../../graph/types';
 import {
   processPreviewEdgeList,
   processPreviewJson,
@@ -75,7 +80,7 @@ export const previewEdgeList = (attachments: TFileContent[]) => (
   dispatch: any,
 ) => {
   const batchDataPromises = attachments.map((attachment: TFileContent) => {
-    const edgeList = attachment.content as EdgeListCsv['data'];
+    const edgeList = attachment.content as EdgeListCsv;
     return processPreviewEdgeList(edgeList);
   });
 

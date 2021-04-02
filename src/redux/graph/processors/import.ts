@@ -79,8 +79,8 @@ export const importEdgeListCsv = async (
  * @return {Promise<GraphData>}
  */
 export const importNodeEdgeCsv = async (
-  nodeCsv: string,
-  edgeCsv: string,
+  nodeCsv: string[],
+  edgeCsv: string[],
   accessors: Accessors,
   groupEdges: boolean,
   metadataKey: string = null,
@@ -141,7 +141,7 @@ export const addEdgeFields = (edge: Edge, accessors: Accessors): void => {
   const edgeTargetValue = get(edge, edgeTarget);
 
   if (isUndefined(edgeSourceValue) || isUndefined(edgeTargetValue)) {
-    throw new Error('Invalid Source and Target fields.');
+    throw new Error('Source and Target fields not found in Edges');
   }
 
   Object.assign(edge, {

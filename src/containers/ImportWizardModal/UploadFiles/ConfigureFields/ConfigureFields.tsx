@@ -4,7 +4,6 @@ import { isEmpty } from 'lodash';
 import { OnChangeParams } from 'baseui/select';
 import { useForm, UnpackNestedValue, SubmitHandler } from 'react-hook-form';
 import { Button, KIND, SIZE } from 'baseui/button';
-import { useDispatch } from 'react-redux';
 
 import DataPreview from './DataPreview';
 import GroupEdgeConfiguration from './GroupEdgeConfiguration';
@@ -14,17 +13,24 @@ import useFileContents from '../hooks/useFileContents';
 import useImportData from '../hooks/useImportData';
 
 import * as Icon from '../../../../components/Icons';
-import { ConfigureFieldsForm } from '../../../../redux/import/fileUpload';
-import { UISlices } from '../../../../redux/ui';
+import {
+  ConfigureFieldsForm,
+  TFileContent,
+  SingleFileForms,
+} from '../../../../redux/import/fileUpload';
 
 const ConfigureFields = () => {
   const {
-    fileUpload: { accessors, groupEdge, isEdgeGroupable, dataType },
-    setAccessors,
-    setGroupEdge,
+    fileUpload: {
+      accessors,
+      groupEdge,
+      isEdgeGroupable,
+      dataType,
+      attachments,
+    },
   } = useFileContents();
 
-  const { importJson } = useImportData();
+  const { importJson, importEdgeList, importNodeEdge } = useImportData();
 
   const {
     watch,
@@ -44,7 +50,6 @@ const ConfigureFields = () => {
     },
   });
 
-  const dispatch = useDispatch();
   const isSubmitDisabled = isEmpty(errors) === false;
 
   const onSelectChange = (params: OnChangeParams, onChange: any) => {
@@ -58,14 +63,21 @@ const ConfigureFields = () => {
   ) => {
     e.preventDefault();
     const { groupEdge, ...accessors } = data;
-    setAccessors(accessors);
-    setGroupEdge(groupEdge);
 
     if (dataType === 'json') {
-      importJson();
-      dispatch(UISlices.closeModal());
+      // TODO: Overwrite Styles modal
+      importJson(attachments as TFileContent[], groupEdge, accessors, true);
       return;
     }
+
+    if (dataType === 'edgeListCsv') {
+      importEdgeList(attachments as TFileContent[], groupEdge, accessors);
+      return;
+    }
+
+    // nodeEdgeCsv
+    importNodeEdge(attachments as SingleFileForms, groupEdge, accessors);
+    return;
   };
 
   return (
@@ -80,7 +92,7 @@ const ConfigureFields = () => {
           clearErrors={clearErrors}
           getValues={getValues}
         />
-        <DataPreview isEdgeGroupable={isEdgeGroupable} />
+        <DataPreview isEdgeGroupable={isEdgeGroupable} dataType={dataType} />
         {isEdgeGroupable && <GroupEdgeConfiguration control={control} />}
 
         <Block position='absolute' bottom='0' right='0'>

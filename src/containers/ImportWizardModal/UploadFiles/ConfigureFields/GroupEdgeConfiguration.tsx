@@ -13,7 +13,7 @@ const GroupEdgeConfiguration: FC<GroupEdgeConfigurationProps> = ({
   const groupEdgeToggle = (
     props: ControllerRenderProps<Record<string, any>>,
   ) => {
-    const { onChange, value } = props;
+    const { onChange, value, name } = props;
     const onCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
       onChange(e.target.checked);
     };
@@ -21,7 +21,7 @@ const GroupEdgeConfiguration: FC<GroupEdgeConfigurationProps> = ({
     return (
       <Checkbox
         ariaLabel='Group Edges'
-        name='groupEdge'
+        name={name}
         checked={value}
         onChange={onCheckboxChange}
         checkmarkType={STYLE_TYPE.toggle_round}
@@ -66,7 +66,7 @@ const GroupEdgeConfiguration: FC<GroupEdgeConfigurationProps> = ({
         <Block marginTop='scale200' marginBottom='0'>
           <Controller
             control={control}
-            name='groupEdges'
+            name='groupEdge'
             render={groupEdgeToggle}
           />
         </Block>

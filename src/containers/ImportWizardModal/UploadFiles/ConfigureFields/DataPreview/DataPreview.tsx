@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { Block } from 'baseui/block';
 import { LabelXSmall } from 'baseui/typography';
 import { styled } from 'baseui';
@@ -76,13 +76,27 @@ const TableTabs: FC<TableTabsProps> = ({ items, activeKey, onClick }) => {
   );
 };
 
-const TABLE_TABS: TableTabItem[] = [
-  { key: 'nodes', label: 'Node' },
-  { key: 'edges', label: 'Edge' },
-];
-type DataPreviewProps = { isEdgeGroupable: boolean };
-const DataPreview: FC<DataPreviewProps> = ({ isEdgeGroupable }) => {
-  const [activeTab, setActiveTab] = useState<GraphAttribute>('nodes');
+type DataPreviewProps = { isEdgeGroupable: boolean; dataType: string };
+const DataPreview: FC<DataPreviewProps> = ({ isEdgeGroupable, dataType }) => {
+  const defaultTab: GraphAttribute = useMemo(() => {
+    if (dataType === 'edgeListCsv') {
+      return 'edges';
+    }
+
+    return 'nodes';
+  }, [dataType]);
+
+  const TABLE_TABS: TableTabItem[] = useMemo(() => {
+    if (dataType === 'edgeListCsv') {
+      return [{ key: 'edges', label: 'Edge' }];
+    }
+    return [
+      { key: 'nodes', label: 'Node' },
+      { key: 'edges', label: 'Edge' },
+    ];
+  }, [dataType]);
+
+  const [activeTab, setActiveTab] = useState<GraphAttribute>(defaultTab);
 
   return (
     <Block marginTop='scale500'>
