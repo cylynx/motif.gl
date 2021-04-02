@@ -48,11 +48,11 @@ const AccessorFields: FC<AccessorsFieldsProps> = ({
     if (isSameWithSource) {
       setError('edgeID', {
         type: 'manual',
-        message: 'Value must different with Source',
+        message: 'Value must differ with Source',
       });
       setError('edgeSource', {
         type: 'manual',
-        message: 'Value must different with Edge ID',
+        message: 'Value must differ with Edge ID',
       });
     }
 
@@ -60,11 +60,11 @@ const AccessorFields: FC<AccessorsFieldsProps> = ({
     if (isSameWithTarget) {
       setError('edgeTarget', {
         type: 'manual',
-        message: 'Value must different with Edge ID',
+        message: 'Value must differ with Edge ID',
       });
       setError('edgeID', {
         type: 'manual',
-        message: 'Value must different with Target',
+        message: 'Value must differ with Target',
       });
     }
 
@@ -72,11 +72,11 @@ const AccessorFields: FC<AccessorsFieldsProps> = ({
     if (isSameSourceAndTarget) {
       setError('edgeID', {
         type: 'manual',
-        message: 'Value must different with Target',
+        message: 'Value must differ with Target',
       });
       setError('edgeTarget', {
         type: 'manual',
-        message: 'Value must different with Edge ID',
+        message: 'Value must differ with Edge ID',
       });
     }
   }, [watch('edgeID'), watch('edgeSource'), watch('edgeTarget')]);

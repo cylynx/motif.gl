@@ -74,7 +74,7 @@ const ImportWizardModal: FC<ImportWizardProps> = ({ overrideTabs }) => {
         },
       }}
     >
-      <StyledModalHeader>Add Data To Graph</StyledModalHeader>
+      <StyledModalHeader>Import Data</StyledModalHeader>
       <StyledModalBody>
         <Tabs
           activeKey={activeKey}

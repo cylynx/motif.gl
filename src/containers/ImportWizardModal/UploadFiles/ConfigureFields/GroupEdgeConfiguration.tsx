@@ -58,7 +58,7 @@ const GroupEdgeConfiguration: FC<GroupEdgeConfigurationProps> = ({
       </Block>
       <Block marginLeft='scale300' marginTop='0'>
         <ParagraphSmall marginTop='0' marginBottom='0'>
-          We have detected that your graph has a lot of edges. You can group
+          We have detected that your graph has multiple edges. You can group
           similar edges to make graph visualization more accessible. You will be
           able to ungroup them later if needed.
         </ParagraphSmall>
