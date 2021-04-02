@@ -66,10 +66,8 @@ const StyledStepperItem = styled(
         bottom: 0,
         width: 0,
         borderLeft: `${scale600} solid #FFFFFF`,
-        borderTop: `${scale600} solid ${$isDisabled ? '#F6F6F6' : '#112B42'}`,
-        borderBottom: `${scale600} solid ${
-          $isDisabled ? '#F6F6F6' : '#112B42'
-        }`,
+        borderTop: `${scale600} solid ${$isActive ? '#112B42' : '#F6F6F6'}`,
+        borderBottom: `${scale600} solid ${$isActive ? '#112B42' : '#F6F6F6'}`,
       },
     };
   },

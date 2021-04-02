@@ -69,7 +69,7 @@ const ImportWizardModal: FC<ImportWizardProps> = ({ overrideTabs }) => {
         Dialog: {
           style: {
             width: '848px',
-            height: '680px',
+            height: '650px',
           },
         },
       }}
