@@ -133,7 +133,7 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
     return (
       <Fragment>
         <DataTableModal />
-        <ImportWizardModal overrides={overrides} />
+        <ImportWizardModal overrideTabs={overrides?.Tabs} />
         <GraphLayer
           isMainWidgetExpanded={isMainWidgetExpanded}
           leftLayerWidth={leftLayerWidth}

@@ -4,7 +4,6 @@ import { Tabs, Tab } from 'baseui/tabs-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import { withStyle } from 'baseui';
 import { ModalState, UISelectors, UISlices } from '../../redux/ui';
-import { Overrides } from '../../utils/overrides';
 import { ImportTabs, TActiveKey } from './types';
 
 import UploadFiles from './UploadFiles';
@@ -31,14 +30,14 @@ const StyledModalBody = withStyle(ModalBody, () => ({
   height: '90%',
 }));
 
-export type ImportWizardProps = { overrides?: Overrides };
-const ImportWizardModal: FC<ImportWizardProps> = ({ overrides }) => {
+export type ImportWizardProps = { overrideTabs?: ImportTabs[] };
+const ImportWizardModal: FC<ImportWizardProps> = ({ overrideTabs }) => {
   const dispatch = useDispatch();
   const { modal } = useSelector((state) => UISelectors.getUI(state));
 
   const tabs = useMemo(() => {
-    return overrides?.Tabs ?? defaultImportTabs;
-  }, [overrides]);
+    return overrideTabs ?? defaultImportTabs;
+  }, [overrideTabs]);
 
   const isOpen: boolean = useMemo(() => {
     const { isOpen, content } = modal as ModalState;
@@ -70,7 +69,7 @@ const ImportWizardModal: FC<ImportWizardProps> = ({ overrides }) => {
         Dialog: {
           style: {
             width: '848px',
-            height: '720px',
+            height: '680px',
           },
         },
       }}

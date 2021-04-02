@@ -4,6 +4,7 @@ import { LabelMedium, ParagraphSmall } from 'baseui/typography';
 import { TFileContent } from '../../../../redux/import/fileUpload';
 import Attachment from './Attachment';
 import ConfirmationModal from '../../../../components/ConfirmationModal';
+import useFileContents from '../../UploadFiles/hooks/useFileContents';
 
 export type AttachmentListsProps = {
   attachments: TFileContent[];
@@ -15,14 +16,16 @@ const AttachmentLists: FC<AttachmentListsProps> = ({
   onDeleteBtnClick,
 }) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const { isPossessDataPreview, resetDataPreview } = useFileContents();
   const indexRef = useRef<number>(null);
   const filenameRef = useRef<string>(null);
 
   const onModalAccept = () => {
-    setModalOpen(false);
+    resetDataPreview();
     onDeleteBtnClick(indexRef.current);
     indexRef.current = null;
     filenameRef.current = null;
+    setModalOpen(false);
   };
 
   const onModalReject = () => {
@@ -31,10 +34,17 @@ const AttachmentLists: FC<AttachmentListsProps> = ({
     filenameRef.current = null;
   };
 
-  const openModal = (index: number, fileName: string) => {
-    setModalOpen(true);
-    indexRef.current = index;
-    filenameRef.current = fileName;
+  const deleteFile = (index: number, fileName: string) => {
+    const isContainPreview = isPossessDataPreview();
+    if (isContainPreview) {
+      setModalOpen(true);
+      indexRef.current = index;
+      filenameRef.current = fileName;
+      return;
+    }
+
+    resetDataPreview();
+    onDeleteBtnClick(index);
   };
 
   return (
@@ -48,7 +58,7 @@ const AttachmentLists: FC<AttachmentListsProps> = ({
               fileName={fileName}
               onDeleteBtnClick={(event) => {
                 event.preventDefault();
-                openModal(index, fileName);
+                deleteFile(index, fileName);
               }}
             />
           </Block>

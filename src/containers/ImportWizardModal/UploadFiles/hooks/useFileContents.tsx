@@ -74,6 +74,21 @@ const UseFileContent = () => {
     dispatch(FileUploadSlices.resetState());
   };
 
+  const resetDataPreview = () => {
+    dispatch(FileUploadSlices.resetDataPreview());
+  };
+
+  const isPossessDataPreview = () => {
+    const {
+      dataPreview: { nodes, edges },
+    } = fileUpload;
+    if (nodes.length === 0 && edges.length === 0) {
+      return false;
+    }
+
+    return true;
+  };
+
   return {
     fileUpload,
     nodeFieldOptions,
@@ -83,6 +98,8 @@ const UseFileContent = () => {
     setAccessors,
     setGroupEdge,
     setDataPreview,
+    isPossessDataPreview,
+    resetDataPreview,
     resetState,
   };
 };
