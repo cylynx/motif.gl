@@ -20,8 +20,7 @@ import useDataPreview from '../hooks/useDataPreview';
 
 const cleanInput = (file: string) => file.replace(/\r/g, '').trim();
 
-type EdgeListCsvProps = { nextStep: () => void };
-const EdgeListCsv: FC<EdgeListCsvProps> = ({ nextStep }) => {
+const EdgeListCsv: FC = () => {
   const { fileUpload, setAttachments } = useFileContents();
   const { previewEdgeList } = useDataPreview();
 
@@ -49,7 +48,6 @@ const EdgeListCsv: FC<EdgeListCsvProps> = ({ nextStep }) => {
     const { attachments } = data;
     setAttachments(attachments as TFileContent[]);
     previewEdgeList(attachments as TFileContent[]);
-    nextStep();
   };
 
   const onRetry = () => {

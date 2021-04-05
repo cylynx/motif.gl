@@ -16,8 +16,9 @@ import {
   combineProcessedData,
   combineDataWithDuplicates,
 } from '../../../containers/Graph/styles/utils';
-import { setDataPreview, setIsEdgeGroupable } from './slice';
-import { show } from '../../ui/thunks';
+import { setDataPreview, setIsEdgeGroupable, setStep } from './slice';
+import { UIThunks } from '../../ui';
+import { getFileUpload } from './selectors';
 
 const emptyGraphData: GraphData = {
   nodes: [],
@@ -51,7 +52,9 @@ const setEdgeGroupable = (graphList: GraphList, dispatch: any) => {
 
 export const previewJson = (attachments: TFileContent[]) => async (
   dispatch: any,
+  getState: any,
 ) => {
+  const { step } = getFileUpload(getState());
   const contentPromises: Promise<GraphList>[] = attachments.map(
     (attachment: TFileContent) => {
       const { data: dataWithStyle } = attachment.content as TLoadFormat;
@@ -70,15 +73,23 @@ export const previewJson = (attachments: TFileContent[]) => async (
     const graphList: GraphList = flatten(graphDataArr);
     createPreviewData(graphList, dispatch, combineProcessedData);
     setEdgeGroupable(graphList, dispatch);
+    nextStep(step, dispatch);
   } catch (err) {
     const { message } = err;
-    dispatch(show(message, 'negative'));
+    dispatch(UIThunks.show(message, 'negative'));
   }
+};
+
+const nextStep = (step: number, dispatch: any) => {
+  dispatch(setStep(step + 1));
 };
 
 export const previewEdgeList = (attachments: TFileContent[]) => (
   dispatch: any,
+  getState: any,
 ) => {
+  const { step } = getFileUpload(getState());
+
   const batchDataPromises = attachments.map((attachment: TFileContent) => {
     const edgeList = attachment.content as EdgeListCsv;
     return processPreviewEdgeList(edgeList);
@@ -88,15 +99,18 @@ export const previewEdgeList = (attachments: TFileContent[]) => (
     .then((graphList: GraphList) => {
       createPreviewData(graphList, dispatch, combineDataWithDuplicates);
       setEdgeGroupable(graphList, dispatch);
+      nextStep(step, dispatch);
     })
     .catch((err: Error) => {
       const { message } = err;
-      dispatch(show(message, 'negative'));
+      dispatch(UIThunks.show(message, 'negative'));
     });
 };
 export const previewNodeEdge = (attachments: SingleFileForms) => async (
   dispatch: any,
+  getState: any,
 ) => {
+  const { step } = getFileUpload(getState());
   const { nodeCsv, edgeCsv } = attachments as SingleFileForms;
 
   const nodeData: string[] = nodeCsv.map(
@@ -112,8 +126,9 @@ export const previewNodeEdge = (attachments: SingleFileForms) => async (
 
     const { availability: isEdgeGroupable } = graphData.metadata.groupEdges;
     dispatch(setIsEdgeGroupable(isEdgeGroupable));
+    nextStep(step, dispatch);
   } catch (err) {
     const { message } = err;
-    dispatch(show(message, 'negative'));
+    dispatch(UIThunks.show(message, 'negative'));
   }
 };

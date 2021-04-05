@@ -11,6 +11,8 @@ export type TFileContent = {
 };
 
 export type TFileContentState = {
+  /** step to perform * */
+  step: number;
   /** attachment uploaded with file inputs */
   attachments: TFileContent[] | SingleFileForms;
   /** type of data uploaded */

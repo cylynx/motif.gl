@@ -10,33 +10,32 @@ import useFileContents from './hooks/useFileContents';
 import ConfigureFields from './ConfigureFields';
 
 const UploadFiles = () => {
-  const { currentStep, setCurrentStep, nextStep } = useStepper(1, 2);
-  const { fileUpload } = useFileContents();
+  const { currentStep, setStep, nextStep } = useStepper(1, 2);
+  const {
+    fileUpload: { attachments },
+  } = useFileContents();
 
   const onStepChange = (step: number) => {
-    setCurrentStep(step);
+    setStep(step);
   };
 
   const stepperItems: StepperItems[] = useMemo(() => {
+    const isSecondStepDisabled = currentStep === 2;
     return [
       {
         children: '1. Upload Files',
-        isClickable: true,
+        disabled: true,
       },
       {
         children: '2. Configure Fields',
-        isClickable: false,
+        disabled: isSecondStepDisabled,
       },
     ];
-  }, [fileUpload.attachments]);
+  }, [attachments, currentStep]);
 
   return (
     <Block>
-      <ProgressStepper
-        currentStep={currentStep}
-        items={stepperItems}
-        onStepChange={onStepChange}
-      />
+      <ProgressStepper items={stepperItems} onStepChange={onStepChange} />
 
       <Block>
         {currentStep === 1 && <DataTypeSelection nextStep={nextStep} />}

@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TFileContentState } from './types';
 
 export const initialState: TFileContentState = {
+  step: 1,
   attachments: [],
   dataType: 'json',
   accessors: {
@@ -77,6 +78,15 @@ const fileUploadSlice = createSlice({
         isEdgeGroupable: action.payload,
       };
     },
+    setStep(
+      state: TFileContentState,
+      action: PayloadAction<number>,
+    ): TFileContentState {
+      return {
+        ...state,
+        step: action.payload,
+      };
+    },
     resetDataPreview(state: TFileContentState) {
       Object.assign(state, {
         dataPreview: initialState.dataPreview,
@@ -95,6 +105,7 @@ export const {
   setGroupEdge,
   setDataPreview,
   setIsEdgeGroupable,
+  setStep,
   resetState,
   resetDataPreview,
 } = fileUploadSlice.actions;

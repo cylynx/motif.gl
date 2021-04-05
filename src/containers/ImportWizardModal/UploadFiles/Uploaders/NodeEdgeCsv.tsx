@@ -23,8 +23,7 @@ import useDataPreview from '../hooks/useDataPreview';
 
 const cleanInput = (file: string) => file.replace(/\r/g, '').trim();
 
-type NodeEdgeCsvProps = { nextStep: () => void };
-const NodeEdgeCsv: FC<NodeEdgeCsvProps> = ({ nextStep }) => {
+const NodeEdgeCsv: FC = () => {
   const { fileUpload, setAttachments } = useFileContents();
   const { previewNodeEdge } = useDataPreview();
 
@@ -51,7 +50,6 @@ const NodeEdgeCsv: FC<NodeEdgeCsvProps> = ({ nextStep }) => {
 
     setAttachments(data);
     previewNodeEdge(data);
-    nextStep();
   };
 
   const onDropRejected = (name: keyof SingleFileForms) => {

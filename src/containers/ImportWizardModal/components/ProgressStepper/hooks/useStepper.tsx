@@ -1,31 +1,35 @@
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  FileUploadSelectors,
+  FileUploadSlices,
+} from '../../../../../redux/import/fileUpload';
 
 const UseStepper = (initialStep: number, maxStep: number) => {
-  const [currentStep, setCurrentStep] = useState(initialStep);
+  const dispatch = useDispatch();
+  const { step } = useSelector((state) =>
+    FileUploadSelectors.getFileUpload(state),
+  );
+
+  const setStep = (targetStep: number) => {
+    dispatch(FileUploadSlices.setStep(targetStep));
+  };
 
   const nextStep = () => {
-    setCurrentStep((prevStep) => {
-      const incrementStep = prevStep + 1;
-      if (incrementStep > maxStep) {
-        return maxStep;
-      }
+    const incrementStep = step + 1;
+    const targetStep = incrementStep > maxStep ? maxStep : incrementStep;
 
-      return incrementStep;
-    });
+    setStep(targetStep);
   };
 
   const previousStep = () => {
-    setCurrentStep((prevStep) => {
-      const decrementStep = prevStep - 1;
-      if (decrementStep < initialStep) {
-        return initialStep;
-      }
+    const decrementStep = step - 1;
 
-      return decrementStep;
-    });
+    const targetStep =
+      decrementStep < initialStep ? initialStep : decrementStep;
+    setStep(targetStep);
   };
 
-  return { currentStep, setCurrentStep, nextStep, previousStep };
+  return { currentStep: step, setStep, nextStep, previousStep };
 };
 
 export default UseStepper;

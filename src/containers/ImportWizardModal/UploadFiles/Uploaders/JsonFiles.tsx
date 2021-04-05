@@ -18,8 +18,7 @@ import AttachmentLists from '../../components/AttachmentLists';
 import useFileContents from '../hooks/useFileContents';
 import useDataPreview from '../hooks/useDataPreview';
 
-type JsonFilesProps = { nextStep: () => void };
-const JsonFiles: FC<JsonFilesProps> = ({ nextStep }) => {
+const JsonFiles: FC = () => {
   const { fileUpload, setAttachments } = useFileContents();
   const { previewJson } = useDataPreview();
 
@@ -49,7 +48,6 @@ const JsonFiles: FC<JsonFilesProps> = ({ nextStep }) => {
 
     try {
       previewJson(attachments);
-      nextStep();
     } catch (err) {
       return;
     }
