@@ -3,48 +3,125 @@ import { Theme } from 'baseui/theme';
 
 type StepperItemProps = {
   $theme?: Theme;
-  $isActive: boolean;
   $isDisabled: boolean;
   $isStart?: boolean;
   $isEnd?: boolean;
+};
+
+const themeByState = ($isDisabled: boolean, $isStart: boolean) => {
+  if ($isDisabled) {
+    const disabledBackground = '#F6F6F6';
+    const disabledColor = '#AFAFAF';
+    return {
+      normal: {
+        backgroundColor: disabledBackground,
+        color: disabledColor,
+      },
+      hover: {
+        cursor: 'not-allowed',
+        backgroundColor: disabledBackground,
+        color: disabledColor,
+        textDecoration: 'none',
+        before: {
+          borderLeftColor: '#FFFFFF',
+          borderTopColor: disabledBackground,
+          borderBottomColor: disabledBackground,
+        },
+        after: {
+          borderLeftColor: disabledBackground,
+          borderTopColor: `white`,
+          borderBottomColor: `white`,
+        },
+      },
+      before: {
+        borderLeftColor: 'white',
+        borderTopColor: disabledBackground,
+        borderBottomColor: disabledBackground,
+      },
+      after: {
+        borderLeftColor: disabledBackground,
+        borderTopColor: 'white',
+        borderBottomColor: 'white',
+      },
+    };
+  }
+
+  const backgroundColor = '#112B42';
+  const fontColor = '#FFFFFF';
+  const hoverBackground = 'black';
+  return {
+    normal: {
+      backgroundColor,
+      color: fontColor,
+    },
+    hover: {
+      cursor: 'pointer',
+      backgroundColor: hoverBackground,
+      color: fontColor,
+      textDecoration: 'underline',
+      before: {
+        borderLeftColor: $isStart ? backgroundColor : 'white',
+        borderTopColor: hoverBackground,
+        borderBottomColor: hoverBackground,
+      },
+      after: {
+        borderLeftColor: hoverBackground,
+        borderTopColor: fontColor,
+        borderBottomColor: fontColor,
+      },
+    },
+    before: {
+      borderLeftColor: 'white',
+      borderTopColor: backgroundColor,
+      borderBottomColor: backgroundColor,
+    },
+    after: {
+      borderLeftColor: backgroundColor,
+      borderTopColor: 'white',
+      borderBottomColor: 'white',
+    },
+  };
 };
 
 const StyledStepperItem = styled(
   'div',
   ({
     $theme,
-    $isActive,
     $isDisabled,
     $isStart = false,
     $isEnd = false,
   }: StepperItemProps) => {
     const { scale300, scale600 } = $theme.sizing;
 
+    const { normal, hover, before, after } = themeByState(
+      $isDisabled,
+      $isStart,
+    );
+
     return {
       paddingTop: scale300,
       paddingBottom: scale300,
       paddingLeft: scale300,
       paddingRight: scale300,
-      backgroundColor: $isActive ? '#112B42' : '#F6F6F6',
-      color: $isActive ? '#FFFFFF' : '#AFAFAF',
+      backgroundColor: normal.backgroundColor,
+      color: normal.color,
       ...$theme.typography.LabelSmall,
       textAlign: 'center',
       position: 'relative',
       flex: '1',
       ':hover': {
-        cursor: $isDisabled ? 'not-allowed' : 'pointer',
-        backgroundColor: $isDisabled ? '#F6F6F6' : 'black',
+        cursor: hover.cursor,
+        backgroundColor: hover.backgroundColor,
+        textDecoration: hover.textDecoration,
         ':after': {
-          borderLeft: `${scale600} solid black`,
-          borderTop: `${scale600} solid white`,
-          borderBottom: `${scale600} solid white`,
+          borderLeft: `${scale600} solid ${hover.after.borderLeftColor}`,
+          borderTop: `${scale600} solid ${hover.after.borderTopColor}`,
+          borderBottom: `${scale600} solid ${hover.after.borderBottomColor}`,
         },
         ':before': {
-          borderLeft: `${scale600} solid ${$isDisabled ? 'white' : '#112B42'}`,
-          borderTop: `${scale600} solid ${$isDisabled ? '#F6F6F6' : 'black'}`,
-          borderBottom: `${scale600} solid ${
-            $isDisabled ? '#F6F6F6' : 'black'
-          }`,
+          borderLeft: `${scale600} solid ${hover.before.borderLeftColor}`,
+          borderTop: `${scale600} solid ${hover.before.borderTopColor}`,
+          borderBottom: `${scale600} solid ${hover.before.borderBottomColor}`,
         },
       },
       ':after': {
@@ -54,9 +131,9 @@ const StyledStepperItem = styled(
         bottom: 0,
         width: 0,
         height: 0,
-        borderLeft: `${scale600} solid ${$isDisabled ? '#F6F6F6' : '#112B42'}`,
-        borderTop: `${scale600} solid white`,
-        borderBottom: `${scale600} solid white`,
+        borderLeft: `${scale600} solid ${after.borderLeftColor}`,
+        borderTop: `${scale600} solid ${after.borderTopColor}`,
+        borderBottom: `${scale600} solid ${after.borderBottomColor}`,
       },
       ':before': {
         content: $isStart ? '' : '""',
@@ -65,9 +142,9 @@ const StyledStepperItem = styled(
         right: 0,
         bottom: 0,
         width: 0,
-        borderLeft: `${scale600} solid #FFFFFF`,
-        borderTop: `${scale600} solid ${$isActive ? '#112B42' : '#F6F6F6'}`,
-        borderBottom: `${scale600} solid ${$isActive ? '#112B42' : '#F6F6F6'}`,
+        borderLeft: `${scale600} solid ${before.borderLeftColor}`,
+        borderTop: `${scale600} solid ${before.borderTopColor}`,
+        borderBottom: `${scale600} solid ${before.borderBottomColor}`,
       },
     };
   },
