@@ -1,13 +1,14 @@
 import React, { ReactNode, useMemo, FC, useEffect } from 'react';
 import { FlexGrid, FlexGridItem } from 'baseui/flex-grid';
 import { Controller, Control } from 'react-hook-form';
-import { OnChangeParams, Value } from 'baseui/select';
+import { OnChangeParams, Option, Value } from 'baseui/select';
 import useFileContents from '../hooks/useFileContents';
 import FormSelectWithTooltip from '../../components/FormSelectWithTooltip';
 
 type AccessorField = {
   name: string;
-  tooltipText: ReactNode;
+  labelText: ReactNode;
+  tooltipText?: ReactNode;
   options: Value;
 };
 type AccessorsFieldsProps = {
@@ -26,6 +27,7 @@ type AccessorsFieldsProps = {
   clearErrors: (name?: string | string[]) => void;
   getValues: (payload?: string | string[]) => Object;
   errors: Record<string, Object>;
+  setValue: (name: string, value: any, config?: Object) => void;
 };
 const AccessorFields: FC<AccessorsFieldsProps> = ({
   onSelectChange,
@@ -43,6 +45,7 @@ const AccessorFields: FC<AccessorsFieldsProps> = ({
     const edgeSource = getValues('edgeSource');
     const edgeTarget = getValues('edgeTarget');
     const edgeID = getValues('edgeID');
+    console.log(getValues());
 
     const isSameWithSource = edgeSource === edgeID;
     if (isSameWithSource) {
@@ -85,22 +88,26 @@ const AccessorFields: FC<AccessorsFieldsProps> = ({
     () => [
       {
         name: 'nodeID',
-        tooltipText: 'Node ID',
+        labelText: 'Node ID',
+        tooltipText: 'Unique Identifier of Specific Node',
         options: nodeFieldOptions,
       },
       {
         name: 'edgeID',
-        tooltipText: 'Edge ID',
+        labelText: 'Edge ID',
+        tooltipText: 'Unique Identifier of Specific Edge',
         options: edgeFieldOptions,
       },
       {
         name: 'edgeSource',
-        tooltipText: 'Source',
+        labelText: 'Source',
+        tooltipText: 'Source attribute of Edges',
         options: edgeFieldOptions,
       },
       {
         name: 'edgeTarget',
-        tooltipText: 'Target',
+        labelText: 'Target',
+        tooltipText: 'Target attribute of Edges',
         options: edgeFieldOptions,
       },
     ],
@@ -110,24 +117,27 @@ const AccessorFields: FC<AccessorsFieldsProps> = ({
   return (
     <FlexGrid flexGridColumnGap='scale300' flexGridColumnCount={4}>
       {ACCESSOR_FIELDS.map((field: AccessorField) => {
-        const { name, tooltipText, options } = field;
+        const { name, tooltipText, options, labelText } = field;
         return (
           <FlexGridItem key={name}>
             <Controller
               name={name}
               control={control}
-              render={({ onChange, name, value }) => (
-                <FormSelectWithTooltip
-                  name={name}
-                  onChange={(params: OnChangeParams) =>
-                    onSelectChange(params, onChange)
-                  }
-                  tooltipText={tooltipText}
-                  options={options}
-                  value={value}
-                  error={errors[name] && (errors[name] as any).message}
-                />
-              )}
+              render={({ onChange, name, value }) => {
+                return (
+                  <FormSelectWithTooltip
+                    name={name}
+                    onChange={(params: OnChangeParams) =>
+                      onSelectChange(params, onChange)
+                    }
+                    labelText={labelText}
+                    tooltipText={tooltipText}
+                    options={options}
+                    value={value}
+                    error={errors[name] && (errors[name] as any).message}
+                  />
+                );
+              }}
             />
           </FlexGridItem>
         );

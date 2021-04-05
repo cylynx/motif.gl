@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useMemo } from 'react';
+import React, { FC, ReactNode, useEffect, useMemo } from 'react';
 import { FormControl } from 'baseui/form-control';
 import { Theme } from 'baseui/theme';
 import {
@@ -14,15 +14,17 @@ import LabelTooltip from './LabelTooltip';
 export type FormSelectWithTooltipProps = {
   name: string;
   onChange: (params: OnChangeParams) => any;
-  tooltipText: ReactNode;
+  labelText: ReactNode;
   options: Value;
   value: string;
+  tooltipText?: ReactNode;
   error?: string;
 };
 
 const FormSelectWithTooltip: FC<FormSelectWithTooltipProps> = ({
   name,
   onChange,
+  labelText,
   tooltipText,
   options,
   value,
@@ -43,7 +45,7 @@ const FormSelectWithTooltip: FC<FormSelectWithTooltipProps> = ({
 
   return (
     <FormControl
-      label={<LabelTooltip text={tooltipText} />}
+      label={<LabelTooltip text={labelText} tooltip={tooltipText} />}
       overrides={{
         Label: {
           style: ({ $theme }: { $theme: Theme }) => ({

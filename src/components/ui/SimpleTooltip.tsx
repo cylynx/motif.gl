@@ -1,5 +1,6 @@
 import React from 'react';
 import { StatefulTooltip, PLACEMENT, TRIGGER_TYPE } from 'baseui/tooltip';
+import { BasePopoverProps } from 'baseui/popover';
 // @ts-ignore
 import { PopoverPlacementT } from 'baseui/popover/types';
 
@@ -8,8 +9,21 @@ type SimpleTooltipProps = {
   title?: string;
   children?: React.ReactNode;
   placement?: PopoverPlacementT;
+  overrides?: BasePopoverProps['overrides'];
 };
 
+const defaultOverrides: BasePopoverProps['overrides'] = {
+  Inner: {
+    style: ({ $theme }) => ({
+      backgroundColor: $theme.colors.backgroundTertiary,
+    }),
+  },
+  Arrow: {
+    style: ({ $theme }) => ({
+      backgroundColor: $theme.colors.backgroundTertiary,
+    }),
+  },
+};
 /*
  * @see
  * https://popper.js.org/docs/v1/#modifiers..hide.enabled
@@ -25,6 +39,7 @@ const SimpleTooltip = ({
   tooltip,
   placement = PLACEMENT.top,
   children,
+  overrides = defaultOverrides,
 }: SimpleTooltipProps) => {
   return (
     <StatefulTooltip
@@ -44,18 +59,7 @@ const SimpleTooltip = ({
           },
         },
       }}
-      overrides={{
-        Inner: {
-          style: ({ $theme }) => ({
-            backgroundColor: $theme.colors.backgroundTertiary,
-          }),
-        },
-        Arrow: {
-          style: ({ $theme }) => ({
-            backgroundColor: $theme.colors.backgroundTertiary,
-          }),
-        },
-      }}
+      overrides={overrides}
     >
       {title || children}
     </StatefulTooltip>

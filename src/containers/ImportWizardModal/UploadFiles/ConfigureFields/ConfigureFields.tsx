@@ -28,6 +28,7 @@ const ConfigureFields = () => {
       dataType,
       attachments,
     },
+    setAccessors,
   } = useFileContents();
 
   const { importJson, importEdgeList, importNodeEdge } = useImportData();
@@ -40,6 +41,7 @@ const ConfigureFields = () => {
     setError,
     clearErrors,
     getValues,
+    setValue,
   } = useForm<ConfigureFieldsForm>({
     defaultValues: {
       nodeID: accessors.nodeID,
@@ -55,6 +57,9 @@ const ConfigureFields = () => {
   const onSelectChange = (params: OnChangeParams, onChange: any) => {
     const [selectedOption] = params.value;
     onChange(selectedOption.id as string);
+
+    const { groupEdge, ...accessors } = getValues();
+    setAccessors(accessors);
   };
 
   const importLocalFile: SubmitHandler<ConfigureFieldsForm> = (
@@ -91,6 +96,7 @@ const ConfigureFields = () => {
           setError={setError}
           clearErrors={clearErrors}
           getValues={getValues}
+          setValue={setValue}
         />
         <DataPreview isEdgeGroupable={isEdgeGroupable} dataType={dataType} />
         {isEdgeGroupable && <GroupEdgeConfiguration control={control} />}
@@ -112,31 +118,3 @@ const ConfigureFields = () => {
 };
 
 export default ConfigureFields;
-
-/**
- * <ConfirmationModal
-        onClose={onConfirmModalReject}
-        isOpen={confirmModalOpen}
-        onReject={onConfirmModalReject}
-        onAccept={onConfirmModalApprove}
-        header={
-          <Block
-            as='span'
-            overrides={{
-              Block: {
-                style: {
-                  textTransform: 'capitalize',
-                },
-              },
-            }}
-          >
-            Overwrite existing styles?
-          </Block>
-        }
-        body={
-          <Block as='span'>
-            Import file styles differ from currently applied styles.
-          </Block>
-        }
-      />
- */

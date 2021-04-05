@@ -2,6 +2,7 @@ import React, { FC, forwardRef, ReactNode } from 'react';
 import { IconBaseProps } from 'react-icons';
 import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
+import { colors } from 'baseui/tokens';
 import * as Icon from '../../../../components/Icons';
 import { SimpleTooltip } from '../../../../components/ui';
 
@@ -29,8 +30,8 @@ const QuestionMarkIconWithRef = forwardRef((props: IconBaseProps, ref) => {
   );
 });
 
-type LabelTooltipProps = { text: ReactNode };
-const LabelTooltip: FC<LabelTooltipProps> = ({ text }) => {
+type LabelTooltipProps = { text: ReactNode; tooltip?: ReactNode };
+const LabelTooltip: FC<LabelTooltipProps> = ({ text, tooltip }) => {
   return (
     <>
       <LabelSmall
@@ -48,7 +49,17 @@ const LabelTooltip: FC<LabelTooltipProps> = ({ text }) => {
         {text}
       </LabelSmall>
 
-      <SimpleTooltip tooltip='Question Marks'>
+      <SimpleTooltip
+        tooltip={tooltip}
+        overrides={{
+          Inner: {
+            style: {
+              backgroundColor: '#0B1A29',
+              color: colors.white,
+            },
+          },
+        }}
+      >
         <QuestionMarkIconWithRef
           size={16}
           color='#8794A1'
