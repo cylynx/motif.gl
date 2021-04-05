@@ -88,7 +88,7 @@ const AttachmentLists: FC<AttachmentListsProps> = ({
         }
         body={
           <ParagraphSmall>
-            Are you sure you want to delete file <b>{filenameRef.current}</b>?{' '}
+            Are you sure you want to delete file <b>{filenameRef.current}</b>?
             <br />
             Your field configuration will be lost.
           </ParagraphSmall>

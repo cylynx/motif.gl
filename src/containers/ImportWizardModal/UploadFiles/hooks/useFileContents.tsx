@@ -8,7 +8,7 @@ import {
 } from '../../../../redux/import/fileUpload';
 import { Field, GraphData } from '../../../../redux/graph';
 
-const UseFileContent = () => {
+const useFileContents = () => {
   const dispatch = useDispatch();
   const fileUpload = useSelector((state) =>
     FileUploadSelectors.getFileUpload(state),
@@ -104,4 +104,4 @@ const UseFileContent = () => {
   };
 };
 
-export default UseFileContent;
+export default useFileContents;
