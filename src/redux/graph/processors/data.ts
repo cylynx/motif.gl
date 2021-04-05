@@ -2,11 +2,9 @@
 import converter from 'json-2-csv';
 import { range } from 'd3-array';
 import shortid from 'shortid';
-import get from 'lodash/get';
 // @ts-ignore
 import { Analyzer, DATA_TYPES as AnalyzerDatatypes } from 'type-analyzer';
-import { isEmpty } from 'lodash';
-import { removeDuplicates } from '../../../containers/Graph/styles/utils';
+import { isEmpty, uniq, get } from 'lodash';
 import { notNullorUndefined } from '../../../utils/data-utils';
 import {
   Edge,
@@ -18,6 +16,7 @@ import {
   Node,
 } from '../types';
 import { duplicateDictionary } from './group-edges';
+import { removeDuplicates } from '../../../containers/Graph/styles/utils';
 
 type RowData = {
   [key: string]: any;
@@ -211,6 +210,9 @@ export const processNodeEdgeCsv = async (
       combineFieldsAndJson,
       emptyFieldsWithJson,
     );
+
+    // ensure all the source and target in edges are present.
+    verifySourceAndTargetExistence(nodeJson as Node[], edgeJson as Edge[]);
 
     const groupEdgeConfig: GroupEdges = applyGroupEdges(
       groupEdges,
@@ -714,4 +716,26 @@ export const applyGroupEdges = (
   }
 
   return groupEdgeConfig;
+};
+
+export const verifySourceAndTargetExistence = (
+  nodes: Node[],
+  edges: Edge[],
+) => {
+  const nodeIds: string[] = nodes.map((node: Node) => node.id);
+  const uniqueNodeIds: string[] = uniq(nodeIds as string[]);
+
+  edges.forEach((edge: Edge) => {
+    const { source, target } = edge;
+
+    const isPossessSource = uniqueNodeIds.includes(source);
+    if (!isPossessSource) {
+      throw new Error(`The Uploaded Edge must possess valid Source attribute.`);
+    }
+
+    const isPossessTarget = uniqueNodeIds.includes(target);
+    if (!isPossessTarget) {
+      throw new Error(`The Uploaded Edge must possess valid Target attribute.`);
+    }
+  });
 };
