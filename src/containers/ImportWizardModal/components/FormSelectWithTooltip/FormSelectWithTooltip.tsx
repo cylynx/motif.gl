@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useEffect, useMemo } from 'react';
+import React, { FC, ReactNode, useMemo } from 'react';
 import { FormControl } from 'baseui/form-control';
 import { Theme } from 'baseui/theme';
 import {
@@ -17,6 +17,7 @@ export type FormSelectWithTooltipProps = {
   labelText: ReactNode;
   options: Value;
   value: string;
+  setValue: (name: string, value: any, config?: Object) => void;
   tooltipText?: ReactNode;
   error?: string;
 };

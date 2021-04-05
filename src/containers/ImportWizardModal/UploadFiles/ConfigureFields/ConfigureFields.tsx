@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, useRef, useState } from 'react';
+import React, { BaseSyntheticEvent, useEffect, useRef, useState } from 'react';
 import { Block } from 'baseui/block';
 import { isEmpty, isEqual } from 'lodash';
 import { OnChangeParams } from 'baseui/select';
@@ -62,12 +62,19 @@ const ConfigureFields = () => {
 
   const isSubmitDisabled = isEmpty(errors) === false;
 
+  useEffect(() => {
+    const { groupEdge, ...accessors } = getValues() as ConfigureFieldsForm;
+    setAccessors(accessors);
+  }, [
+    watch('nodeID'),
+    watch('edgeID'),
+    watch('edgeSource'),
+    watch('edgeTarget'),
+  ]);
+
   const onSelectChange = (params: OnChangeParams, onChange: any) => {
     const [selectedOption] = params.value;
     onChange(selectedOption.id as string);
-
-    const { groupEdge, ...accessors } = getValues();
-    setAccessors(accessors);
   };
 
   const isContainStyle = (attachments: TFileContent[]) => {
@@ -149,15 +156,18 @@ const ConfigureFields = () => {
         onClose={() => {
           importJson(jsonFileRef.current, groupEdge, accessors, false);
           jsonFileRef.current = null;
+          setModalOpen(false);
         }}
         isOpen={modalOpen}
         onReject={() => {
           importJson(jsonFileRef.current, groupEdge, accessors, false);
           jsonFileRef.current = null;
+          setModalOpen(false);
         }}
         onAccept={() => {
           importJson(jsonFileRef.current, groupEdge, accessors, true);
           jsonFileRef.current = null;
+          setModalOpen(false);
         }}
         rejectBtnText='No'
         confirmBtnText='Yes'

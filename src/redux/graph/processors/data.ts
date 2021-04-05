@@ -726,16 +726,20 @@ export const verifySourceAndTargetExistence = (
   const uniqueNodeIds: string[] = uniq(nodeIds as string[]);
 
   edges.forEach((edge: Edge) => {
-    const { source, target } = edge;
+    const { source, target, id } = edge;
 
     const isPossessSource = uniqueNodeIds.includes(source);
     if (!isPossessSource) {
-      throw new Error(`The Uploaded Edge must possess valid Source attribute.`);
+      throw new Error(
+        `The source or target node of edge ${id} does not exist.`,
+      );
     }
 
     const isPossessTarget = uniqueNodeIds.includes(target);
     if (!isPossessTarget) {
-      throw new Error(`The Uploaded Edge must possess valid Target attribute.`);
+      throw new Error(
+        `The source or target node of edge ${id} does not exist.`,
+      );
     }
   });
 };

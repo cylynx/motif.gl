@@ -1,5 +1,4 @@
 import { isEmpty, get, set, cloneDeep } from 'lodash';
-import shortid from 'shortid';
 import {
   Edge,
   FieldAndAggregation,

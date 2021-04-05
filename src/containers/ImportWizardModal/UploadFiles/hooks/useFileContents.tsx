@@ -8,6 +8,7 @@ import {
 } from '../../../../redux/import/fileUpload';
 import { Field, GraphData } from '../../../../redux/graph';
 
+export const defaultField = [{ id: 'auto-generate', label: 'Auto Generate' }];
 const useFileContents = () => {
   const dispatch = useDispatch();
   const fileUpload = useSelector((state) =>
@@ -18,7 +19,7 @@ const useFileContents = () => {
     const { nodes } = fileUpload.dataPreview.metadata.fields;
 
     if (nodes.length === 0) {
-      return [{ id: '-', label: '-' }];
+      return [];
     }
 
     const nodeFields = nodes.map((nodeField: Field) => {
@@ -36,7 +37,7 @@ const useFileContents = () => {
     const { edges } = fileUpload.dataPreview.metadata.fields;
 
     if (edges.length === 0) {
-      return [{ id: '-', label: '-' }];
+      return [];
     }
 
     const edgeFields = edges.map((edgeField: Field) => {

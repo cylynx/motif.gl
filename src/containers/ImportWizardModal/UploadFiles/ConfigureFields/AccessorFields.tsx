@@ -2,8 +2,9 @@ import React, { ReactNode, useMemo, FC, useEffect } from 'react';
 import { FlexGrid, FlexGridItem } from 'baseui/flex-grid';
 import { Controller, Control } from 'react-hook-form';
 import { OnChangeParams, Option, Value } from 'baseui/select';
-import useFileContents from '../hooks/useFileContents';
+import useFileContents, { defaultField } from '../hooks/useFileContents';
 import FormSelectWithTooltip from '../../components/FormSelectWithTooltip';
+import { ConfigureFieldsForm } from '../../../../redux/import/fileUpload';
 
 type AccessorField = {
   name: string;
@@ -37,8 +38,13 @@ const AccessorFields: FC<AccessorsFieldsProps> = ({
   clearErrors,
   getValues,
   errors,
+  setValue,
 }) => {
-  const { nodeFieldOptions, edgeFieldOptions } = useFileContents();
+  const {
+    nodeFieldOptions,
+    edgeFieldOptions,
+    setAccessors,
+  } = useFileContents();
 
   useEffect(() => {
     clearErrors();
@@ -89,13 +95,13 @@ const AccessorFields: FC<AccessorsFieldsProps> = ({
         name: 'nodeID',
         labelText: 'Node ID',
         tooltipText: 'Unique Identifier of Specific Node',
-        options: nodeFieldOptions,
+        options: [...defaultField, ...nodeFieldOptions],
       },
       {
         name: 'edgeID',
         labelText: 'Edge ID',
         tooltipText: 'Unique Identifier of Specific Edge',
-        options: edgeFieldOptions,
+        options: [...defaultField, ...edgeFieldOptions],
       },
       {
         name: 'edgeSource',
@@ -133,6 +139,7 @@ const AccessorFields: FC<AccessorsFieldsProps> = ({
                     tooltipText={tooltipText}
                     options={options}
                     value={value}
+                    setValue={setValue}
                     error={errors[name] && (errors[name] as any).message}
                   />
                 );
