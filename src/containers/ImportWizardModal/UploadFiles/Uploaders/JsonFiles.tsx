@@ -45,12 +45,7 @@ const JsonFiles: FC = () => {
 
     const attachments = getValues('attachments') as TFileContent[];
     setAttachments(attachments);
-
-    try {
-      previewJson(attachments);
-    } catch (err) {
-      return;
-    }
+    previewJson(attachments);
   };
 
   const onRetry = () => {

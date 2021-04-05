@@ -1,10 +1,12 @@
-import React, { BaseSyntheticEvent } from 'react';
+import React, { BaseSyntheticEvent, useRef, useState } from 'react';
 import { Block } from 'baseui/block';
-import { isEmpty } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
 import { OnChangeParams } from 'baseui/select';
 import { useForm, UnpackNestedValue, SubmitHandler } from 'react-hook-form';
 import { Button, KIND, SIZE } from 'baseui/button';
 
+import { LabelMedium, ParagraphSmall } from 'baseui/typography';
+import { useSelector } from 'react-redux';
 import DataPreview from './DataPreview';
 import GroupEdgeConfiguration from './GroupEdgeConfiguration';
 import AccessorFields from './AccessorFields';
@@ -18,6 +20,9 @@ import {
   TFileContent,
   SingleFileForms,
 } from '../../../../redux/import/fileUpload';
+import { JsonImport, TLoadFormat, GraphSlices } from '../../../../redux/graph';
+import ConfirmationModal from '../../../../components/ConfirmationModal';
+import { getGraph } from '../../../../redux/graph/selectors';
 
 const ConfigureFields = () => {
   const {
@@ -31,7 +36,10 @@ const ConfigureFields = () => {
     setAccessors,
   } = useFileContents();
 
+  const { styleOptions } = useSelector((state) => getGraph(state));
   const { importJson, importEdgeList, importNodeEdge } = useImportData();
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const jsonFileRef = useRef<TFileContent[]>(null);
 
   const {
     watch,
@@ -62,6 +70,23 @@ const ConfigureFields = () => {
     setAccessors(accessors);
   };
 
+  const isContainStyle = (attachments: TFileContent[]) => {
+    const isStyleOptionModified = !isEqual(
+      GraphSlices.initialState.styleOptions,
+      styleOptions,
+    );
+
+    const isAttachmentContainStyle: boolean = attachments
+      .map((file: TFileContent) => file.content)
+      .some((content: JsonImport) => {
+        const { style } = content as TLoadFormat;
+        const isContainStyle = !!style;
+        return isContainStyle;
+      });
+
+    return isStyleOptionModified && isAttachmentContainStyle;
+  };
+
   const importLocalFile: SubmitHandler<ConfigureFieldsForm> = (
     data: UnpackNestedValue<ConfigureFieldsForm>,
     e: BaseSyntheticEvent,
@@ -70,7 +95,13 @@ const ConfigureFields = () => {
     const { groupEdge, ...accessors } = data;
 
     if (dataType === 'json') {
-      // TODO: Overwrite Styles modal
+      const isJsonContainStyle = isContainStyle(attachments as TFileContent[]);
+      if (isJsonContainStyle) {
+        jsonFileRef.current = attachments as TFileContent[];
+        setModalOpen(true);
+        return;
+      }
+
       importJson(attachments as TFileContent[], groupEdge, accessors, true);
       return;
     }
@@ -113,6 +144,43 @@ const ConfigureFields = () => {
           </Button>
         </Block>
       </form>
+
+      <ConfirmationModal
+        onClose={() => {
+          importJson(jsonFileRef.current, groupEdge, accessors, false);
+          jsonFileRef.current = null;
+        }}
+        isOpen={modalOpen}
+        onReject={() => {
+          importJson(jsonFileRef.current, groupEdge, accessors, false);
+          jsonFileRef.current = null;
+        }}
+        onAccept={() => {
+          importJson(jsonFileRef.current, groupEdge, accessors, true);
+          jsonFileRef.current = null;
+        }}
+        rejectBtnText='No'
+        confirmBtnText='Yes'
+        header={
+          <LabelMedium
+            as='span'
+            overrides={{
+              Block: {
+                style: {
+                  textTransform: 'capitalize',
+                },
+              },
+            }}
+          >
+            Overwrite existing styles?
+          </LabelMedium>
+        }
+        body={
+          <ParagraphSmall>
+            Import file styles differ from currently applied styles.
+          </ParagraphSmall>
+        }
+      />
     </Block>
   );
 };
