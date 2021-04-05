@@ -45,7 +45,6 @@ const AccessorFields: FC<AccessorsFieldsProps> = ({
     const edgeSource = getValues('edgeSource');
     const edgeTarget = getValues('edgeTarget');
     const edgeID = getValues('edgeID');
-    console.log(getValues());
 
     const isSameWithSource = edgeSource === edgeID;
     if (isSameWithSource) {
@@ -71,7 +70,7 @@ const AccessorFields: FC<AccessorsFieldsProps> = ({
       });
     }
 
-    const isSameSourceAndTarget = edgeTarget === edgeID;
+    const isSameSourceAndTarget = edgeTarget === edgeSource;
     if (isSameSourceAndTarget) {
       setError('edgeID', {
         type: 'manual',
