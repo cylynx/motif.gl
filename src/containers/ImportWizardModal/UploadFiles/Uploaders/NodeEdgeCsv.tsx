@@ -35,12 +35,16 @@ const NodeEdgeCsv: FC = () => {
     setError,
     clearErrors,
     setValue,
+    getValues,
   } = useForm<SingleFileForms>({
     defaultValues: {
       nodeCsv: (fileUpload.attachments as SingleFileForms).nodeCsv ?? null,
       edgeCsv: (fileUpload.attachments as SingleFileForms).edgeCsv ?? null,
     },
   });
+
+  const isNodeCsvEmpty: boolean = watch('nodeCsv') === null;
+  const isEdgeCsvEmpty: boolean = watch('edgeCsv') === null;
 
   const onSubmitForm: SubmitHandler<SingleFileForms> = (
     data: UnpackNestedValue<SingleFileForms>,
@@ -101,8 +105,12 @@ const NodeEdgeCsv: FC = () => {
       });
   };
 
-  const isNodeCsvEmpty: boolean = watch('nodeCsv') === null;
-  const isEdgeCsvEmpty: boolean = watch('edgeCsv') === null;
+  const onDeleteBtnClick = (index: number, name: string) => {
+    const fileAttachments = getValues(name) as TFileContent[];
+    const cloneFileAttachments = [...fileAttachments];
+    cloneFileAttachments.splice(index, 1);
+    setValue(name, cloneFileAttachments);
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmitForm)}>
@@ -147,9 +155,9 @@ const NodeEdgeCsv: FC = () => {
           {isNodeCsvEmpty === false && (
             <AttachmentLists
               attachments={watch('nodeCsv')}
-              onDeleteBtnClick={() => {
-                setValue('nodeCsv', null);
-              }}
+              onDeleteBtnClick={(index: number) =>
+                onDeleteBtnClick(index, 'nodeCsv')
+              }
             />
           )}
         </FlexGridItem>
@@ -193,9 +201,9 @@ const NodeEdgeCsv: FC = () => {
           {isEdgeCsvEmpty === false && (
             <AttachmentLists
               attachments={watch('edgeCsv')}
-              onDeleteBtnClick={() => {
-                setValue('edgeCsv', null);
-              }}
+              onDeleteBtnClick={(index: number) =>
+                onDeleteBtnClick(index, 'edgeCsv')
+              }
             />
           )}
         </FlexGridItem>
