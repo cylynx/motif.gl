@@ -63,7 +63,12 @@ export const importEdgeListCsv = async (
   if (processedData.nodes.length < 1 || processedData.edges.length < 1) {
     throw new Error('process Csv Data Failed: CSV is empty');
   }
-  return addRequiredFieldsJson(processedData, accessors);
+
+  processedData.edges.forEach((edge: Edge) => {
+    addEdgeFields(edge, accessors);
+  });
+
+  return processedData;
 };
 
 /**
@@ -85,7 +90,7 @@ export const importNodeEdgeCsv = async (
   groupEdges: boolean,
   metadataKey: string = null,
 ): Promise<GraphData> => {
-  const processedData = await processNodeEdgeCsv(
+  const processedData: GraphData = await processNodeEdgeCsv(
     nodeCsv,
     edgeCsv,
     groupEdges,
@@ -169,8 +174,11 @@ const generateIdKey = (object: any, idAccessor: string | undefined): void => {
         id: shortid.generate(),
       });
     }
-    // else edge.id = edge.id
   } else if (isUndefined(get(object, idAccessor))) {
+    Object.assign(object, {
+      id: shortid.generate(),
+    });
+  } else if (idAccessor === 'auto-generated') {
     Object.assign(object, {
       id: shortid.generate(),
     });

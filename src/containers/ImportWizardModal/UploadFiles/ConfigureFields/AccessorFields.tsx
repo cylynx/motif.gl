@@ -46,6 +46,72 @@ const AccessorFields: FC<AccessorsFieldsProps> = ({
     setAccessors,
   } = useFileContents();
 
+  const nodeIDOptions = useMemo(() => {
+    return [...defaultField, ...nodeFieldOptions];
+  }, [nodeFieldOptions]);
+
+  const edgeIDOptions = useMemo(() => {
+    return [...defaultField, ...edgeFieldOptions];
+  }, [edgeFieldOptions]);
+
+  const ACCESSOR_FIELDS: AccessorField[] = useMemo(
+    () => [
+      {
+        name: 'nodeID',
+        labelText: 'Node ID',
+        tooltipText: 'Unique Identifier of Specific Node',
+        options: nodeIDOptions,
+      },
+      {
+        name: 'edgeID',
+        labelText: 'Edge ID',
+        tooltipText: 'Unique Identifier of Specific Edge',
+        options: edgeIDOptions,
+      },
+      {
+        name: 'edgeSource',
+        labelText: 'Source',
+        tooltipText: 'Source attribute of Edges',
+        options: edgeFieldOptions,
+      },
+      {
+        name: 'edgeTarget',
+        labelText: 'Target',
+        tooltipText: 'Target attribute of Edges',
+        options: edgeFieldOptions,
+      },
+    ],
+    [nodeIDOptions, edgeIDOptions, edgeFieldOptions],
+  );
+
+  useEffect(() => {
+    const setDefaultValue = (options: Value, name: string, value: string) => {
+      const defaultOption = options.find(
+        (option: Option) => option.id === value,
+      );
+
+      if (defaultOption === undefined) {
+        const [firstOption] = options;
+        setValue(name, firstOption.id);
+        return;
+      }
+
+      setValue(name, defaultOption.id);
+      return;
+    };
+
+    const {
+      nodeID,
+      edgeID,
+      edgeSource,
+      edgeTarget,
+    } = getValues() as ConfigureFieldsForm;
+    setDefaultValue(nodeIDOptions, 'nodeID', nodeID);
+    setDefaultValue(edgeIDOptions, 'edgeID', edgeID);
+    setDefaultValue(edgeFieldOptions, 'edgeSource', edgeSource);
+    setDefaultValue(edgeFieldOptions, 'edgeTarget', edgeTarget);
+  }, []);
+
   useEffect(() => {
     clearErrors();
     const edgeSource = getValues('edgeSource');
@@ -88,36 +154,6 @@ const AccessorFields: FC<AccessorsFieldsProps> = ({
       });
     }
   }, [watch('edgeID'), watch('edgeSource'), watch('edgeTarget')]);
-
-  const ACCESSOR_FIELDS: AccessorField[] = useMemo(
-    () => [
-      {
-        name: 'nodeID',
-        labelText: 'Node ID',
-        tooltipText: 'Unique Identifier of Specific Node',
-        options: [...defaultField, ...nodeFieldOptions],
-      },
-      {
-        name: 'edgeID',
-        labelText: 'Edge ID',
-        tooltipText: 'Unique Identifier of Specific Edge',
-        options: [...defaultField, ...edgeFieldOptions],
-      },
-      {
-        name: 'edgeSource',
-        labelText: 'Source',
-        tooltipText: 'Source attribute of Edges',
-        options: edgeFieldOptions,
-      },
-      {
-        name: 'edgeTarget',
-        labelText: 'Target',
-        tooltipText: 'Target attribute of Edges',
-        options: edgeFieldOptions,
-      },
-    ],
-    [nodeFieldOptions, edgeFieldOptions],
-  );
 
   return (
     <FlexGrid flexGridColumnGap='scale300' flexGridColumnCount={4}>
