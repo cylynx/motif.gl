@@ -142,7 +142,7 @@ const ImportWizardModal: FC<ImportWizardProps> = ({ overrideTabs }) => {
           dispatch(UISlices.closeModal());
         }}
         rejectBtnText='Cancel'
-        confirmBtnText='Delete'
+        confirmBtnText='Close'
         header={
           <LabelMedium
             as='span'
