@@ -35,7 +35,11 @@ const UploadFiles = () => {
 
   return (
     <Block>
-      <ProgressStepper items={stepperItems} onStepChange={onStepChange} />
+      <ProgressStepper
+        items={stepperItems}
+        onStepChange={onStepChange}
+        currentStep={currentStep}
+      />
 
       <Block>
         {currentStep === 1 && <DataTypeSelection nextStep={nextStep} />}

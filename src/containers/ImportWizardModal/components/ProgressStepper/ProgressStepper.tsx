@@ -5,9 +5,14 @@ import { StepperItems } from './types';
 
 type StepperProps = {
   onStepChange: (step: number) => void;
+  currentStep: number;
   items: StepperItems[];
 };
-const ProgressStepper: FC<StepperProps> = ({ onStepChange, items }) => {
+const ProgressStepper: FC<StepperProps> = ({
+  onStepChange,
+  items,
+  currentStep,
+}) => {
   const onItemClick = (step: number, isClickable: boolean) => {
     if (isClickable === false) {
       return;
@@ -29,6 +34,7 @@ const ProgressStepper: FC<StepperProps> = ({ onStepChange, items }) => {
         const isDisabled = disabled === false;
         const isStart = index === 0;
         const isEnd = index === items.length - 1;
+        const isVisited = step < currentStep;
 
         return (
           <StyledStepperItem
@@ -36,6 +42,7 @@ const ProgressStepper: FC<StepperProps> = ({ onStepChange, items }) => {
             $isDisabled={isDisabled}
             $isStart={isStart}
             $isEnd={isEnd}
+            $isVisited={isVisited}
             onClick={() => onItemClick(step, disabled)}
           >
             {children}

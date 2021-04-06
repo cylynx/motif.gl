@@ -10,13 +10,14 @@ import { ImportTabs, TActiveKey } from './types';
 import UploadFiles from './UploadFiles';
 import ConfirmationModal from '../../components/ConfirmationModal';
 import useFileContents from './UploadFiles/hooks/useFileContents';
+import SampleData from './SampleData';
 
 export const defaultImportTabs: ImportTabs[] = [
   { title: 'File', key: 'file', component: <UploadFiles /> },
   {
     title: 'Sample Data',
     key: 'sample-data',
-    component: <div>Import Sample Data</div>,
+    component: <SampleData />,
   },
   {
     title: 'Banking API',

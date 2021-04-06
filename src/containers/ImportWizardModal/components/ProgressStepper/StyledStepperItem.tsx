@@ -6,9 +6,14 @@ type StepperItemProps = {
   $isDisabled: boolean;
   $isStart?: boolean;
   $isEnd?: boolean;
+  $isVisited?: boolean;
 };
 
-const themeByState = ($isDisabled: boolean, $isStart: boolean) => {
+const themeByState = (
+  $isDisabled: boolean,
+  $isStart: boolean,
+  $isVisited: boolean,
+) => {
   if ($isDisabled) {
     const disabledBackground = '#F6F6F6';
     const disabledColor = '#AFAFAF';
@@ -46,9 +51,47 @@ const themeByState = ($isDisabled: boolean, $isStart: boolean) => {
     };
   }
 
+  if ($isVisited) {
+    const backgroundColor = '#4A5E6F';
+    const fontColor = '#FFFFFF';
+    const hoverBackground = '#011B32';
+    return {
+      normal: {
+        backgroundColor,
+        color: fontColor,
+      },
+      hover: {
+        cursor: 'pointer',
+        backgroundColor: hoverBackground,
+        color: fontColor,
+        textDecoration: 'underline',
+        before: {
+          borderLeftColor: $isStart ? backgroundColor : 'white',
+          borderTopColor: hoverBackground,
+          borderBottomColor: hoverBackground,
+        },
+        after: {
+          borderLeftColor: hoverBackground,
+          borderTopColor: fontColor,
+          borderBottomColor: fontColor,
+        },
+      },
+      before: {
+        borderLeftColor: 'white',
+        borderTopColor: backgroundColor,
+        borderBottomColor: backgroundColor,
+      },
+      after: {
+        borderLeftColor: backgroundColor,
+        borderTopColor: 'white',
+        borderBottomColor: 'white',
+      },
+    };
+  }
+
   const backgroundColor = '#112B42';
   const fontColor = '#FFFFFF';
-  const hoverBackground = 'black';
+  const hoverBackground = '#011B32';
   return {
     normal: {
       backgroundColor,
@@ -90,12 +133,14 @@ const StyledStepperItem = styled(
     $isDisabled,
     $isStart = false,
     $isEnd = false,
+    $isVisited = false,
   }: StepperItemProps) => {
     const { scale300, scale600 } = $theme.sizing;
 
     const { normal, hover, before, after } = themeByState(
       $isDisabled,
       $isStart,
+      $isVisited,
     );
 
     return {
