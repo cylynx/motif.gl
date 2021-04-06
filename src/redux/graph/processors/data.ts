@@ -7,6 +7,7 @@ import { Analyzer, DATA_TYPES as AnalyzerDatatypes } from 'type-analyzer';
 import { isEmpty, uniq, get, uniqBy } from 'lodash';
 import { notNullorUndefined } from '../../../utils/data-utils/data-utils';
 import {
+  Accessors,
   Edge,
   Field,
   GraphData,
@@ -168,6 +169,7 @@ export const processNodeEdgeCsv = async (
   nodeCsvs: string[],
   edgeCsvs: string[],
   groupEdges: boolean,
+  accessors: Accessors,
   key = shortid.generate(),
 ): Promise<GraphData> => {
   const combineFieldsAndJson = (
@@ -211,7 +213,11 @@ export const processNodeEdgeCsv = async (
     );
 
     // ensure all the source and target in edges are present.
-    verifySourceAndTargetExistence(nodeJson as Node[], edgeJson as Edge[]);
+    verifySourceAndTargetExistence(
+      nodeJson as Node[],
+      edgeJson as Edge[],
+      accessors,
+    );
 
     const groupEdgeConfig: GroupEdges = applyGroupEdges(
       groupEdges,
@@ -720,12 +726,16 @@ export const applyGroupEdges = (
 export const verifySourceAndTargetExistence = (
   nodes: Node[],
   edges: Edge[],
+  accessors: Accessors,
 ) => {
+  const { edgeID, edgeSource, edgeTarget } = accessors;
   const nodeIds: string[] = nodes.map((node: Node) => node.id);
   const uniqueNodeIds: string[] = uniq(nodeIds as string[]);
 
   edges.forEach((edge: Edge) => {
-    const { source, target, id } = edge;
+    const source = get(edge, edgeSource, '');
+    const target = get(edge, edgeTarget, '');
+    const id = get(edge, edgeID, '');
 
     const isPossessSource = uniqueNodeIds.includes(source);
     if (!isPossessSource) {

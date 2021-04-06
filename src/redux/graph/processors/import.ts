@@ -94,6 +94,7 @@ export const importNodeEdgeCsv = async (
     nodeCsv,
     edgeCsv,
     groupEdges,
+    accessors,
     metadataKey,
   );
   if (processedData.nodes.length < 1) {

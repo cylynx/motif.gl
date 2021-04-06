@@ -263,13 +263,13 @@ export const importNodeEdgeData = (
 };
 
 /**
- * Thunk to add single json data into graph.
+ * Thunk to add sample data into graph
  *
  * @param {JsonImport} importData
  * @param {boolean} groupEdges [groupEdges=true] - group graph's edges
  * @param {ImportAccessors} importAccessors [importAccessors=null] - to customize node Id / edge Id / edge source or target
  */
-export const importSingleJsonData = (
+export const importSampleData = (
   importData: JsonImport,
   importAccessors: ImportAccessors = null,
   groupEdges = false,
@@ -288,6 +288,7 @@ export const importSingleJsonData = (
     .then((graphData: GraphList) => {
       processResponse(dispatch, mainAccessors, graphData);
       showImportDataToast(dispatch, filterOptions);
+      dispatch(FileUploadSlices.resetState());
       dispatch(UISlices.closeModal());
     })
     .catch((err: Error) => {

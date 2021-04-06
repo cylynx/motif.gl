@@ -79,10 +79,7 @@ describe('Pre-process Json data correctly', () => {
   });
 });
 
-const edgeListCsv = `custom_id,data.value,data.blk_ts_unix,from,to
-1,100,NaN,a,b
-2,200,2000000,b,c
-3,300,Null,c,b`;
+const edgeListCsv = `custom_id,data.value,data.blk_ts_unix,from,to\n1,100,NaN,a,b\n2,200,2000000,b,c\n3,300,Null,c,b`;
 
 const edgeListAccessors = {
   edgeID: 'custom_id',
@@ -104,25 +101,26 @@ describe('Import edge list csv', () => {
   });
 });
 
-const nodeCsv = `id,data.value
-a,100
-b,200
-c,300`;
+const nodeCsv = [`id,data.value\na,100\nb,200\nc,300`];
 
 describe('Import node edge csv', () => {
-  it('should output valide json graph object', async () => {
+  const edgeCsv = [edgeListCsv];
+
+  it('should output valid json graph object', async () => {
     const results = await importNodeEdgeCsv(
       nodeCsv,
-      edgeListCsv,
+      edgeCsv,
       edgeListAccessors,
+      false,
     );
     expect(results).toHaveProperty('nodes', 'edges', 'metadata');
   });
   it('should map id, source and target accessors correctly', async () => {
     const results = await importNodeEdgeCsv(
       nodeCsv,
-      edgeListCsv,
+      edgeCsv,
       edgeListAccessors,
+      false,
     );
     expect(results.nodes).toHaveLength(3);
     expect(results.nodes[0]).toHaveProperty('id');

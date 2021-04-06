@@ -72,10 +72,17 @@ describe('Parsing csv to json', () => {
   });
   it('should return a GraphData object with valid metadata', async () => {
     const toggleGroupEdge = false;
+    const accessors = {
+      edgeID: 'id',
+      edgeSource: 'source',
+      edgeTarget: 'target',
+    };
+
     const output = await processNodeEdgeCsv(
-      nodeCsv as string,
-      testCsv as string,
+      [nodeCsv] as string[],
+      [testCsv] as string[],
       toggleGroupEdge,
+      accessors,
     );
     expect(output).toHaveProperty('nodes');
     expect(output).toHaveProperty('edges');

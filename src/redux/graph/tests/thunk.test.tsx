@@ -12,7 +12,7 @@ import {
   importEdgeListData,
   importJsonData,
   importNodeEdgeData,
-  importSingleJsonData,
+  importSampleData,
 } from '../thunk';
 import {
   initialState,
@@ -38,6 +38,7 @@ import {
   GraphData,
   GraphList,
   ImportFormat,
+  JsonImport,
   Selection,
   TLoadFormat,
 } from '../types';
@@ -49,6 +50,8 @@ import {
 } from '../processors/group-edges';
 import { getGraph } from '../selectors';
 import { resetState } from '../../import/fileUpload/slice';
+import { show } from '../../ui/thunks';
+import { TFileContent } from '../../import/fileUpload';
 
 const mockStore = configureStore([thunk]);
 const getStore = (): RootState => {
@@ -126,12 +129,14 @@ describe('thunk.test.js', () => {
     };
 
     const simpleGraphOne = {
-      nodes: [{ id: 'node-3' }, { id: 'node-4' }],
-      edges: [{ id: 'edge-2', source: 'node-3', target: 'node-4' }],
-      metadata: {
+      data: {
+        nodes: [{ id: 'node-3' }, { id: 'node-4' }],
+        edges: [{ id: 'edge-2', source: 'node-3', target: 'node-4' }],
+        metadata: {
+          key: 234,
+        },
         key: 234,
       },
-      key: 234,
     };
 
     const simpleGraphTwo = {
@@ -166,7 +171,7 @@ describe('thunk.test.js', () => {
 
       // processes
       const batchDataPromises = importDataArr.map((graphData: ImportFormat) => {
-        const { data } = graphData.data as TLoadFormat;
+        const { data } = graphData as JsonImport;
         return importJson(data, initialState.accessors, groupEdgeToggle);
       });
 
@@ -219,7 +224,7 @@ describe('thunk.test.js', () => {
 
       // processes
       const batchDataPromises = importDataArr.map((graphData: ImportFormat) => {
-        const { data } = graphData.data as TLoadFormat;
+        const { data } = graphData as TLoadFormat;
         return importJson(data, initialState.accessors, groupEdgeToggle);
       });
 
@@ -247,6 +252,8 @@ describe('thunk.test.js', () => {
         }),
         fetchDone(),
         updateToast('toast-0'),
+        resetState(),
+        closeModal(),
       ];
 
       // assertions
@@ -264,7 +271,7 @@ describe('thunk.test.js', () => {
 
       // processes
       const batchDataPromises = importDataArr.map((graphData: ImportFormat) => {
-        const { data, style } = graphData.data as TLoadFormat;
+        const { data, style } = graphData as TLoadFormat;
 
         if (style) {
           styleOptions = style;
@@ -297,6 +304,8 @@ describe('thunk.test.js', () => {
         }),
         fetchDone(),
         updateToast('toast-0'),
+        resetState(),
+        closeModal(),
       ];
 
       // assertions
@@ -348,6 +357,8 @@ describe('thunk.test.js', () => {
         }),
         fetchDone(),
         updateToast('toast-0'),
+        resetState(),
+        closeModal(),
       ];
 
       // assertions
@@ -360,17 +371,11 @@ describe('thunk.test.js', () => {
     it('should not overwrite styles if data has no style', async () => {
       // input
       const jsonOneWithoutStyle = {
-        data: {
-          data: jsonDataOne.data.data,
-        },
-        type: jsonDataOne.type,
+        data: jsonDataOne.data,
       };
 
       const jsonTwoWithoutStyle = {
-        data: {
-          data: jsonDataTwo.data.data,
-        },
-        type: jsonDataTwo.type,
+        data: jsonDataTwo.data,
       };
 
       const groupEdgeToggle = false;
@@ -380,7 +385,7 @@ describe('thunk.test.js', () => {
 
       // processes
       const batchDataPromises = importDataArr.map((graphData: ImportFormat) => {
-        const { data, style } = graphData.data as TLoadFormat;
+        const { data, style } = graphData as TLoadFormat;
 
         if (style) {
           styleOptions = style;
@@ -412,6 +417,8 @@ describe('thunk.test.js', () => {
         }),
         fetchDone(),
         updateToast('toast-0'),
+        resetState(),
+        closeModal(),
       ];
 
       // assertions
@@ -470,6 +477,8 @@ describe('thunk.test.js', () => {
           }),
           fetchDone(),
           updateToast('toast-0'),
+          resetState(),
+          closeModal(),
         ];
 
         // assertions
@@ -534,6 +543,8 @@ describe('thunk.test.js', () => {
           }),
           fetchDone(),
           updateToast('toast-0'),
+          resetState(),
+          closeModal(),
         ];
 
         // assertions
@@ -560,7 +571,6 @@ describe('thunk.test.js', () => {
             key: 234,
           },
         },
-        type: 'json',
       };
 
       it('should determine whether graph possess duplicate connectivity', async () => {
@@ -600,6 +610,8 @@ describe('thunk.test.js', () => {
           }),
           fetchDone(),
           updateToast('toast-0'),
+          resetState(),
+          closeModal(),
         ];
 
         // assertions
@@ -655,6 +667,8 @@ describe('thunk.test.js', () => {
           }),
           fetchDone(),
           updateToast('toast-0'),
+          resetState(),
+          closeModal(),
         ];
 
         // assertions
@@ -683,27 +697,38 @@ describe('thunk.test.js', () => {
 
   describe('importNodeEdgeData', () => {
     const sampleNodeEdgeData = {
-      data: {
-        edgeData:
-          'id,relation,source,target\ntxn1,hello,a,b\ntxn2,works,b,c\ntxn3,abc,c,a',
-        nodeData: 'id,value,score\na,20,80\nb,40,100\nc,60,123',
-        metadata: {
-          key: 123,
+      edgeCsv: [
+        {
+          fileName: 'test-1.csv',
+          content:
+            'id,relation,source,target\ntxn1,hello,a,b\ntxn2,works,b,c\ntxn3,abc,c,a',
         },
-      },
-      type: 'nodeEdgeCsv',
+      ],
+      nodeCsv: [
+        {
+          fileName: 'test-2.csv',
+          content: 'id,value,score\na,20,80\nb,40,100\nc,60,123',
+        },
+      ],
     };
 
-    it('should receive importNodeEdgeData as object and process graph responses accurately', async () => {
+    it('should receive nodeCsv and edgeCsv as array and process graph responses accurately', async () => {
       const store = mockStore(getStore());
-      const { nodeData, edgeData } = sampleNodeEdgeData.data;
+      const { nodeCsv, edgeCsv } = sampleNodeEdgeData;
       const { accessors } = initialState;
       const metadataKey = '123';
       const groupEdgeToggle = false;
 
+      const nodeCsvs: string[] = nodeCsv.map(
+        (nodeCsv: TFileContent) => nodeCsv.content as string,
+      );
+      const edgeCsvs: string[] = edgeCsv.map(
+        (edgeCsv: TFileContent) => edgeCsv.content as string,
+      );
+
       const data = await importNodeEdgeCsv(
-        nodeData,
-        edgeData,
+        nodeCsvs,
+        edgeCsvs,
         accessors,
         groupEdgeToggle,
         metadataKey,
@@ -722,6 +747,8 @@ describe('thunk.test.js', () => {
         }),
         fetchDone(),
         updateToast('toast-0'),
+        resetState(),
+        closeModal(),
       ];
 
       await store.dispatch(
@@ -758,16 +785,10 @@ describe('thunk.test.js', () => {
   describe('importEdgeListData', () => {
     const store = mockStore(getStore());
 
-    const firstEdgeListCsv = {
-      data:
-        'id,relation,source,target\ntxn1,works,jason,cylynx\ntxn3,abc,cylynx,timothy\ntxn4,says hi to,swan,cylynx',
-      type: 'edgeListCsv',
-    };
+    const firstEdgeListCsv =
+      'id,relation,source,target\ntxn1,works,jason,cylynx\ntxn3,abc,cylynx,timothy\ntxn4,says hi to,swan,cylynx';
 
-    const secondEdgeListCsv = {
-      data: 'id,source,target\n123,x,y\n456,y,z\n789,z,x',
-      type: 'edgeListCsv',
-    };
+    const secondEdgeListCsv = 'id,source,target\n123,x,y\n456,y,z\n789,z,x';
 
     it('should receive importData as array and process graph responses accurately', async () => {
       // input
@@ -776,8 +797,11 @@ describe('thunk.test.js', () => {
 
       // processes
       const batchDataPromises = importDataArr.map((graphData) => {
-        const { data } = graphData;
-        return importEdgeListCsv(data, initialState.accessors, groupEdgeToggle);
+        return importEdgeListCsv(
+          graphData,
+          initialState.accessors,
+          groupEdgeToggle,
+        );
       });
 
       const graphDataArr = await Promise.all(batchDataPromises);
@@ -803,6 +827,8 @@ describe('thunk.test.js', () => {
         }),
         fetchDone(),
         updateToast('toast-0'),
+        resetState(),
+        closeModal(),
       ];
 
       // assertions
@@ -821,29 +847,22 @@ describe('thunk.test.js', () => {
     });
 
     it('should throw errors if source and target fields are invalid', async () => {
-      const firstErrorEdgeCsv = {
-        data:
-          'id,relation,from,to\ntxn1,works,jason,cylynx\ntxn3,abc,cylynx,timothy\ntxn4,says hi to,swan,cylynx',
-        type: 'edgeListCsv',
-      };
+      const firstErrorEdgeCsv =
+        'id,relation,from,to\ntxn1,works,jason,cylynx\ntxn3,abc,cylynx,timothy\ntxn4,says hi to,swan,cylynx';
 
-      const secondValidEdgeCsv = {
-        data: 'id,source,target\n123,x,y\n456,y,z\n789,z,x',
-        type: 'edgeListCsv',
-      };
+      const secondValidEdgeCsv = 'id,source,target\n123,x,y\n456,y,z\n789,z,x';
       await expect(
         importEdgeListData([firstErrorEdgeCsv, secondValidEdgeCsv]),
       ).toThrow(Error);
     });
   });
 
-  describe('importSingleJsonData', () => {
+  describe('importSampleData', () => {
     const store = mockStore(getStore());
 
     it('should receive importData as object and process graph accurately', async () => {
       // input
       const data = SimpleEdge();
-      const importData = data;
       const groupEdgeToggle = false;
 
       // processes
@@ -869,47 +888,12 @@ describe('thunk.test.js', () => {
         }),
         fetchDone(),
         updateToast('toast-0'),
+        resetState(),
+        closeModal(),
       ];
 
-      await store.dispatch(importSingleJsonData(importData, groupEdgeToggle));
+      await store.dispatch(importSampleData(data, groupEdgeToggle));
       expect(store.getActions()).toEqual(expectedActions);
-    });
-
-    it('should throw error if importData parameter is an array', async () => {
-      const data = SimpleEdge();
-      const importData = { data, type: 'json' };
-
-      await expect(importSingleJsonData([importData])).toThrow(Error);
-    });
-
-    it('should throw error if source and target fields are invalid', async () => {
-      // input
-      const invalidData = {
-        nodes: [
-          {
-            id: 'nodeA',
-            label: 'nodeA',
-          },
-          {
-            id: 'nodeB',
-            label: 'nodeB',
-          },
-        ],
-        edges: [
-          {
-            id: 'nodeA-nodeB',
-            from: 'nodeA',
-            to: 'nodeB',
-            weight: 100,
-          },
-        ],
-        metadata: {
-          key: '123',
-        },
-      };
-      const importData = invalidData;
-
-      await expect(importSingleJsonData(importData)).toThrow(Error);
     });
   });
 

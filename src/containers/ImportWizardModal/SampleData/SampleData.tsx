@@ -67,9 +67,7 @@ const StyledItem: FC<StyledItemProps> = ({ item }): JSX.Element => {
       dispatch(GraphSlices.changeLayout({ layout: { id: 'preset' } }));
       Promise.resolve(item.data()).then((d: void) => {
         const sampleDataset: JsonImport = d;
-        dispatch(
-          GraphThunks.importSingleJsonData(sampleDataset, defaultAccessors),
-        );
+        dispatch(GraphThunks.importSampleData(sampleDataset, defaultAccessors));
       });
       return;
     }
@@ -77,9 +75,7 @@ const StyledItem: FC<StyledItemProps> = ({ item }): JSX.Element => {
     dispatch(GraphSlices.changeLayout({ layout: { id: 'concentric' } }));
     Promise.resolve(item.data()).then((d: void) => {
       const sampleDataset: JsonImport = d;
-      dispatch(
-        GraphThunks.importSingleJsonData(sampleDataset, defaultAccessors),
-      );
+      dispatch(GraphThunks.importSampleData(sampleDataset, defaultAccessors));
     });
   };
 
