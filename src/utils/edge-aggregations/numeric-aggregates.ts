@@ -1,5 +1,5 @@
 import { IUserEdge } from '@antv/graphin';
-import { mapCollectionFields } from '../data-utils';
+import { mapCollectionFields } from '../data-utils/data-utils';
 
 const noValueString = 'no-values';
 /**

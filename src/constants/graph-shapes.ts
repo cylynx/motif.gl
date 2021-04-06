@@ -1,6 +1,6 @@
 import { GREY, PRIMARY_COLOR } from './colors';
 import { EdgePattern, mapEdgePattern } from '../utils/shape-utils';
-import { normalizeColor } from '../utils/style-utils';
+import { normalizeColor } from '../utils/style-utils/color-utils';
 
 export const EDGE_DEFAULT_COLOR = 'rgba(105, 123, 140,1)';
 export const EDGE_LABEL_DEFAULT_COLOR = 'rgba(59, 59, 59,1)';

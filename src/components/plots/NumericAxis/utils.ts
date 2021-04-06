@@ -2,7 +2,7 @@ import { ScaleLinear } from 'd3-scale';
 import {
   getDecimalPrecisionCount,
   preciseRound,
-} from '../../../utils/data-utils';
+} from '../../../utils/data-utils/data-utils';
 
 export type DomainType = [number, number];
 export interface TickRules {

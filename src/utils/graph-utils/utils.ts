@@ -9,10 +9,10 @@ import { isWithinInterval } from 'date-fns';
 import {
   ALL_FIELD_TYPES,
   flattenObject,
-} from '../../../redux/graph/processors/data';
-import { styleEdges } from './StyleEdges';
-import { styleNodes } from './StyleNodes';
-import { unixTimeConverter } from '../../../utils/data-utils';
+} from '../../redux/graph/processors/data';
+import { styleEdges } from '../style-utils/style-edges';
+import { styleNodes } from '../style-utils/style-nodes';
+import { unixTimeConverter } from '../data-utils/data-utils';
 import {
   Edge,
   EdgeNode,
@@ -27,9 +27,9 @@ import {
   StyleOptions,
   TimeRange,
   TimeSeries,
-} from '../../../redux/graph/types';
+} from '../../redux/graph/types';
 
-import { ITEM_PER_PAGE } from '../../../constants/widget-units';
+import { ITEM_PER_PAGE } from '../../constants/widget-units';
 
 type MinMax = {
   min: number;

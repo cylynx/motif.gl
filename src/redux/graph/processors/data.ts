@@ -4,8 +4,8 @@ import { range } from 'd3-array';
 import shortid from 'shortid';
 // @ts-ignore
 import { Analyzer, DATA_TYPES as AnalyzerDatatypes } from 'type-analyzer';
-import { isEmpty, uniq, get } from 'lodash';
-import { notNullorUndefined } from '../../../utils/data-utils';
+import { isEmpty, uniq, get, uniqBy } from 'lodash';
+import { notNullorUndefined } from '../../../utils/data-utils/data-utils';
 import {
   Edge,
   Field,
@@ -16,7 +16,6 @@ import {
   Node,
 } from '../types';
 import { duplicateDictionary } from './group-edges';
-import { removeDuplicates } from '../../../containers/Graph/styles/utils';
 
 type RowData = {
   [key: string]: any;
@@ -176,7 +175,7 @@ export const processNodeEdgeCsv = async (
     processedNode: ProcessedCsv,
   ): ProcessedCsv => {
     return {
-      fields: removeDuplicates(
+      fields: uniqBy(
         [...acc.fields, ...processedNode.fields],
         'name',
       ) as Field[],

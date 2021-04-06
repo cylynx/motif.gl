@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Block } from 'baseui/block';
 import { RangePlot } from '../../../../components/plots';
-import { HistogramBin } from '../../../../utils/data-utils';
+import { HistogramBin } from '../../../../utils/data-utils/data-utils';
 
 export type HistogramProp = {
   domain: [number, number];

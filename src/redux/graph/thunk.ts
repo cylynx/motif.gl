@@ -1,6 +1,4 @@
-import flatten from 'lodash/flatten';
-import isEmpty from 'lodash/isEmpty';
-import cloneDeep from 'lodash/cloneDeep';
+import { flatten, isEmpty, cloneDeep, uniqBy } from 'lodash';
 import { getFilterOptions, getGraph, getStyleOptions } from './selectors';
 
 import {
@@ -35,11 +33,10 @@ import {
   groupEdgesForImportation,
   groupEdgesWithConfiguration,
 } from './processors/group-edges';
-import { removeDuplicates } from '../../containers/Graph/styles/utils';
 import {
+  FileUploadSlices,
   SingleFileForms,
   TFileContent,
-  FileUploadSlices,
 } from '../import/fileUpload';
 
 type ImportAccessors = Accessors | null;
@@ -334,7 +331,7 @@ export const groupEdgesWithAggregation = (graphIndex: number) => (
         metadata.groupEdges.fields,
       );
 
-      const combinedEdgeField = removeDuplicates(
+      const combinedEdgeField = uniqBy(
         [...metadata.fields.edges, ...edgeAggregateFields],
         'name',
       ) as Field[];
@@ -347,10 +344,7 @@ export const groupEdgesWithAggregation = (graphIndex: number) => (
 
   // map the aggregated edge fields as edge selections
   const flattenEdgeFields: Field[] = flatten(combinedAggregatedEdgeFields);
-  const uniqueEdgeFields = removeDuplicates(
-    flattenEdgeFields,
-    'name',
-  ) as Field[];
+  const uniqueEdgeFields = uniqBy(flattenEdgeFields, 'name') as Field[];
 
   const modData = cloneDeep(newGraphData);
 

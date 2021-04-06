@@ -1,4 +1,4 @@
-import { removeDuplicates } from '../../../containers/Graph/styles/utils';
+import { removeDuplicates } from '../../../utils/graph-utils/utils';
 import {
   Edge,
   Field,

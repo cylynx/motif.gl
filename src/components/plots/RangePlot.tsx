@@ -6,7 +6,7 @@ import { Block } from 'baseui/block';
 import RangeBrush from './RangeBrush';
 import HistogramPlot from './HistogramPlot';
 import { Slider } from '../ui';
-import { HistogramBin } from '../../utils/data-utils';
+import { HistogramBin } from '../../utils/data-utils/data-utils';
 import NumericAxis from './NumericAxis';
 import DateTimeAxis from './DateTimeAxis';
 import TimeAxis from './TimeAxis';

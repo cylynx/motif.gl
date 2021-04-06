@@ -19,7 +19,7 @@ import React, { Component, createRef } from 'react';
 import styled from 'styled-components';
 import { select } from 'd3-selection';
 import { brushX } from 'd3-brush';
-import { normalizeSliderValue } from '../../utils/data-utils';
+import { normalizeSliderValue } from '../../utils/data-utils/data-utils';
 
 const StyledG = styled.g`
   .selection {

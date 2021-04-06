@@ -15,7 +15,7 @@ import {
 import {
   getFieldDomain,
   TimeRangeFieldDomain,
-} from '../../../../utils/data-utils';
+} from '../../../../utils/data-utils/data-utils';
 import {
   FilterCriteria,
   GraphData,

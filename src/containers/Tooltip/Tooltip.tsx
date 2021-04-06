@@ -9,7 +9,7 @@ import {
   Edge,
   Node,
 } from '../../redux/graph';
-import { extractIntegerFromString } from '../../utils/data-utils';
+import { extractIntegerFromString } from '../../utils/data-utils/data-utils';
 import { SIDE_NAVBAR_WIDTH } from '../../constants/widget-units';
 
 export type TooltipProps = null | {

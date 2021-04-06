@@ -1,5 +1,6 @@
 import reducer from "./slice";
 
+// eslint-disable-next-line prettier/prettier
 export * as UIThunks from "./thunks";
 export * as UISlices from "./slice";
 export * as UISelectors from "./selectors";

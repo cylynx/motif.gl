@@ -6,7 +6,7 @@ import { Theme } from 'baseui/theme';
 import shortid from 'shortid';
 import { Node, Edge, NodeItemType, EdgeNode } from '../../../../redux/graph';
 import { flattenObject } from '../../../../redux/graph/processors/data';
-import { removeEmptyValueInObject } from '../../../../utils/data-utils';
+import { removeEmptyValueInObject } from '../../../../utils/data-utils/data-utils';
 import * as Icon from '../../../../components/Icons';
 
 /**

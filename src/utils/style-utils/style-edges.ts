@@ -7,13 +7,12 @@ import {
   Edge,
   EdgeWidth,
   ArrowOptions,
-} from '../../../redux/graph/types';
+} from '../../redux/graph/types';
 import {
   DEFAULT_EDGE_STYLE,
   edgeFontColor,
-  edgeLineColor,
-} from '../../../constants/graph-shapes';
-import { EdgePattern, mapEdgePattern } from '../../../utils/shape-utils';
+} from '../../constants/graph-shapes';
+import { EdgePattern, mapEdgePattern } from '../shape-utils';
 
 /**
  * Style an edge dataset based on a given method

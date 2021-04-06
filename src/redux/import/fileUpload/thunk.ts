@@ -15,7 +15,7 @@ import {
 import {
   combineProcessedData,
   combineDataWithDuplicates,
-} from '../../../containers/Graph/styles/utils';
+} from '../../../utils/graph-utils/utils';
 import { setDataPreview, setIsEdgeGroupable, setStep } from './slice';
 import { UIThunks } from '../../ui';
 import { getFileUpload } from './selectors';

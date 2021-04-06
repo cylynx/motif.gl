@@ -19,7 +19,7 @@ import {
   paginateItems,
   getField,
   combineProcessedData,
-} from '../../containers/Graph/styles/utils';
+} from '../../utils/graph-utils/utils';
 import { groupEdgesForImportation } from './processors/group-edges';
 
 const getGraph = (state: any): GraphState => state.investigate.graph.present;

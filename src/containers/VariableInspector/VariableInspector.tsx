@@ -26,7 +26,7 @@ import {
   getFieldDomain,
   TimeRangeFieldDomain,
   unixTimeConverter,
-} from '../../utils/data-utils';
+} from '../../utils/data-utils/data-utils';
 import { TPlotDiv, THistogramProp } from './types';
 
 const dateTimeAnalyzerTypes = ['DATETIME', 'DATE', 'TIME'];

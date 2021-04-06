@@ -20,8 +20,8 @@ const StyledHr = styled('hr', ({ $theme }) => ({
   marginTop: $theme.sizing.scale300,
 }));
 
-type DataTypeSelectionProps = { nextStep: () => void };
-const DataTypeSelection: FC<DataTypeSelectionProps> = ({ nextStep }) => {
+type DataTypeSelectionProps = {};
+const DataTypeSelection: FC<DataTypeSelectionProps> = () => {
   const { fileUpload, setDataType, resetState } = useFileContents();
 
   const dataType: Option = useMemo(() => {
@@ -60,9 +60,9 @@ const DataTypeSelection: FC<DataTypeSelectionProps> = ({ nextStep }) => {
 
       <StyledHr />
 
-      {dataType.id === 'json' && <JsonFiles nextStep={nextStep} />}
-      {dataType.id === 'edgeListCsv' && <EdgeListCsv nextStep={nextStep} />}
-      {dataType.id === 'nodeEdgeCsv' && <NodeEdgeCsv nextStep={nextStep} />}
+      {dataType.id === 'json' && <JsonFiles />}
+      {dataType.id === 'edgeListCsv' && <EdgeListCsv />}
+      {dataType.id === 'nodeEdgeCsv' && <NodeEdgeCsv />}
     </Block>
   );
 };

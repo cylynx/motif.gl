@@ -5,7 +5,7 @@ import { styled } from 'baseui';
 import { scaleLinear } from 'd3-scale';
 import { max } from 'd3-array';
 import { Theme } from 'baseui/theme';
-import { HistogramBin } from '../../utils/data-utils';
+import { HistogramBin } from '../../utils/data-utils/data-utils';
 import { PRIMARY_COLOR, DARK_GREY } from '../../constants/colors';
 
 export type HistogramPlotProps = {

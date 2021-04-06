@@ -11,10 +11,10 @@ import {
   NodeColorLegend,
   Edge,
   NodeSizeFixed,
-} from '../../../redux/graph/types';
-import { CATEGORICAL_COLOR, DARK_GREY, GREY } from '../../../constants/colors';
-import { normalizeColor } from '../../../utils/style-utils';
-import { DEFAULT_NODE_STYLE } from '../../../constants/graph-shapes';
+} from '../../redux/graph/types';
+import { CATEGORICAL_COLOR, DARK_GREY, GREY } from '../../constants/colors';
+import { normalizeColor } from './color-utils';
+import { DEFAULT_NODE_STYLE } from '../../constants/graph-shapes';
 
 /**
  * Main function to style nodes

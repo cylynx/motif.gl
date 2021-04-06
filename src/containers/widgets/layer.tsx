@@ -13,7 +13,7 @@ import {
   SIDE_NAVBAR_WIDTH,
   LEFT_LAYER_WIDTH,
 } from '../../constants/widget-units';
-import { extractIntegerFromString } from '../../utils/data-utils';
+import { extractIntegerFromString } from '../../utils/data-utils/data-utils';
 
 export const BottomRightLayer: FC = ({ children }) => (
   <Block

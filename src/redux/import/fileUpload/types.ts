@@ -1,4 +1,4 @@
-import { Accessors, GraphData, ImportFormat } from '../../graph';
+import { Accessors, GraphData, ImportFormat } from '../../graph/types';
 
 export type TFileReaderResponse = {
   name: string;
