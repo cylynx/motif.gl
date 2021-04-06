@@ -274,10 +274,6 @@ export const importSingleJsonData = (
   importAccessors: ImportAccessors = null,
   groupEdges = false,
 ) => async (dispatch: any, getState: any): Promise<void> => {
-  if (Array.isArray(importData)) {
-    throw new Error('importData parameter must be an object');
-  }
-
   const { accessors: mainAccessors } = getGraph(getState());
   const accessors = { ...mainAccessors, ...importAccessors };
   const filterOptions: FilterOptions = getFilterOptions(getState());
@@ -288,16 +284,17 @@ export const importSingleJsonData = (
     groupEdges,
   );
 
-  try {
-    const graphData = await newData;
-    processResponse(dispatch, mainAccessors, graphData);
-    showImportDataToast(dispatch, filterOptions);
-    dispatch(UISlices.closeModal());
-  } catch (err) {
-    const { message } = err;
-    dispatch(UIThunks.show(message, 'negative'));
-    dispatch(UISlices.fetchDone());
-  }
+  return newData
+    .then((graphData: GraphList) => {
+      processResponse(dispatch, mainAccessors, graphData);
+      showImportDataToast(dispatch, filterOptions);
+      dispatch(UISlices.closeModal());
+    })
+    .catch((err: Error) => {
+      const { message } = err;
+      dispatch(UIThunks.show(message, 'negative'));
+      dispatch(UISlices.fetchDone());
+    });
 };
 
 /**

@@ -66,8 +66,8 @@ const ImportWizardModal: FC<ImportWizardProps> = ({ overrideTabs }) => {
       return;
     }
 
-    resetDataPreview();
     dispatch(UISlices.closeModal());
+    resetDataPreview();
   };
 
   return (

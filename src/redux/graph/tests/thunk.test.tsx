@@ -26,7 +26,7 @@ import {
   importNodeEdgeCsv,
   importEdgeListCsv,
 } from '../processors/import';
-import { fetchBegin, fetchDone, updateToast } from '../../ui/slice';
+import { fetchBegin, fetchDone, updateToast, closeModal } from '../../ui/slice';
 import {
   GraphWithGroupEdge,
   SimpleEdge,
@@ -34,11 +34,9 @@ import {
 } from '../../../constants/sample-data';
 import { RootState } from '../../investigate';
 import {
-  Edge,
   Field,
   GraphData,
   GraphList,
-  GroupEdges,
   ImportFormat,
   Selection,
   TLoadFormat,
@@ -50,6 +48,7 @@ import {
   groupEdgesWithConfiguration,
 } from '../processors/group-edges';
 import { getGraph } from '../selectors';
+import { resetState } from '../../import/fileUpload/slice';
 
 const mockStore = configureStore([thunk]);
 const getStore = (): RootState => {
@@ -66,7 +65,7 @@ const getStore = (): RootState => {
   return store;
 };
 
-describe('add-data-thunk.test.js', () => {
+describe('thunk.test.js', () => {
   beforeEach(() => {
     render(<ToasterContainer />);
   });
@@ -74,74 +73,65 @@ describe('add-data-thunk.test.js', () => {
   describe('importJsonData', () => {
     const jsonDataOne = {
       data: {
-        data: {
-          nodes: [{ id: 'node-1' }, { id: 'node-2' }],
-          edges: [{ id: 'edge-1', source: 'node-1', target: 'node-2' }],
-          metadata: {
-            key: 123,
-          },
-        },
-        style: {
-          layout: LAYOUT.RADIAL_DEFAULT,
-          nodeStyle: {
-            color: {
-              id: 'fixed',
-              value: DEFAULT_NODE_STYLE.color,
-            },
-            size: {
-              id: 'fixed',
-              value: 30,
-            },
-          },
-          edgeStyle: {
-            width: {
-              id: 'fixed',
-              value: 2,
-            },
-            label: 'none',
-          },
+        nodes: [{ id: 'node-1' }, { id: 'node-2' }],
+        edges: [{ id: 'edge-1', source: 'node-1', target: 'node-2' }],
+        metadata: {
+          key: 123,
         },
       },
-      type: 'json',
+      style: {
+        layout: LAYOUT.RADIAL_DEFAULT,
+        nodeStyle: {
+          color: {
+            id: 'fixed',
+            value: DEFAULT_NODE_STYLE.color,
+          },
+          size: {
+            id: 'fixed',
+            value: 30,
+          },
+        },
+        edgeStyle: {
+          width: {
+            id: 'fixed',
+            value: 2,
+          },
+          label: 'none',
+        },
+      },
     };
     const jsonDataTwo = {
-      data: {
-        data: {
-          nodes: [{ id: 'node-3' }, { id: 'node-4' }],
-          edges: [{ id: 'edge-2', source: 'node-3', target: 'node-4' }],
-          metadata: {
-            key: 234,
-          },
-        },
-        style: {
-          layout: { type: 'graphin-force' },
-          nodeStyle: {
-            color: { value: 'orange', id: 'fixed' },
-            size: { value: 47, id: 'fixed' },
-            label: 'id',
-          },
-          edgeStyle: {
-            width: { id: 'fixed', value: 1 },
-            label: 'source',
-            pattern: 'dot',
-            fontSize: 16,
-            arrow: 'none',
-          },
-        },
-      },
-      type: 'json',
-    };
-
-    const simpleGraphOne = {
       data: {
         nodes: [{ id: 'node-3' }, { id: 'node-4' }],
         edges: [{ id: 'edge-2', source: 'node-3', target: 'node-4' }],
         metadata: {
           key: 234,
         },
+      },
+      style: {
+        layout: { type: 'graphin-force' },
+        nodeStyle: {
+          color: { value: 'orange', id: 'fixed' },
+          size: { value: 47, id: 'fixed' },
+          label: 'id',
+        },
+        edgeStyle: {
+          width: { id: 'fixed', value: 1 },
+          label: 'source',
+          pattern: 'dot',
+          fontSize: 16,
+          arrow: 'none',
+        },
+      },
+    };
+
+    const simpleGraphOne = {
+      nodes: [{ id: 'node-3' }, { id: 'node-4' }],
+      edges: [{ id: 'edge-2', source: 'node-3', target: 'node-4' }],
+      metadata: {
         key: 234,
       },
-      type: 'json',
+      key: 234,
     };
 
     const simpleGraphTwo = {
@@ -161,7 +151,6 @@ describe('add-data-thunk.test.js', () => {
           },
         },
       ],
-      type: 'json',
     };
 
     const store = mockStore(getStore());
@@ -205,6 +194,8 @@ describe('add-data-thunk.test.js', () => {
         }),
         fetchDone(),
         updateToast('toast-0'),
+        resetState(),
+        closeModal(),
       ];
 
       // assertions
@@ -852,7 +843,7 @@ describe('add-data-thunk.test.js', () => {
     it('should receive importData as object and process graph accurately', async () => {
       // input
       const data = SimpleEdge();
-      const importData = { data, type: 'json' };
+      const importData = data;
       const groupEdgeToggle = false;
 
       // processes
@@ -916,7 +907,7 @@ describe('add-data-thunk.test.js', () => {
           key: '123',
         },
       };
-      const importData = { data: invalidData, type: 'json' };
+      const importData = invalidData;
 
       await expect(importSingleJsonData(importData)).toThrow(Error);
     });

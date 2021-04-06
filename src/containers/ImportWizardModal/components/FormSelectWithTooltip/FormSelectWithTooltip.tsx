@@ -27,21 +27,23 @@ const FormSelectWithTooltip: FC<FormSelectWithTooltipProps> = ({
   onChange,
   labelText,
   tooltipText,
-  options,
+  options = [],
   value,
   error = '',
 }) => {
-  const selectedOption: Option = useMemo(() => {
+  const selectedOption: Value = useMemo(() => {
+    if (options.length === 0) return [];
+
     const selectedOption: Option = options.find(
       (option: Option) => option.id === value,
     );
 
     if (selectedOption === undefined) {
       const [firstOption] = options;
-      return firstOption;
+      return [firstOption];
     }
 
-    return selectedOption;
+    return [selectedOption];
   }, [value, options]);
 
   return (
@@ -85,7 +87,7 @@ const FormSelectWithTooltip: FC<FormSelectWithTooltipProps> = ({
         type={TYPE.select}
         options={options}
         valueKey='id'
-        value={[selectedOption]}
+        value={selectedOption}
       />
     </FormControl>
   );
