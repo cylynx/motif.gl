@@ -12,7 +12,7 @@ export type SimpleFormData = {
   label: string;
   labelPosition?: 'left' | 'top';
   value: any;
-  type: 'input' | 'slider' | 'select';
+  kind: 'input' | 'slider' | 'select';
   callback: (data: any) => void;
   [optionId: string]: any;
 };
@@ -54,7 +54,7 @@ const cleanGetValues = (obj: any) => {
      id: 'name',
      label: 'Test Slider',
      value: 10,
-     type: 'slider',
+     kind: 'slider',
      min: 5,
      max: 15,
      callback: (data) => console.log(data),
@@ -63,7 +63,7 @@ const cleanGetValues = (obj: any) => {
  * @return {*}
  */
 const SimpleForm = ({ data }: { data: SimpleFormData }) => {
-  const { id, label, labelPosition, value, type, callback, ...rest } = data;
+  const { id, label, labelPosition, value, kind, callback, ...rest } = data;
   const { control, getValues } = useForm();
 
   const handleChange = (value: any, onChange: (v: any) => void) => {
@@ -78,17 +78,16 @@ const SimpleForm = ({ data }: { data: SimpleFormData }) => {
   // Select needs to have an options
   let parsedValue =
     // eslint-disable-next-line no-nested-ternary
-    type === 'select'
+    kind === 'select'
       ? data.options.find((x: any) => x.id === value)
         ? [data.options.find((x: any) => x.id === value)]
         : []
       : value;
   parsedValue =
-    type === 'slider' && !Array.isArray(value) ? [value] : parsedValue;
+    kind === 'slider' && !Array.isArray(value) ? [value] : parsedValue;
 
   return (
     <Fragment>
-      <form>
         <Block
           display={labelPosition === 'left' ? 'flex' : 'block'}
           marginBottom={labelPosition === 'left' ? 'scale200' : 0}
@@ -111,7 +110,7 @@ const SimpleForm = ({ data }: { data: SimpleFormData }) => {
             // @ts-ignore
             render={({ value, onChange }) => {
               let component;
-              if (type === 'select') {
+              if (kind === 'select') {
                 component = (
                   <Select
                     onChange={(params) => handleChange(params.value, onChange)}
@@ -123,7 +122,7 @@ const SimpleForm = ({ data }: { data: SimpleFormData }) => {
                   />
                 );
               }
-              if (type === 'input') {
+              if (kind === 'input') {
                 component = (
                   <Input
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -135,7 +134,7 @@ const SimpleForm = ({ data }: { data: SimpleFormData }) => {
                   />
                 );
               }
-              if (type === 'slider') {
+              if (kind === 'slider') {
                 component = (
                   <Slider
                     // eslint-disable-next-line no-shadow
@@ -150,7 +149,6 @@ const SimpleForm = ({ data }: { data: SimpleFormData }) => {
             }}
           />
         </Block>
-      </form>
     </Fragment>
   );
 };

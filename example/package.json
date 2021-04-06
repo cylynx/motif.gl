@@ -18,7 +18,8 @@
     "react-scripts": "file:../node_modules/react-scripts",
     "styletron-engine-atomic": "file:../node_modules/styletron-engine-atomic",
     "styletron-react": "file:../node_modules/styletron-react",
-    "typescript": "^4.1.3"
+    "typescript": "^4.1.3",
+    "use-neo4j": "^0.3.4"
   },
   "devDependencies": {
     "@types/react": "file:../node_modules/@types/react",

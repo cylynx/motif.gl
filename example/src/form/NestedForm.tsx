@@ -55,7 +55,7 @@ const cleanGetValues = (obj: any, mainKey: string) => {
 /**
  * An form generator component that renders subsequent child controls depending on the parent selection
  * Additional keys should correspond to the id in the main options array
- * type supported - "select" | "input" | "slider"
+ * kind supported - "select" | "input" | "slider"
  * @example
  * const testData: FormGeneratorData = {
   id: 'name',
@@ -70,7 +70,7 @@ const cleanGetValues = (obj: any, mainKey: string) => {
     {
       id: 'customInput',
       label: 'Hello World',
-      type: 'input',
+      kind: 'input',
       value: 'Hello',
     },
   ],
@@ -78,7 +78,7 @@ const cleanGetValues = (obj: any, mainKey: string) => {
     {
       id: 'number',
       label: 'Slippery Snakes',
-      type: 'slider',
+      kind: 'slider',
       value: 30,
       max: 50,
     },
@@ -120,121 +120,117 @@ const NestedForm = ({ data }: { data: NestedFormData }) => {
 
   return (
     <Fragment>
-        <Block
-          display={labelPosition === 'left' ? 'flex' : 'block'}
-          marginBottom={labelPosition === 'left' ? 'scale100' : 0}
-          marginTop={labelPosition === 'left' ? 'scale100' : 0}
-          alignItems='center'
-          justifyContent='space-between'
+      <Block
+        display={labelPosition === 'left' ? 'flex' : 'block'}
+        marginBottom={labelPosition === 'left' ? 'scale100' : 0}
+        marginTop={labelPosition === 'left' ? 'scale100' : 0}
+        alignItems='center'
+        justifyContent='space-between'
+      >
+        <LabelSmall
+          marginBottom='scale300'
+          marginTop='scale300'
+          marginRight='scale200'
+          width='100px'
         >
-          <LabelSmall
-            marginBottom='scale300'
-            marginTop='scale300'
-            marginRight='scale200'
-            width='100px'
-          >
-            {data.label}
-          </LabelSmall>
-          <Controller
-            name={data.id}
-            control={control}
-            defaultValue={[data.options.find((x: any) => x.id === data.value)]}
-            render={({ value, onChange }) => (
-              <Select
-                options={data.options}
-                onChange={(params) =>
-                  handleChangeParent(params.value, onChange)
-                }
-                size='compact'
-                clearable={false}
-                value={value}
-                maxDropdownHeight='300px'
-              />
-            )}
-          />
-        </Block>
-        {data[watchSelection[0].id] &&
-          data[watchSelection[0].id].map((d: any) => {
-            const { id, label, type, value, ...rest } = d;
-            let parsedValue =
-              // eslint-disable-next-line no-nested-ternary
-              type === 'select'
-                ? d.options.find((x: any) => x.id === value)
-                  ? [d.options.find((x: any) => x.id === value)]
-                  : []
-                : value;
-            parsedValue =
-              type === 'slider' && !Array.isArray(value)
-                ? [value]
-                : parsedValue;
-            return (
-              <Block
-                key={`${data[watchSelection[0].id]}_${id}`}
-                display={labelPosition === 'left' ? 'flex' : 'block'}
-                marginBottom={labelPosition === 'left' ? 'scale200' : 0}
-                marginTop={labelPosition === 'left' ? 'scale200' : 0}
-                alignItems='center'
-                justifyContent='space-between'
+          {data.label}
+        </LabelSmall>
+        <Controller
+          name={data.id}
+          control={control}
+          defaultValue={[data.options.find((x: any) => x.id === data.value)]}
+          render={({ value, onChange }) => (
+            <Select
+              options={data.options}
+              onChange={(params) => handleChangeParent(params.value, onChange)}
+              size='compact'
+              clearable={false}
+              value={value}
+              maxDropdownHeight='300px'
+            />
+          )}
+        />
+      </Block>
+      {data[watchSelection[0].id] &&
+        data[watchSelection[0].id].map((d: any) => {
+          const { id, label, kind, value, ...rest } = d;
+          let parsedValue =
+            // eslint-disable-next-line no-nested-ternary
+            kind === 'select'
+              ? d.options.find((x: any) => x.id === value)
+                ? [d.options.find((x: any) => x.id === value)]
+                : []
+              : value;
+          parsedValue =
+            kind === 'slider' && !Array.isArray(value) ? [value] : parsedValue;
+          return (
+            <Block
+              key={`${data[watchSelection[0].id]}_${id}`}
+              display={labelPosition === 'left' ? 'flex' : 'block'}
+              marginBottom={labelPosition === 'left' ? 'scale200' : 0}
+              marginTop={labelPosition === 'left' ? 'scale200' : 0}
+              alignItems='center'
+              justifyContent='space-between'
+            >
+              <LabelSmall
+                marginBottom='scale300'
+                marginTop='scale300'
+                marginRight='scale200'
+                width='100px'
               >
-                <LabelSmall
-                  marginBottom='scale300'
-                  marginTop='scale300'
-                  marginRight='scale200'
-                  width='100px'
-                >
-                  {label}
-                </LabelSmall>
-                <Controller
-                  name={id}
-                  control={control}
-                  defaultValue={parsedValue}
-                  // eslint-disable-next-line no-shadow
-                  // @ts-ignore
-                  render={({ value, onChange }) => {
-                    let component;
-                    if (type === 'select') {
-                      component = (
-                        <Select
-                          onChange={(params) =>
-                            handleChange(params.value, onChange)
-                          }
-                          value={value}
-                          size='compact'
-                          clearable={false}
-                          maxDropdownHeight='300px'
-                          {...rest}
-                        />
-                      );
-                    }
-                    if (type === 'input') {
-                      component = (
-                        <Input
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            handleChange(e.target.value, onChange)
-                          }
-                          value={value}
-                          size='compact'
-                          {...rest}
-                        />
-                      );
-                    }
-                    if (type === 'slider') {
-                      component = (
-                        <Slider
-                          // eslint-disable-next-line no-shadow
-                          onChange={({ value }) => value && onChange(value)}
-                          onFinalChange={handleFinalChange}
-                          value={value}
-                          {...rest}
-                        />
-                      );
-                    }
-                    return component;
-                  }}
-                />
-              </Block>
-            );
-          })}
+                {label}
+              </LabelSmall>
+              <Controller
+                name={id}
+                control={control}
+                defaultValue={parsedValue}
+                // eslint-disable-next-line no-shadow
+                // @ts-ignore
+                render={({ value, onChange }) => {
+                  let component;
+                  if (kind === 'select') {
+                    component = (
+                      <Select
+                        onChange={(params) =>
+                          handleChange(params.value, onChange)
+                        }
+                        value={value}
+                        size='compact'
+                        clearable={false}
+                        maxDropdownHeight='300px'
+                        {...rest}
+                      />
+                    );
+                  }
+                  if (kind === 'input') {
+                    component = (
+                      <Input
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          handleChange(e.target.value, onChange)
+                        }
+                        value={value}
+                        size='compact'
+                        {...rest}
+                      />
+                    );
+                  }
+                  if (kind === 'slider') {
+                    component = (
+                      <Slider
+                        // eslint-disable-next-line no-shadow
+                        onChange={({ value }) => value && onChange(value)}
+                        onFinalChange={handleFinalChange}
+                        value={value}
+                        {...rest}
+                      />
+                    );
+                  }
+                  return component;
+                }}
+              />
+            </Block>
+          );
+        })}
     </Fragment>
   );
 };

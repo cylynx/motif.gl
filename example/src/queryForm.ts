@@ -1,4 +1,4 @@
-import { NestedFormData } from './form';
+import { NestedFormData, SimpleFormData } from './form';
 
 export const queryForm: NestedFormData = {
   id: 'query',
@@ -15,7 +15,7 @@ export const queryForm: NestedFormData = {
     {
       id: 'customer',
       label: 'Customer Id',
-      type: 'input',
+      kind: 'input',
       value: '',
     },
     {
@@ -26,7 +26,7 @@ export const queryForm: NestedFormData = {
         { id: 'mid', label: 'Middle' },
         { id: 'high', label: 'high' },
       ],
-      type: 'select',
+      kind: 'select',
       value: 'high',
     },
   ],
@@ -34,7 +34,7 @@ export const queryForm: NestedFormData = {
     {
       id: 'customer',
       label: 'Customer Id',
-      type: 'input',
+      kind: 'input',
       value: '',
     },
   ],
@@ -42,7 +42,7 @@ export const queryForm: NestedFormData = {
     {
       id: 'customer',
       label: 'Customer Id',
-      type: 'input',
+      kind: 'input',
       value: '',
     },
   ],
@@ -50,7 +50,7 @@ export const queryForm: NestedFormData = {
     {
       id: 'entity',
       label: 'Entity',
-      type: 'select',
+      kind: 'select',
       options: [
         { id: 'customer', label: 'Customer' },
         { id: 'atm', label: 'ATM' },
@@ -64,7 +64,7 @@ export const queryForm: NestedFormData = {
     {
       id: 'id_num',
       label: 'Entity Id',
-      type: 'input',
+      kind: 'input',
       value: '',
     },
     {
@@ -79,4 +79,37 @@ export const queryForm: NestedFormData = {
       value: 'ib',
     },
   ],
+};
+
+export const neo4jHost: SimpleFormData = {
+  id: 'neo4jHost',
+  label: 'Host',
+  kind: 'input',
+  value: '',
+  callback: (data: any) => console.log(data),
+};
+
+export const neo4jPort: SimpleFormData = {
+  id: 'neo4jPort',
+  label: 'Port',
+  kind: 'input',
+  value: '',
+  callback: (data: any) => console.log(data),
+};
+
+export const neo4jUsername: SimpleFormData = {
+  id: 'neo4jUsername',
+  label: 'Username',
+  kind: 'input',
+  value: '',
+  callback: (data: any) => console.log(data),
+};
+
+export const neo4jPassword: SimpleFormData = {
+  id: 'neo4jPassword',
+  label: 'Password',
+  kind: 'input',
+  type: 'password',
+  value: '',
+  callback: (data: any) => console.log(data),
 };
