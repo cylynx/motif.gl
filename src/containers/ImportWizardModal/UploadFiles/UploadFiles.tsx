@@ -10,7 +10,7 @@ import useFileContents from './hooks/useFileContents';
 import ConfigureFields from './ConfigureFields';
 
 const UploadFiles = () => {
-  const { currentStep, setStep, nextStep } = useStepper(1, 2);
+  const { currentStep, setStep } = useStepper(1, 2);
   const {
     fileUpload: { attachments },
   } = useFileContents();
@@ -42,7 +42,7 @@ const UploadFiles = () => {
       />
 
       <Block>
-        {currentStep === 1 && <DataTypeSelection nextStep={nextStep} />}
+        {currentStep === 1 && <DataTypeSelection />}
         {currentStep === 2 && <ConfigureFields />}
       </Block>
     </Block>
