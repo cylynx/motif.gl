@@ -37,7 +37,7 @@ const buildNode = (n: any) => {
       node[key] = value instanceof Neo4j.types.Integer ? value.toInt() : value;
     }
   }
-  node.id = n.identity.toString();
+  node.id = `node-${n.identity.toString()}`;
   node.labels = n.labels[0];
   return { ...node };
 };
@@ -49,9 +49,9 @@ const buildEdge = (e: any) => {
       edge[key] = value instanceof Neo4j.types.Integer ? value.toInt() : value;
     }
   }
-  edge.id = e.identity.toString();
-  edge.source = e.start.toString();
-  edge.target = e.end.toString();
+  edge.id = `edge-${e.identity.toString()}`;
+  edge.source = `node-${e.start.toString()}`;
+  edge.target = `node-${e.end.toString()}`;
   edge.relationship = e.type;
   return { ...edge };
 };
@@ -87,6 +87,7 @@ const toMotifFormat = (records: any) => {
       } else if (v instanceof Array) {
         for (let obj of v) {
           if (obj instanceof Neo4j.types.Node) {
+            
             let node = buildNode(obj);
             nodes.push(node);
           } else if (obj instanceof Neo4j.types.Relationship) {
@@ -99,7 +100,6 @@ const toMotifFormat = (records: any) => {
       }
     });
   });
-
   return { nodes, edges };
 };
 
