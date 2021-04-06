@@ -139,7 +139,7 @@ const EdgeListCsv: FC = () => {
         />
       )}
 
-      <Block position='absolute' bottom='0' right='0'>
+      <Block position='absolute' bottom='scale300' right='0'>
         <Button
           type='submit'
           disabled={isEmptyAttachments}

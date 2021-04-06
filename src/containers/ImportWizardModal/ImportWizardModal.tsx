@@ -30,7 +30,7 @@ const StyledModalHeader = withStyle(ModalHeader, ({ $theme }) => ({
 }));
 
 const StyledModalBody = withStyle(ModalBody, () => ({
-  height: '90%',
+  height: 'calc(100% - 60px)',
 }));
 
 export type ImportWizardProps = { overrideTabs?: ImportTabs[] };
@@ -86,7 +86,8 @@ const ImportWizardModal: FC<ImportWizardProps> = ({ overrideTabs }) => {
           Dialog: {
             style: {
               width: '848px',
-              height: '650px',
+              minHeight: '650px',
+              height: '80vh',
             },
           },
         }}

@@ -124,22 +124,25 @@ const ConfigureFields = () => {
   };
 
   return (
-    <Block marginTop='scale200'>
+    <>
       <form onSubmit={handleSubmit(importLocalFile)}>
-        <AccessorFields
-          onSelectChange={onSelectChange}
-          errors={errors}
-          control={control}
-          watch={watch}
-          setError={setError}
-          clearErrors={clearErrors}
-          getValues={getValues}
-          setValue={setValue}
-        />
-        <DataPreview isEdgeGroupable={isEdgeGroupable} dataType={dataType} />
+        <Block marginTop='scale200'>
+          <AccessorFields
+            onSelectChange={onSelectChange}
+            errors={errors}
+            control={control}
+            watch={watch}
+            setError={setError}
+            clearErrors={clearErrors}
+            getValues={getValues}
+            setValue={setValue}
+          />
+          <DataPreview isEdgeGroupable={isEdgeGroupable} dataType={dataType} />
+        </Block>
+
         {isEdgeGroupable && <GroupEdgeConfiguration control={control} />}
 
-        <Block position='absolute' bottom='0' right='0'>
+        <Block position='absolute' bottom='scale300' right='0'>
           <Button
             type='submit'
             disabled={isSubmitDisabled}
@@ -191,7 +194,7 @@ const ConfigureFields = () => {
           </ParagraphSmall>
         }
       />
-    </Block>
+    </>
   );
 };
 

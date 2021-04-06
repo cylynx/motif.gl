@@ -49,6 +49,8 @@ const GroupEdgeConfiguration: FC<GroupEdgeConfigurationProps> = ({
         Block: {
           style: ({ $theme }: { $theme: Theme }) => ({
             border: `1px solid ${$theme.colors.contentPrimary}`,
+            position: 'absolute',
+            bottom: '50px',
           }),
         },
       }}

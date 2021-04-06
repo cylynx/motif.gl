@@ -54,7 +54,10 @@ const TablePreview: FC<TablePreviewProps> = ({
       overrides={{
         Root: {
           style: ({ $theme }: { $theme: Theme }) => ({
-            maxHeight: isEdgeGroupable ? '210px' : '300px',
+            position: 'absolute',
+            width: '100%',
+            height: 'auto',
+            maxHeight: `calc(100% - ${isEdgeGroupable ? '389px' : '295px'})`,
             '::-webkit-scrollbar': {
               height: $theme.sizing.scale100,
               width: $theme.sizing.scale100,
