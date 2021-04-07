@@ -50,7 +50,6 @@ import {
 } from '../processors/group-edges';
 import { getGraph } from '../selectors';
 import { resetState } from '../../import/fileUpload/slice';
-import { show } from '../../ui/thunks';
 import { TFileContent } from '../../import/fileUpload';
 
 const mockStore = configureStore([thunk]);

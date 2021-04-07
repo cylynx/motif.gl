@@ -10,6 +10,7 @@ import {
   processJson,
   processNodeEdgeCsv,
   processEdgeListCsv,
+  verifySourceAndTargetExistence,
 } from '../processors/data';
 import { Edge, GraphData, Node } from '../types';
 
@@ -73,6 +74,7 @@ describe('Parsing csv to json', () => {
   it('should return a GraphData object with valid metadata', async () => {
     const toggleGroupEdge = false;
     const accessors = {
+      nodeID: 'id',
       edgeID: 'id',
       edgeSource: 'source',
       edgeTarget: 'target',
@@ -212,7 +214,7 @@ const testJson = {
   },
 };
 
-describe('Process json data', () => {
+describe('processJson', () => {
   describe('Fault Tolerance', () => {
     it('should throw if no nodes or edges is in the json', async () => {
       const groupEdgeToggle = false;
@@ -235,7 +237,6 @@ describe('Process json data', () => {
       expect(results.metadata.fields).not.toHaveProperty('udf');
     });
   });
-
   describe('Accuracy', () => {
     let results: GraphData;
     beforeEach(async () => {
@@ -306,5 +307,67 @@ describe('Process json data', () => {
     it('should include a key in metadata if not specified', () => {
       expect(results.metadata).toHaveProperty('key');
     });
+  });
+});
+
+describe('verifySourceAndTargetExistence', () => {
+  it('should not display error when edges are valid', () => {
+    const accessors = {
+      nodeID: 'id',
+      edgeID: 'id',
+      edgeSource: 'source',
+      edgeTarget: 'target',
+    };
+    const nodes = [{ id: '1' }, { id: '2' }];
+    const edges = [{ id: 'edge-1', source: '1', target: '2' }];
+
+    verifySourceAndTargetExistence(nodes, edges, accessors);
+
+    expect.anything();
+  });
+
+  it('should identify missing node id', () => {
+    const accessors = {
+      nodeID: 'nodeID',
+      edgeID: 'id',
+      edgeSource: 'source',
+      edgeTarget: 'target',
+    };
+    const nodes = [{ id: '1' }, { id: '2' }];
+    const edges = [{ id: 'edge-1', source: '1', target: '2' }];
+
+    expect(() => {
+      verifySourceAndTargetExistence(nodes, edges, accessors);
+    }).toThrow('The source or target node of edge edge-1 does not exist.');
+  });
+
+  it('should identify missing edge source', () => {
+    const accessors = {
+      nodeID: 'id',
+      edgeID: 'id',
+      edgeSource: 'source',
+      edgeTarget: 'target',
+    };
+    const nodes = [{ id: '1' }, { id: '2' }];
+    const edges = [{ id: 'edge-1', source: '3', target: '2' }];
+
+    expect(() => {
+      verifySourceAndTargetExistence(nodes, edges, accessors);
+    }).toThrow('The source or target node of edge edge-1 does not exist.');
+  });
+
+  it('should identify missing edge target', () => {
+    const accessors = {
+      nodeID: 'id',
+      edgeID: 'id',
+      edgeSource: 'source',
+      edgeTarget: 'target',
+    };
+    const nodes = [{ id: '1' }, { id: '2' }];
+    const edges = [{ id: 'edge-1', source: '2', target: '3' }];
+
+    expect(() => {
+      verifySourceAndTargetExistence(nodes, edges, accessors);
+    }).toThrow('The source or target node of edge edge-1 does not exist.');
   });
 });

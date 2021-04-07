@@ -723,6 +723,14 @@ export const applyGroupEdges = (
   return groupEdgeConfig;
 };
 
+/**
+ * Verify the source and target existence of an edge.
+ *
+ * @param nodes
+ * @param edges
+ * @param accessors
+ * @return {void}
+ */
 export const verifySourceAndTargetExistence = (
   nodes: Node[],
   edges: Edge[],
