@@ -150,7 +150,7 @@ const AccessorFields: FC<AccessorsFieldsProps> = ({
       });
       setError('edgeTarget', {
         type: 'manual',
-        message: 'Value must differ with Edge ID',
+        message: 'Value must differ with Source',
       });
     }
   }, [watch('edgeID'), watch('edgeSource'), watch('edgeTarget')]);
