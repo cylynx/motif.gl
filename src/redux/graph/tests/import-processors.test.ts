@@ -82,6 +82,7 @@ describe('Pre-process Json data correctly', () => {
 const edgeListCsv = `custom_id,data.value,data.blk_ts_unix,from,to\n1,100,NaN,a,b\n2,200,2000000,b,c\n3,300,Null,c,b`;
 
 const edgeListAccessors = {
+  nodeID: 'id',
   edgeID: 'custom_id',
   edgeSource: 'from',
   edgeTarget: 'to',
