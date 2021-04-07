@@ -1,5 +1,4 @@
-import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
-import { AccordionItem } from '../../../src/components/Accordion';
+import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 
 describe('Import Circle Graph', () => {
   before(() => {

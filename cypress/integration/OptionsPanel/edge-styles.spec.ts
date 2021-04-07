@@ -1,6 +1,6 @@
 import { NestedFormData } from '../../../src/components/form';
 import * as form from '../../../src/containers/SidePanel/OptionsPanel/constants';
-import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
+import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 import {
   GraphSelectors,
   EdgeStyleOptions,

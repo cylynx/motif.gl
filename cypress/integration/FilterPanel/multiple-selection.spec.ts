@@ -1,4 +1,4 @@
-import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
+import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 
 describe('Multiple Selection', () => {
   const graphinEl = 'Graphin';

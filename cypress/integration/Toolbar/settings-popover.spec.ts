@@ -1,4 +1,4 @@
-import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
+import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 import * as layoutOptions from '../../../src/constants/layout-options';
 import * as form from '../../../src/containers/SidePanel/OptionsPanel/constants';
 import {

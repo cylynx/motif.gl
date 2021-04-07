@@ -1,7 +1,7 @@
 import * as layoutOptions from '../../../src/constants/layout-options';
 import * as form from '../../../src/containers/SidePanel/OptionsPanel/constants';
 import { NestedFormData } from '../../../src/components/form/NestedForm';
-import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
+import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 const findLayout = (id: string) =>
   layoutOptions.LAYOUT_NAMES.find((layout) => layout.id === id);
 

@@ -48,6 +48,7 @@ describe('Import Single Local File', () => {
     it('should import one file successfully', () => {
       cy.get('input[type="file"]').attachFile(circleWithoutStyles);
       cy.get('button[type="submit"]').click();
+      cy.get('button[type="submit"]').click();
 
       cy.getReact('Graphin')
         .getProps('data')
@@ -63,6 +64,8 @@ describe('Import Single Local File', () => {
         circleWithoutStyles,
         circleWithoutStyles,
       ]);
+
+      cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
 
       cy.getReact('Graphin')
@@ -76,6 +79,8 @@ describe('Import Single Local File', () => {
 
     it('should import one simple graph format successfully', () => {
       cy.get('input[type="file"]').attachFile(simpleGraph);
+
+      cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
 
       cy.getReact('Graphin')
@@ -92,6 +97,8 @@ describe('Import Single Local File', () => {
         simpleGraph,
         circleWithoutStyles,
       ]);
+
+      cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
 
       cy.getReact('Graphin')
@@ -107,6 +114,8 @@ describe('Import Single Local File', () => {
   describe('Single File Without Style', () => {
     it('should not overwrites the default graph styles', async () => {
       cy.get('input[type="file"]').attachFile(circleWithoutStyles);
+
+      cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
 
       const graphState: GraphState = await getGraphStates();
@@ -120,6 +129,8 @@ describe('Import Single Local File', () => {
   describe('Single File With Style', () => {
     it('should overwrite if graph styles are not modified', async () => {
       cy.get('input[type="file"]').attachFile(circleWithStyles);
+
+      cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
 
       const graphState: GraphState = await getGraphStates();
@@ -146,6 +157,8 @@ describe('Import Single Local File', () => {
 
     it('should overwrite modified graph styles with import styles', async () => {
       cy.get('input[type="file"]').attachFile(gridWithStyles);
+
+      cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
 
       // should display confirmation modal if graph style is modified
@@ -187,6 +200,8 @@ describe('Import Single Local File', () => {
     it('should not overwrite modified graph styles with import styles', async () => {
       // import with circle layout
       cy.get('input[type="file"]').attachFile(circleWithStyles);
+
+      cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
 
       // perform reject on style overwrites
@@ -249,6 +264,8 @@ describe('Import Single Local File', () => {
 
     beforeEach(() => {
       cy.get('input[type="file"]').attachFile(customGroupEdgeGraph);
+
+      cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
     });
 

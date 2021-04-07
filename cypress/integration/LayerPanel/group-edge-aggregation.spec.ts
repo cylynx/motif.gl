@@ -1,4 +1,4 @@
-import { SampleData } from '../../../src/containers/ImportWizard/ImportSampleData/ImportSampleData';
+import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 import { Field } from '../../../src/redux/graph';
 import { Option } from 'baseui/select';
 
