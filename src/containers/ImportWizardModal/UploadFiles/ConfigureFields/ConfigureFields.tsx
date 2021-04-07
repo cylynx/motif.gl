@@ -136,6 +136,7 @@ const ConfigureFields = () => {
             clearErrors={clearErrors}
             getValues={getValues}
             setValue={setValue}
+            dataType={dataType}
           />
           <DataPreview isEdgeGroupable={isEdgeGroupable} dataType={dataType} />
         </Block>

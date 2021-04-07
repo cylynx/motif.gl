@@ -29,6 +29,7 @@ type AccessorsFieldsProps = {
   getValues: (payload?: string | string[]) => Object;
   errors: Record<string, Object>;
   setValue: (name: string, value: any, config?: Object) => void;
+  dataType: string;
 };
 const AccessorFields: FC<AccessorsFieldsProps> = ({
   onSelectChange,
@@ -39,15 +40,16 @@ const AccessorFields: FC<AccessorsFieldsProps> = ({
   getValues,
   errors,
   setValue,
+  dataType,
 }) => {
-  const {
-    nodeFieldOptions,
-    edgeFieldOptions,
-    setAccessors,
-  } = useFileContents();
+  const { nodeFieldOptions, edgeFieldOptions } = useFileContents();
 
   const nodeIDOptions = useMemo(() => {
-    return [...defaultField, ...nodeFieldOptions];
+    if (dataType === 'edgeListCsv') {
+      return [...defaultField, ...nodeFieldOptions];
+    }
+
+    return nodeFieldOptions;
   }, [nodeFieldOptions]);
 
   const edgeIDOptions = useMemo(() => {
