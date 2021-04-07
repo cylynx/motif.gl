@@ -5,10 +5,7 @@ describe('Navigation', () => {
   });
 
   it('should open Modal when the page initialized', () => {
-    cy.getReact('Modal')
-      .nthNode(0)
-      .getProps('isOpen')
-      .should('eq', true);
+    cy.getReact('ImportWizardModal').should('exist');
   });
 
   it('should display sample data list after switched to [Sample Data] tabs', () => {

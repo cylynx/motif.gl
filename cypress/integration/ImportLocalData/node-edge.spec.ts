@@ -5,7 +5,9 @@ const edgeDatasetRootPath = 'LocalFiles/EdgeList';
 
 describe('Import Edge List', () => {
   const selectNodeEdgeFormat = () => {
-    cy.react('Controller', { props: { name: 'dataType' } }).click();
+    cy.react('Select', { props: { id: 'DataTypeSelection' } })
+      .nthNode(0)
+      .click();
     cy.get('li[role="option"')
       .contains('Node Edge Csv (2 Files)')
       .click();
@@ -30,7 +32,13 @@ describe('Import Edge List', () => {
 
   describe('Local Files Import', () => {
     it('should import both node and edge successfully', () => {
-      cy.get('input[type="file"]').attachFile([nodeDataset, edgeDataset]);
+      cy.get('input[type="file"]')
+        .nthNode(0)
+        .attachFile([nodeDataset]);
+      cy.get('input[type="file"]')
+        .nthNode(1)
+        .attachFile([edgeDataset]);
+      cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
 
       cy.getReact('Graphin')
@@ -45,14 +53,18 @@ describe('Import Edge List', () => {
     });
 
     describe('Wrong format provided', function() {
-      beforeEach(() => {
-        cy.get('input[type="file"]').attachFile(sampleEdge);
-      });
+      it('should remain modal', () => {
+        cy.get('input[type="file"]')
+          .nthNode(0)
+          .attachFile(sampleEdge);
+        cy.get('input[type="file"]')
+          .nthNode(1)
+          .attachFile(sampleEdge);
 
-      it('should display warning message when wrong format is provided', () => {
-        cy.get('div[data-baseweb="file-uploader"').contains(
-          'Please ensure the correct number of files are uploaded and correctly labelled',
-        );
+        cy.get('button[type="submit"]').click();
+        cy.get('button[type="submit"]').click();
+
+        cy.getReact('ImportWizardModal').should('exist');
       });
     });
   });

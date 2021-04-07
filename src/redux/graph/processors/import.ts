@@ -1,4 +1,4 @@
-import { cloneDeep, get, isUndefined } from 'lodash';
+import { get, isUndefined } from 'lodash';
 import shortid from 'shortid';
 
 import { Node, Edge, GraphList, GraphData, Accessors } from '../types';
@@ -28,8 +28,7 @@ export const importJson = async (
       groupEdges,
       data?.key || data?.metadata?.key,
     );
-    const modData = cloneDeep(processedData);
-    results.push(addRequiredFieldsJson(modData, accessors));
+    results.push(addRequiredFieldsJson(processedData, accessors));
   }
   return results;
 };

@@ -4,7 +4,7 @@ import { range } from 'd3-array';
 import shortid from 'shortid';
 // @ts-ignore
 import { Analyzer, DATA_TYPES as AnalyzerDatatypes } from 'type-analyzer';
-import { isEmpty, uniq, get, uniqBy } from 'lodash';
+import { isEmpty, uniq, get, uniqBy, cloneDeep } from 'lodash';
 import { notNullorUndefined } from '../../../utils/data-utils/data-utils';
 import {
   Accessors,
@@ -120,7 +120,7 @@ export const processJson = async (
   groupEdges: boolean,
   key: string | number = shortid.generate(),
 ): Promise<GraphData> => {
-  if (validateMotifJson(json)) return json;
+  if (validateMotifJson(json)) return cloneDeep(json);
 
   if (json.nodes && json.edges) {
     const nodeCsv = await json2csv(json.nodes);

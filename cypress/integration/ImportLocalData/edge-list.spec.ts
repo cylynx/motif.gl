@@ -4,7 +4,9 @@ const edgeDatasetRootPath = 'LocalFiles/EdgeList';
 
 describe('Import Edge List', () => {
   const selectEdgeListDataType = () => {
-    cy.react('Controller', { props: { name: 'dataType' } }).click();
+    cy.react('Select', { props: { id: 'DataTypeSelection' } })
+      .nthNode(0)
+      .click();
     cy.get('li[role="option"')
       .contains('Edge List Csv')
       .click();
@@ -33,6 +35,7 @@ describe('Import Edge List', () => {
     it('should import one file successfully', () => {
       cy.get('input[type="file"]').attachFile(sampleEdge);
       cy.get('button[type="submit"]').click();
+      cy.get('button[type="submit"]').click();
 
       cy.getReact('Graphin')
         .getProps('data')
@@ -45,6 +48,7 @@ describe('Import Edge List', () => {
 
     it('should import two files successfully', () => {
       cy.get('input[type="file"]').attachFile([sampleEdge, sampleEdge]);
+      cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
 
       cy.getReact('Graphin')

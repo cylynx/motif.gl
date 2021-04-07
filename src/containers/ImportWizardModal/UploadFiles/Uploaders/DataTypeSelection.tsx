@@ -43,6 +43,7 @@ const DataTypeSelection: FC<DataTypeSelectionProps> = () => {
         overrides={{ ControlContainer: { style: { marginBottom: 0 } } }}
       >
         <Select
+          id='DataTypeSelection'
           size='compact'
           value={[dataType]}
           options={importOptions}
