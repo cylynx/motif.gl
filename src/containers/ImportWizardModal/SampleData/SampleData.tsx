@@ -20,7 +20,7 @@ const ImportSampleData = (): JSX.Element => {
   return (
     <Grid
       gridGaps={8}
-      gridColumns={[2, 3, 4]}
+      gridColumns={[2, 3, 3]}
       align={ALIGNMENT.center}
       overrides={{
         Grid: {

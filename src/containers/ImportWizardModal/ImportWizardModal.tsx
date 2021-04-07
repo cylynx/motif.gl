@@ -87,7 +87,9 @@ const ImportWizardModal: FC<ImportWizardProps> = ({ overrideTabs }) => {
           Dialog: {
             style: {
               width: '848px',
-              minHeight: '650px',
+
+              // perform hard code to support small screen width
+              minHeight: '630px',
               height: '80vh',
             },
           },

@@ -144,7 +144,7 @@ const AccessorFields: FC<AccessorsFieldsProps> = ({
 
     const isSameSourceAndTarget = edgeTarget === edgeSource;
     if (isSameSourceAndTarget) {
-      setError('edgeID', {
+      setError('edgeSource', {
         type: 'manual',
         message: 'Value must differ with Target',
       });

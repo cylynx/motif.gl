@@ -109,6 +109,12 @@ const NodeEdgeCsv: FC = () => {
     const fileAttachments = getValues(name) as TFileContent[];
     const cloneFileAttachments = [...fileAttachments];
     cloneFileAttachments.splice(index, 1);
+
+    if (cloneFileAttachments.length === 0) {
+      setValue(name, null);
+      return;
+    }
+
     setValue(name, cloneFileAttachments);
   };
 
