@@ -14,7 +14,7 @@ import {
   TFileContent,
   TFileReaderResponse,
 } from '../../../../redux/import/fileUpload';
-import AttachmentLists from '../../components/AttachmentLists';
+import AttachmentLists from '../../../../components/AttachmentLists';
 import * as Icon from '../../../../components/Icons';
 import useDataPreview from '../hooks/useDataPreview';
 

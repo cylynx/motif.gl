@@ -3,8 +3,8 @@ import { IconBaseProps } from 'react-icons';
 import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
 import { colors } from 'baseui/tokens';
-import * as Icon from '../../../../components/Icons';
-import { SimpleTooltip } from '../../../../components/ui';
+import * as Icon from '../Icons';
+import { SimpleTooltip } from '../ui';
 
 const QuestionMarkIconWithRef = forwardRef((props: IconBaseProps, ref) => {
   return (

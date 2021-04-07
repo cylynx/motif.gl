@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   FileUploadSelectors,
   FileUploadSlices,
-} from '../../../../../redux/import/fileUpload';
+} from '../../../redux/import/fileUpload';
 
 const UseStepper = (initialStep: number, maxStep: number) => {
   const dispatch = useDispatch();

@@ -1,10 +1,10 @@
 import React, { FC, useRef, useState } from 'react';
 import { Block } from 'baseui/block';
 import { LabelMedium, ParagraphSmall } from 'baseui/typography';
-import { TFileContent } from '../../../../redux/import/fileUpload';
+import { TFileContent } from '../../redux/import/fileUpload';
 import Attachment from './Attachment';
-import ConfirmationModal from '../../../../components/ConfirmationModal';
-import useFileContents from '../../UploadFiles/hooks/useFileContents';
+import ConfirmationModal from '../ConfirmationModal';
+import useFileContents from '../../containers/ImportWizardModal/UploadFiles/hooks/useFileContents';
 
 export type AttachmentListsProps = {
   attachments: TFileContent[];

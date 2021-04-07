@@ -3,7 +3,7 @@ import { FlexGrid, FlexGridItem } from 'baseui/flex-grid';
 import { Controller, Control } from 'react-hook-form';
 import { OnChangeParams, Option, Value } from 'baseui/select';
 import useFileContents, { defaultField } from '../hooks/useFileContents';
-import FormSelectWithTooltip from '../../components/FormSelectWithTooltip';
+import FormSelectWithTooltip from '../../../../components/FormSelectWithTooltip';
 import { ConfigureFieldsForm } from '../../../../redux/import/fileUpload';
 
 type AccessorField = {

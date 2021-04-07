@@ -3,7 +3,7 @@ import { Block } from 'baseui/block';
 import { ParagraphSmall } from 'baseui/typography';
 import { Button, KIND, SIZE, SHAPE } from 'baseui/button';
 import { colors } from 'baseui/tokens';
-import * as Icons from '../../../../components/Icons';
+import * as Icons from '../Icons';
 
 type AttachmentProps = {
   fileName: string;

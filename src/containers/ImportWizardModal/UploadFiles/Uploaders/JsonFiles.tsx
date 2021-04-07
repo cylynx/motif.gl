@@ -14,7 +14,7 @@ import {
   MultipleFileForms,
 } from '../../../../redux/import/fileUpload';
 import * as Icon from '../../../../components/Icons';
-import AttachmentLists from '../../components/AttachmentLists';
+import AttachmentLists from '../../../../components/AttachmentLists';
 import useFileContents from '../hooks/useFileContents';
 import useDataPreview from '../hooks/useDataPreview';
 

@@ -4,7 +4,7 @@ import { Block } from 'baseui/block';
 import ProgressStepper, {
   useStepper,
   StepperItems,
-} from '../components/ProgressStepper';
+} from '../../../components/ProgressStepper';
 import DataTypeSelection from './Uploaders/DataTypeSelection';
 import useFileContents from './hooks/useFileContents';
 import ConfigureFields from './ConfigureFields';
