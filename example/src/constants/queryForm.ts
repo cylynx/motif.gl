@@ -1,4 +1,5 @@
-import { NestedFormData, SimpleFormData } from './form';
+// @ts-ignore
+import { NestedFormData, SimpleFormData } from 'motif.gl';
 
 export const queryForm: NestedFormData = {
   id: 'query',
@@ -70,7 +71,7 @@ export const queryForm: NestedFormData = {
     {
       id: 'txn_type',
       label: 'Transaction Type',
-      type: 'select',
+      kind: 'select',
       options: [
         { id: 'atm', label: 'ATM Txns' },
         { id: 'credit_card', label: 'Credit Card Txns' },

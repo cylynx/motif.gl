@@ -7,7 +7,13 @@ import { Select } from 'baseui/select';
 import { LabelMedium } from 'baseui/typography';
 import { FormControl } from 'baseui/form-control';
 import { Textarea } from 'baseui/textarea';
-import { GraphThunks, UISlices, UIThunks } from 'motif.gl';
+import {
+  GraphThunks,
+  UISlices,
+  UIThunks,
+  SimpleForm,
+  genSimpleForm,
+} from 'motif.gl';
 import Neo4j from 'neo4j-driver';
 import {
   Neo4jProvider,
@@ -15,45 +21,19 @@ import {
   createDriver,
   useDatabases,
 } from 'use-neo4j';
-import { SimpleForm, genSimpleForm } from './form';
 import {
   neo4jHost,
   neo4jPort,
   neo4jUsername,
   neo4jPassword,
-} from './queryForm';
+} from '../../constants/queryForm';
+import { buildEdge, buildNode } from './utils';
 
 const DEFAULT_DB_SETTINGS = {
   neo4jHost: 'localhost',
   neo4jPort: '7687',
   neo4jUsername: '',
   neo4jPassword: '',
-};
-
-const buildNode = (n: any) => {
-  let node = {};
-  if (n.properties) {
-    for (let [key, value] of Object.entries(n.properties)) {
-      node[key] = value instanceof Neo4j.types.Integer ? value.toInt() : value;
-    }
-  }
-  node.id = `node-${n.identity.toString()}`;
-  node.labels = n.labels[0];
-  return { ...node };
-};
-
-const buildEdge = (e: any) => {
-  let edge = {};
-  if (e.properties) {
-    for (let [key, value] of Object.entries(e.properties)) {
-      edge[key] = value instanceof Neo4j.types.Integer ? value.toInt() : value;
-    }
-  }
-  edge.id = `edge-${e.identity.toString()}`;
-  edge.source = `node-${e.start.toString()}`;
-  edge.target = `node-${e.end.toString()}`;
-  edge.relationship = e.type;
-  return { ...edge };
 };
 
 /* Adapted from https://github.com/neo4j-contrib/neovis.js/blob/master/src/neovis.js */
@@ -87,7 +67,6 @@ const toMotifFormat = (records: any) => {
       } else if (v instanceof Array) {
         for (let obj of v) {
           if (obj instanceof Neo4j.types.Node) {
-            
             let node = buildNode(obj);
             nodes.push(node);
           } else if (obj instanceof Neo4j.types.Relationship) {
@@ -103,7 +82,7 @@ const toMotifFormat = (records: any) => {
   return { nodes, edges };
 };
 
-const QueryNeo4j = ({ driver, setDriver }) => {
+const Neo4J = ({ driver, setDriver }) => {
   const dispatch = useDispatch();
   const [dbSettings, setDbSettings] = useState(DEFAULT_DB_SETTINGS);
 
@@ -240,4 +219,4 @@ const CypherQuery = () => {
   );
 };
 
-export default QueryNeo4j;
+export default Neo4J;

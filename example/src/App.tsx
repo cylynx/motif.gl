@@ -11,8 +11,8 @@ import Motif, {
   ImportTabs,
 } from 'motif.gl';
 import { Provider } from 'react-redux';
-import Query from './Query';
-import QueryNeo4j from './QueryNeo4j';
+import BankingAPI from './containers/BankingAPI';
+import Neo4J from './containers/Neo4J';
 import store from './redux-store';
 import 'motif.gl/dist/index.css';
 
@@ -32,12 +32,12 @@ const App = () => {
       {
         title: 'Neo4j',
         key: 'neo4j',
-        component: <QueryNeo4j driver={driver} setDriver={setDriver} />,
+        component: <Neo4J driver={driver} setDriver={setDriver} />,
       },
       {
         title: 'Banking API',
         key: 'banking-api',
-        component: <Query />,
+        component: <BankingAPI />,
       },
     ];
   }, [driver, setDriver]);

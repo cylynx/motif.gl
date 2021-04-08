@@ -1,10 +1,9 @@
 import React, { useState, Fragment } from 'react';
 import { useDispatch } from 'react-redux';
-import { Button } from 'baseui/button';
+import { Button, KIND, SIZE } from 'baseui/button';
 import { Block } from 'baseui/block';
-import { GraphThunks, UISlices } from 'motif.gl';
-import { NestedForm, genNestedForm } from './form';
-import { queryForm } from './queryForm';
+import { GraphThunks, NestedForm, genNestedForm } from 'motif.gl';
+import { queryForm } from '../../constants/queryForm';
 
 const ENDPOINT = 'https://banking-demo.cylynx.io/api/';
 
@@ -12,7 +11,7 @@ const DEFAULT_QUERY_SETTINGS = {
   query: { id: 'customers', customer: '', risk_category: 'high' },
 };
 
-const ImportFromAPI = () => {
+const BankingAPI = () => {
   const dispatch = useDispatch();
 
   const [queryOptions, setQueryOptions] = useState(DEFAULT_QUERY_SETTINGS);
@@ -35,7 +34,6 @@ const ImportFromAPI = () => {
       .then((response) => response.json())
       .then((data) => {
         dispatch(GraphThunks.importSampleData(data));
-        dispatch(UISlices.closeModal());
       });
   };
 
@@ -45,12 +43,20 @@ const ImportFromAPI = () => {
         <NestedForm
           data={genNestedForm(queryForm, queryOptions, updateQueryOption)}
         />
-        <Block marginTop='10px' display='flex' justifyContent='flex-end'>
-          <Button type='submit'>Import Data</Button>
+
+        <Block position='absolute' bottom='scale300' right='0'>
+          <Button
+            type='submit'
+            disabled={false}
+            kind={KIND.primary}
+            size={SIZE.compact}
+          >
+            Import
+          </Button>
         </Block>
       </form>
     </Fragment>
   );
 };
 
-export default ImportFromAPI;
+export default BankingAPI;

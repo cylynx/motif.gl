@@ -10,3 +10,4 @@ export * from './theme';
 export * from './utils/utils';
 export * from './redux';
 export * from './containers/ImportWizardModal';
+export * from './components/form';
