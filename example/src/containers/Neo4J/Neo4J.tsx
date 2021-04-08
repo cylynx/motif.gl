@@ -1,33 +1,36 @@
-// @ts-nocheck
-import React, { useState, useContext, Fragment } from 'react';
+import React, {
+  useState,
+  useContext,
+  Fragment,
+  FC,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import { useDispatch } from 'react-redux';
 import { Button } from 'baseui/button';
 import { Block } from 'baseui/block';
-import { Select } from 'baseui/select';
-import { LabelMedium } from 'baseui/typography';
+import { Select, Value } from 'baseui/select';
 import { FormControl } from 'baseui/form-control';
 import { Textarea } from 'baseui/textarea';
-import {
-  GraphThunks,
-  UISlices,
-  UIThunks,
-  SimpleForm,
-  genSimpleForm,
-} from 'motif.gl';
-import Neo4j from 'neo4j-driver';
+// @ts-ignore
+import { GraphThunks, UIThunks, SimpleForm, genSimpleForm } from 'motif.gl';
 import {
   Neo4jProvider,
   Neo4jContext,
   createDriver,
   useDatabases,
 } from 'use-neo4j';
+import { QueryResult } from 'neo4j-driver/types/result';
+import Record from 'neo4j-driver/types/record';
+import { Driver } from 'neo4j-driver/types/driver';
 import {
   neo4jHost,
   neo4jPort,
   neo4jUsername,
   neo4jPassword,
 } from '../../constants/queryForm';
-import { buildEdge, buildNode } from './utils';
+import { toMotifFormat } from './utils';
+import { Neo4jContextState } from 'use-neo4j/dist/neo4j.context';
 
 const DEFAULT_DB_SETTINGS = {
   neo4jHost: 'localhost',
@@ -36,53 +39,11 @@ const DEFAULT_DB_SETTINGS = {
   neo4jPassword: '',
 };
 
-/* Adapted from https://github.com/neo4j-contrib/neovis.js/blob/master/src/neovis.js */
-const toMotifFormat = (records: any) => {
-  let nodes = [];
-  let edges = [];
-  records.forEach((record) => {
-    Object.values(record.toObject()).map(async (v) => {
-      if (v instanceof Neo4j.types.Node) {
-        let node = buildNode(v);
-        try {
-          nodes.push(node);
-        } catch (e) {
-          console.log(e, 'error');
-        }
-      } else if (v instanceof Neo4j.types.Relationship) {
-        let edge = buildEdge(v);
-        edges.push(edge);
-      } else if (v instanceof Neo4j.types.Path) {
-        let startNode = buildNode(v.start);
-        let endNode = buildNode(v.end);
-
-        nodes.push(startNode);
-        nodes.push(endNode);
-
-        for (let obj of v.segments) {
-          nodes.push(buildNode(obj.start));
-          nodes.push(buildNode(obj.end));
-          edges.push(buildEdge(obj.relationship));
-        }
-      } else if (v instanceof Array) {
-        for (let obj of v) {
-          if (obj instanceof Neo4j.types.Node) {
-            let node = buildNode(obj);
-            nodes.push(node);
-          } else if (obj instanceof Neo4j.types.Relationship) {
-            let edge = buildEdge(obj);
-            edges.push(edge);
-          }
-        }
-      } else {
-        console.log('Invalid format');
-      }
-    });
-  });
-  return { nodes, edges };
+type Neo4JProps = {
+  driver: Driver;
+  setDriver: Dispatch<SetStateAction<Driver>>;
 };
-
-const Neo4J = ({ driver, setDriver }) => {
+const Neo4J: FC<Neo4JProps> = ({ driver, setDriver }) => {
   const dispatch = useDispatch();
   const [dbSettings, setDbSettings] = useState(DEFAULT_DB_SETTINGS);
 
@@ -94,14 +55,14 @@ const Neo4J = ({ driver, setDriver }) => {
 
   const onConnectDb = (e: React.FormEvent) => {
     e.preventDefault();
-    const driver = createDriver(
+    const connectionDriver: Driver = createDriver(
       'bolt',
       dbSettings.neo4jHost,
       dbSettings.neo4jPort,
       dbSettings.neo4jUsername,
       dbSettings.neo4jPassword,
     );
-    driver
+    connectionDriver
       .verifyConnectivity()
       .then(() => {
         setDriver(driver);
@@ -118,7 +79,7 @@ const Neo4J = ({ driver, setDriver }) => {
       )}
       {!driver && (
         <form onSubmit={onConnectDb}>
-          <Block display='flex' flexDirection='' width='100%' gridGap='18px'>
+          <Block display='flex' width='100%' gridGap='18px'>
             <Block flex={1}>
               <SimpleForm
                 data={genSimpleForm(neo4jHost, dbSettings, updateQueryOption)}
@@ -155,10 +116,10 @@ const Neo4J = ({ driver, setDriver }) => {
 
 const CypherQuery = () => {
   const dispatch = useDispatch();
-  const { driver } = useContext(Neo4jContext);
+  const { driver } = useContext(Neo4jContext) as Neo4jContextState;
   const { loading, databases } = useDatabases();
   const [query, setQuery] = React.useState(`MATCH (n) RETURN n LIMIT 3`);
-  const [queryDb, setQueryDb] = React.useState('');
+  const [queryDb, setQueryDb] = React.useState<Value>([]);
   const [error, setError] = React.useState('');
 
   const dbOptions = databases?.map((x) => {
@@ -167,16 +128,15 @@ const CypherQuery = () => {
 
   const onQueryData = (e: React.FormEvent) => {
     e.preventDefault();
-    driver
-      .session({ database: queryDb[0].id })
+    (driver as Driver)
+      .session({ database: queryDb[0].id as string })
       .run(query)
-      .then((res) => {
-        const { nodes, edges } = toMotifFormat(res.records);
+      .then((res: QueryResult) => {
+        const { nodes, edges } = toMotifFormat(res.records as Record[]);
         return { nodes, edges };
       })
       .then((data) => {
-        dispatch(GraphThunks.importSingleJsonData({ data, type: 'json' }));
-        dispatch(UISlices.closeModal());
+        dispatch(GraphThunks.importSampleData(data));
       })
       .catch((error) => setError(error.message));
   };
@@ -210,7 +170,7 @@ const CypherQuery = () => {
             />
           </FormControl>
           <Block display='flex' width='100%' justifyContent='space-between'>
-            <LabelMedium color='positive'>{`Successfully connected to ${driver._address._host} as ${driver._authToken.principal}`}</LabelMedium>
+            {/*<LabelMedium color='positive'>{`Successfully connected to ${driver._address._host} as ${driver._authToken.principal}`}</LabelMedium>*/}
             <Button type='submit'>Import Data</Button>
           </Block>
         </>

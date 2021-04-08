@@ -19,7 +19,7 @@ import 'motif.gl/dist/index.css';
 const engine = new Styletron();
 
 const App = () => {
-  const [driver, setDriver] = useState(false);
+  const [driver, setDriver] = useState(null);
 
   const tabOverrides: ImportTabs[] = useMemo(() => {
     return [
