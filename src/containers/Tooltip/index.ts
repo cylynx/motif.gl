@@ -1,4 +1,5 @@
-import Tooltip from './Tooltip';
+import Tooltip, { TooltipProps } from './Tooltip';
 
-export type { TooltipProps } from "./Tooltip";
+// eslint-disable-next-line prettier/prettier
+export type { TooltipProps };
 export default Tooltip;
