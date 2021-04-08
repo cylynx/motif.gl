@@ -34,7 +34,7 @@ const ImportFromAPI = () => {
     fetch(querypath)
       .then((response) => response.json())
       .then((data) => {
-        dispatch(GraphThunks.importSingleJsonData({ data, type: 'json' }));
+        dispatch(GraphThunks.importSampleData(data));
         dispatch(UISlices.closeModal());
       });
   };
