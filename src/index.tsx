@@ -6,6 +6,7 @@ import investigateReducer from './redux';
 export default Motif;
 export { investigateReducer, Tooltip };
 
+export * from './containers/ImportWizard';
 export * from './theme';
 export * from './utils/utils';
 export * from './redux';
