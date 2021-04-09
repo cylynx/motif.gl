@@ -152,7 +152,7 @@ export const processJson = async (
     };
   }
   throw new Error(
-    'process Json Data Failed: Json must contain both nodes & edges object',
+    'Process JSON Data Failed: Json must contain both nodes & edges object',
   );
 };
 

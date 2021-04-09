@@ -175,16 +175,16 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
         </Block>
         {data[watchSelection[0].id] &&
           data[watchSelection[0].id].map((d: any) => {
-            const { id, label, type, value, ...rest } = d;
+            const { id, label, kind, value, ...rest } = d;
             let parsedValue =
               // eslint-disable-next-line no-nested-ternary
-              type === 'select' || type === 'batchSelect'
+              kind === 'select' || kind === 'batchSelect'
                 ? d.options.find((x: any) => x.id === value)
                   ? [d.options.find((x: any) => x.id === value)]
                   : []
                 : value;
             parsedValue =
-              type === 'slider' && !Array.isArray(value)
+              kind === 'slider' && !Array.isArray(value)
                 ? [value]
                 : parsedValue;
             return (
@@ -211,7 +211,7 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
                   // eslint-disable-next-line no-shadow
                   render={({ value, onChange }) => {
                     let component;
-                    if (type === 'select') {
+                    if (kind === 'select') {
                       component = (
                         <Select
                           onChange={(params) =>
@@ -228,7 +228,7 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
                         />
                       );
                     }
-                    if (type === 'batchSelect') {
+                    if (kind === 'batchSelect') {
                       component = (
                         <BatchSingleSelect
                           onChange={(params) => {
@@ -248,7 +248,7 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
                         />
                       );
                     }
-                    if (type === 'input') {
+                    if (kind === 'input') {
                       component = (
                         <Input
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -260,7 +260,7 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
                         />
                       );
                     }
-                    if (type === 'slider') {
+                    if (kind === 'slider') {
                       component = (
                         <Slider
                           // eslint-disable-next-line no-shadow

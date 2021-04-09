@@ -1,16 +1,24 @@
 import React, { FC, useMemo, useState } from 'react';
 import { Block } from 'baseui/block';
 import { LabelXSmall } from 'baseui/typography';
-import { GraphAttribute } from '../../../../../redux/graph';
-import TableTabs, { TableTabItem } from '../../../../../components/TableTabs';
-import useFileContents from '../../hooks/useFileContents';
-import TablePreview from '../../../../../components/TablePreview/TablePreview';
+import {
+  GraphAttribute,
+  TableTabs,
+  TableTabItem,
+  TablePreview,
+  GraphData,
+} from 'motif.gl';
 
-type DataPreviewProps = { isEdgeGroupable: boolean; dataType: string };
-const DataPreview: FC<DataPreviewProps> = ({ isEdgeGroupable, dataType }) => {
-  const {
-    fileUpload: { dataPreview },
-  } = useFileContents();
+type DataPreviewProps = {
+  isEdgeGroupable: boolean;
+  dataType: string;
+  graphData: GraphData;
+};
+const DataPreview: FC<DataPreviewProps> = ({
+  isEdgeGroupable,
+  dataType,
+  graphData,
+}) => {
   const defaultTab: GraphAttribute = useMemo(() => {
     if (dataType === 'edgeListCsv') {
       return 'edges';
@@ -53,9 +61,10 @@ const DataPreview: FC<DataPreviewProps> = ({ isEdgeGroupable, dataType }) => {
       </Block>
       <Block marginTop='scale300'>
         <TablePreview
+          maxHeight={`calc(100% - ${isEdgeGroupable ? '306px' : '215px'})`}
           isEdgeGroupable={isEdgeGroupable}
           activeTab={activeTab}
-          graphData={dataPreview}
+          graphData={graphData}
         />
       </Block>
     </Block>

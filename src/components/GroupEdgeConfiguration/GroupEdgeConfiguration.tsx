@@ -1,10 +1,10 @@
 import React, { ChangeEvent, FC } from 'react';
-import { Block } from 'baseui/block';
-import { ParagraphSmall } from 'baseui/typography';
 import { Controller, ControllerRenderProps } from 'react-hook-form';
 import { Checkbox, LABEL_PLACEMENT, STYLE_TYPE } from 'baseui/checkbox';
+import { Block } from 'baseui/block';
 import { Theme } from 'baseui/theme';
-import * as Icons from '../../../../components/Icons';
+import { ParagraphSmall } from 'baseui/typography';
+import * as Icons from '../Icons';
 
 type GroupEdgeConfigurationProps = { control: any };
 const GroupEdgeConfiguration: FC<GroupEdgeConfigurationProps> = ({
@@ -76,5 +76,4 @@ const GroupEdgeConfiguration: FC<GroupEdgeConfigurationProps> = ({
     </Block>
   );
 };
-
 export default GroupEdgeConfiguration;

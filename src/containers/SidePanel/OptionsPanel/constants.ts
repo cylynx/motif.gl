@@ -17,7 +17,7 @@ export const layoutForm: NestedFormData = {
     {
       id: 'rankSep',
       label: 'Vertical Spacing',
-      type: 'slider',
+      kind: 'slider',
       value: LAYOUT.DAGRE_DEFAULT.rankSep,
       min: 1,
       max: 500,
@@ -25,7 +25,7 @@ export const layoutForm: NestedFormData = {
     {
       id: 'nodeSep',
       label: 'Horizontal Spacing',
-      type: 'slider',
+      kind: 'slider',
       value: LAYOUT.DAGRE_DEFAULT.nodeSep,
       min: 1,
       max: 500,
@@ -33,7 +33,7 @@ export const layoutForm: NestedFormData = {
     {
       id: 'rankdir',
       label: 'Direction',
-      type: 'select',
+      kind: 'select',
       value: 'TB',
       options: [
         { id: 'TB', label: 'Top to Bottom' },
@@ -47,7 +47,7 @@ export const layoutForm: NestedFormData = {
     {
       id: 'startRadius',
       label: 'Start Radius',
-      type: 'slider',
+      kind: 'slider',
       value: LAYOUT.CIRCLE_DEFAULT.startRadius,
       min: 10,
       max: 500,
@@ -55,7 +55,7 @@ export const layoutForm: NestedFormData = {
     {
       id: 'endRadius',
       label: 'End Radius',
-      type: 'slider',
+      kind: 'slider',
       value: LAYOUT.CIRCLE_DEFAULT.endRadius,
       min: 0,
       max: 500,
@@ -63,7 +63,7 @@ export const layoutForm: NestedFormData = {
     {
       id: 'angleRatio',
       label: 'Angle',
-      type: 'slider',
+      kind: 'slider',
       value: LAYOUT.CIRCLE_DEFAULT.angleRatio,
       min: 0.1,
       max: 1,
@@ -72,7 +72,7 @@ export const layoutForm: NestedFormData = {
     {
       id: 'divisions',
       label: 'Divisions',
-      type: 'slider',
+      kind: 'slider',
       value: LAYOUT.CIRCLE_DEFAULT.divisions,
       min: 1,
       max: 10,
@@ -83,7 +83,7 @@ export const layoutForm: NestedFormData = {
     {
       id: 'minNodeSpacing',
       label: 'Node Spacing',
-      type: 'slider',
+      kind: 'slider',
       value: LAYOUT.CONCENTRIC_DEFAULT.minNodeSpacing,
       min: 1,
       max: 100,
@@ -91,7 +91,7 @@ export const layoutForm: NestedFormData = {
     {
       id: 'sortBy',
       label: 'Sort By',
-      type: 'select',
+      kind: 'select',
       value: 'degree',
       options: [{ id: 'degree', label: 'degree' }],
     },
@@ -101,7 +101,7 @@ export const layoutForm: NestedFormData = {
     {
       id: 'gravity',
       label: 'Gravity',
-      type: 'slider',
+      kind: 'slider',
       value: LAYOUT.FRUCHTERMAN_DEFAULT.gravity,
       min: 1,
       max: 100,
@@ -110,7 +110,7 @@ export const layoutForm: NestedFormData = {
     {
       id: 'clusterGravity',
       label: 'Cluster Gravity',
-      type: 'slider',
+      kind: 'slider',
       value: LAYOUT.FRUCHTERMAN_DEFAULT.clusterGravity,
       min: 1,
       max: 100,
@@ -121,7 +121,7 @@ export const layoutForm: NestedFormData = {
     {
       id: 'rows',
       label: 'No. of Rows',
-      type: 'slider',
+      kind: 'slider',
       value: LAYOUT.GRID_DEFAULT.rows,
       min: 1,
       max: 10,
@@ -129,7 +129,7 @@ export const layoutForm: NestedFormData = {
     {
       id: 'sortBy',
       label: 'Sort By',
-      type: 'select',
+      kind: 'select',
       value: 'degree',
       options: [{ id: 'degree', label: 'degree' }],
     },
@@ -138,7 +138,7 @@ export const layoutForm: NestedFormData = {
     {
       id: 'unitRadius',
       label: 'Radius',
-      type: 'slider',
+      kind: 'slider',
       value: LAYOUT.RADIAL_DEFAULT.unitRadius,
       min: 1,
       max: 500,
@@ -146,7 +146,7 @@ export const layoutForm: NestedFormData = {
     {
       id: 'linkDistance',
       label: 'Node Spacing',
-      type: 'slider',
+      kind: 'slider',
       value: LAYOUT.RADIAL_DEFAULT.linkDistance,
       min: 1,
       max: 500,
@@ -154,7 +154,7 @@ export const layoutForm: NestedFormData = {
     {
       id: 'focusNode',
       label: 'Focus Node',
-      type: 'batchSelect',
+      kind: 'batchSelect',
       value: '',
       options: [{ id: '', label: '' }],
       labelKey: 'label',
@@ -178,7 +178,7 @@ export const nodeSizeForm: NestedFormData = {
     {
       id: 'value',
       label: 'Size',
-      type: 'slider',
+      kind: 'slider',
       value: DEFAULT_NODE_STYLE.keyshape.size,
       min: 1,
       max: 100,
@@ -188,7 +188,7 @@ export const nodeSizeForm: NestedFormData = {
     {
       id: 'range',
       label: 'Scaling range (min - max)',
-      type: 'slider',
+      kind: 'slider',
       value: [15, 30],
       min: 1,
       max: 50,
@@ -198,7 +198,7 @@ export const nodeSizeForm: NestedFormData = {
     {
       id: 'variable',
       label: 'Variable',
-      type: 'select',
+      kind: 'select',
       value: 'number',
       options: [
         { id: 'number', label: 'number' },
@@ -208,7 +208,7 @@ export const nodeSizeForm: NestedFormData = {
     {
       id: 'range',
       label: 'Scaling range (min - max)',
-      type: 'slider',
+      kind: 'slider',
       value: [15, 30],
       min: 1,
       max: 50,
@@ -230,7 +230,7 @@ export const nodeColorForm: NestedFormData = {
     {
       id: 'value',
       label: 'Value',
-      type: 'select',
+      kind: 'select',
       value: 'teal',
       options: [
         { id: 'teal', label: 'Teal' },
@@ -244,7 +244,7 @@ export const nodeColorForm: NestedFormData = {
     {
       id: 'variable',
       label: 'Variable',
-      type: 'select',
+      kind: 'select',
       value: null,
       options: [],
     },
@@ -255,7 +255,7 @@ export const nodeFontSizeForm: SimpleFormData = {
   id: 'fontSize',
   label: 'Font Size',
   labelPosition: 'left',
-  type: 'slider',
+  kind: 'slider',
   value: 12,
   min: 0,
   max: 50,
@@ -266,7 +266,7 @@ export const nodeLabelForm: SimpleFormData = {
   id: 'label',
   label: 'Label',
   labelPosition: 'left',
-  type: 'select',
+  kind: 'select',
   value: '-',
   options: [{ id: '-', label: '-' }],
   callback: (data: any) => console.log(data),
@@ -286,7 +286,7 @@ export const edgeWidthForm: NestedFormData = {
     {
       id: 'value',
       label: 'Width',
-      type: 'slider',
+      kind: 'slider',
       value: DEFAULT_EDGE_STYLE.lineWidth,
       min: 1,
       max: 10,
@@ -297,7 +297,7 @@ export const edgeWidthForm: NestedFormData = {
     {
       id: 'variable',
       label: 'Variable',
-      type: 'select',
+      kind: 'select',
       value: 'number',
       options: [
         { id: 'number', label: 'number' },
@@ -307,7 +307,7 @@ export const edgeWidthForm: NestedFormData = {
     {
       id: 'range',
       label: 'Scaling range (min - max)',
-      type: 'slider',
+      kind: 'slider',
       value: [1, 5],
       min: 1,
       max: 10,
@@ -320,7 +320,7 @@ export const edgePatternForm: SimpleFormData = {
   id: 'pattern',
   label: 'Edge Pattern',
   labelPosition: 'left',
-  type: 'select',
+  kind: 'select',
   value: 'none',
   options: [
     { id: 'none', label: 'None' },
@@ -335,7 +335,7 @@ export const edgeFontSizeForm: SimpleFormData = {
   id: 'fontSize',
   label: 'Font Size',
   labelPosition: 'left',
-  type: 'slider',
+  kind: 'slider',
   value: 12,
   min: 0,
   max: 50,
@@ -346,7 +346,7 @@ export const edgeLabelForm: SimpleFormData = {
   id: 'label',
   label: 'Label',
   labelPosition: 'left',
-  type: 'select',
+  kind: 'select',
   value: '-',
   options: [{ id: '-', label: '-' }],
   callback: (data: any) => console.log(data),
@@ -356,7 +356,7 @@ export const edgeArrowForm: SimpleFormData = {
   id: 'arrow',
   label: 'Arrow',
   labelPosition: 'left',
-  type: 'select',
+  kind: 'select',
   value: 'display',
   options: [
     { id: 'none', label: 'None' },
