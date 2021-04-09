@@ -28,7 +28,8 @@ const ItemResults: FC = () => {
   const {
     centerCanvas,
     clearNodeHoverState,
-    centerItem,
+    centerNode,
+    centerEdge,
     clearEdgeHoverState,
   } = useGraphBehaviors(graph);
 
@@ -41,8 +42,7 @@ const ItemResults: FC = () => {
     graph.setAutoPaint(false);
 
     graph.setItemState(node, 'hover', true);
-    centerCanvas();
-    centerItem(node);
+    centerNode(node);
     graph.paint();
     graph.setAutoPaint(true);
   };
@@ -61,8 +61,7 @@ const ItemResults: FC = () => {
     graph.setItemState(edge, 'hover', true);
     graph.setItemState(sourceNode, 'hover', true);
     graph.setItemState(targetNode, 'hover', true);
-    centerCanvas();
-    centerItem(edge);
+    centerEdge(edge);
     graph.paint();
     graph.setAutoPaint(true);
   };

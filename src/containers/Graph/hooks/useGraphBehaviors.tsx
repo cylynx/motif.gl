@@ -97,17 +97,13 @@ const useGraphBehaviors = (graph: IGraph) => {
     });
   };
 
-  const centerItem = (item: INode | IEdge) => {
-    const viewCenter = getViewCenterPoint();
+  const centerNode = (node: INode) => {
+    graph.fitCenter();
+    graph.focusItem(node, false);
+  };
 
-    if (graph.getZoom() <= 0.75) {
-      graph.zoomTo(1.0, viewCenter);
-    }
-
-    const itemBBox = item.getCanvasBBox();
-    const dx = (viewCenter.x - itemBBox.centerX) * graph.getZoom();
-    const dy = (viewCenter.y - itemBBox.centerY) * graph.getZoom();
-    graph.translate(dx, dy);
+  const centerEdge = (edge: IEdge) => {
+    graph.focusItem(edge.getSource(), false);
   };
 
   return {
@@ -120,7 +116,8 @@ const useGraphBehaviors = (graph: IGraph) => {
     clearEdgeHoverState,
     clearNodeSelectedState,
     clearEdgeSelectedState,
-    centerItem,
+    centerNode,
+    centerEdge
   };
 };
 
