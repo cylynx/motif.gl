@@ -18,7 +18,7 @@ import BatchSingleSelect from '../../../../../components/BatchSingleSelect';
 const SearchNode = () => {
   const { nodeOptions, searchNodes } = useGraphSearch();
   const { graph } = useContext(GraphRefContext);
-  const { centerCanvas, clearNodeHoverState, centerItem } = useGraphBehaviors(
+  const { centerCanvas, clearNodeHoverState, centerNode } = useGraphBehaviors(
     graph,
   );
 
@@ -53,7 +53,7 @@ const SearchNode = () => {
     clearNodeHoverState();
     setNodeToHoverState(node);
     centerCanvas();
-    centerItem(node);
+    centerNode(node);
     graph.paint();
     graph.setAutoPaint(true);
   };
