@@ -1,23 +1,22 @@
 import React, { FC, useMemo } from 'react';
+import { flatten, isObject, uniq } from 'lodash';
 import { Table } from 'baseui/table-semantic';
 import { Theme } from 'baseui/theme';
-import { uniq, flatten, isObject } from 'lodash';
-import useFileContent from '../../hooks/useFileContents';
-import { EdgeNode, GraphAttribute } from '../../../../../redux/graph';
+import { EdgeNode, GraphAttribute, GraphData } from '../../redux/graph';
 
 type TablePreviewProps = {
   isEdgeGroupable: boolean;
   activeTab: GraphAttribute;
+  graphData: GraphData;
 };
 const TablePreview: FC<TablePreviewProps> = ({
   activeTab,
   isEdgeGroupable = false,
+  graphData = { nodes: [], edges: [] },
 }) => {
-  const { fileUpload } = useFileContent();
-
   const graphAttributeData: EdgeNode[] = useMemo(() => {
-    return fileUpload.dataPreview[activeTab] ?? [];
-  }, [fileUpload.dataPreview, activeTab]);
+    return graphData[activeTab] ?? [];
+  }, [graphData, activeTab]);
 
   const columns: string[] = useMemo(() => {
     if (graphAttributeData.length === 0) return [];
@@ -98,5 +97,4 @@ const TablePreview: FC<TablePreviewProps> = ({
     />
   );
 };
-
 export default TablePreview;

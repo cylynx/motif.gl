@@ -3,6 +3,12 @@ import Tooltip from './containers/Tooltip';
 
 import investigateReducer from './redux';
 
+import ProgressStepper from './components/ProgressStepper';
+import FormSelectWithTooltip from './components/FormSelectWithTooltip';
+import TablePreview from './components/TablePreview';
+
+export { ProgressStepper, FormSelectWithTooltip, TablePreview };
+
 export default Motif;
 export { investigateReducer, Tooltip };
 

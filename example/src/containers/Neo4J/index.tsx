@@ -1,3 +1,3 @@
-import Neo4J from './Neo4J';
+import OldNeo4j from './OldNeo4j';
 
-export default Neo4J;
+export default OldNeo4j;

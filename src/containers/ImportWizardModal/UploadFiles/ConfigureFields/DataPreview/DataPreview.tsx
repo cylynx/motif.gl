@@ -1,83 +1,16 @@
 import React, { FC, useMemo, useState } from 'react';
 import { Block } from 'baseui/block';
 import { LabelXSmall } from 'baseui/typography';
-import { styled } from 'baseui';
-import { Theme } from 'baseui/theme';
 import { GraphAttribute } from '../../../../../redux/graph';
-import TablePreview from './TablePreview';
-
-type TableTabProps = { $theme?: Theme; $isActive: boolean };
-const TableTab = styled('div', ({ $theme, $isActive }: TableTabProps) => {
-  const {
-    backgroundPrimary,
-    backgroundSecondary,
-    contentPrimary,
-    mono200,
-  } = $theme.colors;
-  const { scale0 } = $theme.sizing;
-  return {
-    paddingTop: $theme.sizing.scale300,
-    paddingBottom: $theme.sizing.scale300,
-    paddingLeft: $theme.sizing.scale500,
-    paddingRight: $theme.sizing.scale500,
-    color: contentPrimary,
-    backgroundColor: $isActive ? backgroundSecondary : backgroundPrimary,
-    borderWidth: $isActive ? scale0 : '2px',
-    borderColor: $isActive ? contentPrimary : 'transparent',
-    borderStyle: 'solid',
-    ...$theme.typography.LabelSmall,
-    ':hover': {
-      backgroundColor: mono200,
-      cursor: 'pointer',
-    },
-  };
-});
-
-type TableTabItem = { key: GraphAttribute; label: string };
-type TableTabsProps = {
-  items: TableTabItem[];
-  activeKey: GraphAttribute;
-  onClick: (targetKey: GraphAttribute) => void;
-};
-const TableTabs: FC<TableTabsProps> = ({ items, activeKey, onClick }) => {
-  const isTabActive = (
-    activeKey: GraphAttribute,
-    attribute: GraphAttribute,
-  ): boolean => activeKey === attribute;
-
-  return (
-    <Block
-      display='inline-flex'
-      backgroundColor='backgroundPrimary'
-      alignItems='center'
-      overrides={{
-        Block: {
-          style: ({ $theme }: { $theme: Theme }) => ({
-            borderWidth: '1px',
-            borderColor: $theme.colors.mono400,
-            borderStyle: 'solid',
-          }),
-        },
-      }}
-    >
-      {items.map((item) => {
-        const { key, label } = item;
-        return (
-          <TableTab
-            $isActive={isTabActive(activeKey, key)}
-            key={key}
-            onClick={() => onClick(key)}
-          >
-            {label}
-          </TableTab>
-        );
-      })}
-    </Block>
-  );
-};
+import TableTabs, { TableTabItem } from '../../../../../components/TableTabs';
+import useFileContents from '../../hooks/useFileContents';
+import TablePreview from '../../../../../components/TablePreview/TablePreview';
 
 type DataPreviewProps = { isEdgeGroupable: boolean; dataType: string };
 const DataPreview: FC<DataPreviewProps> = ({ isEdgeGroupable, dataType }) => {
+  const {
+    fileUpload: { dataPreview },
+  } = useFileContents();
   const defaultTab: GraphAttribute = useMemo(() => {
     if (dataType === 'edgeListCsv') {
       return 'edges';
@@ -119,7 +52,11 @@ const DataPreview: FC<DataPreviewProps> = ({ isEdgeGroupable, dataType }) => {
         />
       </Block>
       <Block marginTop='scale300'>
-        <TablePreview isEdgeGroupable={isEdgeGroupable} activeTab={activeTab} />
+        <TablePreview
+          isEdgeGroupable={isEdgeGroupable}
+          activeTab={activeTab}
+          graphData={dataPreview}
+        />
       </Block>
     </Block>
   );
