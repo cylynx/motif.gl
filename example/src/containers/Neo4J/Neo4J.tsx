@@ -10,7 +10,7 @@ const ThirdPage = () => <div>Third Page</div>;
 const Neo4J = () => {
   const [currentStep, setCurrentStep] = useState<number>(3);
   // @ts-ignore
-  const [driver, setDriver] = useState<Driver>(null);
+  const [driver, setDriver] = useState<Driver>({});
 
   const onStepChange = (step: number) => {
     setCurrentStep(step);

@@ -53,6 +53,8 @@ const OldNeo4j: FC<Neo4JProps> = ({ driver, setDriver }) => {
     });
   };
 
+  console.log(driver);
+
   const onConnectDb = (e: React.FormEvent) => {
     e.preventDefault();
     const connectionDriver: Driver = createDriver(

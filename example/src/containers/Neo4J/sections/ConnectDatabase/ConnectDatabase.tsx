@@ -1,10 +1,8 @@
 import React, { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
 import { Block } from 'baseui/block';
-import { Notification } from 'baseui/notification';
 import { Driver } from 'neo4j-driver/types/driver';
 import { createDriver } from 'use-neo4j';
-import { useDispatch } from 'react-redux';
-import { UIThunks, SimpleForm, genSimpleForm } from 'motif.gl';
+import { SimpleForm, genSimpleForm } from 'motif.gl';
 import {
   neo4jHost,
   neo4jPassword,
@@ -12,6 +10,8 @@ import {
   neo4jUsername,
 } from '../../../../constants/queryForm';
 import { Button } from 'baseui/button';
+import { TNotification } from './types';
+import BaseNotification from '../../../../components/BaseNotification';
 
 const DEFAULT_DB_SETTINGS = {
   neo4jHost: 'localhost',
@@ -25,8 +25,9 @@ type ConnectDatabaseProps = {
   setDriver: Dispatch<SetStateAction<Driver>>;
 };
 const ConnectDatabase: FC<ConnectDatabaseProps> = ({ driver, setDriver }) => {
-  const dispatch = useDispatch();
   const [dbSettings, setDbSettings] = useState(DEFAULT_DB_SETTINGS);
+  const [isLoading, setIsLoading] = useState(false);
+  const [notification, setNotification] = useState<TNotification>({});
 
   const updateQueryOption = (data: any) => {
     setDbSettings((state) => {
@@ -43,12 +44,28 @@ const ConnectDatabase: FC<ConnectDatabaseProps> = ({ driver, setDriver }) => {
       dbSettings.neo4jUsername,
       dbSettings.neo4jPassword,
     );
+
+    setIsLoading(true);
+
     connectionDriver
       .verifyConnectivity()
       .then(() => {
-        setDriver(driver);
+        setDriver(connectionDriver);
+
+        setNotification({
+          kind: 'positive',
+          children: <Block as='span'>Connected</Block>,
+        });
       })
-      .catch((err) => dispatch(UIThunks.show(err.message, 'negative')));
+      .catch((err) => {
+        setNotification({
+          kind: 'negative',
+          children: <Block as='span'>{err.message}</Block>,
+        });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const isFormDisabled = useMemo(() => {
@@ -58,6 +75,10 @@ const ConnectDatabase: FC<ConnectDatabaseProps> = ({ driver, setDriver }) => {
 
     return isValueEmpty;
   }, [dbSettings]);
+
+  const isContinueDisabled = useMemo(() => {
+    return Object.keys(driver).length === 0;
+  }, [driver]);
 
   return (
     <Block marginTop='scale600'>
@@ -87,6 +108,7 @@ const ConnectDatabase: FC<ConnectDatabaseProps> = ({ driver, setDriver }) => {
             type='submit'
             size='compact'
             disabled={isFormDisabled}
+            isLoading={isLoading}
             overrides={{
               BaseButton: {
                 style: {
@@ -99,42 +121,19 @@ const ConnectDatabase: FC<ConnectDatabaseProps> = ({ driver, setDriver }) => {
           </Button>
         </Block>
       </form>
-      <Block marginTop='scale600'>
-        <Notification
-          kind='negative'
-          closeable
-          overrides={{
-            Body: {
-              style: {
-                width: '96%',
-              },
-            },
-          }}
-        >
-          This is a notification
-        </Notification>
-      </Block>
 
-      <Block marginTop='scale600'>
-        <Notification
-          kind='positive'
-          closeable
-          overrides={{
-            Body: {
-              style: {
-                width: '96%',
-              },
-            },
-          }}
-        >
-          This is a notification
-        </Notification>
-      </Block>
+      {Object.keys(notification).length !== 0 && (
+        <Block marginTop='scale600'>
+          <BaseNotification kind={notification.kind}>
+            {notification.children}
+          </BaseNotification>
+        </Block>
+      )}
 
       <Block position='absolute' bottom='scale300' right='0'>
         <Button
           type='submit'
-          disabled={true}
+          disabled={isContinueDisabled}
           kind='primary'
           size='compact'
           overrides={{
