@@ -14,35 +14,6 @@ What kind of change does this PR introduce?
 
 Describe the proposed change introduced, remove where unapplicable.
 
-### Bug Fixed
-
-Describe the bug fixes introduced.
-
-Example:
-
-1. Fix button not disable while field is empty.
-2. Implement exception handling on specific process to handle runtime errors.
-
-### Features
-
-Describe the chracteristics of the new feature introduced.
-
-Example:
-
-1. Left Click on Nodes should display tooltip in the canvas based on the position of mouse pointer.
-2. The tooltip should display the node's metadata based on the Node Selection's preferences.
-
-### Enhancement
-
-Describe the enhancement introduced.
-
-Example:
-
-1. Upgrade specific npm version from 3.0x to 4.0x.
-2. Remove unnecessary heavy computation from several processes.
-3. Add validations on various inputs to prevent unexpected output.
-4. Improve test executions by modify specific option configuration file.
-
 ## Detailed Description
 
 Provide a detailed description or motivation on the proposed changes, how does the introduce changes able to
