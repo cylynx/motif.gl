@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
 import { BaseProvider } from 'baseui';
@@ -12,15 +12,13 @@ import Motif, {
 } from 'motif.gl';
 import { Provider } from 'react-redux';
 import BankingAPI from './containers/BankingAPI';
-import OldNeo4j from './containers/Neo4J';
 import store from './redux-store';
 import 'motif.gl/dist/index.css';
+import Neo4J from './containers/Neo4J';
 
 const engine = new Styletron();
 
 const App = () => {
-  const [driver, setDriver] = useState(null);
-
   const tabOverrides: ImportTabs[] = useMemo(() => {
     return [
       { title: 'File', key: 'file', component: <UploadFiles /> },
@@ -32,7 +30,7 @@ const App = () => {
       {
         title: 'Neo4j',
         key: 'neo4j',
-        component: <OldNeo4j driver={driver} setDriver={setDriver} />,
+        component: <Neo4J />,
       },
       {
         title: 'Banking API',
@@ -40,7 +38,7 @@ const App = () => {
         component: <BankingAPI />,
       },
     ];
-  }, [driver, setDriver]);
+  }, []);
 
   // @ts-ignore
   return (
