@@ -6,8 +6,8 @@ import { StepperItems } from '../../../../src/components/ProgressStepper';
 import ConnectDatabase from './sections/ConnectDatabase';
 import ExecuteQuery, { ExecuteQueryState } from './sections/ExecuteQuery';
 import { Value } from 'baseui/select';
+import ConfigureFields from './sections/ConfigureFields';
 
-const ThirdPage = () => <div>Third Page</div>;
 const Neo4J = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
   // @ts-ignore
@@ -80,7 +80,9 @@ const Neo4J = () => {
             onStateChange={onExecuteQueryChange}
           />
         )}
-        {currentStep === 3 && <ThirdPage />}
+        {currentStep === 3 && (
+          <ConfigureFields graphData={executeQuery.graphData} />
+        )}
       </Block>
     </Block>
   );

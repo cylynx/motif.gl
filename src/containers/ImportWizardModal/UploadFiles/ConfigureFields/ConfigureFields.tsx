@@ -8,7 +8,6 @@ import { Button, KIND, SIZE } from 'baseui/button';
 import { LabelMedium, ParagraphSmall } from 'baseui/typography';
 import { useSelector } from 'react-redux';
 import DataPreview from './DataPreview';
-import GroupEdgeConfiguration from './GroupEdgeConfiguration';
 import AccessorFields from './AccessorFields';
 
 import useFileContents from '../hooks/useFileContents';
@@ -23,6 +22,7 @@ import {
 import { JsonImport, TLoadFormat, GraphSlices } from '../../../../redux/graph';
 import ConfirmationModal from '../../../../components/ConfirmationModal';
 import { getGraph } from '../../../../redux/graph/selectors';
+import GroupEdgeConfiguration from '../../../../components/GroupEdgeConfiguration';
 
 const ConfigureFields = () => {
   const {

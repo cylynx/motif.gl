@@ -23,6 +23,7 @@ const CypherQuery: FC<CypherQueryProps> = ({
 }) => {
   const { driver } = useContext(Neo4jContext) as Neo4jContextState;
   const { loading, databases } = useDatabases();
+  const [isBtnLoading, setIsLoading] = useState(false);
   const [notification, setNotification] = useState<TNotification>({});
 
   const dbOptions = databases?.map((x) => {
@@ -47,6 +48,8 @@ const CypherQuery: FC<CypherQueryProps> = ({
       return;
     }
 
+    setIsLoading(true);
+
     (driver as Driver)
       .session({ database: db[0].id as string })
       .run(query)
@@ -65,12 +68,8 @@ const CypherQuery: FC<CypherQueryProps> = ({
           kind: 'positive',
           children: (
             <Block as='span'>
-              Imported <b>{nodeLength} Node(s)</b> and
-              <b>
-                {edgesLength}
-                Edge(s)
-              </b>
-              .
+              Imported <b>{nodeLength} Node(s)</b> and{' '}
+              <b>{edgesLength} Edge(s)</b>.
             </Block>
           ),
         });
@@ -84,6 +83,9 @@ const CypherQuery: FC<CypherQueryProps> = ({
           kind: 'negative',
           children: error.message,
         });
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -116,7 +118,8 @@ const CypherQuery: FC<CypherQueryProps> = ({
 
                   <Button
                     size='compact'
-                    disabled={isQueryBtnDisable}
+                    disabled={isBtnLoading ?? isQueryBtnDisable}
+                    isLoading={isBtnLoading}
                     type='submit'
                   >
                     Execute Query

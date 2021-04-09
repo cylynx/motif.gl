@@ -15,6 +15,7 @@
     "motif.gl": "file:..",
     "react": "file:../node_modules/react",
     "react-dom": "file:../node_modules/react-dom",
+    "react-hook-form": "file:../node_modules/react-hook-form",
     "react-scripts": "file:../node_modules/react-scripts",
     "styletron-engine-atomic": "file:../node_modules/styletron-engine-atomic",
     "styletron-react": "file:../node_modules/styletron-react",

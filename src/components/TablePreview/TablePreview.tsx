@@ -8,11 +8,13 @@ type TablePreviewProps = {
   isEdgeGroupable: boolean;
   activeTab: GraphAttribute;
   graphData: GraphData;
+  maxHeight?: string;
 };
 const TablePreview: FC<TablePreviewProps> = ({
   activeTab,
   isEdgeGroupable = false,
   graphData = { nodes: [], edges: [] },
+  maxHeight,
 }) => {
   const graphAttributeData: EdgeNode[] = useMemo(() => {
     return graphData[activeTab] ?? [];
@@ -56,7 +58,9 @@ const TablePreview: FC<TablePreviewProps> = ({
             position: 'absolute',
             width: '100%',
             height: 'auto',
-            maxHeight: `calc(100% - ${isEdgeGroupable ? '389px' : '295px'})`,
+            maxHeight:
+              maxHeight ??
+              `calc(100% - ${isEdgeGroupable ? '389px' : '295px'})`,
             '::-webkit-scrollbar': {
               height: $theme.sizing.scale100,
               width: $theme.sizing.scale100,

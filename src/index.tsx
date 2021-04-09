@@ -6,8 +6,17 @@ import investigateReducer from './redux';
 import ProgressStepper from './components/ProgressStepper';
 import FormSelectWithTooltip from './components/FormSelectWithTooltip';
 import TablePreview from './components/TablePreview';
+import TableTabs, { TableTabItem } from './components/TableTabs';
+import GroupEdgeConfiguration from './components/GroupEdgeConfiguration';
 
-export { ProgressStepper, FormSelectWithTooltip, TablePreview };
+export type { TableTabItem };
+export {
+  ProgressStepper,
+  FormSelectWithTooltip,
+  TablePreview,
+  TableTabs,
+  GroupEdgeConfiguration,
+};
 
 export default Motif;
 export { investigateReducer, Tooltip };

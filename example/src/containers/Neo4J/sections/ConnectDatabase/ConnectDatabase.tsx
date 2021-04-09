@@ -108,8 +108,12 @@ const ConnectDatabase: FC<ConnectDatabaseProps> = ({
   }, [dbSettings]);
 
   const isContinueDisabled = useMemo(() => {
+    if (isLoading) {
+      return true;
+    }
+
     return Object.keys(driver).length === 0;
-  }, [driver]);
+  }, [driver, isLoading]);
 
   return (
     <Block marginTop='scale600'>
@@ -138,7 +142,7 @@ const ConnectDatabase: FC<ConnectDatabaseProps> = ({
           <Button
             type='submit'
             size='compact'
-            disabled={isFormDisabled}
+            disabled={isLoading ?? isFormDisabled}
             isLoading={isLoading}
             overrides={{
               BaseButton: {
@@ -164,7 +168,7 @@ const ConnectDatabase: FC<ConnectDatabaseProps> = ({
       <Block position='absolute' bottom='scale300' right='0'>
         <Button
           type='button'
-          disabled={isContinueDisabled ?? isLoading}
+          disabled={isContinueDisabled}
           kind='primary'
           size='compact'
           onClick={() => nextStep()}
