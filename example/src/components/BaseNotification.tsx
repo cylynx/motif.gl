@@ -1,7 +1,7 @@
 import { Notification } from 'baseui/notification';
 import React, { FC } from 'react';
 
-export type BaseNotificationProps = { kind?: 'negative' | 'positive' };
+export type BaseNotificationProps = { kind?: 'negative' | 'positive' | 'info' };
 const BaseNotification: FC<BaseNotificationProps> = ({ kind, children }) => {
   return (
     <Notification

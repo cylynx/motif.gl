@@ -1,4 +1,11 @@
-import React, { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
+import React, {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { Block } from 'baseui/block';
 import { Driver } from 'neo4j-driver/types/driver';
 import { createDriver } from 'use-neo4j';
@@ -23,11 +30,31 @@ const DEFAULT_DB_SETTINGS = {
 type ConnectDatabaseProps = {
   driver: Driver;
   setDriver: Dispatch<SetStateAction<Driver>>;
+  nextStep: () => void;
 };
-const ConnectDatabase: FC<ConnectDatabaseProps> = ({ driver, setDriver }) => {
+const ConnectDatabase: FC<ConnectDatabaseProps> = ({
+  driver,
+  setDriver,
+  nextStep,
+}) => {
   const [dbSettings, setDbSettings] = useState(DEFAULT_DB_SETTINGS);
   const [isLoading, setIsLoading] = useState(false);
   const [notification, setNotification] = useState<TNotification>({});
+
+  useEffect(() => {
+    if (isContinueDisabled === false) {
+      const {
+        // @ts-ignore
+        _address: { _hostPort },
+      } = driver;
+      setNotification({
+        kind: 'info',
+        children: (
+          <Block as='span'>You are current connected to {_hostPort}</Block>
+        ),
+      });
+    }
+  }, []);
 
   const updateQueryOption = (data: any) => {
     setDbSettings((state) => {
@@ -136,6 +163,7 @@ const ConnectDatabase: FC<ConnectDatabaseProps> = ({ driver, setDriver }) => {
           disabled={isContinueDisabled}
           kind='primary'
           size='compact'
+          onClick={() => nextStep()}
           overrides={{
             BaseButton: {
               style: {

@@ -16,9 +16,11 @@ const Neo4J = () => {
     setCurrentStep(step);
   };
 
+  const nextStep = () => setCurrentStep((step) => step + 1);
+
   const stepperItems: StepperItems[] = useMemo(() => {
-    const isSecondStepDisabled = currentStep === 2;
-    const isThirdStepDisabled = currentStep === 3;
+    const isSecondStepDisabled = currentStep >= 2;
+    const isThirdStepDisabled = currentStep >= 3;
     return [
       {
         children: '1. Connect Database',
@@ -45,7 +47,11 @@ const Neo4J = () => {
 
       <Block>
         {currentStep === 1 && (
-          <ConnectDatabase driver={driver} setDriver={setDriver} />
+          <ConnectDatabase
+            driver={driver}
+            setDriver={setDriver}
+            nextStep={nextStep}
+          />
         )}
         {currentStep === 2 && <SecondPage />}
         {currentStep === 3 && <ThirdPage />}
