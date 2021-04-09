@@ -50,10 +50,14 @@ const ConnectDatabase: FC<ConnectDatabaseProps> = ({
       setNotification({
         kind: 'info',
         children: (
-          <Block as='span'>You are current connected to {_hostPort}</Block>
+          <Block as='span'>
+            You are currently connected to <b>{_hostPort}</b>
+          </Block>
         ),
       });
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateQueryOption = (data: any) => {
@@ -159,8 +163,8 @@ const ConnectDatabase: FC<ConnectDatabaseProps> = ({
 
       <Block position='absolute' bottom='scale300' right='0'>
         <Button
-          type='submit'
-          disabled={isContinueDisabled}
+          type='button'
+          disabled={isContinueDisabled ?? isLoading}
           kind='primary'
           size='compact'
           onClick={() => nextStep()}
