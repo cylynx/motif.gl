@@ -5,7 +5,7 @@ import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
 import { Select } from 'baseui/select';
 import { Input } from 'baseui/input';
-import { Slider } from 'baseui/slider';
+import { Slider } from '../ui';
 
 export type SimpleFormData = {
   id: string;
@@ -59,7 +59,7 @@ const cleanGetValues = (obj: any) => {
      max: 15,
      callback: (data) => console.log(data),
   };
- * @param {{ data: NestedFormData }} { data = testData }
+ * @param {{ data: SimpleFormData }} { data = testData }
  * @return {*}
  */
 const SimpleForm = ({ data }: { data: SimpleFormData }) => {
