@@ -1,17 +1,16 @@
 import React, { useMemo, useState } from 'react';
 import { Block } from 'baseui/block';
 import { ProgressStepper, GraphData } from 'motif.gl';
-import { Driver } from 'neo4j-driver/types/driver';
+
 import { StepperItems } from '../../../../src/components/ProgressStepper';
 import ConnectDatabase from './sections/ConnectDatabase';
 import ExecuteQuery, { ExecuteQueryState } from './sections/ExecuteQuery';
 import { Value } from 'baseui/select';
 import ConfigureFields from './sections/ConfigureFields';
 
-const Neo4J = () => {
+// @ts-ignore
+const Neo4J = ({driver, setDriver}) => {
   const [currentStep, setCurrentStep] = useState<number>(1);
-  // @ts-ignore
-  const [driver, setDriver] = useState<Driver>({});
 
   const [executeQuery, setExecuteQuery] = useState<ExecuteQueryState>({
     query: '',
@@ -38,7 +37,7 @@ const Neo4J = () => {
   };
 
   const stepperItems: StepperItems[] = useMemo(() => {
-    const isSecondStepDisabled = currentStep >= 2;
+    const isSecondStepDisabled = currentStep >= 2 || Object.keys(driver).length > 0;
     const isThirdStepDisabled = currentStep >= 3;
     return [
       {
@@ -54,7 +53,7 @@ const Neo4J = () => {
         disabled: isThirdStepDisabled,
       },
     ];
-  }, [currentStep]);
+  }, [currentStep, driver]);
 
   return (
     <Block>

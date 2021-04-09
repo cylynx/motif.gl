@@ -94,7 +94,7 @@ const CypherQuery: FC<CypherQueryProps> = ({
       <form onSubmit={onQueryData}>
         {!loading && databases && (
           <>
-            <FormControl label='Schema'>
+            <FormControl label='Database'>
               <Select
                 value={db}
                 options={dbOptions}
