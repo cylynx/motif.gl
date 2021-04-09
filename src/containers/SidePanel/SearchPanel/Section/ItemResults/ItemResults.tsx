@@ -26,7 +26,6 @@ const ItemResults: FC = () => {
 
   const { graph } = useContext(GraphRefContext);
   const {
-    centerCanvas,
     clearNodeHoverState,
     centerNode,
     centerEdge,
