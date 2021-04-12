@@ -4,9 +4,9 @@ import {
   GraphinContext,
   GraphinContextType,
   IG6GraphEvent,
+  IUserEdge,
 } from '@antv/graphin';
 import { useDispatch, useSelector } from 'react-redux';
-import { IUserEdge } from '@antv/graphin/lib/typings/type';
 import uniq from 'lodash/uniq';
 import { EdgeInformation, GraphSelectors, Node } from '../../../redux/graph';
 import {

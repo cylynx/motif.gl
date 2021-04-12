@@ -1,5 +1,5 @@
 import { Value } from 'baseui/select';
-import { IUserEdge, IUserNode } from '@antv/graphin/lib/typings/type';
+import { IUserEdge, IUserNode } from '@antv/graphin';
 import { SelectVariableOption } from '../../components/SelectVariable/SelectVariable';
 import { HistogramProp } from '../../containers/SidePanel/FilterPanel/FilterSelection/RangePlot';
 
