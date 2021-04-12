@@ -112,8 +112,9 @@ export const getLinearDomain = (
     typeof valueAccessor === 'function'
       ? extent(data, valueAccessor)
       : extent(data);
+
   // @ts-ignore
-  return range.map((d, i) => (d === undefined ? i : d));
+  return range.map((d, i) => (d === undefined ? i : Number(d)));
 };
 
 /**
