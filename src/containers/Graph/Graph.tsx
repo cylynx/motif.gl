@@ -45,7 +45,6 @@ const Graph = React.forwardRef<Graphin, GraphProps>(({ setTooltip }, ref) => {
       ref={ref}
       layout={layout}
       defaultNode={defaultNode}
-      // @ts-ignore
       defaultEdge={defaultEdge}
       nodeStateStyles={nodeStateStyles}
       edgeStateStyles={edgeStateStyles}

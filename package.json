@@ -60,7 +60,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
     "@antv/g6": "^4.1.7",
-    "@antv/graphin": "^2.0.1",
+    "@antv/graphin": "^2.0.6",
     "@reduxjs/toolkit": "^1.2.3",
     "d3-array": "^2.8.0",
     "d3-axis": "^2.0.0",

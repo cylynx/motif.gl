@@ -40,7 +40,7 @@ export const nodeStateStyles: { status: NodeStyle['status'] } = {
   },
 };
 
-export const defaultNode: { style: Partial<NodeStyle> } = {
+export const defaultNode: { style: NodeStyle } = {
   style: {
     badges: [],
     halo: {
@@ -71,7 +71,7 @@ export const edgeStateStyles: {
   },
 };
 
-export const defaultEdge: { style: Partial<EdgeStyle> } = {
+export const defaultEdge: { style: EdgeStyle } = {
   style: {
     halo: {
       lineWidth: DEFAULT_EDGE_STYLE.lineWidth + 1,
