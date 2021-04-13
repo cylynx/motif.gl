@@ -11,7 +11,7 @@
     "node": true
   },
   "parserOptions": {
-    "project": "./tsconfig.json",
+    "project": "./packages/motif/tsconfig.json",
     "ecmaVersion": 2020,
     "ecmaFeatures": {
       "legacyDecorators": true,
