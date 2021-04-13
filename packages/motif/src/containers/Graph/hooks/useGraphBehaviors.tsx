@@ -117,7 +117,7 @@ const useGraphBehaviors = (graph: IGraph) => {
     clearNodeSelectedState,
     clearEdgeSelectedState,
     centerNode,
-    centerEdge
+    centerEdge,
   };
 };
 
