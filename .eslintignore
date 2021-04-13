@@ -3,5 +3,5 @@ cypress/
 dist/
 node_modules/
 commitlint.config.js
-tsdx.config.js
+packages/motif/tsdx.config.js
 

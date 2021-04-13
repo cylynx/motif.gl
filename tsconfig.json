@@ -27,11 +27,13 @@
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": ["src"],
+  "include": [
+    "packages/src"
+  ],
   "exclude": [
     "node_modules",
     "dist",
     "example",
-    "src/**/*.+(test|spec).+(ts|tsx|js|jsx)"
+    "packages/src/**/*.+(test|spec).+(ts|tsx|js|jsx)"
   ]
 }
