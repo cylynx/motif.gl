@@ -191,7 +191,7 @@
     "workerloader-jest-transformer": "^0.0.2"
   },
   "files": [
-    "../../dist",
-    "packages/src"
+    "dist",
+    "src"
   ]
 }
