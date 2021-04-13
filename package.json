@@ -15,10 +15,10 @@
     }
   },
   "lint-staged": {
-    "./packages/motif/src/*.+(js|jsx|ts|tsx)": [
+    "./packages/motif/src/**/*.+(js|jsx|ts|tsx)": [
       "eslint --fix"
     ],
-    "./packages/motif/src/*.+(js|jsx|ts|tsx|json|css|md)": [
+    "./packages/motif/src/**/*.+(js|jsx|ts|tsx|json|css|md)": [
       "prettier --write"
     ]
   },
