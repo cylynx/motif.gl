@@ -1,7 +1,12 @@
-coverage/
-cypress/
-dist/
-node_modules/
-commitlint.config.js
-packages/motif/tsdx.config.js
+.github/
+.idea/
+.vscode/
+.git/
+
+/packages/motif/node_modules
+/packages/motif/dist
+/packages/motif/coverage
+/packages/motif/cypress
+/packages/motif/commitlint.config.js
+/packages/motif/tsdx.config.js
 
