@@ -44,6 +44,7 @@ const Graph = React.forwardRef<Graphin, GraphProps>(({ setTooltip }, ref) => {
       data={graphVisible as GraphinData}
       ref={ref}
       layout={layout}
+      // @ts-ignore
       defaultNode={defaultNode}
       // @ts-ignore
       defaultEdge={defaultEdge}
