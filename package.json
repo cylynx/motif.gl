@@ -1,0 +1,32 @@
+{
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "motif": "cd packages/motif && npm run start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cylynx/motif.gl"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.+(js|jsx|ts|tsx)": [
+      "eslint --fix"
+    ],
+    "*.+(js|jsx|ts|tsx|json|css|md)": [
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^8.0.0",
+    "husky": "^4.2.1",
+    "identity-obj-proxy": "^3.0.0",
+    "lint-staged": "^10.0.3"
+  }
+}
