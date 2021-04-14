@@ -1,11 +1,7 @@
 import { useCallback, useContext, useLayoutEffect } from 'react';
-import {
-  GraphinContext,
-  GraphinContextType,
-  IG6GraphEvent,
-} from '@antv/graphin';
+import { GraphinContext, GraphinContextType } from '@antv/graphin';
 
-import { IEdge, INode } from '@antv/g6';
+import { IEdge, INode, IG6GraphEvent } from '@antv/g6';
 import { isBigDataSet } from '../../../utils/utils';
 import useGraphBehaviors from '../hooks/useGraphBehaviors';
 
@@ -15,8 +11,9 @@ const ActivateEdgeRelations = (): null => {
 
   const highlightEdge = useCallback((currentEdge: IEdge): void => {
     if (currentEdge.hasState('active') === false) {
-      graph.setItemState(currentEdge, 'inactive', false);
-      graph.setItemState(currentEdge, 'active', true);
+      const currentEdgeID: string = currentEdge.getID();
+      graph.setItemState(currentEdgeID, 'inactive', false);
+      graph.setItemState(currentEdgeID, 'active', true);
       currentEdge.toFront();
     }
   }, []);
@@ -26,8 +23,9 @@ const ActivateEdgeRelations = (): null => {
     const targetNode = graph.findById(target.getID()) as INode;
 
     [sourceNode, targetNode].forEach((node: INode) => {
-      graph.setItemState(node, 'inactive', false);
-      graph.setItemState(node, 'active', true);
+      const nodeID: string = node.getID();
+      graph.setItemState(nodeID, 'inactive', false);
+      graph.setItemState(nodeID, 'active', true);
     });
   }, []);
 

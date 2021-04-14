@@ -1,29 +1,29 @@
-import { IG6GraphEvent } from '@antv/graphin';
 import { useCallback } from 'react';
-import { IEdge, INode, IGraph } from '@antv/g6';
+import { IEdge, INode, IG6GraphEvent } from '@antv/g6';
+import { Graph } from '@antv/graphin';
 import { isBigDataSet } from '../../../utils/utils';
 
-const useGraphBehaviors = (graph: IGraph) => {
+const useGraphBehaviors = (graph: Graph) => {
   /**
    * We will not clear the selected states as it is required for Search Panel interaction.
    */
   const clearAllStates = useCallback(() => {
-    graph.getNodes().forEach((node: INode) => {
+    graph.getNodes().forEach((node) => {
       graph.clearItemStates(node, ['inactive', 'active', 'hover']);
     });
 
-    graph.getEdges().forEach((edge: IEdge) => {
+    graph.getEdges().forEach((edge) => {
       graph.clearItemStates(edge, ['inactive', 'active', 'hover']);
     });
   }, [graph]);
 
   const disableAllNodeEdges = useCallback(() => {
-    graph.getNodes().forEach((node: INode) => {
+    graph.getNodes().forEach((node) => {
       graph.clearItemStates(node, ['inactive', 'active']);
       graph.setItemState(node, 'inactive', true);
     });
 
-    graph.getEdges().forEach((edge: IEdge) => {
+    graph.getEdges().forEach((edge) => {
       graph.clearItemStates(edge, ['inactive', 'active']);
       graph.setItemState(edge, 'inactive', true);
     });
@@ -74,36 +74,39 @@ const useGraphBehaviors = (graph: IGraph) => {
   }, []);
 
   const clearNodeHoverState = () => {
-    graph.findAllByState('node', 'hover').forEach((node: INode) => {
+    graph.findAllByState('node', 'hover').forEach((node) => {
       graph.clearItemStates(node, ['hover']);
     });
   };
 
   const clearEdgeHoverState = () => {
-    graph.findAllByState('edge', 'hover').forEach((edge: IEdge) => {
+    graph.findAllByState('edge', 'hover').forEach((edge) => {
       graph.clearItemStates(edge, ['hover']);
     });
   };
 
   const clearNodeSelectedState = () => {
-    graph.findAllByState('node', 'selected').forEach((node: INode) => {
+    graph.findAllByState('node', 'selected').forEach((node) => {
       graph.clearItemStates(node, ['selected']);
     });
   };
 
   const clearEdgeSelectedState = () => {
-    graph.findAllByState('edge', 'selected').forEach((edge: IEdge) => {
+    graph.findAllByState('edge', 'selected').forEach((edge) => {
       graph.clearItemStates(edge, ['selected']);
     });
   };
 
   const centerNode = (node: INode) => {
     graph.fitCenter();
-    graph.focusItem(node, false);
+
+    const nodeID: string = node.getID();
+    graph.focusItem(nodeID, false);
   };
 
   const centerEdge = (edge: IEdge) => {
-    graph.focusItem(edge.getSource(), false);
+    const edgeSourceID = edge.getSource().getID();
+    graph.focusItem(edgeSourceID, false);
   };
 
   return {
