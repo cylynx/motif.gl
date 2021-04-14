@@ -13,7 +13,6 @@ import { Block } from 'baseui/block';
 import { LabelSmall, ParagraphSmall } from 'baseui/typography';
 import { GraphinContextType, IUserEdge, IUserNode } from '@antv/graphin';
 import isEmpty from 'lodash/isEmpty';
-import { IEdge, INode } from '@antv/g6';
 import { GraphRefContext } from '../Graph';
 import SelectVariable from '../../components/SelectVariable';
 import { RangePlot } from '../../components/plots';
