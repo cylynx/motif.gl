@@ -4,7 +4,7 @@
   "scripts": {
     "bootstrap": "lerna bootstrap --no-ci",
     "motif": "cd ./packages/motif && npm run start",
-    "example": "cd ./packages/motif-demo && npm run start"
+    "demo": "cd ./packages/motif-demo && npm run start"
   },
   "repository": {
     "type": "git",
