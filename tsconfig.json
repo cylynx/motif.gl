@@ -1,8 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
     "module": "esnext",
-    "lib": ["dom", "dom.iterable", "esnext"],
     "downlevelIteration": true,
     "moduleResolution": "node",
     "allowJs": true,

@@ -25,7 +25,8 @@
   },
   "devDependencies": {
     "@types/react": "^16.9.27",
-    "@types/react-dom": "^16.9.7"
+    "@types/react-dom": "^16.9.7",
+    "tslib": "^2.2.0"
   },
   "browserslist": {
     "production": [
