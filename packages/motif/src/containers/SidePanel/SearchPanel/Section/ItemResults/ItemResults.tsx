@@ -38,9 +38,13 @@ const ItemResults: FC = () => {
   ) => {
     event.stopPropagation();
     const node = graph.findById(nodeId) as INode;
-    graph.setAutoPaint(false);
+    if (node === null) {
+      return;
+    }
 
-    graph.setItemState(node, 'hover', true);
+    const nodeID: string = node.getID();
+    graph.setAutoPaint(false);
+    graph.setItemState(nodeID, 'hover', true);
     centerNode(node);
     graph.paint();
     graph.setAutoPaint(true);
@@ -52,14 +56,21 @@ const ItemResults: FC = () => {
   ) => {
     event.stopPropagation();
     const edge = graph.findById(edgeId) as IEdge;
+    if (!edge) {
+      return;
+    }
+
     const sourceNode = edge.getSource();
     const targetNode = edge.getTarget();
 
-    graph.setAutoPaint(false);
+    const edgeID: string = edge.getID();
+    const edgeSourceID: string = sourceNode.getID();
+    const edgeTargetID: string = targetNode.getID();
 
-    graph.setItemState(edge, 'hover', true);
-    graph.setItemState(sourceNode, 'hover', true);
-    graph.setItemState(targetNode, 'hover', true);
+    graph.setAutoPaint(false);
+    graph.setItemState(edgeID, 'hover', true);
+    graph.setItemState(edgeSourceID, 'hover', true);
+    graph.setItemState(edgeTargetID, 'hover', true);
     centerEdge(edge);
     graph.paint();
     graph.setAutoPaint(true);

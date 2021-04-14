@@ -220,10 +220,10 @@ const VariableInspector = () => {
 
       const { graph } = graphRef;
       graph.setAutoPaint(false);
-      graph.getNodes().forEach((node: INode) => {
+      graph.getNodes().forEach((node) => {
         graph.clearItemStates(node, 'disabled');
       });
-      graph.getEdges().forEach((edge: IEdge) => {
+      graph.getEdges().forEach((edge) => {
         graph.clearItemStates(edge, 'disabled');
       });
       graph.paint();

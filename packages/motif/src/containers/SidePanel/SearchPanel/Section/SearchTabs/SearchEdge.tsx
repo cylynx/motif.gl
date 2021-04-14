@@ -74,7 +74,8 @@ const SearchEdge = () => {
   };
 
   const setEdgeToHoverState = (edge: IEdge) => {
-    graph.setItemState(edge, 'hover', true);
+    const edgeID: string = edge.getID();
+    graph.setItemState(edgeID, 'hover', true);
   };
 
   return (

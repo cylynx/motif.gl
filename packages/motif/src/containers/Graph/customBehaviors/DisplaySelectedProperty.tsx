@@ -41,8 +41,8 @@ const DisplaySelectedProperty = (): null => {
     const edgeInformation: EdgeInformation[] = edges.map(
       (selectedEdge: IEdge) => {
         const edgeID: string = selectedEdge.get('model').id;
-        const edge = graphVisible.edges.find((edge: IUserEdge) => {
-          return edgeID === edge.id;
+        const edge = graphVisible.edges.find((graphEdge: IUserEdge) => {
+          return edgeID === graphEdge.id;
         });
 
         const sourceID: string = selectedEdge.getSource().getID();
@@ -102,15 +102,15 @@ const DisplaySelectedProperty = (): null => {
 
   useLayoutEffect(() => {
     const displayPropertyInformation = (_: IG6GraphEvent): void => {
-      const selectEdgeWithMouseEvent: IEdge[] = graph.findAllByState(
+      const selectEdgeWithMouseEvent = graph.findAllByState(
         'edge',
         'selected',
-      );
+      ) as IEdge[];
 
-      const selectNodeWithMouseEvent: INode[] = graph.findAllByState(
+      const selectNodeWithMouseEvent = graph.findAllByState(
         'node',
         'selected',
-      );
+      ) as INode[];
 
       if (selectNodeWithMouseEvent.length === 0) return;
       const selectedEdgesLength = setSelectedEdges(selectEdgeWithMouseEvent);

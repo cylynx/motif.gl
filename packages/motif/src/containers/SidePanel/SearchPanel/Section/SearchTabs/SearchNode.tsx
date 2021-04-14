@@ -59,7 +59,8 @@ const SearchNode = () => {
   };
 
   const setNodeToHoverState = (node: INode) => {
-    graph.setItemState(node, 'hover', true);
+    const nodeID: string = node.getID();
+    graph.setItemState(nodeID, 'hover', true);
   };
 
   return (
