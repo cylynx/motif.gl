@@ -1,9 +1,10 @@
 {
   "extends": "../../tsconfig",
   "compilerOptions": {
+    "module": "esnext",
     "outDir": "dist",
     "lib": ["dom", "esnext"],
-    "jsx": "react-jsx",
+    "jsx": "react",
     "noUnusedLocals": true,
     "noFallthroughCasesInSwitch": true
   },
