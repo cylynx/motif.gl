@@ -32,7 +32,7 @@ const App = () => {
       {
         title: 'Neo4j',
         key: 'neo4j',
-        component: <Neo4J driver={driver} setDriver={setDriver}/>,
+        component: <Neo4J driver={driver} setDriver={setDriver} />,
       },
       {
         title: 'Banking API',

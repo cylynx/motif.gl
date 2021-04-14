@@ -5,7 +5,7 @@ const path = require('path');
 const replace = require('@rollup/plugin-replace');
 
 module.exports = {
-  rollup(config, opts) {
+  rollup(config) {
     config.plugins = [
       postcss({
         extract: path.resolve('dist/index.css'),
@@ -22,7 +22,6 @@ module.exports = {
         },
       }),
       replace({
-        'process.env.NODE_ENV': JSON.stringify(opts.env),
         preventAssignment: true,
       }),
       ...config.plugins,
