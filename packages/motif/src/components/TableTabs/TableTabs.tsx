@@ -39,9 +39,9 @@ type TableTabsProps = {
 };
 const TableTabs: FC<TableTabsProps> = ({ items, activeKey, onClick }) => {
   const isTabActive = (
-    activeKey: GraphAttribute,
+    key: GraphAttribute,
     attribute: GraphAttribute,
-  ): boolean => activeKey === attribute;
+  ): boolean => key === attribute;
 
   return (
     <Block

@@ -23,7 +23,7 @@ const BaseNotification: FC<BaseNotificationProps> = ({
             paddingLeft: $theme.sizing.scale300,
             paddingRight: $theme.sizing.scale300,
             paddingBottom: $theme.sizing.scale300,
-            height: height,
+            height,
             overflowX: 'hidden',
           }),
         },
