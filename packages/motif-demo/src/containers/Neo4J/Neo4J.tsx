@@ -1,11 +1,10 @@
 import React, { useMemo, useState } from 'react';
 import { Block } from 'baseui/block';
-import { ProgressStepper, GraphData } from 'motif.gl';
+import { ProgressStepper, GraphData, StepperItems } from 'motif.gl';
 
-import { StepperItems } from '../../../../packages/src/components/ProgressStepper';
+import { Value } from 'baseui/select';
 import ConnectDatabase from './sections/ConnectDatabase';
 import ExecuteQuery, { ExecuteQueryState } from './sections/ExecuteQuery';
-import { Value } from 'baseui/select';
 import ConfigureFields from './sections/ConfigureFields';
 
 // @ts-ignore

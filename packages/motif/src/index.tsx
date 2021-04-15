@@ -3,13 +3,13 @@ import Tooltip from './containers/Tooltip';
 
 import investigateReducer from './redux';
 
-import ProgressStepper from './components/ProgressStepper';
+import ProgressStepper, { StepperItems } from './components/ProgressStepper';
 import FormSelectWithTooltip from './components/FormSelectWithTooltip';
 import TablePreview from './components/TablePreview';
 import TableTabs, { TableTabItem } from './components/TableTabs';
 import GroupEdgeConfiguration from './components/GroupEdgeConfiguration';
 
-export type { TableTabItem };
+export type { TableTabItem, StepperItems };
 export {
   ProgressStepper,
   FormSelectWithTooltip,

@@ -47,7 +47,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
     "@antv/g6": "^4.1.7",
-    "@cylynx/graphin": "^2.0.7",
+    "@cylynx/graphin": "^2.0.13",
     "@reduxjs/toolkit": "^1.2.3",
     "d3-array": "^2.8.0",
     "d3-axis": "^2.0.0",

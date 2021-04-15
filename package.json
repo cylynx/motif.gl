@@ -2,9 +2,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "bootstrap": "lerna bootstrap",
+    "bootstrap": "lerna bootstrap --no-ci",
     "motif": "cd ./packages/motif && npm run start",
-    "demo": "cd ./packages/motif-demo && npm run start"
+    "demo": "cd ./packages/motif-demo && npm run start",
+    "rm-package-lock": "rm -rf ./packages/*/package-lock.json"
   },
   "repository": {
     "type": "git",
