@@ -15,7 +15,7 @@ import { Theme } from 'baseui/theme';
 import { Block } from 'baseui/block';
 
 import { ToasterContainer, PLACEMENT } from 'baseui/toast';
-import Graphin from '@antv/graphin';
+import Graphin from '@cylynx/graphin';
 import { Loader } from '../components/ui';
 import DataTableModal from './DataTableModal';
 import ImportWizardModal from './ImportWizardModal';

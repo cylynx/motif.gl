@@ -2,11 +2,10 @@ import {
   GraphinContext,
   IG6GraphEvent,
   GraphinContextType,
-} from '@antv/graphin';
+} from '@cylynx/graphin';
 import { INode, IEdge } from '@antv/g6';
 import { useContext, useLayoutEffect } from 'react';
 import { TooltipProps } from '../../Tooltip/Tooltip';
-import { interactionStates } from '../../../constants/graph-shapes';
 
 export type DisplayTooltipProps = {
   setTooltip: (tooltip: Partial<TooltipProps>) => void;

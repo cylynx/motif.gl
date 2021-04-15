@@ -8,7 +8,7 @@ import React, {
   FC,
 } from 'react';
 import { Block } from 'baseui/block';
-import Graphin from '@antv/graphin';
+import Graphin from '@cylynx/graphin';
 import {
   SIDE_NAVBAR_WIDTH,
   LEFT_LAYER_WIDTH,

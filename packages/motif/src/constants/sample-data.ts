@@ -1,15 +1,13 @@
 /* eslint-disable no-restricted-properties */
 /* eslint-disable no-param-reassign */
 
-import { EdgeStyle, Utils, IUserNode, IUserEdge } from '@antv/graphin';
+import { EdgeStyle, Utils, IUserNode, IUserEdge } from '@cylynx/graphin';
 import { GraphData, GraphList } from '../redux/graph';
 import { mapNodeSize, styleNodeSize } from '../utils/style-utils/style-nodes';
 import { DEFAULT_EDGE_STYLE } from './graph-shapes';
 
 export const RandomData = () => {
-  const data: GraphData = Utils.mock(15)
-    .random()
-    .graphin();
+  const data: GraphData = Utils.mock(15).random().graphin();
   data.nodes.forEach((n: IUserNode) => {
     n.numeric = Math.floor(Math.random() * 100 + 1);
     delete n.type;
@@ -22,9 +20,7 @@ export const RandomData = () => {
   return data;
 };
 export const CircleData = () => {
-  const data: GraphData = Utils.mock(10)
-    .circle()
-    .graphin();
+  const data: GraphData = Utils.mock(10).circle().graphin();
 
   data.nodes.forEach((n) => {
     delete n.type;

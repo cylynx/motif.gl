@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
-import { NodeStyle } from '@antv/graphin';
+import { NodeStyle } from '@cylynx/graphin';
 import {
   GraphData,
   NodeStyleOptions,

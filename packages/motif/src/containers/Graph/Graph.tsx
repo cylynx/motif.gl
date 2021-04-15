@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import Graphin, { Behaviors } from '@antv/graphin';
-import { GraphinData } from '@antv/graphin/lib/typings/type';
+import Graphin, { Behaviors, GraphinData } from '@cylynx/graphin';
 import { GraphSelectors, Layout } from '../../redux/graph';
 import { TooltipProps } from '../Tooltip/Tooltip';
 import {

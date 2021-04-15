@@ -2,7 +2,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "bootstrap": "lerna bootstrap --no-ci",
+    "bootstrap": "lerna bootstrap",
     "motif": "cd ./packages/motif && npm run start",
     "demo": "cd ./packages/motif-demo && npm run start"
   },

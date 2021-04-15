@@ -1,4 +1,4 @@
-import { IUserEdge } from '@antv/graphin';
+import { IUserEdge } from '@cylynx/graphin';
 import { mapCollectionFields } from '../data-utils/data-utils';
 
 const noValueString = 'no-values';

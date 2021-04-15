@@ -24,6 +24,6 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          start: 'npm run example'
+          start: 'npm run demo'
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 120

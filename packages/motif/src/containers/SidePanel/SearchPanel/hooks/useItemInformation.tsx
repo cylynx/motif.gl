@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Block } from 'baseui/block';
-import { NodeStyle } from '@antv/graphin';
+import { NodeStyle } from '@cylynx/graphin';
 import { darken } from 'polished';
 import { Theme } from 'baseui/theme';
 import shortid from 'shortid';
