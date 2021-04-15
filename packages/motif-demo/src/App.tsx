@@ -14,7 +14,6 @@ import { Driver } from 'neo4j-driver/types/driver';
 import { Provider } from 'react-redux';
 import BankingAPI from './containers/BankingAPI';
 import store from './redux-store';
-import 'motif.gl/dist/index.css';
 import Neo4J from './containers/Neo4J';
 
 const engine = new Styletron();

@@ -2,9 +2,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "bootstrap": "lerna bootstrap --no-ci",
+    "bootstrap": "lerna bootstrap --no-ci --hoist",
     "motif": "cd ./packages/motif && npm run start",
     "demo": "cd ./packages/motif-demo && npm run start",
+    "clean": "lerna clean && npm run rm-package-lock",
     "rm-package-lock": "rm -rf ./packages/*/package-lock.json"
   },
   "repository": {
@@ -41,5 +42,11 @@
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "resolutions": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "**/react": "^16.8.6",
+    "**/react-dom": "^16.8.6"
+  }
 }
