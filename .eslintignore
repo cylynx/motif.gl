@@ -4,8 +4,11 @@
 .git/
 commitlint.config.js
 tsdx.config.js
+packages.json
+craco.config.js
+node_modules/
+webpack.config.js
 
-/packages/motif/node_modules
 /packages/motif/dist
 /packages/motif/coverage
 /packages/motif/cypress
