@@ -4,7 +4,7 @@
 .git/
 commitlint.config.js
 tsdx.config.js
-packages.json
+package.json
 craco.config.js
 node_modules/
 webpack.config.js
