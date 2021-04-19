@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "start": "vite",
-    "start-cra": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test"
   },

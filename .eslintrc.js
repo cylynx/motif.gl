@@ -55,6 +55,7 @@ module.exports = {
     'comma-dangle': 1,
     'no-shadow': 'off',
     'no-useless-return': 'off',
+    'import/no-extraneous-dependencies': 'off',
     'max-len': [
       'warn',
       {
