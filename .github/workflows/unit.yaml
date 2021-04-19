@@ -28,7 +28,7 @@ jobs:
         run: npm install --legacy-peer-deps
 
       - name: Install multiple packages' dependencies
-        run: npm run bootstrap-ci
+        run: npm run bootstrap
 
       - name: Run Unit Test
         run: npm run unit
