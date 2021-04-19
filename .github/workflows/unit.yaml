@@ -21,6 +21,9 @@ jobs:
       - name: Install root NPM dependencies
         run: npm install
 
+      - name: Remove existing package-lock to support multiple platforms
+        run: npm run rm-package-lock
+
       - name: Install multiple packages' dependencies
         run: npm run bootstrap
 
