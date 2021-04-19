@@ -20,6 +20,7 @@ jobs:
 
       - name: Set NPM Production Configuration to false
         run: npm config set -g production false
+        run: npm config get production
 
       - name: Remove existing package-lock to support multiple platforms
         run: npm run rm-package-lock
