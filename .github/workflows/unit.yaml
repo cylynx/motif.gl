@@ -9,7 +9,8 @@ jobs:
   unit:
     name: Jest
     runs-on: ubuntu-latest
-    NODE_ENV: test
+    env:
+      NODE_ENV: test
     steps:
       - name: Checkout to Current Branch
         uses: actions/checkout@v2
