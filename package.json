@@ -2,11 +2,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "bootstrap": "lerna bootstrap --no-ci --hoist --strict -- --only=dev",
+    "bootstrap": "lerna bootstrap --no-ci --hoist --strict",
     "motif": "lerna run start --scope=@cylynx/motif --stream",
     "demo": "lerna run start --scope=motif-demo --stream",
     "clean": "lerna clean && npm run rm-package-lock",
-    "bootstrap-ci": "npm run bootstrap && lerna link convert",
     "rm-package-lock": "rm -rf ./package-lock.json ./packages/*/package-lock.json"
   },
   "repository": {

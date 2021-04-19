@@ -18,6 +18,9 @@ jobs:
         with:
           node-version: 12
 
+      - name: View NPM Configuration List
+        run: npm config list
+
       - name: Remove existing package-lock to support multiple platforms
         run: npm run rm-package-lock
 
@@ -25,7 +28,7 @@ jobs:
         run: npm install
 
       - name: Install multiple packages' dependencies
-        run: npm run bootstrap-ci
+        run: npm run bootstrap
 
       - name: Run Unit Test
         working-directory: './packages/motif'
