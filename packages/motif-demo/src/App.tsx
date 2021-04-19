@@ -9,7 +9,7 @@ import Motif, {
   SampleData,
   UploadFiles,
   ImportTabs,
-} from 'motif.gl';
+} from '@cylynx/motif';
 import { Driver } from 'neo4j-driver/types/driver';
 import { Provider } from 'react-redux';
 import BankingAPI from './containers/BankingAPI';

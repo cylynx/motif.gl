@@ -5,7 +5,7 @@ import {
   GraphThunks,
   GraphGroupEdgeProcessors,
   GroupEdgeConfiguration,
-} from 'motif.gl';
+} from '@cylynx/motif';
 import { Button, KIND, SIZE } from 'baseui/button';
 import { useDispatch } from 'react-redux';
 import { SubmitHandler, UnpackNestedValue, useForm } from 'react-hook-form';

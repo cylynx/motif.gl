@@ -2,7 +2,7 @@ import React, { useState, Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, KIND, SIZE } from 'baseui/button';
 import { Block } from 'baseui/block';
-import { GraphThunks, NestedForm, genNestedForm } from 'motif.gl';
+import { GraphThunks, NestedForm, genNestedForm } from '@cylynx/motif';
 import { queryForm } from '../../constants/queryForm';
 
 const ENDPOINT = 'https://banking-demo.cylynx.io/api/';

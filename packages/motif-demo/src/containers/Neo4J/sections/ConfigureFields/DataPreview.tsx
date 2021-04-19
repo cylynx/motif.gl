@@ -7,7 +7,7 @@ import {
   TableTabItem,
   TablePreview,
   GraphData,
-} from 'motif.gl';
+} from '@cylynx/motif';
 
 type DataPreviewProps = {
   isEdgeGroupable: boolean;

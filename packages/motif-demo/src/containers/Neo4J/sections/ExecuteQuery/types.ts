@@ -1,6 +1,6 @@
 import { Value } from 'baseui/select';
 import { Driver } from 'neo4j-driver/types/driver';
-import { GraphData } from 'motif.gl';
+import { GraphData } from '@cylynx/motif';
 
 export type ExecuteQueryState = {
   db: Value;

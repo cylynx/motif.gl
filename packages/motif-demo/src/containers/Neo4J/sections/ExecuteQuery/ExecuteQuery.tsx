@@ -10,7 +10,7 @@ import { Textarea } from 'baseui/textarea';
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
 import { LabelSmall } from 'baseui/typography';
-import { GraphData } from 'motif.gl';
+import { GraphData } from '@cylynx/motif';
 import { ExecuteQueryProps, CypherQueryProps } from './types';
 import { TNotification } from '../ConnectDatabase/types';
 import { toMotifFormat } from '../../utils';

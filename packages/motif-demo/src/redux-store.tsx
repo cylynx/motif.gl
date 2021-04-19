@@ -1,6 +1,6 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 
-import { investigateReducer } from 'motif.gl';
+import { investigateReducer } from '@cylynx/motif';
 
 const store = configureStore({
   reducer: combineReducers({

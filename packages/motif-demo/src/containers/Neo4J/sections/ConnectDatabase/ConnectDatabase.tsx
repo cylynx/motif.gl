@@ -10,7 +10,7 @@ import React, {
 import { Block } from 'baseui/block';
 import { Driver } from 'neo4j-driver/types/driver';
 import { createDriver } from 'use-neo4j';
-import { SimpleForm, genSimpleForm } from 'motif.gl';
+import { SimpleForm, genSimpleForm } from '@cylynx/motif';
 import { Button } from 'baseui/button';
 import { TNotification } from './types';
 import BaseNotification from '../../../../components/BaseNotification';

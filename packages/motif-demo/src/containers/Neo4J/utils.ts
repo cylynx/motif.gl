@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const, no-console */
 // @ts-nocheck
 import Neo4j from 'neo4j-driver';
-import { Node, Edge, GraphData } from 'motif.gl';
+import { Node, Edge, GraphData } from '@cylynx/motif';
 import Record from 'neo4j-driver/types/record';
 
 export const buildNode = (n: any) => {

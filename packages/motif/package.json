@@ -1,17 +1,16 @@
 {
-  "name": "motif.gl",
-  "version": "1.0.0",
-  "description": "Made with create-react-library",
+  "name": "@cylynx/motif",
+  "version": "0.0.1-beta.1",
+  "description": "An out of the box graph visualization toolkit to assist analysis and investigation of network data.",
   "author": "Timothy Lin",
   "license": "MIT",
   "repository": "cylynx/motif.gl",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
-  "module": "dist/motif.gl.esm.js",
+  "module": "dist/motif.esm.js",
   "engines": {
     "node": ">=10"
   },
-  "private": true,
   "scripts": {
     "start": "npm run clean && tsdx watch --target node",
     "build": "tsdx build --target node",
