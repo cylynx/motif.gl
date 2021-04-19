@@ -6,7 +6,8 @@
     "motif": "cd ./packages/motif && npm run start",
     "demo": "cd ./packages/motif-demo && npm run start",
     "clean": "lerna clean && npm run rm-package-lock",
-    "rm-package-lock": "rm -rf ./package-lock.json ./packages/*/package-lock.json"
+    "rm-package-lock": "rm -rf ./package-lock.json ./packages/*/package-lock.json",
+    "bootstrap-ci": "lerna exec npm install"
   },
   "repository": {
     "type": "git",
