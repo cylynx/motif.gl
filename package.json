@@ -7,7 +7,7 @@
     "demo": "cd ./packages/motif-demo && npm run start",
     "clean": "lerna clean && npm run rm-package-lock",
     "rm-package-lock": "rm -rf ./package-lock.json ./packages/*/package-lock.json",
-    "bootstrap-ci": "lerna exec npm install"
+    "bootstrap-ci": "lerna bootstrap --force-local"
   },
   "repository": {
     "type": "git",
@@ -42,6 +42,6 @@
     "lint-staged": "^10.0.3"
   },
   "workspaces": [
-    "packages/*"
+    "packages/**"
   ]
 }
