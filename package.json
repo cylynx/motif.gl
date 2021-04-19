@@ -42,6 +42,6 @@
     "lint-staged": "^10.0.3"
   },
   "workspaces": [
-    "packages/*"
+    "packages/**"
   ]
 }
