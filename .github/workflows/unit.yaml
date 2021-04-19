@@ -18,7 +18,10 @@ jobs:
         with:
           node-version: 12
 
-      - name: Install NPM Dependencies
+      - name: Install root NPM dependencies
+        run: npm ci
+
+      - name: Install multiple packages' dependencies
         run: npm run bootstrap
 
       - name: Run Unit Test
