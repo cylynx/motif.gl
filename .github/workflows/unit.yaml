@@ -30,7 +30,7 @@ jobs:
         run: npm run rm-package-lock
 
       - name: Install multiple packages' dependencies
-        run: npm run bootstrap
+        run: npm run bootstrap-ci
 
       - name: Run Unit Test
         run: ls -al node_modules/
