@@ -18,6 +18,9 @@ jobs:
         with:
           node-version: 12
 
+      - name: Remove existing package-locks
+        run: npm rm-package-lock
+
       - name: Install root NPM dependencies
         run: npm install
 
