@@ -28,4 +28,4 @@ jobs:
         run: npm run bootstrap
 
       - name: Run Unit Test
-        run: npm run unit
+        run: ls -al node_modules/
