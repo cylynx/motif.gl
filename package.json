@@ -6,7 +6,8 @@
     "motif": "lerna run start --scope=@cylynx/motif --stream",
     "demo": "lerna run start --scope=motif-demo --stream",
     "clean": "lerna clean && npm run rm-package-lock",
-    "rm-package-lock": "rm -rf ./package-lock.json ./packages/*/package-lock.json"
+    "rm-package-lock": "rm -rf ./package-lock.json ./packages/*/package-lock.json",
+    "unit": "lerna run test --scope=@cylynx/motif --stream"
   },
   "repository": {
     "type": "git",
