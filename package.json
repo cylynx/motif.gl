@@ -8,7 +8,7 @@
     "clean": "lerna clean && npm run rm-package-lock",
     "rm-package-lock": "rm -rf ./package-lock.json ./packages/*/package-lock.json",
     "bootstrap-ci": "lerna bootstrap",
-    "unit": "lerna exec --scope @cylynx/motif -- ls -la"
+    "unit": "lerna run test --scope @cylynx/motif --stream"
   },
   "repository": {
     "type": "git",
