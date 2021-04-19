@@ -40,7 +40,7 @@
       "jsdom-worker"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!lodash-es/.*)"
+      "node_modules/(?!lodash-es|@cylynx/graphin)"
     ]
   },
   "dependencies": {
