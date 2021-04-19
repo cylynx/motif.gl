@@ -33,4 +33,4 @@ jobs:
         run: npm run bootstrap-ci
 
       - name: Run Unit Test
-        run: ls -al node_modules/
+        run: npm run unit
