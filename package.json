@@ -2,7 +2,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "bootstrap": "lerna bootstrap --no-ci --hoist --strict && lerna link",
+    "bootstrap": "lerna bootstrap --no-ci --hoist --strict -- --legacy-peer-deps && lerna link --force-local",
     "motif": "lerna run start --scope=@cylynx/motif --stream",
     "demo": "lerna run start --scope=motif-demo --stream",
     "clean": "lerna clean && npm run rm-package-lock",
