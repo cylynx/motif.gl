@@ -25,7 +25,8 @@ jobs:
         run: npm install
 
       - name: Install multiple packages' dependencies
-        run: npm run bootstrap-ci
+        run: npm run bootstrap
 
       - name: Run Unit Test
-        run: npm run unit
+        workspace: './packages/motif'
+        run: npm run test
