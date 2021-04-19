@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "start": "vite",
-    "build": "react-scripts build",
-    "test": "react-scripts test"
+    "build": "react-scripts build"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.2.3",
