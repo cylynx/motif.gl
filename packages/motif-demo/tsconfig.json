@@ -3,11 +3,19 @@
   "compilerOptions": {
     "module": "esnext",
     "outDir": "dist",
-    "lib": ["dom", "esnext"],
-    "jsx": "react",
-    "noUnusedLocals": true,
+    "lib": [
+      "dom",
+      "esnext"
+    ],
+    "jsx": "react-jsx",
+    "noUnusedLocals": false,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "build"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
+  ]
 }

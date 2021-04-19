@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, {
   Dispatch,
   FC,
@@ -10,15 +11,15 @@ import { Block } from 'baseui/block';
 import { Driver } from 'neo4j-driver/types/driver';
 import { createDriver } from 'use-neo4j';
 import { SimpleForm, genSimpleForm } from 'motif.gl';
+import { Button } from 'baseui/button';
+import { TNotification } from './types';
+import BaseNotification from '../../../../components/BaseNotification';
 import {
   neo4jHost,
   neo4jPassword,
   neo4jPort,
   neo4jUsername,
 } from '../../../../constants/queryForm';
-import { Button } from 'baseui/button';
-import { TNotification } from './types';
-import BaseNotification from '../../../../components/BaseNotification';
 
 const DEFAULT_DB_SETTINGS = {
   neo4jHost: 'localhost',
@@ -56,8 +57,6 @@ const ConnectDatabase: FC<ConnectDatabaseProps> = ({
         ),
       });
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const updateQueryOption = (data: any) => {

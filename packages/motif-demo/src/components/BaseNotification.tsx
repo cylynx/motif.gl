@@ -1,12 +1,12 @@
+import React from 'react';
 import { Notification } from 'baseui/notification';
-import React, { FC } from 'react';
 import { Theme } from 'baseui/theme';
 
 export type BaseNotificationProps = {
   kind?: 'negative' | 'positive' | 'info';
   height?: string;
 };
-const BaseNotification: FC<BaseNotificationProps> = ({
+const BaseNotification: React.FC<BaseNotificationProps> = ({
   kind,
   height = 'auto',
   children,

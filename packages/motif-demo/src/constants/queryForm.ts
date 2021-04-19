@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // @ts-ignore
 import { NestedFormData, SimpleFormData } from 'motif.gl';
 

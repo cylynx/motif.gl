@@ -1,3 +1,4 @@
+// @ts-ignore
 import React, { useMemo, useState } from 'react';
 import { Block } from 'baseui/block';
 import { ProgressStepper, GraphData, StepperItems } from 'motif.gl';

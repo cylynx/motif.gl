@@ -4,7 +4,6 @@ import { Neo4jContextState } from 'use-neo4j/dist/neo4j.context';
 import { Select, OnChangeParams } from 'baseui/select';
 import { Driver } from 'neo4j-driver/types/driver';
 import { QueryResult } from 'neo4j-driver/types/result';
-import { toMotifFormat } from '../../utils';
 import Record from 'neo4j-driver/types/record';
 import { FormControl } from 'baseui/form-control';
 import { Textarea } from 'baseui/textarea';
@@ -14,6 +13,7 @@ import { LabelSmall } from 'baseui/typography';
 import { GraphData } from 'motif.gl';
 import { ExecuteQueryProps, CypherQueryProps } from './types';
 import { TNotification } from '../ConnectDatabase/types';
+import { toMotifFormat } from '../../utils';
 import BaseNotification from '../../../../components/BaseNotification';
 
 const CypherQuery: FC<CypherQueryProps> = ({

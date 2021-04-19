@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const, no-console */
 // @ts-nocheck
 import Neo4j from 'neo4j-driver';
 import { Node, Edge, GraphData } from 'motif.gl';

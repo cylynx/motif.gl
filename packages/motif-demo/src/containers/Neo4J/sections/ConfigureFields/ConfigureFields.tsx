@@ -1,6 +1,5 @@
 import React, { BaseSyntheticEvent, FC, useMemo } from 'react';
 import { Block } from 'baseui/block';
-import DataPreview from './DataPreview';
 import {
   GraphData,
   GraphThunks,
@@ -10,6 +9,7 @@ import {
 import { Button, KIND, SIZE } from 'baseui/button';
 import { useDispatch } from 'react-redux';
 import { SubmitHandler, UnpackNestedValue, useForm } from 'react-hook-form';
+import DataPreview from './DataPreview';
 
 type ConfigureFieldsProps = { graphData: GraphData };
 const ConfigureFields: FC<ConfigureFieldsProps> = ({ graphData }) => {
