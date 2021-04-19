@@ -7,8 +7,8 @@
     "demo": "lerna run start --scope=motif-demo --stream",
     "clean": "lerna clean && npm run rm-package-lock",
     "rm-package-lock": "rm -rf ./package-lock.json ./packages/*/package-lock.json",
-    "bootstrap-ci": "export NODE_ENV=development && npm run bootstrap",
-    "unit": "cd ./packages/motif && ../../node_modules/tsdx/dist/index.js test"
+    "bootstrap-ci": "lerna link convert && npm run bootstrap",
+    "unit": "lerna run test --scope @cylynx/motif --stream"
   },
   "repository": {
     "type": "git",
