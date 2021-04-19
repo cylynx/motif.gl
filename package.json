@@ -2,13 +2,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "bootstrap": "lerna bootstrap --no-ci --hoist --strict -- --legacy-peer-deps && lerna link --force-local",
+    "bootstrap": "lerna bootstrap --no-ci --hoist --strict -- --legacy-peer-deps",
     "motif": "lerna run start --scope=@cylynx/motif --stream",
     "demo": "lerna run start --scope=motif-demo --stream",
     "clean": "lerna clean && npm run rm-package-lock",
     "rm-package-lock": "rm -rf ./package-lock.json ./packages/*/package-lock.json",
-    "bootstrap-ci": "lerna bootstrap --no-ci --force-local -- --legacy-peer-deps && lerna link --force-local",
-    "unit": "lerna run test --scope @cylynx/motif --stream"
+    "unit": "cd ./packages/motif && ../../node_modules/tsdx/dist/index.js test"
   },
   "repository": {
     "type": "git",
