@@ -18,11 +18,14 @@ jobs:
         with:
           node-version: 12
 
+      - name: Set NPM Production Configuration to false
+        run: npm config set -g production false
+
       - name: Remove existing package-locks
         run: npm run rm-package-lock
 
       - name: Install root NPM dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
 
       - name: Install multiple packages' dependencies
         run: npm run bootstrap
