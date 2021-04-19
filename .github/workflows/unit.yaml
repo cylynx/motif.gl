@@ -19,7 +19,8 @@ jobs:
           node-version: 12
 
       - name: Install NPM Dependencies
-        run: npm ci
+        run: npm run bootstrap
 
       - name: Run Unit Test
-        run: npm test
+        working-directory: './packages/motif'
+        run: npm run test
