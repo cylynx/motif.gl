@@ -2,6 +2,7 @@ import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData
 import { EdgeInformation, Node } from '../../../src/redux/graph';
 
 describe('Search Tabs', () => {
+  const tabComponent = 'TabComponent2';
   before(() => {
     cy.visit('/');
     cy.waitForReact(5000);
@@ -13,7 +14,7 @@ describe('Search Tabs', () => {
   describe('Search Node', () => {
     const selectedString: string = 'account_103';
     before(() => {
-      cy.react('TabComponent', { props: { id: 'nodes' } }).click();
+      cy.react(tabComponent, { props: { id: 'nodes' } }).click();
       cy.react('SearchNode').type(`${selectedString}{enter}`);
     });
 
@@ -42,7 +43,7 @@ describe('Search Tabs', () => {
   describe('Search Edge', () => {
     const selectedString: string = 'ownership_307';
     before(() => {
-      cy.react('TabComponent', { props: { id: 'edges' } }).click();
+      cy.react(tabComponent, { props: { id: 'edges' } }).click();
       cy.react('SearchEdge').type(`${selectedString}{enter}`);
     });
 

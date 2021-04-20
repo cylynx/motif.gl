@@ -15,6 +15,7 @@ import { NestedFormData } from '../../../src/components/form';
 
 describe('Setting Popovers', () => {
   const graphinEl = 'Graphin2';
+  const selectEl = 'Select2';
   const findDefaultFromForm = (
     form: NestedFormData,
     layout: string,
@@ -68,7 +69,7 @@ describe('Setting Popovers', () => {
 
   describe('Graph Layout Changes', () => {
     const changeLayout = (label: string) => {
-      cy.react('Select', { props: { id: 'SettingsPopover:GraphLayout' } })
+      cy.react(selectEl, { props: { id: 'SettingsPopover:GraphLayout' } })
         .eq(0)
         .type(`${label}{enter}`);
     };
