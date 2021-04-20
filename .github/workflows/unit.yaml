@@ -29,10 +29,8 @@ jobs:
       - name: Remove existing package-lock to support multiple platforms
         run: npm run rm-package-lock
 
-      - name: Install Motif Development Dependencies
-        working-directory: './packages/motif'
-        run: npm install --only=dev --legacy-peer-deps
+      - name: Install Dependencies
+        run: npm run bootstrap-ci
 
       - name: Run Unit Test
-        working-directory: './packages/motif'
-        run: npm run test
+        run: npm run unit

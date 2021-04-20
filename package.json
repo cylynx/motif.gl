@@ -4,12 +4,12 @@
   "scripts": {
     "bootstrap": "lerna bootstrap --no-ci --hoist --strict -- --legacy-peer-deps",
     "motif": "lerna run start --scope=@cylynx/motif --stream",
+    "build-motif": "lerna run build --scope=@cylynx/motif --stream",
     "demo": "lerna run start --scope=motif-demo --stream",
     "clean": "lerna clean && npm run rm-package-lock",
     "rm-package-lock": "rm -rf ./package-lock.json ./packages/*/package-lock.json",
     "bootstrap-ci": "lerna link convert && npm run bootstrap",
-    "unit": "lerna run test --scope @cylynx/motif --stream",
-    "cypress": "npm run motif && npm run demo"
+    "unit": "lerna run test --scope @cylynx/motif --stream"
   },
   "repository": {
     "type": "git",

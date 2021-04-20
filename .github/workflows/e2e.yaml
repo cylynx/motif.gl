@@ -30,9 +30,12 @@ jobs:
       - name: Setup kernel for React, increase watchers
         run: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 
+      - name: Build Motif Packages
+        run: npm run build-motif
+
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          start: 'npm run cypress'
+          start: 'npm run demo'
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 120
