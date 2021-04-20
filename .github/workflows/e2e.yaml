@@ -33,12 +33,10 @@ jobs:
       - name: Build Motif Packages
         run: npm run build-motif
 
-      - name: Start Dev Server
-        run: npm run demo
-
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
+          build: npm run demo
           working-directory: './packages/motif-demo'
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 120
