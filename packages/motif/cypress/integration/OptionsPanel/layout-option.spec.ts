@@ -1,12 +1,13 @@
-import * as layoutOptions from '../../../packages/src/constants/layout-options';
-import * as form from '../../../packages/src/containers/SidePanel/OptionsPanel/constants';
-import { NestedFormData } from '../../../packages/src/components/form/NestedForm';
-import { SampleData } from '../../../packages/src/containers/ImportWizardModal/SampleData';
+import * as layoutOptions from '../../../src/constants/layout-options';
+import * as form from '../../../src/containers/SidePanel/OptionsPanel/constants';
+import { NestedFormData } from '../../../src/components/form/NestedForm';
+import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 const findLayout = (id: string) =>
   layoutOptions.LAYOUT_NAMES.find((layout) => layout.id === id);
 
 describe('Layout Options', () => {
   const layoutEl: string = 'layout';
+  const graphinEl = 'Graphin2';
 
   const changeLayout = (label: string) => {
     cy.react('NestedForm', { props: { id: layoutEl } })
@@ -37,7 +38,7 @@ describe('Layout Options', () => {
       const { label, id } = findLayout(type);
       changeLayout(label);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('layout')
         .then(($layout) => {
           cy.wrap($layout.type).should('deep.equal', id);
@@ -48,18 +49,12 @@ describe('Layout Options', () => {
     it('should change node spacing', () => {
       const arrows = '{rightarrow}'.repeat(1);
       const controllerName: string = 'minNodeSpacing';
-      const formDefaults = findDefaultFromLayoutForm(
-        form.layoutForm,
-        type,
-        controllerName,
-      );
-      const { min, max } = formDefaults;
 
       cy.react('Controller', { props: { name: controllerName } }).type(arrows);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps(`layout.${controllerName}`)
-        .should('deep.equal', max / 2 + min);
+        .should('be.within', 49, 52);
     });
   });
 
@@ -69,7 +64,7 @@ describe('Layout Options', () => {
       const { label, id } = findLayout(type);
       changeLayout(label);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('layout')
         .then(($layout) => {
           cy.wrap($layout.type).should('deep.equal', id);
@@ -84,7 +79,7 @@ describe('Layout Options', () => {
 
       cy.react('Controller', { props: { name: controllerName } }).type(arrows);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps(`layout.${controllerName}`)
         .should('be.within', 248, 251);
     });
@@ -95,7 +90,7 @@ describe('Layout Options', () => {
 
       cy.react('Controller', { props: { name: controllerName } }).type(arrows);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps(`layout.${controllerName}`)
         .should('be.within', 248, 251);
     });
@@ -107,7 +102,7 @@ describe('Layout Options', () => {
       const { label, id } = findLayout(type);
       changeLayout(label);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('layout')
         .then(($layout) => {
           cy.wrap($layout.type).should('deep.equal', id);
@@ -127,7 +122,7 @@ describe('Layout Options', () => {
 
       cy.react('Controller', { props: { name: controllerName } }).type(arrows);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps(`layout.${controllerName}`)
         .should('deep.equal', max / 2 + min);
     });
@@ -139,7 +134,7 @@ describe('Layout Options', () => {
       const { label, id } = findLayout(type);
       changeLayout(label);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('layout')
         .then(($layout) => {
           cy.wrap($layout.type).should('deep.equal', id);
@@ -155,7 +150,7 @@ describe('Layout Options', () => {
 
       cy.react('Controller', { props: { name: controllerName } }).type(arrows);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps(`layout.${controllerName}`)
         .should('be.within', 248, 251);
     });
@@ -166,7 +161,7 @@ describe('Layout Options', () => {
 
       cy.react('Controller', { props: { name: controllerName } }).type(arrows);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps(`layout.${controllerName}`)
         .should('be.within', 248, 251);
     });
@@ -182,7 +177,7 @@ describe('Layout Options', () => {
           `${direction}{enter}`,
         );
 
-        cy.getReact('Graphin')
+        cy.getReact(graphinEl)
           .getProps(`layout.${controllerName}`)
           .should('deep.equal', directionId);
       };
@@ -218,7 +213,7 @@ describe('Layout Options', () => {
       const { label, id } = findLayout(type);
       changeLayout(label);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('layout')
         .then(($layout) => {
           cy.wrap($layout.type).should('deep.equal', id);
@@ -236,7 +231,7 @@ describe('Layout Options', () => {
 
       cy.react('Controller', { props: { name: controllerName } }).type(arrows);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps(`layout.${controllerName}`)
         .should('be.within', 248, 251);
     });
@@ -248,7 +243,7 @@ describe('Layout Options', () => {
 
       cy.react('Controller', { props: { name: controllerName } }).type(arrows);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps(`layout.${controllerName}`)
         .should('be.within', 248, 251);
     });
@@ -267,7 +262,7 @@ describe('Layout Options', () => {
 
       cy.react('Controller', { props: { name: controllerName } }).type(arrows);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps(`layout.${controllerName}`)
         .should('deep.equal', max / 2 - 0.1);
     });
@@ -279,7 +274,7 @@ describe('Layout Options', () => {
 
       cy.react('Controller', { props: { name: controllerName } }).type(arrows);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps(`layout.${controllerName}`)
         .should('deep.equal', divisions + modifyValue);
     });
@@ -292,7 +287,7 @@ describe('Layout Options', () => {
       const { label, id } = findLayout(type);
       changeLayout(label);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('layout.type')
         .should('deep.equal', id);
     });
@@ -305,7 +300,7 @@ describe('Layout Options', () => {
       const { label, id } = findLayout(type);
       changeLayout(label);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('layout')
         .then(($layout) => {
           cy.wrap($layout.type).should('deep.equal', id);
@@ -328,7 +323,7 @@ describe('Layout Options', () => {
 
       cy.react('Controller', { props: { name: controllerName } }).type(arrows);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps(`layout.${controllerName}`)
         .should('deep.equal', max / 2 + modifyValue);
     });
@@ -347,7 +342,7 @@ describe('Layout Options', () => {
 
       cy.react('Controller', { props: { name: controllerName } }).type(arrows);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps(`layout.${controllerName}`)
         .should('deep.equal', max / 2 + modifyValue);
     });
@@ -358,7 +353,7 @@ describe('Layout Options', () => {
       const { label, id } = findLayout('preset');
       changeLayout(label);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('layout.type')
         .should('deep.equal', id);
     });

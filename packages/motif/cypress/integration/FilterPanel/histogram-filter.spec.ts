@@ -1,7 +1,7 @@
 import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 
 describe('Histogram Filters', () => {
-  const graphinEl: string = 'Graphin';
+  const graphinEl: string = 'Graphin2';
   beforeEach(() => {
     cy.visit('/');
     cy.waitForReact();

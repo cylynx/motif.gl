@@ -1,10 +1,10 @@
-import { SampleData } from '../../../packages/src/containers/ImportWizardModal/SampleData';
+import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 import {
   GraphSelectors,
   NodeColorFixed,
   NodeColorLegend,
   NodeStyleOptions,
-} from '../../../packages/src/redux/graph';
+} from '../../../src/redux/graph';
 
 describe('Legend Popover', () => {
   const getNodeStyleFromReduxStore = (): Promise<NodeStyleOptions> => {
@@ -30,7 +30,7 @@ describe('Legend Popover', () => {
 
   describe('Functionality', () => {
     const changeNodeColor = (type: string): void => {
-      cy.react('Select', { props: { id: 'legendSelection' } })
+      cy.react('Select2', { props: { id: 'legendSelection' } })
         .eq(0)
         .type(`${type}{enter}`);
     };

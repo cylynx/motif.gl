@@ -1,20 +1,18 @@
-import { NestedFormData } from '../../../packages/src/components/form';
-import * as form from '../../../packages/src/containers/SidePanel/OptionsPanel/constants';
-import { SampleData } from '../../../packages/src/containers/ImportWizardModal/SampleData';
+import { NestedFormData } from '../../../src/components/form';
+import * as form from '../../../src/containers/SidePanel/OptionsPanel/constants';
+import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 import {
   GraphSelectors,
   EdgeStyleOptions,
   EdgeWidthFixed,
   EdgeWidthProperty,
   Edge,
-} from '../../../packages/src/redux/graph';
-import {
-  EdgePattern,
-  mapEdgePattern,
-} from '../../../packages/src/utils/shape-utils';
-import { DEFAULT_EDGE_STYLE } from '../../../packages/src/constants/graph-shapes';
+} from '../../../src/redux/graph';
+import { EdgePattern, mapEdgePattern } from '../../../src/utils/shape-utils';
+import { DEFAULT_EDGE_STYLE } from '../../../src/constants/graph-shapes';
 
 describe('Edge Style Filter', () => {
+  const graphinEl = 'Graphin2';
   const findDefaultFromForm = (
     form: NestedFormData,
     layout: string,
@@ -144,7 +142,7 @@ describe('Edge Style Filter', () => {
       const edgePattern: string = edgeStyle.pattern;
       expect(edgePattern).to.deep.equal(pattern);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('data.edges.0')
         .then((edge: Edge) => {
           const { lineDash } = edge.style.keyshape;
@@ -158,7 +156,7 @@ describe('Edge Style Filter', () => {
 
       // https://github.com/cylynx/motif.gl/pull/86
       // setting default linewidth if there are no dropdown variables
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('data.edges.0')
         .then((edge: Edge) => {
           const { lineWidth } = edge.style.keyshape;
@@ -226,7 +224,7 @@ describe('Edge Style Filter', () => {
       changeArrow(selectedValue);
       await assertReduxValue(selectedValue);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('data.edges.0')
         .then((edge: Edge) => {
           const { endArrow } = edge.style.keyshape;
@@ -242,7 +240,7 @@ describe('Edge Style Filter', () => {
       changeArrow(selectedValue);
       await assertReduxValue(selectedValue);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('data.edges.0')
         .then((edge: Edge) => {
           const { endArrow } = edge.style.keyshape;

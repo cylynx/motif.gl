@@ -1,10 +1,11 @@
-import { GraphData } from '../../../packages/src/redux/graph';
+import { GraphData } from '../../../src/redux/graph';
 
 const edgeDatasetRootPath = 'LocalFiles/EdgeList';
 
 describe('Import Edge List', () => {
+  const graphinEl = 'Graphin2';
   const selectEdgeListDataType = () => {
-    cy.react('Select', { props: { id: 'DataTypeSelection' } })
+    cy.react('Select2', { props: { id: 'DataTypeSelection' } })
       .nthNode(0)
       .click();
     cy.get('li[role="option"')
@@ -37,7 +38,7 @@ describe('Import Edge List', () => {
       cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('data')
         .then((graph: GraphData) => {
           const { edges, nodes } = graph;
@@ -51,7 +52,7 @@ describe('Import Edge List', () => {
       cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('data')
         .then((graph: GraphData) => {
           const { edges, nodes } = graph;

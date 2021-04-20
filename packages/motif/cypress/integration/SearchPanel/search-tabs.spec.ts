@@ -1,5 +1,5 @@
-import { SampleData } from '../../../packages/src/containers/ImportWizardModal/SampleData';
-import { EdgeInformation, Node } from '../../../packages/src/redux/graph';
+import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
+import { EdgeInformation, Node } from '../../../src/redux/graph';
 
 describe('Search Tabs', () => {
   before(() => {

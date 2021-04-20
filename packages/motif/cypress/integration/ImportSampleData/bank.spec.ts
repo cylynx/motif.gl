@@ -1,6 +1,7 @@
-import { SampleData } from '../../../packages/src/containers/ImportWizardModal/SampleData';
+import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 
 describe('Import Bank Connections', () => {
+  const graphinEl = 'Graphin2';
   before(() => {
     cy.visit('/');
     cy.waitForReact();
@@ -15,19 +16,19 @@ describe('Import Bank Connections', () => {
   });
 
   it('should display layout in Concentric', () => {
-    cy.getReact('Graphin')
+    cy.getReact(graphinEl)
       .getProps('layout.type')
       .should('deep.eq', 'concentric');
   });
 
   it('should render 23 edges in Graphin', () => {
-    cy.getReact('Graphin')
+    cy.getReact(graphinEl)
       .getProps('data.edges')
       .should('have.length', 23);
   });
 
   it('should render 17 nodes in Graphin', () => {
-    cy.getReact('Graphin')
+    cy.getReact(graphinEl)
       .getProps('data.nodes')
       .should('have.length', 17);
   });

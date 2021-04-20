@@ -1,6 +1,7 @@
-import { SampleData } from '../../../packages/src/containers/ImportWizardModal/SampleData';
+import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 
 describe('Import Circle Graph', () => {
+  const graphinEl = 'Graphin2';
   before(() => {
     cy.visit('/');
     cy.waitForReact();
@@ -19,19 +20,19 @@ describe('Import Circle Graph', () => {
   });
 
   it('should display layout in Concentric', () => {
-    cy.getReact('Graphin')
+    cy.getReact(graphinEl)
       .getProps('layout.type')
       .should('deep.eq', 'concentric');
   });
 
   it('should render 18 edges in Graphin', () => {
-    cy.getReact('Graphin')
+    cy.getReact(graphinEl)
       .getProps('data.edges')
       .should('have.length', 18);
   });
 
   it('should render 10 nodes in Graphin', () => {
-    cy.getReact('Graphin')
+    cy.getReact(graphinEl)
       .getProps('data.nodes')
       .should('have.length', 10);
   });

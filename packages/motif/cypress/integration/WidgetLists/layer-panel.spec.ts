@@ -1,4 +1,4 @@
-import { SIDE_NAVBAR_WIDTH } from '../../../packages/src/constants/widget-units';
+import { SIDE_NAVBAR_WIDTH } from '../../../src/constants/widget-units';
 
 describe('Layer Panels', () => {
   before(() => {

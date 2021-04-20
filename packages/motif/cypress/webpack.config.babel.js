@@ -1,3 +1,4 @@
+// @ts-ignore
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const config = {

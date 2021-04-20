@@ -5,11 +5,12 @@ import {
   GraphSlices,
   StyleOptions,
   Field,
-} from '../../../packages/src/redux/graph';
+} from '../../../src/redux/graph';
 
 const jsonDatasetRootPath = 'LocalFiles/Json';
 
 describe('Import Single Local File', () => {
+  const graphinEl = 'Graphin2';
   const getGraphStates = (): Promise<GraphState> => {
     return new Promise((resolve) => {
       cy.getReact('Provider')
@@ -50,7 +51,7 @@ describe('Import Single Local File', () => {
       cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('data')
         .then((graph: GraphData) => {
           const { edges, nodes } = graph;
@@ -68,7 +69,7 @@ describe('Import Single Local File', () => {
       cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('data')
         .then((graph: GraphData) => {
           const { edges, nodes } = graph;
@@ -83,7 +84,7 @@ describe('Import Single Local File', () => {
       cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('data')
         .then((graph: GraphData) => {
           const { edges, nodes } = graph;
@@ -101,7 +102,7 @@ describe('Import Single Local File', () => {
       cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('data')
         .then((graph: GraphData) => {
           const { edges, nodes } = graph;

@@ -1,20 +1,20 @@
-import { SampleData } from '../../../packages/src/containers/ImportWizardModal/SampleData';
-import * as layoutOptions from '../../../packages/src/constants/layout-options';
-import * as form from '../../../packages/src/containers/SidePanel/OptionsPanel/constants';
+import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
+import * as layoutOptions from '../../../src/constants/layout-options';
+import * as form from '../../../src/containers/SidePanel/OptionsPanel/constants';
 import {
   EdgeStyleOptions,
   EdgeWidthFixed,
   EdgeWidthProperty,
-  GraphData,
   GraphSelectors,
   NodeSizeDegree,
   NodeSizeFixed,
   NodeSizeProperty,
   NodeStyleOptions,
-} from '../../../packages/src/redux/graph';
-import { NestedFormData } from '../../../packages/src/components/form';
+} from '../../../src/redux/graph';
+import { NestedFormData } from '../../../src/components/form';
 
 describe('Setting Popovers', () => {
+  const graphinEl = 'Graphin2';
   const findDefaultFromForm = (
     form: NestedFormData,
     layout: string,
@@ -81,7 +81,7 @@ describe('Setting Popovers', () => {
       const { label, id } = findLayout(type);
       changeLayout(label);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('layout')
         .then(($layout) => {
           cy.wrap($layout.type).should('deep.equal', id);
@@ -94,7 +94,7 @@ describe('Setting Popovers', () => {
       const { label, id } = findLayout(type);
       changeLayout(label);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('layout')
         .then(($layout) => {
           cy.wrap($layout.type).should('deep.equal', id);
@@ -108,7 +108,7 @@ describe('Setting Popovers', () => {
       const { label, id } = findLayout(type);
       changeLayout(label);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('layout')
         .then(($layout) => {
           cy.wrap($layout.type).should('deep.equal', id);
@@ -121,7 +121,7 @@ describe('Setting Popovers', () => {
       const { label, id } = findLayout(type);
       changeLayout(label);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('layout')
         .then(($layout) => {
           cy.wrap($layout.type).should('deep.equal', id);
@@ -142,7 +142,7 @@ describe('Setting Popovers', () => {
       const { label, id } = findLayout(type);
       changeLayout(label);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('layout')
         .then(($layout) => {
           cy.wrap($layout.type).should('deep.equal', id);
@@ -158,7 +158,7 @@ describe('Setting Popovers', () => {
       const { label, id } = findLayout(type);
       changeLayout(label);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('layout.type')
         .should('deep.equal', id);
     });
@@ -174,7 +174,7 @@ describe('Setting Popovers', () => {
         const { label, id } = findLayout(type);
         changeLayout(label);
 
-        cy.getReact('Graphin')
+        cy.getReact(graphinEl)
           .getProps('layout')
           .then(($layout) => {
             cy.wrap($layout.type).should('deep.equal', id);
@@ -191,7 +191,7 @@ describe('Setting Popovers', () => {
       const { label, id } = findLayout('preset');
       changeLayout(label);
 
-      cy.getReact('Graphin')
+      cy.getReact(graphinEl)
         .getProps('layout.type')
         .should('deep.equal', id);
     });

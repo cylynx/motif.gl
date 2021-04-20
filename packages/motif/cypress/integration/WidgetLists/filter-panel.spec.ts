@@ -1,4 +1,4 @@
-import { SampleData } from '../../../packages/src/containers/ImportWizardModal/SampleData';
+import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 
 describe('Filter Panel', () => {
   before(() => {

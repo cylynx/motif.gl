@@ -1,6 +1,7 @@
-import { SampleData } from '../../../packages/src/containers/ImportWizardModal/SampleData';
+import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 
 describe('Import Random + Circle', () => {
+  const graphinEl = 'Graphin2';
   before(() => {
     cy.visit('/');
     cy.waitForReact();
@@ -19,19 +20,19 @@ describe('Import Random + Circle', () => {
   });
 
   it('should display layout in Concentric', () => {
-    cy.getReact('Graphin')
+    cy.getReact(graphinEl)
       .getProps('layout.type')
       .should('deep.eq', 'concentric');
   });
 
   it('should render 25 edges in Graphin', () => {
-    cy.getReact('Graphin')
+    cy.getReact(graphinEl)
       .getProps('data.edges')
       .should('have.length', 25);
   });
 
   it('should render 15 nodes in Graphin', () => {
-    cy.getReact('Graphin')
+    cy.getReact(graphinEl)
       .getProps('data.nodes')
       .should('have.length', 15);
   });

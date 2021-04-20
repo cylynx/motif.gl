@@ -8,7 +8,7 @@ describe('Variable Inspector', () => {
   });
 
   it('should render successfully', () => {
-    cy.getReact('Select', {
+    cy.getReact('Select2', {
       props: {
         'data-testid': 'select-variable',
       },
@@ -29,7 +29,7 @@ describe('Variable Inspector', () => {
       },
       exact: true,
     })
-      .getReact('Select')
+      .getReact('Select2')
       .should('exist');
   });
 

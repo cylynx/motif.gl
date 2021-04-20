@@ -1,6 +1,7 @@
-import { SampleData } from '../../../packages/src/containers/ImportWizardModal/SampleData';
+import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 
 describe('Import American Airlines', () => {
+  const graphinEl = 'Graphin2';
   before(() => {
     cy.visit('/');
     cy.waitForReact();
@@ -17,19 +18,19 @@ describe('Import American Airlines', () => {
   });
 
   it('should display layout as x y coordinate', () => {
-    cy.getReact('Graphin')
+    cy.getReact(graphinEl)
       .getProps('layout.type')
       .should('deep.eq', 'preset');
   });
 
   it('should render 1298 edges in Graphin', () => {
-    cy.getReact('Graphin')
+    cy.getReact(graphinEl)
       .getProps('data.edges')
       .should('have.length', 1298);
   });
 
   it('should render 235 nodes in Graphin', () => {
-    cy.getReact('Graphin')
+    cy.getReact(graphinEl)
       .getProps('data.nodes')
       .should('have.length', 235);
   });

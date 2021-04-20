@@ -1,5 +1,5 @@
-import { SampleData } from '../../../packages/src/containers/ImportWizardModal/SampleData';
-import { Field } from '../../../packages/src/redux/graph';
+import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
+import { Field } from '../../../src/redux/graph';
 import { Option } from 'baseui/select';
 
 describe('Group Edge Aggregations', () => {
@@ -18,7 +18,7 @@ describe('Group Edge Aggregations', () => {
     });
 
     it('should enable successfully', () => {
-      cy.react('StatelessCheckbox').click();
+      cy.react('StatelessCheckbox2').click();
       cy.wait(1000);
 
       cy.getReact('GroupByFields')
@@ -57,7 +57,7 @@ describe('Group Edge Aggregations', () => {
 
     it('should group by custom value', () => {
       const groupByType = 'is_foreign_source';
-      cy.react('Select', {
+      cy.react('Select3', {
         props: { 'data-testid': 'group-by-fields:select' },
       })
         .last()
@@ -75,7 +75,7 @@ describe('Group Edge Aggregations', () => {
 
   describe('Fields With Aggregations', () => {
     const fieldSelect = () => {
-      return cy.getReact('Select', {
+      return cy.getReact('Select3', {
         props: {
           'data-testid': 'aggregate-fields:field',
         },
@@ -91,7 +91,7 @@ describe('Group Edge Aggregations', () => {
     };
 
     const aggregateSelect = () => {
-      return cy.getReact('Select', {
+      return cy.getReact('Select3', {
         props: {
           'data-testid': 'aggregate-fields:aggregate',
         },
@@ -111,7 +111,7 @@ describe('Group Edge Aggregations', () => {
     });
 
     it('should suggest numeric aggregations to selected field', () => {
-      cy.react('Select', {
+      cy.react('Select2', {
         props: {
           'data-testid': 'aggregate-fields:field',
         },
@@ -138,7 +138,7 @@ describe('Group Edge Aggregations', () => {
     });
 
     it('should suggest string aggregations to selected field', () => {
-      cy.react('Select', {
+      cy.react('Select2', {
         props: {
           'data-testid': 'aggregate-fields:field',
         },
@@ -163,7 +163,7 @@ describe('Group Edge Aggregations', () => {
     });
 
     it('should apply multiple aggregations onto the group edges', () => {
-      cy.react('Select', {
+      cy.react('Select2', {
         props: {
           'data-testid': 'aggregate-fields:aggregate',
         },
@@ -173,7 +173,7 @@ describe('Group Edge Aggregations', () => {
       cy.get('li[role="option"]')
         .contains('First')
         .click();
-      cy.react('Select', {
+      cy.react('Select2', {
         props: {
           'data-testid': 'aggregate-fields:aggregate',
         },

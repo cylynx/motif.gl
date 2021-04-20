@@ -1,6 +1,6 @@
-import { SampleData } from '../../../packages/src/containers/ImportWizardModal/SampleData';
-import * as form from '../../../packages/src/containers/SidePanel/OptionsPanel/constants';
-import { NestedFormData } from '../../../packages/src/components/form/NestedForm';
+import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
+import * as form from '../../../src/containers/SidePanel/OptionsPanel/constants';
+import { NestedFormData } from '../../../src/components/form/NestedForm';
 import {
   GraphSelectors,
   NodeColorFixed,
@@ -9,7 +9,7 @@ import {
   NodeSizeFixed,
   NodeSizeProperty,
   NodeStyleOptions,
-} from '../../../packages/src/redux/graph';
+} from '../../../src/redux/graph';
 
 describe('Node Style Filter', () => {
   const findDefaultFromForm = (
