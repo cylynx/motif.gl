@@ -16,7 +16,7 @@ jobs:
       - name: Use Node.js 12
         uses: actions/setup-node@v2
         with:
-          node-version: 12
+          node-version: 15
 
       - name: Set NPM Production Configuration to false
         run: npm config set -g production false
