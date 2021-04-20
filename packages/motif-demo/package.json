@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "vite --force",
+    "start": "vite",
     "build": "react-scripts build"
   },
   "dependencies": {
