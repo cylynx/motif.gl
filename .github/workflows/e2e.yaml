@@ -35,7 +35,7 @@ jobs:
 
       - name: Cypress run
         uses: cypress-io/github-action@v2
-        timeout-minutes: 20
+        timeout-minutes: 27
         with:
           install: false
           start: npm run demo
