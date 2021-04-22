@@ -221,6 +221,7 @@ export const getFieldDomain = (
     }
   }
 
+
   // mapped value is undefined and empty, do not proceed.
   if (mappedValue.length === 0) return false;
 
