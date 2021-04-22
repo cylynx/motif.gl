@@ -411,7 +411,7 @@ export const groupEdgesWithConfiguration = (
 
   const revertGroupEdge = (graphData: GraphData, graphFlatten: GraphData) => {
     const graphDataEdgeIds = graphData.edges.map((edge: Edge) => edge.id);
-    const groupedEdgesId: string[] = obtainGroupedEdges(graphFlatten);
+    const groupedEdgesId: string[] = obtainGroupedEdges(graphData);
     const edgeIdsForRemoval: string[] = [
       ...graphDataEdgeIds,
       ...groupedEdgesId,
