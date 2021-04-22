@@ -40,6 +40,7 @@ const ConfigureFields = () => {
   const { importJson, importEdgeList, importNodeEdge } = useImportData();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const jsonFileRef = useRef<TFileContent[]>(null);
+  const groupEdgeRef = useRef<boolean>(groupEdge);
 
   const {
     watch,
@@ -105,6 +106,7 @@ const ConfigureFields = () => {
       const isJsonContainStyle = isContainStyle(attachments as TFileContent[]);
       if (isJsonContainStyle) {
         jsonFileRef.current = attachments as TFileContent[];
+        groupEdgeRef.current = groupEdge;
         setModalOpen(true);
         return;
       }
@@ -158,19 +160,37 @@ const ConfigureFields = () => {
 
       <ConfirmationModal
         onClose={() => {
-          importJson(jsonFileRef.current, groupEdge, accessors, false);
+          importJson(
+            jsonFileRef.current,
+            groupEdgeRef.current,
+            accessors,
+            false,
+          );
           jsonFileRef.current = null;
+          groupEdgeRef.current = groupEdge;
           setModalOpen(false);
         }}
         isOpen={modalOpen}
         onReject={() => {
-          importJson(jsonFileRef.current, groupEdge, accessors, false);
+          importJson(
+            jsonFileRef.current,
+            groupEdgeRef.current,
+            accessors,
+            false,
+          );
           jsonFileRef.current = null;
+          groupEdgeRef.current = groupEdge;
           setModalOpen(false);
         }}
         onAccept={() => {
-          importJson(jsonFileRef.current, groupEdge, accessors, true);
+          importJson(
+            jsonFileRef.current,
+            groupEdgeRef.current,
+            accessors,
+            true,
+          );
           jsonFileRef.current = null;
+          groupEdgeRef.current = groupEdge;
           setModalOpen(false);
         }}
         rejectBtnText='No'

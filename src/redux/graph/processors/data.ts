@@ -120,7 +120,11 @@ export const processJson = async (
   groupEdges: boolean,
   key: string | number = shortid.generate(),
 ): Promise<GraphData> => {
-  if (validateMotifJson(json)) return cloneDeep(json);
+  if (validateMotifJson(json)) {
+    const modJson = cloneDeep(json);
+    Object.assign(modJson.metadata.groupEdges, { toggle: groupEdges });
+    return modJson;
+  }
 
   if (json.nodes && json.edges) {
     const nodeCsv = await json2csv(json.nodes);

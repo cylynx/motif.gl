@@ -262,6 +262,7 @@ const produceGraphWithGroupEdges = (
     ...graphWithRemovedEdges,
     ...groupedEdges,
   ];
+
   const modData = { ...data };
   Object.assign(modData, { edges: graphWithGroupedEdges });
   return modData;
@@ -410,16 +411,11 @@ export const groupEdgesWithConfiguration = (
   };
 
   const revertGroupEdge = (graphData: GraphData, graphFlatten: GraphData) => {
-    const graphDataEdgeIds = graphData.edges.map((edge: Edge) => edge.id);
     const groupedEdgesId: string[] = obtainGroupedEdges(graphData);
-    const edgeIdsForRemoval: string[] = [
-      ...graphDataEdgeIds,
-      ...groupedEdgesId,
-    ];
     const combinedGraphData: GraphData = produceGraphWithoutGroupEdges(
       graphData,
       graphFlatten,
-      edgeIdsForRemoval,
+      groupedEdgesId,
     );
 
     return combinedGraphData;
