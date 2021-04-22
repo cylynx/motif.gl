@@ -7,7 +7,7 @@
   "repository": "cylynx/motif.gl",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
-  "module": "dist/motif.esm.js",
+  "module": "dist/motif.es.js",
   "engines": {
     "node": ">=10"
   },
