@@ -67,9 +67,9 @@ export const TopRightLayer: FC = ({ children }) => {
 
 type GraphLayerProps = {
   isMainWidgetExpanded: boolean;
-  children: ReactNode;
+  children?: ReactNode;
   leftLayerWidth: string;
-  graphRef: MutableRefObject<Graphin>;
+  graphRef?: MutableRefObject<Graphin>;
 };
 
 type GraphLayerState = {

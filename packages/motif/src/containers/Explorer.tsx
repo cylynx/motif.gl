@@ -66,93 +66,177 @@ export const WidgetContainer = (props: WidgetContainerProps) => {
   return null;
 };
 
-const Explorer = React.forwardRef<Graphin, ExplorerProps>(
-  (props, ref: MutableRefObject<Graphin>) => {
-    const {
-      name,
-      accessors,
-      overrides,
-      secondaryTheme,
-      styleOptions = GraphSlices.initialState.styleOptions,
-    } = props;
-    const localRef = useRef<Graphin>(null);
-    const graphRef = ref || localRef;
-    const [tooltip, setTooltip] = useState(null);
-    const [leftLayerWidth, setLeftLayerWidth] = useState<string>(
-      LEFT_LAYER_WIDTH,
-    );
+const Explorer = (props: ExplorerProps) => {
+  const {
+    name,
+    accessors,
+    overrides,
+    secondaryTheme,
+    styleOptions = GraphSlices.initialState.styleOptions,
+  } = props;
+  const graphRef = useRef<Graphin>(null);
+  const [tooltip, setTooltip] = useState(null);
+  const [leftLayerWidth, setLeftLayerWidth] = useState<string>(
+    LEFT_LAYER_WIDTH,
+  );
 
-    const [, theme] = useStyletron();
-    const dispatch = useDispatch();
-    const loading = useSelector((state) => UISelectors.getUI(state).loading);
-    const widgetState = useSelector((state) =>
-      WidgetSelectors.getWidget(state),
-    );
-    const widgetStateIds = useMemo(() => {
-      return Object.values(widgetState);
-    }, [widgetState]);
+  const [, theme] = useStyletron();
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => UISelectors.getUI(state).loading);
+  const widgetState = useSelector((state) => WidgetSelectors.getWidget(state));
+  const widgetStateIds = useMemo(() => {
+    return Object.values(widgetState);
+  }, [widgetState]);
 
-    const UserTooltip = getTooltipOverride(overrides, Tooltip);
-    const widgetList = getWidgetOverride(overrides, defaultWidgetList);
-    const activeWidgetList: WidgetItem[] =
-      widgetList.filter((x: WidgetItem) => widgetStateIds.includes(x.id)) || [];
+  const UserTooltip = getTooltipOverride(overrides, Tooltip);
+  const widgetList = getWidgetOverride(overrides, defaultWidgetList);
+  const activeWidgetList: WidgetItem[] =
+    widgetList.filter((x: WidgetItem) => widgetStateIds.includes(x.id)) || [];
 
-    const isMainWidgetExpanded: boolean = useMemo(() => {
-      return widgetState.main !== null;
-    }, [widgetState.main]);
+  const isMainWidgetExpanded: boolean = useMemo(() => {
+    return widgetState.main !== null;
+  }, [widgetState.main]);
 
-    useEffect(() => {
-      if (isMainWidgetExpanded) {
-        setLeftLayerWidth(LEFT_LAYER_WIDTH);
-        return;
-      }
+  useEffect(() => {
+    if (isMainWidgetExpanded) {
+      setLeftLayerWidth(LEFT_LAYER_WIDTH);
+      return;
+    }
 
-      setLeftLayerWidth('0px');
-    }, [isMainWidgetExpanded]);
+    setLeftLayerWidth('0px');
+  }, [isMainWidgetExpanded]);
 
-    useEffect(() => {
-      // Filter out components
-      const widgetProp = widgetList.map((x) => {
-        return {
-          id: x.id,
-          group: x.group,
-          position: x.position,
-          active: x.active,
-        };
-      });
-      if (accessors) {
-        dispatch(GraphSlices.setAccessors(accessors));
-      }
-      if (name) {
-        dispatch(UISlices.setName(name));
-      }
-      dispatch(WidgetSlices.setWidget(widgetProp));
-      dispatch(GraphSlices.overrideStyles(styleOptions));
-    }, [accessors, overrides?.widgetList, name]);
+  useEffect(() => {
+    // Filter out components
+    const widgetProp = widgetList.map((x) => {
+      return {
+        id: x.id,
+        group: x.group,
+        position: x.position,
+        active: x.active,
+      };
+    });
+    if (accessors) {
+      dispatch(GraphSlices.setAccessors(accessors));
+    }
+    if (name) {
+      dispatch(UISlices.setName(name));
+    }
+    dispatch(WidgetSlices.setWidget(widgetProp));
+    dispatch(GraphSlices.overrideStyles(styleOptions));
+  }, [accessors, overrides?.widgetList, name]);
 
-    return (
-      <Fragment>
-        <DataTableModal />
-        <ImportWizardModal overrideTabs={overrides?.Tabs} />
-        <GraphLayer
-          isMainWidgetExpanded={isMainWidgetExpanded}
-          leftLayerWidth={leftLayerWidth}
-          graphRef={graphRef}
-        >
-          <Graph ref={graphRef} setTooltip={setTooltip} />
-        </GraphLayer>
-        <WidgetContainer graphRef={graphRef} theme={secondaryTheme || theme}>
-          <SideNavBars />
-          {loading && <Loader />}
-          {tooltip && <UserTooltip tooltip={{ ...tooltip, leftLayerWidth }} />}
-          {activeWidgetList.length > 0 &&
-            activeWidgetList.map((item) => (
-              <Block key={item.id}>{item.widget}</Block>
-            ))}
-        </WidgetContainer>
-      </Fragment>
-    );
-  },
-);
+  return (
+    <Fragment>
+      <DataTableModal />
+      <ImportWizardModal overrideTabs={overrides?.Tabs} />
+      <GraphLayer
+        isMainWidgetExpanded={isMainWidgetExpanded}
+        leftLayerWidth={leftLayerWidth}
+        graphRef={graphRef}
+      >
+        <Graph ref={graphRef} setTooltip={setTooltip} />
+      </GraphLayer>
+      <WidgetContainer graphRef={graphRef} theme={secondaryTheme || theme}>
+        <SideNavBars />
+        {loading && <Loader />}
+        {tooltip && <UserTooltip tooltip={{ ...tooltip, leftLayerWidth }} />}
+        {activeWidgetList.length > 0 &&
+          activeWidgetList.map((item) => (
+            <Block key={item.id}>{item.widget}</Block>
+          ))}
+      </WidgetContainer>
+    </Fragment>
+  );
+};
+
+// const Explorer = React.forwardRef<Graphin, ExplorerProps>(
+//   (props, ref: MutableRefObject<Graphin>) => {
+//     const {
+//       name,
+//       accessors,
+//       overrides,
+//       secondaryTheme,
+//       styleOptions = GraphSlices.initialState.styleOptions,
+//     } = props;
+//     const localRef = useRef<Graphin>(null);
+//     const graphRef = ref || localRef;
+//     const [tooltip, setTooltip] = useState(null);
+//     const [leftLayerWidth, setLeftLayerWidth] = useState<string>(
+//       LEFT_LAYER_WIDTH,
+//     );
+
+//     const [, theme] = useStyletron();
+//     const dispatch = useDispatch();
+//     const loading = useSelector((state) => UISelectors.getUI(state).loading);
+//     const widgetState = useSelector((state) =>
+//       WidgetSelectors.getWidget(state),
+//     );
+//     const widgetStateIds = useMemo(() => {
+//       return Object.values(widgetState);
+//     }, [widgetState]);
+
+//     const UserTooltip = getTooltipOverride(overrides, Tooltip);
+//     const widgetList = getWidgetOverride(overrides, defaultWidgetList);
+//     const activeWidgetList: WidgetItem[] =
+//       widgetList.filter((x: WidgetItem) => widgetStateIds.includes(x.id)) || [];
+
+//     const isMainWidgetExpanded: boolean = useMemo(() => {
+//       return widgetState.main !== null;
+//     }, [widgetState.main]);
+
+//     useEffect(() => {
+//       if (isMainWidgetExpanded) {
+//         setLeftLayerWidth(LEFT_LAYER_WIDTH);
+//         return;
+//       }
+
+//       setLeftLayerWidth('0px');
+//     }, [isMainWidgetExpanded]);
+
+//     useEffect(() => {
+//       // Filter out components
+//       const widgetProp = widgetList.map((x) => {
+//         return {
+//           id: x.id,
+//           group: x.group,
+//           position: x.position,
+//           active: x.active,
+//         };
+//       });
+//       if (accessors) {
+//         dispatch(GraphSlices.setAccessors(accessors));
+//       }
+//       if (name) {
+//         dispatch(UISlices.setName(name));
+//       }
+//       dispatch(WidgetSlices.setWidget(widgetProp));
+//       dispatch(GraphSlices.overrideStyles(styleOptions));
+//     }, [accessors, overrides?.widgetList, name]);
+
+//     return (
+//       <Fragment>
+//         <DataTableModal />
+//         <ImportWizardModal overrideTabs={overrides?.Tabs} />
+//         <GraphLayer
+//           isMainWidgetExpanded={isMainWidgetExpanded}
+//           leftLayerWidth={leftLayerWidth}
+//           graphRef={graphRef}
+//         >
+//           <Graph ref={graphRef} setTooltip={setTooltip} />
+//         </GraphLayer>
+//         <WidgetContainer graphRef={graphRef} theme={secondaryTheme || theme}>
+//           <SideNavBars />
+//           {loading && <Loader />}
+//           {tooltip && <UserTooltip tooltip={{ ...tooltip, leftLayerWidth }} />}
+//           {activeWidgetList.length > 0 &&
+//             activeWidgetList.map((item) => (
+//               <Block key={item.id}>{item.widget}</Block>
+//             ))}
+//         </WidgetContainer>
+//       </Fragment>
+//     );
+//   },
+// );
 
 export default Explorer;

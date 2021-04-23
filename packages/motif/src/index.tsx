@@ -9,6 +9,7 @@ import TablePreview from './components/TablePreview';
 import TableTabs, { TableTabItem } from './components/TableTabs';
 import GroupEdgeConfiguration from './components/GroupEdgeConfiguration';
 
+// eslint-disable-next-line prettier/prettier
 export type { TableTabItem, StepperItems };
 export {
   ProgressStepper,

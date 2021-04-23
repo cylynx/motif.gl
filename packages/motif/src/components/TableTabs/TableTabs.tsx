@@ -5,31 +5,34 @@ import { Block } from 'baseui/block';
 import { GraphAttribute } from '../../redux/graph';
 
 type TableTabProps = { $theme?: Theme; $isActive: boolean };
-const TableTab = styled('div', ({ $theme, $isActive }: TableTabProps) => {
-  const {
-    backgroundPrimary,
-    backgroundSecondary,
-    contentPrimary,
-    mono200,
-  } = $theme.colors;
-  const { scale0 } = $theme.sizing;
-  return {
-    paddingTop: $theme.sizing.scale300,
-    paddingBottom: $theme.sizing.scale300,
-    paddingLeft: $theme.sizing.scale500,
-    paddingRight: $theme.sizing.scale500,
-    color: contentPrimary,
-    backgroundColor: $isActive ? backgroundSecondary : backgroundPrimary,
-    borderWidth: $isActive ? scale0 : '2px',
-    borderColor: $isActive ? contentPrimary : 'transparent',
-    borderStyle: 'solid',
-    ...$theme.typography.LabelSmall,
-    ':hover': {
-      backgroundColor: mono200,
-      cursor: 'pointer',
-    },
-  };
-});
+const TableTab = styled<TableTabProps, 'div', Theme>(
+  'div',
+  ({ $theme, $isActive }) => {
+    const {
+      backgroundPrimary,
+      backgroundSecondary,
+      contentPrimary,
+      mono200,
+    } = $theme.colors;
+    const { scale0 } = $theme.sizing;
+    return {
+      paddingTop: $theme.sizing.scale300,
+      paddingBottom: $theme.sizing.scale300,
+      paddingLeft: $theme.sizing.scale500,
+      paddingRight: $theme.sizing.scale500,
+      color: contentPrimary,
+      backgroundColor: $isActive ? backgroundSecondary : backgroundPrimary,
+      borderWidth: $isActive ? scale0 : '2px',
+      borderColor: $isActive ? contentPrimary : 'transparent',
+      borderStyle: 'solid',
+      ...$theme.typography.LabelSmall,
+      ':hover': {
+        backgroundColor: mono200,
+        cursor: 'pointer',
+      },
+    };
+  },
+);
 
 export type TableTabItem = { key: GraphAttribute; label: string };
 type TableTabsProps = {
