@@ -21,7 +21,7 @@ export const buildEdge = (e: any) => {
     id: `edge-${e.identity.toString()}`,
     source: `node-${e.start.toString()}`,
     target: `node-${e.end.toString()}`,
-    erelationship: e.type,
+    relationship: e.type,
   };
 
   if (e.properties) {
