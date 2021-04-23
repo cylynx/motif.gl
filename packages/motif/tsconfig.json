@@ -4,7 +4,9 @@
     "baseUrl": "./",
     "lib": ["dom", "dom.iterable", "esnext"],
     "outDir": "dist",
-    "jsx": "react"
+    "jsx": "react",
+    "noImplicitAny": false,
+    "strictNullChecks": false
   },
   "include": ["src"],
   "exclude": [

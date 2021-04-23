@@ -40,13 +40,13 @@ export interface WidgetContainerProps {
   theme: Theme;
 }
 
-export interface ExplorerProps {
+export type ExplorerProps = {
   name: string;
   accessors: Accessors;
   overrides?: Overrides;
   styleOptions?: StyleOptions;
   secondaryTheme?: Theme;
-}
+};
 
 export const WidgetContainer = (props: WidgetContainerProps) => {
   const { children, theme, graphRef } = props;
