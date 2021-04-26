@@ -1,4 +1,5 @@
 import { createTheme } from 'baseui';
+import { Breakpoints, MediaQuery, Theme } from 'baseui/theme';
 
 const primitives = {
   // Primary Palette
@@ -111,26 +112,24 @@ const overrides = {
 };
 
 // https://github.com/uber/baseweb/blob/4efe7fabbb06c5301f7faabbe56d833d9bc51a91/documentation-site/pages/_app.js
-const breakpoints = {
+const breakpoints: Breakpoints = {
   small: 670,
   medium: 920,
   large: 1280,
 };
 
-const ResponsiveTheme = Object.keys(breakpoints).reduce(
-  (acc, key) => {
-    acc.mediaQuery[
-      key
-    ] = `@media screen and (min-width: ${breakpoints[key]}px)`;
-    return acc;
-  },
-  {
-    breakpoints,
-    mediaQuery: {},
-  },
-);
+const mediaQuery: MediaQuery = {
+  small: '@media screen and (min-width: 670px)',
+  medium: '@media screen and (min-width: 920px)',
+  large: '@media screen and (min-width: 1280px)',
+};
+
+const ResponsiveTheme = {
+  breakpoints,
+  mediaQuery,
+};
 
 const LightTheme = createTheme(primitives, overrides);
-const ResponsiveLightTheme = { ...LightTheme, ...ResponsiveTheme };
+const MotifLightTheme: Theme = { ...LightTheme, ...ResponsiveTheme };
 
-export default ResponsiveLightTheme;
+export default MotifLightTheme;

@@ -12,6 +12,7 @@
   "exclude": [
     "node_modules",
     "dist",
+    "demo/**",
     "src/**/*.+(test|spec).+(ts|tsx|js|jsx)",
     "cypress"
   ]

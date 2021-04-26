@@ -144,6 +144,6 @@ const overrides = {
   },
 };
 
-const DarkTheme = createDarkTheme(primitives, overrides);
+const MotifDarkTheme = createDarkTheme(primitives, overrides);
 
-export default DarkTheme;
+export default MotifDarkTheme;

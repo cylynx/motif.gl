@@ -9,6 +9,8 @@ import TablePreview from './components/TablePreview';
 import TableTabs, { TableTabItem } from './components/TableTabs';
 import GroupEdgeConfiguration from './components/GroupEdgeConfiguration';
 
+import { MotifDarkTheme, MotifLightTheme } from './theme';
+
 // eslint-disable-next-line prettier/prettier
 export type { TableTabItem, StepperItems };
 export {
@@ -22,7 +24,7 @@ export {
 export default Motif;
 export { investigateReducer, Tooltip };
 
-export * from './theme/index';
+export { MotifDarkTheme, MotifLightTheme };
 export * from './utils/utils';
 export * from './redux';
 export * from './containers/ImportWizardModal';
