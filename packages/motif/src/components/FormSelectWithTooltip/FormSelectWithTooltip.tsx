@@ -34,16 +34,16 @@ const FormSelectWithTooltip: FC<FormSelectWithTooltipProps> = ({
   const selectedOption: Value = useMemo(() => {
     if (options.length === 0) return [];
 
-    const selectedOption: Option = options.find(
+    const selected: Option = options.find(
       (option: Option) => option.id === value,
     );
 
-    if (selectedOption === undefined) {
+    if (selected === undefined) {
       const [firstOption] = options;
       return [firstOption];
     }
 
-    return [selectedOption];
+    return [selected];
   }, [value, options]);
 
   return (

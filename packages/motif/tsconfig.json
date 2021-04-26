@@ -5,7 +5,6 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "outDir": "dist",
     "jsx": "react",
-    "types": ["vite/client"],
     "noImplicitAny": false,
     "strictNullChecks": false
   },

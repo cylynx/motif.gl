@@ -13,8 +13,8 @@
   },
   "scripts": {
     "start": "vite --config vite.dev.config.ts",
-    "start-tsdx": "tsdx watch",
-    "build": "npm run clean && tsdx build --target node",
+    "build-tsdx": "tsdx build --target node",
+    "build": "vite build --config vite.prod.config.ts",
     "lint": "tsdx lint",
     "test": "tsdx test",
     "test:watch": "tsdx test --watchAll",
