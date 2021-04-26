@@ -45,14 +45,14 @@ const ImportWizardModal: FC<ImportWizardProps> = ({ overrideTabs }) => {
     return overrideTabs ?? defaultImportTabs;
   }, [overrideTabs]);
 
-  const isOpen: boolean = useMemo(() => {
+  const isModalOpen: boolean = useMemo(() => {
     const { isOpen, content } = modal as ModalState;
     return isOpen && content === 'import';
   }, [modal.isOpen, modal.content]);
 
   const [activeKey, setActiveKey] = useState(tabs[0].key);
-  const onTabChange = ({ activeKey }: TActiveKey) => {
-    setActiveKey(activeKey);
+  const onTabChange = ({ activeKey: tabActiveKey }: TActiveKey) => {
+    setActiveKey(tabActiveKey);
   };
 
   const onCloseModal: ModalProps['onClose'] = (args) => {
@@ -75,7 +75,7 @@ const ImportWizardModal: FC<ImportWizardProps> = ({ overrideTabs }) => {
       <Modal
         closeable
         unstable_ModalBackdropScroll
-        isOpen={isOpen}
+        isOpen={isModalOpen}
         onClose={onCloseModal}
         size={SIZE.auto}
         overrides={{

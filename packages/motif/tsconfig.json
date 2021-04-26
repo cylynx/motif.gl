@@ -5,6 +5,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "outDir": "dist",
     "jsx": "react",
+    "types": ["vite/client"],
     "noImplicitAny": false,
     "strictNullChecks": false
   },
@@ -12,7 +13,6 @@
   "exclude": [
     "node_modules",
     "dist",
-    "demo/**",
     "src/**/*.+(test|spec).+(ts|tsx|js|jsx)",
     "cypress"
   ]
