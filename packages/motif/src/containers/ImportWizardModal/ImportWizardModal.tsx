@@ -51,8 +51,10 @@ const ImportWizardModal: FC<ImportWizardProps> = ({ overrideTabs }) => {
   }, [modal.isOpen, modal.content]);
 
   const [activeKey, setActiveKey] = useState(tabs[0].key);
-  const onTabChange = ({ activeKey: tabActiveKey }: TActiveKey) => {
-    setActiveKey(tabActiveKey);
+
+  // eslint-disable-next-line @typescript-eslint/no-shadow
+  const onTabChange = ({ activeKey }: TActiveKey) => {
+    setActiveKey(activeKey);
   };
 
   const onCloseModal: ModalProps['onClose'] = (args) => {

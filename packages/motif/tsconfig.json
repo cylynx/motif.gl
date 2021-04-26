@@ -4,15 +4,18 @@
     "baseUrl": "./",
     "lib": ["dom", "dom.iterable", "esnext"],
     "outDir": "dist",
-    "jsx": "react",
     "noImplicitAny": false,
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "strict": true,
+    "noEmit": false,
+    "sourceMap": false
   },
   "include": ["src"],
   "exclude": [
     "node_modules",
     "dist",
     "src/**/*.+(test|spec).+(ts|tsx|js|jsx)",
-    "cypress"
+    "cypress",
+    "index.html"
   ]
 }

@@ -1,4 +1,4 @@
-/* eslint-disable no-shadow */
+/* eslint-disable @typescript-eslint/no-shadow */
 import React, { Fragment } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Block } from 'baseui/block';
@@ -137,7 +137,7 @@ const SimpleForm = ({ data }: { data: SimpleFormData }) => {
             if (kind === 'slider') {
               component = (
                 <Slider
-                  // eslint-disable-next-line no-shadow
+                  // eslint-disable-next-line @typescript-eslint/no-shadow
                   onChange={({ value }) => value && onChange(value)}
                   onFinalChange={handleFinalChange}
                   value={value}

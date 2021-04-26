@@ -13,8 +13,14 @@ const outputDir = path.resolve(__dirname, 'dist');
 const tsconfigPath = path.resolve(__dirname, 'tsconfig.json');
 const excludeDir = 'node_modules/**';
 
-const postCssPlugin = postcss({ extract: true }) as Plugin;
 const urlPlugin = url();
+
+const postCssPlugin = postcss({
+  extract: false,
+  modules: true,
+  minimize: true,
+  plugins: [urlPlugin],
+}) as Plugin;
 
 const commonJsPlugin = commonjs({
   exclude: excludeDir,
@@ -36,6 +42,7 @@ const svgrPlugin: Plugin = svgr({
 const typescriptPlugin = typescript({
   typescript: ts,
   tsconfig: tsconfigPath,
+  clean: true,
 }) as Plugin;
 
 const babelPlugin = babel({

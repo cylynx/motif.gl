@@ -22,9 +22,7 @@ const svgrPlugin = svgr({
   },
 }) as Plugin;
 
-const reactRefreshPlugin = reactRefresh({
-  parserPlugins: ['typescript'],
-});
+const reactRefreshPlugin = reactRefresh();
 
 const typescriptPlugin = typescript({
   typescript: ts,
@@ -45,5 +43,5 @@ export default defineConfig({
   mode: 'development',
   logLevel: 'info',
   clearScreen: false,
-  plugins: [reactRefreshPlugin, svgrPlugin],
+  plugins: [typescriptPlugin, svgrPlugin],
 });

@@ -8,6 +8,9 @@ package.json
 craco.config.js
 node_modules/
 webpack.config.js
+vite.config.js
+vite.dev.config.ts
+vite.prod.config.ts
 
 /packages/motif/dist
 /packages/motif/coverage

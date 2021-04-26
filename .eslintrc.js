@@ -44,7 +44,7 @@ module.exports = {
     ],
     'space-before-function-paren': 0,
     'no-plusplus': 0,
-    'react/prop-types': 0,
+    'react/prop-types': 'off',
     'react/jsx-handler-names': 0,
     'react/jsx-fragments': 0,
     'react/no-unused-prop-types': 0,
