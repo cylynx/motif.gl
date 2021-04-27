@@ -17,14 +17,13 @@ const urlPlugin = url();
 
 const postCssPlugin = postcss({
   extract: false,
-  modules: true,
-  minimize: true,
-  plugins: [urlPlugin],
+  modules: false,
+  minimize: false,
 }) as Plugin;
 
 const commonJsPlugin = commonjs({
   exclude: excludeDir,
-  sourceMap: true,
+  sourceMap: false,
 }) as Plugin;
 
 // @ts-ignore
@@ -45,15 +44,15 @@ const typescriptPlugin = typescript({
   clean: true,
 }) as Plugin;
 
-const babelPlugin = babel({
-  babelHelpers: 'bundled',
-  exclude: 'node_modules/**',
-  presets: [
-    '@babel/preset-env',
-    '@babel/preset-react',
-    '@babel/preset-typescript',
-  ],
-});
+// const babelPlugin = babel({
+//   babelHelpers: 'bundled',
+//   exclude: 'node_modules/**',
+//   presets: [
+//     '@babel/preset-env',
+//     '@babel/preset-react',
+//     '@babel/preset-typescript',
+//   ],
+// });
 
 export default defineConfig({
   mode: 'production',
@@ -62,16 +61,15 @@ export default defineConfig({
   plugins: [
     commonJsPlugin,
     typescriptPlugin,
-    babelPlugin,
-    postCssPlugin,
     urlPlugin,
+    postCssPlugin,
     svgrPlugin,
   ],
   build: {
     outDir: outputDir,
     sourcemap: false,
     minify: 'terser',
-    emptyOutDir: true,
+    emptyOutDir: false,
     lib: {
       entry: libEntryPath,
       formats: ['es', 'cjs', 'umd'],
@@ -80,7 +78,7 @@ export default defineConfig({
     brotliSize: true,
     rollupOptions: {
       treeshake: true,
-      external: [excludeDir, 'src/**/*.css'],
+      external: [excludeDir, 'src/**/*.css', 'index.html'],
       output: {
         exports: 'named',
         freeze: false,
@@ -89,19 +87,3 @@ export default defineConfig({
     },
   },
 });
-
-/**
- *     rollupOptions: {
-      input: libEntryPath,
-      preserveEntrySignatures: 'strict',
-      treeshake: true,
-      output: [
-        {
-          dir: 'dist',
-          format: 'cjs',
-          preserveModules: true,
-          manualChunks: {},
-        },
-      ],
-    },
- */

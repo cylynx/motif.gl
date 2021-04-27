@@ -6,14 +6,18 @@
     "outDir": "dist",
     "noImplicitAny": false,
     "noEmit": false,
-    "types": ["@types/react"],
+    "types": [],
     "sourceMap": false
   },
   "include": ["src"],
   "exclude": [
     "node_modules",
+    "../../node_modules/**",
     "dist",
-    "src/**/*.+(test|spec).+(ts|tsx|js|jsx)",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/*.spec.tsx",
+    "**/*.test.tsx",
     "cypress",
     "index.html"
   ]

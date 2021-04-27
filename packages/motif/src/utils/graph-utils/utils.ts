@@ -714,7 +714,7 @@ export const combineDataWithDuplicates = (
 /**
  * Remove duplicates from array by checking on prop
  *
- * @param {(Node[] | Edge[] | [])} myArr
+ * @param {(Node[] | Edge[] | Field[] | [])} myArr
  * @param {string} prop
  * @return {Node[] | Edge[] | Field[]}
  */
