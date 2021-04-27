@@ -26,7 +26,7 @@ const JsonFiles: FC = () => {
     watch,
     control,
     handleSubmit,
-    errors,
+    formState: { errors },
     setError,
     clearErrors,
     getValues,

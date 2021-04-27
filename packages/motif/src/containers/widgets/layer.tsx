@@ -6,7 +6,6 @@ import React, {
   createRef,
   FC,
   MutableRefObject,
-  ForwardedRef,
 } from 'react';
 import { Block } from 'baseui/block';
 import Graphin from '@cylynx/graphin';

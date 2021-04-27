@@ -12,8 +12,10 @@ vite.config.js
 vite.dev.config.ts
 vite.prod.config.ts
 
-/packages/motif/dist
-/packages/motif/coverage
-/packages/motif/cypress
+dist/
+coverage/
+cypress/
+
+
 
 

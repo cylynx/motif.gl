@@ -6,7 +6,7 @@
     "outDir": "dist",
     "noImplicitAny": false,
     "noEmit": false,
-    "types": ["@types/node"],
+    "types": ["@types/node", "@types/react"],
     "sourceMap": false,
     "noEmitOnError": true,
     "strict": false
