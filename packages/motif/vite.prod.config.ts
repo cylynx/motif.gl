@@ -1,15 +1,12 @@
 import { defineConfig } from 'vite';
 import path from 'path';
 import postcss from 'rollup-plugin-postcss';
-import url from '@rollup/plugin-url';
 import svgr from '@svgr/rollup';
+import resolve from '@rollup/plugin-node-resolve';
 import babel from '@rollup/plugin-babel';
 
 const libEntryPath = path.resolve(__dirname, 'src/index.ts');
 const outputDir = path.resolve(__dirname, 'dist');
-const excludeDir = 'node_modules/**';
-
-const urlPlugin = url();
 
 const postCssPlugin = postcss({
   extract: false,
@@ -17,8 +14,7 @@ const postCssPlugin = postcss({
   minimize: false,
 }) as Plugin;
 
-// @ts-ignore
-const svgrPlugin: Plugin = svgr({
+const svgrPlugin = svgr({
   ref: true,
   memo: true,
   svgoConfig: {
@@ -27,13 +23,26 @@ const svgrPlugin: Plugin = svgr({
       { removeAttrs: { attrs: 'g:(stroke|fill):((?!^none$).)*' } },
     ],
   },
-});
+}) as Plugin;
+
+const resolvePlugin = resolve({
+  mainFields: ['module', 'main', 'node'],
+  extensions: ['.js', 'jsx'],
+}) as Plugin;
 
 const babelPlugin = babel({
-  babelHelpers: 'runtime',
-  plugins: ['@babel/plugin-transform-runtime'],
+  exclude: /\/node_modules\//,
+  extensions: ['.js', '.jsx', '.ts', '.tsx'],
+  babelHelpers: 'bundled',
   presets: [
-    '@babel/preset-env',
+    [
+      '@babel/preset-env',
+      {
+        targets: {
+          node: 'current',
+        },
+      },
+    ],
     '@babel/preset-react',
     '@babel/preset-typescript',
   ],
@@ -41,9 +50,9 @@ const babelPlugin = babel({
 
 export default defineConfig({
   mode: 'production',
-  logLevel: 'info',
+  logLevel: 'error',
   clearScreen: false,
-  plugins: [babelPlugin, urlPlugin, postCssPlugin, svgrPlugin],
+  plugins: [resolvePlugin, babelPlugin, postCssPlugin, svgrPlugin],
   build: {
     outDir: outputDir,
     sourcemap: true,
@@ -51,16 +60,14 @@ export default defineConfig({
     emptyOutDir: false,
     lib: {
       entry: libEntryPath,
-      formats: ['es', 'cjs', 'umd'],
+      formats: ['es', 'cjs'],
       name: 'motif',
     },
     brotliSize: true,
     rollupOptions: {
       treeshake: true,
-      external: [excludeDir, 'src/**/*.css', 'index.html'],
       output: {
         exports: 'named',
-        freeze: false,
         globals: { react: 'React' },
       },
     },

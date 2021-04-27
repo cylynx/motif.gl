@@ -51,7 +51,6 @@ export type ExplorerProps = {
 export const WidgetContainer = (props: WidgetContainerProps) => {
   const { children, theme, graphRef } = props;
 
-  // @ts-ignore not sure what to type for current.graph
   if (graphRef && graphRef.current && graphRef.current.graph) {
     return (
       <ThemeProvider theme={theme}>

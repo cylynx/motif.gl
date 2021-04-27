@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useMemo, useState } from 'react';
 import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
@@ -20,7 +19,7 @@ import ErrorBoundary from './ErrorBoundary';
 const engine = new Styletron();
 
 const App = () => {
-  const [driver, setDriver] = useState<Driver>({});
+  const [driver, setDriver] = useState<Driver>(null);
   const tabOverrides: ImportTabs[] = useMemo(() => {
     return [
       { title: 'File', key: 'file', component: <UploadFiles /> },
@@ -42,7 +41,6 @@ const App = () => {
     ];
   }, [driver, setDriver]);
 
-  // @ts-ignore
   return (
     <StyletronProvider value={engine}>
       <BaseProvider theme={MotifLightTheme}>

@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 
 type ErrorBoundaryProps = { children?: ReactNode };
 type ErrorBoundaryStates = { hasError: boolean };
-class ErrorBoundary extends React.Component<
+class ErrorBoundary extends React.PureComponent<
   ErrorBoundaryProps,
   ErrorBoundaryStates
 > {
@@ -17,10 +17,9 @@ class ErrorBoundary extends React.Component<
     return { hasError: true };
   }
 
-  componentDidCatch(error: any, errorInfo: any) {
+  componentDidCatch(error: any) {
     // You can also log the error to an error reporting service
     console.log(error);
-    console.log(errorInfo);
   }
 
   render() {
