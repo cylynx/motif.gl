@@ -15,6 +15,7 @@ import { Provider } from 'react-redux';
 import BankingAPI from './containers/BankingAPI';
 import store from './redux-store';
 import Neo4J from './containers/Neo4J';
+import ErrorBoundary from './ErrorBoundary';
 
 const engine = new Styletron();
 
@@ -46,20 +47,22 @@ const App = () => {
     <StyletronProvider value={engine}>
       <BaseProvider theme={MotifLightTheme}>
         <Provider store={store}>
-          <Motif
-            name='Motif'
-            secondaryTheme={MotifDarkTheme}
-            accessors={{
-              // getters below are for simple edge
-              nodeID: 'id',
-              // edgeID: 'id',
-              edgeSource: 'source',
-              edgeTarget: 'target',
-            }}
-            overrides={{
-              Tabs: tabOverrides,
-            }}
-          />
+          <ErrorBoundary>
+            <Motif
+              name='Motif'
+              secondaryTheme={MotifDarkTheme}
+              accessors={{
+                // getters below are for simple edge
+                nodeID: 'id',
+                // edgeID: 'id',
+                edgeSource: 'source',
+                edgeTarget: 'target',
+              }}
+              overrides={{
+                Tabs: tabOverrides,
+              }}
+            />
+          </ErrorBoundary>
         </Provider>
       </BaseProvider>
     </StyletronProvider>

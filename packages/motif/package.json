@@ -8,11 +8,11 @@
   ],
   "license": "MIT",
   "repository": "cylynx/motif.gl",
-  "main": "dist/motif.umd.js",
+  "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "module": "dist/motif.es.js",
   "engines": {
-    "node": ">=15"
+    "node": ">=15.14"
   },
   "files": [
     "dist"

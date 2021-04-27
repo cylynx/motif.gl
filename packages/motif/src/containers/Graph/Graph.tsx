@@ -18,7 +18,7 @@ import ActivateNodeRelations from './customBehaviors/ActivateNodeRelations';
 import DisplaySelectedProperty from './customBehaviors/DisplaySelectedProperty';
 
 export type GraphProps = {
-  setTooltip: (tooltip: TooltipProps) => void;
+  setTooltip: (tooltip: Partial<TooltipProps>) => void;
 };
 
 const Graph = React.forwardRef<Graphin, GraphProps>(({ setTooltip }, ref) => {

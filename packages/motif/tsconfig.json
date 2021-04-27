@@ -8,7 +8,8 @@
     "noEmit": false,
     "types": ["@types/node"],
     "sourceMap": false,
-    "noEmitOnError": true
+    "noEmitOnError": true,
+    "strict": false
   },
   "include": ["src"],
   "exclude": [

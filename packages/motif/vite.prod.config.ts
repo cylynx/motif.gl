@@ -3,6 +3,7 @@ import path from 'path';
 import postcss from 'rollup-plugin-postcss';
 import url from '@rollup/plugin-url';
 import svgr from '@svgr/rollup';
+import babel from '@rollup/plugin-babel';
 
 const libEntryPath = path.resolve(__dirname, 'src/index.ts');
 const outputDir = path.resolve(__dirname, 'dist');
@@ -28,14 +29,24 @@ const svgrPlugin: Plugin = svgr({
   },
 });
 
+const babelPlugin = babel({
+  babelHelpers: 'runtime',
+  plugins: ['@babel/plugin-transform-runtime'],
+  presets: [
+    '@babel/preset-env',
+    '@babel/preset-react',
+    '@babel/preset-typescript',
+  ],
+}) as Plugin;
+
 export default defineConfig({
   mode: 'production',
   logLevel: 'info',
   clearScreen: false,
-  plugins: [urlPlugin, postCssPlugin, svgrPlugin],
+  plugins: [babelPlugin, urlPlugin, postCssPlugin, svgrPlugin],
   build: {
     outDir: outputDir,
-    sourcemap: false,
+    sourcemap: true,
     minify: 'terser',
     emptyOutDir: false,
     lib: {
