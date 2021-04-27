@@ -6,13 +6,13 @@
     "outDir": "dist",
     "noImplicitAny": false,
     "noEmit": false,
-    "types": [],
-    "sourceMap": false
+    "types": ["@types/node"],
+    "sourceMap": false,
+    "noEmitOnError": true
   },
   "include": ["src"],
   "exclude": [
     "node_modules",
-    "../../node_modules/**",
     "dist",
     "**/*.spec.ts",
     "**/*.test.ts",

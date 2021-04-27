@@ -3,17 +3,24 @@
   "version": "0.0.1-beta.1",
   "description": "An out of the box graph visualization toolkit to assist analysis and investigation of network data.",
   "author": "Timothy Lin",
+  "keywords": [
+    "Graph Visualisation"
+  ],
   "license": "MIT",
   "repository": "cylynx/motif.gl",
-  "main": "dist/index.js",
+  "main": "dist/motif.umd.js",
   "typings": "dist/index.d.ts",
   "module": "dist/motif.es.js",
   "engines": {
-    "node": ">=10"
+    "node": ">=15"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "start": "vite build --config vite.dev.config.ts",
+    "start": "vite --config vite.dev.config.ts",
     "build": "vite build --config vite.prod.config.ts",
+    "compile": "rm -rf ./dist && tsc -b && npm run build",
     "transpile": "tsc --p ./tsconfig.json --noEmit true --strict --watch",
     "lint": "tsdx lint",
     "test": "tsdx test",
@@ -109,7 +116,7 @@
     "@types/fscreen": "^1.0.1",
     "@types/html2canvas": "^0.0.35",
     "@types/lodash": "^4.14.157",
-    "@types/node": "^12.19.16",
+    "@types/node": "^15.0.0",
     "@types/react": ">=16.8.0",
     "@types/react-dom": ">=16.8.0",
     "@types/react-redux": "^7.1.9",
@@ -162,8 +169,5 @@
       "path": "dist/motif.gl.esm.js",
       "limit": "1 MB"
     }
-  ],
-  "files": [
-    "dist"
   ]
 }
