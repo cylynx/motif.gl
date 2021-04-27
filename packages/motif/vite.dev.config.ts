@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import svgr from '@svgr/rollup';
 import reactRefresh from '@vitejs/plugin-react-refresh';
 
+// @ts-ignore
 const svgrPlugin = svgr({
   ref: true,
   memo: true,
@@ -20,4 +21,7 @@ export default defineConfig({
   logLevel: 'info',
   clearScreen: false,
   plugins: [reactRefreshPlugin, svgrPlugin],
+  optimizeDeps: {
+    keepNames: true,
+  },
 });

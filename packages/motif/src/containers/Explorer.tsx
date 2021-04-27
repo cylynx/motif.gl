@@ -8,6 +8,7 @@ import React, {
   useMemo,
   ReactNode,
   MutableRefObject,
+  ForwardedRef,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useStyletron, ThemeProvider } from 'baseui';
@@ -51,7 +52,7 @@ export type ExplorerProps = {
 export const WidgetContainer = (props: WidgetContainerProps) => {
   const { children, theme, graphRef } = props;
 
-  if (graphRef && graphRef.current && graphRef.current.graph) {
+  if (graphRef?.current?.graph) {
     return (
       <ThemeProvider theme={theme}>
         <ToasterContainer placement={PLACEMENT.top}>
@@ -75,7 +76,8 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
       styleOptions = GraphSlices.initialState.styleOptions,
     } = props;
     const localRef = useRef<Graphin>(null);
-    const graphRef = ref || localRef;
+    const graphRef: ForwardedRef<Graphin> | MutableRefObject<Graphin> =
+      ref || localRef;
     const [tooltip, setTooltip] = useState(null);
     const [leftLayerWidth, setLeftLayerWidth] = useState<string>(
       LEFT_LAYER_WIDTH,

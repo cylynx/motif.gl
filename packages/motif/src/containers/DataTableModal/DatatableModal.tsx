@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { Key, useMemo, useState } from 'react';
 import { Tabs, Tab } from 'baseui/tabs-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
@@ -8,7 +8,7 @@ import AttributeTable from './AttributeTable';
 import { ModalState, UISelectors, UISlices } from '../../redux/ui';
 
 export type TActiveKey = {
-  activeKey: GraphAttribute;
+  activeKey: GraphAttribute | Key;
 };
 
 const DatatableModal = () => {
@@ -32,7 +32,7 @@ const DatatableModal = () => {
   };
 
   const onTabChange = ({ activeKey }: TActiveKey) => {
-    setActiveKey(activeKey);
+    setActiveKey(activeKey as string);
   };
 
   return (

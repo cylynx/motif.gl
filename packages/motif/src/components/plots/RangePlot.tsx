@@ -201,11 +201,9 @@ const RangePlot = ({
           min={startRange}
           max={endRange}
           step={step}
-          onChange={({ value }: { value: [number, number] }) =>
-            onChangeSlider(value)
-          }
-          onFinalChange={({ value }: { value: [number, number] }) =>
-            onFinalChangeSlider(value)
+          onChange={({ value }) => onChangeSlider(value as [number, number])}
+          onFinalChange={({ value }) =>
+            onFinalChangeSlider(value as [number, number])
           }
           showThumbValue={false}
           showTickBar={false}

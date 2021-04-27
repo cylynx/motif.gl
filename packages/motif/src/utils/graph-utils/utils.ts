@@ -723,7 +723,7 @@ export const removeDuplicates = (
   prop: string,
 ): Node[] | Edge[] | Field[] => {
   const seen = new Set();
-  const filteredArr = myArr.filter((el) => {
+  const filteredArr = (myArr as any[]).filter((el) => {
     const duplicate = seen.has(el[prop]);
     seen.add(el[prop]);
     return !duplicate;

@@ -39,6 +39,7 @@ const DataListAccordion: FC<DataListAccordionProps> = ({ items }) => {
           style: HeaderStyle,
         },
         Content: {
+          // @ts-ignore
           style: ContentStyle,
         },
       }}

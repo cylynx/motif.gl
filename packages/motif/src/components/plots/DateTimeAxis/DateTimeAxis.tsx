@@ -54,6 +54,7 @@ const DateTimeAxis: FC<DateTimeAxisProps> = ({
         .tickValues(tickValues)
         .tickSize(0)
         .tickPadding(3)
+        // @ts-ignore
         .tickFormat((d: Date) => format(d, dateTimeFormat));
 
       select(axis.current)

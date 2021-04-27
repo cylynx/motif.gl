@@ -1,4 +1,5 @@
 import { Value } from 'baseui/select';
+import { Key } from 'react';
 import {
   GraphAttribute,
   SearchOptions,
@@ -7,7 +8,7 @@ import {
 } from '../../../redux/graph';
 
 export type TActiveKey = {
-  activeKey: GraphAttribute;
+  activeKey: GraphAttribute | Key;
 };
 
 export interface IUseSearchOptions {

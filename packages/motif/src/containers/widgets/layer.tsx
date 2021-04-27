@@ -4,8 +4,9 @@ import React, {
   Component,
   ReactNode,
   createRef,
-  MutableRefObject,
   FC,
+  MutableRefObject,
+  ForwardedRef,
 } from 'react';
 import { Block } from 'baseui/block';
 import Graphin from '@cylynx/graphin';

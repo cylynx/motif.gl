@@ -53,7 +53,7 @@ module.exports = {
     'react/no-array-index-key': 0,
     'arrow-parens': 1,
     'comma-dangle': 1,
-    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': 'off',
     'no-useless-return': 'off',
     'import/no-extraneous-dependencies': 'off',
     'max-len': [

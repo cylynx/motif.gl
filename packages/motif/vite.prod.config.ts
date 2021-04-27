@@ -14,6 +14,7 @@ const postCssPlugin = postcss({
   minimize: false,
 }) as Plugin;
 
+// @ts-ignore
 const svgrPlugin = svgr({
   ref: true,
   memo: true,
@@ -26,7 +27,7 @@ const svgrPlugin = svgr({
 }) as Plugin;
 
 const resolvePlugin = resolve({
-  mainFields: ['module', 'main', 'node'],
+  mainFields: ['module', 'main', 'node', 'browser'],
   extensions: ['.js', 'jsx'],
 }) as Plugin;
 
@@ -66,9 +67,17 @@ export default defineConfig({
     brotliSize: true,
     rollupOptions: {
       treeshake: true,
+      external: [
+        'react',
+        'react-dom',
+        'react-redux',
+        '@reduxjs/toolkit',
+        'styletron-engine-atomic',
+        'styletron-react',
+      ],
       output: {
         exports: 'named',
-        globals: { react: 'React' },
+        globals: { react: 'React', 'react-dom': 'ReactDOM' },
       },
     },
   },

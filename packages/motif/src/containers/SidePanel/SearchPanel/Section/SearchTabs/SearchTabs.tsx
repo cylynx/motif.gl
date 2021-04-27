@@ -7,7 +7,7 @@ import { IUseSearchOptions, TActiveKey } from '../../types';
 import SearchEdge from './SearchEdge';
 import SearchNode from './SearchNode';
 import useSearchOption from '../../hooks/useSearchOption';
-import { SearchOptions } from '../../../../../redux/graph';
+import { GraphAttribute, SearchOptions } from '../../../../../redux/graph';
 import { GraphRefContext } from '../../../../Graph';
 import useGraphBehaviors from '../../../../Graph/hooks/useGraphBehaviors';
 
@@ -50,7 +50,7 @@ const SearchTabs = () => {
       return;
     }
 
-    updateTabs(activeKey);
+    updateTabs(activeKey as GraphAttribute);
     centerCanvas();
   };
 
