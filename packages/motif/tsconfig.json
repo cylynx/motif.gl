@@ -5,9 +5,8 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "outDir": "dist",
     "noImplicitAny": false,
-    "strictNullChecks": false,
-    "strict": true,
     "noEmit": false,
+    "types": ["@types/react"],
     "sourceMap": false
   },
   "include": ["src"],
