@@ -107,8 +107,7 @@ const SimpleForm = ({ data }: { data: SimpleFormData }) => {
           name={id}
           control={control}
           defaultValue={parsedValue}
-          // @ts-ignore
-          render={({ value, onChange }) => {
+          render={({ field: { value, onChange } }) => {
             let component;
             if (kind === 'select') {
               component = (

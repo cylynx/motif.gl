@@ -156,7 +156,7 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
             name={data.id}
             control={control}
             defaultValue={[data.options.find((x: any) => x.id === data.value)]}
-            render={({ value, onChange }) => (
+            render={({ field: { value, onChange } }) => (
               <Select
                 options={data.options}
                 onChange={(params) =>
@@ -209,7 +209,7 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
                   control={control}
                   defaultValue={parsedValue}
                   // eslint-disable-next-line no-shadow
-                  render={({ value, onChange }) => {
+                  render={({ field: { value, onChange } }) => {
                     let component;
                     if (kind === 'select') {
                       component = (

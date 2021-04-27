@@ -31,7 +31,7 @@ const NodeEdgeCsv: FC = () => {
     watch,
     control,
     handleSubmit,
-    errors,
+    formState: { errors },
     setError,
     clearErrors,
     setValue,
@@ -105,7 +105,7 @@ const NodeEdgeCsv: FC = () => {
       });
   };
 
-  const onDeleteBtnClick = (index: number, name: string) => {
+  const onDeleteBtnClick = (index: number, name: keyof SingleFileForms) => {
     const fileAttachments = getValues(name) as TFileContent[];
     const cloneFileAttachments = [...fileAttachments];
     cloneFileAttachments.splice(index, 1);
@@ -125,7 +125,7 @@ const NodeEdgeCsv: FC = () => {
           <Controller
             name='nodeCsv'
             control={control}
-            render={({ onChange, name }) =>
+            render={({ field: { onChange, name } }) =>
               isNodeCsvEmpty && (
                 <FileUploader
                   accept='.csv'
@@ -171,7 +171,7 @@ const NodeEdgeCsv: FC = () => {
           <Controller
             name='edgeCsv'
             control={control}
-            render={({ onChange, name }) =>
+            render={({ field: { onChange, name } }) =>
               isEdgeCsvEmpty && (
                 <FileUploader
                   accept='.csv'

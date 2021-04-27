@@ -166,7 +166,7 @@ const AccessorFields: FC<AccessorsFieldsProps> = ({
             <Controller
               name={name}
               control={control}
-              render={({ onChange, name, value }) => {
+              render={({ field: { onChange, name, value } }) => {
                 return (
                   <FormSelectWithTooltip
                     name={name}

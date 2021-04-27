@@ -112,7 +112,7 @@ const JsonFiles: FC = () => {
       <Controller
         name='attachments'
         control={control}
-        render={({ onChange }) =>
+        render={({ field: { onChange } }) =>
           isEmptyAttachments && (
             <FileUploader
               accept='.json'

@@ -10,10 +10,10 @@ type GroupEdgeConfigurationProps = { control: any };
 const GroupEdgeConfiguration: FC<GroupEdgeConfigurationProps> = ({
   control,
 }) => {
-  const groupEdgeToggle = (
-    props: ControllerRenderProps<Record<string, any>>,
-  ) => {
-    const { onChange, value, name } = props;
+  const groupEdgeToggle = (props: {
+    field: ControllerRenderProps<Record<string, any>>;
+  }) => {
+    const { onChange, value, name } = props.field;
     const onCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
       onChange(e.target.checked);
     };

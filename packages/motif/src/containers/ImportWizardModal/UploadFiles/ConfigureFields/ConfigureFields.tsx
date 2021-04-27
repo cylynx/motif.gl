@@ -45,7 +45,7 @@ const ConfigureFields = () => {
     watch,
     control,
     handleSubmit,
-    errors,
+    formState: { errors },
     setError,
     clearErrors,
     getValues,
