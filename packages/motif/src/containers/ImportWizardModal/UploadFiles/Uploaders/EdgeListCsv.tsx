@@ -63,6 +63,7 @@ const EdgeListCsv: FC = () => {
   };
 
   const onDropAccepted = (acceptedFiles: File[], onChange: any) => {
+    // eslint-disable-next-line max-len
     const fileReaderPromises = acceptedFiles.map((file: File) => {
       const filePromise = new Promise((resolve) => {
         const reader: FileReader = new FileReader();
@@ -75,7 +76,7 @@ const EdgeListCsv: FC = () => {
       });
 
       return filePromise;
-    });
+    }) as Promise<TFileReaderResponse>[];
 
     Promise.all(fileReaderPromises)
       .then((fileResponses: TFileReaderResponse[]) => {

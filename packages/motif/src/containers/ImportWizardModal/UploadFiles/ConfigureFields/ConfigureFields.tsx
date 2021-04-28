@@ -19,7 +19,11 @@ import {
   TFileContent,
   SingleFileForms,
 } from '../../../../redux/import/fileUpload';
-import { JsonImport, TLoadFormat, GraphSlices } from '../../../../redux/graph';
+import {
+  TLoadFormat,
+  GraphSlices,
+  ImportFormat,
+} from '../../../../redux/graph';
 import ConfirmationModal from '../../../../components/ConfirmationModal';
 import { getGraph } from '../../../../redux/graph/selectors';
 import GroupEdgeConfiguration from '../../../../components/GroupEdgeConfiguration';
@@ -85,7 +89,7 @@ const ConfigureFields = () => {
 
     const isAttachmentContainStyle: boolean = attachments
       .map((file: TFileContent) => file.content)
-      .some((content: JsonImport) => {
+      .some((content: ImportFormat) => {
         const { style } = content as TLoadFormat;
         const isContainStyle = !!style;
         return isContainStyle;

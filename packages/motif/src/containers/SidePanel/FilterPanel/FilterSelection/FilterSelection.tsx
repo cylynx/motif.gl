@@ -43,7 +43,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
   const [range, setRange] = useState<[number, number]>(null);
 
   const onSelectChange = useCallback(
-    (obj: SelectVariableOption) => {
+    (obj: { [key: string]: string }) => {
       if (obj === undefined) {
         updateFilterCriteria(idx, {});
         return;
@@ -55,7 +55,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
       const filterCriteria: FilterCriteria = {
         id,
         from,
-        selection: [obj],
+        selection: [obj as SelectVariableOption],
         analyzerType,
         isFilterReady: false,
       };

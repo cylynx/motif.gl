@@ -1,6 +1,11 @@
 import React, { ReactNode, useMemo, FC, useEffect } from 'react';
 import { FlexGrid, FlexGridItem } from 'baseui/flex-grid';
-import { Controller, Control } from 'react-hook-form';
+import {
+  Controller,
+  Control,
+  UseFormClearErrors,
+  UseFormSetValue,
+} from 'react-hook-form';
 import { OnChangeParams, Option, Value } from 'baseui/select';
 import useFileContents, { defaultField } from '../hooks/useFileContents';
 import FormSelectWithTooltip from '../../../../components/FormSelectWithTooltip';
@@ -17,7 +22,7 @@ type AccessorsFieldsProps = {
   control: Control<ConfigureFieldsForm>;
   watch: (names?: string | string[]) => any;
   setError: (
-    name: string,
+    name: keyof ConfigureFieldsForm,
     error: {
       type?: string;
       types?: object;
@@ -25,10 +30,10 @@ type AccessorsFieldsProps = {
       shouldFocus?: boolean;
     },
   ) => void;
-  clearErrors: (name?: string | string[]) => void;
+  clearErrors: UseFormClearErrors<ConfigureFieldsForm>;
   getValues: (payload?: string | string[]) => Object;
   errors: Record<string, Object>;
-  setValue: (name: string, value: any, config?: Object) => void;
+  setValue: UseFormSetValue<ConfigureFieldsForm>;
   dataType: string;
 };
 const AccessorFields: FC<AccessorsFieldsProps> = ({
@@ -87,18 +92,22 @@ const AccessorFields: FC<AccessorsFieldsProps> = ({
   );
 
   useEffect(() => {
-    const setDefaultValue = (options: Value, name: string, value: string) => {
+    const setDefaultValue = (
+      options: Value,
+      name: keyof ConfigureFieldsForm,
+      value: string,
+    ) => {
       const defaultOption = options.find(
         (option: Option) => option.id === value,
       );
 
       if (defaultOption === undefined) {
         const [firstOption] = options;
-        setValue(name, firstOption.id);
+        setValue(name, firstOption.id as string);
         return;
       }
 
-      setValue(name, defaultOption.id);
+      setValue(name, defaultOption.id as string);
       return;
     };
 

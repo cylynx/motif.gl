@@ -4,7 +4,7 @@
     "downlevelIteration": true,
     "moduleResolution": "node",
     "allowJs": true,
-    "strict": false,
+    "strict": true,
     "sourceMap": true,
     "declaration": true,
     "esModuleInterop": true,

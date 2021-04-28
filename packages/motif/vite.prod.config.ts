@@ -8,8 +8,9 @@ import svgr from '@svgr/rollup';
 
 const libEntryPath = path.resolve(__dirname, 'src/index.ts');
 const outputDir = path.resolve(__dirname, 'dist');
-const motifCssPath = path.resolve(__dirname, 'dist/motif.css');
 
+// extract the css from the modules into specific file
+const motifCssPath = path.resolve(__dirname, 'dist/motif.css');
 const postCssPlugin = postcss({
   extract: motifCssPath,
 }) as Plugin;
@@ -26,11 +27,13 @@ const svgrPlugin = svgr({
   },
 }) as Plugin;
 
+// locate and bundle third party plugins into current package, target specific environments
 const resolvePlugin = resolve({
   mainFields: ['module', 'main', 'node', 'browser'],
   extensions: ['.js', 'jsx'],
 }) as Plugin;
 
+// perform transpilation into bundle
 const babelPlugin = babel({
   exclude: /\/node_modules\//,
   extensions: ['.js', '.jsx', '.ts', '.tsx'],
@@ -38,14 +41,18 @@ const babelPlugin = babel({
 }) as Plugin;
 
 export default defineConfig({
-  mode: 'production', // production
+  mode: 'production',
   logLevel: 'error',
   clearScreen: false,
   plugins: [resolvePlugin, babelPlugin, postCssPlugin, svgrPlugin],
   build: {
     outDir: outputDir,
+
+    // generate source map for debugging in the client
     sourcemap: true,
-    minify: 'terser', // 'terser'
+    minify: 'terser',
+
+    // prevent empty output directory as it contains typescript declarations.
     emptyOutDir: false,
     lib: {
       entry: libEntryPath,
@@ -53,11 +60,14 @@ export default defineConfig({
       name: 'motif',
     },
     terserOptions: {
+      // keep the function name during minification to ease up debugging
       keep_fnames: true,
     },
     brotliSize: true,
     rollupOptions: {
       treeshake: true,
+
+      // prevent bundle peer dependencies to avoid unexpected errors
       external: [
         'react',
         'react-dom',

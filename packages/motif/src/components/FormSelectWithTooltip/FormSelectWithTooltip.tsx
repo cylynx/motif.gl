@@ -9,6 +9,8 @@ import {
   Value,
   Option,
 } from 'baseui/select';
+import { UseFormSetValue } from 'react-hook-form';
+import { ConfigureFieldsForm } from 'src/redux/import/fileUpload';
 import LabelTooltip from './LabelTooltip';
 
 export type FormSelectWithTooltipProps = {
@@ -17,7 +19,7 @@ export type FormSelectWithTooltipProps = {
   labelText: ReactNode;
   options: Value;
   value: string;
-  setValue: (name: string, value: any, config?: Object) => void;
+  setValue: UseFormSetValue<ConfigureFieldsForm>;
   tooltipText?: ReactNode;
   error?: string;
 };

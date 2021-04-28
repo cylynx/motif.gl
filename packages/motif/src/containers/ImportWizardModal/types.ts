@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Key } from 'react';
 
 export interface ImportTabs {
   title: string;
@@ -7,5 +7,5 @@ export interface ImportTabs {
 }
 
 export type TActiveKey = {
-  activeKey: string;
+  activeKey: string | Key;
 };

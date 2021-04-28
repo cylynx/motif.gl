@@ -67,6 +67,8 @@ export const WidgetContainer = (props: WidgetContainerProps) => {
 };
 
 const Explorer = React.forwardRef<Graphin, ExplorerProps>(
+  // MutableRefObject clashing with ForwardRef types in React.
+  // @ts-ignore
   (props, ref: MutableRefObject<Graphin>) => {
     const {
       name,

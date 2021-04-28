@@ -8,8 +8,7 @@
     "noEmit": false,
     "types": ["@types/node", "@types/react", "@types/jest"],
     "sourceMap": false,
-    "noEmitOnError": true,
-    "strict": false
+    "noEmitOnError": true
   },
   "include": ["src"],
   "exclude": [

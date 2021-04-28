@@ -7,12 +7,13 @@ import * as Icon from '../../../../components/Icons';
 import SelectVariable, {
   SelectOptions,
   SelectVariableOption,
+  SelectVariableProps,
 } from '../../../../components/SelectVariable/SelectVariable';
 
 type FilterSelectionHeaderProps = {
   selectOptions: SelectOptions;
   selection: SelectVariableOption[];
-  onSelectChange: (obj: SelectVariableOption) => void;
+  onSelectChange: SelectVariableProps['onChange'];
   onDeleteBtnClick: (event: MouseEvent<HTMLButtonElement>) => void;
 };
 

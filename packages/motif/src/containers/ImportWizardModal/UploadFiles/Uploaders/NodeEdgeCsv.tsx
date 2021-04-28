@@ -81,7 +81,7 @@ const NodeEdgeCsv: FC = () => {
       });
 
       return filePromise;
-    });
+    }) as Promise<TFileReaderResponse>[];
 
     Promise.all(fileReaderPromises)
       .then((fileResponses: TFileReaderResponse[]) => {

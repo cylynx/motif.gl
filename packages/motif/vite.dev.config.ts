@@ -22,6 +22,7 @@ export default defineConfig({
   clearScreen: false,
   plugins: [reactRefreshPlugin, svgrPlugin],
   optimizeDeps: {
+    // prevent produce extra index behind the React component namespaces.
     keepNames: true,
   },
 });
