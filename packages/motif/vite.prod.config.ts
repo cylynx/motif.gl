@@ -49,19 +49,22 @@ const babelPlugin = babel({
 }) as Plugin;
 
 export default defineConfig({
-  mode: 'development', // production
+  mode: 'production', // production
   logLevel: 'error',
   clearScreen: false,
   plugins: [resolvePlugin, babelPlugin, postCssPlugin, svgrPlugin],
   build: {
     outDir: outputDir,
     sourcemap: true,
-    minify: false, // 'terser'
+    minify: 'terser', // 'terser'
     emptyOutDir: false,
     lib: {
       entry: libEntryPath,
       formats: ['es', 'cjs'],
       name: 'motif',
+    },
+    terserOptions: {
+      keep_fnames: true,
     },
     brotliSize: true,
     rollupOptions: {
