@@ -7,7 +7,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@cylynx/motif": "*",
+    "@cylynx/motif": "0.0.1-beta.3",
     "@reduxjs/toolkit": "^1.2.3",
     "baseui": "^9.90.0",
     "neo4j-driver": "^4.2.3",
