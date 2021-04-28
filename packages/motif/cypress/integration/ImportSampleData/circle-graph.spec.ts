@@ -1,7 +1,7 @@
 import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 
 describe('Import Circle Graph', () => {
-  const graphinEl = 'Graphin2';
+  const graphinEl = 'Graphin';
   before(() => {
     cy.visit('/');
     cy.waitForReact();
@@ -26,15 +26,11 @@ describe('Import Circle Graph', () => {
   });
 
   it('should render 18 edges in Graphin', () => {
-    cy.getReact(graphinEl)
-      .getProps('data.edges')
-      .should('have.length', 18);
+    cy.getReact(graphinEl).getProps('data.edges').should('have.length', 18);
   });
 
   it('should render 10 nodes in Graphin', () => {
-    cy.getReact(graphinEl)
-      .getProps('data.nodes')
-      .should('have.length', 10);
+    cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 10);
   });
 
   it('should display 10 nodes count in Nodes label', () => {
@@ -56,9 +52,7 @@ describe('Import Circle Graph', () => {
   });
 
   it('should display one row for data list', () => {
-    cy.getReact('DataListAccordion')
-      .getProps('items')
-      .should('have.length', 1);
+    cy.getReact('DataListAccordion').getProps('items').should('have.length', 1);
   });
 
   it('should display data list name [Circle Data]', () => {

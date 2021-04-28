@@ -1,7 +1,7 @@
 import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 
 describe('Multiple Selection', () => {
-  const graphinEl = 'Graphin2';
+  const graphinEl = 'Graphin';
 
   const deleteButtonClick = () => {
     cy.react('Button', {

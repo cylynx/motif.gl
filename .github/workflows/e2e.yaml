@@ -25,13 +25,11 @@ jobs:
         run: npm run rm-package-lock
 
       - name: Install multiple packages' dependencies
-        run: npm run bootstrap-ci
+        working-directory: './packages/motif'
+        run: npm install --dev --legacy-peer-deps
 
       - name: Setup kernel for React, increase watchers
         run: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
-
-      - name: Build Motif Packages
-        run: npm run build-motif
 
       - name: Cypress run
         uses: cypress-io/github-action@v2

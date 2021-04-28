@@ -4,9 +4,9 @@ const nodeEdgeRootPath = 'LocalFiles/NodeEdge';
 const edgeDatasetRootPath = 'LocalFiles/EdgeList';
 
 describe('Import Edge List', () => {
-  const graphinEl = 'Graphin2';
+  const graphinEl = 'Graphin';
   const selectNodeEdgeFormat = () => {
-    cy.react('Select2', { props: { id: 'DataTypeSelection' } })
+    cy.react('Select', { props: { id: 'DataTypeSelection' } })
       .nthNode(0)
       .click();
     cy.get('li[role="option"')

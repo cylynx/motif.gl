@@ -7,7 +7,7 @@ const findLayout = (id: string) =>
 
 describe('Layout Options', () => {
   const layoutEl: string = 'layout';
-  const graphinEl = 'Graphin2';
+  const graphinEl = 'Graphin';
 
   const changeLayout = (label: string) => {
     cy.react('NestedForm', { props: { id: layoutEl } })
@@ -287,9 +287,7 @@ describe('Layout Options', () => {
       const { label, id } = findLayout(type);
       changeLayout(label);
 
-      cy.getReact(graphinEl)
-        .getProps('layout.type')
-        .should('deep.equal', id);
+      cy.getReact(graphinEl).getProps('layout.type').should('deep.equal', id);
     });
   });
 
@@ -353,9 +351,7 @@ describe('Layout Options', () => {
       const { label, id } = findLayout('preset');
       changeLayout(label);
 
-      cy.getReact(graphinEl)
-        .getProps('layout.type')
-        .should('deep.equal', id);
+      cy.getReact(graphinEl).getProps('layout.type').should('deep.equal', id);
     });
   });
 });

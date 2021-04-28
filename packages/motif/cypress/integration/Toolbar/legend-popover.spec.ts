@@ -30,7 +30,7 @@ describe('Legend Popover', () => {
 
   describe('Functionality', () => {
     const changeNodeColor = (type: string): void => {
-      cy.react('Select2', { props: { id: 'legendSelection' } })
+      cy.react('Select', { props: { id: 'legendSelection' } })
         .eq(0)
         .type(`${type}{enter}`);
     };

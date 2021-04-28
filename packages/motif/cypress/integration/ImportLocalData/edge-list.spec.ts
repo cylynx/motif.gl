@@ -3,14 +3,12 @@ import { GraphData } from '../../../src/redux/graph';
 const edgeDatasetRootPath = 'LocalFiles/EdgeList';
 
 describe('Import Edge List', () => {
-  const graphinEl = 'Graphin2';
+  const graphinEl = 'Graphin';
   const selectEdgeListDataType = () => {
-    cy.react('Select2', { props: { id: 'DataTypeSelection' } })
+    cy.react('Select', { props: { id: 'DataTypeSelection' } })
       .nthNode(0)
       .click();
-    cy.get('li[role="option"')
-      .contains('Edge List Csv')
-      .click();
+    cy.get('li[role="option"').contains('Edge List Csv').click();
   };
 
   before(() => {

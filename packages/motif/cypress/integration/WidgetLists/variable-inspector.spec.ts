@@ -8,7 +8,7 @@ describe('Variable Inspector', () => {
   });
 
   it('should render successfully', () => {
-    cy.getReact('Select2', {
+    cy.getReact('Select', {
       props: {
         'data-testid': 'select-variable',
       },
@@ -29,13 +29,11 @@ describe('Variable Inspector', () => {
       },
       exact: true,
     })
-      .getReact('Select2')
+      .getReact('Select')
       .should('exist');
   });
 
   it('should have no value on initialisation', () => {
-    cy.getReact('SelectVariable')
-      .getProps('value')
-      .should('have.length', 0);
+    cy.getReact('SelectVariable').getProps('value').should('have.length', 0);
   });
 });

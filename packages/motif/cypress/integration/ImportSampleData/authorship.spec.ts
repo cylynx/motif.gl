@@ -1,7 +1,7 @@
 import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 
 describe('Import Authorship', () => {
-  const graphinEl = 'Graphin2';
+  const graphinEl = 'Graphin';
   before(() => {
     cy.visit('/');
     cy.waitForReact();
@@ -22,21 +22,15 @@ describe('Import Authorship', () => {
   });
 
   it('should display layout as x y coordinate', () => {
-    cy.getReact(graphinEl)
-      .getProps('layout.type')
-      .should('deep.eq', 'preset');
+    cy.getReact(graphinEl).getProps('layout.type').should('deep.eq', 'preset');
   });
 
   it('should render 2742 edges in Graphin', () => {
-    cy.getReact(graphinEl)
-      .getProps('data.edges')
-      .should('have.length', 2742);
+    cy.getReact(graphinEl).getProps('data.edges').should('have.length', 2742);
   });
 
   it('should render 1589 nodes in Graphin', () => {
-    cy.getReact(graphinEl)
-      .getProps('data.nodes')
-      .should('have.length', 1589);
+    cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 1589);
   });
 
   it('should display 1589 nodes count in Nodes label', () => {

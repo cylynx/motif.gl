@@ -1,7 +1,7 @@
 import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 
 describe('Import Random + Circle', () => {
-  const graphinEl = 'Graphin2';
+  const graphinEl = 'Graphin';
   before(() => {
     cy.visit('/');
     cy.waitForReact();
@@ -26,15 +26,11 @@ describe('Import Random + Circle', () => {
   });
 
   it('should render 25 edges in Graphin', () => {
-    cy.getReact(graphinEl)
-      .getProps('data.edges')
-      .should('have.length', 25);
+    cy.getReact(graphinEl).getProps('data.edges').should('have.length', 25);
   });
 
   it('should render 15 nodes in Graphin', () => {
-    cy.getReact(graphinEl)
-      .getProps('data.nodes')
-      .should('have.length', 15);
+    cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 15);
   });
 
   it('should display 15 nodes count in Nodes label', () => {
@@ -56,9 +52,7 @@ describe('Import Random + Circle', () => {
   });
 
   it('should display two row for data list', () => {
-    cy.getReact('DataListAccordion')
-      .getProps('items')
-      .should('have.length', 2);
+    cy.getReact('DataListAccordion').getProps('items').should('have.length', 2);
   });
 
   it('should display data list name [Random Data]', () => {

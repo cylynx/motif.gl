@@ -1,7 +1,7 @@
 import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 
 describe('Import Bank Connections', () => {
-  const graphinEl = 'Graphin2';
+  const graphinEl = 'Graphin';
   before(() => {
     cy.visit('/');
     cy.waitForReact();
@@ -22,15 +22,11 @@ describe('Import Bank Connections', () => {
   });
 
   it('should render 23 edges in Graphin', () => {
-    cy.getReact(graphinEl)
-      .getProps('data.edges')
-      .should('have.length', 23);
+    cy.getReact(graphinEl).getProps('data.edges').should('have.length', 23);
   });
 
   it('should render 17 nodes in Graphin', () => {
-    cy.getReact(graphinEl)
-      .getProps('data.nodes')
-      .should('have.length', 17);
+    cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 17);
   });
 
   it('should display 17 nodes count in Nodes label', () => {
@@ -52,9 +48,7 @@ describe('Import Bank Connections', () => {
   });
 
   it('should display one row for data list', () => {
-    cy.getReact('DataListAccordion')
-      .getProps('items')
-      .should('have.length', 1);
+    cy.getReact('DataListAccordion').getProps('items').should('have.length', 1);
   });
 
   it('should display data list name [Banking Connections]', () => {

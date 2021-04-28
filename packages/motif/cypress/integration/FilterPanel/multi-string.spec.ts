@@ -1,7 +1,7 @@
 import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 
 describe('String Filters', () => {
-  const graphinEl = 'Graphin2';
+  const graphinEl = 'Graphin';
 
   const deleteButtonClick = () => {
     cy.react('Button', {

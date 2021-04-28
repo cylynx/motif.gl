@@ -14,8 +14,8 @@ import {
 import { NestedFormData } from '../../../src/components/form';
 
 describe('Setting Popovers', () => {
-  const graphinEl = 'Graphin2';
-  const selectEl = 'Select2';
+  const graphinEl = 'Graphin';
+  const selectEl = 'Select';
   const findDefaultFromForm = (
     form: NestedFormData,
     layout: string,
@@ -159,9 +159,7 @@ describe('Setting Popovers', () => {
       const { label, id } = findLayout(type);
       changeLayout(label);
 
-      cy.getReact(graphinEl)
-        .getProps('layout.type')
-        .should('deep.equal', id);
+      cy.getReact(graphinEl).getProps('layout.type').should('deep.equal', id);
     });
 
     it('Fruchterman-Force', () => {
@@ -192,9 +190,7 @@ describe('Setting Popovers', () => {
       const { label, id } = findLayout('preset');
       changeLayout(label);
 
-      cy.getReact(graphinEl)
-        .getProps('layout.type')
-        .should('deep.equal', id);
+      cy.getReact(graphinEl).getProps('layout.type').should('deep.equal', id);
     });
   });
 

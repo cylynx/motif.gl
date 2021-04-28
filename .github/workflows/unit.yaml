@@ -30,7 +30,13 @@ jobs:
         run: npm run rm-package-lock
 
       - name: Install Dependencies
-        run: npm run bootstrap-ci
+        working-directory: './packages/motif'
+        run: npm install --dev --legacy-peer-deps
 
       - name: Run Unit Test
-        run: npm run unit
+        working-directory: './packages/motif'
+        run: npm run test
+
+      - name: List All Directory
+        working-directory: './packages/motif'
+        run: ls -al node_modules/

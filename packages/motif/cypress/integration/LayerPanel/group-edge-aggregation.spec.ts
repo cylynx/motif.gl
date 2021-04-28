@@ -21,15 +21,11 @@ describe('Group Edge Aggregations', () => {
       cy.react('StatelessCheckbox2').click();
       cy.wait(1000);
 
-      cy.getReact('GroupByFields')
-        .getProps('toggle')
-        .should('deep.eq', true);
+      cy.getReact('GroupByFields').getProps('toggle').should('deep.eq', true);
     });
 
     it('should toggle by all after enabled', () => {
-      cy.getReact('GroupByFields')
-        .getProps('type')
-        .should('deep.eq', 'all');
+      cy.getReact('GroupByFields').getProps('type').should('deep.eq', 'all');
     });
 
     it('should contains all the edge fields', () => {
@@ -63,9 +59,7 @@ describe('Group Edge Aggregations', () => {
         .last()
         .click();
 
-      cy.get('li[role="option"]')
-        .contains(groupByType)
-        .click();
+      cy.get('li[role="option"]').contains(groupByType).click();
 
       cy.getReact('GroupByFields')
         .getProps('type')
@@ -111,16 +105,14 @@ describe('Group Edge Aggregations', () => {
     });
 
     it('should suggest numeric aggregations to selected field', () => {
-      cy.react('Select2', {
+      cy.react('Select', {
         props: {
           'data-testid': 'aggregate-fields:field',
         },
       })
         .last()
         .click();
-      cy.get('li[role="option"]')
-        .contains('amount')
-        .click();
+      cy.get('li[role="option"]').contains('amount').click();
 
       aggregateSelect()
         .nthNode(0)
@@ -138,16 +130,14 @@ describe('Group Edge Aggregations', () => {
     });
 
     it('should suggest string aggregations to selected field', () => {
-      cy.react('Select2', {
+      cy.react('Select', {
         props: {
           'data-testid': 'aggregate-fields:field',
         },
       })
         .last()
         .click();
-      cy.get('li[role="option"]')
-        .contains('date')
-        .click();
+      cy.get('li[role="option"]').contains('date').click();
 
       aggregateSelect()
         .nthNode(0)
@@ -163,26 +153,22 @@ describe('Group Edge Aggregations', () => {
     });
 
     it('should apply multiple aggregations onto the group edges', () => {
-      cy.react('Select2', {
+      cy.react('Select', {
         props: {
           'data-testid': 'aggregate-fields:aggregate',
         },
       })
         .last()
         .click();
-      cy.get('li[role="option"]')
-        .contains('First')
-        .click();
-      cy.react('Select2', {
+      cy.get('li[role="option"]').contains('First').click();
+      cy.react('Select', {
         props: {
           'data-testid': 'aggregate-fields:aggregate',
         },
       })
         .last()
         .click();
-      cy.get('li[role="option"]')
-        .contains('Last')
-        .click();
+      cy.get('li[role="option"]').contains('Last').click();
 
       aggregateSelect()
         .nthNode(0)

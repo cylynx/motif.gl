@@ -1,7 +1,7 @@
 import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 
 describe('Interactions', () => {
-  const graphinEl = 'Graphin2';
+  const graphinEl = 'Graphin';
   before(() => {
     cy.visit('/');
     cy.waitForReact();
@@ -27,12 +27,8 @@ describe('Interactions', () => {
     cy.switchPanel('filters');
 
     // results
-    cy.getReact(graphinEl)
-      .getProps('data.nodes')
-      .should('have.length', 7);
-    cy.getReact(graphinEl)
-      .getProps('data.edges')
-      .should('have.length', 0);
+    cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 7);
+    cy.getReact(graphinEl).getProps('data.edges').should('have.length', 0);
   });
 
   it('should remain filters are adding data', () => {
@@ -53,32 +49,22 @@ describe('Interactions', () => {
     cy.switchPanel('filters');
 
     // results
-    cy.getReact(graphinEl)
-      .getProps('data.nodes')
-      .should('have.length', 7);
-    cy.getReact(graphinEl)
-      .getProps('data.edges')
-      .should('have.length', 0);
+    cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 7);
+    cy.getReact(graphinEl).getProps('data.edges').should('have.length', 0);
   });
 
   it('should remain filters after remove one data', () => {
     cy.switchPanel('layers');
 
     // remove circular graph data
-    cy.react('DeleteButton')
-      .last()
-      .click();
+    cy.react('DeleteButton').last().click();
 
     // switch back to filters
     cy.switchPanel('filters');
 
     // results
-    cy.getReact(graphinEl)
-      .getProps('data.nodes')
-      .should('have.length', 7);
-    cy.getReact(graphinEl)
-      .getProps('data.edges')
-      .should('have.length', 0);
+    cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 7);
+    cy.getReact(graphinEl).getProps('data.edges').should('have.length', 0);
   });
 
   it('should remove filters once all data are cleared', () => {

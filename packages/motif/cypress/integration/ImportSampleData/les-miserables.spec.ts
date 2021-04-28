@@ -1,7 +1,7 @@
 import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 
 describe('Import Les Misérables', () => {
-  const graphinEl = 'Graphin2';
+  const graphinEl = 'Graphin';
   before(() => {
     cy.visit('/');
     cy.waitForReact();
@@ -28,15 +28,11 @@ describe('Import Les Misérables', () => {
   });
 
   it('should render 254 edges in Graphin', () => {
-    cy.getReact(graphinEl)
-      .getProps('data.edges')
-      .should('have.length', 254);
+    cy.getReact(graphinEl).getProps('data.edges').should('have.length', 254);
   });
 
   it('should render 77 nodes in Graphin', () => {
-    cy.getReact(graphinEl)
-      .getProps('data.nodes')
-      .should('have.length', 77);
+    cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 77);
   });
 
   it('should display 77 nodes count in Nodes label', () => {
@@ -58,9 +54,7 @@ describe('Import Les Misérables', () => {
   });
 
   it('should display one row for data list', () => {
-    cy.getReact('DataListAccordion')
-      .getProps('items')
-      .should('have.length', 1);
+    cy.getReact('DataListAccordion').getProps('items').should('have.length', 1);
   });
 
   it('should display data list name [Les Miserables]', () => {
