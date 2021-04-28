@@ -21,12 +21,9 @@ jobs:
       - name: Set NPM Production Configuration to false
         run: npm config set -g production false
 
-      - name: Remove existing package-locks
-        run: npm run rm-package-lock
-
-      - name: Install multiple packages' dependencies
+      - name: Install Dependencies
         working-directory: './packages/motif'
-        run: npm install --include=dev --legacy-peer-deps
+        run: npm ci --legacy-peer-deps
 
       - name: Setup kernel for React, increase watchers
         run: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
@@ -39,5 +36,5 @@ jobs:
           start: npm run start
           command: npm run cypress:test
           wait-on: 'http://localhost:3000'
-          wait-on-timeout: 120
+          wait-on-timeout: 30
           working-directory: './packages/motif'
