@@ -22,8 +22,8 @@
     "build": "npm run clean && tsc -b && vite build --config vite.prod.config.ts",
     "transpile": "tsc --p ./tsconfig.json --noEmit true --strict --watch",
     "test": "jest",
-    "test:watch": "tsdx test --watchAll",
-    "test:coverage": "tsdx --coverage --watchAll=false",
+    "test:watch": "jest --watchAll",
+    "test:coverage": "jest --coverage --watchAll=false",
     "cypress:open": "cypress open",
     "cypress:test": "cypress run",
     "clean": "rimraf -rf ./dist"
