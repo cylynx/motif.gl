@@ -23,8 +23,8 @@ jobs:
       - name: Set NPM Production Configuration to false
         run: npm config set -g production false
 
-      # - name: Remove existing package-lock to support multiple platforms
-      #   run: npm run rm-package-lock
+      - name: Remove existing package-lock to support multiple platforms
+        run: npm run rm-package-lock
 
       # - name: Install Development Dependencies
       #   working-directory: './packages/motif'
@@ -32,7 +32,7 @@ jobs:
 
       - name: Install Dependencies
         working-directory: './packages/motif'
-        run: npm ci --legacy-peer-deps
+        run: npm install --legacy-peer-deps
 
       - name: Run Unit Test
         working-directory: './packages/motif'
