@@ -29,14 +29,14 @@ jobs:
       - name: Remove existing package-lock to support multiple platforms
         run: npm run rm-package-lock
 
-      - name: Install Dependencies
+      - name: Install Development Dependencies
         working-directory: './packages/motif'
-        run: npm install --dev --legacy-peer-deps
+        run: npm install --include=dev --legacy-peer-deps
+
+      - name: Install Baseui and Lodash for Testing Purposes
+        working-directory: './packages/motif'
+        run: npm install baseui lodash-es --legacy-peer-deps
 
       - name: Run Unit Test
         working-directory: './packages/motif'
         run: npm run test
-
-      - name: List All Directory
-        working-directory: './packages/motif'
-        run: ls -al node_modules/
