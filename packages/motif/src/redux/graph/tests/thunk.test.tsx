@@ -178,7 +178,6 @@ describe('thunk.test.js', () => {
       const [firstGraphData, secondGraphData] = flatten(graphDataArr);
 
       // group edge configuration arrangements
-      const groupEdgeToggle = false;
       const groupEdgeConfig = { availability: false, toggle: groupEdgeToggle };
       Object.assign(firstGraphData.metadata.groupEdges, groupEdgeConfig);
       Object.assign(secondGraphData.metadata.groupEdges, groupEdgeConfig);
@@ -231,7 +230,6 @@ describe('thunk.test.js', () => {
       const [firstGraphData, secondGraphData] = flatten(graphDataArr);
 
       // group edge configuration arrangements
-      const groupEdgeToggle = false;
       const groupEdgeConfig = { availability: false, toggle: groupEdgeToggle };
       firstGraphData.metadata.groupEdges = groupEdgeConfig;
       secondGraphData.metadata.groupEdges = groupEdgeConfig;
@@ -873,7 +871,6 @@ describe('thunk.test.js', () => {
       const [objectData] = processedJsonData;
 
       // group edge configurations
-      const groupEdgeToggle = false;
       const groupEdgeConfig = { toggle: groupEdgeToggle, availability: false };
       objectData.metadata.groupEdges = groupEdgeConfig;
 

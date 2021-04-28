@@ -1,9 +1,10 @@
 import { defineConfig } from 'vite';
 import path from 'path';
 import postcss from 'rollup-plugin-postcss';
-import svgr from '@svgr/rollup';
 import resolve from '@rollup/plugin-node-resolve';
 import babel from '@rollup/plugin-babel';
+// @ts-ignore
+import svgr from '@svgr/rollup';
 
 const libEntryPath = path.resolve(__dirname, 'src/index.ts');
 const outputDir = path.resolve(__dirname, 'dist');
@@ -34,18 +35,6 @@ const babelPlugin = babel({
   exclude: /\/node_modules\//,
   extensions: ['.js', '.jsx', '.ts', '.tsx'],
   babelHelpers: 'bundled',
-  presets: [
-    [
-      '@babel/preset-env',
-      {
-        targets: {
-          node: 'current',
-        },
-      },
-    ],
-    '@babel/preset-react',
-    '@babel/preset-typescript',
-  ],
 }) as Plugin;
 
 export default defineConfig({
