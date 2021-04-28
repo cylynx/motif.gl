@@ -26,7 +26,7 @@ jobs:
 
       - name: Install multiple packages' dependencies
         working-directory: './packages/motif'
-        run: npm install --dev --legacy-peer-deps
+        run: npm install --include=dev --legacy-peer-deps
 
       - name: Setup kernel for React, increase watchers
         run: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
@@ -36,7 +36,8 @@ jobs:
         timeout-minutes: 27
         with:
           install: false
-          start: npm run demo
-          command: npm run cypress
+          start: npm run start
+          command: npm run cypress:test
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 120
+          working-directory: './packages/motif'
