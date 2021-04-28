@@ -75,7 +75,7 @@ export default defineConfig({
         '@reduxjs/toolkit',
         'styletron-engine-atomic',
         'styletron-react',
-        'attr-accept',
+        'baseui',
       ],
       output: {
         exports: 'named',
