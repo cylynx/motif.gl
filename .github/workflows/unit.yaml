@@ -27,7 +27,7 @@ jobs:
         run: npm run rm-package-lock
 
       - name: Install Dependencies
-        run: npm run bootstrap-ci && yarn install
+        run: lerna link convert && yarn install
 
       - name: Run Unit Test
         working-directory: './packages/motif'
