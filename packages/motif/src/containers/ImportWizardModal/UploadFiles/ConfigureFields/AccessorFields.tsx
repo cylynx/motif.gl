@@ -14,7 +14,7 @@ type AccessorField = {
 };
 type AccessorsFieldsProps = {
   onSelectChange: (params: OnChangeParams, onChange: any) => any;
-  control: Control<Record<string, any>>;
+  control: Control<ConfigureFieldsForm>;
   watch: (names?: string | string[]) => any;
   setError: (
     name: string,
@@ -164,7 +164,7 @@ const AccessorFields: FC<AccessorsFieldsProps> = ({
         return (
           <FlexGridItem key={name}>
             <Controller
-              name={name}
+              name={name as keyof ConfigureFieldsForm}
               control={control}
               render={({ field: { onChange, name, value } }) => {
                 return (
@@ -176,7 +176,7 @@ const AccessorFields: FC<AccessorsFieldsProps> = ({
                     labelText={labelText}
                     tooltipText={tooltipText}
                     options={options}
-                    value={value}
+                    value={value as string}
                     setValue={setValue}
                     error={errors[name] && (errors[name] as any).message}
                   />

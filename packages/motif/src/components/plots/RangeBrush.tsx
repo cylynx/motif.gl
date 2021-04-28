@@ -16,22 +16,17 @@
 //  https://github.com/keplergl/kepler.gl/blob/master/src/utils/data-utils.js
 
 import React, { Component, createRef } from 'react';
-import { styled } from 'baseui';
 import { select } from 'd3-selection';
 import { brushX } from 'd3-brush';
+import styled from 'styled-components';
 import { normalizeSliderValue } from '../../utils/data-utils/data-utils';
 
-const StyledG = styled('g', {
-  stroke: 'none',
-  fillOpacity: 0.3,
-});
-
-// const StyledG = styled.g`
-//   .selection {
-//     stroke: none;
-//     fill-opacity: 0.3;
-//   }
-// `;
+const StyledG = styled.g`
+  .selection {
+    stroke: none;
+    fill-opacity: 0.3;
+  }
+`;
 
 function moveRight(startSel, selection) {
   const [startSel0] = startSel;

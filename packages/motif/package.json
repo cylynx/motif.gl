@@ -77,6 +77,7 @@
     "redux-thunk": "^2.3.0",
     "redux-undo": "^1.0.1",
     "shortid": "^2.2.15",
+    "styled-components": "^5.2.3",
     "type-analyzer": "^0.2.5"
   },
   "devDependencies": {

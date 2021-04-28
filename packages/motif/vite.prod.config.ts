@@ -7,11 +7,10 @@ import babel from '@rollup/plugin-babel';
 
 const libEntryPath = path.resolve(__dirname, 'src/index.ts');
 const outputDir = path.resolve(__dirname, 'dist');
+const motifCssPath = path.resolve(__dirname, 'dist/motif.css');
 
 const postCssPlugin = postcss({
-  extract: false,
-  modules: false,
-  minimize: false,
+  extract: motifCssPath,
 }) as Plugin;
 
 // @ts-ignore
@@ -50,14 +49,14 @@ const babelPlugin = babel({
 }) as Plugin;
 
 export default defineConfig({
-  mode: 'production',
+  mode: 'development', // production
   logLevel: 'error',
   clearScreen: false,
   plugins: [resolvePlugin, babelPlugin, postCssPlugin, svgrPlugin],
   build: {
     outDir: outputDir,
     sourcemap: true,
-    minify: 'terser',
+    minify: false, // 'terser'
     emptyOutDir: false,
     lib: {
       entry: libEntryPath,
@@ -74,6 +73,7 @@ export default defineConfig({
         '@reduxjs/toolkit',
         'styletron-engine-atomic',
         'styletron-react',
+        'attr-accept',
       ],
       output: {
         exports: 'named',
