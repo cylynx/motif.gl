@@ -8,16 +8,6 @@ describe('Data List Header', () => {
     cy.importSampleData(SampleData.BANK);
   });
 
-  describe('Display Node/Edge Information', () => {
-    it('should open datatable modal', () => {
-      cy.react('TableButton').click();
-      cy.getReact('DatatableModal').should('exist');
-
-      // close modal
-      cy.get('button[aria-label="Close"]').click();
-    });
-  });
-
   describe('Visibility Button', () => {
     it('should hide the specific graph list', () => {
       cy.react('VisibilityButton').click();
