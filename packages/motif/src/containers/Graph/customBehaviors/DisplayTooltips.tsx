@@ -14,55 +14,49 @@ export type DisplayTooltipProps = {
 const DisplayTooltip = ({ setTooltip }: DisplayTooltipProps): any => {
   const { graph } = useContext(GraphinContext) as GraphinContextType;
 
-  const onResetClick = (): void => {
+  const onMouseLeave = (): void => {
     setTooltip(null);
   };
 
-  const onNodeClick = (e: IG6GraphEvent): void => {
+  const onNodeHover = (e: IG6GraphEvent): void => {
     const item = e.item as INode;
-    const { shiftKey } = e.originalEvent as KeyboardEvent;
 
-    if (shiftKey === false) {
-      const node = item.get('model');
-      const point = graph.getPointByClient(e.clientX, e.clientY);
-      const { x, y } = graph.getCanvasByPoint(point.x, point.y);
-      setTooltip({
-        id: node.id,
-        x,
-        y,
-        type: 'node',
-      });
-    }
+    const node = item.get('model');
+    const point = graph.getPointByClient(e.clientX, e.clientY);
+    const { x, y } = graph.getCanvasByPoint(point.x, point.y);
+    setTooltip({
+      id: node.id,
+      x,
+      y,
+      type: 'node',
+    });
   };
 
-  const onEdgeClick = (e: IG6GraphEvent): void => {
+  const onEdgeHover = (e: IG6GraphEvent): void => {
     const item = e.item as IEdge;
-    const { shiftKey } = e.originalEvent as KeyboardEvent;
 
-    if (shiftKey === false) {
-      const edge = item.get('model');
-      const point = graph.getPointByClient(e.clientX, e.clientY);
-      const { x, y } = graph.getCanvasByPoint(point.x, point.y);
-      setTooltip({
-        id: edge.id,
-        x,
-        y,
-        type: 'edge',
-      });
-    }
+    const edge = item.get('model');
+    const point = graph.getPointByClient(e.clientX, e.clientY);
+    const { x, y } = graph.getCanvasByPoint(point.x, point.y);
+    setTooltip({
+      id: edge.id,
+      x,
+      y,
+      type: 'edge',
+    });
   };
 
   useLayoutEffect(() => {
-    graph.on('node:click', onNodeClick);
-    graph.on('node:mouseleave', onResetClick);
-    graph.on('edge:click', onEdgeClick);
-    graph.on('edge:mouseleave', onResetClick);
+    graph.on('node:mouseenter', onNodeHover);
+    graph.on('node:mouseleave', onMouseLeave);
+    graph.on('edge:mouseenter', onEdgeHover);
+    graph.on('edge:mouseleave', onMouseLeave);
 
     return (): void => {
-      graph.off('node:click', onNodeClick);
-      graph.off('node:mouseleave', onResetClick);
-      graph.off('edge:click', onEdgeClick);
-      graph.off('edge:mouseleave', onResetClick);
+      graph.off('node:mouseenter', onNodeHover);
+      graph.off('node:mouseleave', onMouseLeave);
+      graph.off('edge:mouseenter', onEdgeHover);
+      graph.off('edge:mouseleave', onMouseLeave);
     };
   }, [setTooltip]);
 
