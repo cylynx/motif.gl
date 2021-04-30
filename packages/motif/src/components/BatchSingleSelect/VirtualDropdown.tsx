@@ -83,6 +83,7 @@ const VirtualDropdown = React.forwardRef((props: any, ref) => {
         width='100%'
         height={height}
         itemCount={children.length}
+        // @ts-ignore
         itemData={children}
         itemKey={(index: number, data: { props: OptionListProps }[]) =>
           data[index].props.item.id
