@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import path from 'path';
 import postcss from 'rollup-plugin-postcss';
 import resolve from '@rollup/plugin-node-resolve';
+import { visualizer } from 'rollup-plugin-visualizer';
 // @ts-ignore
 import svgr from '@svgr/rollup';
 
@@ -32,11 +33,13 @@ const resolvePlugin = resolve({
   extensions: ['.js', 'jsx'],
 }) as Plugin;
 
+const visualiserPlugin = visualizer();
+
 export default defineConfig({
   mode: 'production',
   logLevel: 'error',
   clearScreen: false,
-  plugins: [resolvePlugin, postCssPlugin, svgrPlugin],
+  plugins: [resolvePlugin, postCssPlugin, svgrPlugin, visualiserPlugin],
   build: {
     outDir: outputDir,
 

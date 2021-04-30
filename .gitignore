@@ -37,3 +37,6 @@ coverage/
 cypress/screenshots
 cypress/videos
 
+# rollup 
+stats.html
+
