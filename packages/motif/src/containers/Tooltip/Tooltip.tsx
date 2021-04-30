@@ -80,7 +80,7 @@ const Tooltip = ({ tooltip }: { tooltip: TooltipProps }) => {
           },
         }}
       >
-        {value}
+        {String(value ?? '')}
       </Block>
     </Block>
   ));

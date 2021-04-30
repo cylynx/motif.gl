@@ -285,17 +285,16 @@ export const getEdgeProperties = (
 
   if (kind === 'data' || kind === 'all') {
     dataKeys.forEach((k) => {
-      if (isValidValue(flattenInfo[k]) && !filter.includes(k))
-        newObj[k] = flattenInfo[k];
+      if (!filter.includes(k)) newObj[k] = flattenInfo[k];
     });
   }
 
   if (kind === 'style' || kind === 'all') {
     styleKeys.forEach((k) => {
-      if (isValidValue(flattenInfo[k]) && !filter.includes(k))
-        newObj[k] = flattenInfo[k];
+      if (!filter.includes(k)) newObj[k] = flattenInfo[k];
     });
   }
+
   return newObj;
 };
 

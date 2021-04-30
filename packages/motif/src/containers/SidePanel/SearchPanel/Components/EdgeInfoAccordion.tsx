@@ -58,6 +58,11 @@ const EdgeInfoAccordion = ({
             return <Icon.ChevronDown />;
           },
         },
+        PanelContainer: {
+          style: {
+            borderBottomStyle: 'none',
+          },
+        },
       }}
       items={[sourceNodeItem, edgeItem, targetNodeItem]}
     />

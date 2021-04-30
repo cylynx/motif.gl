@@ -88,7 +88,8 @@ const TableContent = ({ results }: TableContentProps) => {
               },
             }}
           >
-            {value}
+            {/* Convert boolean value into string */}
+            {String(value ?? '')}
           </Block>
         </Block>
       );

@@ -92,9 +92,7 @@ export const getOrdinalDomain = (
   const values =
     typeof valueAccessor === 'function' ? data.map(valueAccessor) : data;
 
-  return unique(values)
-    .filter(notNullorUndefined)
-    .sort();
+  return unique(values).filter(notNullorUndefined).sort();
 };
 
 /**
@@ -464,11 +462,10 @@ export const removeEmptyValueInObject = (object: Record<string, any>): void => {
   Object.entries(object).forEach((property) => {
     const [key, value] = property;
 
-    const isNullOrUndefined = !value;
     const isEmptyArray: boolean = Array.isArray(value) && value.length === 0;
     const isEmptyObj: boolean = typeof value === 'object' && value !== null;
 
-    if (isNullOrUndefined || isEmptyArray || isEmptyObj) {
+    if (isEmptyArray || isEmptyObj) {
       // eslint-disable-next-line no-param-reassign
       delete object[key];
     }

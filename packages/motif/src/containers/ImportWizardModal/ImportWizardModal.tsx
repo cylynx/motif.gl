@@ -38,7 +38,7 @@ export type ImportWizardProps = { overrideTabs?: ImportTabs[] };
 const ImportWizardModal: FC<ImportWizardProps> = ({ overrideTabs }) => {
   const dispatch = useDispatch();
   const { modal } = useSelector((state) => UISelectors.getUI(state));
-  const { isPossessDataPreview, resetDataPreview } = useFileContents();
+  const { isPossessDataPreview, resetState } = useFileContents();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const tabs = useMemo(() => {
@@ -68,7 +68,7 @@ const ImportWizardModal: FC<ImportWizardProps> = ({ overrideTabs }) => {
     }
 
     dispatch(UISlices.closeModal());
-    resetDataPreview();
+    resetState();
   };
 
   return (
@@ -141,7 +141,7 @@ const ImportWizardModal: FC<ImportWizardProps> = ({ overrideTabs }) => {
         }}
         onAccept={() => {
           setModalOpen(false);
-          resetDataPreview();
+          resetState();
           dispatch(UISlices.closeModal());
         }}
         rejectBtnText='Cancel'

@@ -49,6 +49,11 @@ const NodeInfoAccordion: FC<NodeInformationProps> = ({
             return <Icon.ChevronDown />;
           },
         },
+        PanelContainer: {
+          style: {
+            borderBottomStyle: 'none',
+          },
+        },
       }}
       key={nodeItem.key}
       items={[nodeItem]}
