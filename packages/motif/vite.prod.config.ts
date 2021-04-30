@@ -2,7 +2,6 @@ import { defineConfig } from 'vite';
 import path from 'path';
 import postcss from 'rollup-plugin-postcss';
 import resolve from '@rollup/plugin-node-resolve';
-import babel from '@rollup/plugin-babel';
 // @ts-ignore
 import svgr from '@svgr/rollup';
 
@@ -33,18 +32,11 @@ const resolvePlugin = resolve({
   extensions: ['.js', 'jsx'],
 }) as Plugin;
 
-// perform transpilation into bundle
-const babelPlugin = babel({
-  exclude: /\/node_modules\//,
-  extensions: ['.js', '.jsx', '.ts', '.tsx'],
-  babelHelpers: 'bundled',
-}) as Plugin;
-
 export default defineConfig({
   mode: 'production',
   logLevel: 'error',
   clearScreen: false,
-  plugins: [resolvePlugin, babelPlugin, postCssPlugin, svgrPlugin],
+  plugins: [resolvePlugin, postCssPlugin, svgrPlugin],
   build: {
     outDir: outputDir,
 
@@ -75,7 +67,7 @@ export default defineConfig({
         '@reduxjs/toolkit',
         'styletron-engine-atomic',
         'styletron-react',
-        'baseui',
+        'attr-accepts',
       ],
       output: {
         exports: 'named',

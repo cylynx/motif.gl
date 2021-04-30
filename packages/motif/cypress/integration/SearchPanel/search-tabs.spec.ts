@@ -2,7 +2,7 @@ import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData
 import { EdgeInformation, Node } from '../../../src/redux/graph';
 
 describe('Search Tabs', () => {
-  const tabComponent = 'TabComponent2';
+  const tabComponent = 'TabComponent';
   before(() => {
     cy.visit('/');
     cy.waitForReact(5000);
@@ -19,9 +19,7 @@ describe('Search Tabs', () => {
     });
 
     it('should possess only one node', () => {
-      cy.getReact('NodeResults')
-        .getProps('nodes')
-        .should('have.length', 1);
+      cy.getReact('NodeResults').getProps('nodes').should('have.length', 1);
     });
 
     it('should display results correctly', () => {
@@ -34,9 +32,7 @@ describe('Search Tabs', () => {
     });
 
     it('should not render edge information results', () => {
-      cy.getReact('EdgeResults')
-        .getProps('edges')
-        .should('have.length', 0);
+      cy.getReact('EdgeResults').getProps('edges').should('have.length', 0);
     });
   });
 
@@ -48,9 +44,7 @@ describe('Search Tabs', () => {
     });
 
     it('should possess only one node', () => {
-      cy.getReact('EdgeResults')
-        .getProps('edges')
-        .should('have.length', 1);
+      cy.getReact('EdgeResults').getProps('edges').should('have.length', 1);
     });
 
     it('should display results correctly', () => {
@@ -72,9 +66,7 @@ describe('Search Tabs', () => {
     });
 
     it('should not render NodeResults', () => {
-      cy.getReact('NodeResults')
-        .getProps('nodes')
-        .should('have.length', 0);
+      cy.getReact('NodeResults').getProps('nodes').should('have.length', 0);
     });
   });
 });

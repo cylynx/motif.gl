@@ -18,7 +18,7 @@ describe('Group Edge Aggregations', () => {
     });
 
     it('should enable successfully', () => {
-      cy.react('StatelessCheckbox2').click();
+      cy.react('StatelessCheckbox').click();
       cy.wait(1000);
 
       cy.getReact('GroupByFields').getProps('toggle').should('deep.eq', true);
@@ -53,7 +53,7 @@ describe('Group Edge Aggregations', () => {
 
     it('should group by custom value', () => {
       const groupByType = 'is_foreign_source';
-      cy.react('Select3', {
+      cy.react('Select', {
         props: { 'data-testid': 'group-by-fields:select' },
       })
         .last()
@@ -69,7 +69,7 @@ describe('Group Edge Aggregations', () => {
 
   describe('Fields With Aggregations', () => {
     const fieldSelect = () => {
-      return cy.getReact('Select3', {
+      return cy.getReact('Select', {
         props: {
           'data-testid': 'aggregate-fields:field',
         },
@@ -85,7 +85,7 @@ describe('Group Edge Aggregations', () => {
     };
 
     const aggregateSelect = () => {
-      return cy.getReact('Select3', {
+      return cy.getReact('Select', {
         props: {
           'data-testid': 'aggregate-fields:aggregate',
         },
