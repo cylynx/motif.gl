@@ -1,6 +1,3 @@
-// @ts-ignore
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
 const config = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
@@ -15,7 +12,6 @@ const config = {
             loader: 'babel-loader',
             options: {
               presets: ['@babel/preset-env', '@babel/preset-react'],
-              plugins: ['@babel/plugin-transform-runtime'],
             },
           },
         ],
@@ -30,25 +26,15 @@ const config = {
       },
       {
         test: /\.css$/i,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        use: ['css-loader'],
       },
       {
         test: /\.less$/,
-        use: [
-          { loader: MiniCssExtractPlugin.loader },
-          { loader: 'css-loader' },
-          {
-            loader: 'less-loader',
-            options: {
-              javascriptEnabled: true,
-            },
-          },
-        ],
+        use: [{ loader: 'css-loader' }],
         sideEffects: true,
       },
     ],
   },
-  plugins: [new MiniCssExtractPlugin()],
 };
 
 module.exports = config;
