@@ -44,10 +44,7 @@ describe('Data List Header', () => {
 
   describe('Delete Layer', () => {
     it('should delete the specific graph list', () => {
-      cy.react('DeleteButton')
-        .last()
-        .click();
-      cy.wait(2000);
+      cy.react('DeleteButton').last().click();
 
       cy.getReact('GraphStatistics')
         .nthNode(0)

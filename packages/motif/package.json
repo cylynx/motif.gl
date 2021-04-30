@@ -18,7 +18,7 @@
     "dist"
   ],
   "scripts": {
-    "start": "vite --config vite.dev.config.ts",
+    "start": "npm run clean && vite --force --config vite.dev.config.ts",
     "build": "npm run clean && tsc -b && vite build --config vite.prod.config.ts",
     "transpile": "tsc --p ./tsconfig.json --noEmit true --strict --watch",
     "test": "jest",

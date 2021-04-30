@@ -189,6 +189,8 @@ export class GraphLayer extends Component<GraphLayerProps, GraphLayerState> {
         height='100%'
         paddingTop='0'
         paddingBottom='0'
+        top='0'
+        bottom='0'
         left={left}
         overrides={{
           Block: {
