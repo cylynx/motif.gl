@@ -42,6 +42,11 @@ const DataListAccordion: FC<DataListAccordionProps> = ({ items }) => {
           // @ts-ignore
           style: ContentStyle,
         },
+        PanelContainer: {
+          style: {
+            borderBottomStyle: 'none',
+          },
+        },
       }}
     />
   );

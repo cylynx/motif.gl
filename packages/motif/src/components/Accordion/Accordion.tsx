@@ -76,6 +76,11 @@ const Accordion = ({ items, icon, overrides }: AccordionProps) => {
         borderBottomWidth: 0,
       }),
     },
+    PanelContainer: {
+      style: {
+        borderBottomStyle: 'none',
+      },
+    },
   };
 
   return (
