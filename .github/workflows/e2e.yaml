@@ -24,11 +24,17 @@ jobs:
       - name: Remove existing package-lock to support multiple platforms
         run: npm run rm-package-lock
 
-      - name: Install Dependencies
-        run: lerna link convert && yarn install
+      - name: Install Motif Dependencies
+        working-directory: './packages/motif'
+        run: yarn install
 
       - name: Build Motif Bundle
-        run: npm run motif:build
+        working-directory: './packages/motif'
+        run: npm run build
+
+      - name: Install Demo Dependencies
+        working-directory: './packages/motif-demo'
+        run: yarn install
 
       - name: Setup kernel for React, increase watchers
         run: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
