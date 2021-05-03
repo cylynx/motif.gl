@@ -33,7 +33,7 @@ const resolvePlugin = resolve({
   extensions: ['.js', 'jsx'],
 }) as Plugin;
 
-const visualiserPlugin = visualizer();
+const visualiserPlugin = visualizer() as Plugin;
 
 export default defineConfig({
   mode: 'production',
@@ -70,7 +70,7 @@ export default defineConfig({
         '@reduxjs/toolkit',
         'styletron-engine-atomic',
         'styletron-react',
-        'attr-accepts',
+        'attr-accept',
       ],
       output: {
         exports: 'named',
