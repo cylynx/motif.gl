@@ -11,19 +11,15 @@ describe('Navigation', () => {
   it('should display sample data list after switched to [Sample Data] tabs', () => {
     switchSampleDataTabs('sample-data');
 
-    cy.getReact('Tabs')
-      .getProps('activeKey')
-      .should('eq', 'sample-data');
+    cy.getReact('Tabs$1').getProps('activeKey').should('eq', 'sample-data');
   });
 
   it('should display six categories of sample data', () => {
-    cy.react('FlushedGrid')
-      .react('Cell')
-      .should('have.length', 6);
+    cy.react('Cell').should('have.length', 6);
   });
 
   const switchSampleDataTabs = (tabActiveKey: string) => {
-    cy.react('Tabs')
+    cy.react('Tabs$1')
       .react('InternalTab', {
         props: { childKey: tabActiveKey },
       })

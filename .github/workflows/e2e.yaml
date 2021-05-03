@@ -24,23 +24,21 @@ jobs:
       - name: Remove existing package-lock to support multiple platforms
         run: npm run rm-package-lock
 
-      # - name: Install Dependencies
-      #   run: lerna link convert && yarn install
-
       - name: Install Dependencies
-        working-directory: './packages/motif'
-        run: yarn install
+        run: lerna link convert && yarn install
+
+      - name: Build Motif Bundle
+        run: npm run motif:build
 
       - name: Setup kernel for React, increase watchers
         run: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 
       - name: Cypress run
         uses: cypress-io/github-action@v2
-        timeout-minutes: 27
+        timeout-minutes: 30
         with:
           install: false
-          start: npm run start
-          command: npm run cypress:test
+          start: npm run demo-cra
+          command: npm run cypress
           wait-on: 'http://localhost:3000'
-          wait-on-timeout: 30
-          working-directory: './packages/motif'
+          wait-on-timeout: 100
