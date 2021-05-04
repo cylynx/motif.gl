@@ -1,12 +1,13 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  mode: 'development',
+  mode: 'production',
   build: {
     emptyOutDir: true,
     minify: false,
-    rollupOptions: {
-      treeshake: true,
+    terserOptions: {
+      keep_classnames: true,
+      keep_fnames: true,
     },
   },
   optimizeDeps: {

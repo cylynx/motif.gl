@@ -7,7 +7,8 @@
     "motif:tsc": "cd ./packages/motif && npm run transpile",
     "motif:build": "cd ./packages/motif && npm run build",
     "demo": "cd ./packages/motif-demo && npm run start",
-    "demo-cra": "cd ./packages/motif-demo && echo SKIP_PREFLIGHT_CHECK=true >> .env && npm run start-cra",
+    "demo:build": "cd ./packages/motif-demo && npm run build",
+    "demo:serve": "cd ./packages/motif-demo && npm run serve",
     "clean": "lerna clean && npm run rm-package-lock",
     "cypress": "cd ./packages/motif && npm run cypress:test",
     "rm-package-lock": "rm -rf ./package-lock.json ./packages/*/package-lock.json"
