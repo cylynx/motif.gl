@@ -303,8 +303,8 @@ export const importSampleData = (
         processResponse(dispatch, mainAccessors, graphData);
         showImportDataToast(dispatch, filterOptions);
         dispatch(FileUploadSlices.resetState());
-        dispatch(UISlices.closeModal());
         dispatch(UISlices.fetchDone());
+        dispatch(UISlices.closeModal());
       }, 200);
     })
     .catch((err: Error) => {

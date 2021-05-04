@@ -195,17 +195,24 @@ describe('thunk.test.js', () => {
           data: secondGraphData,
           accessors: initialState.accessors,
         }),
-        fetchDone(),
         updateToast('toast-0'),
         resetState(),
+        fetchDone(),
         closeModal(),
       ];
 
       // assertions
-      await store.dispatch(
-        importJsonData(importDataArr, groupEdgeToggle, initialState.accessors),
-      );
-      expect(store.getActions()).toEqual(expectedActions);
+      store
+        .dispatch(
+          importJsonData(
+            importDataArr,
+            groupEdgeToggle,
+            initialState.accessors,
+          ),
+        )
+        .then(() => {
+          expect(store.getActions()).toEqual(expectedActions);
+        });
     });
 
     it('should display different success message in toast with filter applied', async () => {
@@ -247,17 +254,24 @@ describe('thunk.test.js', () => {
           data: secondGraphData,
           accessors: initialState.accessors,
         }),
-        fetchDone(),
         updateToast('toast-0'),
         resetState(),
+        fetchDone(),
         closeModal(),
       ];
 
       // assertions
-      await modifiedStore.dispatch(
-        importJsonData(importDataArr, groupEdgeToggle, initialState.accessors),
-      );
-      expect(modifiedStore.getActions()).toEqual(expectedActions);
+      modifiedStore
+        .dispatch(
+          importJsonData(
+            importDataArr,
+            groupEdgeToggle,
+            initialState.accessors,
+          ),
+        )
+        .then(() => {
+          expect(modifiedStore.getActions()).toEqual(expectedActions);
+        });
     });
 
     it('should overwrite styles with the last file', async () => {
@@ -287,8 +301,8 @@ describe('thunk.test.js', () => {
 
       // expected results
       const expectedActions = [
-        updateStyleOption(styleOptions),
         fetchBegin(),
+        updateStyleOption(styleOptions),
         addQuery(firstGraphData),
         processGraphResponse({
           data: firstGraphData,
@@ -299,22 +313,25 @@ describe('thunk.test.js', () => {
           data: secondGraphData,
           accessors: initialState.accessors,
         }),
-        fetchDone(),
         updateToast('toast-0'),
         resetState(),
+        fetchDone(),
         closeModal(),
       ];
 
       // assertions
-      await store.dispatch(
-        importJsonData(
-          importDataArr,
-          groupEdgeToggle,
-          initialState.accessors,
-          true,
-        ),
-      );
-      expect(store.getActions()).toEqual(expectedActions);
+      store
+        .dispatch(
+          importJsonData(
+            importDataArr,
+            groupEdgeToggle,
+            initialState.accessors,
+            true,
+          ),
+        )
+        .then(() => {
+          expect(store.getActions()).toEqual(expectedActions);
+        });
     });
 
     it('should import successfully without metadata', async () => {
@@ -352,17 +369,24 @@ describe('thunk.test.js', () => {
           data: graphData,
           accessors: initialState.accessors,
         }),
-        fetchDone(),
         updateToast('toast-0'),
         resetState(),
+        fetchDone(),
         closeModal(),
       ];
 
       // assertions
-      await store.dispatch(
-        importJsonData(importDataArr, groupEdgeToggle, initialState.accessors),
-      );
-      expect(store.getActions()).toEqual(expectedActions);
+      store
+        .dispatch(
+          importJsonData(
+            importDataArr,
+            groupEdgeToggle,
+            initialState.accessors,
+          ),
+        )
+        .then(() => {
+          expect(store.getActions()).toEqual(expectedActions);
+        });
     });
 
     it('should not overwrite styles if data has no style', async () => {
@@ -412,22 +436,25 @@ describe('thunk.test.js', () => {
           data: secondGraphData,
           accessors: initialState.accessors,
         }),
-        fetchDone(),
         updateToast('toast-0'),
         resetState(),
+        fetchDone(),
         closeModal(),
       ];
 
       // assertions
-      await store.dispatch(
-        importJsonData(
-          importDataArr,
-          groupEdgeToggle,
-          initialState.accessors,
-          true,
-        ),
-      );
-      expect(store.getActions()).toEqual(expectedActions);
+      store
+        .dispatch(
+          importJsonData(
+            importDataArr,
+            groupEdgeToggle,
+            initialState.accessors,
+            true,
+          ),
+        )
+        .then(() => {
+          expect(store.getActions()).toEqual(expectedActions);
+        });
     });
 
     describe('Simple Graph Format', () => {
@@ -472,21 +499,24 @@ describe('thunk.test.js', () => {
             data: secondGraphData,
             accessors: initialState.accessors,
           }),
-          fetchDone(),
           updateToast('toast-0'),
           resetState(),
+          fetchDone(),
           closeModal(),
         ];
 
         // assertions
-        await store.dispatch(
-          importJsonData(
-            importDataArr,
-            groupEdgeToggle,
-            initialState.accessors,
-          ),
-        );
-        expect(store.getActions()).toEqual(expectedActions);
+        store
+          .dispatch(
+            importJsonData(
+              importDataArr,
+              groupEdgeToggle,
+              initialState.accessors,
+            ),
+          )
+          .then(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+          });
       });
 
       it('should import with two files contain three graph lists', async () => {
@@ -538,21 +568,24 @@ describe('thunk.test.js', () => {
             data: thirdGraphData,
             accessors: initialState.accessors,
           }),
-          fetchDone(),
           updateToast('toast-0'),
           resetState(),
+          fetchDone(),
           closeModal(),
         ];
 
         // assertions
-        await store.dispatch(
-          importJsonData(
-            importDataArr,
-            groupEdgeToggle,
-            initialState.accessors,
-          ),
-        );
-        expect(store.getActions()).toEqual(expectedActions);
+        store
+          .dispatch(
+            importJsonData(
+              importDataArr,
+              groupEdgeToggle,
+              initialState.accessors,
+            ),
+          )
+          .then(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+          });
       });
     });
 
@@ -612,14 +645,17 @@ describe('thunk.test.js', () => {
         ];
 
         // assertions
-        await store.dispatch(
-          importJsonData(
-            importDataArr,
-            groupEdgeToggle,
-            initialState.accessors,
-          ),
-        );
-        expect(store.getActions()).toEqual(expectedActions);
+        store
+          .dispatch(
+            importJsonData(
+              importDataArr,
+              groupEdgeToggle,
+              initialState.accessors,
+            ),
+          )
+          .then(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+          });
       });
 
       it('should perform group edge during importation', async () => {
@@ -662,27 +698,29 @@ describe('thunk.test.js', () => {
             data: modData,
             accessors: initialState.accessors,
           }),
-          fetchDone(),
           updateToast('toast-0'),
           resetState(),
+          fetchDone(),
           closeModal(),
         ];
 
         // assertions
-        await store.dispatch(
-          importJsonData(
-            importDataArr,
-            groupEdgeToggle,
-            initialState.accessors,
-          ),
-        );
-
-        // perform assertion except process graph response due to random numbers.
-        store.getActions().forEach((actions, index) => {
-          if (actions.type !== 'graph/processGraphResponse') {
-            expect(actions).toEqual(expectedActions[index]);
-          }
-        });
+        store
+          .dispatch(
+            importJsonData(
+              importDataArr,
+              groupEdgeToggle,
+              initialState.accessors,
+            ),
+          )
+          .then(() => {
+            // perform assertion except process graph response due to random numbers.
+            store.getActions().forEach((actions, index) => {
+              if (actions.type !== 'graph/processGraphResponse') {
+                expect(actions).toEqual(expectedActions[index]);
+              }
+            });
+          });
       });
     });
 
@@ -742,21 +780,24 @@ describe('thunk.test.js', () => {
           data,
           accessors,
         }),
-        fetchDone(),
         updateToast('toast-0'),
         resetState(),
+        fetchDone(),
         closeModal(),
       ];
 
-      await store.dispatch(
-        importNodeEdgeData(
-          sampleNodeEdgeData,
-          groupEdgeToggle,
-          accessors,
-          metadataKey,
-        ),
-      );
-      expect(store.getActions()).toEqual(expectedActions);
+      store
+        .dispatch(
+          importNodeEdgeData(
+            sampleNodeEdgeData,
+            groupEdgeToggle,
+            accessors,
+            metadataKey,
+          ),
+        )
+        .then(() => {
+          expect(store.getActions()).toEqual(expectedActions);
+        });
     });
     it('should throw errors if importNodeEdgeData parameter is array', async () => {
       const importDataArr = [sampleNodeEdgeData];
@@ -822,21 +863,24 @@ describe('thunk.test.js', () => {
           data: secondGraphData,
           accessors: initialState.accessors,
         }),
-        fetchDone(),
         updateToast('toast-0'),
         resetState(),
+        fetchDone(),
         closeModal(),
       ];
 
       // assertions
-      await store.dispatch(
-        importEdgeListData(
-          importDataArr,
-          groupEdgeToggle,
-          initialState.accessors,
-        ),
-      );
-      expect(store.getActions()).toEqual(expectedActions);
+      store
+        .dispatch(
+          importEdgeListData(
+            importDataArr,
+            groupEdgeToggle,
+            initialState.accessors,
+          ),
+        )
+        .then(() => {
+          expect(store.getActions()).toEqual(expectedActions);
+        });
     });
 
     it('should throw errors if importData parameter is not array', async () => {
@@ -882,14 +926,15 @@ describe('thunk.test.js', () => {
           data: objectData,
           accessors: initialState.accessors,
         }),
-        fetchDone(),
         updateToast('toast-0'),
         resetState(),
+        fetchDone(),
         closeModal(),
       ];
 
-      await store.dispatch(importSampleData(data, groupEdgeToggle));
-      expect(store.getActions()).toEqual(expectedActions);
+      store.dispatch(importSampleData(data, groupEdgeToggle)).then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
     });
   });
 
