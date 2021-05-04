@@ -7,7 +7,7 @@ const findLayout = (id: string) =>
 
 describe('Layout Options', () => {
   const layoutEl: string = 'layout';
-  const graphinEl = 'Graphin';
+  const graphinEl = 'Graphin2';
 
   const changeLayout = (label: string) => {
     cy.react('NestedForm', { props: { id: layoutEl } })

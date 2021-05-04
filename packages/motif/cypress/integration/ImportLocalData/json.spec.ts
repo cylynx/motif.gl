@@ -10,7 +10,7 @@ import {
 const jsonDatasetRootPath = 'LocalFiles/Json';
 
 describe('Import Single Local File', () => {
-  const graphinEl = 'Graphin';
+  const graphinEl = 'Graphin2';
   const getGraphStates = (): Promise<GraphState> => {
     return new Promise((resolve) => {
       cy.getReact('Provider')

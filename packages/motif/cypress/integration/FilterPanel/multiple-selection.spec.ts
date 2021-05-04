@@ -1,7 +1,7 @@
 import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 
 describe('Multiple Selection', () => {
-  const graphinEl = 'Graphin';
+  const graphinEl = 'Graphin2';
 
   const deleteButtonClick = () => {
     cy.react('Button', {
@@ -47,13 +47,9 @@ describe('Multiple Selection', () => {
       cy.filterMultiString('customer_81{enter}', 'last');
 
       // results
-      cy.getReact(graphinEl)
-        .getProps('data.nodes')
-        .should('have.length', 1);
+      cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 1);
 
-      cy.getReact(graphinEl)
-        .getProps('data.edges')
-        .should('have.length', 0);
+      cy.getReact(graphinEl).getProps('data.edges').should('have.length', 0);
     });
 
     it('Multiple - Single combination', () => {
@@ -67,13 +63,9 @@ describe('Multiple Selection', () => {
       cy.filterMultiString('customer_81{enter}customer_55{enter}', 'last');
 
       // results
-      cy.getReact(graphinEl)
-        .getProps('data.nodes')
-        .should('have.length', 2);
+      cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 2);
 
-      cy.getReact(graphinEl)
-        .getProps('data.edges')
-        .should('have.length', 0);
+      cy.getReact(graphinEl).getProps('data.edges').should('have.length', 0);
     });
 
     it('Multiple - Multiple combination', () => {
@@ -87,13 +79,9 @@ describe('Multiple Selection', () => {
       cy.filterMultiString('customer_81{enter}customer_55{enter}', 'last');
 
       // results
-      cy.getReact(graphinEl)
-        .getProps('data.nodes')
-        .should('have.length', 2);
+      cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 2);
 
-      cy.getReact(graphinEl)
-        .getProps('data.edges')
-        .should('have.length', 0);
+      cy.getReact(graphinEl).getProps('data.edges').should('have.length', 0);
     });
   });
 
@@ -124,13 +112,9 @@ describe('Multiple Selection', () => {
       cy.filterMultiString('account_box{enter}-{enter}', 'last');
 
       // results
-      cy.getReact(graphinEl)
-        .getProps('data.nodes')
-        .should('have.length', 2);
+      cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 2);
 
-      cy.getReact(graphinEl)
-        .getProps('data.edges')
-        .should('have.length', 0);
+      cy.getReact(graphinEl).getProps('data.edges').should('have.length', 0);
     });
   });
 
@@ -154,13 +138,9 @@ describe('Multiple Selection', () => {
       cy.filterMultiString('customer_901{enter}', 'last');
 
       // results
-      cy.getReact(graphinEl)
-        .getProps('data.nodes')
-        .should('have.length', 1);
+      cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 1);
 
-      cy.getReact(graphinEl)
-        .getProps('data.edges')
-        .should('have.length', 0);
+      cy.getReact(graphinEl).getProps('data.edges').should('have.length', 0);
     });
 
     it('Numeric - Double String combination', () => {
@@ -173,13 +153,9 @@ describe('Multiple Selection', () => {
       cy.filterMultiString('customer_901{enter}customer_902{enter}', 'last');
 
       // results
-      cy.getReact(graphinEl)
-        .getProps('data.nodes')
-        .should('have.length', 2);
+      cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 2);
 
-      cy.getReact(graphinEl)
-        .getProps('data.edges')
-        .should('have.length', 0);
+      cy.getReact(graphinEl).getProps('data.edges').should('have.length', 0);
     });
   });
 
@@ -197,13 +173,9 @@ describe('Multiple Selection', () => {
       cy.selectFilterSelection('is_different_bank{enter}', 'last');
 
       // results
-      cy.getReact(graphinEl)
-        .getProps('data.nodes')
-        .should('have.length', 9);
+      cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 9);
 
-      cy.getReact(graphinEl)
-        .getProps('data.edges')
-        .should('have.length', 14);
+      cy.getReact(graphinEl).getProps('data.edges').should('have.length', 14);
 
       deleteButtonClick();
       deleteButtonClick();
@@ -222,13 +194,9 @@ describe('Multiple Selection', () => {
       cy.selectFilterSelection('risk_score{enter}', 'last');
 
       // results
-      cy.getReact(graphinEl)
-        .getProps('data.nodes')
-        .should('have.length', 0);
+      cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 0);
 
-      cy.getReact(graphinEl)
-        .getProps('data.edges')
-        .should('have.length', 0);
+      cy.getReact(graphinEl).getProps('data.edges').should('have.length', 0);
 
       deleteButtonClick();
       deleteButtonClick();
@@ -256,13 +224,9 @@ describe('Multiple Selection', () => {
       cy.filterMultiString('customer_901{enter}', 'last');
 
       // results
-      cy.getReact(graphinEl)
-        .getProps('data.nodes')
-        .should('have.length', 1);
+      cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 1);
 
-      cy.getReact(graphinEl)
-        .getProps('data.edges')
-        .should('have.length', 0);
+      cy.getReact(graphinEl).getProps('data.edges').should('have.length', 0);
     });
   });
 
@@ -286,13 +250,9 @@ describe('Multiple Selection', () => {
       cy.filterMultiString('account_balance{enter}', 'last');
 
       // results
-      cy.getReact(graphinEl)
-        .getProps('data.nodes')
-        .should('have.length', 9);
+      cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 9);
 
-      cy.getReact(graphinEl)
-        .getProps('data.edges')
-        .should('have.length', 14);
+      cy.getReact(graphinEl).getProps('data.edges').should('have.length', 14);
     });
 
     it('Multi String - DateTime combination', () => {
@@ -305,13 +265,9 @@ describe('Multiple Selection', () => {
       cy.filterMultiString('account_box{enter}-{enter}', 'last');
 
       // results
-      cy.getReact(graphinEl)
-        .getProps('data.nodes')
-        .should('have.length', 0);
+      cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 0);
 
-      cy.getReact(graphinEl)
-        .getProps('data.edges')
-        .should('have.length', 0);
+      cy.getReact(graphinEl).getProps('data.edges').should('have.length', 0);
     });
   });
 
@@ -335,13 +291,9 @@ describe('Multiple Selection', () => {
       cy.filterMultiString('account_balance{enter}', 'last');
 
       // results
-      cy.getReact(graphinEl)
-        .getProps('data.nodes')
-        .should('have.length', 9);
+      cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 9);
 
-      cy.getReact(graphinEl)
-        .getProps('data.edges')
-        .should('have.length', 14);
+      cy.getReact(graphinEl).getProps('data.edges').should('have.length', 14);
     });
 
     it('Multi String - Time combination', () => {
@@ -354,13 +306,9 @@ describe('Multiple Selection', () => {
       cy.filterMultiString('account_balance{enter}-{enter}', 'last');
 
       // results
-      cy.getReact(graphinEl)
-        .getProps('data.nodes')
-        .should('have.length', 9);
+      cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 9);
 
-      cy.getReact(graphinEl)
-        .getProps('data.edges')
-        .should('have.length', 14);
+      cy.getReact(graphinEl).getProps('data.edges').should('have.length', 14);
     });
   });
 
@@ -384,13 +332,9 @@ describe('Multiple Selection', () => {
       cy.filterMultiString('account_balance{enter}', 'last');
 
       // results
-      cy.getReact(graphinEl)
-        .getProps('data.nodes')
-        .should('have.length', 9);
+      cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 9);
 
-      cy.getReact(graphinEl)
-        .getProps('data.edges')
-        .should('have.length', 14);
+      cy.getReact(graphinEl).getProps('data.edges').should('have.length', 14);
     });
 
     it('Multi String - Date combination', () => {
@@ -403,13 +347,9 @@ describe('Multiple Selection', () => {
       cy.filterMultiString('account_balance{enter}-{enter}', 'last');
 
       // results
-      cy.getReact(graphinEl)
-        .getProps('data.nodes')
-        .should('have.length', 9);
+      cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 9);
 
-      cy.getReact(graphinEl)
-        .getProps('data.edges')
-        .should('have.length', 14);
+      cy.getReact(graphinEl).getProps('data.edges').should('have.length', 14);
     });
   });
 });

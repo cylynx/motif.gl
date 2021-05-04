@@ -3,7 +3,7 @@ import { GraphData } from '../../../src/redux/graph';
 const edgeDatasetRootPath = 'LocalFiles/EdgeList';
 
 describe('Import Edge List', () => {
-  const graphinEl = 'Graphin';
+  const graphinEl = 'Graphin2';
   const selectEdgeListDataType = () => {
     cy.react('Select', { props: { id: 'DataTypeSelection' } })
       .nthNode(0)

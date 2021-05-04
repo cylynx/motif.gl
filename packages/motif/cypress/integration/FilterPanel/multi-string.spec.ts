@@ -1,7 +1,7 @@
 import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 
 describe('String Filters', () => {
-  const graphinEl = 'Graphin';
+  const graphinEl = 'Graphin2';
 
   const deleteButtonClick = () => {
     cy.react('Button', {
@@ -41,13 +41,9 @@ describe('String Filters', () => {
       cy.filterMultiString('node-0{enter}');
 
       // possess only one edge and one node
-      cy.getReact(graphinEl)
-        .getProps('data.nodes')
-        .should('have.length', 1);
+      cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 1);
 
-      cy.getReact(graphinEl)
-        .getProps('data.edges')
-        .should('have.length', 1);
+      cy.getReact(graphinEl).getProps('data.edges').should('have.length', 1);
     });
 
     it('should perform filter with multi variable', () => {
@@ -56,13 +52,9 @@ describe('String Filters', () => {
       cy.filterMultiString('node-0{enter}node-1{enter}');
 
       // possess three edges and two nodes
-      cy.getReact(graphinEl)
-        .getProps('data.nodes')
-        .should('have.length', 2);
+      cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 2);
 
-      cy.getReact(graphinEl)
-        .getProps('data.edges')
-        .should('have.length', 3);
+      cy.getReact(graphinEl).getProps('data.edges').should('have.length', 3);
     });
   });
 
@@ -82,13 +74,9 @@ describe('String Filters', () => {
       cy.filterMultiString('node-1{enter}');
 
       // possess only one edge and two nodes
-      cy.getReact(graphinEl)
-        .getProps('data.nodes')
-        .should('have.length', 2);
+      cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 2);
 
-      cy.getReact(graphinEl)
-        .getProps('data.edges')
-        .should('have.length', 1);
+      cy.getReact(graphinEl).getProps('data.edges').should('have.length', 1);
     });
 
     it('should perform filter with multi variable', () => {
@@ -97,13 +85,9 @@ describe('String Filters', () => {
       cy.filterMultiString('node-1{enter}node-0{enter}');
 
       // possess three edges and two nodes
-      cy.getReact(graphinEl)
-        .getProps('data.nodes')
-        .should('have.length', 9);
+      cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 9);
 
-      cy.getReact(graphinEl)
-        .getProps('data.edges')
-        .should('have.length', 10);
+      cy.getReact(graphinEl).getProps('data.edges').should('have.length', 10);
     });
   });
 });

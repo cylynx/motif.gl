@@ -12,7 +12,7 @@ import { EdgePattern, mapEdgePattern } from '../../../src/utils/shape-utils';
 import { DEFAULT_EDGE_STYLE } from '../../../src/constants/graph-shapes';
 
 describe('Edge Style Filter', () => {
-  const graphinEl = 'Graphin';
+  const graphinEl = 'Graphin2';
   const findDefaultFromForm = (
     form: NestedFormData,
     layout: string,

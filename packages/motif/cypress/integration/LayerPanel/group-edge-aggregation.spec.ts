@@ -3,6 +3,7 @@ import { Field } from '../../../src/redux/graph';
 import { Option } from 'baseui/select';
 
 describe('Group Edge Aggregations', () => {
+  const checkboxEl = 'StatelessCheckbox2';
   before(() => {
     cy.visit('/');
     cy.waitForReact();
@@ -18,7 +19,7 @@ describe('Group Edge Aggregations', () => {
     });
 
     it('should enable successfully', () => {
-      cy.react('StatelessCheckbox').click();
+      cy.react(checkboxEl).click();
       cy.wait(1000);
 
       cy.getReact('GroupByFields').getProps('toggle').should('deep.eq', true);

@@ -12,7 +12,7 @@ declare namespace Cypress {
 }
 
 const switchTab = (tabActiveKey: string) => {
-  cy.react('Tabs')
+  cy.react('Tabs$1')
     .react('InternalTab', {
       props: { childKey: tabActiveKey },
     })

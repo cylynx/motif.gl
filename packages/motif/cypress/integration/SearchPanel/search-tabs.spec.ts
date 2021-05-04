@@ -2,7 +2,7 @@ import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData
 import { EdgeInformation, Node } from '../../../src/redux/graph';
 
 describe('Search Tabs', () => {
-  const tabComponent = 'TabComponent';
+  const tabComponent = 'TabComponent2';
   before(() => {
     cy.visit('/');
     cy.waitForReact(5000);

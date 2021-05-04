@@ -4,14 +4,12 @@ const nodeEdgeRootPath = 'LocalFiles/NodeEdge';
 const edgeDatasetRootPath = 'LocalFiles/EdgeList';
 
 describe('Import Edge List', () => {
-  const graphinEl = 'Graphin';
+  const graphinEl = 'Grpahin2';
   const selectNodeEdgeFormat = () => {
     cy.react('Select', { props: { id: 'DataTypeSelection' } })
       .nthNode(0)
       .click();
-    cy.get('li[role="option"')
-      .contains('Node Edge Csv (2 Files)')
-      .click();
+    cy.get('li[role="option"').contains('Node Edge Csv (2 Files)').click();
   };
 
   before(() => {
@@ -33,12 +31,8 @@ describe('Import Edge List', () => {
 
   describe('Local Files Import', () => {
     it('should import both node and edge successfully', () => {
-      cy.get('input[type="file"]')
-        .nthNode(0)
-        .attachFile([nodeDataset]);
-      cy.get('input[type="file"]')
-        .nthNode(1)
-        .attachFile([edgeDataset]);
+      cy.get('input[type="file"]').nthNode(0).attachFile([nodeDataset]);
+      cy.get('input[type="file"]').nthNode(1).attachFile([edgeDataset]);
       cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
 
@@ -53,14 +47,10 @@ describe('Import Edge List', () => {
       cy.react('ClearDataButton').click();
     });
 
-    describe('Wrong format provided', function() {
+    describe('Wrong format provided', function () {
       it('should remain modal', () => {
-        cy.get('input[type="file"]')
-          .nthNode(0)
-          .attachFile(sampleEdge);
-        cy.get('input[type="file"]')
-          .nthNode(1)
-          .attachFile(sampleEdge);
+        cy.get('input[type="file"]').nthNode(0).attachFile(sampleEdge);
+        cy.get('input[type="file"]').nthNode(1).attachFile(sampleEdge);
 
         cy.get('button[type="submit"]').click();
         cy.get('button[type="submit"]').click();

@@ -14,7 +14,7 @@ import {
 import { NestedFormData } from '../../../src/components/form';
 
 describe('Setting Popovers', () => {
-  const graphinEl = 'Graphin';
+  const graphinEl = 'Graphin2';
   const selectEl = 'Select';
   const findDefaultFromForm = (
     form: NestedFormData,

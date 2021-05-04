@@ -1,7 +1,7 @@
 import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 
 describe('Import American Airlines', () => {
-  const graphinEl = 'Graphin';
+  const graphinEl = 'Graphin2';
   before(() => {
     cy.visit('/');
     cy.waitForReact();
