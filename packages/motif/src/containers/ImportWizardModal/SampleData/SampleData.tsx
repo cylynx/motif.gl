@@ -14,7 +14,7 @@ import {
   GraphThunks,
   JsonImport,
 } from '../../../redux/graph';
-import { UISelectors, UISlices } from '../../../redux/ui';
+import { UISelectors } from '../../../redux/ui';
 import { defaultAccessors, sampleData } from './constant';
 import useNodeStyle from '../../../redux/graph/hooks/useNodeStyle';
 
