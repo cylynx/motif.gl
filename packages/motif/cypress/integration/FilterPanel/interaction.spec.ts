@@ -57,7 +57,7 @@ describe('Interactions', () => {
     cy.switchPanel('layers');
 
     // remove circular graph data
-    cy.react('DeleteButton').last().click();
+    cy.react('DeleteButton$1').last().click();
 
     // switch back to filters
     cy.switchPanel('filters');

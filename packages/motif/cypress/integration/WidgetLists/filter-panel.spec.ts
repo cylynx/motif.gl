@@ -9,16 +9,7 @@ describe('Filter Panel', () => {
     cy.get('button[aria-label="Close"]').click();
 
     // open filter panels by clicking sidebar
-    cy.react('Block', {
-      props: {
-        'data-testid': 'filters',
-      },
-      exact: true,
-    })
-      .react('IconButton', {
-        props: { id: 'filters', group: 'main' },
-      })
-      .click();
+    cy.switchPanel('filters');
   });
 
   it('should render successfully', () => {
@@ -26,15 +17,11 @@ describe('Filter Panel', () => {
   });
 
   it('should render beside Left Navigation Bar', () => {
-    cy.getReact('LeftLayer')
-      .getReact('FilterPanel')
-      .should('exist');
+    cy.getReact('LeftLayer').getReact('FilterPanel').should('exist');
   });
 
   it('should render Header component', () => {
-    cy.getReact('FilterPanel')
-      .getReact('Header')
-      .should('exist');
+    cy.getReact('FilterPanel').getReact('Header$2').should('exist');
   });
 
   it('FilterSelection should not be render when no data is present', () => {
@@ -43,9 +30,7 @@ describe('Filter Panel', () => {
 
   describe('AddFilterButton', () => {
     it('should render successfully', () => {
-      cy.getReact('FilterPanel')
-        .getReact('AddFilterButton')
-        .should('exist');
+      cy.getReact('FilterPanel').getReact('AddFilterButton').should('exist');
     });
 
     it('should be disabled when no data is present', () => {
