@@ -87,7 +87,6 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
 
     const [, theme] = useStyletron();
     const dispatch = useDispatch();
-    const loading = useSelector((state) => UISelectors.getUI(state).loading);
     const widgetState = useSelector((state) =>
       WidgetSelectors.getWidget(state),
     );
@@ -146,7 +145,6 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
         </GraphLayer>
         <WidgetContainer graphRef={graphRef} theme={secondaryTheme || theme}>
           <SideNavBars />
-          {loading && <Loader />}
           {tooltip && <UserTooltip tooltip={{ ...tooltip, leftLayerWidth }} />}
           {activeWidgetList.length > 0 &&
             activeWidgetList.map((item) => (

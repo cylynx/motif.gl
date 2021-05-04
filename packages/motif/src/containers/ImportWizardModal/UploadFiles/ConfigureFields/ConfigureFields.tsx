@@ -7,6 +7,7 @@ import { Button, KIND, SIZE } from 'baseui/button';
 
 import { LabelMedium, ParagraphSmall } from 'baseui/typography';
 import { useSelector } from 'react-redux';
+import { UISelectors } from '../../../../redux/ui';
 import DataPreview from './DataPreview';
 import AccessorFields from './AccessorFields';
 
@@ -39,6 +40,9 @@ const ConfigureFields = () => {
     },
     setAccessors,
   } = useFileContents();
+
+  // loading indicator progress states
+  const { loading } = useSelector((state) => UISelectors.getUI(state));
 
   const { styleOptions } = useSelector((state) => getGraph(state));
   const { importJson, importEdgeList, importNodeEdge } = useImportData();
@@ -127,6 +131,12 @@ const ConfigureFields = () => {
     return;
   };
 
+  const importJsonOverwriteStyles = (overwriteStyles: boolean) => {
+    importJson(jsonFileRef.current, groupEdge, accessors, overwriteStyles);
+    jsonFileRef.current = null;
+    setModalOpen(false);
+  };
+
   return (
     <>
       <form onSubmit={handleSubmit(importLocalFile)}>
@@ -150,7 +160,8 @@ const ConfigureFields = () => {
         <Block position='absolute' bottom='scale300' right='0'>
           <Button
             type='submit'
-            disabled={isSubmitDisabled}
+            disabled={loading || isSubmitDisabled}
+            isLoading={loading}
             kind={KIND.primary}
             size={SIZE.compact}
             endEnhancer={<Icon.ChevronRight size={16} />}
@@ -162,20 +173,14 @@ const ConfigureFields = () => {
 
       <ConfirmationModal
         onClose={() => {
-          importJson(jsonFileRef.current, groupEdge, accessors, false);
-          jsonFileRef.current = null;
-          setModalOpen(false);
+          importJsonOverwriteStyles(false);
         }}
         isOpen={modalOpen}
         onReject={() => {
-          importJson(jsonFileRef.current, groupEdge, accessors, false);
-          jsonFileRef.current = null;
-          setModalOpen(false);
+          importJsonOverwriteStyles(false);
         }}
         onAccept={() => {
-          importJson(jsonFileRef.current, groupEdge, accessors, true);
-          jsonFileRef.current = null;
-          setModalOpen(false);
+          importJsonOverwriteStyles(true);
         }}
         rejectBtnText='No'
         confirmBtnText='Yes'

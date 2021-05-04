@@ -1,7 +1,9 @@
 import React, { FC, MouseEvent } from 'react';
+import { withStyle } from 'baseui';
 import { ALIGNMENT, Cell, Grid } from 'baseui/layout-grid';
 import { Button } from 'baseui/button';
 import { Block } from 'baseui/block';
+import { StyledSpinnerNext } from 'baseui/spinner';
 import { LabelMedium, ParagraphSmall } from 'baseui/typography';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,12 +14,31 @@ import {
   GraphThunks,
   JsonImport,
 } from '../../../redux/graph';
-import { UISlices } from '../../../redux/ui';
+import { UISelectors, UISlices } from '../../../redux/ui';
 import { defaultAccessors, sampleData } from './constant';
 import useNodeStyle from '../../../redux/graph/hooks/useNodeStyle';
 
+const ExtraLargeSpinner = withStyle(StyledSpinnerNext, {
+  width: '48px',
+  height: '48px',
+  borderLeftWidth: '8px',
+  borderRightWidth: '8px',
+  borderTopWidth: '8px',
+  borderBottomWidth: '8px',
+});
+
+const CenterSpinner = () => (
+  <Block justifyContent='center' display='flex'>
+    <ExtraLargeSpinner />
+  </Block>
+);
+
 const ImportSampleData = (): JSX.Element => {
-  return (
+  const { loading } = useSelector((state) => UISelectors.getUI(state));
+
+  return loading ? (
+    <CenterSpinner />
+  ) : (
     <Grid
       gridGaps={8}
       gridColumns={[2, 3, 3]}
@@ -56,7 +77,6 @@ const StyledItem: FC<StyledItemProps> = ({ item }): JSX.Element => {
     e: MouseEvent<HTMLButtonElement>,
   ): void => {
     e.preventDefault();
-    dispatch(UISlices.closeModal());
 
     if (nodeOptions.color.id === 'legend') {
       switchToFixNodeColor();

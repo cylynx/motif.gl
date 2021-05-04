@@ -46,9 +46,6 @@ const processResponse = (
   accessors: Accessors,
   newData: GraphData | GraphList,
 ) => {
-  dispatch(UISlices.fetchBegin());
-
-  // ensure the graph must be in array formats.
   const graphList: GraphList = Array.isArray(newData) ? newData : [newData];
 
   graphList.forEach((graphData: GraphData) => {
@@ -69,8 +66,6 @@ const processResponse = (
     // combine new graph data with existing graph data to form graph flattens.
     dispatch(processGraphResponse({ data: modData, accessors }));
   });
-
-  dispatch(UISlices.fetchDone());
 };
 
 /**
@@ -126,10 +121,15 @@ export const importEdgeListData = (
 
   return Promise.all(batchDataPromises)
     .then((graphData: GraphList) => {
-      processResponse(dispatch, mainAccessors, graphData);
-      showImportDataToast(dispatch, filterOptions);
-      dispatch(FileUploadSlices.resetState());
-      dispatch(UISlices.closeModal());
+      dispatch(UISlices.fetchBegin());
+
+      setTimeout(() => {
+        processResponse(dispatch, mainAccessors, graphData);
+        showImportDataToast(dispatch, filterOptions);
+        dispatch(FileUploadSlices.resetState());
+        dispatch(UISlices.fetchDone());
+        dispatch(UISlices.closeModal());
+      }, 200);
     })
     .catch((err: Error) => {
       const { message } = err;
@@ -191,16 +191,22 @@ export const importJsonData = (
 
   return Promise.all(batchDataPromises)
     .then((graphDataArr: GraphList[]) => {
-      const graphData: GraphList = flatten(graphDataArr);
+      dispatch(UISlices.fetchBegin());
 
-      if (isDataPossessStyle && overwriteStyles) {
-        dispatch(updateStyleOption(styleOptions));
-      }
+      setTimeout(() => {
+        const graphData: GraphList = flatten(graphDataArr);
 
-      processResponse(dispatch, mainAccessors, graphData);
-      showImportDataToast(dispatch, filterOptions);
-      dispatch(FileUploadSlices.resetState());
-      dispatch(UISlices.closeModal());
+        if (isDataPossessStyle && overwriteStyles) {
+          dispatch(updateStyleOption(styleOptions));
+        }
+
+        processResponse(dispatch, mainAccessors, graphData);
+
+        showImportDataToast(dispatch, filterOptions);
+        dispatch(FileUploadSlices.resetState());
+        dispatch(UISlices.fetchDone());
+        dispatch(UISlices.closeModal());
+      }, 200);
     })
     .catch((err: Error) => {
       const { message } = err;
@@ -250,10 +256,15 @@ export const importNodeEdgeData = (
 
   return newData
     .then((graphData: GraphData) => {
-      processResponse(dispatch, mainAccessors, graphData);
-      showImportDataToast(dispatch, filterOptions);
-      dispatch(FileUploadSlices.resetState());
-      dispatch(UISlices.closeModal());
+      dispatch(UISlices.fetchBegin());
+
+      setTimeout(() => {
+        processResponse(dispatch, mainAccessors, graphData);
+        showImportDataToast(dispatch, filterOptions);
+        dispatch(FileUploadSlices.resetState());
+        dispatch(UISlices.fetchDone());
+        dispatch(UISlices.closeModal());
+      }, 200);
     })
     .catch((err: Error) => {
       const { message } = err;
@@ -286,10 +297,15 @@ export const importSampleData = (
 
   return newData
     .then((graphData: GraphList) => {
-      processResponse(dispatch, mainAccessors, graphData);
-      showImportDataToast(dispatch, filterOptions);
-      dispatch(FileUploadSlices.resetState());
-      dispatch(UISlices.closeModal());
+      dispatch(UISlices.fetchBegin());
+
+      setTimeout(() => {
+        processResponse(dispatch, mainAccessors, graphData);
+        showImportDataToast(dispatch, filterOptions);
+        dispatch(FileUploadSlices.resetState());
+        dispatch(UISlices.closeModal());
+        dispatch(UISlices.fetchDone());
+      }, 200);
     })
     .catch((err: Error) => {
       const { message } = err;
