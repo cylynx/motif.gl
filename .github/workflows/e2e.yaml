@@ -24,17 +24,16 @@ jobs:
       - name: Remove existing package-lock to support multiple platforms
         run: npm run rm-package-lock
 
-      - name: Install Motif Dependencies
-        working-directory: './packages/motif'
+      - name: Install All Dependencies
         run: yarn install
 
       - name: Build Motif Bundle
         working-directory: './packages/motif'
         run: npm run build
 
-      - name: Install Demo Dependencies
+      - name: Build Demo Bundles
         working-directory: './packages/motif-demo'
-        run: yarn install
+        run: npm run build
 
       - name: Setup kernel for React, increase watchers
         run: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
@@ -44,7 +43,7 @@ jobs:
         timeout-minutes: 30
         with:
           install: false
-          start: npm run demo-cra
+          start: npm run demo:serve
           command: npm run cypress
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 100
