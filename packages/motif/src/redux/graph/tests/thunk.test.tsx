@@ -163,7 +163,7 @@ describe('thunk.test.js', () => {
       store.clearActions();
     });
 
-    it('should receive array of importData and process graph responses accurately', async () => {
+    it('should receive array of importData and process graph responses accurately', async (done) => {
       // input
       const importDataArr = [jsonDataOne, jsonDataTwo];
       const groupEdgeToggle = false;
@@ -202,7 +202,7 @@ describe('thunk.test.js', () => {
       ];
 
       // assertions
-      store
+      return store
         .dispatch(
           importJsonData(
             importDataArr,
@@ -211,11 +211,14 @@ describe('thunk.test.js', () => {
           ),
         )
         .then(() => {
-          expect(store.getActions()).toEqual(expectedActions);
+          setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+          }, 300);
         });
     });
 
-    it('should display different success message in toast with filter applied', async () => {
+    it('should display different success message in toast with filter applied', async (done) => {
       const currentStore = getStore();
       Object.assign(currentStore.investigate.graph.present.filterOptions, {
         value: 'something',
@@ -261,7 +264,7 @@ describe('thunk.test.js', () => {
       ];
 
       // assertions
-      modifiedStore
+      return modifiedStore
         .dispatch(
           importJsonData(
             importDataArr,
@@ -270,11 +273,14 @@ describe('thunk.test.js', () => {
           ),
         )
         .then(() => {
-          expect(modifiedStore.getActions()).toEqual(expectedActions);
+          setTimeout(() => {
+            expect(modifiedStore.getActions()).toEqual(expectedActions);
+            done();
+          }, 300);
         });
     });
 
-    it('should overwrite styles with the last file', async () => {
+    it('should overwrite styles with the last file', async (done) => {
       // input
       const importDataArr = [jsonDataOne, jsonDataTwo];
       let { styleOptions } = initialState;
@@ -320,7 +326,7 @@ describe('thunk.test.js', () => {
       ];
 
       // assertions
-      store
+      return store
         .dispatch(
           importJsonData(
             importDataArr,
@@ -330,11 +336,14 @@ describe('thunk.test.js', () => {
           ),
         )
         .then(() => {
-          expect(store.getActions()).toEqual(expectedActions);
+          setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+          }, 300);
         });
     });
 
-    it('should import successfully without metadata', async () => {
+    it('should import successfully without metadata', async (done) => {
       const graphWithoutMetadata = simpleGraphOne;
       delete graphWithoutMetadata.data.metadata;
       const groupEdgeToggle = false;
@@ -376,20 +385,17 @@ describe('thunk.test.js', () => {
       ];
 
       // assertions
-      store
-        .dispatch(
-          importJsonData(
-            importDataArr,
-            groupEdgeToggle,
-            initialState.accessors,
-          ),
-        )
-        .then(() => {
-          expect(store.getActions()).toEqual(expectedActions);
-        });
+      await store.dispatch(
+        importJsonData(importDataArr, groupEdgeToggle, initialState.accessors),
+      );
+
+      setTimeout(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+        done();
+      }, 300);
     });
 
-    it('should not overwrite styles if data has no style', async () => {
+    it('should not overwrite styles if data has no style', async (done) => {
       // input
       const jsonOneWithoutStyle = {
         data: jsonDataOne.data,
@@ -443,7 +449,7 @@ describe('thunk.test.js', () => {
       ];
 
       // assertions
-      store
+      return store
         .dispatch(
           importJsonData(
             importDataArr,
@@ -453,12 +459,15 @@ describe('thunk.test.js', () => {
           ),
         )
         .then(() => {
-          expect(store.getActions()).toEqual(expectedActions);
+          setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+          }, 300);
         });
     });
 
     describe('Simple Graph Format', () => {
-      it('should import with single file contains two graph lists', async () => {
+      it('should import with single file contains two graph lists', async (done) => {
         // input
         const importDataArr = [simpleGraphTwo];
         const groupEdgeToggle = false;
@@ -506,7 +515,7 @@ describe('thunk.test.js', () => {
         ];
 
         // assertions
-        store
+        return store
           .dispatch(
             importJsonData(
               importDataArr,
@@ -515,11 +524,14 @@ describe('thunk.test.js', () => {
             ),
           )
           .then(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+            setTimeout(() => {
+              expect(store.getActions()).toEqual(expectedActions);
+              done();
+            }, 300);
           });
       });
 
-      it('should import with two files contain three graph lists', async () => {
+      it('should import with two files contain three graph lists', async (done) => {
         // input
         const importDataArr = [simpleGraphOne, simpleGraphTwo];
         const groupEdgeToggle = false;
@@ -575,7 +587,7 @@ describe('thunk.test.js', () => {
         ];
 
         // assertions
-        store
+        return store
           .dispatch(
             importJsonData(
               importDataArr,
@@ -584,7 +596,10 @@ describe('thunk.test.js', () => {
             ),
           )
           .then(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+            setTimeout(() => {
+              expect(store.getActions()).toEqual(expectedActions);
+              done();
+            }, 300);
           });
       });
     });
@@ -603,7 +618,7 @@ describe('thunk.test.js', () => {
         },
       };
 
-      it('should determine whether graph possess duplicate connectivity', async () => {
+      it('should determine whether graph possess duplicate connectivity', async (done) => {
         // arrange
         const importDataArr = [simpleGraphWithGroupEdge];
         const groupEdgeToggle = false;
@@ -638,14 +653,14 @@ describe('thunk.test.js', () => {
             data: firstGraphData,
             accessors: initialState.accessors,
           }),
-          fetchDone(),
           updateToast('toast-0'),
           resetState(),
+          fetchDone(),
           closeModal(),
         ];
 
         // assertions
-        store
+        return store
           .dispatch(
             importJsonData(
               importDataArr,
@@ -654,11 +669,14 @@ describe('thunk.test.js', () => {
             ),
           )
           .then(() => {
-            expect(store.getActions()).toEqual(expectedActions);
+            setTimeout(() => {
+              expect(store.getActions()).toEqual(expectedActions);
+              done();
+            }, 300);
           });
       });
 
-      it('should perform group edge during importation', async () => {
+      it('should perform group edge during importation', async (done) => {
         // arrange
         const importDataArr = [simpleGraphWithGroupEdge];
         const groupEdgeToggle = true;
@@ -705,7 +723,7 @@ describe('thunk.test.js', () => {
         ];
 
         // assertions
-        store
+        return store
           .dispatch(
             importJsonData(
               importDataArr,
@@ -715,11 +733,14 @@ describe('thunk.test.js', () => {
           )
           .then(() => {
             // perform assertion except process graph response due to random numbers.
-            store.getActions().forEach((actions, index) => {
-              if (actions.type !== 'graph/processGraphResponse') {
-                expect(actions).toEqual(expectedActions[index]);
-              }
-            });
+            setTimeout(() => {
+              store.getActions().forEach((actions, index) => {
+                if (actions.type !== 'graph/processGraphResponse') {
+                  expect(actions).toEqual(expectedActions[index]);
+                }
+              });
+              done();
+            }, 300);
           });
       });
     });
@@ -747,7 +768,7 @@ describe('thunk.test.js', () => {
       ],
     };
 
-    it('should receive nodeCsv and edgeCsv as array and process graph responses accurately', async () => {
+    it('should receive nodeCsv and edgeCsv as array and process graph responses accurately', async (done) => {
       const store = mockStore(getStore());
       const { nodeCsv, edgeCsv } = sampleNodeEdgeData;
       const { accessors } = initialState;
@@ -786,7 +807,7 @@ describe('thunk.test.js', () => {
         closeModal(),
       ];
 
-      store
+      return store
         .dispatch(
           importNodeEdgeData(
             sampleNodeEdgeData,
@@ -796,7 +817,10 @@ describe('thunk.test.js', () => {
           ),
         )
         .then(() => {
-          expect(store.getActions()).toEqual(expectedActions);
+          setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+          }, 300);
         });
     });
     it('should throw errors if importNodeEdgeData parameter is array', async () => {
@@ -828,7 +852,7 @@ describe('thunk.test.js', () => {
 
     const secondEdgeListCsv = 'id,source,target\n123,x,y\n456,y,z\n789,z,x';
 
-    it('should receive importData as array and process graph responses accurately', async () => {
+    it('should receive importData as array and process graph responses accurately', async (done) => {
       // input
       const importDataArr = [firstEdgeListCsv, secondEdgeListCsv];
       const groupEdgeToggle = false;
@@ -870,7 +894,7 @@ describe('thunk.test.js', () => {
       ];
 
       // assertions
-      store
+      return store
         .dispatch(
           importEdgeListData(
             importDataArr,
@@ -879,7 +903,10 @@ describe('thunk.test.js', () => {
           ),
         )
         .then(() => {
-          expect(store.getActions()).toEqual(expectedActions);
+          setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+          }, 300);
         });
     });
 
@@ -896,458 +923,466 @@ describe('thunk.test.js', () => {
         importEdgeListData([firstErrorEdgeCsv, secondValidEdgeCsv]),
       ).toThrow(Error);
     });
-  });
 
-  describe('importSampleData', () => {
-    const store = mockStore(getStore());
+    describe('importSampleData', () => {
+      const store = mockStore(getStore());
 
-    it('should receive importData as object and process graph accurately', async () => {
-      // input
-      const data = SimpleEdge();
-      const groupEdgeToggle = false;
+      it('should receive importData as object and process graph accurately', async (done) => {
+        // input
+        const data = SimpleEdge();
+        const groupEdgeToggle = false;
 
-      // processes
-      const processedJsonData = await importJson(
-        data,
-        initialState.accessors,
-        groupEdgeToggle,
-      );
-      const [objectData] = processedJsonData;
+        // processes
+        const processedJsonData = await importJson(
+          data,
+          initialState.accessors,
+          groupEdgeToggle,
+        );
+        const [objectData] = processedJsonData;
 
-      // group edge configurations
-      const groupEdgeConfig = { toggle: groupEdgeToggle, availability: false };
-      objectData.metadata.groupEdges = groupEdgeConfig;
+        // group edge configurations
+        const groupEdgeConfig = {
+          toggle: groupEdgeToggle,
+          availability: false,
+        };
+        objectData.metadata.groupEdges = groupEdgeConfig;
 
-      // expected results
-      const expectedActions = [
-        fetchBegin(),
-        addQuery(objectData),
-        processGraphResponse({
-          data: objectData,
-          accessors: initialState.accessors,
-        }),
-        updateToast('toast-0'),
-        resetState(),
-        fetchDone(),
-        closeModal(),
+        // expected results
+        const expectedActions = [
+          fetchBegin(),
+          addQuery(objectData),
+          processGraphResponse({
+            data: objectData,
+            accessors: initialState.accessors,
+          }),
+          updateToast('toast-0'),
+          resetState(),
+          fetchDone(),
+          closeModal(),
+        ];
+
+        return store
+          .dispatch(importSampleData(data, groupEdgeToggle))
+          .then(() => {
+            setTimeout(() => {
+              expect(store.getActions()).toEqual(expectedActions);
+              done();
+            }, 300);
+          });
+      });
+    });
+
+    describe('groupEdgesWithAggregation', () => {
+      describe('Group By All', () => {
+        const simpleGraphWithGroupEdge = SimpleGraphWithGroupEdge();
+
+        const importedGraphState = (): RootState => {
+          const store = {
+            investigate: {
+              ui: {},
+              widget: {},
+              graph: {
+                present: {
+                  graphList: [simpleGraphWithGroupEdge],
+                  graphFlatten: simpleGraphWithGroupEdge,
+                },
+              },
+            },
+          };
+          return store;
+        };
+
+        const store = mockStore(importedGraphState());
+        const graphIndex = 0;
+        let newGraphData = {};
+        beforeEach(() => {
+          const { graphList, graphFlatten } = getGraph(store.getState());
+          const selectedGraphList: GraphData = graphList[graphIndex];
+
+          const { groupEdges } = selectedGraphList.metadata;
+
+          newGraphData = groupEdgesWithConfiguration(
+            selectedGraphList,
+            graphFlatten,
+            groupEdges,
+          );
+        });
+
+        afterEach(() => {
+          store.clearActions();
+        });
+
+        it('should display the correct title and visibility', async () => {
+          await store.dispatch(groupEdgesWithAggregation(graphIndex));
+
+          store.getActions().forEach((actions) => {
+            const { payload } = actions;
+            const { nodes, metadata } = payload;
+            expect(nodes).toEqual(newGraphData.nodes);
+
+            const { visible, title } = metadata;
+            expect(visible).toEqual(newGraphData.visible);
+            expect(title).toEqual(newGraphData.title);
+          });
+        });
+
+        it('should compute the correct grouped edges', async () => {
+          await store.dispatch(groupEdgesWithAggregation(graphIndex));
+
+          store.getActions().forEach((actions) => {
+            const { payload } = actions;
+            const { edges } = payload;
+            expect(edges).toEqual(newGraphData.edges);
+          });
+        });
+
+        it('should derive the correct group edge configurations', async () => {
+          await store.dispatch(groupEdgesWithAggregation(graphIndex));
+
+          store.getActions().forEach((actions) => {
+            const { payload } = actions;
+            const { metadata } = payload;
+
+            const { groupEdges } = metadata;
+            expect(groupEdges).toEqual(newGraphData.metadata.groupEdges);
+          });
+        });
+
+        it('should display the correct edge properties', async () => {
+          await store.dispatch(groupEdgesWithAggregation(graphIndex));
+
+          const aggregatedEdgeFields: Field[] = [
+            {
+              analyzerType: 'INT',
+              format: '',
+              name: 'min numeric',
+              type: 'integer',
+            },
+            {
+              analyzerType: 'INT',
+              format: '',
+              name: 'max numeric',
+              type: 'integer',
+            },
+            {
+              analyzerType: 'INT',
+              format: '',
+              name: 'average numeric',
+              type: 'integer',
+            },
+            {
+              analyzerType: 'INT',
+              format: '',
+              name: 'count numeric',
+              type: 'integer',
+            },
+            {
+              analyzerType: 'INT',
+              format: '',
+              name: 'sum numeric',
+              type: 'integer',
+            },
+            {
+              analyzerType: 'STRING',
+              format: '',
+              name: 'first value',
+              type: 'string',
+            },
+            {
+              analyzerType: 'STRING',
+              format: '',
+              name: 'last value',
+              type: 'string',
+            },
+            {
+              analyzerType: 'STRING',
+              format: '',
+              name: 'most_frequent value',
+              type: 'string',
+            },
+            {
+              analyzerType: 'STRING',
+              format: '',
+              name: 'first date',
+              type: 'string',
+            },
+            {
+              analyzerType: 'STRING',
+              format: '',
+              name: 'last date',
+              type: 'string',
+            },
+            {
+              analyzerType: 'STRING',
+              format: '',
+              name: 'most_frequent date',
+              type: 'string',
+            },
+          ];
+
+          const uniqueEdgeFields = [
+            ...newGraphData.metadata.fields.edges,
+            ...aggregatedEdgeFields,
+          ];
+
+          const modData = cloneDeep(newGraphData);
+
+          Object.assign(modData.metadata.fields, {
+            edges: uniqueEdgeFields,
+          });
+
+          store.getActions().forEach((actions) => {
+            const { payload } = actions;
+            const { metadata } = payload;
+
+            const { fields } = metadata;
+            expect(fields.edges).toEqual(modData.metadata.fields.edges);
+          });
+        });
+      });
+
+      describe('Group By Types', () => {
+        const graphWithGroupEdge = GraphWithGroupEdge();
+
+        const importedGraphState = (): RootState => {
+          const store = {
+            investigate: {
+              ui: {},
+              widget: {},
+              graph: {
+                present: {
+                  graphList: [graphWithGroupEdge],
+                  graphFlatten: graphWithGroupEdge,
+                },
+              },
+            },
+          };
+          return store;
+        };
+
+        const store = mockStore(importedGraphState());
+        const graphIndex = 0;
+        let newGraphData = {};
+        beforeEach(() => {
+          const { graphList, graphFlatten } = getGraph(store.getState());
+          const selectedGraphList: GraphData = graphList[graphIndex];
+
+          const { groupEdges } = selectedGraphList.metadata;
+
+          newGraphData = groupEdgesWithConfiguration(
+            selectedGraphList,
+            graphFlatten,
+            groupEdges,
+          );
+        });
+
+        afterEach(() => {
+          store.clearActions();
+        });
+
+        it('should compute the correct grouped edges', async () => {
+          await store.dispatch(groupEdgesWithAggregation(graphIndex));
+
+          store.getActions().forEach((actions) => {
+            const { payload } = actions;
+            const { edges } = payload;
+            expect(edges).toEqual(newGraphData.edges);
+          });
+        });
+
+        it('should derive correct group edge configuration', async () => {
+          await store.dispatch(groupEdgesWithAggregation(graphIndex));
+
+          store.getActions().forEach((actions) => {
+            const { payload } = actions;
+            const { groupEdges } = payload.metadata;
+
+            expect(groupEdges).toEqual(newGraphData.metadata.groupEdges);
+          });
+        });
+      });
+    });
+
+    describe('computeEdgeSelection', () => {
+      const simpleGraphWithGroupEdge = SimpleGraphWithGroupEdge();
+      const aggregatedEdgeFields: Field[] = [
+        {
+          name: 'id',
+          format: '',
+          type: 'string',
+          analyzerType: 'string',
+        },
+        {
+          name: 'source',
+          format: '',
+          type: 'string',
+          analyzerType: 'string',
+        },
+        {
+          name: 'target',
+          format: '',
+          type: 'string',
+          analyzerType: 'string',
+        },
+        {
+          name: 'numeric',
+          format: '',
+          type: 'integer',
+          analyzerType: 'INT',
+        },
+        {
+          name: 'value',
+          format: '',
+          type: 'string',
+          analyzerType: 'STRING',
+        },
+        {
+          name: 'date',
+          format: '',
+          type: 'string',
+          analyzerType: 'STRING',
+        },
+
+        {
+          analyzerType: 'INT',
+          format: '',
+          name: 'min numeric',
+          type: 'integer',
+        },
+        {
+          analyzerType: 'INT',
+          format: '',
+          name: 'max numeric',
+          type: 'integer',
+        },
+        {
+          analyzerType: 'INT',
+          format: '',
+          name: 'average numeric',
+          type: 'integer',
+        },
+        {
+          analyzerType: 'INT',
+          format: '',
+          name: 'count numeric',
+          type: 'integer',
+        },
+        {
+          analyzerType: 'INT',
+          format: '',
+          name: 'sum numeric',
+          type: 'integer',
+        },
+        {
+          analyzerType: 'STRING',
+          format: '',
+          name: 'first value',
+          type: 'string',
+        },
+        {
+          analyzerType: 'STRING',
+          format: '',
+          name: 'last value',
+          type: 'string',
+        },
+        {
+          analyzerType: 'STRING',
+          format: '',
+          name: 'most_frequent value',
+          type: 'string',
+        },
+        {
+          analyzerType: 'STRING',
+          format: '',
+          name: 'first date',
+          type: 'string',
+        },
+        {
+          analyzerType: 'STRING',
+          format: '',
+          name: 'last date',
+          type: 'string',
+        },
+        {
+          analyzerType: 'STRING',
+          format: '',
+          name: 'most_frequent date',
+          type: 'string',
+        },
       ];
 
-      store.dispatch(importSampleData(data, groupEdgeToggle)).then(() => {
+      Object.assign(simpleGraphWithGroupEdge.metadata.fields, {
+        edges: aggregatedEdgeFields,
+      });
+
+      const importedGraphState = (): RootState => {
+        const store = {
+          investigate: {
+            ui: {},
+            widget: {},
+            graph: {
+              present: {
+                graphFlatten: simpleGraphWithGroupEdge,
+                edgeSelection: [
+                  {
+                    label: 'id',
+                    id: 'id',
+                    type: 'string',
+                    selected: true,
+                  },
+                  {
+                    label: 'source',
+                    id: 'source',
+                    type: 'string',
+                    selected: true,
+                  },
+                  {
+                    label: 'target',
+                    id: 'target',
+                    type: 'string',
+                    selected: true,
+                  },
+                ],
+              },
+            },
+          },
+        };
+        return store;
+      };
+
+      const store = mockStore(importedGraphState());
+
+      beforeEach(() => {
+        store.dispatch(computeEdgeSelection());
+      });
+
+      afterEach(() => {
+        store.clearActions();
+      });
+
+      it('should append edge selection based on edge fields', () => {
+        const { edgeSelection, graphFlatten } = getGraph(store.getState());
+        const { edges: edgeFields } = graphFlatten.metadata.fields;
+
+        const computedEdgeSelection = edgeFields.map((edgeField: Field) => {
+          const { name, type } = edgeField;
+          const existingSelection = edgeSelection.find(
+            (selection: Selection) => selection.id === edgeField.name,
+          );
+          const isSelected: boolean = existingSelection?.selected ?? false;
+
+          return {
+            id: name,
+            label: name,
+            type,
+            selected: isSelected,
+          };
+        });
+
+        const expectedActions = [overwriteEdgeSelection(computedEdgeSelection)];
+
         expect(store.getActions()).toEqual(expectedActions);
       });
-    });
-  });
-
-  describe('groupEdgesWithAggregation', () => {
-    describe('Group By All', () => {
-      const simpleGraphWithGroupEdge = SimpleGraphWithGroupEdge();
-
-      const importedGraphState = (): RootState => {
-        const store = {
-          investigate: {
-            ui: {},
-            widget: {},
-            graph: {
-              present: {
-                graphList: [simpleGraphWithGroupEdge],
-                graphFlatten: simpleGraphWithGroupEdge,
-              },
-            },
-          },
-        };
-        return store;
-      };
-
-      const store = mockStore(importedGraphState());
-      const graphIndex = 0;
-      let newGraphData = {};
-      beforeEach(() => {
-        const { graphList, graphFlatten } = getGraph(store.getState());
-        const selectedGraphList: GraphData = graphList[graphIndex];
-
-        const { groupEdges } = selectedGraphList.metadata;
-
-        newGraphData = groupEdgesWithConfiguration(
-          selectedGraphList,
-          graphFlatten,
-          groupEdges,
-        );
-      });
-
-      afterEach(() => {
-        store.clearActions();
-      });
-
-      it('should display the correct title and visibility', async () => {
-        await store.dispatch(groupEdgesWithAggregation(graphIndex));
-
-        store.getActions().forEach((actions) => {
-          const { payload } = actions;
-          const { nodes, metadata } = payload;
-          expect(nodes).toEqual(newGraphData.nodes);
-
-          const { visible, title } = metadata;
-          expect(visible).toEqual(newGraphData.visible);
-          expect(title).toEqual(newGraphData.title);
-        });
-      });
-
-      it('should compute the correct grouped edges', async () => {
-        await store.dispatch(groupEdgesWithAggregation(graphIndex));
-
-        store.getActions().forEach((actions) => {
-          const { payload } = actions;
-          const { edges } = payload;
-          expect(edges).toEqual(newGraphData.edges);
-        });
-      });
-
-      it('should derive the correct group edge configurations', async () => {
-        await store.dispatch(groupEdgesWithAggregation(graphIndex));
-
-        store.getActions().forEach((actions) => {
-          const { payload } = actions;
-          const { metadata } = payload;
-
-          const { groupEdges } = metadata;
-          expect(groupEdges).toEqual(newGraphData.metadata.groupEdges);
-        });
-      });
-
-      it('should display the correct edge properties', async () => {
-        await store.dispatch(groupEdgesWithAggregation(graphIndex));
-
-        const aggregatedEdgeFields: Field[] = [
-          {
-            analyzerType: 'INT',
-            format: '',
-            name: 'min numeric',
-            type: 'integer',
-          },
-          {
-            analyzerType: 'INT',
-            format: '',
-            name: 'max numeric',
-            type: 'integer',
-          },
-          {
-            analyzerType: 'INT',
-            format: '',
-            name: 'average numeric',
-            type: 'integer',
-          },
-          {
-            analyzerType: 'INT',
-            format: '',
-            name: 'count numeric',
-            type: 'integer',
-          },
-          {
-            analyzerType: 'INT',
-            format: '',
-            name: 'sum numeric',
-            type: 'integer',
-          },
-          {
-            analyzerType: 'STRING',
-            format: '',
-            name: 'first value',
-            type: 'string',
-          },
-          {
-            analyzerType: 'STRING',
-            format: '',
-            name: 'last value',
-            type: 'string',
-          },
-          {
-            analyzerType: 'STRING',
-            format: '',
-            name: 'most_frequent value',
-            type: 'string',
-          },
-          {
-            analyzerType: 'STRING',
-            format: '',
-            name: 'first date',
-            type: 'string',
-          },
-          {
-            analyzerType: 'STRING',
-            format: '',
-            name: 'last date',
-            type: 'string',
-          },
-          {
-            analyzerType: 'STRING',
-            format: '',
-            name: 'most_frequent date',
-            type: 'string',
-          },
-        ];
-
-        const uniqueEdgeFields = [
-          ...newGraphData.metadata.fields.edges,
-          ...aggregatedEdgeFields,
-        ];
-
-        const modData = cloneDeep(newGraphData);
-
-        Object.assign(modData.metadata.fields, {
-          edges: uniqueEdgeFields,
-        });
-
-        store.getActions().forEach((actions) => {
-          const { payload } = actions;
-          const { metadata } = payload;
-
-          const { fields } = metadata;
-          expect(fields.edges).toEqual(modData.metadata.fields.edges);
-        });
-      });
-    });
-
-    describe('Group By Types', () => {
-      const graphWithGroupEdge = GraphWithGroupEdge();
-
-      const importedGraphState = (): RootState => {
-        const store = {
-          investigate: {
-            ui: {},
-            widget: {},
-            graph: {
-              present: {
-                graphList: [graphWithGroupEdge],
-                graphFlatten: graphWithGroupEdge,
-              },
-            },
-          },
-        };
-        return store;
-      };
-
-      const store = mockStore(importedGraphState());
-      const graphIndex = 0;
-      let newGraphData = {};
-      beforeEach(() => {
-        const { graphList, graphFlatten } = getGraph(store.getState());
-        const selectedGraphList: GraphData = graphList[graphIndex];
-
-        const { groupEdges } = selectedGraphList.metadata;
-
-        newGraphData = groupEdgesWithConfiguration(
-          selectedGraphList,
-          graphFlatten,
-          groupEdges,
-        );
-      });
-
-      afterEach(() => {
-        store.clearActions();
-      });
-
-      it('should compute the correct grouped edges', async () => {
-        await store.dispatch(groupEdgesWithAggregation(graphIndex));
-
-        store.getActions().forEach((actions) => {
-          const { payload } = actions;
-          const { edges } = payload;
-          expect(edges).toEqual(newGraphData.edges);
-        });
-      });
-
-      it('should derive correct group edge configuration', async () => {
-        await store.dispatch(groupEdgesWithAggregation(graphIndex));
-
-        store.getActions().forEach((actions) => {
-          const { payload } = actions;
-          const { groupEdges } = payload.metadata;
-
-          expect(groupEdges).toEqual(newGraphData.metadata.groupEdges);
-        });
-      });
-    });
-  });
-
-  describe('computeEdgeSelection', () => {
-    const simpleGraphWithGroupEdge = SimpleGraphWithGroupEdge();
-    const aggregatedEdgeFields: Field[] = [
-      {
-        name: 'id',
-        format: '',
-        type: 'string',
-        analyzerType: 'string',
-      },
-      {
-        name: 'source',
-        format: '',
-        type: 'string',
-        analyzerType: 'string',
-      },
-      {
-        name: 'target',
-        format: '',
-        type: 'string',
-        analyzerType: 'string',
-      },
-      {
-        name: 'numeric',
-        format: '',
-        type: 'integer',
-        analyzerType: 'INT',
-      },
-      {
-        name: 'value',
-        format: '',
-        type: 'string',
-        analyzerType: 'STRING',
-      },
-      {
-        name: 'date',
-        format: '',
-        type: 'string',
-        analyzerType: 'STRING',
-      },
-
-      {
-        analyzerType: 'INT',
-        format: '',
-        name: 'min numeric',
-        type: 'integer',
-      },
-      {
-        analyzerType: 'INT',
-        format: '',
-        name: 'max numeric',
-        type: 'integer',
-      },
-      {
-        analyzerType: 'INT',
-        format: '',
-        name: 'average numeric',
-        type: 'integer',
-      },
-      {
-        analyzerType: 'INT',
-        format: '',
-        name: 'count numeric',
-        type: 'integer',
-      },
-      {
-        analyzerType: 'INT',
-        format: '',
-        name: 'sum numeric',
-        type: 'integer',
-      },
-      {
-        analyzerType: 'STRING',
-        format: '',
-        name: 'first value',
-        type: 'string',
-      },
-      {
-        analyzerType: 'STRING',
-        format: '',
-        name: 'last value',
-        type: 'string',
-      },
-      {
-        analyzerType: 'STRING',
-        format: '',
-        name: 'most_frequent value',
-        type: 'string',
-      },
-      {
-        analyzerType: 'STRING',
-        format: '',
-        name: 'first date',
-        type: 'string',
-      },
-      {
-        analyzerType: 'STRING',
-        format: '',
-        name: 'last date',
-        type: 'string',
-      },
-      {
-        analyzerType: 'STRING',
-        format: '',
-        name: 'most_frequent date',
-        type: 'string',
-      },
-    ];
-
-    Object.assign(simpleGraphWithGroupEdge.metadata.fields, {
-      edges: aggregatedEdgeFields,
-    });
-
-    const importedGraphState = (): RootState => {
-      const store = {
-        investigate: {
-          ui: {},
-          widget: {},
-          graph: {
-            present: {
-              graphFlatten: simpleGraphWithGroupEdge,
-              edgeSelection: [
-                {
-                  label: 'id',
-                  id: 'id',
-                  type: 'string',
-                  selected: true,
-                },
-                {
-                  label: 'source',
-                  id: 'source',
-                  type: 'string',
-                  selected: true,
-                },
-                {
-                  label: 'target',
-                  id: 'target',
-                  type: 'string',
-                  selected: true,
-                },
-              ],
-            },
-          },
-        },
-      };
-      return store;
-    };
-
-    const store = mockStore(importedGraphState());
-
-    beforeEach(() => {
-      store.dispatch(computeEdgeSelection());
-    });
-
-    afterEach(() => {
-      store.clearActions();
-    });
-
-    it('should append edge selection based on edge fields', () => {
-      const { edgeSelection, graphFlatten } = getGraph(store.getState());
-      const { edges: edgeFields } = graphFlatten.metadata.fields;
-
-      const computedEdgeSelection = edgeFields.map((edgeField: Field) => {
-        const { name, type } = edgeField;
-        const existingSelection = edgeSelection.find(
-          (selection: Selection) => selection.id === edgeField.name,
-        );
-        const isSelected: boolean = existingSelection?.selected ?? false;
-
-        return {
-          id: name,
-          label: name,
-          type,
-          selected: isSelected,
-        };
-      });
-
-      const expectedActions = [overwriteEdgeSelection(computedEdgeSelection)];
-
-      expect(store.getActions()).toEqual(expectedActions);
     });
   });
 });
