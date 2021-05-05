@@ -83,9 +83,7 @@ const switchPanel = (type: string) => {
 const importSampleData = (type: any) => {
   cy.react('Cell', {
     props: { 'data-testid': type },
-  })
-    .find('Button')
-    .click();
+  }).click();
 };
 
 Cypress.Commands.add('switchTab', switchTab);
