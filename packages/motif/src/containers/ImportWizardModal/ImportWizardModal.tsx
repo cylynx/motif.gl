@@ -80,11 +80,6 @@ const ImportWizardModal: FC<ImportWizardProps> = ({ overrideTabs }) => {
         onClose={onCloseModal}
         size={SIZE.auto}
         overrides={{
-          Root: {
-            style: () => ({
-              position: 'absolute',
-            }),
-          },
           Dialog: {
             style: {
               width: '848px',

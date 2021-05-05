@@ -4,7 +4,6 @@ import React, {
   useState,
   useEffect,
   useRef,
-  Fragment,
   useMemo,
   ReactNode,
   MutableRefObject,
@@ -17,7 +16,6 @@ import { Block } from 'baseui/block';
 
 import { ToasterContainer, PLACEMENT } from 'baseui/toast';
 import Graphin from '@cylynx/graphin';
-import { Loader } from '../components/ui';
 import DataTableModal from './DataTableModal';
 import ImportWizardModal from './ImportWizardModal';
 import { defaultWidgetList } from './widgets';
@@ -26,7 +24,7 @@ import {
   getTooltipOverride,
   getWidgetOverride,
 } from '../utils/overrides';
-import { UISelectors, UISlices } from '../redux/ui';
+import { UISlices } from '../redux/ui';
 import { WidgetSelectors, WidgetSlices, WidgetItem } from '../redux/widget';
 import { GraphSlices, Accessors, StyleOptions } from '../redux/graph';
 import SideNavBars from './SideNavBar';
@@ -133,7 +131,7 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
     }, [accessors, overrides?.widgetList, name]);
 
     return (
-      <Fragment>
+      <Block position='relative' height='100%' width='100%'>
         <DataTableModal />
         <ImportWizardModal overrideTabs={overrides?.Tabs} />
         <GraphLayer
@@ -151,7 +149,7 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
               <Block key={item.id}>{item.widget}</Block>
             ))}
         </WidgetContainer>
-      </Fragment>
+      </Block>
     );
   },
 );

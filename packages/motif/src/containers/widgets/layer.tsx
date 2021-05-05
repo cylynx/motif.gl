@@ -184,7 +184,7 @@ export class GraphLayer extends Component<GraphLayerProps, GraphLayerState> {
     return (
       <Block
         ref={this.blockRef}
-        position='absolute'
+        position='relative'
         width={width}
         height='100%'
         paddingTop='0'
