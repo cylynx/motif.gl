@@ -12,7 +12,7 @@ describe('Import Random + Circle', () => {
     cy.switchTab('sample-data');
 
     // import sample data by clicking random graph
-    cy.importSampleData(SampleData.CIRCLE_GRAPH);
+    cy.importSampleData(SampleData.RANDOM_GRAPH);
 
     // waiting for loading indicator to dissappear
     cy.wait(500);
