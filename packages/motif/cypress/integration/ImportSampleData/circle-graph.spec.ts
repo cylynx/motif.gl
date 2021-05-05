@@ -12,11 +12,10 @@ describe('Import Circle Graph', () => {
     cy.switchTab('sample-data');
 
     // import sample data by clicking random graph
-    cy.react('Cell', {
-      props: { 'data-testid': SampleData.CIRCLE_GRAPH },
-    })
-      .find('Button')
-      .click();
+    cy.importSampleData(SampleData.CIRCLE_GRAPH);
+
+    // waiting for loading indicator to dissappear
+    cy.wait(500);
   });
 
   it('should display layout in Concentric', () => {

@@ -51,6 +51,8 @@ describe('Import Single Local File', () => {
       cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
 
+      cy.wait(500);
+
       cy.getReact(graphinEl)
         .getProps('data')
         .then((graph: GraphData) => {
@@ -69,6 +71,8 @@ describe('Import Single Local File', () => {
       cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
 
+      cy.wait(500);
+
       cy.getReact(graphinEl)
         .getProps('data')
         .then((graph: GraphData) => {
@@ -83,6 +87,8 @@ describe('Import Single Local File', () => {
 
       cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
+
+      cy.wait(500);
 
       cy.getReact(graphinEl)
         .getProps('data')
@@ -102,6 +108,8 @@ describe('Import Single Local File', () => {
       cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
 
+      cy.wait(500);
+
       cy.getReact(graphinEl)
         .getProps('data')
         .then((graph: GraphData) => {
@@ -119,6 +127,8 @@ describe('Import Single Local File', () => {
       cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
 
+      cy.wait(500);
+
       const graphState: GraphState = await getGraphStates();
       const styleOptions: StyleOptions = graphState.styleOptions;
       const { styleOptions: initialStyleState } = GraphSlices.initialState;
@@ -133,6 +143,8 @@ describe('Import Single Local File', () => {
 
       cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
+
+      cy.wait(500);
 
       const graphState: GraphState = await getGraphStates();
       const styleOptions: StyleOptions = graphState.styleOptions;
@@ -165,6 +177,8 @@ describe('Import Single Local File', () => {
       // should display confirmation modal if graph style is modified
       cy.getReact('ConfirmationModal').should('exist');
       cy.get('[data-testid="confirmation-modal:accept"]').click();
+
+      cy.wait(500);
 
       const graphState: GraphState = await getGraphStates();
       const styleOptions: StyleOptions = graphState.styleOptions;
@@ -207,6 +221,9 @@ describe('Import Single Local File', () => {
 
       // perform reject on style overwrites
       cy.get('[data-testid="confirmation-modal:reject"]').click();
+
+      // waiting for loading indicator to dissappear
+      cy.wait(500);
 
       const graphState: GraphState = await getGraphStates();
       const styleOptions: StyleOptions = graphState.styleOptions;
@@ -268,6 +285,9 @@ describe('Import Single Local File', () => {
 
       cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
+
+      // waiting for loading indicator to dissappear
+      cy.wait(500);
     });
 
     it('application should obtain the group edge configurations', () => {

@@ -13,6 +13,9 @@ describe('Import Bank Connections', () => {
 
     // import sample data by clicking bank datasets
     cy.importSampleData(SampleData.BANK);
+
+    // waiting for loading indicator to dissappear
+    cy.wait(500);
   });
 
   it('should display layout in Concentric', () => {

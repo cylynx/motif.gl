@@ -36,6 +36,8 @@ describe('Import Edge List', () => {
       cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
 
+      cy.wait(500);
+
       cy.getReact(graphinEl)
         .getProps('data')
         .then((graph: GraphData) => {
@@ -49,6 +51,8 @@ describe('Import Edge List', () => {
       cy.get('input[type="file"]').attachFile([sampleEdge, sampleEdge]);
       cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
+
+      cy.wait(500);
 
       cy.getReact(graphinEl)
         .getProps('data')

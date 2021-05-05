@@ -36,6 +36,9 @@ describe('Import Edge List', () => {
       cy.get('button[type="submit"]').click();
       cy.get('button[type="submit"]').click();
 
+      // waiting for loading indicator to dissappear
+      cy.wait(500);
+
       cy.getReact(graphinEl)
         .getProps('data')
         .then((graph: GraphData) => {
