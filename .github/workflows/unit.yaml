@@ -28,7 +28,7 @@ jobs:
 
       - name: Install Dependencies
         working-directory: './packages/motif'
-        run: yarn install
+        run: yarn install --link-duplicates
 
       - name: Run Unit Test
         working-directory: './packages/motif'

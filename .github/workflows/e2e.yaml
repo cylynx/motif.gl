@@ -25,7 +25,7 @@ jobs:
         run: npm run rm-package-lock
 
       - name: Install All Dependencies
-        run: yarn install
+        run: yarn install --link-duplicates
 
       - name: Build Motif Bundle
         working-directory: './packages/motif'
