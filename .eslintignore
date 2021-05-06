@@ -1,7 +1,22 @@
-coverage/
-cypress/
-dist/
-node_modules/
+.github/
+.idea/
+.vscode/
+.git/
 commitlint.config.js
 tsdx.config.js
+package.json
+craco.config.js
+node_modules/
+webpack.config.js
+vite.config.js
+vite.dev.config.ts
+vite.prod.config.ts
+jest.config.ts
+
+dist/
+coverage/
+cypress/
+
+
+
 

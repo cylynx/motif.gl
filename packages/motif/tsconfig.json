@@ -1,0 +1,24 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "outDir": "dist",
+    "noImplicitAny": false,
+    "noEmit": false,
+    "types": ["@types/node", "@types/react", "@types/jest"],
+    "sourceMap": false,
+    "noEmitOnError": true
+  },
+  "include": ["src"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/*.spec.tsx",
+    "**/*.test.tsx",
+    "cypress",
+    "index.html"
+  ]
+}

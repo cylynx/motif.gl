@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "module": "esnext",
+    "outDir": "dist",
+    "types": ["vite/client"],
+    "lib": ["dom", "esnext"],
+    "jsx": "react-jsx",
+    "noUnusedLocals": false,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "build"]
+}

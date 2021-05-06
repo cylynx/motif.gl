@@ -4,8 +4,8 @@
 # dependencies
 node_modules
 
-# example package-lock
-/example/package-lock.json
+# package-lock
+package-lock.json
 
 # builds
 build
@@ -23,6 +23,8 @@ dist
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+lerna-debug.log*
+yarn.lock
 
 # ide's setting folder
 .vscode/
@@ -34,4 +36,7 @@ coverage/
 # cypress miscellaneous
 cypress/screenshots
 cypress/videos
+
+# rollup 
+stats.html
 

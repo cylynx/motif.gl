@@ -1,14 +1,10 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "outDir": "dist",
     "module": "esnext",
-    "lib": ["dom", "dom.iterable", "esnext"],
     "downlevelIteration": true,
     "moduleResolution": "node",
-    "jsx": "react",
     "allowJs": true,
-    "strict": false,
+    "strict": true,
     "sourceMap": true,
     "declaration": true,
     "esModuleInterop": true,
@@ -25,13 +21,7 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true
-  },
-  "include": ["src"],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "example",
-    "src/**/*.+(test|spec).+(ts|tsx|js|jsx)"
-  ]
+    "noEmit": true,
+    "jsx": "react"
+  }
 }

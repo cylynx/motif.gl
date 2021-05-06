@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+#graphin-container {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+.graphin-core {
+  height: 100%;
+  width: 100%;
+  min-height: 500px;
+}
+::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #595f6d;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #595f6d;
+}
