@@ -3,7 +3,7 @@ import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData
 describe('Filter Panel', () => {
   before(() => {
     cy.visit('/');
-    cy.waitForReact(5000);
+    cy.waitForReact();
 
     // close modal
     cy.get('button[aria-label="Close"]').click();
@@ -13,6 +13,7 @@ describe('Filter Panel', () => {
   });
 
   it('should render successfully', () => {
+    cy.wait(200);
     cy.getReact('FilterPanel').should('exist');
   });
 
