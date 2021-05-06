@@ -4,8 +4,9 @@ const edgeDatasetRootPath = 'LocalFiles/EdgeList';
 
 describe('Import Edge List', () => {
   const graphinEl = 'Graphin2';
+  const selectEl = 'Select2'; 
   const selectEdgeListDataType = () => {
-    cy.react('Select', { props: { id: 'DataTypeSelection' } })
+    cy.react(selectEl, { props: { id: 'DataTypeSelection' } })
       .nthNode(0)
       .click();
     cy.get('li[role="option"').contains('Edge List Csv').click();

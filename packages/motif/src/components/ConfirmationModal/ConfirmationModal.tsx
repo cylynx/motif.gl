@@ -1,5 +1,4 @@
 import React, { FC, MouseEvent, ReactNode } from 'react';
-import { styled } from 'baseui';
 import {
   Modal,
   ModalHeader,

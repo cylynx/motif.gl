@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { Block } from 'baseui/block';
 import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
 import { BaseProvider } from 'baseui';
@@ -46,20 +47,22 @@ const App = () => {
     <StyletronProvider value={engine}>
       <BaseProvider theme={MotifLightTheme}>
         <Provider store={store}>
-          <Motif
-            name='Motif'
-            secondaryTheme={MotifDarkTheme}
-            accessors={{
-              // getters below are for simple edge
-              nodeID: 'id',
-              // edgeID: 'id',
-              edgeSource: 'source',
-              edgeTarget: 'target',
-            }}
-            overrides={{
-              Tabs: tabOverrides,
-            }}
-          />
+          <Block height='100vh'>
+            <Motif
+              name='Motif'
+              secondaryTheme={MotifDarkTheme}
+              accessors={{
+                // getters below are for simple edge
+                nodeID: 'id',
+                // edgeID: 'id',
+                edgeSource: 'source',
+                edgeTarget: 'target',
+              }}
+              overrides={{
+                Tabs: tabOverrides,
+              }}
+            />
+          </Block>
         </Provider>
       </BaseProvider>
     </StyletronProvider>

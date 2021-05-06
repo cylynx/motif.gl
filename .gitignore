@@ -4,8 +4,8 @@
 # dependencies
 node_modules
 
-# example package-lock
-/example/package-lock.json
+# package-lock
+package-lock.json
 
 # builds
 build

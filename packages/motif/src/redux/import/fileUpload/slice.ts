@@ -92,8 +92,8 @@ const fileUploadSlice = createSlice({
         dataPreview: initialState.dataPreview,
       });
     },
-    resetState(): TFileContentState {
-      return initialState;
+    resetState(state: TFileContentState) {
+      Object.assign(state, initialState);
     },
   },
 });
