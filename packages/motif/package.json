@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@antv/g6": "4.1.13",
-    "@cylynx/graphin": "2.0.15",
+    "@cylynx/graphin": "2.0.16",
     "@reduxjs/toolkit": "^1.5.0",
     "d3-array": "^2.12.1",
     "d3-axis": "^2.1.0",
