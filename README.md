@@ -116,12 +116,6 @@ $ npm run motif
 $ npm run motif:tsc
 ```
 
-### Perform Bundling into Typescript Library
-
-```bash
-$ npm run motif:build
-```
-
 ### Preview Library on Client Side
 
 **Perform Bundling into Typescript Library**
