@@ -15,6 +15,7 @@ describe('Filter Panel', () => {
   it('should render successfully', () => {
     cy.wait(200);
     cy.getReact('FilterPanel').should('exist');
+    console.log(process.env.NODE_ENV);
   });
 
   it('should render beside Left Navigation Bar', () => {
@@ -49,6 +50,8 @@ describe('Filter Panel', () => {
 
       // import sample data by clicking random graph
       cy.importSampleData(SampleData.CIRCLE_GRAPH);
+
+      cy.wait(300);
 
       // open filter panels by clicking sidebar
       cy.switchPanel('filters');
