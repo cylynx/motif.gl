@@ -191,9 +191,10 @@ const VariableInspector = () => {
   const onChangeSelected = useCallback(
     (obj) => {
       if (obj?.id) {
+        console.log(obj?.id);
         const fieldDomain = getFieldDomain(
           graphVisible[obj.from],
-          (x) => x[obj.id],
+          (x) => get(x, obj.id, ''),
           obj.analyzerType,
           obj.format,
         );

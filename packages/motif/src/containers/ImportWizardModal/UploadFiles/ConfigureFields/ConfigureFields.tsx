@@ -48,6 +48,7 @@ const ConfigureFields = () => {
   const { importJson, importEdgeList, importNodeEdge } = useImportData();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const jsonFileRef = useRef<TFileContent[]>(null);
+  const groupEdgeRef = useRef<boolean>(groupEdge);
 
   const {
     watch,
@@ -113,6 +114,7 @@ const ConfigureFields = () => {
       const isJsonContainStyle = isContainStyle(attachments as TFileContent[]);
       if (isJsonContainStyle) {
         jsonFileRef.current = attachments as TFileContent[];
+        groupEdgeRef.current = groupEdge;
         setModalOpen(true);
         return;
       }
@@ -132,8 +134,14 @@ const ConfigureFields = () => {
   };
 
   const importJsonOverwriteStyles = (overwriteStyles: boolean) => {
-    importJson(jsonFileRef.current, groupEdge, accessors, overwriteStyles);
+    importJson(
+      jsonFileRef.current,
+      groupEdgeRef.current,
+      accessors,
+      overwriteStyles,
+    );
     jsonFileRef.current = null;
+    groupEdgeRef.current = groupEdge;
     setModalOpen(false);
   };
 
