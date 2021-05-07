@@ -15,7 +15,6 @@ describe('Filter Panel', () => {
   it('should render successfully', () => {
     cy.wait(200);
     cy.getReact('FilterPanel').should('exist');
-    console.log(process.env.NODE_ENV);
   });
 
   it('should render beside Left Navigation Bar', () => {
