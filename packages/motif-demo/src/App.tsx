@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
+import initHelpHero from 'helphero';
 import { Block } from 'baseui/block';
 import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
@@ -18,10 +19,17 @@ import store from './redux-store';
 import Neo4J from './containers/Neo4J';
 
 const engine = new Styletron();
+// @ts-ignore
+const hlp = initHelpHero(import.meta.env.VITE_HELP_HERO_APP_ID);
 
 const App = () => {
   // @ts-ignore
   const [driver, setDriver] = useState<Driver>({});
+
+  useEffect(() => {
+    hlp.anonymous();
+  }, []);
+
   const tabOverrides: ImportTabs[] = useMemo(() => {
     return [
       { title: 'File', key: 'file', component: <UploadFiles /> },
