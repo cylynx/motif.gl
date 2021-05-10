@@ -2,7 +2,7 @@
 
 // Generated using https://materialpalettes.com/
 const themeColors = {
-  theme: "#488F80",
+  theme: '#488F80',
   theme50: '#e3f1ef',
   theme100: '#b9ddd7',
   theme200: '#8ec7bd',
@@ -11,6 +11,6 @@ const themeColors = {
   theme500: '#488f80',
   theme600: '#438274',
   theme700: '#3d7265',
-}
+};
 
-export default themeColors
+export default themeColors;

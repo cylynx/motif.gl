@@ -1,7 +1,7 @@
 /* https://github.com/uber/baseweb/blob/master/src/themes/shared/borders.js  */
-import {Borders} from 'baseui/theme'
+import { Borders } from 'baseui/theme';
 
-const borderColor = "rgba(140, 140, 151, 0.16)"
+const borderColor = 'rgba(140, 140, 151, 0.16)';
 
 const borders: Partial<Borders> = {
   border100: {
@@ -38,11 +38,11 @@ const borders: Partial<Borders> = {
   buttonBorderRadius: '6px',
   /** Input, Select, Textarea, Checkbox */
   inputBorderRadius: '6px',
-   /** Popover, Menu, Tooltip */
-   popoverBorderRadius: '6px',
-   /** Card, Datepicker, Modal, Toast, Notification */
-   surfaceBorderRadius: '6px',
-   tagBorderRadius: '6px',
-  }
+  /** Popover, Menu, Tooltip */
+  popoverBorderRadius: '6px',
+  /** Card, Datepicker, Modal, Toast, Notification */
+  surfaceBorderRadius: '6px',
+  tagBorderRadius: '6px',
+};
 
-  export default borders;
+export default borders;

@@ -6,17 +6,17 @@ LICENSE file in the root directory of this source tree.
 */
 // @flow
 
-import * as React from "react"
-import { useStyletron } from "baseui"
-import { PropertyCompareTheme } from "./common"
+import * as React from 'react';
+import { useStyletron } from 'baseui';
+import { PropertyCompareTheme } from './common';
 
 // eslint-disable-next-line import/prefer-default-export
 export function Lighting({ name }) {
-  const [css] = useStyletron()
+  const [css] = useStyletron();
   return (
     <PropertyCompareTheme
       name={name}
-      concern="lighting"
+      concern='lighting'
       renderBox={({ previewTheme, commonStyles }) => (
         <div
           className={css({
@@ -27,5 +27,5 @@ export function Lighting({ name }) {
       )}
       renderValue={({ previewTheme }) => previewTheme.lighting[name]}
     />
-  )
+  );
 }

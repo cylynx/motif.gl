@@ -1,3 +1,5 @@
+/* eslint-disable no-alert */
+/* eslint-disable react/no-unescaped-entities */
 import React from 'react';
 import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
@@ -41,7 +43,7 @@ const engine = new Styletron();
 const App = () => (
   <StyletronProvider value={engine}>
     <BaseProvider theme={MotifDarkTheme}>
-    <typo.HeadingLarge marginLeft='10%'>Component Gallery</typo.HeadingLarge>
+      <typo.HeadingLarge marginLeft='10%'>Component Gallery</typo.HeadingLarge>
       <Block
         backgroundColor='#080808'
         color='contentPrimary'
@@ -49,7 +51,7 @@ const App = () => (
         marginRight='20%'
         marginLeft='10%'
       >
-        <StatefulTabs orientation="vertical">
+        <StatefulTabs orientation='vertical'>
           <Tab title='Input Components'>
             <InputComponents />
           </Tab>
@@ -88,12 +90,12 @@ const PickerComponents = () => (
         label={() => 'Input with label and caption using form control'}
         caption={() => 'caption'}
       >
-        <Input size="compact"/>
+        <Input size='compact' />
       </FormControl>
       <Block display='flex' gridGap='20px'>
         <Block width='300px'>
           <typo.LabelMedium> Datepicker </typo.LabelMedium>
-          <StatefulDatePicker size="compact"/>
+          <StatefulDatePicker size='compact' />
         </Block>
         <Block width='300px'>
           <typo.LabelMedium> Select </typo.LabelMedium>
@@ -107,7 +109,7 @@ const PickerComponents = () => (
               { label: 'Beige', id: '#F5F5DC' },
             ]}
             placeholder='Select color'
-            size="compact"
+            size='compact'
           />
         </Block>
         <Block width='400px'>
@@ -128,7 +130,7 @@ const PickerComponents = () => (
               ],
             }}
             multi
-            size="compact"
+            size='compact'
           />
         </Block>
       </Block>
@@ -172,71 +174,87 @@ const InputComponents = () => (
       gridGap='10px'
       paddingLeft='18px'
     >
-      <typo.ParagraphMedium>Buttons - use compact size as default and square shape for standalone icons</typo.ParagraphMedium>
+      <typo.ParagraphMedium>
+        Buttons - use compact size as default and square shape for standalone
+        icons
+      </typo.ParagraphMedium>
       <typo.LabelMedium> Primary Button </typo.LabelMedium>
       <Block display='flex' gridGap='10px'>
-        <Button kind='primary' size="compact"> Primary Button </Button>
-        <Button kind='primary' size="compact" isLoading>
+        <Button kind='primary' size='compact'>
+          {' '}
+          Primary Button{' '}
+        </Button>
+        <Button kind='primary' size='compact' isLoading>
           Loading State
         </Button>
-        <Button kind='primary' size="compact" isSelected>
+        <Button kind='primary' size='compact' isSelected>
           Selected State
         </Button>
-        <Button kind='primary' size="compact" disabled>
+        <Button kind='primary' size='compact' disabled>
           Disabled State
         </Button>
       </Block>
       <typo.LabelMedium> Secondary Button </typo.LabelMedium>
       <Block display='flex' gridGap='10px'>
-        <Button kind='secondary' size="compact"> Secondary Button </Button>
-        <Button kind='secondary'size="compact" isLoading>
+        <Button kind='secondary' size='compact'>
+          {' '}
+          Secondary Button{' '}
+        </Button>
+        <Button kind='secondary' size='compact' isLoading>
           {' '}
           Loading State{' '}
         </Button>
-        <Button kind='secondary' size="compact" isSelected>
+        <Button kind='secondary' size='compact' isSelected>
           {' '}
           Selected State{' '}
         </Button>
-        <Button kind='secondary' size="compact" disabled>
+        <Button kind='secondary' size='compact' disabled>
           {' '}
           Disabled State{' '}
         </Button>
       </Block>
       <typo.LabelMedium> Tertiary Button </typo.LabelMedium>
       <Block display='flex' gridGap='10px'>
-        <Button kind='tertiary' size="compact"> Tertiary Button </Button>
-        <Button kind='tertiary' size="compact" isLoading>
+        <Button kind='tertiary' size='compact'>
+          {' '}
+          Tertiary Button{' '}
+        </Button>
+        <Button kind='tertiary' size='compact' isLoading>
           {' '}
           Loading State{' '}
         </Button>
-        <Button kind='tertiary' size="compact" isSelected>
+        <Button kind='tertiary' size='compact' isSelected>
           {' '}
           Selected State{' '}
         </Button>
-        <Button kind='tertiary' size="compact" disabled>
+        <Button kind='tertiary' size='compact' disabled>
           {' '}
           Disabled State{' '}
         </Button>
       </Block>
-      <typo.LabelMedium>
-        {' '}
-        Icon Buttons
-      </typo.LabelMedium>
+      <typo.LabelMedium> Icon Buttons</typo.LabelMedium>
       <Block display='flex' gridGap='10px'>
         <br />
-        <Button shape='square' size="compact">
-          <icon.Plus size={18}/>
+        <Button shape='square' size='compact'>
+          <icon.Plus size={18} />
         </Button>
-        <Button kind='secondary' shape='square' size="compact">
-          <icon.Check size={18}/>
+        <Button kind='secondary' shape='square' size='compact'>
+          <icon.Check size={18} />
         </Button>
-        <Button kind='tertiary' shape='square' size="compact">
-          <icon.ChevronDown size={18}/>
+        <Button kind='tertiary' shape='square' size='compact'>
+          <icon.ChevronDown size={18} />
         </Button>
-        <Button startEnhancer={() => <icon.ArrowRight size={18} />} size="compact">
+        <Button
+          startEnhancer={() => <icon.ArrowRight size={18} />}
+          size='compact'
+        >
           Start Enhancer
         </Button>
-        <Button endEnhancer={() => <icon.Upload size={18} />} kind='secondary' size="compact">
+        <Button
+          endEnhancer={() => <icon.Upload size={18} />}
+          kind='secondary'
+          size='compact'
+        >
           End Enhancer
         </Button>
       </Block>
@@ -313,7 +331,7 @@ const ContentComponents = () => (
               Tooltip{' '}
             </typo.LabelMedium>
             <StatefulTooltip
-              content={() => <Block padding={'20px'}>Hello, there! 👋</Block>}
+              content={() => <Block padding='20px'>Hello, there! 👋</Block>}
               returnFocus
               autoFocus
             >
@@ -327,7 +345,7 @@ const ContentComponents = () => (
             </typo.LabelMedium>
             <StatefulPopover
               content={() => (
-                <Block padding={'20px'}>
+                <Block padding='20px'>
                   Hello, there! 👋 <Input placeholder='Focusable Element' />
                 </Block>
               )}
@@ -369,7 +387,7 @@ const ContentComponents = () => (
               KIND.negative,
               KIND.warning,
             ].map((kind) => (
-              <div>
+              <div key={kind}>
                 <Tag
                   kind={kind}
                   onClick={() => alert(`click ${kind}`)}
@@ -471,7 +489,7 @@ const TypographyComponents = () => (
 );
 
 const BaseTokens = () => (
-  <Block maxWidth="800px">
+  <Block maxWidth='800px'>
     <typo.HeadingLarge> Theme Properties </typo.HeadingLarge>
     The theme object organizes its various properties according to their
     respective concerns.

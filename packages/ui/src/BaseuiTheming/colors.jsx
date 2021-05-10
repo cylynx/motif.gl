@@ -6,26 +6,26 @@ LICENSE file in the root directory of this source tree.
 */
 // @flow
 
-import * as React from "react"
-import { useStyletron, expandBorderStyles } from "baseui/styles"
-import { colors } from "baseui/tokens"
-import { PropertyCompareTheme } from "./common"
+import * as React from 'react';
+import { useStyletron, expandBorderStyles } from 'baseui/styles';
+import { colors } from 'baseui/tokens';
+import { PropertyCompareTheme } from './common';
 
 function getTokenFromCode(code) {
-  let res = ""
+  let res = '';
   Object.entries(colors).forEach(([name, value]) => {
-    if (value === code) res = name
-  })
-  return res
+    if (value === code) res = name;
+  });
+  return res;
 }
 
 // eslint-disable-next-line import/prefer-default-export
 export function Color({ name }) {
-  const [css] = useStyletron()
+  const [css] = useStyletron();
   return (
     <PropertyCompareTheme
       name={name}
-      concern="colors"
+      concern='colors'
       renderBox={({ previewTheme, commonStyles }) => (
         <div
           className={css({
@@ -42,5 +42,5 @@ export function Color({ name }) {
         </>
       )}
     />
-  )
+  );
 }

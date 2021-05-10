@@ -7,16 +7,16 @@ LICENSE file in the root directory of this source tree.
 */
 // @flow
 
-import * as React from "react"
-import { useStyletron } from "baseui"
-import { Property } from "./common"
+import * as React from 'react';
+import { useStyletron } from 'baseui';
+import { Property } from './common';
 
 export function Type({ name }) {
-  const [css, theme] = useStyletron()
+  const [css, theme] = useStyletron();
   return (
     <Property
       name={name}
-      concern="typography"
+      concern='typography'
       renderPreview={() => (
         <div className={css({ ...theme.typography[name] })}>Example</div>
       )}
@@ -28,5 +28,5 @@ export function Type({ name }) {
         </>
       )}
     />
-  )
+  );
 }

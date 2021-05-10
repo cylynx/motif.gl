@@ -11,41 +11,41 @@ LICENSE file in the root directory of this source tree.
  * properties and their default values.
  */
 
-import * as React from "react"
-import { useStyletron, styled } from "baseui"
-import MotifDarkTheme from "../theme/baseui-dark"
-import MotifLightTheme from "../theme/baseui-light"
-import { LightTheme, DarkTheme } from "baseui/themes"
+import * as React from 'react';
+import { useStyletron, styled } from 'baseui';
+import { DarkTheme } from 'baseui/themes';
+import MotifDarkTheme from '../theme/baseui-dark';
+import MotifLightTheme from '../theme/baseui-light';
 
 const monospaceFontFamily =
-  'SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace'
+  'SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace';
 
-const SubTitle = styled("span", ({ $theme }) => {
+const SubTitle = styled('span', ({ $theme }) => {
   return {
     ...$theme.typography.LabelSmall,
     fontFamily: monospaceFontFamily,
-    fontStyle: "italic",
+    fontStyle: 'italic',
     color: $theme.colors.contentSecondary,
-  }
-})
+  };
+});
 
-export const Title = styled("div", ({ $theme }) => {
+export const Title = styled('div', ({ $theme }) => {
   return {
     ...$theme.typography.HeadingXSmall,
     fontFamily: monospaceFontFamily,
-  }
-})
+  };
+});
 
-export const Value = styled("div", ({ $theme }) => {
+export const Value = styled('div', ({ $theme }) => {
   return {
     ...$theme.typography.ParagraphSmall,
     fontFamily: monospaceFontFamily,
-  }
-})
+  };
+});
 
 // $FlowFixMe
 export function Property({ name, concern, renderPreview, renderValue }) {
-  const [css, theme] = useStyletron()
+  const [css, theme] = useStyletron();
   return (
     <div className={css({ marginBottom: theme.sizing.scale800 })}>
       <Title $style={{ marginBottom: theme.sizing.scale200 }}>
@@ -59,7 +59,7 @@ export function Property({ name, concern, renderPreview, renderValue }) {
       )}
       <Value>{renderValue && renderValue()}</Value>
     </div>
-  )
+  );
 }
 
 // $FlowFixMe
@@ -69,61 +69,61 @@ export function PropertyCompareTheme({
   renderBox,
   renderValue,
 }) {
-  const [css] = useStyletron()
+  const [css] = useStyletron();
   return (
     <Property
       name={name}
       concern={concern}
       renderPreview={() => {
         return (
-          <div className={css({ display: "flex" })}>
-            <div className={css({ flexBasis: "50%" })}>
+          <div className={css({ display: 'flex' })}>
+            <div className={css({ flexBasis: '50%' })}>
               <Swatch
                 renderBox={renderBox}
                 previewTheme={MotifLightTheme}
                 left
               />
             </div>
-            <div className={css({ flexBasis: "50%" })}>
+            <div className={css({ flexBasis: '50%' })}>
               <Swatch renderBox={renderBox} previewTheme={DarkTheme} />
             </div>
           </div>
-        )
+        );
       }}
       renderValue={() => {
         return (
-          <div className={css({ display: "flex" })}>
-            <div className={css({ flexBasis: "50%" })}>
+          <div className={css({ display: 'flex' })}>
+            <div className={css({ flexBasis: '50%' })}>
               <Value>{renderValue({ previewTheme: MotifLightTheme })}</Value>
             </div>
-            <div className={css({ flexBasis: "50%" })}>
+            <div className={css({ flexBasis: '50%' })}>
               <Value>{renderValue({ previewTheme: MotifDarkTheme })}</Value>
             </div>
           </div>
-        )
+        );
       }}
     />
-  )
+  );
 }
 
 function Swatch({ renderBox, previewTheme, left = false }) {
-  const [css, theme] = useStyletron()
+  const [css, theme] = useStyletron();
   return (
     <div
       className={css({
         backgroundColor: previewTheme.colors.backgroundPrimary,
         paddingTop: theme.sizing.scale800,
         paddingBottom: theme.sizing.scale800,
-        display: "flex",
-        justifyContent: "center",
-        borderTopStyle: "solid",
-        borderBottomStyle: "solid",
-        borderRightStyle: left ? null : "solid",
-        borderLeftStyle: left ? "solid" : null,
-        borderRightWidth: left ? null : "1px",
-        borderLeftWidth: left ? "1px" : null,
-        borderTopWidth: "1px",
-        borderBottomWidth: "1px",
+        display: 'flex',
+        justifyContent: 'center',
+        borderTopStyle: 'solid',
+        borderBottomStyle: 'solid',
+        borderRightStyle: left ? null : 'solid',
+        borderLeftStyle: left ? 'solid' : null,
+        borderRightWidth: left ? null : '1px',
+        borderLeftWidth: left ? '1px' : null,
+        borderTopWidth: '1px',
+        borderBottomWidth: '1px',
         borderTopColor: theme.colors.borderOpaque,
         borderBottomColor: theme.colors.borderOpaque,
         borderRightColor: theme.colors.borderOpaque,
@@ -132,8 +132,8 @@ function Swatch({ renderBox, previewTheme, left = false }) {
     >
       {renderBox({
         previewTheme,
-        commonStyles: { height: "50px", width: "50px" },
+        commonStyles: { height: '50px', width: '50px' },
       })}
     </div>
-  )
+  );
 }

@@ -6,86 +6,86 @@ LICENSE file in the root directory of this source tree.
 */
 // @flow
 
-import * as React from "react"
-import { useStyletron } from "baseui"
-import { Property } from "./common"
+import * as React from 'react';
+import { useStyletron } from 'baseui';
+import { Property } from './common';
 
 const move = {
   from: {
-    width: "0px",
+    width: '0px',
   },
   to: {
-    width: "100%",
+    width: '100%',
   },
-}
+};
 
 // adds delays so that bars are in sync
 const animations = {
   timing100: {
     ...move,
-    "10%": {
-      width: "100%",
+    '10%': {
+      width: '100%',
     },
   },
   timing200: {
     ...move,
-    "20%": {
-      width: "100%",
+    '20%': {
+      width: '100%',
     },
   },
   timing300: {
     ...move,
-    "30%": {
-      width: "100%",
+    '30%': {
+      width: '100%',
     },
   },
   timing400: {
     ...move,
-    "40%": {
-      width: "100%",
+    '40%': {
+      width: '100%',
     },
   },
   timing500: {
     ...move,
-    "50%": {
-      width: "100%",
+    '50%': {
+      width: '100%',
     },
   },
   timing600: {
     ...move,
-    "60%": {
-      width: "100%",
+    '60%': {
+      width: '100%',
     },
   },
   timing700: {
     ...move,
-    "70%": {
-      width: "100%",
+    '70%': {
+      width: '100%',
     },
   },
   timing800: {
     ...move,
-    "80%": {
-      width: "100%",
+    '80%': {
+      width: '100%',
     },
   },
   timing900: {
     ...move,
-    "90%": {
-      width: "100%",
+    '90%': {
+      width: '100%',
     },
   },
   timing1000: {
     ...move,
   },
-}
+};
 
 export function Timing({ name }) {
-  const [css, theme] = useStyletron()
+  const [css, theme] = useStyletron();
   return (
     <Property
       name={name}
-      concern="animation"
+      concern='animation'
       renderPreview={() => (
         <div
           className={css({
@@ -95,10 +95,10 @@ export function Timing({ name }) {
           <div
             className={css({
               animationName: animations[name],
-              animationDuration: "1s",
-              animationDirection: "alternate",
-              animationIterationCount: "infinite",
-              animationTimingFunction: "linear",
+              animationDuration: '1s',
+              animationDirection: 'alternate',
+              animationIterationCount: 'infinite',
+              animationTimingFunction: 'linear',
               height: theme.sizing.scale100,
               backgroundColor: theme.colors.contentPrimary,
             })}
@@ -107,15 +107,15 @@ export function Timing({ name }) {
       )}
       renderValue={() => theme.animation[name]}
     />
-  )
+  );
 }
 
 export function Easing({ name }) {
-  const [css, theme] = useStyletron()
+  const [css, theme] = useStyletron();
   return (
     <Property
       name={name}
-      concern="animation"
+      concern='animation'
       renderValue={() => theme.animation[name]}
       renderPreview={() => (
         <div
@@ -126,9 +126,9 @@ export function Easing({ name }) {
           <div
             className={css({
               animationName: move,
-              animationDuration: "1s",
-              animationDirection: "alternate",
-              animationIterationCount: "infinite",
+              animationDuration: '1s',
+              animationDirection: 'alternate',
+              animationIterationCount: 'infinite',
               animationTimingFunction: theme.animation[name],
               height: theme.sizing.scale100,
               backgroundColor: theme.colors.contentPrimary,
@@ -137,5 +137,5 @@ export function Easing({ name }) {
         </div>
       )}
     />
-  )
+  );
 }

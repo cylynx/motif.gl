@@ -6,26 +6,26 @@ LICENSE file in the root directory of this source tree.
 */
 // @flow
 
-import * as React from "react"
-import { Property } from "./common"
+import * as React from 'react';
+import { Property } from './common';
 
 // eslint-disable-next-line import/prefer-default-export
 export function Grid() {
   return (
     <>
-      <Property name="columns" concern="grid" renderValue={() => "4, 8, 12"} />
+      <Property name='columns' concern='grid' renderValue={() => '4, 8, 12'} />
       <Property
-        name="gutters"
-        concern="grid"
-        renderValue={() => "16px, 36px, 36px"}
+        name='gutters'
+        concern='grid'
+        renderValue={() => '16px, 36px, 36px'}
       />
       <Property
-        name="margins"
-        concern="grid"
-        renderValue={() => "16px, 36px, 64px"}
+        name='margins'
+        concern='grid'
+        renderValue={() => '16px, 36px, 64px'}
       />
-      <Property name="gaps" concern="grid" renderValue={() => "0"} />
-      <Property name="maxWidth" concern="grid" renderValue={() => "1280px"} />
+      <Property name='gaps' concern='grid' renderValue={() => '0'} />
+      <Property name='maxWidth' concern='grid' renderValue={() => '1280px'} />
     </>
-  )
+  );
 }

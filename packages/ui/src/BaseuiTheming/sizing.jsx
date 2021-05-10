@@ -6,17 +6,17 @@ LICENSE file in the root directory of this source tree.
 */
 // @flow
 
-import * as React from "react"
-import { useStyletron } from "baseui"
-import { Property } from "./common"
+import * as React from 'react';
+import { useStyletron } from 'baseui';
+import { Property } from './common';
 
 // eslint-disable-next-line import/prefer-default-export
 export function Sizing({ name }) {
-  const [css, theme] = useStyletron()
+  const [css, theme] = useStyletron();
   return (
     <Property
       name={name}
-      concern="sizing"
+      concern='sizing'
       renderPreview={() => (
         <div
           className={css({
@@ -28,5 +28,5 @@ export function Sizing({ name }) {
       )}
       renderValue={() => theme.sizing[name]}
     />
-  )
+  );
 }
