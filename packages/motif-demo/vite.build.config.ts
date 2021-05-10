@@ -4,7 +4,7 @@ export default defineConfig({
   mode: 'production',
   build: {
     emptyOutDir: true,
-    minify: false,
+    minify: 'terser',
     terserOptions: {
       keep_classnames: true,
       keep_fnames: true,

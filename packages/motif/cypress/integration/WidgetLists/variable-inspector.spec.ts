@@ -18,7 +18,7 @@ describe('Variable Inspector', () => {
   it('should render at bottom right position', () => {
     cy.react('Block', {
       props: {
-        position: 'fixed',
+        position: 'absolute',
         bottom: '10px',
         right: '10px',
         width: '500px',

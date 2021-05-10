@@ -16,7 +16,7 @@ describe('Layer Panels', () => {
   it('should render beside Left Navigation Bar', () => {
     cy.react('Block', {
       props: {
-        position: 'fixed',
+        position: 'absolute',
         top: '0px',
         bottom: '0px',
         left: SIDE_NAVBAR_WIDTH,
@@ -35,9 +35,7 @@ describe('Layer Panels', () => {
   });
 
   it('should has Header component', () => {
-    cy.getReact('LayersPanel')
-      .getReact('Header')
-      .should('exist');
+    cy.getReact('LayersPanel').getReact('Header').should('exist');
   });
 
   it('should has node and edge statistics', () => {
@@ -98,24 +96,16 @@ describe('Layer Panels', () => {
   });
 
   it('should render Clear Data button', () => {
-    cy.getReact('LayersPanel')
-      .getReact('ClearDataButton')
-      .should('exist');
+    cy.getReact('LayersPanel').getReact('ClearDataButton').should('exist');
   });
 
   it('should render Import Data button', () => {
-    cy.getReact('LayersPanel')
-      .getReact('ImportDataButton')
-      .should('exist');
+    cy.getReact('LayersPanel').getReact('ImportDataButton').should('exist');
   });
 
   it('should render Import Layers with zero data list on initialisation', () => {
-    cy.getReact('LayersPanel')
-      .getReact('ImportLayers')
-      .should('exist');
+    cy.getReact('LayersPanel').getReact('ImportLayers').should('exist');
 
-    cy.getReact('DataListAccordion')
-      .getProps('items')
-      .should('have.length', 0);
+    cy.getReact('DataListAccordion').getProps('items').should('have.length', 0);
   });
 });
