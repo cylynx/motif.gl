@@ -1,4 +1,4 @@
-describe('Search Panel', function() {
+describe('Search Panel', function () {
   before(() => {
     cy.visit('/');
     cy.waitForReact(5000);
@@ -11,13 +11,7 @@ describe('Search Panel', function() {
   });
 
   it('should render successfully', () => {
-    cy.getReact('SearchPanel').should('exist');
-  });
-
-  it('should render beside Left Navigation Bar', () => {
-    cy.getReact('LeftLayer')
-      .getReact('SearchPanel')
-      .should('exist');
+    cy.getSearchPanel().should('exist');
   });
 
   it('should render Search Tabs successfully', () => {

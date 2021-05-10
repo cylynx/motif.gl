@@ -1,4 +1,5 @@
-import React, { useContext, Fragment } from 'react';
+import React, { useContext } from 'react';
+import { Block } from 'baseui/block';
 import { useDispatch } from 'react-redux';
 import { ActionCreators as UndoActionCreators } from 'redux-undo';
 import fscreen from 'fscreen';
@@ -125,11 +126,11 @@ const Toolbar = () => {
   ];
 
   return (
-    <Fragment>
+    <Block data-testid='toolbar'>
       {menuItems.map((item) => (
         <ToolbarButton key={item.key} item={item} />
       ))}
-    </Fragment>
+    </Block>
   );
 };
 

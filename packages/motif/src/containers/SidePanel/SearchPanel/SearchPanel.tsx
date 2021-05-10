@@ -24,7 +24,12 @@ const SearchPanel = () => {
   }, [results.edges]);
 
   return (
-    <Block position='absolute' height='100%' width='inherit'>
+    <Block
+      position='absolute'
+      height='100%'
+      width='inherit'
+      data-testid='search-panel'
+    >
       <Block
         paddingLeft='scale550'
         paddingRight='scale550'

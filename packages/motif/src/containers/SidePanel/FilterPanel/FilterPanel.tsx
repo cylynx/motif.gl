@@ -96,13 +96,13 @@ const FilterPanel: FC = () => {
   }, [onAddFilterClick, isEnableAddFilter]);
 
   return (
-    <Fragment>
+    <Block data-testid='filter-panel'>
       <Header />
       <Block display='flex' justifyContent='start' flexDirection='column'>
         {FilterSelections}
         {AddFilterButtonMemo}
       </Block>
-    </Fragment>
+    </Block>
   );
 };
 

@@ -77,9 +77,6 @@ describe('Interactions', () => {
     cy.switchPanel('filters');
 
     // all filters are removed and add filter button is disabled
-    cy.getReact('FilterPanel')
-      .getReact('AddFilterButton')
-      .getProps('disabled')
-      .should('deep.eq', true);
+    cy.getReact('AddFilterButton').getProps('disabled').should('deep.eq', true);
   });
 });

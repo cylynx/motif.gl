@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
 import { Block } from 'baseui/block';
 import Header from '../Header';
@@ -9,7 +9,7 @@ import OptionsEdgeStyles from './OptionsEdgeStyles';
 
 const OptionsPanel = () => {
   return (
-    <Fragment>
+    <Block data-testid='options-panel'>
       <Header />
       <OptionsLayout />
       <Block marginTop='scale800' />
@@ -17,7 +17,7 @@ const OptionsPanel = () => {
       <Block marginTop='scale800' />
       <OptionsEdgeStyles />
       <Block marginBottom='scale1000' />
-    </Fragment>
+    </Block>
   );
 };
 
