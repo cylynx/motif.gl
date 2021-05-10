@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
 import path from 'path';
-import postcss from 'rollup-plugin-postcss';
 import resolve from '@rollup/plugin-node-resolve';
 import { visualizer } from 'rollup-plugin-visualizer';
 // @ts-ignore
@@ -8,12 +7,6 @@ import svgr from '@svgr/rollup';
 
 const libEntryPath = path.resolve(__dirname, 'src/index.ts');
 const outputDir = path.resolve(__dirname, 'dist');
-
-// extract the css from the modules into specific file
-const motifCssPath = path.resolve(__dirname, 'dist/motif.css');
-const postCssPlugin = postcss({
-  extract: motifCssPath,
-}) as Plugin;
 
 // @ts-ignore
 const svgrPlugin = svgr({
@@ -39,7 +32,7 @@ export default defineConfig({
   mode: 'production',
   logLevel: 'error',
   clearScreen: false,
-  plugins: [resolvePlugin, postCssPlugin, svgrPlugin, visualiserPlugin],
+  plugins: [resolvePlugin, svgrPlugin, visualiserPlugin],
   build: {
     outDir: outputDir,
 

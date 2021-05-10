@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "vite --force",
-    "build": "vite build --config vite.dev.config.ts",
+    "build": "vite build --config vite.build.config.ts",
     "serve": "vite preview --port 3000"
   },
   "dependencies": {
