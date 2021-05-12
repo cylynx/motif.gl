@@ -1,25 +1,29 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { FC } from 'react';
 import { Button, ButtonProps } from 'baseui/button';
+import { borderTopRightRadius } from 'html2canvas/dist/types/css/property-descriptors/border-radius';
 import * as Icon from '../Icons';
 
 type BorderButtonProps = ButtonProps & {
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => any;
   hasBorder?: boolean;
+  disabled?: boolean;
 };
 
 export const NewFolderButton: FC<BorderButtonProps> = ({
   onClick,
   hasBorder,
+  disabled,
 }) => {
   return (
     <Button
       onClick={onClick}
+      disabled={disabled}
       overrides={{
         BaseButton: {
           style: ({ $theme }) => {
             return {
-              backgroundColor: '#3C785C',
+              backgroundColor: '#488F80',
               color: $theme.colors.backgroundInversePrimary,
               minWidth: '99px',
               height: '36px',
@@ -27,7 +31,10 @@ export const NewFolderButton: FC<BorderButtonProps> = ({
                 backgroundColor: '#65A194',
                 color: $theme.colors.backgroundInversePrimary,
               },
-              outline: hasBorder ? '#488F80 solid' : 'none',
+              borderWidth: '3px',
+              borderStyle: 'solid',
+              borderRadius: '6px',
+              borderColor: hasBorder ? '#488F80' : 'none',
             };
           },
         },
@@ -38,15 +45,20 @@ export const NewFolderButton: FC<BorderButtonProps> = ({
   );
 };
 
-export const OpenButton: FC<BorderButtonProps> = ({ onClick, hasBorder }) => {
+export const OpenButton: FC<BorderButtonProps> = ({
+  onClick,
+  hasBorder,
+  disabled,
+}) => {
   return (
     <Button
       onClick={onClick}
+      disabled={disabled}
       overrides={{
         BaseButton: {
           style: ({ $theme }) => {
             return {
-              backgroundColor: '#2A2A31',
+              backgroundColor: '#32323A',
               color: $theme.colors.backgroundInversePrimary,
               minWidth: '63px',
               height: '36px',
@@ -54,7 +66,10 @@ export const OpenButton: FC<BorderButtonProps> = ({ onClick, hasBorder }) => {
                 backgroundColor: '#53535A',
                 color: $theme.colors.backgroundInversePrimary,
               },
-              outline: hasBorder ? '#488F80 solid' : 'none',
+              borderWidth: '3px',
+              borderStyle: 'solid',
+              borderRadius: '6px',
+              borderColor: hasBorder ? '#488F80' : 'none',
             };
           },
         },
@@ -68,16 +83,18 @@ export const OpenButton: FC<BorderButtonProps> = ({ onClick, hasBorder }) => {
 export const PlusImportButton: FC<BorderButtonProps> = ({
   onClick,
   hasBorder,
+  disabled,
 }) => {
   return (
     <Button
       startEnhancer={<Icon.Plus />}
       onClick={onClick}
+      disabled={disabled}
       overrides={{
         BaseButton: {
           style: ({ $theme }) => {
             return {
-              backgroundColor: '#2A2A31',
+              backgroundColor: '#32323A',
               color: $theme.colors.backgroundInversePrimary,
               minWidth: '99px',
               height: '36px',
@@ -85,7 +102,10 @@ export const PlusImportButton: FC<BorderButtonProps> = ({
                 backgroundColor: '#53535A',
                 color: $theme.colors.backgroundInversePrimary,
               },
-              outline: hasBorder ? '#488F80 solid' : 'none',
+              borderWidth: '3px',
+              borderStyle: 'solid',
+              borderRadius: '6px',
+              borderColor: hasBorder ? '#488F80' : 'none',
             };
           },
         },
@@ -99,16 +119,18 @@ export const PlusImportButton: FC<BorderButtonProps> = ({
 export const ImportPlusButton: FC<BorderButtonProps> = ({
   onClick,
   hasBorder,
+  disabled,
 }) => {
   return (
     <Button
       endEnhancer={<Icon.Plus />}
       onClick={onClick}
+      disabled={disabled}
       overrides={{
         BaseButton: {
           style: ({ $theme }) => {
             return {
-              backgroundColor: '#2A2A31',
+              backgroundColor: '#32323A',
               color: $theme.colors.backgroundInversePrimary,
               minWidth: '99px',
               height: '36px',
@@ -116,7 +138,10 @@ export const ImportPlusButton: FC<BorderButtonProps> = ({
                 backgroundColor: '#53535A',
                 color: $theme.colors.backgroundInversePrimary,
               },
-              outline: hasBorder ? '#488F80 solid' : 'none',
+              borderWidth: '3px',
+              borderStyle: 'solid',
+              borderRadius: '6px',
+              borderColor: hasBorder ? '#488F80' : 'none',
             };
           },
         },
