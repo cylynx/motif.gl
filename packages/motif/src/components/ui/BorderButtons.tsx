@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { FC } from 'react';
 import { Button, ButtonProps } from 'baseui/button';
-import { borderTopRightRadius } from 'html2canvas/dist/types/css/property-descriptors/border-radius';
 import * as Icon from '../Icons';
 
 type BorderButtonProps = ButtonProps & {
@@ -148,6 +147,77 @@ export const ImportPlusButton: FC<BorderButtonProps> = ({
       }}
     >
       Import
+    </Button>
+  );
+};
+
+/* Icon buttons with border option */
+export const ProfileGreenButton: FC<BorderButtonProps> = ({
+  onClick,
+  hasBorder,
+  disabled,
+}) => {
+  return (
+    <Button
+      onClick={onClick}
+      disabled={disabled}
+      overrides={{
+        BaseButton: {
+          style: ({ $theme }) => {
+            return {
+              backgroundColor: '#488F80',
+              color: $theme.colors.backgroundInversePrimary,
+              minWidth: '36px',
+              height: '36px',
+              ':hover:not([disabled])': {
+                backgroundColor: '#65A194',
+                color: $theme.colors.backgroundInversePrimary,
+              },
+              borderWidth: '3px',
+              borderStyle: 'solid',
+              borderRadius: '6px',
+              borderColor: hasBorder ? '#488F80' : 'none',
+            };
+          },
+        },
+      }}
+    >
+      <Icon.User />
+    </Button>
+  );
+};
+
+export const ProfileGreyButton: FC<BorderButtonProps> = ({
+  onClick,
+  hasBorder,
+  disabled,
+}) => {
+  return (
+    <Button
+      onClick={onClick}
+      disabled={disabled}
+      overrides={{
+        BaseButton: {
+          style: ({ $theme }) => {
+            return {
+              backgroundColor: '#32323A',
+              color: $theme.colors.backgroundInversePrimary,
+              minWidth: '36px',
+              height: '36px',
+              ':hover:not([disabled])': {
+                backgroundColor: '#53535A',
+                color: $theme.colors.backgroundInversePrimary,
+              },
+              borderWidth: '3px',
+              borderStyle: 'solid',
+              borderRadius: '6px',
+              borderColor: hasBorder ? '#488F80' : 'none',
+            };
+          },
+        },
+      }}
+    >
+      <Icon.User />
     </Button>
   );
 };
