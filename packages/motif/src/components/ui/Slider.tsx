@@ -25,11 +25,11 @@ const Slider = (props: SliderProps) => {
               height: '12px',
               width: '12px',
               // modify to border: 0 will breaks atomic rendering
-              borderTopLeftRadius: 0,
-              borderTopRightRadius: 0,
-              borderBottomLeftRadius: 0,
-              borderBottomRightRadius: 0,
-              backgroundColor: $theme.colors.primary,
+              borderTopLeftRadius: '35px',
+              borderTopRightRadius: '35px',
+              borderBottomLeftRadius: '35px',
+              borderBottomRightRadius: '35px',
+              backgroundColor: '#488F80',
               color: $theme.colors.contentPrimary,
               display: 'flex',
               outline: 'none',
@@ -69,15 +69,13 @@ const Slider = (props: SliderProps) => {
           style: ({ $theme, $value = [], $min, $max, $disabled }) => {
             const { colors, direction } = $theme;
             return {
-              height: '3px',
+              height: '2px',
               background: getTrackBackground({
                 values: $value,
                 colors:
                   $value.length === 1
                     ? [
-                        $disabled
-                          ? colors.borderOpaque
-                          : colors.contentTertiary,
+                        $disabled ? colors.borderOpaque : '#488F80',
                         $disabled
                           ? colors.backgroundSecondary
                           : colors.borderOpaque,
@@ -86,9 +84,7 @@ const Slider = (props: SliderProps) => {
                         $disabled
                           ? colors.backgroundSecondary
                           : colors.borderOpaque,
-                        $disabled
-                          ? colors.borderOpaque
-                          : colors.contentTertiary,
+                        $disabled ? colors.borderOpaque : '#488F80',
                         $disabled
                           ? colors.backgroundSecondary
                           : colors.borderOpaque,
@@ -115,7 +111,7 @@ const Slider = (props: SliderProps) => {
               display: showTickBar ? 'flex' : 'none',
               justifyContent: 'space-between',
               alignItems: 'center',
-              color: theme.colors.contentPrimary,
+              color: theme.colors.contentSecondary,
               ...theme.typography.font200,
             })}
           >
