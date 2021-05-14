@@ -1,10 +1,12 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { FC } from 'react';
+import React, { FC, MouseEvent } from 'react';
+import { useDispatch } from 'react-redux';
 import { Button, ButtonProps } from 'baseui/button';
+import { UISlices } from '../../redux/ui';
 import * as Icon from '../Icons';
 
 type BorderButtonProps = ButtonProps & {
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => any;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => any;
   hasBorder?: boolean;
   disabled?: boolean;
 };
@@ -31,9 +33,8 @@ export const NewFolderButton: FC<BorderButtonProps> = ({
                 color: $theme.colors.backgroundInversePrimary,
               },
               borderWidth: '3px',
-              borderStyle: 'solid',
               borderRadius: '6px',
-              borderColor: hasBorder ? '#488F80' : 'none',
+              borderColor: hasBorder ? '#488F80' : 'transparent',
             };
           },
         },
@@ -68,7 +69,7 @@ export const OpenButton: FC<BorderButtonProps> = ({
               borderWidth: '3px',
               borderStyle: 'solid',
               borderRadius: '6px',
-              borderColor: hasBorder ? '#488F80' : 'none',
+              borderColor: hasBorder ? '#488F80' : 'transparent',
             };
           },
         },
@@ -80,14 +81,19 @@ export const OpenButton: FC<BorderButtonProps> = ({
 };
 
 export const PlusImportButton: FC<BorderButtonProps> = ({
-  onClick,
   hasBorder,
   disabled,
 }) => {
+  const dispatch = useDispatch();
+  const onClickImport = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    dispatch(UISlices.openImportModal());
+  };
+
   return (
     <Button
       startEnhancer={<Icon.Plus />}
-      onClick={onClick}
+      onClick={onClickImport}
       disabled={disabled}
       overrides={{
         BaseButton: {
@@ -104,7 +110,7 @@ export const PlusImportButton: FC<BorderButtonProps> = ({
               borderWidth: '3px',
               borderStyle: 'solid',
               borderRadius: '6px',
-              borderColor: hasBorder ? '#488F80' : 'none',
+              borderColor: hasBorder ? '#488F80' : 'transparent',
             };
           },
         },
@@ -116,14 +122,19 @@ export const PlusImportButton: FC<BorderButtonProps> = ({
 };
 
 export const ImportPlusButton: FC<BorderButtonProps> = ({
-  onClick,
   hasBorder,
   disabled,
 }) => {
+  const dispatch = useDispatch();
+  const onClickImport = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    dispatch(UISlices.openImportModal());
+  };
+
   return (
     <Button
       endEnhancer={<Icon.Plus />}
-      onClick={onClick}
+      onClick={onClickImport}
       disabled={disabled}
       overrides={{
         BaseButton: {
@@ -140,7 +151,7 @@ export const ImportPlusButton: FC<BorderButtonProps> = ({
               borderWidth: '3px',
               borderStyle: 'solid',
               borderRadius: '6px',
-              borderColor: hasBorder ? '#488F80' : 'none',
+              borderColor: hasBorder ? '#488F80' : 'transparent',
             };
           },
         },
@@ -176,13 +187,13 @@ export const ProfileGreenButton: FC<BorderButtonProps> = ({
               borderWidth: '3px',
               borderStyle: 'solid',
               borderRadius: '6px',
-              borderColor: hasBorder ? '#488F80' : 'none',
+              borderColor: hasBorder ? '#488F80' : 'transparent',
             };
           },
         },
       }}
     >
-      <Icon.User />
+      <Icon.User size={20} />
     </Button>
   );
 };
@@ -211,13 +222,83 @@ export const ProfileGreyButton: FC<BorderButtonProps> = ({
               borderWidth: '3px',
               borderStyle: 'solid',
               borderRadius: '6px',
-              borderColor: hasBorder ? '#488F80' : 'none',
+              borderColor: hasBorder ? '#488F80' : 'transparent',
             };
           },
         },
       }}
     >
-      <Icon.User />
+      <Icon.User size={20} />
+    </Button>
+  );
+};
+
+export const UndoButton: FC<BorderButtonProps> = ({
+  onClick,
+  hasBorder,
+  disabled,
+}) => {
+  return (
+    <Button
+      onClick={onClick}
+      disabled={disabled}
+      overrides={{
+        BaseButton: {
+          style: ({ $theme }) => {
+            return {
+              backgroundColor: '#32323A',
+              color: $theme.colors.backgroundInversePrimary,
+              minWidth: '36px',
+              height: '36px',
+              ':hover:not([disabled])': {
+                backgroundColor: '#53535A',
+                color: $theme.colors.backgroundInversePrimary,
+              },
+              borderWidth: '3px',
+              borderStyle: 'solid',
+              borderRadius: '6px',
+              borderColor: hasBorder ? '#488F80' : 'transparent',
+            };
+          },
+        },
+      }}
+    >
+      <Icon.Undo size={20} />
+    </Button>
+  );
+};
+
+export const RedoButton: FC<BorderButtonProps> = ({
+  onClick,
+  hasBorder,
+  disabled,
+}) => {
+  return (
+    <Button
+      onClick={onClick}
+      disabled={disabled}
+      overrides={{
+        BaseButton: {
+          style: ({ $theme }) => {
+            return {
+              backgroundColor: '#32323A',
+              color: $theme.colors.backgroundInversePrimary,
+              minWidth: '36px',
+              height: '36px',
+              ':hover:not([disabled])': {
+                backgroundColor: '#53535A',
+                color: $theme.colors.backgroundInversePrimary,
+              },
+              borderWidth: '3px',
+              borderStyle: 'solid',
+              borderRadius: '6px',
+              borderColor: hasBorder ? '#488F80' : 'transparent',
+            };
+          },
+        },
+      }}
+    >
+      <Icon.Redo size={20} />
     </Button>
   );
 };
