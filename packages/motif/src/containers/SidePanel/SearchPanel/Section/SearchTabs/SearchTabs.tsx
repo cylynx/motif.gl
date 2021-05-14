@@ -14,10 +14,12 @@ import useGraphBehaviors from '../../../../Graph/hooks/useGraphBehaviors';
 const TabHighlight = () => ({
   backgroundColor: '#488F80',
   height: '3px',
+  borderRadius: '6px',
 });
 
 const TabBorder = ({ $theme }: { $theme: Theme }) => ({
   backgroundColor: $theme.colors.backgroundTertiary,
+  borderRadius: '6px',
 });
 
 const TabList = ({ $theme }: { $theme: Theme }) => ({
