@@ -36,7 +36,7 @@ import { Lighting } from './BaseuiTheming/lighting';
 import { Sizing } from './BaseuiTheming/sizing';
 import { Type } from './BaseuiTheming/typography';
 import MotifDarkTheme from './theme/baseui-dark';
-import SearchTabs from './component/SearchTabs';
+import { SearchTabs } from './component/SearchTabs';
 import BorderButton from './component/BorderButtons';
 import { Dropdown } from './component/Dropdown';
 import { Slider } from './component/Slider';
@@ -139,16 +139,31 @@ const PickerComponents = () => (
       </Block>
       <Block display='flex' gridGap='20px'>
         <Block width='300px'>
-          <typo.LabelMedium> Big text Dropdown </typo.LabelMedium>
-          <Dropdown fontSize='16px' />
-        </Block>
-        <Block width='300px'>
           <typo.LabelMedium> Regular Dropdown </typo.LabelMedium>
-          <Dropdown fontSize='14px' />
+          <Dropdown
+            options={[
+              { label: 'AliceBlue', id: '#F0F8FF' },
+              { label: 'AntiqueWhite', id: '#FAEBD7' },
+              { label: 'Aqua', id: '#00FFFF' },
+              { label: 'Aquamarine', id: '#7FFFD4' },
+              { label: 'Azure', id: '#F0FFFF' },
+              { label: 'Beige', id: '#F5F5DC' },
+            ]}
+          />
         </Block>
         <Block width='400px'>
           <typo.LabelMedium> Transparent Dropdown </typo.LabelMedium>
-          <Dropdown fontSize='14px' transparent />
+          <Dropdown
+            transparent
+            options={[
+              { label: 'AliceBlue', id: '#F0F8FF' },
+              { label: 'AntiqueWhite', id: '#FAEBD7' },
+              { label: 'Aqua', id: '#00FFFF' },
+              { label: 'Aquamarine', id: '#7FFFD4' },
+              { label: 'Azure', id: '#F0FFFF' },
+              { label: 'Beige', id: '#F5F5DC' },
+            ]}
+          />
         </Block>
       </Block>
       <Block display='flex' gridGap='20px'>
@@ -355,7 +370,28 @@ const ContentComponents = () => (
         </Block>
         <Block width='400px'>
           <typo.LabelMedium> Tabs (motion) Fixed fill </typo.LabelMedium>
-          <SearchTabs />
+          <SearchTabs
+            items={[
+              {
+                key: 1,
+                title: 'First',
+                content: 'I must not fear',
+              },
+              {
+                key: 2,
+                title: 'Second',
+                content: 'Fear is the mind-killer.',
+              },
+              {
+                key: 3,
+                title: 'Third',
+                content:
+                  'Fear is the little-death that brings total obliteration.',
+              },
+            ]}
+          >
+            test
+          </SearchTabs>
         </Block>
         <Block width='400px'>
           <typo.LabelMedium> Accordion </typo.LabelMedium>
