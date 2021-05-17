@@ -37,11 +37,7 @@ import { Sizing } from './BaseuiTheming/sizing';
 import { Type } from './BaseuiTheming/typography';
 import MotifDarkTheme from './theme/baseui-dark';
 import SearchTabs from './component/SearchTabs';
-import {
-  TextBorderButton,
-  ImportBorderButton,
-  IconBorderButton,
-} from './component/BorderButtons';
+import BorderButton from './component/BorderButtons';
 import { Dropdown } from './component/Dropdown';
 import { Slider } from './component/Slider';
 
@@ -286,10 +282,25 @@ const InputComponents = () => (
       <typo.LabelMedium> Border Button </typo.LabelMedium>
       <Block display='flex' gridGap='10px'>
         <br />
-        <IconBorderButton hasBorder />
-        <TextBorderButton hasBorder />
-        <ImportBorderButton hasBorder />
-        <TextBorderButton hasBorder disabled />
+        <BorderButton size='compact' kind='secondary' shape='square'>
+          <icon.Plus size={18} />
+        </BorderButton>
+        <BorderButton size='compact' kind='secondary'>
+          Border Secondary
+        </BorderButton>
+        <BorderButton size='compact' kind='tertiary'>
+          Border Tertiary
+        </BorderButton>
+        <BorderButton
+          size='compact'
+          kind='secondary'
+          startEnhancer={() => <icon.Plus size={18} />}
+        >
+          Import Data
+        </BorderButton>
+        <BorderButton size='compact' kind='secondary' disabled>
+          Disabled State
+        </BorderButton>
       </Block>
       <Block display='flex'>
         <Block width='200px'>
