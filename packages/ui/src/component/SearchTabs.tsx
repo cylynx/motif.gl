@@ -2,8 +2,8 @@ import React from 'react';
 import { Tab, StatefulTabs, FILL } from 'baseui/tabs-motion';
 import { Theme } from 'baseui/theme';
 
-const TabHighlight = () => ({
-  backgroundColor: '#488F80',
+const TabHighlight = ({ $theme }: { $theme: Theme }) => ({
+  backgroundColor: $theme.colors.accent500,
   height: '3px',
   borderRadius: '6px',
 });

@@ -29,7 +29,7 @@ export const Slider: FC<SliderProps> = ({
               borderTopRightRadius: '35px',
               borderBottomLeftRadius: '35px',
               borderBottomRightRadius: '35px',
-              backgroundColor: '#488F80',
+              backgroundColor: $theme.colors.accent500,
               color: $theme.colors.contentPrimary,
               display: 'flex',
               outline: 'none',
@@ -75,7 +75,9 @@ export const Slider: FC<SliderProps> = ({
                 colors:
                   $value.length === 1
                     ? [
-                        $disabled ? colors.borderOpaque : '#488F80',
+                        $disabled
+                          ? colors.borderOpaque
+                          : $theme.colors.accent500,
                         $disabled
                           ? colors.backgroundSecondary
                           : colors.borderOpaque,
@@ -84,7 +86,9 @@ export const Slider: FC<SliderProps> = ({
                         $disabled
                           ? colors.backgroundSecondary
                           : colors.borderOpaque,
-                        $disabled ? colors.borderOpaque : '#488F80',
+                        $disabled
+                          ? colors.borderOpaque
+                          : $theme.colors.accent500,
                         $disabled
                           ? colors.backgroundSecondary
                           : colors.borderOpaque,
