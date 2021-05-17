@@ -22,14 +22,14 @@ const Slider = (props: SliderProps) => {
         Thumb: {
           style: ({ $theme }) => {
             return {
-              height: '20px',
-              width: '20px',
+              height: '12px',
+              width: '12px',
               // modify to border: 0 will breaks atomic rendering
-              borderTopLeftRadius: '35px',
-              borderTopRightRadius: '35px',
-              borderBottomLeftRadius: '35px',
-              borderBottomRightRadius: '35px',
-              backgroundColor: '#488F80',
+              borderTopLeftRadius: 0,
+              borderTopRightRadius: 0,
+              borderBottomLeftRadius: 0,
+              borderBottomRightRadius: 0,
+              backgroundColor: $theme.colors.primary,
               color: $theme.colors.contentPrimary,
               display: 'flex',
               outline: 'none',
@@ -75,7 +75,9 @@ const Slider = (props: SliderProps) => {
                 colors:
                   $value.length === 1
                     ? [
-                        $disabled ? colors.borderOpaque : '#488F80',
+                        $disabled
+                          ? colors.borderOpaque
+                          : colors.contentTertiary,
                         $disabled
                           ? colors.backgroundSecondary
                           : colors.borderOpaque,
@@ -84,7 +86,9 @@ const Slider = (props: SliderProps) => {
                         $disabled
                           ? colors.backgroundSecondary
                           : colors.borderOpaque,
-                        $disabled ? colors.borderOpaque : '#488F80',
+                        $disabled
+                          ? colors.borderOpaque
+                          : colors.contentTertiary,
                         $disabled
                           ? colors.backgroundSecondary
                           : colors.borderOpaque,
