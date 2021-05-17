@@ -22,8 +22,8 @@ const Slider = (props: SliderProps) => {
         Thumb: {
           style: ({ $theme }) => {
             return {
-              height: '12px',
-              width: '12px',
+              height: '20px',
+              width: '20px',
               // modify to border: 0 will breaks atomic rendering
               borderTopLeftRadius: '35px',
               borderTopRightRadius: '35px',
