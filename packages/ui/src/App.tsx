@@ -339,7 +339,7 @@ const ContentComponents = () => (
       display='flex'
       flexDirection='column'
       gridGap='10px'
-      maxWidth='1200px'
+      maxWidth='1000px'
       paddingLeft='18px'
     >
       <Block display='flex' gridGap='20px'>
