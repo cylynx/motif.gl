@@ -22,7 +22,6 @@ import { ListItem, ListItemLabel } from 'baseui/list';
 import { Radio, StatefulRadioGroup } from 'baseui/radio';
 import { StatefulTabs, Tab } from 'baseui/tabs-motion';
 import { StatefulDatePicker } from 'baseui/datepicker';
-import { StatefulSlider } from 'baseui/slider';
 import { ProgressBar } from 'baseui/progress-bar';
 import { Spinner } from 'baseui/spinner';
 import { Skeleton } from 'baseui/skeleton';
