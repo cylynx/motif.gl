@@ -37,6 +37,14 @@ import { Lighting } from './BaseuiTheming/lighting';
 import { Sizing } from './BaseuiTheming/sizing';
 import { Type } from './BaseuiTheming/typography';
 import MotifDarkTheme from './theme/baseui-dark';
+import SearchTabs from './component/SearchTabs';
+import {
+  TextBorderButton,
+  ImportBorderButton,
+  IconBorderButton,
+} from './component/BorderButtons';
+import { Dropdown } from './component/Dropdown';
+import { Slider } from './component/Slider';
 
 const engine = new Styletron();
 
@@ -135,13 +143,31 @@ const PickerComponents = () => (
         </Block>
       </Block>
       <Block display='flex' gridGap='20px'>
+        <Block width='300px'>
+          <typo.LabelMedium> Big text Dropdown </typo.LabelMedium>
+          <Dropdown fontSize='16px' />
+        </Block>
+        <Block width='300px'>
+          <typo.LabelMedium> Regular Dropdown </typo.LabelMedium>
+          <Dropdown fontSize='14px' />
+        </Block>
+        <Block width='400px'>
+          <typo.LabelMedium> Transparent Dropdown </typo.LabelMedium>
+          <Dropdown fontSize='14px' transparent />
+        </Block>
+      </Block>
+      <Block display='flex' gridGap='20px'>
         <Block width='400px'>
           <typo.LabelMedium> Slider </typo.LabelMedium>
-          <StatefulSlider />
+          <Slider showThumbValue showTickBar />
         </Block>
         <Block width='400px'>
           <typo.LabelMedium> Range Slider </typo.LabelMedium>
-          <StatefulSlider initialState={{ value: [20, 50] }} />
+          <Slider
+            showThumbValue
+            showTickBar
+            initialState={{ value: [20, 50] }}
+          />
         </Block>
       </Block>
       <Block display='flex' gridGap='20px'>
@@ -258,6 +284,14 @@ const InputComponents = () => (
           End Enhancer
         </Button>
       </Block>
+      <typo.LabelMedium> Border Button </typo.LabelMedium>
+      <Block display='flex' gridGap='10px'>
+        <br />
+        <IconBorderButton hasBorder />
+        <TextBorderButton hasBorder />
+        <ImportBorderButton hasBorder />
+        <TextBorderButton hasBorder disabled />
+      </Block>
       <Block display='flex'>
         <Block width='200px'>
           <typo.LabelMedium> Checkbox </typo.LabelMedium>
@@ -308,6 +342,10 @@ const ContentComponents = () => (
               Fear is the little-death that brings total obliteration.
             </Tab>
           </StatefulTabs>
+        </Block>
+        <Block width='400px'>
+          <typo.LabelMedium> Tabs (motion) Fixed fill </typo.LabelMedium>
+          <SearchTabs />
         </Block>
         <Block width='400px'>
           <typo.LabelMedium> Accordion </typo.LabelMedium>
