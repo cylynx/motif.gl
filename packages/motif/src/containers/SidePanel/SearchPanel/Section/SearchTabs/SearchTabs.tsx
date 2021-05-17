@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { Tab, Tabs, FILL } from 'baseui/tabs-motion';
 import { Theme } from 'baseui/theme';
-
 import { Block } from 'baseui/block';
 import { IUseSearchOptions, TActiveKey } from '../../types';
 import SearchEdge from './SearchEdge';
@@ -10,6 +9,10 @@ import useSearchOption from '../../hooks/useSearchOption';
 import { GraphAttribute, SearchOptions } from '../../../../../redux/graph';
 import { GraphRefContext } from '../../../../Graph';
 import useGraphBehaviors from '../../../../Graph/hooks/useGraphBehaviors';
+
+const TabStyle = () => ({
+  background: 'transparent',
+});
 
 const TabHighlight = () => ({
   backgroundColor: '#488F80',
@@ -58,10 +61,26 @@ const SearchTabs = () => {
         },
       }}
     >
-      <Tab key='nodes' title={<Block as='span'>Nodes</Block>}>
+      <Tab
+        key='nodes'
+        title={<Block as='span'>Nodes</Block>}
+        overrides={{
+          Tab: {
+            style: TabStyle,
+          },
+        }}
+      >
         <SearchNode />
       </Tab>
-      <Tab key='edges' title={<Block as='span'>Edges</Block>}>
+      <Tab
+        key='edges'
+        title={<Block as='span'>Edges</Block>}
+        overrides={{
+          Tab: {
+            style: TabStyle,
+          },
+        }}
+      >
         <SearchEdge />
       </Tab>
     </Tabs>

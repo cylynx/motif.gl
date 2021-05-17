@@ -1,6 +1,16 @@
-import React from 'react';
-import { Tab, StatefulTabs, FILL } from 'baseui/tabs-motion';
+import React, { FC } from 'react';
+import { StatefulTabs, FILL, TabsProps, Tab } from 'baseui/tabs-motion';
 import { Theme } from 'baseui/theme';
+
+type SearchTabsProps = TabsProps & {
+  items: TabItems[];
+};
+
+type TabItems = {
+  key?: string | number;
+  title: React.ReactNode;
+  content: React.ReactNode;
+};
 
 const TabHighlight = ({ $theme }: { $theme: Theme }) => ({
   backgroundColor: $theme.colors.accent500,
@@ -8,38 +18,42 @@ const TabHighlight = ({ $theme }: { $theme: Theme }) => ({
   borderRadius: '6px',
 });
 
-const TabBorder = ({ $theme }: { $theme: Theme }) => ({
-  backgroundColor: $theme.colors.backgroundTertiary,
+const TabBorder = () => ({
+  backgroundColor: 'transparent',
   borderRadius: '6px',
 });
 
-const TabList = ({ $theme }: { $theme: Theme }) => ({
-  backgroundColor: $theme.colors.backgroundSecondary,
-});
-
-const SearchTabs = () => {
+export const SearchTabs: FC<SearchTabsProps> = ({ items, ...rest }) => {
   return (
     <StatefulTabs
+      {...rest}
       fill={FILL.fixed}
       overrides={{
         TabHighlight: {
           style: TabHighlight,
-        },
-        TabList: {
-          style: TabList,
         },
         TabBorder: {
           style: TabBorder,
         },
       }}
     >
-      <Tab title='First'>I must not fear.</Tab>
-      <Tab title='Second'>Fear is the mind-killer.</Tab>
-      <Tab title='Third'>
-        Fear is the little-death that brings total obliteration.
-      </Tab>
+      {items.map((item: TabItems) => (
+        <Tab
+          key={item.key}
+          title={item.title}
+          overrides={{
+            Tab: {
+              style: () => {
+                return {
+                  background: 'transparent',
+                };
+              },
+            },
+          }}
+        >
+          {item.content}
+        </Tab>
+      ))}
     </StatefulTabs>
   );
 };
-
-export default SearchTabs;
