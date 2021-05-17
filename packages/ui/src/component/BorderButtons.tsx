@@ -75,8 +75,6 @@ export const ImportBorderButton: FC<BorderButtonProps> = ({
   );
 };
 
-// sample icon button. color and icon to be specified later. current color is grey
-// bg green: $theme.colors.accent500, hover bg green: #65A194
 export const IconBorderButton: FC<BorderButtonProps> = ({
   hasBorder,
   disabled,
