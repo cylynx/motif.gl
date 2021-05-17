@@ -4,31 +4,18 @@ import * as Icon from '../../../motif/src/components/Icons';
 
 type DropdownProps = SelectProps & {
   transparent?: boolean;
-  isOpen?: boolean;
-  fontSize: string | number;
-  popoverOverride?: any;
 };
 
 export const Dropdown: FC<DropdownProps> = ({
   transparent,
-  onChange,
-  value,
-  fontSize,
-  popoverOverride,
+  options,
   ...rest
 }) => {
   return (
     <StatefulSelect
       size='compact'
       placeholder='Select'
-      options={[
-        { label: 'AliceBlue', id: '#F0F8FF' },
-        { label: 'AntiqueWhite', id: '#FAEBD7' },
-        { label: 'Aqua', id: '#00FFFF' },
-        { label: 'Aquamarine', id: '#7FFFD4' },
-        { label: 'Azure', id: '#F0FFFF' },
-        { label: 'Beige', id: '#F5F5DC' },
-      ]}
+      options={options}
       overrides={{
         ControlContainer: {
           style: ({ $theme }) => {
@@ -40,21 +27,12 @@ export const Dropdown: FC<DropdownProps> = ({
                 ? 'transparent'
                 : $theme.colors.primary700,
               borderRadius: '6px',
-              fontSize,
             };
           },
         },
         SelectArrow: {
           component: ({ $isOpen }: { $isOpen: boolean }) => {
             return $isOpen ? <Icon.ChevronUp /> : <Icon.ChevronDown />;
-          },
-        },
-        Popover: popoverOverride,
-        DropdownListItem: {
-          style: () => {
-            return {
-              fontSize,
-            };
           },
         },
       }}
