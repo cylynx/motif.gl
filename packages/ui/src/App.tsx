@@ -22,7 +22,6 @@ import { ListItem, ListItemLabel } from 'baseui/list';
 import { Radio, StatefulRadioGroup } from 'baseui/radio';
 import { StatefulTabs, Tab } from 'baseui/tabs-motion';
 import { StatefulDatePicker } from 'baseui/datepicker';
-import { StatefulSlider } from 'baseui/slider';
 import { ProgressBar } from 'baseui/progress-bar';
 import { Spinner } from 'baseui/spinner';
 import { Skeleton } from 'baseui/skeleton';
@@ -37,6 +36,10 @@ import { Lighting } from './BaseuiTheming/lighting';
 import { Sizing } from './BaseuiTheming/sizing';
 import { Type } from './BaseuiTheming/typography';
 import MotifDarkTheme from './theme/baseui-dark';
+import { SearchTabs } from './component/SearchTabs';
+import BorderButton from './component/BorderButtons';
+import { Dropdown } from './component/Dropdown';
+import { Slider } from './component/Slider';
 
 const engine = new Styletron();
 
@@ -135,13 +138,46 @@ const PickerComponents = () => (
         </Block>
       </Block>
       <Block display='flex' gridGap='20px'>
+        <Block width='300px'>
+          <typo.LabelMedium> Regular Dropdown </typo.LabelMedium>
+          <Dropdown
+            options={[
+              { label: 'AliceBlue', id: '#F0F8FF' },
+              { label: 'AntiqueWhite', id: '#FAEBD7' },
+              { label: 'Aqua', id: '#00FFFF' },
+              { label: 'Aquamarine', id: '#7FFFD4' },
+              { label: 'Azure', id: '#F0FFFF' },
+              { label: 'Beige', id: '#F5F5DC' },
+            ]}
+          />
+        </Block>
+        <Block width='400px'>
+          <typo.LabelMedium> Transparent Dropdown </typo.LabelMedium>
+          <Dropdown
+            transparent
+            options={[
+              { label: 'AliceBlue', id: '#F0F8FF' },
+              { label: 'AntiqueWhite', id: '#FAEBD7' },
+              { label: 'Aqua', id: '#00FFFF' },
+              { label: 'Aquamarine', id: '#7FFFD4' },
+              { label: 'Azure', id: '#F0FFFF' },
+              { label: 'Beige', id: '#F5F5DC' },
+            ]}
+          />
+        </Block>
+      </Block>
+      <Block display='flex' gridGap='20px'>
         <Block width='400px'>
           <typo.LabelMedium> Slider </typo.LabelMedium>
-          <StatefulSlider />
+          <Slider showThumbValue showTickBar />
         </Block>
         <Block width='400px'>
           <typo.LabelMedium> Range Slider </typo.LabelMedium>
-          <StatefulSlider initialState={{ value: [20, 50] }} />
+          <Slider
+            showThumbValue
+            showTickBar
+            initialState={{ value: [20, 50] }}
+          />
         </Block>
       </Block>
       <Block display='flex' gridGap='20px'>
@@ -258,6 +294,29 @@ const InputComponents = () => (
           End Enhancer
         </Button>
       </Block>
+      <typo.LabelMedium> Border Button </typo.LabelMedium>
+      <Block display='flex' gridGap='10px'>
+        <br />
+        <BorderButton size='compact' kind='secondary' shape='square'>
+          <icon.Plus size={18} />
+        </BorderButton>
+        <BorderButton size='compact' kind='secondary'>
+          Border Secondary
+        </BorderButton>
+        <BorderButton size='compact' kind='tertiary'>
+          Border Tertiary
+        </BorderButton>
+        <BorderButton
+          size='compact'
+          kind='secondary'
+          startEnhancer={() => <icon.Plus size={18} />}
+        >
+          Import Data
+        </BorderButton>
+        <BorderButton size='compact' kind='secondary' disabled>
+          Disabled State
+        </BorderButton>
+      </Block>
       <Block display='flex'>
         <Block width='200px'>
           <typo.LabelMedium> Checkbox </typo.LabelMedium>
@@ -295,7 +354,7 @@ const ContentComponents = () => (
       display='flex'
       flexDirection='column'
       gridGap='10px'
-      maxWidth='1200px'
+      maxWidth='1000px'
       paddingLeft='18px'
     >
       <Block display='flex' gridGap='20px'>
@@ -308,6 +367,29 @@ const ContentComponents = () => (
               Fear is the little-death that brings total obliteration.
             </Tab>
           </StatefulTabs>
+        </Block>
+        <Block width='400px'>
+          <typo.LabelMedium> Tabs (motion) Fixed fill </typo.LabelMedium>
+          <SearchTabs
+            items={[
+              {
+                key: 1,
+                title: 'First',
+                content: 'I must not fear',
+              },
+              {
+                key: 2,
+                title: 'Second',
+                content: 'Fear is the mind-killer.',
+              },
+              {
+                key: 3,
+                title: 'Third',
+                content:
+                  'Fear is the little-death that brings total obliteration.',
+              },
+            ]}
+          />
         </Block>
         <Block width='400px'>
           <typo.LabelMedium> Accordion </typo.LabelMedium>

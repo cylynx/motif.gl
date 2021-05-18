@@ -5,6 +5,7 @@
   "scripts": {
     "start": "vite --force",
     "build": "vite build --config vite.dev.config.ts",
+    "transpile": "tsc --p ./tsconfig.json --noEmit true --strict --watch",
     "serve": "vite preview --port 3000"
   },
   "dependencies": {

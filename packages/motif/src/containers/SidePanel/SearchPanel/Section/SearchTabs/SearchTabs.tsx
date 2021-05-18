@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
-import { Tab, Tabs } from 'baseui/tabs';
+import { Tab, Tabs, FILL } from 'baseui/tabs-motion';
 import { Theme } from 'baseui/theme';
-
 import { Block } from 'baseui/block';
 import { IUseSearchOptions, TActiveKey } from '../../types';
 import SearchEdge from './SearchEdge';
@@ -11,31 +10,22 @@ import { GraphAttribute, SearchOptions } from '../../../../../redux/graph';
 import { GraphRefContext } from '../../../../Graph';
 import useGraphBehaviors from '../../../../Graph/hooks/useGraphBehaviors';
 
-const TabContentStyle = ({ $theme }: { $theme: Theme }) => ({
-  paddingTop: $theme.sizing.scale100,
-  paddingBottom: $theme.sizing.scale100,
-  paddingLeft: 0,
-  paddingRight: 0,
+const TabStyle = () => ({
+  background: 'transparent',
 });
 
-const TabStyle = ({
-  $theme,
-  $active,
-}: {
-  $theme: Theme;
-  $active: boolean;
-}) => ({
-  width: '50%',
-  paddingTop: $theme.sizing.scale100,
-  paddingBottom: $theme.sizing.scale100,
-  textAlign: 'center',
-  borderBottom: `2px solid ${$active ? '#06a2a2' : 'transparent'}`,
-  ':hover': {
-    backgroundColor: $theme.colors.backgroundTertiary,
-  },
+const TabHighlight = () => ({
+  backgroundColor: '#488F80',
+  height: '3px',
+  borderRadius: '6px',
 });
 
-const TabBarStyle = ({ $theme }: { $theme: Theme }) => ({
+const TabBorder = ({ $theme }: { $theme: Theme }) => ({
+  backgroundColor: $theme.colors.backgroundTertiary,
+  borderRadius: '6px',
+});
+
+const TabList = ({ $theme }: { $theme: Theme }) => ({
   backgroundColor: $theme.colors.backgroundSecondary,
 });
 
@@ -58,23 +48,39 @@ const SearchTabs = () => {
     <Tabs
       activeKey={activeTabs}
       onChange={onTabChange}
+      fill={FILL.fixed}
       overrides={{
-        Tab: {
-          // @ts-ignore
-          style: TabStyle,
+        TabHighlight: {
+          style: TabHighlight,
         },
-        TabContent: {
-          style: TabContentStyle,
+        TabList: {
+          style: TabList,
         },
-        TabBar: {
-          style: TabBarStyle,
+        TabBorder: {
+          style: TabBorder,
         },
       }}
     >
-      <Tab key='nodes' title={<Block as='span'>Nodes</Block>}>
+      <Tab
+        key='nodes'
+        title={<Block as='span'>Nodes</Block>}
+        overrides={{
+          Tab: {
+            style: TabStyle,
+          },
+        }}
+      >
         <SearchNode />
       </Tab>
-      <Tab key='edges' title={<Block as='span'>Edges</Block>}>
+      <Tab
+        key='edges'
+        title={<Block as='span'>Edges</Block>}
+        overrides={{
+          Tab: {
+            style: TabStyle,
+          },
+        }}
+      >
         <SearchEdge />
       </Tab>
     </Tabs>
