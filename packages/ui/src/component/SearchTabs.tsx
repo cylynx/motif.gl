@@ -46,7 +46,7 @@ export const SearchTabs: FC<SearchTabsProps> = ({ items = [], ...rest }) => {
             Tab: {
               style: () => {
                 return {
-                  backgroundColor: 'transparent',
+                  background: 'transparent',
                 };
               },
             },

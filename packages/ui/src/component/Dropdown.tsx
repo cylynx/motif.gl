@@ -15,13 +15,13 @@ export const Dropdown: FC<DropdownProps> = ({ transparent, ...rest }) => {
         ControlContainer: {
           style: ({ $theme }) => {
             return {
-              borderColor: transparent
-                ? 'transparent'
-                : $theme.colors.textSecondary,
               backgroundColor: transparent
                 ? 'transparent'
                 : $theme.colors.primary700,
-              borderRadius: '6px',
+              borderTopLeftRadius: '6px',
+              borderTopRightRadius: '6px',
+              borderBottomLeftRadius: '6px',
+              borderBottomRightRadius: '6px',
             };
           },
         },
