@@ -389,9 +389,7 @@ const ContentComponents = () => (
                   'Fear is the little-death that brings total obliteration.',
               },
             ]}
-          >
-            test
-          </SearchTabs>
+          />
         </Block>
         <Block width='400px'>
           <typo.LabelMedium> Accordion </typo.LabelMedium>

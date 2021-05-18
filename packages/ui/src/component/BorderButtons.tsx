@@ -13,9 +13,15 @@ const BorderButton: FC<BorderButtonProps> = ({ children, ...rest }) => {
         BaseButton: {
           style: ({ $theme }) => {
             return {
-              borderWidth: '1px',
-              borderStyle: 'solid',
               borderColor: $theme.colors.accent500,
+              borderTopStyle: 'solid',
+              borderBottomStyle: 'solid',
+              borderLeftStyle: 'solid',
+              borderRightStyle: 'solid',
+              borderTopWidth: '1px',
+              borderBottomWidth: '1px',
+              borderLeftWidth: '1px',
+              borderRightWidth: '1px',
             };
           },
         },
