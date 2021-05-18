@@ -2,8 +2,9 @@ import React, { FC } from 'react';
 import { StatefulTabs, FILL, TabsProps, Tab } from 'baseui/tabs-motion';
 import { Theme } from 'baseui/theme';
 
-type SearchTabsProps = TabsProps & {
+type SearchTabsProps = Omit<TabsProps, 'children'> & {
   items: TabItems[];
+  children?: React.ReactNode;
 };
 
 type TabItems = {
@@ -23,7 +24,7 @@ const TabBorder = () => ({
   borderRadius: '6px',
 });
 
-export const SearchTabs: FC<SearchTabsProps> = ({ items, ...rest }) => {
+export const SearchTabs: FC<SearchTabsProps> = ({ items = [], ...rest }) => {
   return (
     <StatefulTabs
       {...rest}
@@ -45,7 +46,7 @@ export const SearchTabs: FC<SearchTabsProps> = ({ items, ...rest }) => {
             Tab: {
               style: () => {
                 return {
-                  background: 'transparent',
+                  backgroundColor: 'transparent',
                 };
               },
             },

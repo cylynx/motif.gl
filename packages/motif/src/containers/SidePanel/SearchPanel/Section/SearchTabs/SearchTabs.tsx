@@ -11,7 +11,7 @@ import { GraphRefContext } from '../../../../Graph';
 import useGraphBehaviors from '../../../../Graph/hooks/useGraphBehaviors';
 
 const TabStyle = () => ({
-  background: 'transparent',
+  backgroundColor: 'transparent',
 });
 
 const TabHighlight = () => ({
