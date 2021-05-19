@@ -1,7 +1,7 @@
 import React, { useMemo, FC } from 'react';
 import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
-import { Select, SIZE, Option, OnChangeParams, Value } from 'baseui/select';
+import { SIZE, Option, OnChangeParams, Value } from 'baseui/select';
 import { Theme } from 'baseui/theme';
 import { colors } from 'baseui/tokens';
 import { Button } from 'baseui/button';
@@ -75,9 +75,8 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
           marginTop={index === 0 ? 'scale200' : 'scale600'}
           key={uniqueFieldId}
         >
-          yoooooooooo
           <Block display='flex'>
-            <Select
+            <Dropdown
               data-testid='aggregate-fields:field'
               size={SIZE.compact}
               searchable={false}
@@ -115,7 +114,7 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
             </Block>
           </Block>
           <Block width='100%' marginTop='scale200'>
-            <Select
+            <Dropdown
               data-testid='aggregate-fields:aggregate'
               size={SIZE.compact}
               searchable={false}
