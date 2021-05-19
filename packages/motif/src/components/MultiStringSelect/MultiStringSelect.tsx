@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { Theme } from 'baseui/theme';
-import { OnChangeParams, Select, Value, TYPE } from 'baseui/select';
+import { OnChangeParams, Value, TYPE } from 'baseui/select';
+import { Dropdown } from '../ui/Dropdown';
 
 type MultiStringSelectType = {
   placeholder: string;
@@ -16,7 +17,7 @@ const MultiStringSelect: FC<MultiStringSelectType> = ({
   onChange,
 }) => {
   return (
-    <Select
+    <Dropdown
       placeholder={placeholder}
       options={options}
       onChange={(params: OnChangeParams) => onChange(params.value)}

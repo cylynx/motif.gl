@@ -11,6 +11,7 @@ import {
   NUMERIC_AGGREGATIONS,
   STRING_AGGREGATIONS,
 } from '../../../../../constants/widget-units';
+import { Dropdown } from '../../../../../components/ui/Dropdown';
 
 const FieldLabels = () =>
   useMemo(
@@ -74,6 +75,7 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
           marginTop={index === 0 ? 'scale200' : 'scale600'}
           key={uniqueFieldId}
         >
+          yoooooooooo
           <Block display='flex'>
             <Select
               data-testid='aggregate-fields:field'
@@ -112,7 +114,6 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
               </Button>
             </Block>
           </Block>
-
           <Block width='100%' marginTop='scale200'>
             <Select
               data-testid='aggregate-fields:aggregate'

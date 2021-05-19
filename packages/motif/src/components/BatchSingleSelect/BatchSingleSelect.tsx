@@ -1,13 +1,13 @@
 import React, { FC, useEffect } from 'react';
 import {
   OnChangeParams,
-  Select,
   SelectOverrides,
   TYPE,
   Value,
   SIZE,
 } from 'baseui/select';
 import VirtualDropdown from './VirtualDropdown';
+import { Dropdown } from '../ui/Dropdown';
 
 export type BatchSingleSelectProps = {
   options: Value;
@@ -46,7 +46,7 @@ const BatchSingleSelect: FC<BatchSingleSelectProps> = ({
   }, [overrides]);
 
   return (
-    <Select
+    <Dropdown
       options={options}
       labelKey={labelKey}
       valueKey={valueKey}
