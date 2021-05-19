@@ -8,5 +8,5 @@
 Information about the frontend package of the widgets.
 """
 
-module_name = "motif"
-module_version = "^0.1.0"
+module_name = "motif-jupyter"
+module_version = "^0.0.1-beta.5"

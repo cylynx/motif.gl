@@ -1,0 +1,5 @@
+{
+  "load_extensions": {
+    "motif_jupyter/extension": true
+  }
+}

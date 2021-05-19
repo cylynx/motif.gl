@@ -27,8 +27,9 @@ module.exports = [
     entry: './src/extension.ts',
     output: {
       filename: 'index.js',
-      path: path.resolve(__dirname, 'motif', 'nbextension', 'static'),
-      libraryTarget: 'amd'
+      path: path.resolve(__dirname, 'motif_jupyter', 'nbextension'),
+      libraryTarget: 'amd',
+      publicPath: '',
     },
     module: {
       rules: rules
@@ -39,7 +40,7 @@ module.exports = [
   },
 
   /**
-   * Embeddable motif bundle
+   * Embeddable motif-jupyter bundle
    *
    * This bundle is almost identical to the notebook extension bundle. The only
    * difference is in the configuration of the webpack public path for the
@@ -54,8 +55,8 @@ module.exports = [
         filename: 'index.js',
         path: path.resolve(__dirname, 'dist'),
         libraryTarget: 'amd',
-        library: "motif",
-        publicPath: 'https://unpkg.com/motif@' + version + '/dist/'
+        library: "motif-jupyter",
+        publicPath: 'https://unpkg.com/motif-jupyter@' + version + '/dist/'
     },
     devtool: 'source-map',
     module: {
@@ -76,7 +77,7 @@ module.exports = [
     output: {
       filename: 'embed-bundle.js',
       path: path.resolve(__dirname, 'docs', 'source', '_static'),
-      library: "motif",
+      library: "motif-jupyter",
       libraryTarget: 'amd'
     },
     module: {

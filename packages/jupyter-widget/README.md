@@ -1,10 +1,45 @@
 
 # motif
 
-[![Build Status](https://travis-ci.org/Cylynx/motif.svg?branch=master)](https://travis-ci.org/Cylynx/motif)
-[![codecov](https://codecov.io/gh/Cylynx/motif/branch/master/graph/badge.svg)](https://codecov.io/gh/Cylynx/motif)
-
 Jupyter widget bindings for the motif library
+
+## Installation
+
+You can install using `pip`:
+
+```
+pip install motif_jupyter
+```
+
+Or if you use jupyterlab:
+
+```
+pip install motif_jupyter
+jupyter labextension install @jupyter-widgets/jupyterlab-manager
+```
+
+If you are using Jupyter Notebook 5.2 or earlier, you may also need to enable
+the nbextension:
+```
+jupyter nbextension enable --py [--sys-prefix|--user|--system] motif
+```
+
+## Try
+
+Demo notebooks can be found in the `examples` folder.
+
+Sample code:
+```
+from motif_jupyter import Motif
+import networkx as nx
+
+gml1 = 'karate.gml'
+g1 = nx.read_gml(gml1)
+motif = Motif(nx_graph=g1, title='karate')
+motif.plot()
+```
+
+More documentation coming soon...
 
 ## Development
 
@@ -36,18 +71,14 @@ python -m pip install -e .
 If you are using JupyterLab:
 
 ```
-# install the widget manager to display the widgets in JupyterLab
-jupyter labextension install @jupyter-widgets/jupyterlab-manager --no-build
-
-# install the local extension
-jupyter labextension install .
+jupyter labextension develop --overwrite .
 ```
 
 If you are using the Classic Notebook:
 
 ```
-jupyter nbextension install --sys-prefix --symlink --overwrite --py motif
-jupyter nbextension enable --sys-prefix --py motif
+jupyter nbextension install --sys-prefix --symlink --overwrite --py motif_jupyter
+jupyter nbextension enable --sys-prefix --py motif_jupyter
 ```
 
 Installing the js dependencies:
@@ -72,26 +103,18 @@ After a change wait for the build to finish and then refresh your browser and th
 
 If you make a change to the python code then you will need to restart the notebook kernel to have it take effect.
 
-A demo notebook file can be found at `examples/introduction.ipynb`
+### Publishing
 
-
-## Installation
-
-You can install using `pip`:
-
+1. Update the version in package.json (should sync with main motif released version on npm)
+2. Relase the `@cylynx/motif-jupyter` packages:
 ```
-pip install motif
+npm login
+npm publish
 ```
-
-Or if you use jupyterlab:
-
+3. Bundle the python package: `python setup.py sdist bdist_wheel`
+4. Update the version in `motif_jupyter/_version.py` (should sync with the frontend version)
+5. Publish the package to PyPI:
 ```
-pip install motif
-jupyter labextension install @jupyter-widgets/jupyterlab-manager
-```
-
-If you are using Jupyter Notebook 5.2 or earlier, you may also need to enable
-the nbextension:
-```
-jupyter nbextension enable --py [--sys-prefix|--user|--system] motif
+pip install twine
+twine upload dist/motif_jupyter*
 ```

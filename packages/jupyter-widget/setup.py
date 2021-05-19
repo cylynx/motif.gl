@@ -6,57 +6,61 @@
 
 from __future__ import print_function
 from glob import glob
+import os
 from os.path import join as pjoin
+from setuptools import setup, find_packages
 
 
-from setupbase import (
-    create_cmdclass, install_npm, ensure_targets,
-    find_packages, combine_commands, ensure_python,
-    get_version, HERE
+from jupyter_packaging import (
+    create_cmdclass,
+    install_npm,
+    ensure_targets,
+    combine_commands,
+    get_version,
 )
 
-from setuptools import setup
+HERE = os.path.dirname(os.path.abspath(__file__))
+
+
 
 
 # The name of the project
-name = 'motif'
+name = 'motif_jupyter'
 
-# Ensure a valid python version
-ensure_python('>=3.4')
-
-# Get our version
+# Get the version
 version = get_version(pjoin(name, '_version.py'))
 
-nb_path = pjoin(HERE, name, 'nbextension', 'static')
-lab_path = pjoin(HERE, name, 'labextension')
 
 # Representative files that should exist after a successful build
 jstargets = [
-    pjoin(nb_path, 'index.js'),
+    pjoin(HERE, name, 'nbextension', 'index.js'),
     pjoin(HERE, 'lib', 'plugin.js'),
 ]
 
+
 package_data_spec = {
     name: [
-        'nbextension/static/*.*js*',
-        'labextension/*.tgz'
+        'nbextension/**js*',
+        'labextension/**'
     ]
 }
 
+
 data_files_spec = [
-    ('share/jupyter/nbextensions/motif',
-        nb_path, '*.js*'),
-    ('share/jupyter/lab/extensions', lab_path, '*.tgz'),
-    ('etc/jupyter/nbconfig/notebook.d' , HERE, 'motif.json')
+    ('share/jupyter/nbextensions/motif_jupyter', 'motif_jupyter/nbextension', '**'),
+    ('share/jupyter/labextensions/motif-jupyter', 'motif_jupyter/labextension', '**'),
+    ('share/jupyter/labextensions/motif-jupyter', '.', 'install.json'),
+    ('etc/jupyter/nbconfig/notebook.d', '.', 'motif_jupyter.json'),
 ]
 
 
 cmdclass = create_cmdclass('jsdeps', package_data_spec=package_data_spec,
     data_files_spec=data_files_spec)
 cmdclass['jsdeps'] = combine_commands(
-    install_npm(HERE, build_cmd='build:all'),
+    install_npm(HERE, build_cmd='build:prod'),
     ensure_targets(jstargets),
 )
+
 
 setup_args = dict(
     name            = name,
@@ -67,7 +71,7 @@ setup_args = dict(
     packages        = find_packages(),
     author          = 'Cylynx',
     author_email    = 'hello@cylynx.io',
-    url             = 'https://github.com/Cylynx/motif',
+    url             = 'https://github.com/Cylynx/motif.gl',
     license         = 'BSD',
     platforms       = "Linux, Mac OS X, Windows",
     keywords        = ['Jupyter', 'Widgets', 'IPython'],
@@ -84,6 +88,7 @@ setup_args = dict(
         'Framework :: Jupyter',
     ],
     include_package_data = True,
+    python_requires=">=3.6",
     install_requires = [
         'ipywidgets>=7.0.0',
     ],
@@ -97,14 +102,14 @@ setup_args = dict(
             # Any requirements for the examples to run
         ],
         'docs': [
-            'sphinx>=1.5',
-            'recommonmark',
-            'sphinx_rtd_theme',
-            'nbsphinx>=0.2.13,<0.4.0',
             'jupyter_sphinx',
+            'nbsphinx',
             'nbsphinx-link',
             'pytest_check_links',
             'pypandoc',
+            'recommonmark',
+            'sphinx>=1.5',
+            'sphinx_rtd_theme',
         ],
     },
     entry_points = {

@@ -145,12 +145,12 @@ $RECYCLE.BIN/
 # ----
 
 **/node_modules/
-motif/nbextension/static/index.*
-motif/labextension/*.tgz
+motif_jupyter/nbextension/index.*
+motif_jupyter/labextension/*.tgz
 
 # Coverage data
 # -------------
 **/coverage/
 
 # Packed lab extensions
-motif/labextension
+motif_jupyter/labextension
