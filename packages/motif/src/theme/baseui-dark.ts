@@ -16,6 +16,7 @@ const primitives = {
   primary500: '#a2a2aa',
   primary600: '#4b4b52',
   primary700: '#32323A',
+  primaryFontFamily: 'Poppins',
   // Give a tint to the dark mono colors
   // mono300: '#4c5667',
   // mono400: '#3d4552',

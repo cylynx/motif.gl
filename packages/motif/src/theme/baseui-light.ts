@@ -14,6 +14,7 @@ const primitives = {
   primary500: '#627D98',
   primary600: '#486581',
   primary700: '#243B53',
+  primaryFontFamily: 'Poppins',
 };
 
 const overrides = {
