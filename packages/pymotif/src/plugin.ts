@@ -11,7 +11,7 @@ import * as widgetExports from './motif-plugin';
 
 import { MODULE_NAME, MODULE_VERSION } from './version';
 
-const EXTENSION_ID = 'motif-jupyer:plugin';
+const EXTENSION_ID = '@cylynx/motif-jupyer:plugin';
 
 /**
  * The example plugin.

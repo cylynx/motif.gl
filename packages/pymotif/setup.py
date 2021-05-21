@@ -25,7 +25,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 
 # The name of the project
-name = 'motif_jupyter'
+name = 'pymotif'
 
 # Get the version
 version = get_version(pjoin(name, '_version.py'))
@@ -47,10 +47,10 @@ package_data_spec = {
 
 
 data_files_spec = [
-    ('share/jupyter/nbextensions/motif_jupyter', 'motif_jupyter/nbextension', '**'),
-    ('share/jupyter/labextensions/motif-jupyter', 'motif_jupyter/labextension', '**'),
-    ('share/jupyter/labextensions/motif-jupyter', '.', 'install.json'),
-    ('etc/jupyter/nbconfig/notebook.d', '.', 'motif_jupyter.json'),
+    ('share/jupyter/nbextensions/pymotif', 'pymotif/nbextension', '**'),
+    ('share/jupyter/labextensions/@cylynx/pymotif', 'pymotif/labextension', '**'),
+    ('share/jupyter/labextensions/@cylynx/pymotif', '.', 'install.json'),
+    ('etc/jupyter/nbconfig/notebook.d', '.', 'pymotif.json'),
 ]
 
 

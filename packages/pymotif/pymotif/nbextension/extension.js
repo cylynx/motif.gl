@@ -6,7 +6,7 @@ define(function() {
     window['requirejs'].config({
         map: {
             '*': {
-                'motif-jupyter': 'nbextensions/motif_jupyter/index',
+                'pymotif': 'nbextensions/pymotif/index',
             },
         }
     });

@@ -8,20 +8,16 @@ Jupyter widget bindings for the motif library
 You can install using `pip`:
 
 ```
-pip install motif_jupyter
+pip install pymotif
 ```
 
-Or if you use jupyterlab:
-
-```
-pip install motif_jupyter
-jupyter labextension install @jupyter-widgets/jupyterlab-manager
-```
+Note: You might need to enable labextension first: `jupyter labextension install @jupyter-widgets/jupyterlab-manager`
+If you are using Jupyter Lab <= 2, you might need to install the extension manually: `jupyter labextension install @cylynx/pymotif` or through the extension manager
 
 If you are using Jupyter Notebook 5.2 or earlier, you may also need to enable
 the nbextension:
 ```
-jupyter nbextension enable --py [--sys-prefix|--user|--system] motif
+jupyter nbextension enable --py [--sys-prefix|--user|--system] pymotif
 ```
 
 ## Try
@@ -30,7 +26,7 @@ Demo notebooks can be found in the `examples` folder.
 
 Sample code:
 ```
-from motif_jupyter import Motif
+from pymotif import Motif
 import networkx as nx
 
 gml1 = 'karate.gml'
@@ -43,7 +39,7 @@ More documentation coming soon...
 
 ## Development
 
-For a more thorough walkthrough check out the official guide: 
+For a more thorough walkthrough check out the official guide:  
 https://ipywidgets.readthedocs.io/en/latest/examples/Widget%20Custom.html
 
 ### Create a new conda environment with the dependencies
@@ -77,8 +73,8 @@ jupyter labextension develop --overwrite .
 If you are using the Classic Notebook:
 
 ```
-jupyter nbextension install --sys-prefix --symlink --overwrite --py motif_jupyter
-jupyter nbextension enable --sys-prefix --py motif_jupyter
+jupyter nbextension install --sys-prefix --symlink --overwrite --py pymotif
+jupyter nbextension enable --sys-prefix --py pymotif
 ```
 
 Installing the js dependencies:
@@ -105,16 +101,20 @@ If you make a change to the python code then you will need to restart the notebo
 
 ### Publishing
 
-1. Update the version in package.json (should sync with main motif released version on npm)
-2. Relase the `@cylynx/motif-jupyter` packages:
+1. Update the version in package.json
+2. Relase the `@cylynx/pymotif` packages:
+
 ```
 npm login
 npm publish
 ```
+
 3. Bundle the python package: `python setup.py sdist bdist_wheel`
-4. Update the version in `motif_jupyter/_version.py` (should sync with the frontend version)
-5. Publish the package to PyPI:
+4. Update the version in `pymotif/_version.py`
+5. If frontend version dependency has changed, update `pymotif/_frontend.py`
+6. Publish the package to PyPI:
+
 ```
 pip install twine
-twine upload dist/motif_jupyter*
+twine upload dist/pymotif*
 ```

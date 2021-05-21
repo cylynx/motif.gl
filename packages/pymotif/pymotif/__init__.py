@@ -21,7 +21,7 @@ def _jupyter_labextension_paths():
     """
     return [{
         'src': 'labextension',
-        'dest': 'motif-jupyter',
+        'dest': '@cylynx/pymotif',
     }]
 
 
@@ -44,6 +44,6 @@ def _jupyter_nbextension_paths():
     return [{
         'section': 'notebook',
         'src': 'nbextension',
-        'dest': 'motif_jupyter',
-        'require': 'motif_jupyter/extension'
+        'dest': 'pymotif',
+        'require': 'pymotif/extension'
     }]
