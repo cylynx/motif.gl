@@ -16,13 +16,14 @@ export type SelectVariableOption = {
 };
 
 export type SelectOptions = {
+  __ungrouped: any[];
   Nodes: SelectVariableOption[];
   Edges: SelectVariableOption[];
 };
 
 export type SelectVariableProps = Omit<
   DropdownProps,
-  'options' | 'getValueLabel' | 'getOptionLabel'
+  'options' | 'onChange'
 > & {
   value: SelectVariableOption[];
   options: SelectOptions & OptgroupsT;

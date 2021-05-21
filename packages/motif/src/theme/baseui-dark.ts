@@ -33,9 +33,6 @@ const textSecondary = '#8C8C97';
 const borderColor = 'rgba(140, 140, 151, 0.16)';
 const hoverColor = 'rgba(255, 255, 255, 0.08)';
 
-// mono200 / gray400 (https://github.com/uber/baseweb/blob/master/src/tokens/colors.js)
-const mono200 = '#AFAFAF';
-
 const overrides = {
   colors: {
     // Ref: https://github.com/uber/baseweb/blob/master/src/themes/light-theme/color-semantic-tokens.js
