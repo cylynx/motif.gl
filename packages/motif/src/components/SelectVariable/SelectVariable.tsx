@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
-import React from 'react';
-import { Select } from 'baseui/select';
+import React, { useEffect } from 'react';
+import { Select, SelectOverrides } from 'baseui/select';
 import { Block } from 'baseui/block';
 import { getIcon, TypeProps } from '../TagData';
 
@@ -24,18 +24,18 @@ export type SelectVariableProps = {
   options: SelectOptions;
   onChange?: (obj: { [key: string]: string }) => void;
   placeholder?: string;
+  overrides?: SelectOverrides;
   [x: string]: any;
 };
 
-const testOptions = {
-  Nodes: [
-    { label: 'data.id', id: 'data.id', type: 'string' },
-    { label: 'dataStr', id: 'datastr', type: 'boolean' },
-  ],
-  Edges: [
-    { label: 'value', id: 'value', type: 'real' },
-    { label: 'start_dt', id: 'start_dt', type: 'timestamp' },
-  ],
+const SelectFieldPopoverOverrides = {
+  props: {
+    overrides: {
+      Body: {
+        style: () => ({ zIndex: 1 }),
+      },
+    },
+  },
 };
 
 const getValueLabel = ({ option }: { option: SelectVariableOption }) => {
@@ -61,9 +61,10 @@ const getOptionLabel = ({ option }: { option: SelectVariableOption }) => {
 
 const SelectVariable = ({
   value = [],
-  options = testOptions,
+  options,
   onChange: onChangeProps,
   placeholder = 'Select Variable',
+  overrides,
   ...rest
 }: SelectVariableProps) => {
   const onChangeSelection = (value: any) => {
@@ -72,6 +73,12 @@ const SelectVariable = ({
     }
     return value;
   };
+
+  useEffect(() => {
+    Object.assign(overrides, {
+      Popover: SelectFieldPopoverOverrides,
+    });
+  }, [overrides]);
 
   return (
     // @ts-ignore

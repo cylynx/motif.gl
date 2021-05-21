@@ -43,6 +43,16 @@ export const PlotDiv = styled('div', ({ $theme, $expanded }: TPlotDiv) => {
   };
 });
 
+const SelectFieldPopoverOverrides = {
+  props: {
+    overrides: {
+      Body: {
+        style: () => ({ zIndex: 1 }),
+      },
+    },
+  },
+};
+
 const VariableInspector = () => {
   const graphRef = useContext(GraphRefContext) as GraphinContextType;
   const [selection, setSelection] = useState([]);
@@ -191,7 +201,6 @@ const VariableInspector = () => {
   const onChangeSelected = useCallback(
     (obj) => {
       if (obj?.id) {
-        console.log(obj?.id);
         const fieldDomain = getFieldDomain(
           graphVisible[obj.from],
           (x) => get(x, obj.id, ''),
@@ -247,6 +256,9 @@ const VariableInspector = () => {
         options={{ Nodes: nodeOptions, Edges: edgeOptions }}
         onChange={(obj) => onChangeSelected(obj)}
         valueKey='optionKey'
+        overrides={{
+          Popover: SelectFieldPopoverOverrides,
+        }}
       />
     ),
     [selection, nodeOptions, edgeOptions, onChangeSelected],

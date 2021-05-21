@@ -9,6 +9,16 @@ import {
 } from 'baseui/select';
 import VirtualDropdown from './VirtualDropdown';
 
+const SelectFieldPopoverOverrides = {
+  props: {
+    overrides: {
+      Body: {
+        style: () => ({ zIndex: 1 }),
+      },
+    },
+  },
+};
+
 export type BatchSingleSelectProps = {
   options: Value;
   onChange: (params: OnChangeParams) => any;
@@ -42,6 +52,7 @@ const BatchSingleSelect: FC<BatchSingleSelectProps> = ({
   useEffect(() => {
     Object.assign(overrides, {
       Dropdown: VirtualDropdown,
+      Popover: SelectFieldPopoverOverrides,
     });
   }, [overrides]);
 
