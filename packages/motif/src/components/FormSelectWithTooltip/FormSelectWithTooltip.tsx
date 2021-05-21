@@ -68,6 +68,7 @@ const FormSelectWithTooltip: FC<FormSelectWithTooltipProps> = ({
       error={error}
     >
       <Dropdown
+        transparent
         aria-label={name}
         autoFocus={false}
         backspaceRemoves={false}
