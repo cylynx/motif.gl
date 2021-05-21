@@ -1,8 +1,9 @@
 /* eslint-disable no-shadow */
 import React from 'react';
-import { Select } from 'baseui/select';
+import { Select, SelectProps } from 'baseui/select';
 import { Block } from 'baseui/block';
 import { getIcon, TypeProps } from '../TagData';
+import { Dropdown, DropdownProps } from '../ui/Dropdown';
 
 export type SelectVariableOption = {
   id: string;
@@ -19,7 +20,10 @@ export type SelectOptions = {
   Edges: SelectVariableOption[];
 };
 
-export type SelectVariableProps = {
+export type SelectVariableProps = Omit<
+  DropdownProps,
+  'options' | 'getValueLabel' | 'getOptionLabel'
+> & {
   value: SelectVariableOption[];
   options: SelectOptions;
   onChange?: (obj: { [key: string]: string }) => void;
@@ -75,7 +79,7 @@ const SelectVariable = ({
 
   return (
     // @ts-ignore
-    <Select
+    <Dropdown
       options={options}
       value={value}
       size='compact'
