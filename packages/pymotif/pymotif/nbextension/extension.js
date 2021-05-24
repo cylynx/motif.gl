@@ -6,7 +6,7 @@ define(function() {
     window['requirejs'].config({
         map: {
             '*': {
-                'pymotif': 'nbextensions/pymotif/index',
+                '@cylynx/pymotif': 'nbextensions/pymotif/index',
             },
         }
     });
