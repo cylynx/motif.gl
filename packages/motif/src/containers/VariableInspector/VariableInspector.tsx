@@ -47,7 +47,7 @@ const SelectFieldPopoverOverrides = {
   props: {
     overrides: {
       Body: {
-        style: () => ({ zIndex: 1 }),
+        style: () => ({ zIndex: 2 }),
       },
     },
   },

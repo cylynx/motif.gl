@@ -16,6 +16,7 @@ const defaultOverrides: BasePopoverProps['overrides'] = {
   Body: {
     style: {
       // to display tooltip in front of canvas in Jupyter Notebook
+      // the zIndex value must be lesser than Select to prevent overlapped with Options field.
       zIndex: 1,
     },
   },
