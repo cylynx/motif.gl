@@ -245,7 +245,7 @@ const VariableInspector = () => {
   );
 
   const LabelSmallMemo = useMemo(
-    () => <LabelSmall>Variable Inspector</LabelSmall>,
+    () => <LabelSmall>Variable Inspectors</LabelSmall>,
     [],
   );
 

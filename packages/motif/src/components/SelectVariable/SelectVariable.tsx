@@ -64,7 +64,9 @@ const SelectVariable = ({
   options,
   onChange: onChangeProps,
   placeholder = 'Select Variable',
-  overrides,
+  overrides = {
+    Popover: SelectFieldPopoverOverrides,
+  },
   ...rest
 }: SelectVariableProps) => {
   const onChangeSelection = (value: any) => {
@@ -92,6 +94,7 @@ const SelectVariable = ({
       getValueLabel={getValueLabel}
       maxDropdownHeight='300px'
       data-testid='select-variable'
+      overrides={overrides}
       {...rest}
     />
   );

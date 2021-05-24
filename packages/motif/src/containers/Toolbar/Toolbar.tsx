@@ -86,7 +86,7 @@ const Toolbar = () => {
     {
       key: 4,
       name: 'Undo',
-      icon: <Icon.Undo size={22} />,
+      icon: <Icon.Undo size={18} />,
       isDisabled: false,
       popoverContent: null,
       onClick: () => dispatch(UndoActionCreators.undo()),
@@ -94,7 +94,7 @@ const Toolbar = () => {
     {
       key: 5,
       name: 'Redo',
-      icon: <Icon.Redo size={22} />,
+      icon: <Icon.Redo size={18} />,
       isDisabled: false,
       popoverContent: null,
       onClick: () => dispatch(UndoActionCreators.redo()),

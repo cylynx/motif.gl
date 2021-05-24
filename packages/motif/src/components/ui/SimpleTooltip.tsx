@@ -13,6 +13,11 @@ type SimpleTooltipProps = {
 };
 
 const defaultOverrides: BasePopoverProps['overrides'] = {
+  Body: {
+    style: {
+      zIndex: 1,
+    },
+  },
   Inner: {
     style: ({ $theme }) => ({
       backgroundColor: $theme.colors.backgroundTertiary,
@@ -24,6 +29,7 @@ const defaultOverrides: BasePopoverProps['overrides'] = {
     }),
   },
 };
+
 /*
  * @see
  * https://popper.js.org/docs/v1/#modifiers..hide.enabled
