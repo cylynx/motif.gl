@@ -153,6 +153,7 @@ const StyledStepperItem = styled(
       ...$theme.typography.LabelSmall,
       textAlign: 'center',
       position: 'relative',
+      borderRadius: '6px',
       flex: '1',
       ':hover': {
         cursor: hover.cursor,
