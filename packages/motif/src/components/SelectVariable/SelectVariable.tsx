@@ -76,6 +76,9 @@ const SelectVariable = ({
     return value;
   };
 
+  /**
+   * To prevent option not displayed in Jupyter Notebook
+   */
   useEffect(() => {
     Object.assign(overrides, {
       Popover: SelectFieldPopoverOverrides,

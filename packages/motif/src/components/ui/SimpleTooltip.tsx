@@ -15,6 +15,7 @@ type SimpleTooltipProps = {
 const defaultOverrides: BasePopoverProps['overrides'] = {
   Body: {
     style: {
+      // to display tooltip in front of canvas in Jupyter Notebook
       zIndex: 1,
     },
   },
