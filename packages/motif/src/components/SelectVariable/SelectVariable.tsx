@@ -64,7 +64,9 @@ const SelectVariable = ({
   options,
   onChange: onChangeProps,
   placeholder = 'Select Variable',
-  overrides,
+  overrides = {
+    Popover: SelectFieldPopoverOverrides,
+  },
   ...rest
 }: SelectVariableProps) => {
   const onChangeSelection = (value: any) => {
@@ -74,6 +76,9 @@ const SelectVariable = ({
     return value;
   };
 
+  /**
+   * To prevent option not displayed in Jupyter Notebook
+   */
   useEffect(() => {
     Object.assign(overrides, {
       Popover: SelectFieldPopoverOverrides,
@@ -92,6 +97,7 @@ const SelectVariable = ({
       getValueLabel={getValueLabel}
       maxDropdownHeight='300px'
       data-testid='select-variable'
+      overrides={overrides}
       {...rest}
     />
   );
