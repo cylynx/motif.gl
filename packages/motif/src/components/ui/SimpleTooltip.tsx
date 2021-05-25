@@ -60,7 +60,7 @@ const SimpleTooltip = ({
         modifiers: {
           preventOverflow: {
             enabled: true,
-            boundariesElement: 'viewport',
+            boundariesElement: 'scrollParent',
           },
           hide: {
             enabled: false,

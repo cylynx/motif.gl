@@ -47,7 +47,7 @@ const SelectFieldPopoverOverrides = {
   props: {
     overrides: {
       Body: {
-        style: () => ({ zIndex: 2 }),
+        style: () => ({ zIndex: 1 }),
       },
     },
   },
@@ -245,7 +245,7 @@ const VariableInspector = () => {
   );
 
   const LabelSmallMemo = useMemo(
-    () => <LabelSmall>Variable Inspectors</LabelSmall>,
+    () => <LabelSmall>Variable Inspector</LabelSmall>,
     [],
   );
 
