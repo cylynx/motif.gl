@@ -3,9 +3,9 @@ import React, { Fragment } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
-import { Select } from 'baseui/select';
 import { Input } from 'baseui/input';
 import { Slider } from '../ui';
+import { Dropdown } from '../ui/Dropdown';
 
 export type SimpleFormData = {
   id: string;
@@ -111,7 +111,7 @@ const SimpleForm = ({ data }: { data: SimpleFormData }) => {
             let component;
             if (kind === 'select') {
               component = (
-                <Select
+                <Dropdown
                   onChange={(params) => handleChange(params.value, onChange)}
                   value={value}
                   size='compact'

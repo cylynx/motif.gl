@@ -1,13 +1,14 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormControl } from 'baseui/form-control';
-import { OnChangeParams, Select } from 'baseui/select';
+import { OnChangeParams } from 'baseui/select';
 import { Block } from 'baseui/block';
 import { GraphSlices, GraphSelectors } from '../../redux/graph';
 
 import * as LAYOUT from '../../constants/layout-options';
 import { NestedForm, genNestedForm } from '../../components/form';
 import { nodeSizeForm, edgeWidthForm } from '../SidePanel/OptionsPanel';
+import { Dropdown } from '../../components/ui/Dropdown';
 
 const SettingsPopover = () => {
   const dispatch = useDispatch();
@@ -38,7 +39,7 @@ const SettingsPopover = () => {
   return (
     <Block width='300px' paddingBottom='scale400'>
       <FormControl label='Graph Layout'>
-        <Select
+        <Dropdown
           id='SettingsPopover:GraphLayout'
           options={LAYOUT.LAYOUT_NAMES}
           size='compact'

@@ -2,8 +2,9 @@ import React, { ChangeEvent, useCallback, useMemo } from 'react';
 import { Block } from 'baseui/block';
 import { Checkbox, LABEL_PLACEMENT, STYLE_TYPE } from 'baseui/checkbox';
 import { LabelSmall } from 'baseui/typography';
-import { Select, SIZE, OnChangeParams, Option } from 'baseui/select';
+import { SIZE, OnChangeParams, Option } from 'baseui/select';
 import debounce from 'lodash/debounce';
+import { Dropdown } from '../../../../../components/ui/Dropdown';
 
 type GroupByFieldsProps = {
   disabled: boolean;
@@ -102,7 +103,7 @@ const GroupByFields = ({
 
       {toggle && (
         <Block marginTop='scale100'>
-          <Select
+          <Dropdown
             data-testid='group-by-fields:select'
             size={SIZE.compact}
             searchable={false}

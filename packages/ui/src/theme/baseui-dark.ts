@@ -1,7 +1,7 @@
 import { createDarkTheme } from 'baseui';
-import typography from './shared/typography'
-import borders from './shared/borders'
-import themeColors from './shared/themeColors'
+import typography from './shared/typography';
+import borders from './shared/borders';
+import themeColors from './shared/themeColors';
 
 const primitives = {
   // Primary Palette
@@ -30,8 +30,8 @@ const primitives = {
 const backgroundSecondary = '#292930';
 const backgroundTertiary = primitives.primary700;
 const textSecondary = '#8C8C97';
-const borderColor = "rgba(140, 140, 151, 0.16)"
-const hoverColor = "rgba(255, 255, 255, 0.08)"
+const borderColor = 'rgba(140, 140, 151, 0.16)';
+const hoverColor = 'rgba(255, 255, 255, 0.08)';
 
 const overrides = {
   colors: {
@@ -73,19 +73,18 @@ const overrides = {
     // https://github.com/uber/baseweb/blob/master/src/themes/dark-theme/color-component-tokens.js
     modalCloseColor: primitives.primary300,
     tableFilterHeading: primitives.primary300,
-    tickBorder: textSecondary,  
+    tickBorder: textSecondary,
     inputPlaceholder: primitives.primary300,
     menuFontDefault: primitives.primary300,
     // Override tooltip
     // tooltipBackground: primitives.mono600,
     tooltipText: primitives.primaryA,
-    
 
     // Components
     buttonPrimaryFill: themeColors.theme,
     buttonPrimaryHover: themeColors.theme300,
-    buttonPrimaryActive: "rgba(72, 143, 128, 0.64)",
-    buttonPrimarySelectedFill: "rgba(72, 143, 128, 0.64)",
+    buttonPrimaryActive: 'rgba(72, 143, 128, 0.64)',
+    buttonPrimarySelectedFill: 'rgba(72, 143, 128, 0.64)',
     buttonPrimaryText: primitives.primaryA,
     buttonPrimarySelectedText: primitives.primaryA,
     buttonSecondaryFill: primitives.primary700,
@@ -115,7 +114,7 @@ const overrides = {
     borderFocus: themeColors.theme,
   },
   typography,
-  borders
+  borders,
 };
 
 const MotifDarkTheme = createDarkTheme(primitives, overrides);

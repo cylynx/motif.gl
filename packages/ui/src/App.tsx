@@ -37,7 +37,7 @@ import { Sizing } from './BaseuiTheming/sizing';
 import { Type } from './BaseuiTheming/typography';
 import MotifDarkTheme from './theme/baseui-dark';
 import { SearchTabs } from './component/SearchTabs';
-import BorderButton from './component/BorderButtons';
+import BorderButton from './component/BorderButton';
 import { Dropdown } from './component/Dropdown';
 import { Slider } from './component/Slider';
 

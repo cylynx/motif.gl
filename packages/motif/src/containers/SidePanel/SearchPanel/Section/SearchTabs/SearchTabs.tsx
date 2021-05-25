@@ -14,19 +14,15 @@ const TabStyle = () => ({
   background: 'transparent',
 });
 
-const TabHighlight = () => ({
-  backgroundColor: '#488F80',
+const TabHighlight = ({ $theme }: { $theme: Theme }) => ({
+  backgroundColor: $theme.colors.accent500,
   height: '3px',
   borderRadius: '6px',
 });
 
-const TabBorder = ({ $theme }: { $theme: Theme }) => ({
-  backgroundColor: $theme.colors.backgroundTertiary,
+const TabBorder = () => ({
+  backgroundColor: 'transparent',
   borderRadius: '6px',
-});
-
-const TabList = ({ $theme }: { $theme: Theme }) => ({
-  backgroundColor: $theme.colors.backgroundSecondary,
 });
 
 const SearchTabs = () => {
@@ -52,9 +48,6 @@ const SearchTabs = () => {
       overrides={{
         TabHighlight: {
           style: TabHighlight,
-        },
-        TabList: {
-          style: TabList,
         },
         TabBorder: {
           style: TabBorder,

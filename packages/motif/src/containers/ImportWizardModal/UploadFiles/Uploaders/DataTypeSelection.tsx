@@ -2,7 +2,7 @@ import React, { FC, useMemo } from 'react';
 import { styled } from 'baseui';
 import { Block } from 'baseui/block';
 import { FormControl } from 'baseui/form-control';
-import { OnChangeParams, Option, Select } from 'baseui/select';
+import { OnChangeParams, Option } from 'baseui/select';
 
 import JsonFiles from './JsonFiles';
 import EdgeListCsv from './EdgeListCsv';
@@ -10,6 +10,7 @@ import NodeEdgeCsv from './NodeEdgeCsv';
 import { UIConstants } from '../../../../redux/ui';
 import useFileContents from '../hooks/useFileContents';
 import { TFileContentState } from '../../../../redux/import/fileUpload';
+import { Dropdown } from '../../../../components/ui/Dropdown';
 
 const importOptions = Object.values(UIConstants.OPTIONS);
 
@@ -42,7 +43,8 @@ const DataTypeSelection: FC<DataTypeSelectionProps> = () => {
         label='Data Type'
         overrides={{ ControlContainer: { style: { marginBottom: 0 } } }}
       >
-        <Select
+        <Dropdown
+          transparent /* show without transparency in pr */
           id='DataTypeSelection'
           size='compact'
           value={[dataType]}

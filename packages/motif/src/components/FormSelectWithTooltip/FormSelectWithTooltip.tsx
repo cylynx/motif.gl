@@ -1,17 +1,11 @@
 import React, { FC, ReactNode, useMemo } from 'react';
 import { FormControl } from 'baseui/form-control';
 import { Theme } from 'baseui/theme';
-import {
-  OnChangeParams,
-  Select,
-  SIZE,
-  TYPE,
-  Value,
-  Option,
-} from 'baseui/select';
+import { OnChangeParams, SIZE, TYPE, Value, Option } from 'baseui/select';
 import { UseFormSetValue } from 'react-hook-form';
 import { ConfigureFieldsForm } from 'src/redux/import/fileUpload';
 import LabelTooltip from './LabelTooltip';
+import { Dropdown } from '../ui/Dropdown';
 
 export type FormSelectWithTooltipProps = {
   name: string;
@@ -73,7 +67,8 @@ const FormSelectWithTooltip: FC<FormSelectWithTooltipProps> = ({
       }}
       error={error}
     >
-      <Select
+      <Dropdown
+        transparent
         aria-label={name}
         autoFocus={false}
         backspaceRemoves={false}

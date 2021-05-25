@@ -1,8 +1,9 @@
 /* eslint-disable no-shadow */
 import React from 'react';
-import { Select } from 'baseui/select';
 import { Block } from 'baseui/block';
+import { OptgroupsT, SelectProps } from 'baseui/select';
 import { getIcon, TypeProps } from '../TagData';
+import { Dropdown, DropdownProps } from '../ui/Dropdown';
 
 export type SelectVariableOption = {
   id: string;
@@ -15,19 +16,24 @@ export type SelectVariableOption = {
 };
 
 export type SelectOptions = {
+  __ungrouped: any[];
   Nodes: SelectVariableOption[];
   Edges: SelectVariableOption[];
 };
 
-export type SelectVariableProps = {
+export type SelectVariableProps = Omit<
+  DropdownProps,
+  'options' | 'onChange'
+> & {
   value: SelectVariableOption[];
-  options: SelectOptions;
+  options: SelectOptions & OptgroupsT;
   onChange?: (obj: { [key: string]: string }) => void;
   placeholder?: string;
   [x: string]: any;
 };
 
 const testOptions = {
+  __ungrouped: [],
   Nodes: [
     { label: 'data.id', id: 'data.id', type: 'string' },
     { label: 'dataStr', id: 'datastr', type: 'boolean' },
@@ -38,7 +44,7 @@ const testOptions = {
   ],
 };
 
-const getValueLabel = ({ option }: { option: SelectVariableOption }) => {
+const getValueLabel: SelectProps['getValueLabel'] = ({ option }) => {
   return (
     <Block display='flex' alignItems='center'>
       <Block as='span' position='relative' top='3px'>
@@ -50,7 +56,7 @@ const getValueLabel = ({ option }: { option: SelectVariableOption }) => {
   );
 };
 
-const getOptionLabel = ({ option }: { option: SelectVariableOption }) => {
+const getOptionLabel: SelectProps['getOptionLabel'] = ({ option }) => {
   return (
     <Block display='flex' alignItems='center'>
       {getIcon(option.type)}
@@ -74,8 +80,7 @@ const SelectVariable = ({
   };
 
   return (
-    // @ts-ignore
-    <Select
+    <Dropdown
       options={options}
       value={value}
       size='compact'
