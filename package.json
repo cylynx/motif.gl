@@ -9,6 +9,9 @@
     "demo": "cd ./packages/motif-demo && npm run start",
     "demo:build": "cd ./packages/motif-demo && npm run build",
     "demo:serve": "cd ./packages/motif-demo && npm run serve",
+    "pymotif": "cd ./packages/pymotif && npm run start",
+    "pymotif:build": "cd ./packages/pymotif && npm run build:prod",
+    "pymotif:publish": "cd ./packages/pymotif && npm publish",
     "clean": "lerna clean && npm run rm-package-lock",
     "cypress": "cd ./packages/motif && npm run cypress:test",
     "rm-package-lock": "rm -rf ./package-lock.json ./packages/*/package-lock.json"

@@ -13,7 +13,7 @@ from setuptools import setup, find_packages
 
 from jupyter_packaging import (
     create_cmdclass,
-    install_npm,
+    # install_npm,
     ensure_targets,
     combine_commands,
     get_version,
@@ -57,7 +57,8 @@ data_files_spec = [
 cmdclass = create_cmdclass('jsdeps', package_data_spec=package_data_spec,
     data_files_spec=data_files_spec)
 cmdclass['jsdeps'] = combine_commands(
-    install_npm(HERE, build_cmd='build:prod'),
+    # Please build seperately at the root of the monorepo before running setup.py
+    # install_npm(HERE, build_cmd='build:prod'),
     ensure_targets(jstargets),
 )
 

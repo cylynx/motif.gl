@@ -61,6 +61,7 @@ conda activate motif
 Since the widget contains a Python part, you need to install the package in editable mode:
 
 ```
+npm run pymotif:build // In root directory to link it with monorepo setup
 python -m pip install -e .
 ```
 
@@ -77,12 +78,6 @@ jupyter nbextension install --sys-prefix --symlink --overwrite --py pymotif
 jupyter nbextension enable --sys-prefix --py pymotif
 ```
 
-Installing the js dependencies:
-
-```
-npm install
-```
-
 To continuously monitor the project for changes and automatically trigger a rebuild, start Jupyter in watch mode:
 
 ```
@@ -92,7 +87,7 @@ jupyter lab --watch
 And in a separate session, begin watching the source directory for changes:
 
 ```
-npm run start
+npm run pymotif  // In root directory to link it with monorepo setup
 ```
 
 After a change wait for the build to finish and then refresh your browser and the changes should take effect.  
@@ -106,7 +101,7 @@ If you make a change to the python code then you will need to restart the notebo
 
 ```
 npm login
-npm publish
+npm run pymotif:publish
 ```
 
 3. Bundle the python package: `python setup.py sdist bdist_wheel`
