@@ -13,6 +13,13 @@ type SimpleTooltipProps = {
 };
 
 const defaultOverrides: BasePopoverProps['overrides'] = {
+  Body: {
+    style: {
+      // to display tooltip in front of canvas in Jupyter Notebook
+      // the zIndex value must be lesser than Select to prevent overlapped with Options field.
+      zIndex: 1,
+    },
+  },
   Inner: {
     style: ({ $theme }) => ({
       backgroundColor: $theme.colors.backgroundTertiary,
@@ -24,6 +31,7 @@ const defaultOverrides: BasePopoverProps['overrides'] = {
     }),
   },
 };
+
 /*
  * @see
  * https://popper.js.org/docs/v1/#modifiers..hide.enabled
@@ -52,7 +60,7 @@ const SimpleTooltip = ({
         modifiers: {
           preventOverflow: {
             enabled: true,
-            boundariesElement: 'viewport',
+            boundariesElement: 'scrollParent',
           },
           hide: {
             enabled: false,
