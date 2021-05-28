@@ -36,6 +36,7 @@ import { Lighting } from './BaseuiTheming/lighting';
 import { Sizing } from './BaseuiTheming/sizing';
 import { Type } from './BaseuiTheming/typography';
 import MotifDarkTheme from './theme/baseui-dark';
+import MotifLightTheme from './theme/baseui-light';
 import { SearchTabs } from './component/SearchTabs';
 import BorderButton from './component/BorderButton';
 import { Dropdown } from './component/Dropdown';
@@ -45,10 +46,10 @@ const engine = new Styletron();
 
 const App = () => (
   <StyletronProvider value={engine}>
-    <BaseProvider theme={MotifDarkTheme}>
+    <BaseProvider theme={MotifLightTheme}>
       <typo.HeadingLarge marginLeft='10%'>Component Gallery</typo.HeadingLarge>
       <Block
-        backgroundColor='#080808'
+        backgroundColor='white'
         color='contentPrimary'
         marginTop='60px'
         marginRight='20%'

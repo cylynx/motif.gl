@@ -1,7 +1,9 @@
 import { createDarkTheme } from 'baseui';
+import { Theme } from 'baseui/theme';
 import typography from './shared/typography';
 import borders from './shared/borders';
 import themeColors from './shared/themeColors';
+import responsiveTheme from './shared/responsive';
 
 const primitives = {
   // Primary Palette
@@ -16,15 +18,7 @@ const primitives = {
   primary500: '#a2a2aa',
   primary600: '#4b4b52',
   primary700: '#32323A',
-  // Give a tint to the dark mono colors
-  // mono300: '#4c5667',
-  // mono400: '#3d4552',
-  // mono500: '#2e3238',
-  // mono600: '#292d32',
-  // mono700: '#22262a',
-  // mono800: '#3f3f40',
-  // mono900: '#1e1e1f',
-  // mono1000: "black", #default
+  primaryFontFamily: 'Poppins',
 };
 
 const backgroundSecondary = '#292930';
@@ -117,6 +111,7 @@ const overrides = {
   borders,
 };
 
-const MotifDarkTheme = createDarkTheme(primitives, overrides);
+const DarkTheme = createDarkTheme(primitives, overrides);
+const MotifDarkTheme: Theme = { ...DarkTheme, ...responsiveTheme };
 
 export default MotifDarkTheme;

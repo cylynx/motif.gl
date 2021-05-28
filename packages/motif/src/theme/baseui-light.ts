@@ -1,30 +1,58 @@
 import { createTheme } from 'baseui';
-import { Breakpoints, MediaQuery, Theme } from 'baseui/theme';
+import { Theme } from 'baseui/theme';
+import typography from './shared/typography';
+import borders from './shared/borders';
+import themeColors from './shared/themeColors';
+import responsiveTheme from './shared/responsive';
 
 const primitives = {
   // Primary Palette
-  primaryA: '#102A43',
+  primaryA: '#24242A',
   primaryB: '#FFFFFF',
-  primary: '#102A43',
-  primary50: '#F0F4F8',
-  primary100: '#D9E2EC',
-  primary200: '#BCCCDC',
-  primary300: '#9FB3C8',
-  primary400: '#829AB1',
-  primary500: '#627D98',
-  primary600: '#486581',
-  primary700: '#243B53',
+  primary: '#24242A',
+  primary50: '#fafaff',
+  primary100: '#f5f5fd',
+  primary200: '#f0f0f8',
+  primary300: '#e3e3eb',
+  primary400: '#c1c1c9',
+  primary500: '#a2a2aa',
+  primary600: '#4b4b52',
+  primary700: '#32323A',
   primaryFontFamily: 'Poppins',
 };
+
+const backgroundSecondary = '#f0f0f0';
+const backgroundTertiary = primitives.primary300;
+const textSecondary = '#8C8C97';
+const borderColor = 'rgba(140, 140, 151, 0.4)';
 
 const overrides = {
   colors: {
     // Ref: https://github.com/uber/baseweb/blob/master/src/themes/light-theme/color-semantic-tokens.js
     // Background
     backgroundPrimary: primitives.primaryB,
-    backgroundSecondary: primitives.primary50,
+    backgroundSecondary,
+    backgroundTertiary,
     backgroundInversePrimary: primitives.primaryA,
-    backgroundInverseSecondary: primitives.primary700,
+    backgroundInverseSecondary: primitives.primary600,
+
+    // Replace accent palette with theme colors
+    accent: themeColors.theme,
+    accent50: themeColors.theme50,
+    accent100: themeColors.theme100,
+    accent200: themeColors.theme200,
+    accent300: themeColors.theme300,
+    accent400: themeColors.theme400,
+    accent500: themeColors.theme500,
+    accent600: themeColors.theme600,
+    accent700: themeColors.theme700,
+
+    // Map other accent colors to theme accent instead of default blue
+    // https://github.com/uber/baseweb/blob/master/src/themes/dark-theme/color-semantic-tokens.js
+    backgroundLightAccent: themeColors.theme700,
+    contentAccent: themeColors.theme300,
+    borderAccent: themeColors.theme400,
+    borderAccentLight: themeColors.theme500,
 
     // Content
     contentPrimary: primitives.primaryA,
@@ -34,103 +62,51 @@ const overrides = {
     contentInverseSecondary: primitives.primary200,
     contentInverseTertiary: primitives.primary300,
 
-    // Make primary button a little darker
-    buttonPrimaryFill: '#0a1a29',
-    buttonPrimaryHover: primitives.primary,
-    buttonPrimaryActive: primitives.primary700,
+    // Change all non-disabled text with mono300 (gray500) to make the contrast higher
+    // https://github.com/uber/baseweb/blob/master/src/themes/dark-theme/color-component-tokens.js
+    modalCloseColor: primitives.primary600,
+    tableFilterHeading: primitives.primary600,
+    tickBorder: textSecondary,
+    inputPlaceholder: primitives.primary600,
+    menuFontDefault: primitives.primary600,
+    // Override tooltip
+    // tooltipBackground: primitives.mono600,
+    tooltipText: primitives.primaryA,
 
-    // Change style of secondary button to be slightly lighter
-    buttonSecondaryFill: primitives.primary50,
+    // Components
+    buttonPrimaryFill: themeColors.theme300,
+    buttonPrimaryHover: themeColors.theme400,
+    buttonPrimaryActive: themeColors.theme,
+    buttonPrimarySelectedFill: themeColors.theme,
+    buttonPrimaryText: primitives.primaryA,
+    buttonPrimarySelectedText: primitives.primaryA,
+    buttonSecondaryFill: backgroundSecondary,
+    buttonSecondaryActive: primitives.primary300,
+    buttonSecondarySelectedFill: primitives.primary300,
+    listHeaderFill: backgroundSecondary,
+    listBodyFill: backgroundTertiary,
+    inputBorder: borderColor,
+    inputFill: primitives.primary50,
+    inputFillActive: primitives.primary50,
+    menuFill: primitives.primary50,
+    menuFillHover: primitives.primary300,
+    tagPrimarySolidBackground: themeColors.theme300,
+    tagPrimarySolidFont: primitives.primaryA,
+    tagPrimaryOutlinedBackground: themeColors.theme300,
+    toggleFill: themeColors.theme300,
+    toggleFillChecked: themeColors.theme400,
+    tickFillSelected: themeColors.theme300,
+    tickFillSelectedHover: themeColors.theme400,
+    tickFillSelectedHoverActive: themeColors.theme400,
+    fileUploaderBackgroundColor: primitives.primary50,
+    fileUploaderBorderColorActive: borderColor,
+    borderFocus: themeColors.theme,
   },
-
-  typography: {
-    HeadingXXLarge: {
-      fontSize: '40px',
-      lineHeight: '48px',
-      fontWeight: '700',
-    },
-    HeadingXLarge: {
-      fontSize: '32px',
-      lineHeight: '40px',
-      fontWeight: '700',
-    },
-    HeadingLarge: {
-      fontSize: '24px',
-      lineHeight: '30px',
-      fontWeight: '700',
-    },
-    HeadingMedium: {
-      fontSize: '20px',
-      lineHeight: '28px',
-      fontWeight: '600',
-    },
-    HeadingSmall: {
-      fontSize: '18px',
-      lineHeight: '24px',
-      fontWeight: '600',
-    },
-    HeadingXSmall: {
-      fontSize: '18px',
-      lineHeight: '24px',
-      fontWeight: '600',
-    },
-    LabelLarge: {
-      fontSize: '18px',
-      lineHeight: '24px',
-      fontWeight: '600',
-    },
-    LabelMedium: {
-      fontSize: '16px',
-      lineHeight: '20px',
-      fontWeight: '600',
-    },
-    LabelSmall: {
-      fontSize: '14px',
-      lineHeight: '16px',
-      fontWeight: '600',
-    },
-    LabelXSmall: {
-      fontSize: '12px',
-      lineHeight: '16px',
-      fontWeight: '600',
-    },
-    ParagraphLarge: {
-      fontSize: '18px',
-      lineHeight: '28px',
-      fontWeight: '400',
-    },
-    ParagraphMedium: {
-      fontSize: '16px',
-      lineHeight: '24px',
-      fontWeight: '400',
-    },
-    ParagraphSmall: {
-      fontSize: '14px',
-      lineHeight: '20px',
-      fontWeight: '400',
-    },
-  },
-};
-
-// https://github.com/uber/baseweb/blob/4efe7fabbb06c5301f7faabbe56d833d9bc51a91/documentation-site/pages/_app.js
-const breakpoints: Breakpoints = {
-  small: 670,
-  medium: 920,
-  large: 1280,
-};
-
-const mediaQuery: MediaQuery = {
-  small: '@media screen and (min-width: 670px)',
-  medium: '@media screen and (min-width: 920px)',
-  large: '@media screen and (min-width: 1280px)',
-};
-
-const ResponsiveTheme = {
-  breakpoints,
-  mediaQuery,
+  typography,
+  borders,
 };
 
 const LightTheme = createTheme(primitives, overrides);
-const MotifLightTheme: Theme = { ...LightTheme, ...ResponsiveTheme };
+const MotifLightTheme: Theme = { ...LightTheme, ...responsiveTheme };
 
 export default MotifLightTheme;
