@@ -189,11 +189,11 @@ const PickerComponents = () => (
       </Block>
       <Block display='flex' gridGap='20px'>
         <Block width='400px'>
-          <typo.LabelSmall> Slider </typo.LabelSmall>
+          <typo.LabelSmall marginBottom='4px'> Slider </typo.LabelSmall>
           <Slider showThumbValue showTickBar />
         </Block>
         <Block width='400px'>
-          <typo.LabelSmall> Range Slider </typo.LabelSmall>
+          <typo.LabelSmall marginBottom='4px'> Range Slider </typo.LabelSmall>
           <Slider
             showThumbValue
             showTickBar

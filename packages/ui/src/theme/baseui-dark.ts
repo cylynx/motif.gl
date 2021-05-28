@@ -25,7 +25,6 @@ const backgroundSecondary = '#292930';
 const backgroundTertiary = primitives.primary700;
 const textSecondary = '#8C8C97';
 const borderColor = 'rgba(140, 140, 151, 0.16)';
-const hoverColor = 'rgba(255, 255, 255, 0.08)';
 
 const overrides = {
   colors: {
@@ -90,7 +89,7 @@ const overrides = {
     inputFill: backgroundTertiary,
     inputFillActive: backgroundTertiary,
     menuFill: backgroundTertiary,
-    menuFillHover: hoverColor,
+    menuFillHover: primitives.primary600,
     tagPrimarySolidBackground: themeColors.theme,
     tagPrimarySolidFont: primitives.primaryA,
     tagPrimaryOutlinedBackground: themeColors.theme,

@@ -22,13 +22,8 @@ export const Slider: FC<SliderProps> = ({
         Thumb: {
           style: ({ $theme }) => {
             return {
-              height: '20px',
-              width: '20px',
-              // modify to border: 0 will breaks atomic rendering
-              borderTopLeftRadius: '35px',
-              borderTopRightRadius: '35px',
-              borderBottomLeftRadius: '35px',
-              borderBottomRightRadius: '35px',
+              height: '16px',
+              width: '16px',
               backgroundColor: $theme.colors.accent500,
               color: $theme.colors.contentPrimary,
               display: 'flex',
@@ -49,10 +44,9 @@ export const Slider: FC<SliderProps> = ({
               display: showThumbValue ? 'block' : 'none',
               position: 'absolute',
               backgroundColor: 'transparent',
-              top: `-${$theme.sizing.scale700}`,
+              top: `-${$theme.sizing.scale600}`,
               ...$theme.typography.font200,
               color: $theme.colors.contentPrimary,
-
               // simplify to padding:0, border:0 will break atomic rendering
               paddingLeft: 0,
               paddingRight: 0,
@@ -76,22 +70,22 @@ export const Slider: FC<SliderProps> = ({
                   $value.length === 1
                     ? [
                         $disabled
-                          ? colors.borderOpaque
+                          ? colors.inputBorder
                           : $theme.colors.accent500,
                         $disabled
                           ? colors.backgroundSecondary
-                          : colors.borderOpaque,
+                          : colors.inputBorder,
                       ]
                     : [
                         $disabled
                           ? colors.backgroundSecondary
-                          : colors.borderOpaque,
+                          : colors.inputBorder,
                         $disabled
-                          ? colors.borderOpaque
+                          ? colors.inputBorder
                           : $theme.colors.accent500,
                         $disabled
                           ? colors.backgroundSecondary
-                          : colors.borderOpaque,
+                          : colors.inputBorder,
                       ],
                 min: $min || 0,
                 max: $max || 0,
