@@ -5,7 +5,7 @@ import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
 import { BaseProvider } from 'baseui';
 import { Block } from 'baseui/block';
-import { Button } from 'baseui/button';
+// import { Button } from 'baseui/button';
 import * as icon from 'baseui/icon';
 import { Tag, KIND, VARIANT } from 'baseui/tag';
 import { Notification } from 'baseui/notification';
@@ -38,7 +38,7 @@ import { Type } from './BaseuiTheming/typography';
 import MotifDarkTheme from './theme/baseui-dark';
 import MotifLightTheme from './theme/baseui-light';
 import { SearchTabs } from './component/SearchTabs';
-import BorderButton from './component/BorderButton';
+import Button from './component/Button';
 import { Dropdown } from './component/Dropdown';
 import { Slider } from './component/Slider';
 
@@ -46,10 +46,10 @@ const engine = new Styletron();
 
 const App = () => (
   <StyletronProvider value={engine}>
-    <BaseProvider theme={MotifLightTheme}>
+    <BaseProvider theme={MotifDarkTheme}>
       <typo.HeadingLarge marginLeft='10%'>Component Gallery</typo.HeadingLarge>
       <Block
-        backgroundColor='white'
+        backgroundColor='#080808'
         color='contentPrimary'
         marginTop='60px'
         marginRight='20%'
@@ -98,11 +98,11 @@ const PickerComponents = () => (
       </FormControl>
       <Block display='flex' gridGap='20px'>
         <Block width='300px'>
-          <typo.LabelMedium> Datepicker </typo.LabelMedium>
+          <typo.LabelSmall> Datepicker </typo.LabelSmall>
           <StatefulDatePicker size='compact' />
         </Block>
         <Block width='300px'>
-          <typo.LabelMedium> Select </typo.LabelMedium>
+          <typo.LabelSmall> Select </typo.LabelSmall>
           <StatefulSelect
             options={[
               { label: 'AliceBlue', id: '#F0F8FF' },
@@ -117,7 +117,7 @@ const PickerComponents = () => (
           />
         </Block>
         <Block width='400px'>
-          <typo.LabelMedium> Multi-Select </typo.LabelMedium>
+          <typo.LabelSmall> Multi-Select </typo.LabelSmall>
           <StatefulSelect
             options={[
               { label: 'AliceBlue', id: '#F0F8FF' },
@@ -140,7 +140,7 @@ const PickerComponents = () => (
       </Block>
       <Block display='flex' gridGap='20px'>
         <Block width='300px'>
-          <typo.LabelMedium> Regular Dropdown </typo.LabelMedium>
+          <typo.LabelSmall> Regular Dropdown </typo.LabelSmall>
           <Dropdown
             options={[
               { label: 'AliceBlue', id: '#F0F8FF' },
@@ -152,8 +152,8 @@ const PickerComponents = () => (
             ]}
           />
         </Block>
-        <Block width='400px'>
-          <typo.LabelMedium> Transparent Dropdown </typo.LabelMedium>
+        <Block width='300px'>
+          <typo.LabelSmall> Transparent Dropdown </typo.LabelSmall>
           <Dropdown
             transparent
             options={[
@@ -166,14 +166,34 @@ const PickerComponents = () => (
             ]}
           />
         </Block>
+        <Block width='400px'>
+          <typo.LabelSmall> Multi-select dropdown </typo.LabelSmall>
+          <Dropdown
+            options={[
+              { label: 'AliceBlue', id: '#F0F8FF' },
+              { label: 'AntiqueWhite', id: '#FAEBD7' },
+              { label: 'Aqua', id: '#00FFFF' },
+              { label: 'Aquamarine', id: '#7FFFD4' },
+              { label: 'Azure', id: '#F0FFFF' },
+              { label: 'Beige', id: '#F5F5DC' },
+            ]}
+            initialState={{
+              value: [
+                { label: 'Azure', id: '#F0FFFF' },
+                { label: 'Beige', id: '#F5F5DC' },
+              ],
+            }}
+            multi
+          />
+        </Block>
       </Block>
       <Block display='flex' gridGap='20px'>
         <Block width='400px'>
-          <typo.LabelMedium> Slider </typo.LabelMedium>
+          <typo.LabelSmall> Slider </typo.LabelSmall>
           <Slider showThumbValue showTickBar />
         </Block>
         <Block width='400px'>
-          <typo.LabelMedium> Range Slider </typo.LabelMedium>
+          <typo.LabelSmall> Range Slider </typo.LabelSmall>
           <Slider
             showThumbValue
             showTickBar
@@ -183,11 +203,11 @@ const PickerComponents = () => (
       </Block>
       <Block display='flex' gridGap='20px'>
         <Block width='400px'>
-          <typo.LabelMedium> FileUploader </typo.LabelMedium>
+          <typo.LabelSmall> FileUploader </typo.LabelSmall>
           <FileUploader />
         </Block>
         <Block width='400px'>
-          <typo.LabelMedium> Menu </typo.LabelMedium>
+          <typo.LabelSmall> Menu </typo.LabelSmall>
           <StatefulMenu
             items={[
               { label: 'Item One' },
@@ -212,10 +232,10 @@ const InputComponents = () => (
       paddingLeft='18px'
     >
       <typo.ParagraphMedium>
-        Buttons - use compact size as default and square shape for standalone
-        icons
+        Buttons - use compact size (height - 32px) as default and square shape
+        for standalone icons
       </typo.ParagraphMedium>
-      <typo.LabelMedium> Primary Button </typo.LabelMedium>
+      <typo.LabelSmall> Primary Button </typo.LabelSmall>
       <Block display='flex' gridGap='10px'>
         <Button kind='primary' size='compact'>
           {' '}
@@ -231,7 +251,7 @@ const InputComponents = () => (
           Disabled State
         </Button>
       </Block>
-      <typo.LabelMedium> Secondary Button </typo.LabelMedium>
+      <typo.LabelSmall> Secondary Button </typo.LabelSmall>
       <Block display='flex' gridGap='10px'>
         <Button kind='secondary' size='compact'>
           {' '}
@@ -250,7 +270,7 @@ const InputComponents = () => (
           Disabled State{' '}
         </Button>
       </Block>
-      <typo.LabelMedium> Tertiary Button </typo.LabelMedium>
+      <typo.LabelSmall> Tertiary Button </typo.LabelSmall>
       <Block display='flex' gridGap='10px'>
         <Button kind='tertiary' size='compact'>
           {' '}
@@ -269,7 +289,7 @@ const InputComponents = () => (
           Disabled State{' '}
         </Button>
       </Block>
-      <typo.LabelMedium> Icon Buttons</typo.LabelMedium>
+      <typo.LabelSmall> Icon Buttons</typo.LabelSmall>
       <Block display='flex' gridGap='10px'>
         <br />
         <Button shape='square' size='compact'>
@@ -295,32 +315,33 @@ const InputComponents = () => (
           End Enhancer
         </Button>
       </Block>
-      <typo.LabelMedium> Border Button </typo.LabelMedium>
+      <typo.LabelSmall> Border Button </typo.LabelSmall>
       <Block display='flex' gridGap='10px'>
         <br />
-        <BorderButton size='compact' kind='secondary' shape='square'>
+        <Button border='solid' size='compact' kind='secondary' shape='square'>
           <icon.Plus size={18} />
-        </BorderButton>
-        <BorderButton size='compact' kind='secondary'>
+        </Button>
+        <Button border='solid' size='compact' kind='secondary'>
           Border Secondary
-        </BorderButton>
-        <BorderButton size='compact' kind='tertiary'>
+        </Button>
+        <Button border='solid' size='compact' kind='tertiary'>
           Border Tertiary
-        </BorderButton>
-        <BorderButton
+        </Button>
+        <Button
+          border='solid'
           size='compact'
           kind='secondary'
           startEnhancer={() => <icon.Plus size={18} />}
         >
           Import Data
-        </BorderButton>
-        <BorderButton size='compact' kind='secondary' disabled>
+        </Button>
+        <Button border='solid' size='compact' kind='secondary' disabled>
           Disabled State
-        </BorderButton>
+        </Button>
       </Block>
       <Block display='flex'>
         <Block width='200px'>
-          <typo.LabelMedium> Checkbox </typo.LabelMedium>
+          <typo.LabelSmall> Checkbox </typo.LabelSmall>
           <StatefulCheckbox> click me </StatefulCheckbox>
           <StatefulCheckbox initialState={{ checked: true }}>
             checked
@@ -336,7 +357,7 @@ const InputComponents = () => (
           </StatefulCheckbox>
         </Block>
         <Block width='300px'>
-          <typo.LabelMedium> Radio Groups </typo.LabelMedium>
+          <typo.LabelSmall> Radio Groups </typo.LabelSmall>
           <StatefulRadioGroup name='stateful' initialState={{ value: '2' }}>
             <Radio value='1'>First</Radio>
             <Radio value='2'>Second</Radio>
@@ -360,7 +381,7 @@ const ContentComponents = () => (
     >
       <Block display='flex' gridGap='20px'>
         <Block width='400px'>
-          <typo.LabelMedium> Tabs (motion) </typo.LabelMedium>
+          <typo.LabelSmall> Tabs (motion) </typo.LabelSmall>
           <StatefulTabs>
             <Tab title='First'>I must not fear.</Tab>
             <Tab title='Second'>Fear is the mind-killer.</Tab>
@@ -370,7 +391,7 @@ const ContentComponents = () => (
           </StatefulTabs>
         </Block>
         <Block width='400px'>
-          <typo.LabelMedium> Tabs (motion) Fixed fill </typo.LabelMedium>
+          <typo.LabelSmall> Tabs (motion) Fixed fill </typo.LabelSmall>
           <SearchTabs
             items={[
               {
@@ -393,7 +414,7 @@ const ContentComponents = () => (
           />
         </Block>
         <Block width='400px'>
-          <typo.LabelMedium> Accordion </typo.LabelMedium>
+          <typo.LabelSmall> Accordion </typo.LabelSmall>
           <Accordion>
             <Panel title='Panel 1'>Content 1</Panel>
             <Panel title='Panel 2'>Content 2</Panel>
@@ -409,10 +430,10 @@ const ContentComponents = () => (
       >
         <Block display='flex' gridGap='20px'>
           <Block width='400px'>
-            <typo.LabelMedium marginBottom='24px' marginTop='24px'>
+            <typo.LabelSmall marginBottom='24px' marginTop='24px'>
               {' '}
               Tooltip{' '}
-            </typo.LabelMedium>
+            </typo.LabelSmall>
             <StatefulTooltip
               content={() => <Block padding='20px'>Hello, there! 👋</Block>}
               returnFocus
@@ -422,10 +443,10 @@ const ContentComponents = () => (
             </StatefulTooltip>
           </Block>
           <Block width='400px'>
-            <typo.LabelMedium marginBottom='24px' marginTop='24px'>
+            <typo.LabelSmall marginBottom='24px' marginTop='24px'>
               {' '}
               Popover{' '}
-            </typo.LabelMedium>
+            </typo.LabelSmall>
             <StatefulPopover
               content={() => (
                 <Block padding='20px'>
@@ -443,7 +464,7 @@ const ContentComponents = () => (
 
       <Block display='flex' gridGap='20px'>
         <Block width='400px'>
-          <typo.LabelMedium> List </typo.LabelMedium>
+          <typo.LabelSmall> List </typo.LabelSmall>
           <ListItem>
             <ListItemLabel>Label One</ListItemLabel>
           </ListItem>
@@ -458,10 +479,10 @@ const ContentComponents = () => (
           </ListItem>
         </Block>
         <Block width='400px'>
-          <typo.LabelMedium marginTop='24px' marginBottom='18px'>
+          <typo.LabelSmall marginTop='24px' marginBottom='18px'>
             {' '}
             Tag{' '}
-          </typo.LabelMedium>
+          </typo.LabelSmall>
           <React.Fragment>
             {[
               KIND.primary,
@@ -507,7 +528,7 @@ const ProgressComponents = () => (
     >
       <Block display='flex' gridGap='20px'>
         <Block width='400px'>
-          <typo.LabelMedium> Notification </typo.LabelMedium>
+          <typo.LabelSmall> Notification </typo.LabelSmall>
           <Notification>{() => 'This is a notification.'}</Notification>
           <Notification kind={TOASTKIND.positive}>
             Positive notification
@@ -520,7 +541,7 @@ const ProgressComponents = () => (
           </Notification>
         </Block>
         <Block width='400px'>
-          <typo.LabelMedium> Toast </typo.LabelMedium>
+          <typo.LabelSmall> Toast </typo.LabelSmall>
           <Toast>Default info notification</Toast>
           <Toast kind={TOASTKIND.positive}>Positive notification</Toast>
           <Toast kind={TOASTKIND.warning}>Warning notification</Toast>
@@ -530,15 +551,15 @@ const ProgressComponents = () => (
 
       <Block display='flex' gridGap='20px'>
         <Block width='300px'>
-          <typo.LabelMedium> Progress Bar </typo.LabelMedium>
+          <typo.LabelSmall> Progress Bar </typo.LabelSmall>
           <ProgressBar value={50} successValue={100} />
         </Block>
         <Block width='300px'>
-          <typo.LabelMedium> Skeleton </typo.LabelMedium>
+          <typo.LabelSmall> Skeleton </typo.LabelSmall>
           <Skeleton height='100px' width='200px' animation />
         </Block>
         <Block width='300px'>
-          <typo.LabelMedium> Spinner </typo.LabelMedium>
+          <typo.LabelSmall> Spinner </typo.LabelSmall>
           <Spinner />
         </Block>
       </Block>
@@ -561,7 +582,7 @@ const TypographyComponents = () => (
     <typo.HeadingSmall> Heading Small (H5) </typo.HeadingSmall>
     <typo.HeadingXSmall> Heading XSmall (H6) </typo.HeadingXSmall>
     <typo.LabelLarge> Label Large </typo.LabelLarge>
-    <typo.LabelMedium> Label Medium </typo.LabelMedium>
+    <typo.LabelSmall> Label Medium </typo.LabelSmall>
     <typo.LabelSmall> Label Small </typo.LabelSmall>
     <typo.LabelXSmall> Label XSmall </typo.LabelXSmall>
     <typo.ParagraphLarge> Paragraph Large </typo.ParagraphLarge>
@@ -783,7 +804,7 @@ const BaseTokens = () => (
     <Type name='ParagraphLarge' />
     <Type name='LabelXSmall' />
     <Type name='LabelSmall' />
-    <Type name='LabelMedium' />
+    <Type name='LabelSmall' />
     <Type name='LabelLarge' />
     <Type name='HeadingXSmall' />
     <Type name='HeadingSmall' />

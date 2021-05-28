@@ -21,10 +21,10 @@ const primitives = {
   primaryFontFamily: 'Poppins',
 };
 
-const backgroundSecondary = '#f0f0f0';
+const backgroundSecondary = '#f0f0f4';
 const backgroundTertiary = primitives.primary300;
 const textSecondary = '#8C8C97';
-const borderColor = 'rgba(140, 140, 151, 0.4)';
+const borderColor = 'rgba(140, 140, 151, 0.2)';
 
 const overrides = {
   colors: {
@@ -60,9 +60,8 @@ const overrides = {
     contentTertiary: primitives.primary400,
     contentInversePrimary: primitives.primaryB,
     contentInverseSecondary: primitives.primary200,
-    contentInverseTertiary: primitives.primary300,
+    contentInverseTertiary: backgroundTertiary,
 
-    // Change all non-disabled text with mono300 (gray500) to make the contrast higher
     // https://github.com/uber/baseweb/blob/master/src/themes/dark-theme/color-component-tokens.js
     modalCloseColor: primitives.primary600,
     tableFilterHeading: primitives.primary600,
@@ -70,7 +69,7 @@ const overrides = {
     inputPlaceholder: primitives.primary600,
     menuFontDefault: primitives.primary600,
     // Override tooltip
-    // tooltipBackground: primitives.mono600,
+    tooltipBackground: backgroundTertiary,
     tooltipText: primitives.primaryA,
 
     // Components
@@ -81,15 +80,15 @@ const overrides = {
     buttonPrimaryText: primitives.primaryA,
     buttonPrimarySelectedText: primitives.primaryA,
     buttonSecondaryFill: backgroundSecondary,
-    buttonSecondaryActive: primitives.primary300,
-    buttonSecondarySelectedFill: primitives.primary300,
+    buttonSecondaryActive: backgroundTertiary,
+    buttonSecondarySelectedFill: backgroundTertiary,
     listHeaderFill: backgroundSecondary,
     listBodyFill: backgroundTertiary,
     inputBorder: borderColor,
-    inputFill: primitives.primary50,
-    inputFillActive: primitives.primary50,
+    inputFill: backgroundSecondary,
+    inputFillActive: backgroundSecondary,
     menuFill: primitives.primary50,
-    menuFillHover: primitives.primary300,
+    menuFillHover: backgroundTertiary,
     tagPrimarySolidBackground: themeColors.theme300,
     tagPrimarySolidFont: primitives.primaryA,
     tagPrimaryOutlinedBackground: themeColors.theme300,
@@ -98,7 +97,7 @@ const overrides = {
     tickFillSelected: themeColors.theme300,
     tickFillSelectedHover: themeColors.theme400,
     tickFillSelectedHoverActive: themeColors.theme400,
-    fileUploaderBackgroundColor: primitives.primary50,
+    fileUploaderBackgroundColor: backgroundSecondary,
     fileUploaderBorderColorActive: borderColor,
     borderFocus: themeColors.theme,
   },

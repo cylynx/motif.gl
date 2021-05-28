@@ -63,7 +63,6 @@ const overrides = {
     contentInverseSecondary: primitives.primary600,
     contentInverseTertiary: primitives.primary500,
 
-    // Change all non-disabled text with mono300 (gray500) to make the contrast higher
     // https://github.com/uber/baseweb/blob/master/src/themes/dark-theme/color-component-tokens.js
     modalCloseColor: primitives.primary300,
     tableFilterHeading: primitives.primary300,
@@ -71,7 +70,7 @@ const overrides = {
     inputPlaceholder: primitives.primary300,
     menuFontDefault: primitives.primary300,
     // Override tooltip
-    // tooltipBackground: primitives.mono600,
+    tooltipBackground: backgroundTertiary,
     tooltipText: primitives.primaryA,
 
     // Components
@@ -88,13 +87,10 @@ const overrides = {
     listHeaderFill: backgroundSecondary,
     listBodyFill: backgroundTertiary,
     inputBorder: borderColor,
-    inputFill: primitives.primary700,
-    inputFillActive: primitives.primary700,
-    menuFill: primitives.primary700,
+    inputFill: backgroundTertiary,
+    inputFillActive: backgroundTertiary,
+    menuFill: backgroundTertiary,
     menuFillHover: hoverColor,
-    // Seems strange...
-    // menuFontSelected: themeColors.theme,
-    // menuFontHighlighted: themeColors.theme,
     tagPrimarySolidBackground: themeColors.theme,
     tagPrimarySolidFont: primitives.primaryA,
     tagPrimaryOutlinedBackground: themeColors.theme,
@@ -103,7 +99,7 @@ const overrides = {
     tickFillSelected: themeColors.theme,
     tickFillSelectedHover: themeColors.theme300,
     tickFillSelectedHoverActive: themeColors.theme300,
-    fileUploaderBackgroundColor: primitives.primary700,
+    fileUploaderBackgroundColor: backgroundTertiary,
     fileUploaderBorderColorActive: borderColor,
     borderFocus: themeColors.theme,
   },
