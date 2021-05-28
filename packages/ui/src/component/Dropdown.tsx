@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { StatefulSelect, SelectProps } from 'baseui/select';
+import { StatefulSelect, StatefulSelectProps } from 'baseui/select';
 import * as Icon from '../../../motif/src/components/Icons';
 
-type DropdownProps = SelectProps & {
+type DropdownProps = StatefulSelectProps & {
   transparent?: boolean;
 };
 
@@ -17,12 +17,23 @@ export const Dropdown: FC<DropdownProps> = ({ transparent, ...rest }) => {
             return {
               backgroundColor: transparent
                 ? 'transparent'
-                : $theme.colors.primary700,
-              borderTopLeftRadius: '6px',
-              borderTopRightRadius: '6px',
-              borderBottomLeftRadius: '6px',
-              borderBottomRightRadius: '6px',
+                : $theme.colors.inputFill,
             };
+          },
+        },
+        Tag: {
+          props: {
+            overrides: {
+              Root: {
+                style: () => ({
+                  marginTop: '2px',
+                  marginBottom: '2px',
+                  marginLeft: '2px',
+                  marginRight: '2px',
+                  height: '20px',
+                }),
+              },
+            },
           },
         },
         SelectArrow: {
