@@ -12,17 +12,33 @@ export const Dropdown: FC<DropdownProps> = ({ transparent, ...rest }) => {
       size='compact'
       {...rest}
       overrides={{
+        Root: {
+          style: () => ({
+            paddingBottom: '4px',
+          }),
+        },
         ControlContainer: {
           style: ({ $theme }) => {
             return {
               backgroundColor: transparent
                 ? 'transparent'
-                : $theme.colors.primary700,
-              borderTopLeftRadius: '6px',
-              borderTopRightRadius: '6px',
-              borderBottomLeftRadius: '6px',
-              borderBottomRightRadius: '6px',
+                : $theme.colors.inputFill,
             };
+          },
+        },
+        Tag: {
+          props: {
+            overrides: {
+              Root: {
+                style: () => ({
+                  marginTop: '2px',
+                  marginBottom: '2px',
+                  marginLeft: '2px',
+                  marginRight: '2px',
+                  height: '20px',
+                }),
+              },
+            },
           },
         },
         SelectArrow: {
@@ -34,3 +50,5 @@ export const Dropdown: FC<DropdownProps> = ({ transparent, ...rest }) => {
     />
   );
 };
+
+export default Dropdown;

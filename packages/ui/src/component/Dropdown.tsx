@@ -6,12 +6,17 @@ type DropdownProps = StatefulSelectProps & {
   transparent?: boolean;
 };
 
-export const Dropdown: FC<DropdownProps> = ({ transparent, ...rest }) => {
+const Dropdown: FC<DropdownProps> = ({ transparent, ...rest }) => {
   return (
     <StatefulSelect
       size='compact'
       {...rest}
       overrides={{
+        Root: {
+          style: () => ({
+            paddingBottom: '4px',
+          }),
+        },
         ControlContainer: {
           style: ({ $theme }) => {
             return {
@@ -45,3 +50,5 @@ export const Dropdown: FC<DropdownProps> = ({ transparent, ...rest }) => {
     />
   );
 };
+
+export default Dropdown;
