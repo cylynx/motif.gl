@@ -25,6 +25,7 @@ const backgroundSecondary = '#292930';
 const backgroundTertiary = primitives.primary700;
 const textSecondary = '#8C8C97';
 const borderColor = 'rgba(140, 140, 151, 0.16)';
+const hoverColor = 'rgba(255, 255, 255, 0.08)';
 
 const overrides = {
   colors: {
@@ -74,9 +75,9 @@ const overrides = {
 
     // Components
     buttonPrimaryFill: themeColors.theme,
-    buttonPrimaryHover: themeColors.theme300,
-    buttonPrimaryActive: 'rgba(72, 143, 128, 0.64)',
-    buttonPrimarySelectedFill: 'rgba(72, 143, 128, 0.64)',
+    buttonPrimaryHover: themeColors.theme400,
+    buttonPrimaryActive: themeColors.theme700,
+    buttonPrimarySelectedFill: themeColors.theme700,
     buttonPrimaryText: primitives.primaryA,
     buttonPrimarySelectedText: primitives.primaryA,
     buttonSecondaryFill: primitives.primary700,
@@ -89,12 +90,12 @@ const overrides = {
     inputFill: backgroundTertiary,
     inputFillActive: backgroundTertiary,
     menuFill: backgroundTertiary,
-    menuFillHover: primitives.primary600,
+    menuFillHover: hoverColor,
     tagPrimarySolidBackground: themeColors.theme,
     tagPrimarySolidFont: primitives.primaryA,
     tagPrimaryOutlinedBackground: themeColors.theme,
     toggleFill: themeColors.theme,
-    toggleFillChecked: themeColors.theme300,
+    toggleFillChecked: themeColors.theme400,
     tickFillSelected: themeColors.theme,
     tickFillSelectedHover: themeColors.theme300,
     tickFillSelectedHoverActive: themeColors.theme300,

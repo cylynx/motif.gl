@@ -74,7 +74,7 @@ const overrides = {
 
     // Components
     buttonPrimaryFill: themeColors.theme300,
-    buttonPrimaryHover: themeColors.theme400,
+    buttonPrimaryHover: themeColors.theme200,
     buttonPrimaryActive: themeColors.theme,
     buttonPrimarySelectedFill: themeColors.theme,
     buttonPrimaryText: primitives.primaryA,
@@ -93,10 +93,10 @@ const overrides = {
     tagPrimarySolidFont: primitives.primaryA,
     tagPrimaryOutlinedBackground: themeColors.theme300,
     toggleFill: themeColors.theme300,
-    toggleFillChecked: themeColors.theme400,
+    toggleFillChecked: themeColors.theme500,
     tickFillSelected: themeColors.theme300,
-    tickFillSelectedHover: themeColors.theme400,
-    tickFillSelectedHoverActive: themeColors.theme400,
+    tickFillSelectedHover: themeColors.theme200,
+    tickFillSelectedHoverActive: themeColors.theme500,
     fileUploaderBackgroundColor: primitives.primary50,
     fileUploaderBorderColorActive: borderColor,
     borderFocus: themeColors.theme,

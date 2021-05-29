@@ -75,9 +75,9 @@ const overrides = {
 
     // Components
     buttonPrimaryFill: themeColors.theme,
-    buttonPrimaryHover: themeColors.theme300,
-    buttonPrimaryActive: 'rgba(72, 143, 128, 0.64)',
-    buttonPrimarySelectedFill: 'rgba(72, 143, 128, 0.64)',
+    buttonPrimaryHover: themeColors.theme400,
+    buttonPrimaryActive: themeColors.theme700,
+    buttonPrimarySelectedFill: themeColors.theme700,
     buttonPrimaryText: primitives.primaryA,
     buttonPrimarySelectedText: primitives.primaryA,
     buttonSecondaryFill: primitives.primary700,
