@@ -51,11 +51,7 @@ describe('Node Style Filter', () => {
       const nodeSizeType = 'fixed';
       const controllerName = 'value';
 
-      cy.react('OptionsNodeStyles')
-        .react('NestedForm', {
-          props: { id: 'nodeSize' },
-        })
-        .react('Controller', { props: { name: controllerName } })
+      cy.react('Controller', { props: { name: controllerName } })
         .nthNode(0)
         .type(arrows);
 

@@ -203,11 +203,7 @@ describe('Setting Popovers', () => {
       const nodeSizeType = 'fixed';
       const controllerName = 'value';
 
-      cy.react('SettingsPopover')
-        .react('NestedForm', {
-          props: { id: 'nodeSize' },
-        })
-        .react('Controller', { props: { name: controllerName } })
+      cy.react('Controller', { props: { name: controllerName } })
         .nthNode(0)
         .type(arrows);
 
@@ -290,9 +286,7 @@ describe('Setting Popovers', () => {
       const edgeSizeType = 'fixed';
       const controllerName = 'value';
 
-      cy.react('SettingsPopover')
-        .react('NestedForm')
-        .react('Controller', { props: { name: controllerName } })
+      cy.react('Controller', { props: { name: controllerName } })
         .nthNode(1)
         .type(arrows);
 

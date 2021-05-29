@@ -1,4 +1,5 @@
-import React, { useContext, Fragment } from 'react';
+import React, { useContext } from 'react';
+import { Block } from 'baseui/block';
 import { useDispatch } from 'react-redux';
 import { ActionCreators as UndoActionCreators } from 'redux-undo';
 import fscreen from 'fscreen';
@@ -85,7 +86,7 @@ const Toolbar = () => {
     {
       key: 4,
       name: 'Undo',
-      icon: <Icon.Undo size={22} />,
+      icon: <Icon.Undo size={18} />,
       isDisabled: false,
       popoverContent: null,
       onClick: () => dispatch(UndoActionCreators.undo()),
@@ -93,7 +94,7 @@ const Toolbar = () => {
     {
       key: 5,
       name: 'Redo',
-      icon: <Icon.Redo size={22} />,
+      icon: <Icon.Redo size={18} />,
       isDisabled: false,
       popoverContent: null,
       onClick: () => dispatch(UndoActionCreators.redo()),
@@ -125,11 +126,11 @@ const Toolbar = () => {
   ];
 
   return (
-    <Fragment>
+    <Block data-testid='toolbar'>
       {menuItems.map((item) => (
         <ToolbarButton key={item.key} item={item} />
       ))}
-    </Fragment>
+    </Block>
   );
 };
 

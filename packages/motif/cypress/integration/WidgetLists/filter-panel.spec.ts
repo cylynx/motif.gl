@@ -14,15 +14,11 @@ describe('Filter Panel', () => {
 
   it('should render successfully', () => {
     cy.wait(200);
-    cy.getReact('FilterPanel').should('exist');
-  });
-
-  it('should render beside Left Navigation Bar', () => {
-    cy.getReact('LeftLayer').getReact('FilterPanel').should('exist');
+    cy.getFilterPanel().should('exist');
   });
 
   it('should render Header component', () => {
-    cy.getReact('FilterPanel').getReact('Header$2').should('exist');
+    cy.getFilterPanel().getReact('Header$2').should('exist');
   });
 
   it('FilterSelection should not be render when no data is present', () => {
@@ -31,11 +27,11 @@ describe('Filter Panel', () => {
 
   describe('AddFilterButton', () => {
     it('should render successfully', () => {
-      cy.getReact('FilterPanel').getReact('AddFilterButton').should('exist');
+      cy.getFilterPanel().getReact('AddFilterButton').should('exist');
     });
 
     it('should be disabled when no data is present', () => {
-      cy.getReact('FilterPanel')
+      cy.getFilterPanel()
         .getReact('AddFilterButton')
         .getProps('disabled')
         .should('deep.eq', true);
@@ -50,10 +46,12 @@ describe('Filter Panel', () => {
       // import sample data by clicking random graph
       cy.importSampleData(SampleData.CIRCLE_GRAPH);
 
+      cy.wait(300);
+
       // open filter panels by clicking sidebar
       cy.switchPanel('filters');
 
-      cy.getReact('FilterPanel')
+      cy.getFilterPanel()
         .getReact('AddFilterButton')
         .getProps('disabled')
         .should('deep.eq', false);

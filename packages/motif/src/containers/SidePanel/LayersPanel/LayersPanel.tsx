@@ -28,7 +28,7 @@ const LayersPanel = () => {
     ungroupGraphFlatten.edges.length - graphFlatten.edges.length;
 
   return (
-    <Fragment>
+    <Block data-testid='layers-panel'>
       <Header />
       <Block
         display='flex'
@@ -52,7 +52,7 @@ const LayersPanel = () => {
       </Block>
       <ImportLayers />
       <Block marginBottom='scale300' />
-    </Fragment>
+    </Block>
   );
 };
 

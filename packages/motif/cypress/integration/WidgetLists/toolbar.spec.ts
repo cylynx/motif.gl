@@ -1,4 +1,12 @@
 describe('Toolbar', () => {
+  const getToolbar = () => {
+    return cy.react('Block', {
+      props: {
+        'data-testid': 'toolbar',
+      },
+    });
+  };
+
   before(() => {
     cy.visit('/');
     cy.waitForReact();
@@ -8,19 +16,11 @@ describe('Toolbar', () => {
   });
 
   it('should render successfully', () => {
-    cy.getReact('Toolbar').should('exist');
+    getToolbar().should('exist');
   });
 
   it('should have eight icons button', () => {
-    cy.react('Toolbar')
-      .getReact('ToolbarButton')
-      .should('have.length', 8);
-  });
-
-  it('should render on top right position and flex column direction', () => {
-    cy.react('TopRightLayer')
-      .getReact('Toolbar')
-      .should('exist');
+    getToolbar().getReact('ToolbarButton').should('have.length', 8);
   });
 
   it('should render legend button successfully', () => {

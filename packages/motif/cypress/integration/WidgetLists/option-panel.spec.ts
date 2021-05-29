@@ -11,30 +11,20 @@ describe('Option Panel', () => {
   });
 
   it('should render successfully', () => {
-    cy.getReact('OptionsPanel').should('exist');
-  });
-
-  it('should render beside Left Navigation Bar', () => {
-    cy.react('LeftLayer')
-      .getReact('OptionsPanel')
-      .should('exist');
+    cy.getOptionsPanel().should('exist');
   });
 
   it('should render Header component', () => {
-    cy.getReact('OptionsPanel')
-      .getReact('Header')
-      .should('exist');
+    cy.getOptionsPanel().getReact('Header').should('exist');
   });
 
   describe('Layout Options', () => {
     it('should render Layout Options', () => {
-      cy.getReact('OptionsPanel')
-        .getReact('OptionsLayout')
-        .should('exist');
+      cy.getOptionsPanel().getReact('OptionsLayout').should('exist');
     });
 
     it('should possess one layout nested form', () => {
-      cy.getReact('OptionsPanel')
+      cy.getOptionsPanel()
         .getReact('OptionsLayout')
         .getReact('Accordion', {
           props: {
@@ -54,13 +44,11 @@ describe('Option Panel', () => {
 
   describe('Node Style Options', () => {
     it('should render Node Style Options', () => {
-      cy.getReact('OptionsPanel')
-        .getReact('OptionsNodeStyles')
-        .should('exist');
+      cy.getOptionsPanel().getReact('OptionsNodeStyles').should('exist');
     });
 
     it('should possess four forms', () => {
-      cy.getReact('OptionsPanel')
+      cy.getOptionsPanel()
         .getReact('OptionsNodeStyles')
         .getReact('Accordion', {
           props: {
@@ -79,13 +67,11 @@ describe('Option Panel', () => {
 
   describe('Edge Style Options', () => {
     it('should render Edge Style Filter', () => {
-      cy.getReact('OptionsPanel')
-        .getReact('OptionsEdgeStyles')
-        .should('exist');
+      cy.getOptionsPanel().getReact('OptionsEdgeStyles').should('exist');
     });
 
     it('should possess five forms', () => {
-      cy.getReact('OptionsPanel')
+      cy.getOptionsPanel()
         .getReact('OptionsEdgeStyles')
         .getReact('Accordion', {
           props: {

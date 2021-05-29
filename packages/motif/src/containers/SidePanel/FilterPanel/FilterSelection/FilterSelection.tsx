@@ -83,12 +83,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
           return;
         }
 
-        const { domain, step, histogram } = getFieldDomain(
-          graphFlatten[from],
-          (x) => x[id],
-          analyzerType,
-          format,
-        ) as TimeRangeFieldDomain;
+        const { domain, step, histogram } = fieldDomain as TimeRangeFieldDomain;
 
         const histogramProp: HistogramProp = {
           domain,

@@ -10,9 +10,9 @@ describe('Layout Options', () => {
   const graphinEl = 'Graphin2';
 
   const changeLayout = (label: string) => {
-    cy.react('NestedForm', { props: { id: layoutEl } })
-      .react('Controller', { props: { name: layoutEl } })
-      .type(`${label}{enter}`);
+    cy.react('Controller', { props: { name: layoutEl } }).type(
+      `${label}{enter}`,
+    );
   };
 
   const findDefaultFromLayoutForm = (

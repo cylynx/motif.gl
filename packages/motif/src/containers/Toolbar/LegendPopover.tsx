@@ -12,6 +12,16 @@ import { Dropdown } from '../../components/ui/Dropdown';
 
 const MAX_LEGEND_SIZE = CATEGORICAL_COLOR.length;
 
+const SelectFieldPopoverOverrides = {
+  props: {
+    overrides: {
+      Body: {
+        style: () => ({ zIndex: 1 }),
+      },
+    },
+  },
+};
+
 const Legend = ({ data }: { data: { [_: string]: string } }) => {
   const [css] = useStyletron();
   let valueArr = Object.keys(data);
@@ -92,6 +102,9 @@ const LegendPopover = () => {
           clearable={false}
           value={selectValue}
           maxDropdownHeight='300px'
+          overrides={{
+            Popover: SelectFieldPopoverOverrides,
+          }}
         />
       </FormControl>
       {nodeStyle.color &&

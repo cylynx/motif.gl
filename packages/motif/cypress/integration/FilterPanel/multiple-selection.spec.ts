@@ -4,12 +4,12 @@ describe('Multiple Selection', () => {
   const graphinEl = 'Graphin2';
 
   const deleteButtonClick = () => {
-    cy.react('Button', {
+    cy.react('Button2', {
       props: {
         'data-testid': 'filter-selection-header:delete',
       },
     })
-      .nthNode(0)
+      .first()
       .click();
   };
 

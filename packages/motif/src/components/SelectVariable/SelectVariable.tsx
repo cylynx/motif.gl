@@ -1,5 +1,6 @@
 /* eslint-disable no-shadow */
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Select, SelectOverrides } from 'baseui/select';
 import { Block } from 'baseui/block';
 import { OptgroupsT, SelectProps } from 'baseui/select';
 import { getIcon, TypeProps } from '../TagData';
@@ -29,19 +30,18 @@ export type SelectVariableProps = Omit<
   options: SelectOptions & OptgroupsT;
   onChange?: (obj: { [key: string]: string }) => void;
   placeholder?: string;
+  overrides?: SelectOverrides;
   [x: string]: any;
 };
 
-const testOptions = {
-  __ungrouped: [],
-  Nodes: [
-    { label: 'data.id', id: 'data.id', type: 'string' },
-    { label: 'dataStr', id: 'datastr', type: 'boolean' },
-  ],
-  Edges: [
-    { label: 'value', id: 'value', type: 'real' },
-    { label: 'start_dt', id: 'start_dt', type: 'timestamp' },
-  ],
+const SelectFieldPopoverOverrides = {
+  props: {
+    overrides: {
+      Body: {
+        style: () => ({ zIndex: 1 }),
+      },
+    },
+  },
 };
 
 const getValueLabel: SelectProps['getValueLabel'] = ({ option }) => {
@@ -67,9 +67,12 @@ const getOptionLabel: SelectProps['getOptionLabel'] = ({ option }) => {
 
 const SelectVariable = ({
   value = [],
-  options = testOptions,
+  options,
   onChange: onChangeProps,
   placeholder = 'Select Variable',
+  overrides = {
+    Popover: SelectFieldPopoverOverrides,
+  },
   ...rest
 }: SelectVariableProps) => {
   const onChangeSelection = (value: any) => {
@@ -78,6 +81,15 @@ const SelectVariable = ({
     }
     return value;
   };
+
+  /**
+   * To prevent option not displayed in Jupyter Notebook
+   */
+  useEffect(() => {
+    Object.assign(overrides, {
+      Popover: SelectFieldPopoverOverrides,
+    });
+  }, [overrides]);
 
   return (
     <Dropdown
@@ -90,6 +102,7 @@ const SelectVariable = ({
       getValueLabel={getValueLabel}
       maxDropdownHeight='300px'
       data-testid='select-variable'
+      overrides={overrides}
       {...rest}
     />
   );

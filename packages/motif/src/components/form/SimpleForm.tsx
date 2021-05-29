@@ -17,6 +17,16 @@ export type SimpleFormData = {
   [optionId: string]: any;
 };
 
+const SelectFieldPopoverOverrides = {
+  props: {
+    overrides: {
+      Body: {
+        style: () => ({ zIndex: 1 }),
+      },
+    },
+  },
+};
+
 const cleanGetValues = (obj: any) => {
   const results = {};
   Object.entries(obj).forEach(([key, value]: any[]) => {
@@ -117,6 +127,9 @@ const SimpleForm = ({ data }: { data: SimpleFormData }) => {
                   size='compact'
                   clearable={false}
                   maxDropdownHeight='300px'
+                  overrides={{
+                    Popover: SelectFieldPopoverOverrides,
+                  }}
                   {...rest}
                 />
               );
