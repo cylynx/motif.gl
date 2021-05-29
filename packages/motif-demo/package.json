@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "vite --force --host",
+    "start": "vite --force",
     "build": "vite build --config vite.build.config.ts",
     "serve": "vite preview --port 3000"
   },
