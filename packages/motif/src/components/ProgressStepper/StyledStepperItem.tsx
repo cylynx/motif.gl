@@ -10,13 +10,15 @@ type StepperItemProps = {
 };
 
 const themeByState = (
+  $theme: Theme,
   $isDisabled: boolean,
   $isStart: boolean,
   $isVisited: boolean,
 ) => {
+  const { backgroundPrimary } = $theme.colors;
   if ($isDisabled) {
-    const disabledBackground = '#F6F6F6';
-    const disabledColor = '#AFAFAF';
+    const disabledBackground = $theme.colors.buttonDisabledFill;
+    const disabledColor = $theme.colors.contentStateDisabled;
     return {
       normal: {
         backgroundColor: disabledBackground,
@@ -28,33 +30,33 @@ const themeByState = (
         color: disabledColor,
         textDecoration: 'none',
         before: {
-          borderLeftColor: '#FFFFFF',
+          borderLeftColor: backgroundPrimary,
           borderTopColor: disabledBackground,
           borderBottomColor: disabledBackground,
         },
         after: {
           borderLeftColor: disabledBackground,
-          borderTopColor: `white`,
-          borderBottomColor: `white`,
+          borderTopColor: backgroundPrimary,
+          borderBottomColor: backgroundPrimary,
         },
       },
       before: {
-        borderLeftColor: 'white',
+        borderLeftColor: backgroundPrimary,
         borderTopColor: disabledBackground,
         borderBottomColor: disabledBackground,
       },
       after: {
         borderLeftColor: disabledBackground,
-        borderTopColor: 'white',
-        borderBottomColor: 'white',
+        borderTopColor: backgroundPrimary,
+        borderBottomColor: backgroundPrimary,
       },
     };
   }
 
   if ($isVisited) {
-    const backgroundColor = '#4A5E6F';
-    const fontColor = '#FFFFFF';
-    const hoverBackground = '#011B32';
+    const backgroundColor = $theme.colors.buttonPrimarySelectedFill;
+    const fontColor = $theme.colors.contentPrimary;
+    const hoverBackground = $theme.colors.buttonPrimaryHover;
     return {
       normal: {
         backgroundColor,
@@ -66,32 +68,33 @@ const themeByState = (
         color: fontColor,
         textDecoration: 'underline',
         before: {
-          borderLeftColor: $isStart ? backgroundColor : 'white',
+          borderLeftColor: $isStart ? backgroundColor : backgroundPrimary,
           borderTopColor: hoverBackground,
           borderBottomColor: hoverBackground,
         },
         after: {
           borderLeftColor: hoverBackground,
-          borderTopColor: fontColor,
-          borderBottomColor: fontColor,
+          borderTopColor: backgroundPrimary,
+          borderBottomColor: backgroundPrimary,
         },
       },
       before: {
-        borderLeftColor: 'white',
+        borderLeftColor: backgroundPrimary,
         borderTopColor: backgroundColor,
         borderBottomColor: backgroundColor,
       },
       after: {
         borderLeftColor: backgroundColor,
-        borderTopColor: 'white',
-        borderBottomColor: 'white',
+        borderTopColor: backgroundPrimary,
+        borderBottomColor: backgroundPrimary,
       },
     };
   }
 
-  const backgroundColor = '#112B42';
-  const fontColor = '#FFFFFF';
-  const hoverBackground = '#011B32';
+  const backgroundColor = $theme.colors.buttonPrimaryFill;
+  const fontColor = $theme.colors.contentPrimary;
+  const hoverBackground = $theme.colors.buttonPrimaryHover;
+
   return {
     normal: {
       backgroundColor,
@@ -103,25 +106,25 @@ const themeByState = (
       color: fontColor,
       textDecoration: 'underline',
       before: {
-        borderLeftColor: $isStart ? backgroundColor : 'white',
+        borderLeftColor: $isStart ? backgroundColor : backgroundPrimary,
         borderTopColor: hoverBackground,
         borderBottomColor: hoverBackground,
       },
       after: {
         borderLeftColor: hoverBackground,
-        borderTopColor: fontColor,
-        borderBottomColor: fontColor,
+        borderTopColor: backgroundPrimary,
+        borderBottomColor: backgroundPrimary,
       },
     },
     before: {
-      borderLeftColor: 'white',
+      borderLeftColor: backgroundPrimary,
       borderTopColor: backgroundColor,
       borderBottomColor: backgroundColor,
     },
     after: {
       borderLeftColor: backgroundColor,
-      borderTopColor: 'white',
-      borderBottomColor: 'white',
+      borderTopColor: backgroundPrimary,
+      borderBottomColor: backgroundPrimary,
     },
   };
 };
@@ -138,6 +141,7 @@ const StyledStepperItem = styled(
     const { scale300, scale600 } = $theme.sizing;
 
     const { normal, hover, before, after } = themeByState(
+      $theme,
       $isDisabled,
       $isStart,
       $isVisited,
@@ -150,7 +154,7 @@ const StyledStepperItem = styled(
       paddingRight: scale300,
       backgroundColor: normal.backgroundColor,
       color: normal.color,
-      ...$theme.typography.LabelSmall,
+      ...$theme.typography.LabelMedium,
       textAlign: 'center',
       position: 'relative',
       borderRadius: '6px',
