@@ -41,6 +41,7 @@ import SearchTabs from './component/SearchTabs';
 import Button from './component/Button';
 import Dropdown from './component/Dropdown';
 import Slider from './component/Slider';
+import ProgressStepper from './component/ProgressStepper';
 
 const engine = new Styletron();
 
@@ -522,56 +523,95 @@ const ContentComponents = () => (
   </>
 );
 
-const ProgressComponents = () => (
-  <>
-    <typo.HeadingLarge> Progress and Validation </typo.HeadingLarge>
-    <Block
-      display='flex'
-      flexDirection='column'
-      gridGap='10px'
-      maxWidth='1000px'
-      paddingLeft='18px'
-    >
-      <Block display='flex' gridGap='20px'>
-        <Block width='400px'>
-          <typo.LabelSmall> Notification </typo.LabelSmall>
-          <Notification>{() => 'This is a notification.'}</Notification>
-          <Notification kind={TOASTKIND.positive}>
-            Positive notification
-          </Notification>
-          <Notification kind={TOASTKIND.warning}>
-            Warning notification
-          </Notification>
-          <Notification kind={TOASTKIND.negative}>
-            Negative notification
-          </Notification>
-        </Block>
-        <Block width='400px'>
-          <typo.LabelSmall> Toast </typo.LabelSmall>
-          <Toast>Default info notification</Toast>
-          <Toast kind={TOASTKIND.positive}>Positive notification</Toast>
-          <Toast kind={TOASTKIND.warning}>Warning notification</Toast>
-          <Toast kind={TOASTKIND.negative}>Negative notification</Toast>
-        </Block>
-      </Block>
+const ProgressComponents = () => {
+  const [currentStep, setCurrentStep] = React.useState(1);
 
-      <Block display='flex' gridGap='20px'>
-        <Block width='300px'>
-          <typo.LabelSmall> Progress Bar </typo.LabelSmall>
-          <ProgressBar value={50} successValue={100} />
+  return (
+    <>
+      <typo.HeadingLarge> Progress and Validation </typo.HeadingLarge>
+      <Block
+        display='flex'
+        flexDirection='column'
+        gridGap='10px'
+        maxWidth='1000px'
+        paddingLeft='18px'
+      >
+        <Block display='flex' gridGap='20px'>
+          <Block width='400px'>
+            <typo.LabelSmall> Notification </typo.LabelSmall>
+            <Notification>{() => 'This is a notification.'}</Notification>
+            <Notification kind={TOASTKIND.positive}>
+              Positive notification
+            </Notification>
+            <Notification kind={TOASTKIND.warning}>
+              Warning notification
+            </Notification>
+            <Notification kind={TOASTKIND.negative}>
+              Negative notification
+            </Notification>
+          </Block>
+          <Block width='400px'>
+            <typo.LabelSmall> Toast </typo.LabelSmall>
+            <Toast>Default info notification</Toast>
+            <Toast kind={TOASTKIND.positive}>Positive notification</Toast>
+            <Toast kind={TOASTKIND.warning}>Warning notification</Toast>
+            <Toast kind={TOASTKIND.negative}>Negative notification</Toast>
+          </Block>
         </Block>
-        <Block width='300px'>
-          <typo.LabelSmall> Skeleton </typo.LabelSmall>
-          <Skeleton height='100px' width='200px' animation />
+        <Block width='500px'>
+          <typo.LabelSmall> Progress Stepper </typo.LabelSmall>
+          <ProgressStepper
+            currentStep={currentStep}
+            onStepChange={(step) => {
+              setCurrentStep(step);
+            }}
+            items={[
+              {
+                children: '1. Connect Database',
+                disabled: currentStep > 0,
+              },
+              {
+                children: '2. Execute Query',
+                disabled: currentStep > 1,
+              },
+              {
+                children: '3. Configure Fields',
+                disabled: currentStep > 2,
+              },
+            ]}
+          />
         </Block>
-        <Block width='300px'>
-          <typo.LabelSmall> Spinner </typo.LabelSmall>
-          <Spinner />
+        <Block width='200px' display='flex' gridGap='20px'>
+          <Button
+            onClick={() => setCurrentStep((step) => step - 1)}
+            kind='secondary'
+          >
+            {' '}
+            prev step
+          </Button>
+          <Button onClick={() => setCurrentStep((step) => step + 1)}>
+            {' '}
+            next step
+          </Button>
+        </Block>
+        <Block display='flex' gridGap='20px'>
+          <Block width='300px'>
+            <typo.LabelSmall> Progress Bar </typo.LabelSmall>
+            <ProgressBar value={50} successValue={100} />
+          </Block>
+          <Block width='300px'>
+            <typo.LabelSmall> Skeleton </typo.LabelSmall>
+            <Skeleton height='100px' width='200px' animation />
+          </Block>
+          <Block width='300px'>
+            <typo.LabelSmall> Spinner </typo.LabelSmall>
+            <Spinner />
+          </Block>
         </Block>
       </Block>
-    </Block>
-  </>
-);
+    </>
+  );
+};
 
 const TypographyComponents = () => (
   <>
