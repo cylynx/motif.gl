@@ -2,9 +2,12 @@ import React, { FC } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { getTrackBackground } from 'react-range';
 import { useStyletron } from 'baseui';
-import { StatefulSlider, StatefulSliderProps } from 'baseui/slider';
+import {
+  Slider as BaseSlider,
+  SliderProps as BaseSliderProps,
+} from 'baseui/slider';
 
-interface SliderProps extends StatefulSliderProps {
+interface SliderProps extends BaseSliderProps {
   showThumbValue?: boolean;
   showTickBar?: boolean;
 }
@@ -16,7 +19,7 @@ const Slider: FC<SliderProps> = ({
 }) => {
   const [css, theme] = useStyletron();
   return (
-    <StatefulSlider
+    <BaseSlider
       {...rest}
       overrides={{
         Thumb: {
