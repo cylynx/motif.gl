@@ -7,7 +7,7 @@ import {
   SIZE,
 } from 'baseui/select';
 import VirtualDropdown from './VirtualDropdown';
-import { Dropdown } from '../ui/Dropdown';
+import { Dropdown } from '../ui';
 
 const SelectFieldPopoverOverrides = {
   props: {

@@ -4,9 +4,8 @@ import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
 import { TYPE } from 'baseui/select';
 import { Input } from 'baseui/input';
-import { Slider } from '../ui';
+import { Slider, Dropdown } from '../ui';
 import BatchSingleSelect from '../BatchSingleSelect';
-import { Dropdown } from '../ui/Dropdown';
 
 export type NestedFormData = {
   id: string;

@@ -1,8 +1,7 @@
 /* eslint-disable no-shadow */
 import React, { useEffect } from 'react';
-import { Select, SelectOverrides } from 'baseui/select';
 import { Block } from 'baseui/block';
-import { OptgroupsT, SelectProps } from 'baseui/select';
+import { OptgroupsT, SelectProps, SelectOverrides } from 'baseui/select';
 import { getIcon, TypeProps } from '../TagData';
 import { Dropdown, DropdownProps } from '../ui/Dropdown';
 

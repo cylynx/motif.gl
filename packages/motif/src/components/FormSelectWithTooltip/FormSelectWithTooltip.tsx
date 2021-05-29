@@ -5,7 +5,7 @@ import { OnChangeParams, SIZE, TYPE, Value, Option } from 'baseui/select';
 import { UseFormSetValue } from 'react-hook-form';
 import { ConfigureFieldsForm } from 'src/redux/import/fileUpload';
 import LabelTooltip from './LabelTooltip';
-import { Dropdown } from '../ui/Dropdown';
+import { Dropdown } from '../ui';
 
 export type FormSelectWithTooltipProps = {
   name: string;

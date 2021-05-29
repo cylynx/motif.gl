@@ -4,8 +4,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
 import { Input } from 'baseui/input';
-import { Slider } from '../ui';
-import { Dropdown } from '../ui/Dropdown';
+import { Slider, Dropdown } from '../ui';
 
 export type SimpleFormData = {
   id: string;

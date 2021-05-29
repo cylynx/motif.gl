@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Theme } from 'baseui/theme';
 import { OnChangeParams, Value, TYPE } from 'baseui/select';
-import { Dropdown } from '../ui/Dropdown';
+import { Dropdown } from '../ui';
 
 type MultiStringSelectType = {
   placeholder: string;
