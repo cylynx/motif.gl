@@ -37,10 +37,10 @@ import { Sizing } from './BaseuiTheming/sizing';
 import { Type } from './BaseuiTheming/typography';
 import MotifDarkTheme from './theme/baseui-dark';
 import MotifLightTheme from './theme/baseui-light';
-import { SearchTabs } from './component/SearchTabs';
+import SearchTabs from './component/SearchTabs';
 import Button from './component/Button';
-import { Dropdown } from './component/Dropdown';
-import { Slider } from './component/Slider';
+import Dropdown from './component/Dropdown';
+import Slider from './component/Slider';
 
 const engine = new Styletron();
 
@@ -337,6 +337,12 @@ const InputComponents = () => (
         </Button>
         <Button border='solid' size='compact' kind='secondary' disabled>
           Disabled State
+        </Button>
+      </Block>
+      <typo.LabelSmall> Full Width Button</typo.LabelSmall>
+      <Block width='500px'>
+        <Button border='solid' width='100%'>
+          Width=100%
         </Button>
       </Block>
       <Block display='flex'>

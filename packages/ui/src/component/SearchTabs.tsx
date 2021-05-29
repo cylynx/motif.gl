@@ -24,7 +24,7 @@ const TabBorder = () => ({
   borderRadius: '6px',
 });
 
-export const SearchTabs: FC<SearchTabsProps> = ({ items = [], ...rest }) => {
+const SearchTabs: FC<SearchTabsProps> = ({ items = [], ...rest }) => {
   return (
     <StatefulTabs
       {...rest}
@@ -58,3 +58,5 @@ export const SearchTabs: FC<SearchTabsProps> = ({ items = [], ...rest }) => {
     </StatefulTabs>
   );
 };
+
+export default SearchTabs;

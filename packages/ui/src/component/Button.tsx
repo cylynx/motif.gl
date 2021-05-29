@@ -3,11 +3,13 @@ import { Button as BaseButton, SHAPE, ButtonProps } from 'baseui/button';
 
 type BorderButtonProps = ButtonProps & {
   children: React.ReactNode;
+  width?: string;
   border?: 'solid' | 'none';
 };
 
 const Button: FC<BorderButtonProps> = ({
   children,
+  width = 'auto',
   border = 'none',
   ...rest
 }) => {
@@ -32,7 +34,7 @@ const Button: FC<BorderButtonProps> = ({
               width:
                 $shape === SHAPE.circle || $shape === SHAPE.square
                   ? '32px'
-                  : 'auto',
+                  : width,
             };
           },
         },

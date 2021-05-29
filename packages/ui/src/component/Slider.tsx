@@ -9,11 +9,7 @@ interface SliderProps extends StatefulSliderProps {
   showTickBar?: boolean;
 }
 
-export const Slider: FC<SliderProps> = ({
-  showThumbValue,
-  showTickBar,
-  ...rest
-}) => {
+const Slider: FC<SliderProps> = ({ showThumbValue, showTickBar, ...rest }) => {
   const [css, theme] = useStyletron();
   return (
     <StatefulSlider
@@ -122,3 +118,5 @@ export const Slider: FC<SliderProps> = ({
     />
   );
 };
+
+export default Slider;

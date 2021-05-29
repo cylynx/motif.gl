@@ -1,31 +1,48 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
-import { Button, ButtonProps } from 'baseui/button';
+import React, { FC } from 'react';
+import { Button as BaseButton, SHAPE, ButtonProps } from 'baseui/button';
 
-type FullButtonProps = ButtonProps & {
+type BorderButtonProps = ButtonProps & {
   children: React.ReactNode;
-  width?: string | number;
+  width?: string;
+  border?: 'solid' | 'none';
 };
 
-type Ref = HTMLButtonElement;
-
-// Button which streches the full width of the container
-const FullButton = React.forwardRef<Ref, FullButtonProps>(
-  ({ children, width = '100%', ...rest }, ref) => (
-    <Button
-      ref={ref}
+const Button: FC<BorderButtonProps> = ({
+  children,
+  width = 'auto',
+  border = 'none',
+  ...rest
+}) => {
+  return (
+    <BaseButton
+      {...rest}
+      size='compact'
       overrides={{
         BaseButton: {
-          style: {
-            width,
+          style: ({ $theme, $shape }) => {
+            return {
+              borderColor: $theme.colors.accent500,
+              borderTopStyle: border,
+              borderBottomStyle: border,
+              borderLeftStyle: border,
+              borderRightStyle: border,
+              borderTopWidth: '1px',
+              borderBottomWidth: '1px',
+              borderLeftWidth: '1px',
+              borderRightWidth: '1px',
+              height: '32px',
+              width:
+                $shape === SHAPE.circle || $shape === SHAPE.square
+                  ? '32px'
+                  : width,
+            };
           },
         },
       }}
-      {...rest}
     >
       {children}
-    </Button>
-  ),
-);
+    </BaseButton>
+  );
+};
 
-export default FullButton;
+export default Button;
