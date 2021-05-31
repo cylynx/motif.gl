@@ -1,9 +1,8 @@
 import { createDarkTheme } from 'baseui';
-import { Theme } from 'baseui/theme';
 import typography from './shared/typography';
 import borders from './shared/borders';
 import themeColors from './shared/themeColors';
-import responsiveTheme from './shared/responsive';
+import { breakpoints, mediaQuery } from './shared/responsive';
 
 const primitives = {
   // Primary Palette
@@ -95,7 +94,7 @@ const overrides = {
     tagPrimarySolidFont: primitives.primaryA,
     tagPrimaryOutlinedBackground: themeColors.theme,
     toggleFill: themeColors.theme,
-    toggleFillChecked: themeColors.theme400,
+    toggleFillChecked: themeColors.theme300,
     tickFillSelected: themeColors.theme,
     tickFillSelectedHover: themeColors.theme300,
     tickFillSelectedHoverActive: themeColors.theme300,
@@ -105,9 +104,10 @@ const overrides = {
   },
   typography,
   borders,
+  breakpoints,
+  mediaQuery,
 };
 
-const DarkTheme = createDarkTheme(primitives, overrides);
-const MotifDarkTheme: Theme = { ...DarkTheme, ...responsiveTheme };
+const MotifDarkTheme = createDarkTheme(primitives, overrides);
 
 export default MotifDarkTheme;

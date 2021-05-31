@@ -1,9 +1,8 @@
 import { createDarkTheme } from 'baseui';
-import { Theme } from 'baseui/theme';
 import typography from './shared/typography';
 import borders from './shared/borders';
 import themeColors from './shared/themeColors';
-import responsiveTheme from './shared/responsive';
+import { breakpoints, mediaQuery } from './shared/responsive';
 
 const primitives = {
   // Primary Palette
@@ -105,9 +104,10 @@ const overrides = {
   },
   typography,
   borders,
+  breakpoints,
+  mediaQuery,
 };
 
-const DarkTheme = createDarkTheme(primitives, overrides);
-const MotifDarkTheme: Theme = { ...DarkTheme, ...responsiveTheme };
+const MotifDarkTheme = createDarkTheme(primitives, overrides);
 
 export default MotifDarkTheme;

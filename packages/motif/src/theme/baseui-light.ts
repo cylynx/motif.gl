@@ -1,9 +1,9 @@
-import { createTheme } from 'baseui';
+import { createLightTheme } from 'baseui';
 import { Theme } from 'baseui/theme';
 import typography from './shared/typography';
 import borders from './shared/borders';
 import themeColors from './shared/themeColors';
-import responsiveTheme from './shared/responsive';
+import { breakpoints, mediaQuery } from './shared/responsive';
 
 const primitives = {
   // Primary Palette
@@ -103,9 +103,10 @@ const overrides = {
   },
   typography,
   borders,
+  breakpoints,
+  mediaQuery,
 };
 
-const LightTheme = createTheme(primitives, overrides);
-const MotifLightTheme: Theme = { ...LightTheme, ...responsiveTheme };
+const MotifLightTheme = createLightTheme(primitives, overrides);
 
 export default MotifLightTheme;
