@@ -178,7 +178,3 @@ $ cd ./packages/motif && npm run cypress:open
 ## License
 
 MIT © [cylynx](https://github.com/cylynx)
-
-```
-
-```
