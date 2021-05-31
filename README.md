@@ -76,10 +76,9 @@ Motif utilise [Lerna](https://github.com/lerna/lerna) to manage multi-package re
 
 ### Packages
 
-|                           Packages                           | Description                                                             |
-| :----------------------------------------------------------: | :---------------------------------------------------------------------- | ---------- |
-| [@cylynx/motif](https://www.npmjs.com/package/@cylynx/motif) | Core Library of Motif                                                   | motif-demo |
-|                          motif-demo                          | Client side that test the functionality and usability of Motif's bundle |
+- [@cylynx/motif](https://www.npmjs.com/package/@cylynx/motif), Core Library of Motif
+- [@cylynx/pymotif](https://www.npmjs.com/package/@cylynx/pymotif), Jupyter widget bindings for Motif
+- **motif-demo**, Client side that test the functionality of **@cylynx/motif**
 
 ### Environment Installation
 
@@ -130,6 +129,45 @@ $ npm run motif:build
 $ npm run demo
 ```
 
+### Testing
+
+**Unit Test**
+
+The test runner of **@cylynx/motif** is configure with [Jest](https://jestjs.io/) testing framework. The following commands are use to verify whether the test case are execute correctly.
+
+```bash
+$ cd ./packages/motif
+$ npm run test
+```
+
+**Cypress Test**
+
+Test runner of **@cylynx/motif** is configure with [Cypress](https://www.cypress.io/) testing framework. The motivation of having end-to-end test is to verify the consistency and accuracy of the library in client's browser environment. Therefore, several commands and procedure are requires as prequisite to setup the test environment.
+
+1. Perform bundling on the `@cylynx/motif` packages to produce production bundles,
+
+```bash
+$ npm run motif:build
+```
+
+2. The production bundle produced in **step 1** will be import by **motif-demo**, the **motif-demo** play as a role to verify how the **@cylynx/motif** library behaves in client's browser environment. We will first generate a production build in **motif-demo**.
+
+```bash
+$ npm run demo:build
+```
+
+3. Serve the demo with port 3000, access `http://localhost:3000` to verify whether the application is running.
+
+```bash
+$ npm run demo:serve
+```
+
+4. Once the **step 3** is execute successfully, we can launch Cypress to verify whether our test case are running accurately.
+
+```bash
+$ cd ./packages/motif && npm run cypress:open
+```
+
 ## Built with
 
 - Antv G6 and Graphin for the graph library
@@ -140,3 +178,7 @@ $ npm run demo
 ## License
 
 MIT © [cylynx](https://github.com/cylynx)
+
+```
+
+```
