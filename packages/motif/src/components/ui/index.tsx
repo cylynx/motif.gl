@@ -5,6 +5,7 @@ import FlushedGrid from './FlushedGrid';
 import TriGrid from './TriGrid';
 import Statistic from './Statistic';
 import Button from './Button';
+import { Tabs, Tab } from './Tabs';
 import Dropdown from './Dropdown';
 import Slider from './Slider';
 import SimpleTooltip from './SimpleTooltip';
@@ -22,6 +23,8 @@ export {
   Statistic,
   Dropdown,
   Slider,
+  Tabs,
+  Tab,
   SimpleTooltip,
   InfoIcon,
   InfoNotification,
