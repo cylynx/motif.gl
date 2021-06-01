@@ -1,5 +1,5 @@
 /* eslint-disable no-shadow */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Block } from 'baseui/block';
 import { OptgroupsT, SelectProps, SelectOverrides } from 'baseui/select';
 import { getIcon, TypeProps } from '../TagData';
@@ -33,16 +33,6 @@ export type SelectVariableProps = Omit<
   [x: string]: any;
 };
 
-const SelectFieldPopoverOverrides = {
-  props: {
-    overrides: {
-      Body: {
-        style: () => ({ zIndex: 1 }),
-      },
-    },
-  },
-};
-
 const getValueLabel: SelectProps['getValueLabel'] = ({ option }) => {
   return (
     <Block display='flex' alignItems='center'>
@@ -69,9 +59,6 @@ const SelectVariable = ({
   options,
   onChange: onChangeProps,
   placeholder = 'Select Variable',
-  overrides = {
-    Popover: SelectFieldPopoverOverrides,
-  },
   ...rest
 }: SelectVariableProps) => {
   const onChangeSelection = (value: any) => {
@@ -80,15 +67,6 @@ const SelectVariable = ({
     }
     return value;
   };
-
-  /**
-   * To prevent option not displayed in Jupyter Notebook
-   */
-  useEffect(() => {
-    Object.assign(overrides, {
-      Popover: SelectFieldPopoverOverrides,
-    });
-  }, [overrides]);
 
   return (
     <Dropdown
@@ -101,7 +79,6 @@ const SelectVariable = ({
       getValueLabel={getValueLabel}
       maxDropdownHeight='300px'
       data-testid='select-variable'
-      overrides={overrides}
       {...rest}
     />
   );

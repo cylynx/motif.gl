@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { Theme } from 'baseui/theme';
 import { OnChangeParams, Value, TYPE } from 'baseui/select';
 import { Dropdown } from '../ui';
 
@@ -25,27 +24,6 @@ const MultiStringSelect: FC<MultiStringSelectType> = ({
       maxDropdownHeight='300px'
       size='compact'
       type={TYPE.select}
-      overrides={{
-        Tag: {
-          props: {
-            overrides: {
-              Text: {
-                style: ({ $theme }: { $theme: Theme }) => ({
-                  fontSize: $theme.sizing.scale500,
-                }),
-              },
-              Root: {
-                style: ({ $theme }: { $theme: Theme }) => ({
-                  marginTop: $theme.sizing.scale0,
-                  marginBottom: $theme.sizing.scale0,
-                  marginRight: $theme.sizing.scale0,
-                  marginLeft: $theme.sizing.scale0,
-                }),
-              },
-            },
-          },
-        },
-      }}
       backspaceRemoves
       clearable
       closeOnSelect

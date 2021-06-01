@@ -10,16 +10,6 @@ import { NestedForm, genNestedForm } from '../../components/form';
 import { nodeSizeForm, edgeWidthForm } from '../SidePanel/OptionsPanel';
 import { Dropdown } from '../../components/ui/Dropdown';
 
-const SelectFieldPopoverOverrides = {
-  props: {
-    overrides: {
-      Body: {
-        style: () => ({ zIndex: 1 }),
-      },
-    },
-  },
-};
-
 const SettingsPopover = () => {
   const dispatch = useDispatch();
   const { nodeStyle, edgeStyle, layout } = useSelector((state) =>
@@ -56,9 +46,6 @@ const SettingsPopover = () => {
           clearable={false}
           value={[findID(LAYOUT.LAYOUT_NAMES, layout.type)]}
           onChange={onLayoutChange}
-          overrides={{
-            Popover: SelectFieldPopoverOverrides,
-          }}
         />
       </FormControl>
       <NestedForm
