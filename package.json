@@ -13,6 +13,8 @@
     "pymotif:build": "cd ./packages/pymotif && npm run build:prod",
     "pymotif:publish": "cd ./packages/pymotif && npm publish",
     "ui": "cd ./packages/ui && npm run start",
+    "ui:build": "cd ./packages/ui && npm run build",
+    "ui:serve": "cd ./packages/ui && npm run serve",
     "clean": "lerna clean && npm run rm-package-lock",
     "cypress": "cd ./packages/motif && npm run cypress:test",
     "rm-package-lock": "rm -rf ./package-lock.json ./packages/*/package-lock.json"

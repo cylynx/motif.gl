@@ -61,8 +61,7 @@ const DataTypeSelection: FC<DataTypeSelectionProps> = () => {
         />
       </FormControl>
 
-      <StyledHr />
-
+      <Block marginBottom='4px' />
       {dataType.id === 'json' && <JsonFiles />}
       {dataType.id === 'edgeListCsv' && <EdgeListCsv />}
       {dataType.id === 'nodeEdgeCsv' && <NodeEdgeCsv />}
