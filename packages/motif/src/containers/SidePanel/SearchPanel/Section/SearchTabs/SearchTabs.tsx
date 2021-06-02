@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
-import { Tab, Tabs, FILL } from 'baseui/tabs-motion';
-import { Theme } from 'baseui/theme';
+import { FILL } from 'baseui/tabs-motion';
 import { Block } from 'baseui/block';
 import { IUseSearchOptions, TActiveKey } from '../../types';
 import SearchEdge from './SearchEdge';
@@ -8,22 +7,8 @@ import SearchNode from './SearchNode';
 import useSearchOption from '../../hooks/useSearchOption';
 import { GraphAttribute, SearchOptions } from '../../../../../redux/graph';
 import { GraphRefContext } from '../../../../Graph';
+import { Tab, Tabs } from '../../../../../components/ui';
 import useGraphBehaviors from '../../../../Graph/hooks/useGraphBehaviors';
-
-const TabStyle = () => ({
-  background: 'transparent',
-});
-
-const TabHighlight = ({ $theme }: { $theme: Theme }) => ({
-  backgroundColor: $theme.colors.accent500,
-  height: '3px',
-  borderRadius: '6px',
-});
-
-const TabBorder = () => ({
-  backgroundColor: 'transparent',
-  borderRadius: '6px',
-});
 
 const SearchTabs = () => {
   const { searchOptions, updateTabs } = useSearchOption() as IUseSearchOptions;
@@ -41,39 +26,11 @@ const SearchTabs = () => {
   };
 
   return (
-    <Tabs
-      activeKey={activeTabs}
-      onChange={onTabChange}
-      fill={FILL.fixed}
-      overrides={{
-        TabHighlight: {
-          style: TabHighlight,
-        },
-        TabBorder: {
-          style: TabBorder,
-        },
-      }}
-    >
-      <Tab
-        key='nodes'
-        title={<Block as='span'>Nodes</Block>}
-        overrides={{
-          Tab: {
-            style: TabStyle,
-          },
-        }}
-      >
+    <Tabs activeKey={activeTabs} onChange={onTabChange} fill={FILL.fixed}>
+      <Tab key='nodes' title={<Block as='span'>Nodes</Block>}>
         <SearchNode />
       </Tab>
-      <Tab
-        key='edges'
-        title={<Block as='span'>Edges</Block>}
-        overrides={{
-          Tab: {
-            style: TabStyle,
-          },
-        }}
-      >
+      <Tab key='edges' title={<Block as='span'>Edges</Block>}>
         <SearchEdge />
       </Tab>
     </Tabs>
