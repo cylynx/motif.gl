@@ -27,10 +27,10 @@ const SearchTabs = () => {
 
   return (
     <Tabs activeKey={activeTabs} onChange={onTabChange} fill={FILL.fixed}>
-      <Tab key='nodes' title={<Block as='span'>Nodes</Block>}>
+      <Tab key='nodes' title="Nodes">
         <SearchNode />
       </Tab>
-      <Tab key='edges' title={<Block as='span'>Edges</Block>}>
+      <Tab key='edges' title="Edges">
         <SearchEdge />
       </Tab>
     </Tabs>
