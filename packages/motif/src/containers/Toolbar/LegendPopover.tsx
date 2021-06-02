@@ -4,23 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
 import { FormControl } from 'baseui/form-control';
-import { Select } from 'baseui/select';
 import { LabelSmall, ParagraphSmall } from 'baseui/typography';
 import { GraphSelectors, GraphSlices } from '../../redux/graph';
 import { CATEGORICAL_COLOR } from '../../constants/colors';
 import useNodeStyle from '../../redux/graph/hooks/useNodeStyle';
+import { Dropdown } from '../../components/ui/Dropdown';
 
 const MAX_LEGEND_SIZE = CATEGORICAL_COLOR.length;
-
-const SelectFieldPopoverOverrides = {
-  props: {
-    overrides: {
-      Body: {
-        style: () => ({ zIndex: 1 }),
-      },
-    },
-  },
-};
 
 const Legend = ({ data }: { data: { [_: string]: string } }) => {
   const [css] = useStyletron();
@@ -94,7 +84,7 @@ const LegendPopover = () => {
   return (
     <Block width='300px'>
       <FormControl label='Legend Selection'>
-        <Select
+        <Dropdown
           id='legendSelection'
           options={allNodeFields}
           onChange={(params: any) => updateNodeStyle(params.value)}
@@ -102,9 +92,6 @@ const LegendPopover = () => {
           clearable={false}
           value={selectValue}
           maxDropdownHeight='300px'
-          overrides={{
-            Popover: SelectFieldPopoverOverrides,
-          }}
         />
       </FormControl>
       {nodeStyle.color &&

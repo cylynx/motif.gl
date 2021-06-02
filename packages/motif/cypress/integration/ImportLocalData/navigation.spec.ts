@@ -7,7 +7,7 @@ import {
 describe('Navigation', () => {
   const getFileUploadState = (): Promise<TFileContentState> => {
     return new Promise((resolve) => {
-      cy.getReact('Provider')
+      cy.getReact('Provider$1')
         .getProps('store')
         .then((store) => {
           const globalStore = store.getState();

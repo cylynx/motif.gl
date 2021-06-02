@@ -5,8 +5,6 @@ import { Block } from 'baseui/block';
 import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
 import { Provider } from 'react-redux';
-import { BaseProvider } from 'baseui';
-import { Theme } from 'baseui/theme';
 import Motif, { MotifLightTheme, MotifDarkTheme } from '../src';
 import store from './redux-store';
 
@@ -34,24 +32,23 @@ const SampleHeader = () => {
 const Demo = () => {
   return (
     <StyletronProvider value={engine}>
-      <BaseProvider theme={MotifLightTheme as Theme}>
-        <Provider store={store}>
-          <Block height='100vh'>
-            <SampleHeader />
-            <Block height='calc(100vh - 28px)'>
-              <Motif
-                name='Motif'
-                secondaryTheme={MotifDarkTheme}
-                accessors={{
-                  nodeID: 'id',
-                  edgeSource: 'source',
-                  edgeTarget: 'target',
-                }}
-              />
-            </Block>
+      <Provider store={store}>
+        <Block height='100vh'>
+          <SampleHeader />
+          <Block height='calc(100vh - 28px)'>
+            <Motif
+              name='Motif'
+              primaryTheme={MotifLightTheme}
+              secondaryTheme={MotifDarkTheme}
+              accessors={{
+                nodeID: 'id',
+                edgeSource: 'source',
+                edgeTarget: 'target',
+              }}
+            />
           </Block>
-        </Provider>
-      </BaseProvider>
+        </Block>
+      </Provider>
     </StyletronProvider>
   );
 };

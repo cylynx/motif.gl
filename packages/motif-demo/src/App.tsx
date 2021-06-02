@@ -3,7 +3,6 @@ import initHelpHero from 'helphero';
 import { Block } from 'baseui/block';
 import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
-import { BaseProvider } from 'baseui';
 import Motif, {
   MotifLightTheme,
   MotifDarkTheme,
@@ -14,6 +13,7 @@ import Motif, {
 import '@cylynx/motif/dist/style.css';
 import { Driver } from 'neo4j-driver/types/driver';
 import { Provider } from 'react-redux';
+import { BaseProvider } from 'baseui';
 import BankingAPI from './containers/BankingAPI';
 import store from './redux-store';
 import Neo4J from './containers/Neo4J';
@@ -60,6 +60,7 @@ const App = () => {
           <Block height='100vh'>
             <Motif
               name='Motif'
+              primaryTheme={MotifLightTheme}
               secondaryTheme={MotifDarkTheme}
               accessors={{
                 // getters below are for simple edge

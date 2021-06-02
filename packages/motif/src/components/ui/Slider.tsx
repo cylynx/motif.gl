@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { FC } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { getTrackBackground } from 'react-range';
 import { useStyletron } from 'baseui';
@@ -12,8 +12,11 @@ interface SliderProps extends BaseSliderProps {
   showTickBar?: boolean;
 }
 
-const Slider = (props: SliderProps) => {
-  const { showThumbValue = true, showTickBar = true, ...rest } = props;
+const Slider: FC<SliderProps> = ({
+  showThumbValue = true,
+  showTickBar = true,
+  ...rest
+}) => {
   const [css, theme] = useStyletron();
   return (
     <BaseSlider
@@ -22,14 +25,9 @@ const Slider = (props: SliderProps) => {
         Thumb: {
           style: ({ $theme }) => {
             return {
-              height: '12px',
-              width: '12px',
-              // modify to border: 0 will breaks atomic rendering
-              borderTopLeftRadius: 0,
-              borderTopRightRadius: 0,
-              borderBottomLeftRadius: 0,
-              borderBottomRightRadius: 0,
-              backgroundColor: $theme.colors.primary,
+              height: '16px',
+              width: '16px',
+              backgroundColor: $theme.colors.accent500,
               color: $theme.colors.contentPrimary,
               display: 'flex',
               outline: 'none',
@@ -49,10 +47,9 @@ const Slider = (props: SliderProps) => {
               display: showThumbValue ? 'block' : 'none',
               position: 'absolute',
               backgroundColor: 'transparent',
-              top: `-${$theme.sizing.scale700}`,
+              top: `-${$theme.sizing.scale600}`,
               ...$theme.typography.font200,
               color: $theme.colors.contentPrimary,
-
               // simplify to padding:0, border:0 will break atomic rendering
               paddingLeft: 0,
               paddingRight: 0,
@@ -69,29 +66,29 @@ const Slider = (props: SliderProps) => {
           style: ({ $theme, $value = [], $min, $max, $disabled }) => {
             const { colors, direction } = $theme;
             return {
-              height: '3px',
+              height: '2px',
               background: getTrackBackground({
                 values: $value,
                 colors:
                   $value.length === 1
                     ? [
                         $disabled
-                          ? colors.borderOpaque
-                          : colors.contentTertiary,
+                          ? colors.inputBorder
+                          : $theme.colors.accent500,
                         $disabled
                           ? colors.backgroundSecondary
-                          : colors.borderOpaque,
+                          : colors.inputBorder,
                       ]
                     : [
                         $disabled
                           ? colors.backgroundSecondary
-                          : colors.borderOpaque,
+                          : colors.inputBorder,
                         $disabled
-                          ? colors.borderOpaque
-                          : colors.contentTertiary,
+                          ? colors.inputBorder
+                          : $theme.colors.accent500,
                         $disabled
                           ? colors.backgroundSecondary
-                          : colors.borderOpaque,
+                          : colors.inputBorder,
                       ],
                 min: $min || 0,
                 max: $max || 0,
@@ -115,7 +112,7 @@ const Slider = (props: SliderProps) => {
               display: showTickBar ? 'flex' : 'none',
               justifyContent: 'space-between',
               alignItems: 'center',
-              color: theme.colors.contentPrimary,
+              color: theme.colors.contentSecondary,
               ...theme.typography.font200,
             })}
           >

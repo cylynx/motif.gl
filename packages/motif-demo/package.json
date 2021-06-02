@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "vite --force --host",
+    "start": "vite",
     "build": "vite build --config vite.build.config.ts",
     "serve": "vite preview --port 3000"
   },
@@ -13,7 +13,7 @@
     "attr-accept": "^2.2.2",
     "baseui": "^9.90.0",
     "helphero": "3.5.3",
-    "neo4j-driver": "^4.2.3",
+    "neo4j-driver": "4.2.3",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-hook-form": "^7.3.4",

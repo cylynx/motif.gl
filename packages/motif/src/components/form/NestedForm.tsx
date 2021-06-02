@@ -2,9 +2,9 @@ import React, { Fragment } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
-import { Select, TYPE } from 'baseui/select';
+import { TYPE } from 'baseui/select';
 import { Input } from 'baseui/input';
-import { Slider } from '../ui';
+import { Slider, Dropdown } from '../ui';
 import BatchSingleSelect from '../BatchSingleSelect';
 
 export type NestedFormData = {
@@ -157,7 +157,7 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
             control={control}
             defaultValue={[data.options.find((x: any) => x.id === data.value)]}
             render={({ field: { value, onChange } }) => (
-              <Select
+              <Dropdown
                 options={data.options}
                 onChange={(params) =>
                   handleChangeParent(params.value, onChange)
@@ -213,7 +213,7 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
                     let component;
                     if (kind === 'select') {
                       component = (
-                        <Select
+                        <Dropdown
                           onChange={(params) =>
                             handleChange(params.value, onChange)
                           }

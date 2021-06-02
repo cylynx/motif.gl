@@ -1,8 +1,9 @@
 /* eslint-disable no-shadow */
-import React, { useEffect } from 'react';
-import { Select, SelectOverrides } from 'baseui/select';
+import React from 'react';
 import { Block } from 'baseui/block';
+import { OptgroupsT, SelectProps, SelectOverrides } from 'baseui/select';
 import { getIcon, TypeProps } from '../TagData';
+import { Dropdown, DropdownProps } from '../ui/Dropdown';
 
 export type SelectVariableOption = {
   id: string;
@@ -15,30 +16,24 @@ export type SelectVariableOption = {
 };
 
 export type SelectOptions = {
+  __ungrouped: any[];
   Nodes: SelectVariableOption[];
   Edges: SelectVariableOption[];
 };
 
-export type SelectVariableProps = {
+export type SelectVariableProps = Omit<
+  DropdownProps,
+  'options' | 'onChange'
+> & {
   value: SelectVariableOption[];
-  options: SelectOptions;
+  options: SelectOptions & OptgroupsT;
   onChange?: (obj: { [key: string]: string }) => void;
   placeholder?: string;
   overrides?: SelectOverrides;
   [x: string]: any;
 };
 
-const SelectFieldPopoverOverrides = {
-  props: {
-    overrides: {
-      Body: {
-        style: () => ({ zIndex: 1 }),
-      },
-    },
-  },
-};
-
-const getValueLabel = ({ option }: { option: SelectVariableOption }) => {
+const getValueLabel: SelectProps['getValueLabel'] = ({ option }) => {
   return (
     <Block display='flex' alignItems='center'>
       <Block as='span' position='relative' top='3px'>
@@ -50,7 +45,7 @@ const getValueLabel = ({ option }: { option: SelectVariableOption }) => {
   );
 };
 
-const getOptionLabel = ({ option }: { option: SelectVariableOption }) => {
+const getOptionLabel: SelectProps['getOptionLabel'] = ({ option }) => {
   return (
     <Block display='flex' alignItems='center'>
       {getIcon(option.type)}
@@ -64,9 +59,6 @@ const SelectVariable = ({
   options,
   onChange: onChangeProps,
   placeholder = 'Select Variable',
-  overrides = {
-    Popover: SelectFieldPopoverOverrides,
-  },
   ...rest
 }: SelectVariableProps) => {
   const onChangeSelection = (value: any) => {
@@ -76,18 +68,8 @@ const SelectVariable = ({
     return value;
   };
 
-  /**
-   * To prevent option not displayed in Jupyter Notebook
-   */
-  useEffect(() => {
-    Object.assign(overrides, {
-      Popover: SelectFieldPopoverOverrides,
-    });
-  }, [overrides]);
-
   return (
-    // @ts-ignore
-    <Select
+    <Dropdown
       options={options}
       value={value}
       size='compact'
@@ -97,7 +79,6 @@ const SelectVariable = ({
       getValueLabel={getValueLabel}
       maxDropdownHeight='300px'
       data-testid='select-variable'
-      overrides={overrides}
       {...rest}
     />
   );
