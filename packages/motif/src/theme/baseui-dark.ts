@@ -59,7 +59,7 @@ const overrides = {
     contentSecondary: primitives.primary300,
     contentTertiary: primitives.primary400,
     contentInversePrimary: primitives.primaryB,
-    contentInverseSecondary: primitives.primary600,
+    contentInverseSecondary: textSecondary,
     contentInverseTertiary: primitives.primary500,
 
     // https://github.com/uber/baseweb/blob/master/src/themes/dark-theme/color-component-tokens.js
