@@ -20,7 +20,10 @@ import {
   getField,
   combineProcessedData,
 } from '../../utils/graph-utils/utils';
-import { groupEdgesForImportation } from './processors/group-edges';
+import {
+  GroupEdgeReturns,
+  groupEdgesForImportation,
+} from './processors/group-edges';
 
 const getGraph = (state: any): GraphState => state.investigate.graph.present;
 const getAccessors = (state: any): Accessors => getGraph(state).accessors;
@@ -48,6 +51,8 @@ const getAggregatedGroupGraphList = (
   const { graphList } = getGraph(state);
   const selectedGraphList: GraphData = graphList[graphIndex];
 
+  return selectedGraphList;
+
   if (visible === false) {
     return {
       nodes: [],
@@ -56,11 +61,11 @@ const getAggregatedGroupGraphList = (
     };
   }
 
-  const graphWithGroupEdge: GraphData = groupEdgesForImportation(
+  const { graphData }: GroupEdgeReturns = groupEdgesForImportation(
     selectedGraphList,
     groupEdges,
   );
-  return graphWithGroupEdge;
+  return graphData;
 };
 
 // obtain the grouped edges graph flatten

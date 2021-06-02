@@ -7,6 +7,7 @@ import {
   processGraphResponse,
   updateStyleOption,
   overwriteEdgeSelection,
+  updateGroupEdgeIds,
 } from './slice';
 import {
   importEdgeListCsv,
@@ -57,10 +58,9 @@ const processResponse = (
 
     // perform group edges based on user preferences during data importation.
     if (graphData.metadata.groupEdges.toggle) {
-      modData = groupEdgesForImportation(
-        graphData,
-        graphData.metadata.groupEdges,
-      );
+      const { graphData: groupedEdgeData, groupEdgeIds } =
+        groupEdgesForImportation(graphData, graphData.metadata.groupEdges);
+      modData = groupedEdgeData;
     }
 
     // combine new graph data with existing graph data to form graph flattens.
@@ -101,42 +101,44 @@ const showImportDataToast = (
  *
  * @return void
  */
-export const importEdgeListData = (
-  importData: EdgeListCsv[],
-  groupEdges = true,
-  importAccessors: ImportAccessors = null,
-  metadataKey: string = null,
-) => (dispatch: any, getState: any) => {
-  if (Array.isArray(importData) === false) {
-    throw new Error('importData parameter must be array');
-  }
+export const importEdgeListData =
+  (
+    importData: EdgeListCsv[],
+    groupEdges = true,
+    importAccessors: ImportAccessors = null,
+    metadataKey: string = null,
+  ) =>
+  (dispatch: any, getState: any) => {
+    if (Array.isArray(importData) === false) {
+      throw new Error('importData parameter must be array');
+    }
 
-  const { accessors: mainAccessors } = getGraph(getState());
-  const accessors = { ...mainAccessors, ...importAccessors };
-  const filterOptions: FilterOptions = getFilterOptions(getState());
+    const { accessors: mainAccessors } = getGraph(getState());
+    const accessors = { ...mainAccessors, ...importAccessors };
+    const filterOptions: FilterOptions = getFilterOptions(getState());
 
-  const batchDataPromises = importData.map((graphData: EdgeListCsv) => {
-    return importEdgeListCsv(graphData, accessors, groupEdges, metadataKey);
-  });
-
-  return Promise.all(batchDataPromises)
-    .then((graphData: GraphList) => {
-      dispatch(UISlices.fetchBegin());
-
-      setTimeout(() => {
-        processResponse(dispatch, mainAccessors, graphData);
-        showImportDataToast(dispatch, filterOptions);
-        dispatch(FileUploadSlices.resetState());
-        dispatch(UISlices.fetchDone());
-        dispatch(UISlices.closeModal());
-      }, 200);
-    })
-    .catch((err: Error) => {
-      const { message } = err;
-      dispatch(UIThunks.show(message, 'negative'));
-      dispatch(UISlices.fetchDone());
+    const batchDataPromises = importData.map((graphData: EdgeListCsv) => {
+      return importEdgeListCsv(graphData, accessors, groupEdges, metadataKey);
     });
-};
+
+    return Promise.all(batchDataPromises)
+      .then((graphData: GraphList) => {
+        dispatch(UISlices.fetchBegin());
+
+        setTimeout(() => {
+          processResponse(dispatch, mainAccessors, graphData);
+          showImportDataToast(dispatch, filterOptions);
+          dispatch(FileUploadSlices.resetState());
+          dispatch(UISlices.fetchDone());
+          dispatch(UISlices.closeModal());
+        }, 200);
+      })
+      .catch((err: Error) => {
+        const { message } = err;
+        dispatch(UIThunks.show(message, 'negative'));
+        dispatch(UISlices.fetchDone());
+      });
+  };
 
 /**
  *
@@ -152,68 +154,70 @@ export const importEdgeListData = (
  *
  * @return Promise
  */
-export const importJsonData = (
-  importData: JsonImport[],
-  groupEdges = true,
-  importAccessors: ImportAccessors = null,
-  overwriteStyles = false,
-) => (dispatch: any, getState: any) => {
-  if (Array.isArray(importData) === false) {
-    throw new Error('Provided import data is not an array');
-  }
-
-  const { accessors: mainAccessors } = getGraph(getState());
-  const accessors = { ...mainAccessors, ...importAccessors };
-  const filterOptions: FilterOptions = getFilterOptions(getState());
-  let isDataPossessStyle = false;
-  let styleOptions: StyleOptions = getStyleOptions(getState());
-
-  const batchDataPromises = importData.map((graphData: JsonImport) => {
-    const { data: dataWithStyle } = graphData as TLoadFormat;
-
-    if (dataWithStyle) {
-      const { style: importStyleOption } = graphData as TLoadFormat;
-
-      if (importStyleOption) {
-        isDataPossessStyle = true;
-        styleOptions = importStyleOption;
-      }
-
-      return importJson(dataWithStyle as GraphList, accessors, groupEdges);
+export const importJsonData =
+  (
+    importData: JsonImport[],
+    groupEdges = true,
+    importAccessors: ImportAccessors = null,
+    overwriteStyles = false,
+  ) =>
+  (dispatch: any, getState: any) => {
+    if (Array.isArray(importData) === false) {
+      throw new Error('Provided import data is not an array');
     }
 
-    return importJson(
-      graphData as GraphList | GraphData,
-      accessors,
-      groupEdges,
-    );
-  });
+    const { accessors: mainAccessors } = getGraph(getState());
+    const accessors = { ...mainAccessors, ...importAccessors };
+    const filterOptions: FilterOptions = getFilterOptions(getState());
+    let isDataPossessStyle = false;
+    let styleOptions: StyleOptions = getStyleOptions(getState());
 
-  return Promise.all(batchDataPromises)
-    .then((graphDataArr: GraphList[]) => {
-      dispatch(UISlices.fetchBegin());
+    const batchDataPromises = importData.map((graphData: JsonImport) => {
+      const { data: dataWithStyle } = graphData as TLoadFormat;
 
-      setTimeout(() => {
-        const graphData: GraphList = flatten(graphDataArr);
+      if (dataWithStyle) {
+        const { style: importStyleOption } = graphData as TLoadFormat;
 
-        if (isDataPossessStyle && overwriteStyles) {
-          dispatch(updateStyleOption(styleOptions));
+        if (importStyleOption) {
+          isDataPossessStyle = true;
+          styleOptions = importStyleOption;
         }
 
-        processResponse(dispatch, mainAccessors, graphData);
+        return importJson(dataWithStyle as GraphList, accessors, groupEdges);
+      }
 
-        showImportDataToast(dispatch, filterOptions);
-        dispatch(FileUploadSlices.resetState());
-        dispatch(UISlices.fetchDone());
-        dispatch(UISlices.closeModal());
-      }, 200);
-    })
-    .catch((err: Error) => {
-      const { message } = err;
-      dispatch(UIThunks.show(message, 'negative'));
-      dispatch(UISlices.fetchDone());
+      return importJson(
+        graphData as GraphList | GraphData,
+        accessors,
+        groupEdges,
+      );
     });
-};
+
+    return Promise.all(batchDataPromises)
+      .then((graphDataArr: GraphList[]) => {
+        dispatch(UISlices.fetchBegin());
+
+        setTimeout(() => {
+          const graphData: GraphList = flatten(graphDataArr);
+
+          if (isDataPossessStyle && overwriteStyles) {
+            dispatch(updateStyleOption(styleOptions));
+          }
+
+          processResponse(dispatch, mainAccessors, graphData);
+
+          showImportDataToast(dispatch, filterOptions);
+          dispatch(FileUploadSlices.resetState());
+          dispatch(UISlices.fetchDone());
+          dispatch(UISlices.closeModal());
+        }, 200);
+      })
+      .catch((err: Error) => {
+        const { message } = err;
+        dispatch(UIThunks.show(message, 'negative'));
+        dispatch(UISlices.fetchDone());
+      });
+  };
 
 /**
  * Thunk to add data to graph - processed CSV with node and edge and add to graph List
@@ -224,54 +228,56 @@ export const importJsonData = (
  * @param {number} metadataKey [metadataKey=null]
  * @return {Promise<GraphData>}
  */
-export const importNodeEdgeData = (
-  importData: SingleFileForms,
-  groupEdges = true,
-  importAccessors: ImportAccessors = null,
-  metadataKey: string = null,
-) => (dispatch: any, getState: any) => {
-  if (Array.isArray(importData)) {
-    throw new Error('importData parameter must not be an array');
-  }
+export const importNodeEdgeData =
+  (
+    importData: SingleFileForms,
+    groupEdges = true,
+    importAccessors: ImportAccessors = null,
+    metadataKey: string = null,
+  ) =>
+  (dispatch: any, getState: any) => {
+    if (Array.isArray(importData)) {
+      throw new Error('importData parameter must not be an array');
+    }
 
-  const { accessors: mainAccessors } = getGraph(getState());
-  const accessors = { ...mainAccessors, ...importAccessors };
-  const filterOptions: FilterOptions = getFilterOptions(getState());
+    const { accessors: mainAccessors } = getGraph(getState());
+    const accessors = { ...mainAccessors, ...importAccessors };
+    const filterOptions: FilterOptions = getFilterOptions(getState());
 
-  const { nodeCsv: nodeContents, edgeCsv: edgeContents } = importData;
-  const nodeCsvs: string[] = nodeContents.map(
-    (nodeCsv: TFileContent) => nodeCsv.content as string,
-  );
-  const edgeCsvs: string[] = edgeContents.map(
-    (edgeCsv: TFileContent) => edgeCsv.content as string,
-  );
+    const { nodeCsv: nodeContents, edgeCsv: edgeContents } = importData;
+    const nodeCsvs: string[] = nodeContents.map(
+      (nodeCsv: TFileContent) => nodeCsv.content as string,
+    );
+    const edgeCsvs: string[] = edgeContents.map(
+      (edgeCsv: TFileContent) => edgeCsv.content as string,
+    );
 
-  const newData: Promise<GraphData> = importNodeEdgeCsv(
-    nodeCsvs,
-    edgeCsvs,
-    accessors,
-    groupEdges,
-    metadataKey,
-  );
+    const newData: Promise<GraphData> = importNodeEdgeCsv(
+      nodeCsvs,
+      edgeCsvs,
+      accessors,
+      groupEdges,
+      metadataKey,
+    );
 
-  return newData
-    .then((graphData: GraphData) => {
-      dispatch(UISlices.fetchBegin());
+    return newData
+      .then((graphData: GraphData) => {
+        dispatch(UISlices.fetchBegin());
 
-      setTimeout(() => {
-        processResponse(dispatch, mainAccessors, graphData);
-        showImportDataToast(dispatch, filterOptions);
-        dispatch(FileUploadSlices.resetState());
+        setTimeout(() => {
+          processResponse(dispatch, mainAccessors, graphData);
+          showImportDataToast(dispatch, filterOptions);
+          dispatch(FileUploadSlices.resetState());
+          dispatch(UISlices.fetchDone());
+          dispatch(UISlices.closeModal());
+        }, 200);
+      })
+      .catch((err: Error) => {
+        const { message } = err;
+        dispatch(UIThunks.show(message, 'negative'));
         dispatch(UISlices.fetchDone());
-        dispatch(UISlices.closeModal());
-      }, 200);
-    })
-    .catch((err: Error) => {
-      const { message } = err;
-      dispatch(UIThunks.show(message, 'negative'));
-      dispatch(UISlices.fetchDone());
-    });
-};
+      });
+  };
 
 /**
  * Thunk to add sample data into graph
@@ -280,39 +286,41 @@ export const importNodeEdgeData = (
  * @param {boolean} groupEdges [groupEdges=true] - group graph's edges
  * @param {ImportAccessors} importAccessors [importAccessors=null] - to customize node Id / edge Id / edge source or target
  */
-export const importSampleData = (
-  importData: JsonImport,
-  importAccessors: ImportAccessors = null,
-  groupEdges = false,
-) => async (dispatch: any, getState: any): Promise<void> => {
-  const { accessors: mainAccessors } = getGraph(getState());
-  const accessors = { ...mainAccessors, ...importAccessors };
-  const filterOptions: FilterOptions = getFilterOptions(getState());
+export const importSampleData =
+  (
+    importData: JsonImport,
+    importAccessors: ImportAccessors = null,
+    groupEdges = false,
+  ) =>
+  async (dispatch: any, getState: any): Promise<void> => {
+    const { accessors: mainAccessors } = getGraph(getState());
+    const accessors = { ...mainAccessors, ...importAccessors };
+    const filterOptions: FilterOptions = getFilterOptions(getState());
 
-  const newData: Promise<GraphList> = importJson(
-    importData as GraphData,
-    accessors,
-    groupEdges,
-  );
+    const newData: Promise<GraphList> = importJson(
+      importData as GraphData,
+      accessors,
+      groupEdges,
+    );
 
-  return newData
-    .then((graphData: GraphList) => {
-      dispatch(UISlices.fetchBegin());
+    return newData
+      .then((graphData: GraphList) => {
+        dispatch(UISlices.fetchBegin());
 
-      setTimeout(() => {
-        processResponse(dispatch, mainAccessors, graphData);
-        showImportDataToast(dispatch, filterOptions);
-        dispatch(FileUploadSlices.resetState());
+        setTimeout(() => {
+          processResponse(dispatch, mainAccessors, graphData);
+          showImportDataToast(dispatch, filterOptions);
+          dispatch(FileUploadSlices.resetState());
+          dispatch(UISlices.fetchDone());
+          dispatch(UISlices.closeModal());
+        }, 200);
+      })
+      .catch((err: Error) => {
+        const { message } = err;
+        dispatch(UIThunks.show(message, 'negative'));
         dispatch(UISlices.fetchDone());
-        dispatch(UISlices.closeModal());
-      }, 200);
-    })
-    .catch((err: Error) => {
-      const { message } = err;
-      dispatch(UIThunks.show(message, 'negative'));
-      dispatch(UISlices.fetchDone());
-    });
-};
+      });
+  };
 
 /**
  * Perform group edges based on preferences and graph edge configurations.
@@ -320,83 +328,78 @@ export const importSampleData = (
  * @param {number} graphIndex - identify specific graph list to perform edge aggregations
  * @return {void}
  */
-export const groupEdgesWithAggregation = (graphIndex: number) => (
-  dispatch: any,
-  getState: any,
-) => {
-  const { graphList, graphFlatten }: GraphState = getGraph(getState());
-  const selectedGraphList: GraphData = graphList[graphIndex];
+export const groupEdgesWithAggregation =
+  (graphIndex: number) => (dispatch: any, getState: any) => {
+    const { graphList, graphFlatten }: GraphState = getGraph(getState());
+    const selectedGraphList: GraphData = graphList[graphIndex];
 
-  const { groupEdges } = selectedGraphList.metadata;
+    const { groupEdges } = selectedGraphList.metadata;
 
-  const newGraphData = groupEdgesWithConfiguration(
-    selectedGraphList,
-    graphFlatten,
-    groupEdges,
-  );
+    const { graphData: newGraphData, groupEdgeIds } =
+      groupEdgesWithConfiguration(selectedGraphList, graphFlatten, groupEdges);
 
-  // obtain the combined aggregated edge fields of entire graph.
-  const combinedAggregatedEdgeFields: Field[][] = graphList.reduce(
-    (acc: Field[][], graphData: GraphData) => {
-      const { metadata } = graphData;
+    // obtain the combined aggregated edge fields of entire graph.
+    const combinedAggregatedEdgeFields: Field[][] = graphList.reduce(
+      (acc: Field[][], graphData: GraphData) => {
+        const { metadata } = graphData;
 
-      const edgeAggregateFields: Field[] = aggregateMetadataFields(
-        graphData,
-        metadata.groupEdges.fields,
-      );
+        const edgeAggregateFields: Field[] = aggregateMetadataFields(
+          graphData,
+          metadata.groupEdges.fields,
+        );
 
-      const combinedEdgeField = uniqBy(
-        [...metadata.fields.edges, ...edgeAggregateFields],
-        'name',
-      ) as Field[];
+        const combinedEdgeField = uniqBy(
+          [...metadata.fields.edges, ...edgeAggregateFields],
+          'name',
+        ) as Field[];
 
-      acc.push(combinedEdgeField);
-      return acc;
-    },
-    [],
-  );
+        acc.push(combinedEdgeField);
+        return acc;
+      },
+      [],
+    );
 
-  // map the aggregated edge fields as edge selections
-  const flattenEdgeFields: Field[] = flatten(combinedAggregatedEdgeFields);
-  const uniqueEdgeFields = uniqBy(flattenEdgeFields, 'name') as Field[];
+    // map the aggregated edge fields as edge selections
+    const flattenEdgeFields: Field[] = flatten(combinedAggregatedEdgeFields);
+    const uniqueEdgeFields = uniqBy(flattenEdgeFields, 'name') as Field[];
 
-  const modData = cloneDeep(newGraphData);
+    const modData = cloneDeep(newGraphData);
 
-  Object.assign(modData.metadata.fields, {
-    edges: uniqueEdgeFields,
-  });
+    Object.assign(modData.metadata.fields, {
+      edges: uniqueEdgeFields,
+    });
 
-  dispatch(updateGraphFlatten(modData));
-};
+    dispatch(updateGraphFlatten(modData));
+    dispatch(updateGroupEdgeIds({ graphIndex, groupEdgeIds }));
+  };
 
 /**
  * Update edge selections based on group edge configurations.
  *
  * @return {void}
  */
-export const computeEdgeSelection = () => (
-  dispatch: any,
-  getState: any,
-): void => {
-  const { graphFlatten, edgeSelection }: GraphState = getGraph(getState());
-  const { edges: edgeFields } = graphFlatten.metadata.fields;
+export const computeEdgeSelection =
+  () =>
+  (dispatch: any, getState: any): void => {
+    const { graphFlatten, edgeSelection }: GraphState = getGraph(getState());
+    const { edges: edgeFields } = graphFlatten.metadata.fields;
 
-  const computedEdgeSelection: Selection[] = edgeFields.map(
-    (edgeField: Field) => {
-      const { name, type } = edgeField;
-      const existingSelection = edgeSelection.find(
-        (selection: Selection) => selection.id === edgeField.name,
-      );
-      const isSelected: boolean = existingSelection?.selected ?? false;
+    const computedEdgeSelection: Selection[] = edgeFields.map(
+      (edgeField: Field) => {
+        const { name, type } = edgeField;
+        const existingSelection = edgeSelection.find(
+          (selection: Selection) => selection.id === edgeField.name,
+        );
+        const isSelected: boolean = existingSelection?.selected ?? false;
 
-      return {
-        id: name,
-        label: name,
-        type,
-        selected: isSelected,
-      };
-    },
-  );
+        return {
+          id: name,
+          label: name,
+          type,
+          selected: isSelected,
+        };
+      },
+    );
 
-  dispatch(overwriteEdgeSelection(computedEdgeSelection));
-};
+    dispatch(overwriteEdgeSelection(computedEdgeSelection));
+  };

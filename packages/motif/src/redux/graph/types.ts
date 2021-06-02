@@ -100,6 +100,7 @@ export type GroupEdges = {
   availability?: boolean;
   type?: string;
   fields?: GroupEdgeFields;
+  ids?: string[];
 };
 
 export interface Metadata {
@@ -128,6 +129,11 @@ export type UpdateGroupEdgeFieldPayload = {
   index: number;
   fieldId: string;
   value: string | FieldAndAggregation['aggregation'];
+};
+
+export type UpdateGroupEdgeIds = {
+  graphIndex: number;
+  groupEdgeIds: string[];
 };
 
 export type GroupEdgeCandidates = Record<string, Edge[]>;

@@ -21,6 +21,7 @@ import {
   FieldAndAggregation,
   DeleteGroupEdgeFieldPayload,
   Selection,
+  UpdateGroupEdgeIds,
 } from './types';
 import { DEFAULT_NODE_STYLE } from '../../constants/graph-shapes';
 import { groupEdgesForImportation } from './processors/group-edges';
@@ -175,7 +176,11 @@ const graph = createSlice({
         if (modData?.metadata?.visible !== false) {
           // perform group edge if enable when perform data list deletion
           if (modData.metadata.groupEdges.toggle) {
-            modData = groupEdgesForImportation(data, data.metadata.groupEdges);
+            const { graphData: groupedEdgeData } = groupEdgesForImportation(
+              data,
+              data.metadata.groupEdges,
+            );
+            modData = groupedEdgeData;
           }
 
           graphData = combineProcessedData(modData as GraphData, graphData);
@@ -211,7 +216,11 @@ const graph = createSlice({
 
           // perform group edge if enable when toggle against visibility
           if (data.metadata.groupEdges.toggle) {
-            modData = groupEdgesForImportation(data, data.metadata.groupEdges);
+            const { graphData: groupedEdgeData } = groupEdgesForImportation(
+              data,
+              data.metadata.groupEdges,
+            );
+            modData = groupedEdgeData;
           }
 
           graphData = combineProcessedData(modData as GraphData, graphData);
@@ -365,9 +374,8 @@ const graph = createSlice({
       });
     },
     resetGroupEdgeOptions(state, action: PayloadAction<number>) {
-      const { availability } = state.graphList[
-        action.payload
-      ].metadata.groupEdges;
+      const { availability } =
+        state.graphList[action.payload].metadata.groupEdges;
       Object.assign(state.graphList[action.payload].metadata, {
         groupEdges: {
           toggle: false,
@@ -422,9 +430,8 @@ const graph = createSlice({
       const { graphIndex, fieldIndex } = action.payload;
 
       // remove specific fields from the group edge list.
-      const { [fieldIndex]: removedValue, ...res } = state.graphList[
-        graphIndex
-      ].metadata.groupEdges.fields;
+      const { [fieldIndex]: removedValue, ...res } =
+        state.graphList[graphIndex].metadata.groupEdges.fields;
 
       // assign the removed fields into the redux states
       Object.assign(state.graphList[graphIndex].metadata.groupEdges, {
@@ -438,6 +445,11 @@ const graph = createSlice({
       Object.assign(state, {
         edgeSelection: action.payload,
       });
+    },
+    updateGroupEdgeIds(state, action: PayloadAction<UpdateGroupEdgeIds>) {
+      const { graphIndex, groupEdgeIds } = action.payload;
+
+      state.graphList[graphIndex].metadata.groupEdges.ids = groupEdgeIds;
     },
   },
 });
@@ -474,6 +486,7 @@ export const {
   updateGroupEdgeAggregate,
   deleteGroupEdgeField,
   updateGraphFlatten,
+  updateGroupEdgeIds,
   overwriteEdgeSelection,
 } = graph.actions;
 
