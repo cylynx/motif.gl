@@ -37,6 +37,9 @@
       "prettier --write"
     ]
   },
+  "resolutions": {
+    "**/neo4j-driver": "4.2.3"
+  },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^8.0.0",
