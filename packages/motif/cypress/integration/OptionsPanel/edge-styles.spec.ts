@@ -23,7 +23,7 @@ describe('Edge Style Filter', () => {
 
   const getEdgeStyleFromReduxStore = (): Promise<EdgeStyleOptions> => {
     return new Promise((resolve) => {
-      cy.getReact('Provider')
+      cy.getReact('Provider$1')
         .getProps('store')
         .then((store) => {
           const globalStore = store.getState();

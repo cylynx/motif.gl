@@ -13,7 +13,7 @@ describe('Import Single Local File', () => {
   const graphinEl = 'Graphin2';
   const getGraphStates = (): Promise<GraphState> => {
     return new Promise((resolve) => {
-      cy.getReact('Provider')
+      cy.getReact('Provider$1')
         .getProps('store')
         .then((store) => {
           const globalStore = store.getState();
