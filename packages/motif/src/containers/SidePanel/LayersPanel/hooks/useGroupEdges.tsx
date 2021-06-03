@@ -58,7 +58,6 @@ const useGroupEdges = (graphIndex: number) => {
     }
 
     resetState();
-    performGroupEdges();
     computeEdgeSelection();
   };
 

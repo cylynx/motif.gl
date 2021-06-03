@@ -1,4 +1,4 @@
-import { isEmpty, get, set, cloneDeep, uniqBy } from 'lodash';
+import { isEmpty, get, set, cloneDeep, uniqBy, uniq } from 'lodash';
 import {
   Edge,
   FieldAndAggregation,
@@ -99,18 +99,6 @@ const obtainGroupEdgeIds = (
     },
     [],
   );
-};
-
-/**
- * Return grouped edge found in graph data.
- *
- * @param graphFlatten
- * @return {string[]}
- */
-const obtainGroupedEdges = (graphFlatten: GraphData): string[] => {
-  return graphFlatten.edges
-    .filter((edge: Edge) => edge.id.toLowerCase().includes('group'))
-    .map((edge: Edge) => edge.id);
 };
 
 /**
@@ -222,11 +210,18 @@ const aggregateGroupEdges = (
 
     const groupByFields = get(firstEdge, type, '');
 
-    return {
+    const properties = {
       id: `group-${id}`,
       source,
       target,
-      [type]: groupByFields,
+    };
+
+    if (type !== 'all') {
+      properties[type] = groupByFields;
+    }
+
+    return {
+      ...properties,
       ...aggregationFields,
     };
   });
@@ -337,6 +332,8 @@ export const groupEdgesForImportation = (
   );
 
   const groupEdgeIds: string[] = groupedEdges.map((edge: Edge) => edge.id);
+  const modData = cloneDeep(graphWithGroupEdges);
+  modData.metadata.groupEdges.ids = groupEdgeIds;
 
   if (isEmpty(fields) === false) {
     const edgeAggregateFields: Field[] = aggregateMetadataFields(
@@ -349,14 +346,12 @@ export const groupEdgesForImportation = (
       'name',
     );
 
-    const modData = cloneDeep(graphWithGroupEdges);
     Object.assign(modData.metadata.fields.edges, combinedEdgeField);
-    Object.assign(modData.metadata.groupEdges.ids, groupEdgeIds);
 
     return { graphData: modData, groupEdgeIds };
   }
 
-  return { graphData: graphWithGroupEdges, groupEdgeIds };
+  return { graphData: modData, groupEdgeIds };
 };
 
 /**

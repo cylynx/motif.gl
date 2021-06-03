@@ -8,6 +8,7 @@ import {
   updateStyleOption,
   overwriteEdgeSelection,
   updateGroupEdgeIds,
+  updateLastGroupEdgeIds,
 } from './slice';
 import {
   importEdgeListCsv,
@@ -61,6 +62,7 @@ const processResponse = (
       const { graphData: groupedEdgeData, groupEdgeIds } =
         groupEdgesForImportation(graphData, graphData.metadata.groupEdges);
       modData = groupedEdgeData;
+      dispatch(updateLastGroupEdgeIds(groupEdgeIds));
     }
 
     // combine new graph data with existing graph data to form graph flattens.

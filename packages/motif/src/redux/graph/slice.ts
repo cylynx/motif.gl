@@ -451,6 +451,15 @@ const graph = createSlice({
 
       state.graphList[graphIndex].metadata.groupEdges.ids = groupEdgeIds;
     },
+    updateLastGroupEdgeIds(state, action: PayloadAction<string[]>) {
+      const lastGraphIndex = state.graphList.length - 1;
+
+      if (lastGraphIndex <= -1) {
+        return;
+      }
+
+      state.graphList[lastGraphIndex].metadata.groupEdges.ids = action.payload;
+    },
   },
 });
 
@@ -487,6 +496,7 @@ export const {
   deleteGroupEdgeField,
   updateGraphFlatten,
   updateGroupEdgeIds,
+  updateLastGroupEdgeIds,
   overwriteEdgeSelection,
 } = graph.actions;
 
