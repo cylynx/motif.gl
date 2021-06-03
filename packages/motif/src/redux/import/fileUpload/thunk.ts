@@ -3,6 +3,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import { SingleFileForms, TFileContent } from './types';
 import {
   EdgeListCsv,
+  Field,
   GraphData,
   GraphList,
   TLoadFormat,
@@ -24,6 +25,27 @@ const emptyGraphData: GraphData = {
   nodes: [],
   edges: [],
   metadata: { fields: { nodes: [], edges: [] } },
+};
+
+/**
+ * Prevent uploaded data set contain node properties "type".
+ *  - "type" is a restricted word in node property for Graphin to perform styling
+ *
+ * @param {GraphList} graphList
+ * @return {boolean}
+ */
+const containRestrictWords = (graphList: GraphList): boolean => {
+  const isValidData = graphList.some((graph: GraphData) => {
+    const { nodes } = graph.metadata.fields;
+
+    const isContainType = nodes.find((field: Field) => {
+      return field.name === 'type';
+    });
+
+    return isContainType;
+  });
+
+  return isValidData;
 };
 
 const createPreviewData = (
@@ -69,6 +91,7 @@ export const previewJson =
     try {
       const graphDataArr = await Promise.all(contentPromises);
       const graphList: GraphList = flatten(graphDataArr);
+      containRestrictWords(graphList);
       createPreviewData(graphList, dispatch, combineProcessedData);
       setEdgeGroupable(graphList, dispatch);
       nextStep(step, dispatch);
@@ -93,6 +116,7 @@ export const previewEdgeList =
 
     return Promise.all(batchDataPromises)
       .then((graphList: GraphList) => {
+        containRestrictWords(graphList);
         createPreviewData(graphList, dispatch, combineDataWithDuplicates);
         setEdgeGroupable(graphList, dispatch);
         nextStep(step, dispatch);
@@ -116,6 +140,11 @@ export const previewNodeEdge =
 
     try {
       const graphData = await processPreviewNodeEdge(nodeData, edgeData);
+      const dataHasRestrictedWords = containRestrictWords([graphData]);
+      if (dataHasRestrictedWords) {
+        return;
+      }
+
       dispatch(setDataPreview(graphData));
 
       const { availability: isEdgeGroupable } = graphData.metadata.groupEdges;
