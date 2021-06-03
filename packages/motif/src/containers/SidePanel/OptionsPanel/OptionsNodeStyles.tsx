@@ -59,6 +59,7 @@ const OptionsNodeStyles = () => {
         marginTop={0}
         marginBottom={0}
         color='contentInverseSecondary'
+        $style={{ letterSpacing: '1px' }}
       >
         NODE STYLES
       </HeadingXSmall>
