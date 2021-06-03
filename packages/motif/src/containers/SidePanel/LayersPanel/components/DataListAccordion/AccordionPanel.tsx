@@ -10,7 +10,7 @@ type VisibilityButtonProps = {
   isVisible: boolean;
   [key: string]: any;
 };
-const VisibilityButton = ({
+export const VisibilityButton = ({
   onClick,
   isVisible,
   ...rest
@@ -52,7 +52,7 @@ type DeleteButtonProps = {
   tooltip: ReactNode;
   [key: string]: any;
 };
-const DeleteButton = ({
+export const DeleteButton = ({
   onClick: onClickDelete,
   shape,
   tooltip,
@@ -91,7 +91,7 @@ const DeleteButton = ({
 };
 
 type TableButtonProps = { onClick: () => any; [key: string]: any };
-const TableButton = ({ onClick, ...rest }: TableButtonProps) => {
+export const TableButton = ({ onClick, ...rest }: TableButtonProps) => {
   const onDatatableClick = (event: MouseEvent<HTMLButtonElement>): void => {
     event.stopPropagation();
     onClick();

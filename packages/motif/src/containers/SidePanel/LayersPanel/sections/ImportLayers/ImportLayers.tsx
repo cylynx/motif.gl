@@ -12,9 +12,13 @@ import {
 import useNodeStyle from '../../../../../redux/graph/hooks/useNodeStyle';
 import useSearchOption from '../../../SearchPanel/hooks/useSearchOption';
 import LayerDetailed from './LayerDetailed';
+import Accordion from '../../../../../components/Accordion';
 
-import DataListAccordion from '../../components/DataListAccordion/DataListAccordion';
-import AccordionPanel from '../../components/DataListAccordion/AccordionPanel';
+import {
+  TableButton,
+  VisibilityButton,
+  DeleteButton,
+} from '../../components/DataListAccordion/AccordionPanel';
 import { UISlices } from '../../../../../redux/ui';
 
 const ImportLayers = () => {
@@ -54,19 +58,22 @@ const ImportLayers = () => {
   };
 
   const items = graphList.map((graph: GraphData, index: number) => {
-    const titleText: string = graph.metadata?.title ?? `import ${index}`;
+    const title: string = graph.metadata?.title ?? `import ${index}`;
     const isVisible: boolean = graph.metadata?.visible ?? true;
 
-    const title = (
-      <AccordionPanel
-        key={index}
-        index={index}
-        onDatatableClick={displayTabularData}
-        onChangeVisibility={onChangeVisibility}
-        onDelete={onDelete}
-        title={titleText}
-        isVisible={isVisible}
-      />
+    const actionButtons = (
+      <Block>
+        <TableButton onClick={() => displayTabularData(index)} />
+        <VisibilityButton
+          isVisible={isVisible}
+          onClick={() => onChangeVisibility(index, !isVisible)}
+        />
+        <DeleteButton
+          onClick={() => onDelete(index)}
+          tooltip='Delete Layer'
+          shape='round'
+        />
+      </Block>
     );
 
     const content = <LayerDetailed graph={graph} index={index} />;
@@ -75,13 +82,23 @@ const ImportLayers = () => {
       key: index,
       title,
       content,
+      actionButtons,
       expanded: true,
     };
   });
 
   return (
     <Block overflow='auto' marginTop='scale300'>
-      <DataListAccordion items={items} />
+      {items.map((x) => (
+        <Block key={x.key} marginTop='scale300'>
+          <Accordion
+            title={x.title}
+            content={x.content}
+            actionButtons={x.actionButtons}
+            expanded={x.expanded}
+          />
+        </Block>
+      ))}
     </Block>
   );
 };

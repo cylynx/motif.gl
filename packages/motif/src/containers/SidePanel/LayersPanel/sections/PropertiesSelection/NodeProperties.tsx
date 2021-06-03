@@ -28,40 +28,30 @@ const NodeProperties: FC<NodePropertiesProps> = ({ haveData, nodeFields }) => {
   return (
     <Accordion
       data-testid='node-properties-accordion'
-      items={[
-        {
-          title: (
-            <Block display='flex' justifyContent='center'>
-              <Icon.Node style={{ paddingRight: '8px' }} />
-              Node Properties
-            </Block>
-          ),
-          key: 'node properties',
-          content: (
-            <Fragment>
-              {haveData ? (
-                <Block display='flex'>
-                  <ParagraphSmall marginTop={0}>
-                    Hint: Select node properties to display in tooltip
-                  </ParagraphSmall>
-                  <ToggleAllButton
-                    selected={isAllNodeSelected}
-                    onClick={onSelectAllNodeToken}
-                  />
-                </Block>
-              ) : (
-                <ParagraphSmall marginTop={0}>
-                  Import data to get started.
-                </ParagraphSmall>
-              )}
-              <ToggleTokens
-                options={haveData ? nodeFields : []}
-                onClick={onClickNodeToken}
+      title='NODE PROPERTIES'
+      content={
+        <Fragment>
+          {haveData ? (
+            <Block display='flex'>
+              <ParagraphSmall marginTop={0}>
+                Select node properties to display in tooltip
+              </ParagraphSmall>
+              <ToggleAllButton
+                selected={isAllNodeSelected}
+                onClick={onSelectAllNodeToken}
               />
-            </Fragment>
-          ),
-        },
-      ]}
+            </Block>
+          ) : (
+            <ParagraphSmall marginTop={0}>
+              Import data to get started.
+            </ParagraphSmall>
+          )}
+          <ToggleTokens
+            options={haveData ? nodeFields : []}
+            onClick={onClickNodeToken}
+          />
+        </Fragment>
+      }
     />
   );
 };
