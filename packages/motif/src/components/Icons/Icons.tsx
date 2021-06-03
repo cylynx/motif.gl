@@ -21,6 +21,7 @@ import {
   HiChevronRight,
   HiOutlineArrowNarrowDown,
   HiQuestionMarkCircle,
+  HiUser,
 } from 'react-icons/hi';
 import {
   BiLayer,
@@ -318,6 +319,12 @@ export const QuestionMarkCircle = ({
     </HiQuestionMarkCircle>
   );
 };
+
+export const User = ({ children, size = 16, ...rest }: IconBaseProps) => (
+  <HiUser size={size} {...rest}>
+    {children}
+  </HiUser>
+);
 
 export const WarningSign = ({
   size = 16,

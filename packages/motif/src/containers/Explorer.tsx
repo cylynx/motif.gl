@@ -10,7 +10,7 @@ import React, {
   ForwardedRef,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useStyletron, ThemeProvider } from 'baseui';
+import { BaseProvider, ThemeProvider } from 'baseui';
 import { Theme } from 'baseui/theme';
 import { Block } from 'baseui/block';
 
@@ -25,6 +25,7 @@ import {
   getWidgetOverride,
 } from '../utils/overrides';
 import { UISlices } from '../redux/ui';
+import { MotifLightTheme, MotifDarkTheme } from '../theme';
 import { WidgetSelectors, WidgetSlices, WidgetItem } from '../redux/widget';
 import { GraphSlices, Accessors, StyleOptions } from '../redux/graph';
 import SideNavBars from './SideNavBar';
@@ -44,6 +45,7 @@ export type ExplorerProps = {
   accessors: Accessors;
   overrides?: Overrides;
   styleOptions?: StyleOptions;
+  primaryTheme?: Theme;
   secondaryTheme?: Theme;
 };
 
@@ -72,6 +74,7 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
       name,
       accessors,
       overrides,
+      primaryTheme,
       secondaryTheme,
       styleOptions = GraphSlices.initialState.styleOptions,
     } = props;
@@ -79,11 +82,9 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
     const graphRef: ForwardedRef<Graphin> | MutableRefObject<Graphin> =
       ref || localRef;
     const [tooltip, setTooltip] = useState(null);
-    const [leftLayerWidth, setLeftLayerWidth] = useState<string>(
-      LEFT_LAYER_WIDTH,
-    );
+    const [leftLayerWidth, setLeftLayerWidth] =
+      useState<string>(LEFT_LAYER_WIDTH);
 
-    const [, theme] = useStyletron();
     const dispatch = useDispatch();
     const widgetState = useSelector((state) =>
       WidgetSelectors.getWidget(state),
@@ -131,7 +132,14 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
     }, [accessors, overrides?.widgetList, name]);
 
     return (
-      <Block position='relative' height='100%' width='100%'>
+      <BaseProvider
+        theme={primaryTheme || MotifLightTheme}
+        overrides={{
+          AppContainer: {
+            style: { position: 'relative', height: '100%', width: '100%' },
+          },
+        }}
+      >
         <DataTableModal />
         <ImportWizardModal overrideTabs={overrides?.Tabs} />
         <GraphLayer
@@ -141,7 +149,10 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
         >
           <Graph ref={graphRef} setTooltip={setTooltip} />
         </GraphLayer>
-        <WidgetContainer graphRef={graphRef} theme={secondaryTheme || theme}>
+        <WidgetContainer
+          graphRef={graphRef}
+          theme={secondaryTheme || MotifDarkTheme}
+        >
           <SideNavBars />
           {tooltip && <UserTooltip tooltip={{ ...tooltip, leftLayerWidth }} />}
           {activeWidgetList.length > 0 &&
@@ -149,7 +160,7 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
               <Block key={item.id}>{item.widget}</Block>
             ))}
         </WidgetContainer>
-      </Block>
+      </BaseProvider>
     );
   },
 );

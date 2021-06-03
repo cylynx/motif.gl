@@ -1,9 +1,9 @@
 import React, { FC, useMemo, useState } from 'react';
 import { Modal, ModalHeader, ModalBody, SIZE, ModalProps } from 'baseui/modal';
-import { Tabs, Tab } from 'baseui/tabs-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import { withStyle } from 'baseui';
-import { LabelMedium, ParagraphSmall } from 'baseui/typography';
+import { HeadingLarge, LabelMedium, ParagraphSmall } from 'baseui/typography';
+import { Tabs, Tab } from '../../components/ui/Tabs';
 import { ModalState, UISelectors, UISlices } from '../../redux/ui';
 import { ImportTabs, TActiveKey } from './types';
 
@@ -31,7 +31,7 @@ const StyledModalHeader = withStyle(ModalHeader, ({ $theme }) => ({
 }));
 
 const StyledModalBody = withStyle(ModalBody, () => ({
-  height: 'calc(100% - 60px)',
+  height: 'calc(100% - 80px)',
 }));
 
 export type ImportWizardProps = { overrideTabs?: ImportTabs[] };
@@ -83,7 +83,6 @@ const ImportWizardModal: FC<ImportWizardProps> = ({ overrideTabs }) => {
           Dialog: {
             style: {
               width: '848px',
-
               // perform hard code to support small screen width
               minHeight: '630px',
               height: '80vh',
@@ -91,7 +90,9 @@ const ImportWizardModal: FC<ImportWizardProps> = ({ overrideTabs }) => {
           },
         }}
       >
-        <StyledModalHeader>Import Data</StyledModalHeader>
+        <StyledModalHeader>
+          <HeadingLarge>Import Data</HeadingLarge>
+        </StyledModalHeader>
         <StyledModalBody>
           <Tabs
             activeKey={activeKey}
