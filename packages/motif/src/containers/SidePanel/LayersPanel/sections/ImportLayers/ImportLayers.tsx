@@ -18,7 +18,7 @@ import {
   TableButton,
   VisibilityButton,
   DeleteButton,
-} from '../../components/DataListAccordion/AccordionPanel';
+} from '../../components/DataListAccordion/AccordionButtons';
 import { UISlices } from '../../../../../redux/ui';
 
 const ImportLayers = () => {

@@ -14,6 +14,7 @@ import * as Icon from '../Icons';
 export type AccordionProps = {
   title: React.ReactNode;
   content: React.ReactNode;
+  iconPosition?: 'left' | 'right';
   actionButtons?: React.ReactNode;
   expanded?: boolean;
   overrides?: AccordionOverrides<SharedProps>;
@@ -39,13 +40,23 @@ export const Content = ({ children }: { children: React.ReactNode }) => {
 const Accordion = ({
   title,
   content,
+  iconPosition = 'left',
   actionButtons = null,
   expanded = false,
   overrides,
 }: AccordionProps) => {
   const BASE_ACCORDION_OVERRIDES: AccordionOverrides<SharedProps> = {
     ToggleIcon: {
-      component: () => actionButtons,
+      component: () => {
+        return iconPosition === 'left' ? (
+          actionButtons
+        ) : (
+          <>
+            {actionButtons}
+            <Icon.ChevronDown />
+          </>
+        );
+      },
     },
     Header: {
       style: ({ $theme, $expanded }) => ({
@@ -86,8 +97,14 @@ const Accordion = ({
       <StatefulPanel
         title={
           <Block display='flex' alignItems='center'>
-            <Icon.ChevronDown />
-            <Block marginLeft='8px'>{title}</Block>
+            {iconPosition === 'left' ? (
+              <>
+                <Icon.ChevronDown />
+                <Block marginLeft='8px'>{title}</Block>
+              </>
+            ) : (
+              title
+            )}
           </Block>
         }
         initialState={{ expanded }}

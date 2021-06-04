@@ -1,6 +1,5 @@
-import React, { FC, MouseEvent, ReactNode, useCallback } from 'react';
+import React, { MouseEvent, ReactNode, useCallback } from 'react';
 import { Button, ButtonProps } from 'baseui/button';
-import { Block } from 'baseui/block';
 import debounce from 'lodash/debounce';
 import { SimpleTooltip } from '../../../../../components/ui';
 import * as Icon from '../../../../../components/Icons';
@@ -112,42 +111,3 @@ export const TableButton = ({ onClick, ...rest }: TableButtonProps) => {
     </SimpleTooltip>
   );
 };
-
-type AccordionPanelProps = {
-  index: number;
-  onDatatableClick: (key: number) => void;
-  isVisible: boolean;
-  onChangeVisibility: (index: number, isVisible: boolean) => void;
-  onDelete: (key: number) => void;
-  title: ReactNode;
-};
-const AccordionPanel: FC<AccordionPanelProps> = ({
-  index,
-  onDatatableClick,
-  isVisible,
-  onChangeVisibility,
-  onDelete,
-  title,
-}) => {
-  return (
-    <Block display='flex' justifyContent='space-between' width='100%'>
-      <Block as='span' paddingTop='scale200'>
-        {title}
-      </Block>
-      <Block>
-        <TableButton onClick={() => onDatatableClick(index)} />
-        <VisibilityButton
-          isVisible={isVisible}
-          onClick={() => onChangeVisibility(index, !isVisible)}
-        />
-        <DeleteButton
-          onClick={() => onDelete(index)}
-          tooltip='Delete Layer'
-          shape='round'
-        />
-      </Block>
-    </Block>
-  );
-};
-
-export default AccordionPanel;
