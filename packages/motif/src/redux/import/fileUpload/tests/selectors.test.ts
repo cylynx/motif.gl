@@ -1,5 +1,4 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import fileUploadReducer from '../slice';
 import { TFileContentState } from '../types';
 import investigateReducer from '../../../investigate';
 import { getFileUpload } from '../selectors';
@@ -26,6 +25,7 @@ describe('getFileUpload', () => {
       metadata: { fields: { nodes: [], edges: [] } },
     },
     isEdgeGroupable: false,
+    error: null,
   };
 
   let reducer: any;

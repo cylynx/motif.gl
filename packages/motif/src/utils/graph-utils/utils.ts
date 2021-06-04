@@ -355,16 +355,12 @@ export const filterGraph = (
 
   const filtersArray: FilterArray[] = Object.entries(filterOptions);
 
-  const hasNodeFilters:
-    | FilterArray
-    | undefined = filtersArray.find((value: FilterArray) =>
-    hasGraphFilters(value, 'nodes'),
+  const hasNodeFilters: FilterArray | undefined = filtersArray.find(
+    (value: FilterArray) => hasGraphFilters(value, 'nodes'),
   );
 
-  const hasEdgeFilters:
-    | FilterArray
-    | undefined = filtersArray.find((value: FilterArray) =>
-    hasGraphFilters(value, 'edges'),
+  const hasEdgeFilters: FilterArray | undefined = filtersArray.find(
+    (value: FilterArray) => hasGraphFilters(value, 'edges'),
   );
 
   if (hasNodeFilters === undefined && hasEdgeFilters === undefined) {
@@ -435,13 +431,8 @@ const filterGraphEdgeNodes = (
     .filter((value: FilterArray) => hasGraphFilters(value, type))
     .reduce((accFilter: any[], value: FilterArray) => {
       const { 1: criteria } = value;
-      const {
-        id,
-        caseSearch,
-        analyzerType,
-        range,
-        format,
-      } = criteria as FilterCriteria;
+      const { id, caseSearch, analyzerType, range, format } =
+        criteria as FilterCriteria;
 
       if (analyzerType === 'STRING') {
         const stringCases: (string | number)[] = caseSearch.map(

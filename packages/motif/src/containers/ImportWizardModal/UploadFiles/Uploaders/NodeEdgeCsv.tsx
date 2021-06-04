@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, FC } from 'react';
+import React, { BaseSyntheticEvent, FC, useMemo } from 'react';
 import {
   Controller,
   SubmitHandler,
@@ -24,7 +24,7 @@ import useDataPreview from '../hooks/useDataPreview';
 const cleanInput = (file: string) => file.replace(/\r/g, '').trim();
 
 const NodeEdgeCsv: FC = () => {
-  const { fileUpload, setAttachments } = useFileContents();
+  const { fileUpload, setAttachments, setErrorMessage } = useFileContents();
   const { previewNodeEdge } = useDataPreview();
 
   const {
@@ -106,6 +106,8 @@ const NodeEdgeCsv: FC = () => {
   };
 
   const onDeleteBtnClick = (index: number, name: keyof SingleFileForms) => {
+    setErrorMessage(null);
+
     const fileAttachments = getValues(name) as TFileContent[];
     const cloneFileAttachments = [...fileAttachments];
     cloneFileAttachments.splice(index, 1);
@@ -117,6 +119,18 @@ const NodeEdgeCsv: FC = () => {
 
     setValue(name, cloneFileAttachments);
   };
+
+  const isButtonDisabled = useMemo(() => {
+    if (fileUpload.error !== null) {
+      return true;
+    }
+
+    if (isNodeCsvEmpty || isEdgeCsvEmpty) {
+      return true;
+    }
+
+    return false;
+  }, [isNodeCsvEmpty, isEdgeCsvEmpty, fileUpload.error]);
 
   return (
     <form onSubmit={handleSubmit(onSubmitForm)}>
@@ -218,7 +232,7 @@ const NodeEdgeCsv: FC = () => {
       <Block position='absolute' bottom='scale300' right='0'>
         <Button
           type='submit'
-          disabled={isNodeCsvEmpty || isEdgeCsvEmpty}
+          disabled={isButtonDisabled}
           kind={KIND.primary}
           size={SIZE.compact}
           endEnhancer={<Icon.ChevronRight size={16} />}

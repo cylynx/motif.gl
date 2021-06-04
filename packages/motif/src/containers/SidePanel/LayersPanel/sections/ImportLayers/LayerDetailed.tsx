@@ -1,11 +1,13 @@
-import { useSelector } from 'react-redux';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Block } from 'baseui/block';
 import { styled } from 'baseui';
-import { GraphData, GraphSelectors } from '../../../../../redux/graph';
+import {
+  GroupEdgeReturns,
+  groupEdgesForImportation,
+} from '../../../../../redux/graph/processors/group-edges';
+import { GraphData } from '../../../../../redux/graph';
 import GraphStatistics from '../../components/GraphStatistics';
 import GroupEdges from '../GroupEdges';
-import useGroupEdges from '../../hooks/useGroupEdges';
 
 const StyledHr = styled('hr', ({ $theme }) => ({
   borderColor: $theme.colors.mono700,
@@ -16,23 +18,33 @@ const StyledHr = styled('hr', ({ $theme }) => ({
 
 type LayerDetailProps = { graph: GraphData; index: number };
 const LayerDetailed = ({ graph, index }: LayerDetailProps) => {
-  const { groupEdges } = useGroupEdges(index);
-  const { visible } = graph.metadata;
+  const { groupEdges, visible } = graph.metadata;
+  const graphWithGroupEdge = useMemo(() => {
+    if (visible === false) {
+      return graph;
+    }
 
-  const graphWithGroupEdge = useSelector((state) =>
-    GraphSelectors.getAggregatedGroupGraphList(
-      state,
-      index,
-      visible,
+    const { graphData }: GroupEdgeReturns = groupEdgesForImportation(
+      graph,
       groupEdges,
-    ),
-  );
+    );
+
+    return graphData;
+  }, [groupEdges, visible]);
 
   // compute the information for statistics
-  const visibleNodeLength = graphWithGroupEdge.nodes.length;
-  const visibleEdgeLength = graphWithGroupEdge.edges.length;
-  const hiddenNodeLength = graph.nodes.length - visibleNodeLength;
-  const hiddenEdgeLength = graph.edges.length - visibleEdgeLength;
+  const visibleNodeLength =
+    visible === false ? 0 : graphWithGroupEdge.nodes.length;
+  const visibleEdgeLength =
+    visible === false ? 0 : graphWithGroupEdge.edges.length;
+  const hiddenNodeLength =
+    visible === false
+      ? graphWithGroupEdge.nodes.length
+      : graph.nodes.length - visibleNodeLength;
+  const hiddenEdgeLength =
+    visible === false
+      ? graphWithGroupEdge.edges.length
+      : graph.edges.length - visibleEdgeLength;
 
   return (
     <>
