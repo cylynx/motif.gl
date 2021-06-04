@@ -3,18 +3,29 @@ import {
   Button as BaseButton,
   SHAPE,
   ButtonProps as BaseButtonProps,
+  ButtonOverrides,
 } from 'baseui/button';
 
 type ButtonProps = BaseButtonProps & {
   children: React.ReactNode;
   width?: string;
   border?: 'solid' | 'none';
+  BaseButtonStyleOverrides?: any;
 };
 
 type Ref = HTMLButtonElement;
 
 const Button = React.forwardRef<Ref, ButtonProps>(
-  ({ children, width = 'auto', border = 'none', ...rest }, ref) => {
+  (
+    {
+      children,
+      width = 'auto',
+      border = 'none',
+      BaseButtonStyleOverrides = {},
+      ...rest
+    },
+    ref,
+  ) => {
     return (
       <BaseButton
         ref={ref}
@@ -38,6 +49,7 @@ const Button = React.forwardRef<Ref, ButtonProps>(
                   $shape === SHAPE.circle || $shape === SHAPE.square
                     ? '32px'
                     : width,
+                ...BaseButtonStyleOverrides,
               };
             },
           },

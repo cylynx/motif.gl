@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useMemo, MouseEvent, useCallback } from 'react';
+import React, { FC, useMemo, MouseEvent, useCallback } from 'react';
 import { Block } from 'baseui/block';
 import { useSelector } from 'react-redux';
 import Header from '../Header';
@@ -99,7 +99,12 @@ const FilterPanel: FC = () => {
   return (
     <Block data-testid='filter-panel'>
       <Header />
-      <Block display='flex' justifyContent='start' flexDirection='column'>
+      <Block
+        display='flex'
+        justifyContent='start'
+        flexDirection='column'
+        gridGap='scale200'
+      >
         {FilterSelections}
         {AddFilterButtonMemo}
       </Block>

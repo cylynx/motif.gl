@@ -3,12 +3,14 @@ import { useStyletron } from 'baseui';
 
 export type CardProps = {
   children: React.ReactNode;
+  $style?: React.HTMLAttributes<HTMLDivElement>['style'];
 };
 
-const Card: FC<CardProps> = ({ children }) => {
+const Card: FC<CardProps> = ({ children, $style }) => {
   const [css, theme] = useStyletron();
   return (
     <div
+      style={{}}
       className={css({
         backgroundColor: theme.colors.backgroundSecondary,
         paddingTop: theme.sizing.scale300,
@@ -19,6 +21,7 @@ const Card: FC<CardProps> = ({ children }) => {
         borderBottomRightRadius: theme.borders.radius200,
         borderTopLeftRadius: theme.borders.radius200,
         borderTopRightRadius: theme.borders.radius200,
+        ...$style,
       })}
     >
       {children}
