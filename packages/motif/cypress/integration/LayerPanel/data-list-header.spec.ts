@@ -32,20 +32,7 @@ describe('Data List Header', () => {
     it('should delete the specific graph list', () => {
       cy.react('DeleteButton$1').last().click();
 
-      cy.wait(1000);
-
-      cy.getReact('GraphStatistics')
-        .nthNode(0)
-        .getProps()
-        .then((props) => {
-          const { edgeLength, hiddenEdgeLength, hiddenNodeLength, nodeLength } =
-            props;
-
-          expect(nodeLength).to.deep.equal(0);
-          expect(edgeLength).to.deep.equal(0);
-          expect(hiddenNodeLength).to.deep.equal(0);
-          expect(hiddenEdgeLength).to.deep.equal(0);
-        });
+      cy.getReact('LayerDetailed').should('not.exist');
     });
   });
 });
