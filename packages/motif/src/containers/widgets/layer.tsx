@@ -38,7 +38,7 @@ export const LeftLayer: FC<LeftLayerProps> = ({ children, padding = true }) => {
       top='0px'
       bottom='0px'
       left={SIDE_NAVBAR_WIDTH}
-      width={padding ? '310px' : '338px'}
+      width={padding ? '280px' : '308px'}
       paddingTop={padding ? 'scale600' : 0}
       paddingBottom={padding ? 'scale200' : 0}
       paddingLeft={padding ? 'scale550' : 0}
