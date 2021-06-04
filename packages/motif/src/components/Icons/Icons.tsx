@@ -16,7 +16,6 @@ import {
   HiOutlineZoomOut,
   HiOutlineCamera,
   HiOutlineFilter,
-  HiOutlineSearch,
   HiChevronLeft,
   HiChevronRight,
   HiOutlineArrowNarrowDown,
@@ -34,6 +33,7 @@ import {
   BiFullscreen,
   BiUndo,
   BiRedo,
+  BiSearch,
   BiListUl,
   BiNetworkChart,
   BiSave,
@@ -261,9 +261,9 @@ export const Camera = ({ children, size = 16, ...rest }: IconBaseProps) => (
 );
 
 export const Search = ({ children, size = 16, ...rest }: IconBaseProps) => (
-  <HiOutlineSearch size={size} {...rest}>
+  <BiSearch size={size} {...rest}>
     {children}
-  </HiOutlineSearch>
+  </BiSearch>
 );
 
 export const Save = ({ children, size = 16, ...rest }: IconBaseProps) => (
