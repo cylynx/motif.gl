@@ -71,6 +71,10 @@ const useFileContents = () => {
     dispatch(FileUploadSlices.setDataPreview(graphData));
   };
 
+  const setErrorMessage = (error: TFileContentState['error']) => {
+    dispatch(FileUploadSlices.setError(error));
+  };
+
   const resetState = () => {
     dispatch(FileUploadSlices.resetState());
   };
@@ -99,6 +103,7 @@ const useFileContents = () => {
     setAccessors,
     setGroupEdge,
     setDataPreview,
+    setErrorMessage,
     isPossessDataPreview,
     resetDataPreview,
     resetState,

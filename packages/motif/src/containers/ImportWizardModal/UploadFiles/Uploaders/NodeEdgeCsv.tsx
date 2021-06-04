@@ -24,7 +24,7 @@ import useDataPreview from '../hooks/useDataPreview';
 const cleanInput = (file: string) => file.replace(/\r/g, '').trim();
 
 const NodeEdgeCsv: FC = () => {
-  const { fileUpload, setAttachments } = useFileContents();
+  const { fileUpload, setAttachments, setErrorMessage } = useFileContents();
   const { previewNodeEdge } = useDataPreview();
 
   const {
@@ -106,6 +106,8 @@ const NodeEdgeCsv: FC = () => {
   };
 
   const onDeleteBtnClick = (index: number, name: keyof SingleFileForms) => {
+    setErrorMessage(null);
+
     const fileAttachments = getValues(name) as TFileContent[];
     const cloneFileAttachments = [...fileAttachments];
     cloneFileAttachments.splice(index, 1);

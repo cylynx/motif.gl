@@ -3,7 +3,6 @@ import { Block } from 'baseui/block';
 import { FormControl } from 'baseui/form-control';
 import { OnChangeParams, Option } from 'baseui/select';
 
-import { LabelLarge } from 'baseui/typography';
 import JsonFiles from './JsonFiles';
 import EdgeListCsv from './EdgeListCsv';
 import NodeEdgeCsv from './NodeEdgeCsv';
@@ -18,6 +17,7 @@ const importOptions = Object.values(UIConstants.OPTIONS);
 type DataTypeSelectionProps = {};
 const DataTypeSelection: FC<DataTypeSelectionProps> = () => {
   const { fileUpload, setDataType, resetState } = useFileContents();
+  const { error } = fileUpload;
 
   const dataType: Option = useMemo(() => {
     const selectedDataType = importOptions.find(
@@ -31,35 +31,10 @@ const DataTypeSelection: FC<DataTypeSelectionProps> = () => {
     return selectedDataType;
   }, [fileUpload.dataType]);
 
-  return (
-    <Block marginTop='scale600'>
-      <FormControl
-        label='Data Type'
-        overrides={{ ControlContainer: { style: { marginBottom: 0 } } }}
-      >
-        <Dropdown
-          transparent /* show without transparency in pr */
-          id='DataTypeSelection'
-          size='compact'
-          value={[dataType]}
-          options={importOptions}
-          clearable={false}
-          searchable={false}
-          onChange={(data: OnChangeParams) => {
-            const [option] = data.value;
-            const { id } = option as Option;
-            resetState();
-            setDataType(id as TFileContentState['dataType']);
-          }}
-          placeholder='Select Import Data Type'
-        />
-      </FormControl>
+  const errorMessage = useMemo(() => {
+    if (error === null) return null;
 
-      <Block marginBottom='4px' />
-      {dataType.id === 'json' && <JsonFiles />}
-      {dataType.id === 'edgeListCsv' && <EdgeListCsv />}
-      {dataType.id === 'nodeEdgeCsv' && <NodeEdgeCsv />}
-
+    return (
       <ErrorMessage
         title={
           <Block
@@ -91,6 +66,39 @@ const DataTypeSelection: FC<DataTypeSelectionProps> = () => {
           </Block>
         }
       />
+    );
+  }, [error]);
+
+  return (
+    <Block marginTop='scale600'>
+      <FormControl
+        label='Data Type'
+        overrides={{ ControlContainer: { style: { marginBottom: 0 } } }}
+      >
+        <Dropdown
+          transparent /* show without transparency in pr */
+          id='DataTypeSelection'
+          size='compact'
+          value={[dataType]}
+          options={importOptions}
+          clearable={false}
+          searchable={false}
+          onChange={(data: OnChangeParams) => {
+            const [option] = data.value;
+            const { id } = option as Option;
+            resetState();
+            setDataType(id as TFileContentState['dataType']);
+          }}
+          placeholder='Select Import Data Type'
+        />
+      </FormControl>
+
+      <Block marginBottom='4px' />
+      {dataType.id === 'json' && <JsonFiles />}
+      {dataType.id === 'edgeListCsv' && <EdgeListCsv />}
+      {dataType.id === 'nodeEdgeCsv' && <NodeEdgeCsv />}
+
+      {errorMessage}
     </Block>
   );
 };

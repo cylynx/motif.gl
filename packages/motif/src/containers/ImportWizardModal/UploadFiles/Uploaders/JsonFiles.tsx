@@ -19,7 +19,7 @@ import useFileContents from '../hooks/useFileContents';
 import useDataPreview from '../hooks/useDataPreview';
 
 const JsonFiles: FC = () => {
-  const { fileUpload, setAttachments } = useFileContents();
+  const { fileUpload, setAttachments, setErrorMessage } = useFileContents();
   const { previewJson } = useDataPreview();
 
   const {
@@ -102,6 +102,7 @@ const JsonFiles: FC = () => {
     (watch('attachments') as TFileContent[]).length === 0;
 
   const onDeleteBtnClick = (index: number) => {
+    setErrorMessage(null);
     const fileAttachments = getValues('attachments') as TFileContent[];
     const cloneFileAttachments = [...fileAttachments];
     cloneFileAttachments.splice(index, 1);

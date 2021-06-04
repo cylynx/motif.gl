@@ -17,7 +17,7 @@ import {
   combineProcessedData,
   combineDataWithDuplicates,
 } from '../../../utils/graph-utils/utils';
-import { setDataPreview, setIsEdgeGroupable, setStep } from './slice';
+import { setDataPreview, setIsEdgeGroupable, setStep, setError } from './slice';
 import { UIThunks } from '../../ui';
 import { getFileUpload } from './selectors';
 
@@ -91,7 +91,12 @@ export const previewJson =
     try {
       const graphDataArr = await Promise.all(contentPromises);
       const graphList: GraphList = flatten(graphDataArr);
-      containRestrictWords(graphList);
+      const isDataInvalid = containRestrictWords(graphList);
+      if (isDataInvalid) {
+        dispatch(setError('restricted-words'));
+        return;
+      }
+
       createPreviewData(graphList, dispatch, combineProcessedData);
       setEdgeGroupable(graphList, dispatch);
       nextStep(step, dispatch);
@@ -116,7 +121,6 @@ export const previewEdgeList =
 
     return Promise.all(batchDataPromises)
       .then((graphList: GraphList) => {
-        containRestrictWords(graphList);
         createPreviewData(graphList, dispatch, combineDataWithDuplicates);
         setEdgeGroupable(graphList, dispatch);
         nextStep(step, dispatch);
@@ -126,6 +130,7 @@ export const previewEdgeList =
         dispatch(UIThunks.show(message, 'negative'));
       });
   };
+
 export const previewNodeEdge =
   (attachments: SingleFileForms) => async (dispatch: any, getState: any) => {
     const { step } = getFileUpload(getState());
@@ -140,8 +145,9 @@ export const previewNodeEdge =
 
     try {
       const graphData = await processPreviewNodeEdge(nodeData, edgeData);
-      const dataHasRestrictedWords = containRestrictWords([graphData]);
-      if (dataHasRestrictedWords) {
+      const isDatasetInvalid = containRestrictWords([graphData]);
+      if (isDatasetInvalid) {
+        dispatch(setError('restricted-words'));
         return;
       }
 
@@ -149,6 +155,7 @@ export const previewNodeEdge =
 
       const { availability: isEdgeGroupable } = graphData.metadata.groupEdges;
       dispatch(setIsEdgeGroupable(isEdgeGroupable));
+      dispatch(setError(null));
       nextStep(step, dispatch);
     } catch (err) {
       const { message } = err;
