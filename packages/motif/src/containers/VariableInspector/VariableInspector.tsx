@@ -253,7 +253,7 @@ const VariableInspector = () => {
     () => (
       <SelectVariable
         value={selection}
-        options={{ Nodes: nodeOptions, Edges: edgeOptions }}
+        options={{ __ungrouped: [], Nodes: nodeOptions, Edges: edgeOptions }}
         onChange={(obj) => onChangeSelected(obj)}
         valueKey='optionKey'
         overrides={{

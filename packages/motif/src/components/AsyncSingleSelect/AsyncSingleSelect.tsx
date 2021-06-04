@@ -1,7 +1,6 @@
 import React, { FC, SyntheticEvent, useState } from 'react';
 
 import {
-  Select,
   TYPE,
   OnChangeParams,
   Value,
@@ -9,6 +8,7 @@ import {
   SelectOverrides,
 } from 'baseui/select';
 import debounce from 'lodash/debounce';
+import { Dropdown } from '../ui';
 
 export type AsyncSingleSelectProps = {
   options: Value;
@@ -60,7 +60,7 @@ const AsyncSingleSelect: FC<AsyncSingleSelectProps> = ({
   };
 
   return (
-    <Select
+    <Dropdown
       isLoading={isLoading}
       options={asyncOptions}
       labelKey={labelKey}

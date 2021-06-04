@@ -52,6 +52,7 @@ const FilterPanel: FC = () => {
 
   const selectOptions: SelectOptions = useMemo(() => {
     return {
+      __ungrouped: [],
       Nodes: nodeOptions,
       Edges: edgeOptions,
     };

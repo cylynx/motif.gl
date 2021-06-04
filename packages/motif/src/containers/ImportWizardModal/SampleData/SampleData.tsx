@@ -4,7 +4,7 @@ import { ALIGNMENT, Cell, Grid } from 'baseui/layout-grid';
 import { Button } from 'baseui/button';
 import { Block } from 'baseui/block';
 import { StyledSpinnerNext } from 'baseui/spinner';
-import { LabelMedium, ParagraphSmall } from 'baseui/typography';
+import { HeadingSmall, ParagraphSmall } from 'baseui/typography';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { SampleData, SampleDataItem } from './types';
@@ -103,9 +103,9 @@ const StyledItem: FC<StyledItemProps> = ({ item }): JSX.Element => {
     <Button onClick={(e): void => trySampleData(item, e)} kind='minimal'>
       <Block width='200px'>
         <img src={item.src} height='120px' width='180px' alt={item.title} />
-        <LabelMedium marginTop='6px' marginBottom='0'>
+        <HeadingSmall marginTop='6px' marginBottom='0'>
           {item.title}
-        </LabelMedium>
+        </HeadingSmall>
         <ParagraphSmall marginTop='6px' marginBottom='6px'>
           {item.description}
         </ParagraphSmall>
