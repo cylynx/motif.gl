@@ -1,0 +1,18 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "type": "something"
+    },
+    {
+      "id": 2
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-1",
+      "source": 1,
+      "target": 2
+    }
+  ]
+}

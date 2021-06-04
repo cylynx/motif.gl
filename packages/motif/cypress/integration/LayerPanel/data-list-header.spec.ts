@@ -17,12 +17,8 @@ describe('Data List Header', () => {
         .nthNode(1)
         .getProps()
         .then((props) => {
-          const {
-            edgeLength,
-            hiddenEdgeLength,
-            hiddenNodeLength,
-            nodeLength,
-          } = props;
+          const { edgeLength, hiddenEdgeLength, hiddenNodeLength, nodeLength } =
+            props;
 
           expect(nodeLength).to.deep.equal(0);
           expect(edgeLength).to.deep.equal(0);
@@ -36,16 +32,14 @@ describe('Data List Header', () => {
     it('should delete the specific graph list', () => {
       cy.react('DeleteButton$1').last().click();
 
+      cy.wait(500);
+
       cy.getReact('GraphStatistics')
         .nthNode(0)
         .getProps()
         .then((props) => {
-          const {
-            edgeLength,
-            hiddenEdgeLength,
-            hiddenNodeLength,
-            nodeLength,
-          } = props;
+          const { edgeLength, hiddenEdgeLength, hiddenNodeLength, nodeLength } =
+            props;
 
           expect(nodeLength).to.deep.equal(0);
           expect(edgeLength).to.deep.equal(0);

@@ -18,9 +18,8 @@ const StyledHr = styled('hr', ({ $theme }) => ({
 
 type LayerDetailProps = { graph: GraphData; index: number };
 const LayerDetailed = ({ graph, index }: LayerDetailProps) => {
+  const { groupEdges, visible } = graph.metadata;
   const graphWithGroupEdge = useMemo(() => {
-    const { groupEdges, visible } = graph.metadata;
-
     if (visible === false) {
       return graph;
     }
@@ -31,13 +30,21 @@ const LayerDetailed = ({ graph, index }: LayerDetailProps) => {
     );
 
     return graphData;
-  }, [graph]);
+  }, [groupEdges, visible]);
 
   // compute the information for statistics
-  const visibleNodeLength = graphWithGroupEdge.nodes.length;
-  const visibleEdgeLength = graphWithGroupEdge.edges.length;
-  const hiddenNodeLength = graph.nodes.length - visibleNodeLength;
-  const hiddenEdgeLength = graph.edges.length - visibleEdgeLength;
+  const visibleNodeLength =
+    visible === false ? 0 : graphWithGroupEdge.nodes.length;
+  const visibleEdgeLength =
+    visible === false ? 0 : graphWithGroupEdge.edges.length;
+  const hiddenNodeLength =
+    visible === false
+      ? graphWithGroupEdge.nodes.length
+      : graph.nodes.length - visibleNodeLength;
+  const hiddenEdgeLength =
+    visible === false
+      ? graphWithGroupEdge.edges.length
+      : graph.edges.length - visibleEdgeLength;
 
   return (
     <>

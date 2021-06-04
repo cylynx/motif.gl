@@ -4,7 +4,7 @@ const edgeDatasetRootPath = 'LocalFiles/EdgeList';
 
 describe('Import Edge List', () => {
   const graphinEl = 'Graphin2';
-  const selectEl = 'Select2'; 
+  const selectEl = 'Select2';
   const selectEdgeListDataType = () => {
     cy.react(selectEl, { props: { id: 'DataTypeSelection' } })
       .nthNode(0)
