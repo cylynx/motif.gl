@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, FC } from 'react';
+import React, { BaseSyntheticEvent, FC, useMemo } from 'react';
 import {
   Controller,
   SubmitHandler,
@@ -120,6 +120,18 @@ const NodeEdgeCsv: FC = () => {
     setValue(name, cloneFileAttachments);
   };
 
+  const isButtonDisabled = useMemo(() => {
+    if (fileUpload.error !== null) {
+      return true;
+    }
+
+    if (isNodeCsvEmpty || isEdgeCsvEmpty) {
+      return true;
+    }
+
+    return false;
+  }, [isNodeCsvEmpty, isEdgeCsvEmpty, fileUpload.error]);
+
   return (
     <form onSubmit={handleSubmit(onSubmitForm)}>
       <FlexGrid flexGridColumnCount={2} flexGridColumnGap='scale300'>
@@ -220,7 +232,7 @@ const NodeEdgeCsv: FC = () => {
       <Block position='absolute' bottom='scale300' right='0'>
         <Button
           type='submit'
-          disabled={isNodeCsvEmpty || isEdgeCsvEmpty}
+          disabled={isButtonDisabled}
           kind={KIND.primary}
           size={SIZE.compact}
           endEnhancer={<Icon.ChevronRight size={16} />}

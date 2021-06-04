@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, FC } from 'react';
+import React, { BaseSyntheticEvent, FC, useMemo } from 'react';
 import {
   SubmitHandler,
   UnpackNestedValue,
@@ -109,6 +109,18 @@ const JsonFiles: FC = () => {
     setValue('attachments', cloneFileAttachments);
   };
 
+  const isButtonDisabled = useMemo(() => {
+    if (fileUpload.error !== null) {
+      return true;
+    }
+
+    if (isEmptyAttachments) {
+      return true;
+    }
+
+    return false;
+  }, [isEmptyAttachments, fileUpload.error]);
+
   return (
     <form onSubmit={handleSubmit(onSubmitForm)}>
       <Controller
@@ -142,7 +154,7 @@ const JsonFiles: FC = () => {
       <Block position='absolute' bottom='scale300' right='0'>
         <Button
           type='submit'
-          disabled={isEmptyAttachments}
+          disabled={isButtonDisabled}
           kind={KIND.primary}
           size={SIZE.compact}
           endEnhancer={<Icon.ChevronRight size={16} />}
