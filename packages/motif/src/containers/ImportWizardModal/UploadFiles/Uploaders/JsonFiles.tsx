@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, FC } from 'react';
+import React, { BaseSyntheticEvent, FC, useMemo } from 'react';
 import {
   SubmitHandler,
   UnpackNestedValue,
@@ -19,7 +19,7 @@ import useFileContents from '../hooks/useFileContents';
 import useDataPreview from '../hooks/useDataPreview';
 
 const JsonFiles: FC = () => {
-  const { fileUpload, setAttachments } = useFileContents();
+  const { fileUpload, setAttachments, setErrorMessage } = useFileContents();
   const { previewJson } = useDataPreview();
 
   const {
@@ -97,15 +97,29 @@ const JsonFiles: FC = () => {
       });
   };
 
+  /*  tslint:disable-next-line  */
   const isEmptyAttachments: boolean =
     (watch('attachments') as TFileContent[]).length === 0;
 
   const onDeleteBtnClick = (index: number) => {
+    setErrorMessage(null);
     const fileAttachments = getValues('attachments') as TFileContent[];
     const cloneFileAttachments = [...fileAttachments];
     cloneFileAttachments.splice(index, 1);
     setValue('attachments', cloneFileAttachments);
   };
+
+  const isButtonDisabled = useMemo(() => {
+    if (fileUpload.error !== null) {
+      return true;
+    }
+
+    if (isEmptyAttachments) {
+      return true;
+    }
+
+    return false;
+  }, [isEmptyAttachments, fileUpload.error]);
 
   return (
     <form onSubmit={handleSubmit(onSubmitForm)}>
@@ -140,7 +154,7 @@ const JsonFiles: FC = () => {
       <Block position='absolute' bottom='scale300' right='0'>
         <Button
           type='submit'
-          disabled={isEmptyAttachments}
+          disabled={isButtonDisabled}
           kind={KIND.primary}
           size={SIZE.compact}
           endEnhancer={<Icon.ChevronRight size={16} />}

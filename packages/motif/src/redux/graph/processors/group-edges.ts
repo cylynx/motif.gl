@@ -1,4 +1,4 @@
-import { isEmpty, get, set, cloneDeep } from 'lodash';
+import { isEmpty, get, set, cloneDeep, uniqBy, uniq } from 'lodash';
 import {
   Edge,
   FieldAndAggregation,
@@ -24,6 +24,10 @@ import {
 } from '../../../utils/edge-aggregations/string-aggregates';
 
 type AggregationFields = Record<string, number | string>;
+export type GroupEdgeReturns = {
+  graphData: GraphData;
+  groupEdgeIds;
+};
 
 const combineEdgeFields = (myArr: Field[], prop: string): Field[] => {
   const seen = new Set();
@@ -95,18 +99,6 @@ const obtainGroupEdgeIds = (
     },
     [],
   );
-};
-
-/**
- * Return grouped edge found in graph data.
- *
- * @param graphFlatten
- * @return {string[]}
- */
-const obtainGroupedEdges = (graphFlatten: GraphData): string[] => {
-  return graphFlatten.edges
-    .filter((edge: Edge) => edge.id.toLowerCase().includes('group'))
-    .map((edge: Edge) => edge.id);
 };
 
 /**
@@ -218,11 +210,18 @@ const aggregateGroupEdges = (
 
     const groupByFields = get(firstEdge, type, '');
 
-    return {
+    const properties = {
       id: `group-${id}`,
       source,
       target,
-      [type]: groupByFields,
+    };
+
+    if (type !== 'all') {
+      properties[type] = groupByFields;
+    }
+
+    return {
+      ...properties,
       ...aggregationFields,
     };
   });
@@ -269,7 +268,7 @@ const produceGraphWithGroupEdges = (
 };
 
 /**
- * 1. Remove grouped edge from graph data.
+ * 1. Remove grouped edge from graph flatten.
  * 2. Append edges with duplicate connectivity into the graph
  *
  * @param graphData - original graph list without grouped edges
@@ -285,7 +284,10 @@ const produceGraphWithoutGroupEdges = (
   const withoutGroupedEdges = graphFlatten.edges.filter(
     (edge: Edge) => !edgeIdsForRemoval.includes(edge.id),
   );
-  const graphWithOriginalEdges = [...withoutGroupedEdges, ...graphData.edges];
+  const graphWithOriginalEdges = uniqBy(
+    [...withoutGroupedEdges, ...graphData.edges],
+    (edge: Edge) => edge.id,
+  );
 
   const modData = { ...graphFlatten };
   Object.assign(modData, { edges: graphWithOriginalEdges });
@@ -303,17 +305,18 @@ const produceGraphWithoutGroupEdges = (
  *
  * @param {GraphData} data - graph data
  * @param {GroupEdges} groupEdgeConfig [groupEdgeConfig={}] - group edge configuration found in every graph list
- * @return {GraphData} - graph data with grouped edges
+ * @return {GroupEdgeReturns} - graph data with grouped edges
  */
 export const groupEdgesForImportation = (
   data: GraphData,
   groupEdgeConfig: GroupEdges = {},
-): GraphData => {
+): GroupEdgeReturns => {
   const { type, toggle, fields } = groupEdgeConfig;
-  if (toggle === false) return data;
+  if (toggle === false) return { graphData: data, groupEdgeIds: [] };
 
   const groupEdgesCandidates = duplicateDictionary(data, type);
-  if (isEmpty(groupEdgesCandidates)) return data;
+  if (isEmpty(groupEdgesCandidates))
+    return { graphData: data, groupEdgeIds: [] };
 
   const edgeIdsForRemoval: string[] = obtainGroupEdgeIds(groupEdgesCandidates);
   const groupedEdges: Edge[] = aggregateGroupEdges(
@@ -328,6 +331,10 @@ export const groupEdgesForImportation = (
     fields,
   );
 
+  const groupEdgeIds: string[] = groupedEdges.map((edge: Edge) => edge.id);
+  const modData = cloneDeep(graphWithGroupEdges);
+  modData.metadata.groupEdges.ids = groupEdgeIds;
+
   if (isEmpty(fields) === false) {
     const edgeAggregateFields: Field[] = aggregateMetadataFields(
       graphWithGroupEdges,
@@ -339,13 +346,12 @@ export const groupEdgesForImportation = (
       'name',
     );
 
-    const modData = cloneDeep(graphWithGroupEdges);
     Object.assign(modData.metadata.fields.edges, combinedEdgeField);
 
-    return modData;
+    return { graphData: modData, groupEdgeIds };
   }
 
-  return graphWithGroupEdges;
+  return { graphData: modData, groupEdgeIds };
 };
 
 /**
@@ -364,21 +370,27 @@ export const groupEdgesForImportation = (
  * @param graphData - selected graph list to perform aggregation
  * @param graphFlatten - existing graph with combination of graph list
  * @param groupEdgesConfig - list of aggregations to be perform on graph list
+ * @param groupEdges - list of group edges to be removed
  * @return {GraphData} - graph combined with grouped edges.
  */
 export const groupEdgesWithConfiguration = (
   graphData: GraphData,
   graphFlatten: GraphData,
   groupEdgesConfig: GroupEdges,
-): GraphData => {
+): GroupEdgeReturns => {
   const groupEdgesWithConfig = (
     graphData: GraphData,
     graphFlatten: GraphData,
     type: string,
     fields: GroupEdgeFields,
+    groupedEdgeIds: string[],
   ) => {
     // clear previous group edges before perform another grouping
-    const ungroupedGraph: GraphData = revertGroupEdge(graphData, graphFlatten);
+    const ungroupedGraph: GroupEdgeReturns = revertGroupEdge(
+      graphData,
+      graphFlatten,
+      groupedEdgeIds,
+    );
 
     // create dictionary with the duplicates source and target edges
     const groupEdgesCandidates: GroupEdgeCandidates = duplicateDictionary(
@@ -387,10 +399,11 @@ export const groupEdgesWithConfiguration = (
     );
     if (isEmpty(groupEdgesCandidates)) return ungroupedGraph;
 
+    const { graphData: ungroupGraphData } = ungroupedGraph;
+
     // obtain edge id for removal from graph flatten.
-    const edgeIdsForRemoval: string[] = obtainGroupEdgeIds(
-      groupEdgesCandidates,
-    );
+    const edgeIdsForRemoval: string[] =
+      obtainGroupEdgeIds(groupEdgesCandidates);
 
     // produce grouped edge with aggregations fields.
     const groupedEdges: Edge[] = aggregateGroupEdges(
@@ -401,32 +414,41 @@ export const groupEdgesWithConfiguration = (
 
     // remove duplicate edges and combine the grouped edges with current graph.
     const graphWithGroupEdges: GraphData = produceGraphWithGroupEdges(
-      ungroupedGraph,
+      ungroupGraphData,
       edgeIdsForRemoval,
       groupedEdges,
       fields,
     );
 
-    return graphWithGroupEdges;
+    //  return grouped edge id to be store in redux states, useful for ungrouped.
+    const groupEdgeIds: string[] = groupedEdges.map((edge: Edge) => edge.id);
+    return { graphData: graphWithGroupEdges, groupEdgeIds };
   };
 
-  const revertGroupEdge = (graphData: GraphData, graphFlatten: GraphData) => {
-    const groupedEdgesId: string[] = obtainGroupedEdges(graphData);
+  const revertGroupEdge = (
+    graphData: GraphData,
+    graphFlatten: GraphData,
+    groupedEdgesId: string[],
+  ) => {
+    if (groupedEdgesId.length === 0) {
+      return { graphData: graphFlatten, groupEdgeIds: [] };
+    }
+
     const combinedGraphData: GraphData = produceGraphWithoutGroupEdges(
       graphData,
       graphFlatten,
       groupedEdgesId,
     );
 
-    return combinedGraphData;
+    return { graphData: combinedGraphData, groupEdgeIds: [] };
   };
 
-  const { toggle, type, fields } = groupEdgesConfig;
+  const { toggle, type, fields, ids = [] } = groupEdgesConfig;
   if (toggle) {
-    return groupEdgesWithConfig(graphData, graphFlatten, type, fields);
+    return groupEdgesWithConfig(graphData, graphFlatten, type, fields, ids);
   }
 
-  return revertGroupEdge(graphData, graphFlatten);
+  return revertGroupEdge(graphData, graphFlatten, ids);
 };
 
 /**
@@ -450,10 +472,9 @@ export const aggregateMetadataFields = (
     (accumulateField: Field[], fieldsWithAggr: FieldAndAggregation) => {
       const { field, aggregation } = fieldsWithAggr;
 
-      const edgeAggregateField: Field[] = (aggregation as (
-        | NumericAggregations
-        | StringAggregations
-      )[]).map((aggr) => {
+      const edgeAggregateField: Field[] = (
+        aggregation as (NumericAggregations | StringAggregations)[]
+      ).map((aggr) => {
         const aggregateField = `${aggr} ${field}`;
 
         const oriEdgeField: Field = edgeFields.find(

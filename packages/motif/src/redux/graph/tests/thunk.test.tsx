@@ -20,6 +20,8 @@ import {
   processGraphResponse,
   updateStyleOption,
   overwriteEdgeSelection,
+  updateLastGroupEdgeIds,
+  updateGraphFlatten,
 } from '../slice';
 import {
   importJson,
@@ -549,9 +551,8 @@ describe('thunk.test.js', () => {
         );
 
         const graphDataArr = await Promise.all(batchDataPromises);
-        const [firstGraphData, secondGraphData, thirdGraphData] = flatten(
-          graphDataArr,
-        );
+        const [firstGraphData, secondGraphData, thirdGraphData] =
+          flatten(graphDataArr);
 
         // group edge configuration arrangements
         const groupEdgeConfig = {
@@ -703,15 +704,16 @@ describe('thunk.test.js', () => {
           type: 'all',
         };
         firstGraphData.metadata.groupEdges = groupEdgeConfig;
-        const modData = groupEdgesForImportation(
+        const { graphData: modData, groupEdgeIds } = groupEdgesForImportation(
           firstGraphData,
-          firstGraphData.metadata.groupEdge,
+          firstGraphData.metadata.groupEdges,
         );
 
         // expected results
         const expectedActions = [
           fetchBegin(),
           addQuery(firstGraphData),
+          updateLastGroupEdgeIds(groupEdgeIds),
           processGraphResponse({
             data: modData,
             accessors: initialState.accessors,
@@ -995,17 +997,21 @@ describe('thunk.test.js', () => {
         const store = mockStore(importedGraphState());
         const graphIndex = 0;
         let newGraphData = {};
+        let newGroupEdgeIds = [];
         beforeEach(() => {
           const { graphList, graphFlatten } = getGraph(store.getState());
           const selectedGraphList: GraphData = graphList[graphIndex];
 
           const { groupEdges } = selectedGraphList.metadata;
 
-          newGraphData = groupEdgesWithConfiguration(
+          const { graphData, groupEdgeIds } = groupEdgesWithConfiguration(
             selectedGraphList,
             graphFlatten,
             groupEdges,
           );
+
+          newGraphData = graphData;
+          newGroupEdgeIds = groupEdgeIds;
         });
 
         afterEach(() => {
@@ -1016,13 +1022,16 @@ describe('thunk.test.js', () => {
           await store.dispatch(groupEdgesWithAggregation(graphIndex));
 
           store.getActions().forEach((actions) => {
-            const { payload } = actions;
-            const { nodes, metadata } = payload;
-            expect(nodes).toEqual(newGraphData.nodes);
+            const { payload, type } = actions;
 
-            const { visible, title } = metadata;
-            expect(visible).toEqual(newGraphData.visible);
-            expect(title).toEqual(newGraphData.title);
+            if (type === 'graph/updateGraphFlatten') {
+              const { nodes, metadata } = payload;
+              expect(nodes).toEqual(newGraphData.nodes);
+
+              const { visible, title } = metadata;
+              expect(visible).toEqual(newGraphData.visible);
+              expect(title).toEqual(newGraphData.title);
+            }
           });
         });
 
@@ -1030,9 +1039,12 @@ describe('thunk.test.js', () => {
           await store.dispatch(groupEdgesWithAggregation(graphIndex));
 
           store.getActions().forEach((actions) => {
-            const { payload } = actions;
-            const { edges } = payload;
-            expect(edges).toEqual(newGraphData.edges);
+            const { payload, type } = actions;
+
+            if (type === 'graph/updateGraphFlatten') {
+              const { edges } = payload;
+              expect(edges).toEqual(newGraphData.edges);
+            }
           });
         });
 
@@ -1041,10 +1053,12 @@ describe('thunk.test.js', () => {
 
           store.getActions().forEach((actions) => {
             const { payload } = actions;
-            const { metadata } = payload;
+            const { metadata, type } = payload;
 
-            const { groupEdges } = metadata;
-            expect(groupEdges).toEqual(newGraphData.metadata.groupEdges);
+            if (type === 'graph/updateGraphFlatten') {
+              const { groupEdges } = metadata;
+              expect(groupEdges).toEqual(newGraphData.metadata.groupEdges);
+            }
           });
         });
 
@@ -1133,10 +1147,24 @@ describe('thunk.test.js', () => {
 
           store.getActions().forEach((actions) => {
             const { payload } = actions;
-            const { metadata } = payload;
+            const { metadata, type } = payload;
 
-            const { fields } = metadata;
-            expect(fields.edges).toEqual(modData.metadata.fields.edges);
+            if (type === 'graph/updateGraphFlatten') {
+              const { fields } = metadata;
+              expect(fields.edges).toEqual(modData.metadata.fields.edges);
+            }
+          });
+        });
+
+        it('should update valid group edge ids', async () => {
+          await store.dispatch(groupEdgesWithAggregation(graphIndex));
+
+          store.getActions().forEach((actions) => {
+            const { payload, type } = actions;
+
+            if (type === 'graph/updateGroupEdgeIds') {
+              expect(newGroupEdgeIds).toEqual(payload.groupEdgeIds);
+            }
           });
         });
       });
@@ -1163,17 +1191,21 @@ describe('thunk.test.js', () => {
         const store = mockStore(importedGraphState());
         const graphIndex = 0;
         let newGraphData = {};
+        let newGroupEdgeIds = [];
         beforeEach(() => {
           const { graphList, graphFlatten } = getGraph(store.getState());
           const selectedGraphList: GraphData = graphList[graphIndex];
 
           const { groupEdges } = selectedGraphList.metadata;
 
-          newGraphData = groupEdgesWithConfiguration(
+          const { graphData, groupEdgeIds } = groupEdgesWithConfiguration(
             selectedGraphList,
             graphFlatten,
             groupEdges,
           );
+
+          newGraphData = graphData;
+          newGroupEdgeIds = groupEdgeIds;
         });
 
         afterEach(() => {
@@ -1184,9 +1216,12 @@ describe('thunk.test.js', () => {
           await store.dispatch(groupEdgesWithAggregation(graphIndex));
 
           store.getActions().forEach((actions) => {
-            const { payload } = actions;
-            const { edges } = payload;
-            expect(edges).toEqual(newGraphData.edges);
+            const { payload, type } = actions;
+
+            if (type === 'graph/updateGraphFlatten') {
+              const { edges } = payload;
+              expect(edges).toEqual(newGraphData.edges);
+            }
           });
         });
 
@@ -1194,10 +1229,25 @@ describe('thunk.test.js', () => {
           await store.dispatch(groupEdgesWithAggregation(graphIndex));
 
           store.getActions().forEach((actions) => {
-            const { payload } = actions;
-            const { groupEdges } = payload.metadata;
+            const { payload, type } = actions;
 
-            expect(groupEdges).toEqual(newGraphData.metadata.groupEdges);
+            if (type === 'graph/updateGraphFlatten') {
+              const { groupEdges } = payload.metadata;
+
+              expect(groupEdges).toEqual(newGraphData.metadata.groupEdges);
+            }
+          });
+        });
+
+        it('should update valid group edge ids', async () => {
+          await store.dispatch(groupEdgesWithAggregation(graphIndex));
+
+          store.getActions().forEach((actions) => {
+            const { payload, type } = actions;
+
+            if (type === 'graph/updateGroupEdgeIds') {
+              expect(newGroupEdgeIds).toEqual(payload.groupEdgeIds);
+            }
           });
         });
       });

@@ -44,6 +44,7 @@ describe('Import Single Local File', () => {
   const gridWithStyles = `${jsonDatasetRootPath}/grid-with-styles.json`;
   const simpleGraph = `${jsonDatasetRootPath}/simple-graph.json`;
   const customGroupEdgeGraph = `${jsonDatasetRootPath}/custom-grouped-edge-graph.json`;
+  const restrictedTermsGraph = `${jsonDatasetRootPath}/restricted-word-dataset.json`;
 
   describe('Local Files Import', () => {
     it('should import one file successfully', () => {
@@ -264,6 +265,7 @@ describe('Import Single Local File', () => {
       toggle: true,
       availability: true,
       type: 'numeric',
+      ids: ['group-a-b2', 'group-a-b4', 'group-c-d2'],
       fields: {
         'Y_-ZK2S3P': {
           field: 'numeric',
@@ -308,12 +310,8 @@ describe('Import Single Local File', () => {
         .nthNode(1)
         .getProps()
         .then((props) => {
-          const {
-            edgeLength,
-            hiddenEdgeLength,
-            hiddenNodeLength,
-            nodeLength,
-          } = props;
+          const { edgeLength, hiddenEdgeLength, hiddenNodeLength, nodeLength } =
+            props;
 
           expect(nodeLength).to.deep.equal(4);
           expect(edgeLength).to.deep.equal(6);
@@ -378,6 +376,22 @@ describe('Import Single Local File', () => {
         .nthNode(0)
         .getProps('options.Edges')
         .should('deep.eq', nodeOptions);
+    });
+  });
+
+  describe('prevent upload restricted words dataset', () => {
+    beforeEach(() => {
+      cy.get('input[type="file"]').attachFile(restrictedTermsGraph);
+
+      cy.get('button[type="submit"]').click();
+
+      // waiting for loading indicator to dissappear
+      cy.wait(500);
+    });
+
+    it('should display error message', () => {
+      cy.getReact('ErrorMessage').should('exist');
+      cy.get('button[aria-label="Close"]').click();
     });
   });
 });
