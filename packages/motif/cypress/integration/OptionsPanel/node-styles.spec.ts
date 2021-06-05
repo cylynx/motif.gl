@@ -40,6 +40,7 @@ describe('Node Style Filter', () => {
     cy.switchTab('sample-data');
     cy.importSampleData(SampleData.BANK);
     cy.switchPanel('options');
+    cy.switchTab('nodes');
   });
 
   describe('Node Size', () => {

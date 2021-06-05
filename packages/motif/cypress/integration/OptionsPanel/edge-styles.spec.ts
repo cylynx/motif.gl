@@ -41,6 +41,7 @@ describe('Edge Style Filter', () => {
     cy.switchTab('sample-data');
     cy.importSampleData(SampleData.BANK);
     cy.switchPanel('options');
+    cy.switchTab('edges');
   });
 
   describe('Edge Width', () => {
@@ -55,6 +56,8 @@ describe('Edge Style Filter', () => {
         .nthNode(1)
         .type(`${variable}{enter}`);
     };
+
+    
 
     it('should be fixed with specific line width', async () => {
       changeWidthType('fixed');

@@ -51,11 +51,11 @@ describe('Import Bank Connections', () => {
   });
 
   it('should display one row for data list', () => {
-    cy.getReact('DataListAccordion').getProps('items').should('have.length', 1);
+    cy.getReact('Accordion').getProps('items').should('have.length', 1);
   });
 
   it('should display data list name [Banking Connections]', () => {
-    cy.getReact('AccordionPanel')
+    cy.getReact('Panel2')
       .nthNode(0)
       .getProps('title')
       .should('deep.eq', 'Banking Connections');

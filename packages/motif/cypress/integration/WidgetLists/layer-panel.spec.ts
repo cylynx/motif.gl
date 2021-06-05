@@ -85,6 +85,6 @@ describe('Layer Panels', () => {
   it('should render Import Layers with zero data list on initialisation', () => {
     cy.getLayerPanel().getReact('ImportLayers').should('exist');
 
-    cy.getReact('DataListAccordion').getProps('items').should('have.length', 0);
+    cy.getReact('Accordion').should('have.length', 2);
   });
 });
