@@ -13,7 +13,7 @@ const AddFilterButton: FC<AddFilterButtonType> = ({ onClick, disabled }) => {
     () => (
       <Button
         startEnhancer={<Icon.Plus />}
-        kind='secondary'
+        kind='primary'
         onClick={onClick}
         size={SIZE.compact}
         disabled={disabled}

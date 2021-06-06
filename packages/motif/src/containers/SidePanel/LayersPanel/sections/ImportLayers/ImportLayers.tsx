@@ -83,22 +83,25 @@ const ImportLayers = () => {
       title,
       content,
       actionButtons,
-      expanded: true,
+      expanded: false,
     };
   });
 
   return (
     <Block overflow='auto' marginTop='scale300'>
-      {items.map((x) => (
-        <Block key={x.key} marginTop='scale300'>
-          <Accordion
-            title={x.title}
-            content={x.content}
-            actionButtons={x.actionButtons}
-            expanded={x.expanded}
-          />
-        </Block>
-      ))}
+      {items
+        .map((x) => (
+          <Block key={x.key} marginTop='scale300'>
+            <Accordion
+              title={x.title}
+              content={x.content}
+              actionButtons={x.actionButtons}
+              expanded={x.expanded}
+              width='full'
+            />
+          </Block>
+        ))
+        .reverse()}
     </Block>
   );
 };

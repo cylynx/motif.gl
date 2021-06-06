@@ -1,19 +1,20 @@
 import React from 'react';
+import { useStyletron } from 'baseui';
 import { useSelector } from 'react-redux';
+import { HeadingXSmall } from 'baseui/typography';
 import { Block } from 'baseui/block';
 
-import ImportLayers from './sections/ImportLayers/ImportLayers';
-import {
-  ImportDataButton,
-  ClearDataButton,
-} from './components/LayersPanelButtons';
+import ImportLayers from './sections/ImportLayers';
+import { ImportDataButton } from './components/LayersPanelButtons';
 
 import { GraphSelectors } from '../../../redux/graph';
 import Header from '../Header';
 import GraphStatistics from './components/GraphStatistics';
 import PropertiesSelections from './sections/PropertiesSelection';
+import { Card } from '../../../components/ui';
 
 const LayersPanel = () => {
+  const [css, theme] = useStyletron();
   const ungroupGraphFlatten = useSelector((state) => {
     return GraphSelectors.getUngroupedGraphFlatten(state);
   });
@@ -30,7 +31,7 @@ const LayersPanel = () => {
   return (
     <Block data-testid='layers-panel'>
       <Header />
-      <Block
+      {/* <Block
         display='flex'
         justifyContent='space-between'
         marginLeft='scale600'
@@ -42,15 +43,23 @@ const LayersPanel = () => {
           hiddenNodeLength={hiddenNodes}
           hiddenEdgeLength={hiddenEdges}
         />
-      </Block>
-      <PropertiesSelections />
-      <br />
-      <hr />
-      <Block width='100%' display='flex' justifyContent='space-between'>
-        <ClearDataButton />
+      </Block> */}
+      <Card>
+        <HeadingXSmall
+          marginTop={0}
+          marginBottom='scale400'
+          color='contentInverseSecondary'
+          $style={{ letterSpacing: '1px' }}
+        >
+          DATA SOURCES
+        </HeadingXSmall>
         <ImportDataButton />
-      </Block>
-      <ImportLayers />
+        <hr
+          className={css({ borderColor: theme.colors.contentInverseSecondary })}
+        />
+        <ImportLayers />
+      </Card>
+      <PropertiesSelections />
       <Block marginBottom='scale300' />
     </Block>
   );

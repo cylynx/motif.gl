@@ -15,6 +15,7 @@ export type AccordionProps = {
   title: React.ReactNode;
   content: React.ReactNode;
   iconPosition?: 'left' | 'right';
+  width?: 'full' | 'default';
   actionButtons?: React.ReactNode;
   expanded?: boolean;
   overrides?: AccordionOverrides<SharedProps>;
@@ -41,6 +42,7 @@ const Accordion = ({
   title,
   content,
   iconPosition = 'left',
+  width = 'default',
   actionButtons = null,
   expanded = false,
   overrides,
@@ -64,13 +66,15 @@ const Accordion = ({
         color: $theme.colors.contentTertiary,
         backgroundColor: $theme.colors.backgroundSecondary,
         paddingTop: $theme.sizing.scale300,
-        paddingLeft: $theme.sizing.scale600,
+        paddingLeft: width === 'full' ? 0 : $theme.sizing.scale300,
+        paddingRight: width === 'full' ? 0 : $theme.sizing.scale300,
         paddingBottom: $theme.sizing.scale300,
         borderBottomStyle: 'none',
         borderTopLeftRadius: $theme.borders.radius200,
         borderTopRightRadius: $theme.borders.radius200,
         borderBottomLeftRadius: $expanded ? '0px' : $theme.borders.radius200,
         borderBottomRightRadius: $expanded ? '0px' : $theme.borders.radius200,
+        letterSpacing: '1px',
       }),
     },
     Content: {
@@ -78,8 +82,8 @@ const Accordion = ({
         backgroundColor: $theme.colors.backgroundSecondary,
         paddingTop: $expanded ? $theme.sizing.scale500 : 0,
         paddingBottom: $expanded ? $theme.sizing.scale500 : 0,
-        paddingLeft: $theme.sizing.scale600,
-        paddingRight: $theme.sizing.scale600,
+        paddingLeft: width === 'full' ? 0 : $theme.sizing.scale300,
+        paddingRight: width === 'full' ? 0 : $theme.sizing.scale300,
         borderBottomLeftRadius: $theme.borders.radius200,
         borderBottomRightRadius: $theme.borders.radius200,
         borderBottomWidth: 0,

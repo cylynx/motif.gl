@@ -30,6 +30,7 @@ const EdgeProperties: FC<EdgePropertiesProps> = ({ haveData, edgeFields }) => {
     <Accordion
       data-testid='edge-properties-accordion'
       title='EDGE PROPERTIES'
+      expanded
       content={
         <Fragment>
           {haveData ? (

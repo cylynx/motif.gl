@@ -29,11 +29,12 @@ const NodeProperties: FC<NodePropertiesProps> = ({ haveData, nodeFields }) => {
     <Accordion
       data-testid='node-properties-accordion'
       title='NODE PROPERTIES'
+      expanded
       content={
         <Fragment>
           {haveData ? (
             <Block display='flex'>
-              <ParagraphSmall marginTop={0}>
+              <ParagraphSmall marginTop={0} color='contentTertiary'>
                 Select node properties to display in tooltip
               </ParagraphSmall>
               <ToggleAllButton
