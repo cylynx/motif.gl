@@ -68,13 +68,7 @@ const ItemPagination: FC<ItemPaginationProps> = ({
       <hr
         className={css({ borderColor: theme.colors.contentInverseSecondary })}
       />
-      <Block
-        paddingTop='scale200'
-        paddingBottom='scale200'
-        justifyContent='space-between'
-        alignItems='center'
-        display='flex'
-      >
+      <Block justifyContent='space-between' alignItems='center' display='flex'>
         <ParagraphSmall marginTop='0' marginBottom='0'>
           Results {displayText}
         </ParagraphSmall>

@@ -27,19 +27,17 @@ const SearchPanel = () => {
   return (
     <Block
       position='absolute'
-      height='100%'
+      height='100vh'
       width='inherit'
       data-testid='search-panel'
     >
-      <Block>
-        <HeadingMedium marginTop='scale300' marginBottom='scale300'>
-          Search
-        </HeadingMedium>
-        <SearchTabs />
-      </Block>
+      <HeadingMedium marginTop='scale300' marginBottom='scale300'>
+        Search
+      </HeadingMedium>
+      <SearchTabs />
       {isResultEmpty === false && (
         <>
-          <Block position='relative' height='calc(100% - 220px)'>
+          <Block position='relative' height='calc(100% - 200px)'>
             <ItemResults />
           </Block>
           <ItemPagination

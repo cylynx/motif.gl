@@ -28,7 +28,7 @@ const defaultWidgetList: WidgetItem[] = [
   {
     id: 'options',
     group: 'main',
-    icon: <IconButton id='options' group='main' icon={<Icon.Gear />} />,
+    icon: <IconButton id='options' group='main' icon={<Icon.Palette />} />,
     widget: (
       <LeftLayer>
         <OptionsPanel />
