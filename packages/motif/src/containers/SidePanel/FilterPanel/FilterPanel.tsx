@@ -1,7 +1,8 @@
 import React, { FC, useMemo, MouseEvent, useCallback } from 'react';
+import { useStyletron } from 'baseui';
 import { Block } from 'baseui/block';
+import { HeadingMedium } from 'baseui/typography';
 import { useSelector } from 'react-redux';
-import Header from '../Header';
 import FilterSelection from './FilterSelection';
 import AddFilterButton from './AddFilterButton';
 import useGraphFilter from './hooks/UseGraphFilter';
@@ -10,6 +11,7 @@ import { GraphSelectors, Field, GraphFields } from '../../../redux/graph';
 import { SelectOptions } from '../../../components/SelectVariable/SelectVariable';
 
 const FilterPanel: FC = () => {
+  const [css, theme] = useStyletron();
   const graphFlatten = useSelector((state) =>
     GraphSelectors.getGraphFlatten(state),
   );
@@ -74,18 +76,20 @@ const FilterPanel: FC = () => {
     [isEnableAddFilter],
   );
 
-  const FilterSelections = Object.entries(filterOptions).map((entry) => {
-    const [key] = entry;
-    return (
-      <FilterSelection
-        graphFlatten={graphFlatten}
-        selectOptions={selectOptions}
-        data-testid='filter-panel:filter-selection'
-        key={key}
-        idx={key}
-      />
-    );
-  });
+  const FilterSelections = Object.entries(filterOptions)
+    .map((entry) => {
+      const [key] = entry;
+      return (
+        <FilterSelection
+          graphFlatten={graphFlatten}
+          selectOptions={selectOptions}
+          data-testid='filter-panel:filter-selection'
+          key={key}
+          idx={key}
+        />
+      );
+    })
+    .reverse();
 
   const AddFilterButtonMemo = useMemo(() => {
     return (
@@ -98,7 +102,13 @@ const FilterPanel: FC = () => {
 
   return (
     <Block data-testid='filter-panel'>
-      <Header />
+      <HeadingMedium marginTop='scale300' marginBottom='scale300'>
+        Filters
+      </HeadingMedium>
+      {AddFilterButtonMemo}
+      <hr
+        className={css({ borderColor: theme.colors.contentInverseSecondary })}
+      />
       <Block
         display='flex'
         justifyContent='start'
@@ -106,7 +116,6 @@ const FilterPanel: FC = () => {
         gridGap='scale200'
       >
         {FilterSelections}
-        {AddFilterButtonMemo}
       </Block>
     </Block>
   );

@@ -1,7 +1,7 @@
 import React, { FC, useMemo, useContext } from 'react';
-import { ParagraphXSmall } from 'baseui/typography';
+import { useStyletron } from 'baseui';
+import { ParagraphSmall } from 'baseui/typography';
 import { Block } from 'baseui/block';
-import { Theme } from 'baseui/theme';
 import useSearchOption from '../../hooks/useSearchOption';
 import { IUseSearchOptions } from '../../types';
 import { SearchOptPagination } from '../../../../../redux/graph';
@@ -23,23 +23,15 @@ const ItemPagination: FC<ItemPaginationProps> = ({
   nodeLength,
   edgeLength,
 }) => {
-  const {
-    searchOptions,
-    nextPage,
-    previousPage,
-    resetSearchOptions,
-  } = useSearchOption() as IUseSearchOptions;
-  const {
-    currentPage,
-    totalPage,
-  } = searchOptions.pagination as SearchOptPagination;
+  const [css, theme] = useStyletron();
+  const { searchOptions, nextPage, previousPage, resetSearchOptions } =
+    useSearchOption() as IUseSearchOptions;
+  const { currentPage, totalPage } =
+    searchOptions.pagination as SearchOptPagination;
 
   const { graph } = useContext(GraphRefContext);
-  const {
-    centerCanvas,
-    clearNodeSelectedState,
-    clearEdgeSelectedState,
-  } = useGraphBehaviors(graph);
+  const { centerCanvas, clearNodeSelectedState, clearEdgeSelectedState } =
+    useGraphBehaviors(graph);
 
   const endIndex = currentPage * ITEM_PER_PAGE;
   const startIndex = endIndex - ITEM_PER_PAGE + 1;
@@ -72,35 +64,20 @@ const ItemPagination: FC<ItemPaginationProps> = ({
   };
 
   return (
-    <Block
-      color='primary300'
-      backgroundColor='backgroundSecondary'
-      position='absolute'
-      width='100%'
-      bottom='0'
-      overrides={{
-        Block: {
-          style: ({ $theme }: { $theme: Theme }) => ({
-            boxShadow: `-4px 2px 6px 2px ${$theme.colors.backgroundInverseSecondary}`,
-          }),
-        },
-      }}
-    >
+    <Block color='primary300' position='absolute' width='100%' bottom='20px'>
+      <hr
+        className={css({ borderColor: theme.colors.contentInverseSecondary })}
+      />
       <Block
-        paddingTop='scale300'
-        paddingBottom='scale300'
-        paddingRight='scale300'
-        paddingLeft='scale300'
+        paddingTop='scale200'
+        paddingBottom='scale200'
         justifyContent='space-between'
+        alignItems='center'
         display='flex'
       >
-        <ParagraphXSmall
-          color='contentSecondary'
-          marginTop='0'
-          marginBottom='0'
-        >
-          Showing result {displayText}
-        </ParagraphXSmall>
+        <ParagraphSmall marginTop='0' marginBottom='0'>
+          Results {displayText}
+        </ParagraphSmall>
 
         <Block>
           <DeleteButton onClick={clearButtonClick} />

@@ -89,8 +89,7 @@ const Header = () => {
         display='flex'
         justifyContent='space-between'
         alignItems='center'
-        marginTop='scale300'
-        marginBottom='scale800'
+        marginBottom='scale300'
         height='scale950'
       >
         <Block>

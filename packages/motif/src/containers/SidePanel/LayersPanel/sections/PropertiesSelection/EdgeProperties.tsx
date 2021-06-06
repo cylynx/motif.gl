@@ -2,7 +2,6 @@ import React, { FC, Fragment } from 'react';
 import { Block } from 'baseui/block';
 import { ParagraphSmall } from 'baseui/typography';
 import { useDispatch } from 'react-redux';
-import * as Icon from '../../../../../components/Icons';
 import { ToggleAllButton } from '../../components/LayersPanelButtons';
 import ToggleTokens from '../../../../../components/ToggleTokens';
 import Accordion from '../../../../../components/Accordion';

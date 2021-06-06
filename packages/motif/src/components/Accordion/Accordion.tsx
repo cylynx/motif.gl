@@ -63,7 +63,7 @@ const Accordion = ({
     Header: {
       style: ({ $theme, $expanded }) => ({
         ...$theme.typography.HeadingXSmall,
-        color: $theme.colors.contentTertiary,
+        color: $theme.colors.contentInverseSecondary,
         backgroundColor: $theme.colors.backgroundSecondary,
         paddingTop: $theme.sizing.scale300,
         paddingLeft: width === 'full' ? 0 : $theme.sizing.scale300,

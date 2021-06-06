@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
-
 import { Block } from 'baseui/block';
+import { HeadingMedium } from 'baseui/typography';
+
 import SearchTabs from './Section/SearchTabs';
 import ItemResults from './Section/ItemResults';
 import ItemPagination from './Components/ItemPagination';
@@ -30,23 +31,22 @@ const SearchPanel = () => {
       width='inherit'
       data-testid='search-panel'
     >
-      <Block
-        paddingLeft='scale550'
-        paddingRight='scale550'
-        paddingTop='scale550'
-        paddingBottom='scale200'
-      >
+      <Block>
+        <HeadingMedium marginTop='scale300' marginBottom='scale300'>
+          Search
+        </HeadingMedium>
         <SearchTabs />
       </Block>
-
       {isResultEmpty === false && (
-        <Block position='relative' height='calc(100% - 94px)'>
-          <ItemResults />
+        <>
+          <Block position='relative' height='calc(100% - 220px)'>
+            <ItemResults />
+          </Block>
           <ItemPagination
             nodeLength={nodeResultLength}
             edgeLength={edgeResultLength}
           />
-        </Block>
+        </>
       )}
     </Block>
   );

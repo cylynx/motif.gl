@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { Block } from 'baseui/block';
+import { HeadingMedium } from 'baseui/typography';
 import { FILL } from 'baseui/tabs-motion';
 import Header from '../Header';
 import { Tabs, Tab } from '../../../components/ui';
@@ -18,9 +19,11 @@ const OptionsPanel = () => {
 
   return (
     <Block data-testid='options-panel'>
-      <Header />
+      <HeadingMedium marginTop='scale300' marginBottom='scale300'>
+        Styles
+      </HeadingMedium>
       <OptionsLayout />
-      <Block marginTop='scale400' />
+      <Block marginTop='scale300' />
       <Tabs activeKey={activeKey} onChange={onTabChange} fill={FILL.fixed}>
         <Tab
           title='Node styles'
