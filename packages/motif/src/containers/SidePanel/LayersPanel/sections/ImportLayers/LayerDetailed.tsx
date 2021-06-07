@@ -1,20 +1,13 @@
 import React, { useMemo } from 'react';
 import { Block } from 'baseui/block';
 import { styled } from 'baseui';
+import { LabelSmall } from 'baseui/typography';
 import {
   GroupEdgeReturns,
   groupEdgesForImportation,
 } from '../../../../../redux/graph/processors/group-edges';
 import { GraphData } from '../../../../../redux/graph';
-import GraphStatistics from '../../components/GraphStatistics';
 import GroupEdges from '../GroupEdges';
-
-const StyledHr = styled('hr', ({ $theme }) => ({
-  borderColor: $theme.colors.mono700,
-  borderWidth: '1px',
-  borderStyle: 'solid',
-  marginTop: $theme.sizing.scale500,
-}));
 
 type LayerDetailProps = { graph: GraphData; index: number };
 const LayerDetailed = ({ graph, index }: LayerDetailProps) => {
@@ -54,16 +47,23 @@ const LayerDetailed = ({ graph, index }: LayerDetailProps) => {
         paddingLeft='scale300'
         paddingRight='scale300'
       >
-        <GraphStatistics
-          nodeLength={visibleNodeLength}
-          edgeLength={visibleEdgeLength}
-          hiddenNodeLength={hiddenNodeLength}
-          hiddenEdgeLength={hiddenEdgeLength}
-          size='medium'
-        />
+        <Block display='flex'>
+          <LabelSmall marginRight='scale200' color='contentInverseSecondary'>
+            Nodes:
+          </LabelSmall>
+          <LabelSmall>
+            {visibleNodeLength}/{hiddenNodeLength + visibleNodeLength}{' '}
+          </LabelSmall>
+        </Block>
+        <Block display='flex'>
+          <LabelSmall marginRight='scale200' color='contentInverseSecondary'>
+            Edges:
+          </LabelSmall>
+          <LabelSmall>
+            {visibleEdgeLength}/{hiddenEdgeLength + visibleEdgeLength}{' '}
+          </LabelSmall>
+        </Block>
       </Block>
-
-      <StyledHr />
 
       <Block marginTop='scale300'>
         <GroupEdges graphListIndex={index} />

@@ -88,7 +88,7 @@ const GroupByFields = ({
             Label: {
               style: ({ $theme }) => ({
                 ...$theme.typography.LabelSmall,
-                // fontSize: $theme.sizing.scale500,
+                color: $theme.colors.contentInverseSecondary,
                 paddingRight: $theme.sizing.scale0,
                 paddingTop: $theme.sizing.scale100,
               }),

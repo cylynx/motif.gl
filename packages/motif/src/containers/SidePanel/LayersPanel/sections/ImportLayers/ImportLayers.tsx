@@ -97,6 +97,7 @@ const ImportLayers = () => {
               content={x.content}
               actionButtons={x.actionButtons}
               expanded={x.expanded}
+              data-testid='DataListAccordian'
               width='full'
             />
           </Block>
