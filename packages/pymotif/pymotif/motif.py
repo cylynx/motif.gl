@@ -5,6 +5,7 @@
 # Distributed under the terms of the Modified BSD License.
 
 import json
+import neo4j
 import networkx as nx
 import pandas as pd
 
@@ -18,6 +19,7 @@ DISPLAY = Layout(width='100%', height='600px')
 
 # minimise hard-coding elsewhere
 NX_GRAPH = 'nx_graph'
+NEO4J_GRAPH = 'neo4j_graph'
 JSON_PATH = 'json_path'
 CSV_PATH = 'csv_path'
 STYLE = 'style'
@@ -32,6 +34,7 @@ EDGES = 'edges'
 # allowed kwargs upon class instantiation
 ALLOWED = {
     NX_GRAPH: nx.Graph,
+    NEO4J_GRAPH: neo4j.graph.Graph,
     JSON_PATH: str,
     CSV_PATH: str,
     STYLE: dict,
@@ -88,6 +91,9 @@ class Motif(DOMWidget, ValueWidget):
 
         nx_graph: nx.Graph
             A networkx graph to be rendered
+
+        neo4j_graph: neo4j.graph.Graph
+            A neo4j graph to be rendered
 
         csv_path: str
             Path to a local CSV edgelist file
@@ -164,11 +170,11 @@ class Motif(DOMWidget, ValueWidget):
         require_import=False:
             Whether it is required to pass a graph import.
         """
-        IMPORTS = { JSON_PATH, NX_GRAPH, CSV_PATH }
+        IMPORTS = { JSON_PATH, NX_GRAPH, NEO4J_GRAPH, CSV_PATH }
 
         # if required, check that only 1 import type is passed
         if require_import and len(set(kwargs) & IMPORTS) != 1:
-            raise KeyError(f'Pass 1 import type parameter: nx_graph, json_path, or csv_path.')
+            raise KeyError(f'Pass 1 import type parameter: nx_graph, neo4j_graph, json_path, or csv_path.')
 
         for k, v in kwargs.items():
             # check for accepted params
@@ -226,6 +232,10 @@ class Motif(DOMWidget, ValueWidget):
                 nx_graph = kwargs[NX_GRAPH]
                 motif_graph = self._nx_to_motif(nx_graph)  
             
+            if NEO4J_GRAPH in kwargs:
+                neo4j_graph = kwargs[NEO4J_GRAPH]
+                motif_graph = self._neo4j_to_motif(neo4j_graph)
+            
             if CSV_PATH in kwargs:
                 csv_path = kwargs[CSV_PATH]
                 motif_graph = self._csv_to_motif(csv_path)
@@ -259,6 +269,47 @@ class Motif(DOMWidget, ValueWidget):
         # take relevant parts from cyjs format and add to data
         motif_data[NODES] = [node[DATA] for node in cyjs['elements'][NODES]]
         motif_data[EDGES] = [edge[DATA] for edge in cyjs['elements'][EDGES]]
+
+        return motif_data
+    
+
+    def _neo4j_to_motif(self, neo4j_graph: neo4j.graph.Graph) -> dict:
+        """
+        Converts a neo4j_graph into a networkx graph, then into a dict format 
+        suitable for plotting in Motif: { nodes: [...], edges: [...] }
+        """
+        self._validate(neo4j_graph=neo4j_graph)
+        
+        motif_data = {}
+
+        # will hold the networkx graph that's converted from neo4j
+        nx_graph = nx.MultiDiGraph()
+        
+        # try to construct the networkx graph
+        try:
+            # https://stackoverflow.com/questions/59289134/constructing-networkx-graph-from-neo4j-query-result
+            # https://github.com/neo4j/neo4j-python-driver/blob/4.3/neo4j/graph/__init__.py
+            nodes = list(neo4j_graph._nodes.values())
+            edges = list(neo4j_graph._relationships.values())
+            
+            for node in nodes:
+                # props are node attributes
+                props = node._properties
+
+                # somehow, 'name' is overwritten on the frontend to be set as id. replace with another key
+                if 'name' in props:
+                    props['_name'] = props.pop('name')
+
+                # next(iter(node._labels)) to extract the only item from a frozenset
+                nx_graph.add_node(node.id, entity=next(iter(node._labels)), **props)    
+            
+            for edge in edges:
+                 nx_graph.add_edge(edge.start_node.id, edge.end_node.id, relationship=edge.type)
+        except:
+            raise Exception('Could not convert neo4j_graph to nx_graph')
+
+        # pass to nx_graph converter
+        motif_data = self._nx_to_motif(nx_graph)
 
         return motif_data
 
