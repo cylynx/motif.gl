@@ -3,7 +3,6 @@ import Loader from './Loader';
 import Notification from './Notification';
 import FlushedGrid from './FlushedGrid';
 import TriGrid from './TriGrid';
-import Statistic from './Statistic';
 import Button from './Button';
 import Card from './Card';
 import { Tabs, Tab } from './Tabs';
@@ -21,7 +20,6 @@ export {
   Notification,
   FlushedGrid,
   TriGrid,
-  Statistic,
   Card,
   Dropdown,
   Slider,
