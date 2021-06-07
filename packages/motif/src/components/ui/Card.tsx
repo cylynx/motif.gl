@@ -10,7 +10,6 @@ const Card: FC<CardProps> = ({ children, $style }) => {
   const [css, theme] = useStyletron();
   return (
     <div
-      style={{}}
       className={css({
         backgroundColor: theme.colors.backgroundSecondary,
         paddingTop: theme.sizing.scale300,
