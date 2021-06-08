@@ -15,24 +15,6 @@ describe('Variable Inspector', () => {
     }).should('exist');
   });
 
-  it('should render at bottom right position', () => {
-    cy.react('Block', {
-      props: {
-        position: 'absolute',
-        bottom: '10px',
-        right: '10px',
-        width: '500px',
-        backgroundColor: 'backgroundTertiary',
-        paddingTop: 'scale600',
-        paddingLeft: 'scale600',
-        paddingRight: 'scale600',
-      },
-      exact: true,
-    })
-      .getReact('Select')
-      .should('exist');
-  });
-
   it('should have no value on initialisation', () => {
     cy.getReact('SelectVariable').getProps('value').should('have.length', 0);
   });

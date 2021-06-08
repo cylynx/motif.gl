@@ -1,9 +1,9 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
-import { Block } from 'baseui/block';
+import { HeadingXSmall } from 'baseui/typography';
 import { useDispatch, useSelector } from 'react-redux';
 import { GraphSlices, GraphSelectors } from '../../../redux/graph';
-import Accordion from '../../../components/Accordion';
+import { Card } from '../../../components/ui';
 import {
   NestedForm,
   genNestedForm,
@@ -11,7 +11,6 @@ import {
   genSimpleForm,
 } from '../../../components/form';
 
-import * as Icon from '../../../components/Icons';
 import {
   nodeSizeForm,
   nodeColorForm,
@@ -26,11 +25,9 @@ const OptionsNodeStyles = () => {
     (state) => GraphSelectors.getGraph(state).styleOptions.nodeStyle,
   );
 
-  const {
-    allNodeFields,
-    nodeLabelFields,
-    numericNodeFields,
-  } = useSelector((state) => GraphSelectors.getGraphFieldsOptions(state));
+  const { allNodeFields, nodeLabelFields, numericNodeFields } = useSelector(
+    (state) => GraphSelectors.getGraphFieldsOptions(state),
+  );
 
   const updateNodeStyle = (data: any) => {
     dispatch(GraphSlices.changeNodeStyle(data));
@@ -57,45 +54,32 @@ const OptionsNodeStyles = () => {
   );
 
   return (
-    <Accordion
-      data-testid='OptionsNodeStyles'
-      items={[
-        {
-          title: (
-            <Block display='flex' justifyContent='center'>
-              <Icon.Node style={{ paddingRight: '8px' }} />
-              Node Styles
-            </Block>
-          ),
-          key: 'node styles',
-          content: (
-            <Fragment>
-              <NestedForm
-                data={nodeSizeFormData}
-                key={`${nodeSizeFormData.id}-${nodeSizeFormData.value}`}
-              />
-              <SimpleForm
-                data={genSimpleForm(nodeLabelForm, nodeStyle, updateNodeStyle, {
-                  options: nodeLabelFields,
-                })}
-              />
-              <NestedForm
-                data={nodeColorFormData}
-                key={`${nodeColorFormData.id}-${nodeColorFormData.value}`}
-              />
-              <SimpleForm
-                data={genSimpleForm(
-                  nodeFontSizeForm,
-                  nodeStyle,
-                  updateNodeStyle,
-                )}
-              />
-            </Fragment>
-          ),
-          expanded: true,
-        },
-      ]}
-    />
+    <Card data-testid='OptionsNodeStyles'>
+      <HeadingXSmall
+        marginTop={0}
+        marginBottom={0}
+        color='contentInverseSecondary'
+        $style={{ letterSpacing: '1px' }}
+      >
+        NODE STYLES
+      </HeadingXSmall>
+      <NestedForm
+        data={nodeSizeFormData}
+        key={`${nodeSizeFormData.id}-${nodeSizeFormData.value}`}
+      />
+      <SimpleForm
+        data={genSimpleForm(nodeLabelForm, nodeStyle, updateNodeStyle, {
+          options: nodeLabelFields,
+        })}
+      />
+      <NestedForm
+        data={nodeColorFormData}
+        key={`${nodeColorFormData.id}-${nodeColorFormData.value}`}
+      />
+      <SimpleForm
+        data={genSimpleForm(nodeFontSizeForm, nodeStyle, updateNodeStyle)}
+      />
+    </Card>
   );
 };
 

@@ -3,7 +3,7 @@ import { Modal, ModalHeader, ModalBody, SIZE, ModalProps } from 'baseui/modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { withStyle } from 'baseui';
 import { HeadingLarge, LabelMedium, ParagraphSmall } from 'baseui/typography';
-import { Tabs, Tab } from '../../components/ui/Tabs';
+import { Tabs, Tab } from '../../components/ui';
 import { ModalState, UISelectors, UISlices } from '../../redux/ui';
 import { ImportTabs, TActiveKey } from './types';
 

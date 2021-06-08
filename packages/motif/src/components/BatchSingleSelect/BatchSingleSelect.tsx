@@ -6,15 +6,24 @@ import {
   Value,
   SIZE,
 } from 'baseui/select';
+import * as Icons from '../Icons';
 import VirtualDropdown from './VirtualDropdown';
 import { Dropdown } from '../ui';
 
-const SelectFieldPopoverOverrides = {
+const SelectFieldPopoverOverride = {
   props: {
     overrides: {
       Body: {
         style: () => ({ zIndex: 1 }),
       },
+    },
+  },
+};
+
+const SearchIconOverride = {
+  props: {
+    overrides: {
+      component: () => <Icons.Search />,
     },
   },
 };
@@ -52,7 +61,8 @@ const BatchSingleSelect: FC<BatchSingleSelectProps> = ({
   useEffect(() => {
     Object.assign(overrides, {
       Dropdown: VirtualDropdown,
-      Popover: SelectFieldPopoverOverrides,
+      Popover: SelectFieldPopoverOverride,
+      SearchIcon: SearchIconOverride,
     });
   }, [overrides]);
 

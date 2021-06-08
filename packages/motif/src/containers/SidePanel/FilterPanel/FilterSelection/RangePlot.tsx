@@ -24,12 +24,7 @@ const FilterSelectionRangePlot: FC<FilterSelectionContentProps> = ({
 }) => {
   const { domain, data, dataType, step = 0.01, format } = histogram;
   return (
-    <Block
-      padding='scale200'
-      width='auto'
-      height='130px'
-      backgroundColor='backgroundTertiary'
-    >
+    <Block height="120px">
       <RangePlot
         range={domain}
         histogram={data}
@@ -37,7 +32,7 @@ const FilterSelectionRangePlot: FC<FilterSelectionContentProps> = ({
         dataType={dataType}
         value={value}
         onChange={onChangeRange}
-        width={275}
+        width={255}
         height={90}
         xAxisFormat={format}
       />

@@ -25,12 +25,8 @@ const ItemResults: FC = () => {
   );
 
   const { graph } = useContext(GraphRefContext);
-  const {
-    clearNodeHoverState,
-    centerNode,
-    centerEdge,
-    clearEdgeHoverState,
-  } = useGraphBehaviors(graph);
+  const { clearNodeHoverState, centerNode, centerEdge, clearEdgeHoverState } =
+    useGraphBehaviors(graph);
 
   const onNodeMouseEnter = (
     event: MouseEvent<HTMLDivElement>,
@@ -89,10 +85,9 @@ const ItemResults: FC = () => {
   return (
     <Block
       paddingBottom='scale300'
-      paddingLeft='scale550'
-      paddingRight='scale550'
+      paddingLeft='scale100'
+      paddingRight='scale100'
       paddingTop='scale300'
-      marginTop='scale500'
       position='absolute'
       top={0}
       bottom='35px'

@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { Block } from 'baseui/block';
+import { HeadingXSmall } from 'baseui/typography';
 import { useDispatch, useSelector } from 'react-redux';
-import { GraphSlices, GraphSelectors } from '../../../redux/graph';
-import Accordion from '../../../components/Accordion';
-import { NestedForm, genNestedForm } from '../../../components/form';
 
-import * as Icon from '../../../components/Icons';
+import { GraphSlices, GraphSelectors } from '../../../redux/graph';
+import { Card } from '../../../components/ui';
+import { NestedForm, genNestedForm } from '../../../components/form';
 import { layoutForm } from './constants';
 
 const OptionsLayout = () => {
@@ -36,27 +35,17 @@ const OptionsLayout = () => {
   });
 
   return (
-    <Accordion
-      data-testid='OptionsLayout'
-      items={[
-        {
-          title: (
-            <Block display='flex' justifyContent='center'>
-              <Icon.Network style={{ paddingRight: '8px' }} />
-              Layout Options
-            </Block>
-          ),
-          key: 'layout',
-          content: (
-            <NestedForm
-              data={formData}
-              key={`${formData.id}-${formData.value}`}
-            />
-          ),
-          expanded: true,
-        },
-      ]}
-    />
+    <Card data-testid='OptionsLayout'>
+      <HeadingXSmall
+        marginTop={0}
+        marginBottom={0}
+        color='contentInverseSecondary'
+        $style={{ letterSpacing: '1px' }}
+      >
+        LAYOUT
+      </HeadingXSmall>
+      <NestedForm data={formData} key={`${formData.id}-${formData.value}`} />
+    </Card>
   );
 };
 

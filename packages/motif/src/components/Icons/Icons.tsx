@@ -16,7 +16,6 @@ import {
   HiOutlineZoomOut,
   HiOutlineCamera,
   HiOutlineFilter,
-  HiOutlineSearch,
   HiChevronLeft,
   HiChevronRight,
   HiOutlineArrowNarrowDown,
@@ -34,6 +33,7 @@ import {
   BiFullscreen,
   BiUndo,
   BiRedo,
+  BiSearch,
   BiListUl,
   BiNetworkChart,
   BiSave,
@@ -42,6 +42,7 @@ import {
   BiReset,
   BiRocket,
   BiTable,
+  BiPalette,
 } from 'react-icons/bi';
 import { BsSlash } from 'react-icons/bs';
 import { VscSymbolKey, VscCircleOutline } from 'react-icons/vsc';
@@ -261,9 +262,9 @@ export const Camera = ({ children, size = 16, ...rest }: IconBaseProps) => (
 );
 
 export const Search = ({ children, size = 16, ...rest }: IconBaseProps) => (
-  <HiOutlineSearch size={size} {...rest}>
+  <BiSearch size={size} {...rest}>
     {children}
-  </HiOutlineSearch>
+  </BiSearch>
 );
 
 export const Save = ({ children, size = 16, ...rest }: IconBaseProps) => (
@@ -288,6 +289,12 @@ export const Reset = ({ children, size = 16, ...rest }: IconBaseProps) => (
   <BiReset size={size} {...rest}>
     {children}
   </BiReset>
+);
+
+export const Palette = ({ children, size = 16, ...rest }: IconBaseProps) => (
+  <BiPalette size={size} {...rest}>
+    {children}
+  </BiPalette>
 );
 
 export const Rocket = ({ children, size = 16, ...rest }: IconBaseProps) => (

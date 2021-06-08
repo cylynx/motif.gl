@@ -1,6 +1,8 @@
 // @ts-nocheck
-import React from 'react';
+import React, { useState } from 'react';
 import { useStyletron } from 'baseui';
+import { Button } from 'baseui/button';
+import { Block } from 'baseui/block';
 import {
   Accordion as BaseAccordion,
   AccordionOverrides,
@@ -10,16 +12,13 @@ import {
 import * as Icon from '../Icons';
 
 export type AccordionProps = {
-  items: AccordionItem[];
-  icon?: React.ReactNode;
-  overrides?: AccordionOverrides<SharedProps>;
-};
-
-export type AccordionItem = {
-  key?: string | number;
   title: React.ReactNode;
   content: React.ReactNode;
+  iconPosition?: 'left' | 'right';
+  width?: 'full' | 'default';
+  actionButtons?: React.ReactNode;
   expanded?: boolean;
+  overrides?: AccordionOverrides<SharedProps>;
 };
 
 export const Content = ({ children }: { children: React.ReactNode }) => {
@@ -39,40 +38,54 @@ export const Content = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-const Accordion = ({ items, icon, overrides }: AccordionProps) => {
-  const listItems = items.map((x) => {
-    return (
-      <StatefulPanel
-        title={x.title}
-        key={x.key}
-        initialState={{ expanded: x.expanded || false }}
-      >
-        {x.content}
-      </StatefulPanel>
-    );
-  });
-
+const Accordion = ({
+  title,
+  content,
+  iconPosition = 'left',
+  width = 'default',
+  actionButtons = null,
+  expanded = false,
+  overrides,
+}: AccordionProps) => {
   const BASE_ACCORDION_OVERRIDES: AccordionOverrides<SharedProps> = {
     ToggleIcon: {
-      // eslint-disable-next-line react/display-name
-      component: ({ $expanded }: { $expanded: boolean }) =>
-        icon || <Icon.ChevronDown />,
+      component: () => {
+        return iconPosition === 'left' ? (
+          actionButtons
+        ) : (
+          <>
+            {actionButtons}
+            <Icon.ChevronDown />
+          </>
+        );
+      },
     },
     Header: {
-      style: ({ $theme }) => ({
-        ...$theme.typography.LabelSmall,
+      style: ({ $theme, $expanded }) => ({
+        ...$theme.typography.HeadingXSmall,
+        color: $theme.colors.contentInverseSecondary,
+        backgroundColor: $theme.colors.backgroundSecondary,
         paddingTop: $theme.sizing.scale300,
-        paddingLeft: $theme.sizing.scale600,
+        paddingLeft: width === 'full' ? 0 : $theme.sizing.scale300,
+        paddingRight: width === 'full' ? 0 : $theme.sizing.scale300,
         paddingBottom: $theme.sizing.scale300,
         borderBottomStyle: 'none',
+        borderTopLeftRadius: $theme.borders.radius200,
+        borderTopRightRadius: $theme.borders.radius200,
+        borderBottomLeftRadius: $expanded ? '0px' : $theme.borders.radius200,
+        borderBottomRightRadius: $expanded ? '0px' : $theme.borders.radius200,
+        letterSpacing: '1px',
       }),
     },
     Content: {
       style: ({ $expanded, $theme }) => ({
+        backgroundColor: $theme.colors.backgroundSecondary,
         paddingTop: $expanded ? $theme.sizing.scale500 : 0,
         paddingBottom: $expanded ? $theme.sizing.scale500 : 0,
-        paddingLeft: $theme.sizing.scale600,
-        paddingRight: $theme.sizing.scale600,
+        paddingLeft: width === 'full' ? 0 : $theme.sizing.scale300,
+        paddingRight: width === 'full' ? 0 : $theme.sizing.scale300,
+        borderBottomLeftRadius: $theme.borders.radius200,
+        borderBottomRightRadius: $theme.borders.radius200,
         borderBottomWidth: 0,
       }),
     },
@@ -85,7 +98,23 @@ const Accordion = ({ items, icon, overrides }: AccordionProps) => {
 
   return (
     <BaseAccordion overrides={overrides ?? BASE_ACCORDION_OVERRIDES}>
-      {listItems}
+      <StatefulPanel
+        title={
+          <Block display='flex' alignItems='center'>
+            {iconPosition === 'left' ? (
+              <>
+                <Icon.ChevronDown />
+                <Block marginLeft='8px'>{title}</Block>
+              </>
+            ) : (
+              title
+            )}
+          </Block>
+        }
+        initialState={{ expanded }}
+      >
+        {content}
+      </StatefulPanel>
     </BaseAccordion>
   );
 };

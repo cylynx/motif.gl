@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { FILL } from 'baseui/tabs-motion';
-import { Block } from 'baseui/block';
 import { IUseSearchOptions, TActiveKey } from '../../types';
 import SearchEdge from './SearchEdge';
 import SearchNode from './SearchNode';
@@ -27,10 +26,48 @@ const SearchTabs = () => {
 
   return (
     <Tabs activeKey={activeTabs} onChange={onTabChange} fill={FILL.fixed}>
-      <Tab key='nodes' title="Nodes">
+      <Tab
+        key='nodes'
+        title='Nodes'
+        overrides={{
+          Tab: {
+            style: ({ $theme }) => {
+              return {
+                paddingTop: $theme.sizing.scale300,
+                paddingBottom: $theme.sizing.scale300,
+              };
+            },
+          },
+          TabPanel: {
+            style: {
+              paddingLeft: 0,
+              paddingRight: 0,
+            },
+          },
+        }}
+      >
         <SearchNode />
       </Tab>
-      <Tab key='edges' title="Edges">
+      <Tab
+        key='edges'
+        title='Edges'
+        overrides={{
+          Tab: {
+            style: ({ $theme }) => {
+              return {
+                paddingTop: $theme.sizing.scale300,
+                paddingBottom: $theme.sizing.scale300,
+              };
+            },
+          },
+          TabPanel: {
+            style: {
+              paddingLeft: 0,
+              paddingRight: 0,
+            },
+          },
+        }}
+      >
         <SearchEdge />
       </Tab>
     </Tabs>

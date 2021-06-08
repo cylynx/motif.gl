@@ -26,9 +26,8 @@ describe('Node Style Filter', () => {
         .getProps('store')
         .then((store) => {
           const globalStore = store.getState();
-          const { nodeStyle } = GraphSelectors.getGraph(
-            globalStore,
-          ).styleOptions;
+          const { nodeStyle } =
+            GraphSelectors.getGraph(globalStore).styleOptions;
           return resolve(nodeStyle);
         });
     });
@@ -40,6 +39,7 @@ describe('Node Style Filter', () => {
     cy.switchTab('sample-data');
     cy.importSampleData(SampleData.BANK);
     cy.switchPanel('options');
+    cy.switchTab('nodes');
   });
 
   describe('Node Size', () => {
@@ -61,11 +61,12 @@ describe('Node Style Filter', () => {
         controllerName,
       );
       const { max } = formDefaults;
+      const target = max / 2 + modifyValue;
 
       const nodeStyle = await getNodeStyleFromReduxStore();
       const { id, value } = nodeStyle.size as NodeSizeFixed;
       expect(id).to.deep.equal(nodeSizeType);
-      expect(value).to.deep.equal(max / 2 + modifyValue);
+      expect(value).to.be.within(target - 1, target + 1);
     });
 
     it('should adjust with degree of connections', async () => {

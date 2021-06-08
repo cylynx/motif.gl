@@ -7,28 +7,35 @@ import React, {
   FC,
   MutableRefObject,
 } from 'react';
+import { useStyletron } from 'baseui';
 import { Block } from 'baseui/block';
+
 import Graphin from '@cylynx/graphin';
 import {
   SIDE_NAVBAR_WIDTH,
   LEFT_LAYER_WIDTH,
 } from '../../constants/widget-units';
+import { Card } from '../../components/ui';
 import { extractIntegerFromString } from '../../utils/data-utils/data-utils';
 
-export const BottomRightLayer: FC = ({ children }) => (
-  <Block
-    position='absolute'
-    bottom='10px'
-    right='10px'
-    width='500px'
-    backgroundColor='backgroundTertiary'
-    paddingTop='scale600'
-    paddingLeft='scale600'
-    paddingRight='scale600'
-  >
-    {children}
-  </Block>
-);
+export const BottomRightLayer: FC = ({ children }) => {
+  const [, theme] = useStyletron();
+  return (
+    <Card
+      $style={{
+        paddingLeft: theme.sizing.scale400,
+        paddingTop: theme.sizing.scale400,
+        paddingBottom: theme.sizing.scale400,
+        position: 'absolute',
+        bottom: '10px',
+        right: '10px',
+        width: '550px',
+      }}
+    >
+      {children}
+    </Card>
+  );
+};
 
 type LeftLayerProps = { padding?: boolean };
 export const LeftLayer: FC<LeftLayerProps> = ({ children, padding = true }) => {
@@ -38,7 +45,7 @@ export const LeftLayer: FC<LeftLayerProps> = ({ children, padding = true }) => {
       top='0px'
       bottom='0px'
       left={SIDE_NAVBAR_WIDTH}
-      width={padding ? '310px' : '338px'}
+      width={padding ? '280px' : '308px'}
       paddingTop={padding ? 'scale600' : 0}
       paddingBottom={padding ? 'scale200' : 0}
       paddingLeft={padding ? 'scale550' : 0}
@@ -118,9 +125,8 @@ export class GraphLayer extends Component<GraphLayerProps, GraphLayerState> {
       const { graph } = graphRef.current;
 
       // convert the value from px into integer
-      const leftLayerWidthPx: number = extractIntegerFromString(
-        LEFT_LAYER_WIDTH,
-      );
+      const leftLayerWidthPx: number =
+        extractIntegerFromString(LEFT_LAYER_WIDTH);
 
       const { innerWidth, innerHeight } = this.getInnerDimension();
 

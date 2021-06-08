@@ -46,11 +46,6 @@ export const Dropdown: FC<DropdownProps> = ({
       size='compact'
       {...rest}
       overrides={{
-        Root: {
-          style: () => ({
-            paddingBottom: '4px',
-          }),
-        },
         ControlContainer: {
           style: ({ $theme }) => {
             return {

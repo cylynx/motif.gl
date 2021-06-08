@@ -24,39 +24,36 @@ describe('Import Bank Connections', () => {
       .should('deep.eq', 'concentric');
   });
 
-  it('should render 23 edges in Graphin', () => {
-    cy.getReact(graphinEl).getProps('data.edges').should('have.length', 23);
-  });
-
   it('should render 17 nodes in Graphin', () => {
     cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 17);
   });
 
+  it('should render 23 edges in Graphin', () => {
+    cy.getReact(graphinEl).getProps('data.edges').should('have.length', 23);
+  });
+
   it('should display 17 nodes count in Nodes label', () => {
-    cy.getReact('Statistic', {
-      props: { 'data-testid': 'nodes-count' },
-    })
-      .nthNode(0)
-      .getProps('value')
-      .should('deep.eq', 17);
+    cy.get('div[data-testid="nodes-count"]').should('have.text', '17/17');
   });
 
   it('should display 23 edges count in Edges label', () => {
-    cy.getReact('Statistic', {
-      props: { 'data-testid': 'edges-count' },
-    })
-      .nthNode(0)
-      .getProps('value')
-      .should('deep.eq', 23);
+    cy.get('div[data-testid="edges-count"]').should('have.text', '23/23');
   });
 
   it('should display one row for data list', () => {
-    cy.getReact('DataListAccordion').getProps('items').should('have.length', 1);
+    cy.getReact('Accordion', {
+      props: {
+        'data-testid': 'DataListAccordion',
+      },
+    }).should('have.length', 1);
   });
 
   it('should display data list name [Banking Connections]', () => {
-    cy.getReact('AccordionPanel')
-      .nthNode(0)
+    cy.getReact('Accordion', {
+      props: {
+        'data-testid': 'DataListAccordion',
+      },
+    })
       .getProps('title')
       .should('deep.eq', 'Banking Connections');
   });

@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import get from 'lodash/get';
 import { styled } from 'baseui';
 import { Block } from 'baseui/block';
-import { LabelSmall, ParagraphSmall } from 'baseui/typography';
+import { HeadingXSmall, ParagraphSmall } from 'baseui/typography';
 import { GraphinContextType, IUserEdge, IUserNode } from '@cylynx/graphin';
 import isEmpty from 'lodash/isEmpty';
 import { GraphRefContext } from '../Graph';
@@ -34,9 +34,9 @@ const validTypes = ['integer', 'real', 'timestamp', 'date'];
 export const PlotDiv = styled('div', ({ $theme, $expanded }: TPlotDiv) => {
   const { animation, sizing } = $theme;
   return {
-    paddingLeft: sizing.scale700,
-    paddingRight: sizing.scale600,
-    height: $expanded ? '150px' : 0,
+    paddingLeft: sizing.scale300,
+    paddingRight: sizing.scale300,
+    height: $expanded ? '120px' : 0,
     transitionProperty: 'all',
     transitionDuration: animation.timing400,
     transitionTimingFunction: animation.easeInOutCurve,
@@ -85,19 +85,12 @@ const VariableInspector = () => {
     setValue([]);
   }, [graphVisible]);
 
-  const onChangeSpeed = useCallback(() => {
-    if (speed === 1) {
-      setSpeed(2);
-    } else if (speed === 2) {
-      setSpeed(4);
-    } else if (speed === 4) {
-      setSpeed(8);
-    } else if (speed === 8) {
-      setSpeed(16);
-    } else if (speed === 16) {
-      setSpeed(1);
-    }
-  }, [speed, setSpeed]);
+  const onChangeSpeed = useCallback(
+    (newSpeed) => {
+      setSpeed(newSpeed);
+    },
+    [speed, setSpeed],
+  );
 
   const nodeOptions = useMemo(
     () =>
@@ -245,7 +238,17 @@ const VariableInspector = () => {
   );
 
   const LabelSmallMemo = useMemo(
-    () => <LabelSmall>Variable Inspector</LabelSmall>,
+    () => (
+      <HeadingXSmall
+        marginTop={0}
+        marginBottom={0}
+        marginRight='scale300'
+        color='contentInverseSecondary'
+        $style={{ letterSpacing: '1px' }}
+      >
+        VARIABLE INSPECTOR
+      </HeadingXSmall>
+    ),
     [],
   );
 
@@ -266,7 +269,7 @@ const VariableInspector = () => {
 
   return (
     <Fragment>
-      <Block display='flex' height='50px'>
+      <Block display='flex' alignItems='center'>
         {LabelSmallMemo}
         {SelectVariableMemo}
         {histogramProp.histogram && (
@@ -293,6 +296,7 @@ const VariableInspector = () => {
       <PlotDiv $expanded={selection.length !== 0}>
         {histogramProp.histogram && (
           <RangePlot
+            width={540}
             value={value as [number, number]}
             step={histogramProp.step}
             onChange={onChangeRange}

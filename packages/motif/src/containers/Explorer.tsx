@@ -29,6 +29,7 @@ import { MotifLightTheme, MotifDarkTheme } from '../theme';
 import { WidgetSelectors, WidgetSlices, WidgetItem } from '../redux/widget';
 import { GraphSlices, Accessors, StyleOptions } from '../redux/graph';
 import SideNavBars from './SideNavBar';
+import GraphStatistic from './GraphStatistic';
 import Graph, { GraphRefContext } from './Graph';
 import Tooltip from './Tooltip';
 import { LEFT_LAYER_WIDTH } from '../constants/widget-units';
@@ -54,13 +55,15 @@ export const WidgetContainer = (props: WidgetContainerProps) => {
 
   if (graphRef?.current?.graph) {
     return (
-      <ThemeProvider theme={theme}>
-        <ToasterContainer placement={PLACEMENT.top}>
-          <GraphRefContext.Provider value={graphRef.current}>
-            {children}
-          </GraphRefContext.Provider>
-        </ToasterContainer>
-      </ThemeProvider>
+      <>
+        <ThemeProvider theme={theme}>
+          <ToasterContainer placement={PLACEMENT.top}>
+            <GraphRefContext.Provider value={graphRef.current}>
+              {children}
+            </GraphRefContext.Provider>
+          </ToasterContainer>
+        </ThemeProvider>
+      </>
     );
   }
   return null;
@@ -142,11 +145,13 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
       >
         <DataTableModal />
         <ImportWizardModal overrideTabs={overrides?.Tabs} />
+
         <GraphLayer
           isMainWidgetExpanded={isMainWidgetExpanded}
           leftLayerWidth={leftLayerWidth}
           graphRef={graphRef}
         >
+          <GraphStatistic />
           <Graph ref={graphRef} setTooltip={setTooltip} />
         </GraphLayer>
         <WidgetContainer

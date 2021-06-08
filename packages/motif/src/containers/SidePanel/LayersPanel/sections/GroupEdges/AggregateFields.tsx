@@ -2,22 +2,20 @@ import React, { useMemo, FC } from 'react';
 import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
 import { SIZE, Option, OnChangeParams, Value } from 'baseui/select';
-import { Theme } from 'baseui/theme';
 import { colors } from 'baseui/tokens';
-import { Button } from 'baseui/button';
 import { GroupEdges } from '../../../../../redux/graph';
 import * as Icon from '../../../../../components/Icons';
 import {
   NUMERIC_AGGREGATIONS,
   STRING_AGGREGATIONS,
 } from '../../../../../constants/widget-units';
-import { Dropdown } from '../../../../../components/ui/Dropdown';
+import { Dropdown, Button } from '../../../../../components/ui';
 
 const FieldLabels = () =>
   useMemo(
     () => (
-      <Block marginTop='scale200'>
-        <LabelSmall>Aggregations</LabelSmall>
+      <Block>
+        <LabelSmall color='contentInverseSecondary'>Aggregations</LabelSmall>
       </Block>
     ),
     [],
@@ -85,7 +83,6 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
               options={edgeFields}
               value={fieldValue}
               maxDropdownHeight='300px'
-              overrides={{ Root: { style: { maxWidth: '243px' } } }}
               onChange={(params: OnChangeParams) =>
                 onFieldChange(params, uniqueFieldId)
               }
@@ -94,18 +91,13 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
             <Block marginLeft='scale200'>
               <Button
                 data-testid='aggregate-fields:delete'
-                size='compact'
                 kind='minimal'
+                shape='square'
                 $as='div'
                 onClick={() => onDeleteClick(uniqueFieldId)}
-                overrides={{
-                  BaseButton: {
-                    style: ({ $theme }: { $theme: Theme }) => ({
-                      backgroundColor: $theme.colors.backgroundTertiary,
-                      ':hover': {
-                        backgroundColor: colors.red500,
-                      },
-                    }),
+                BaseButtonStyleOverrides={{
+                  ':hover': {
+                    backgroundColor: colors.red500,
                   },
                 }}
               >

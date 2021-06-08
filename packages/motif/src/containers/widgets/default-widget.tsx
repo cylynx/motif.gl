@@ -28,7 +28,7 @@ const defaultWidgetList: WidgetItem[] = [
   {
     id: 'options',
     group: 'main',
-    icon: <IconButton id='options' group='main' icon={<Icon.Gear />} />,
+    icon: <IconButton id='options' group='main' icon={<Icon.Palette />} />,
     widget: (
       <LeftLayer>
         <OptionsPanel />
@@ -54,7 +54,7 @@ const defaultWidgetList: WidgetItem[] = [
     group: 'main',
     icon: <IconButton icon={<Icon.Search />} id='search' group='main' />,
     widget: (
-      <LeftLayer padding={false}>
+      <LeftLayer>
         <SearchPanel />
       </LeftLayer>
     ),

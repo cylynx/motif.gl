@@ -34,6 +34,10 @@ const borders: Partial<Borders> = {
     borderStyle: 'solid',
     borderWidth: '1px',
   },
+  radius100: '4px',
+  radius200: '6px',
+  radius300: '8px',
+  radius400: '12px',
   /** Button, ButtonGroup */
   buttonBorderRadius: '6px',
   /** Input, Select, Textarea, Checkbox */

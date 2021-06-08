@@ -145,9 +145,10 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
           justifyContent='space-between'
         >
           <LabelSmall
-            marginBottom='scale300'
-            marginTop='scale300'
+            marginBottom='scale100'
+            marginTop='scale200'
             marginRight='scale200'
+            color='contentInverseSecondary'
             width='100px'
           >
             {data.label}
@@ -197,9 +198,10 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
                 justifyContent='space-between'
               >
                 <LabelSmall
-                  marginBottom='scale300'
-                  marginTop='scale300'
+                  marginBottom='scale100'
+                  marginTop='scale200'
                   marginRight='scale200'
+                  color='contentInverseSecondary'
                   width='100px'
                 >
                   {label}
