@@ -81,11 +81,11 @@ describe('Node Style Filter', () => {
         controllerName,
       );
       const { value } = formDefaults;
-      
+
       const nodeStyle = await getNodeStyleFromReduxStore();
       const { id, range } = nodeStyle.size as NodeSizeDegree;
       expect(id).to.deep.equal(nodeSizeType);
-      expect(range).to.be.within(value - 1, value + 1);
+      expect(range).to.deep.equal(value);
     });
 
     it('should adjust with property (user defined)', async () => {
