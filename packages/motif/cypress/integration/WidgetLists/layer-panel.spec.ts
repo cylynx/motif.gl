@@ -17,45 +17,6 @@ describe('Layer Panels', () => {
     cy.getLayerPanel().getReact('Header').should('exist');
   });
 
-  it('should has node and edge statistics', () => {
-    cy.getLayerPanel()
-      .getReact('Statistic', {
-        props: {
-          'data-testid': 'nodes-count',
-        },
-      })
-      .nthNode(0)
-      .should('exist');
-
-    cy.getLayerPanel()
-      .getReact('Statistic', {
-        props: {
-          'data-testid': 'edges-count',
-        },
-      })
-      .should('exist');
-  });
-
-  it('nodes and edges statistic should initialize with zero', () => {
-    cy.getLayerPanel()
-      .getReact('Statistic', {
-        props: {
-          'data-testid': 'nodes-count',
-        },
-      })
-      .getProps('value')
-      .should('deep.eq', 0);
-
-    cy.getLayerPanel()
-      .getReact('Statistic', {
-        props: {
-          'data-testid': 'edges-count',
-        },
-      })
-      .getProps('value')
-      .should('deep.eq', 0);
-  });
-
   it('should have node and edge properties accordions', () => {
     cy.getLayerPanel()
       .getReact('Accordion', {
@@ -74,9 +35,10 @@ describe('Layer Panels', () => {
       .should('exist');
   });
 
-  it('should render Clear Data button', () => {
-    cy.getLayerPanel().getReact('ClearDataButton').should('exist');
-  });
+  // TODO: Add back clear data button
+  // it('should render Clear Data button', () => {
+  //   cy.getLayerPanel().getReact('ClearDataButton').should('exist');
+  // });
 
   it('should render Import Data button', () => {
     cy.getLayerPanel().getReact('ImportDataButton').should('exist');

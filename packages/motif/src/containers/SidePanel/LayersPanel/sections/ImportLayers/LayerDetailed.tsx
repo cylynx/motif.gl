@@ -51,16 +51,16 @@ const LayerDetailed = ({ graph, index }: LayerDetailProps) => {
           <LabelSmall marginRight='scale200' color='contentInverseSecondary'>
             Nodes:
           </LabelSmall>
-          <LabelSmall>
-            {visibleNodeLength}/{hiddenNodeLength + visibleNodeLength}{' '}
+          <LabelSmall data-testid='nodes-count'>
+            {`${visibleNodeLength}/${hiddenNodeLength + visibleNodeLength}`}
           </LabelSmall>
         </Block>
         <Block display='flex'>
           <LabelSmall marginRight='scale200' color='contentInverseSecondary'>
             Edges:
           </LabelSmall>
-          <LabelSmall>
-            {visibleEdgeLength}/{hiddenEdgeLength + visibleEdgeLength}{' '}
+          <LabelSmall data-testid='edges-count'>
+            {`${visibleEdgeLength}/${hiddenEdgeLength + visibleEdgeLength}`}
           </LabelSmall>
         </Block>
       </Block>

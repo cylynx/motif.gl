@@ -25,10 +25,6 @@ describe('Import Edge List', () => {
     selectEdgeListDataType();
   });
 
-  afterEach(() => {
-    cy.react('ClearDataButton').click();
-  });
-
   const sampleEdge = `${edgeDatasetRootPath}/edge_dataset.csv`;
 
   describe('Local Files Import', () => {

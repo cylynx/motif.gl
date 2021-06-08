@@ -1,7 +1,6 @@
 import React, { MouseEvent, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { Block } from 'baseui/block';
-// import { Button } from 'baseui/button';
 import useGraphBehaviors from '../../../Graph/hooks/useGraphBehaviors';
 import { GraphRefContext } from '../../../Graph';
 import { GraphSlices } from '../../../../redux/graph';

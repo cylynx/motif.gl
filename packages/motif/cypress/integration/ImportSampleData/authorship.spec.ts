@@ -34,20 +34,10 @@ describe('Import Authorship', () => {
   });
 
   it('should display 1589 nodes count in Nodes label', () => {
-    cy.getReact('Statistic', {
-      props: { 'data-testid': 'nodes-count' },
-    })
-      .nthNode(0)
-      .getProps('value')
-      .should('deep.eq', 1589);
+    cy.get('div[data-testid="nodes-count"]').should('have.text', '1589/1589');
   });
-
+  
   it('should display 2742 edges count in Edges label', () => {
-    cy.getReact('Statistic', {
-      props: { 'data-testid': 'edges-count' },
-    })
-      .nthNode(0)
-      .getProps('value')
-      .should('deep.eq', 2742);
+    cy.get('div[data-testid="edges-count"]').should('have.text', '2742/2742');
   });
 });

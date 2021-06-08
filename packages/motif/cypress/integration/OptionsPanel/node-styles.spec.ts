@@ -26,9 +26,8 @@ describe('Node Style Filter', () => {
         .getProps('store')
         .then((store) => {
           const globalStore = store.getState();
-          const { nodeStyle } = GraphSelectors.getGraph(
-            globalStore,
-          ).styleOptions;
+          const { nodeStyle } =
+            GraphSelectors.getGraph(globalStore).styleOptions;
           return resolve(nodeStyle);
         });
     });
@@ -62,11 +61,12 @@ describe('Node Style Filter', () => {
         controllerName,
       );
       const { max } = formDefaults;
+      const target = max / 2 + modifyValue;
 
       const nodeStyle = await getNodeStyleFromReduxStore();
       const { id, value } = nodeStyle.size as NodeSizeFixed;
       expect(id).to.deep.equal(nodeSizeType);
-      expect(value).to.deep.equal(max / 2 + modifyValue);
+      expect(value).to.be.within(target - 1, target + 1);
     });
 
     it('should adjust with degree of connections', async () => {
@@ -81,11 +81,11 @@ describe('Node Style Filter', () => {
         controllerName,
       );
       const { value } = formDefaults;
-
+      
       const nodeStyle = await getNodeStyleFromReduxStore();
       const { id, range } = nodeStyle.size as NodeSizeDegree;
       expect(id).to.deep.equal(nodeSizeType);
-      expect(range).to.deep.equal(value);
+      expect(range).to.be.within(value - 1, value + 1);
     });
 
     it('should adjust with property (user defined)', async () => {

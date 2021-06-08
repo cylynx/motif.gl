@@ -9,6 +9,11 @@ describe('Group Edge Aggregations', () => {
     cy.waitForReact();
     cy.switchTab('sample-data');
     cy.importSampleData(SampleData.BANK);
+    cy.react('Accordion', {
+      props: {
+        'data-testid': 'DataListAccordion',
+      },
+    }).click();
   });
 
   describe('Group Edges Toggle', () => {
@@ -54,13 +59,15 @@ describe('Group Edge Aggregations', () => {
 
     it('should group by custom value', () => {
       const groupByType = 'is_foreign_source';
-      cy.react('Select', {
+      cy.react('Dropdown', {
         props: { 'data-testid': 'group-by-fields:select' },
       })
         .last()
         .click();
 
-      cy.get('li[role="option"]').contains(groupByType).click();
+      cy.get('li[role="option"]').contains(groupByType).click({force: true});
+
+      cy.wait(10000)
 
       cy.getReact('GroupByFields')
         .getProps('type')
@@ -70,7 +77,7 @@ describe('Group Edge Aggregations', () => {
 
   describe('Fields With Aggregations', () => {
     const fieldSelect = () => {
-      return cy.getReact('Select', {
+      return cy.getReact('Dropdown', {
         props: {
           'data-testid': 'aggregate-fields:field',
         },
@@ -86,7 +93,7 @@ describe('Group Edge Aggregations', () => {
     };
 
     const aggregateSelect = () => {
-      return cy.getReact('Select', {
+      return cy.getReact('Dropdown', {
         props: {
           'data-testid': 'aggregate-fields:aggregate',
         },
@@ -106,14 +113,14 @@ describe('Group Edge Aggregations', () => {
     });
 
     it('should suggest numeric aggregations to selected field', () => {
-      cy.react('Select', {
+      cy.react('Dropdown', {
         props: {
           'data-testid': 'aggregate-fields:field',
         },
       })
         .last()
         .click();
-      cy.get('li[role="option"]').contains('amount').click();
+      cy.get('li[role="option"]').contains('amount').click({force: true});
 
       aggregateSelect()
         .nthNode(0)
@@ -131,14 +138,14 @@ describe('Group Edge Aggregations', () => {
     });
 
     it('should suggest string aggregations to selected field', () => {
-      cy.react('Select', {
+      cy.react('Dropdown', {
         props: {
           'data-testid': 'aggregate-fields:field',
         },
       })
         .last()
         .click();
-      cy.get('li[role="option"]').contains('date').click();
+      cy.get('li[role="option"]').contains('date').click({force: true});
 
       aggregateSelect()
         .nthNode(0)
@@ -154,22 +161,22 @@ describe('Group Edge Aggregations', () => {
     });
 
     it('should apply multiple aggregations onto the group edges', () => {
-      cy.react('Select', {
+      cy.react('Dropdown', {
         props: {
           'data-testid': 'aggregate-fields:aggregate',
         },
       })
         .last()
         .click();
-      cy.get('li[role="option"]').contains('First').click();
-      cy.react('Select', {
+      cy.get('li[role="option"]').contains('First').click({force: true});
+      cy.react('Dropdown', {
         props: {
           'data-testid': 'aggregate-fields:aggregate',
         },
       })
         .last()
         .click();
-      cy.get('li[role="option"]').contains('Last').click();
+      cy.get('li[role="option"]').contains('Last').click({force: true});
 
       aggregateSelect()
         .nthNode(0)
@@ -187,7 +194,7 @@ describe('Group Edge Aggregations', () => {
         },
       })
         .last()
-        .click();
+        .click({});
 
       fieldSelect().should('not.exist');
       deleteButton().should('not.exist');
