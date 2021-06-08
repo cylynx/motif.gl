@@ -4,10 +4,10 @@ import { ParagraphSmall } from 'baseui/typography';
 import { useDispatch } from 'react-redux';
 import { useStyletron } from 'styletron-react';
 import { ToggleAllButton } from '../../components/LayersPanelButtons';
-import LabelTooltip from '../../../../../components/FormSelectWithTooltip/LabelTooltip';
 import ToggleTokens from '../../../../../components/ToggleTokens';
 import Accordion from '../../../../../components/Accordion';
 import { GraphSlices, Selection } from '../../../../../redux/graph';
+import QuestionMarkTooltip from '../../../../../components/FormSelectWithTooltip/QuestionMarkTooltip';
 
 type EdgePropertiesProps = { haveData: boolean; edgeFields: Selection[] };
 const EdgeProperties: FC<EdgePropertiesProps> = ({ haveData, edgeFields }) => {
@@ -35,7 +35,7 @@ const EdgeProperties: FC<EdgePropertiesProps> = ({ haveData, edgeFields }) => {
       title={
         <div className={css({ display: 'flex', alignItems: 'center' })}>
           EDGE PROPERTIES
-          <LabelTooltip text='' tooltip='edge properties' />
+          <QuestionMarkTooltip tooltip='edge properties' />
         </div>
       }
       expanded

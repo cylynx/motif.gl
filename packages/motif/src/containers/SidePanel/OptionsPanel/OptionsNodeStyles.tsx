@@ -17,7 +17,7 @@ import {
   nodeFontSizeForm,
   nodeLabelForm,
 } from './constants';
-import LabelTooltip from '../../../components/FormSelectWithTooltip/LabelTooltip';
+import QuestionMarkTooltip from '../../../components/FormSelectWithTooltip/QuestionMarkTooltip';
 
 const OptionsNodeStyles = () => {
   const dispatch = useDispatch();
@@ -65,7 +65,7 @@ const OptionsNodeStyles = () => {
         $style={{ letterSpacing: '1px' }}
       >
         NODE STYLES
-        <LabelTooltip text='' tooltip='node styles' />
+        <QuestionMarkTooltip tooltip='node styles' />
       </HeadingXSmall>
       <NestedForm
         data={nodeSizeFormData}

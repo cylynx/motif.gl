@@ -3,12 +3,12 @@ import { useStyletron } from 'baseui';
 import { HeadingXSmall } from 'baseui/typography';
 import { Block } from 'baseui/block';
 
-import LabelTooltip from '../../../components/FormSelectWithTooltip/LabelTooltip';
 import ImportLayers from './sections/ImportLayers';
 import { ImportDataButton } from './components/LayersPanelButtons';
 import Header from '../Header';
 import PropertiesSelections from './sections/PropertiesSelection';
 import { Card } from '../../../components/ui';
+import QuestionMarkTooltip from '../../../components/FormSelectWithTooltip/QuestionMarkTooltip';
 
 const LayersPanel = () => {
   const [css, theme] = useStyletron();
@@ -23,7 +23,7 @@ const LayersPanel = () => {
           color='contentInverseSecondary'
           $style={{ letterSpacing: '1px' }}
         >
-          DATA SOURCES <LabelTooltip text='' tooltip='data sources' />
+          DATA SOURCES <QuestionMarkTooltip tooltip='data sources' />
         </HeadingXSmall>
         <ImportDataButton />
         <hr

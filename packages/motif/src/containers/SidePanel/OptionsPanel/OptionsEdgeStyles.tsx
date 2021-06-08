@@ -18,6 +18,7 @@ import {
   edgeLabelForm,
   edgeArrowForm,
 } from './constants';
+import QuestionMarkTooltip from '../../../components/FormSelectWithTooltip/QuestionMarkTooltip';
 
 const OptionsEdgeStyles = () => {
   const dispatch = useDispatch();
@@ -64,6 +65,7 @@ const OptionsEdgeStyles = () => {
         $style={{ letterSpacing: '1px' }}
       >
         EDGE STYLES
+        <QuestionMarkTooltip tooltip='edge styles' />
       </HeadingXSmall>
       <NestedForm
         data={edgeWidthFormData}
