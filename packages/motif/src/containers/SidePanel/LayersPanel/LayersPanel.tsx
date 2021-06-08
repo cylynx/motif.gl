@@ -3,6 +3,7 @@ import { useStyletron } from 'baseui';
 import { HeadingXSmall } from 'baseui/typography';
 import { Block } from 'baseui/block';
 
+import LabelTooltip from '../../../components/FormSelectWithTooltip/LabelTooltip';
 import ImportLayers from './sections/ImportLayers';
 import { ImportDataButton } from './components/LayersPanelButtons';
 import Header from '../Header';
@@ -22,7 +23,7 @@ const LayersPanel = () => {
           color='contentInverseSecondary'
           $style={{ letterSpacing: '1px' }}
         >
-          DATA SOURCES
+          DATA SOURCES <LabelTooltip text='' tooltip='data sources' />
         </HeadingXSmall>
         <ImportDataButton />
         <hr

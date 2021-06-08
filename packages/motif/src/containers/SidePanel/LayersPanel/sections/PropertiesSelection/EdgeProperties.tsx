@@ -2,7 +2,9 @@ import React, { FC, Fragment } from 'react';
 import { Block } from 'baseui/block';
 import { ParagraphSmall } from 'baseui/typography';
 import { useDispatch } from 'react-redux';
+import { useStyletron } from 'styletron-react';
 import { ToggleAllButton } from '../../components/LayersPanelButtons';
+import LabelTooltip from '../../../../../components/FormSelectWithTooltip/LabelTooltip';
 import ToggleTokens from '../../../../../components/ToggleTokens';
 import Accordion from '../../../../../components/Accordion';
 import { GraphSlices, Selection } from '../../../../../redux/graph';
@@ -25,10 +27,17 @@ const EdgeProperties: FC<EdgePropertiesProps> = ({ haveData, edgeFields }) => {
     dispatch(GraphSlices.updateEdgeSelection({ index, status }));
   };
 
+  const [css] = useStyletron();
+
   return (
     <Accordion
       data-testid='edge-properties-accordion'
-      title='EDGE PROPERTIES'
+      title={
+        <div className={css({ display: 'flex', alignItems: 'center' })}>
+          EDGE PROPERTIES
+          <LabelTooltip text='' tooltip='edge properties' />
+        </div>
+      }
       expanded
       content={
         <Fragment>

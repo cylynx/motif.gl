@@ -7,6 +7,7 @@ import { GraphSlices, GraphSelectors } from '../../../redux/graph';
 import { Card } from '../../../components/ui';
 import { NestedForm, genNestedForm } from '../../../components/form';
 import { layoutForm } from './constants';
+import LabelTooltip from '../../../components/FormSelectWithTooltip/LabelTooltip';
 
 const OptionsLayout = () => {
   const dispatch = useDispatch();
@@ -43,6 +44,7 @@ const OptionsLayout = () => {
         $style={{ letterSpacing: '1px' }}
       >
         LAYOUT
+        <LabelTooltip text='' tooltip='layout' />
       </HeadingXSmall>
       <NestedForm data={formData} key={`${formData.id}-${formData.value}`} />
     </Card>

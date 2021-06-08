@@ -2,7 +2,8 @@ import React, { FC, Fragment } from 'react';
 import { Block } from 'baseui/block';
 import { ParagraphSmall } from 'baseui/typography';
 import { useDispatch } from 'react-redux';
-import * as Icon from '../../../../../components/Icons';
+import { useStyletron } from 'styletron-react';
+import LabelTooltip from '../../../../../components/FormSelectWithTooltip/LabelTooltip';
 import { ToggleAllButton } from '../../components/LayersPanelButtons';
 import ToggleTokens from '../../../../../components/ToggleTokens';
 import Accordion from '../../../../../components/Accordion';
@@ -25,10 +26,17 @@ const NodeProperties: FC<NodePropertiesProps> = ({ haveData, nodeFields }) => {
     dispatch(GraphSlices.updateNodeSelection({ index, status }));
   };
 
+  const [css] = useStyletron();
+
   return (
     <Accordion
       data-testid='node-properties-accordion'
-      title='NODE PROPERTIES'
+      title={
+        <div className={css({ display: 'flex', alignItems: 'center' })}>
+          NODE PROPERTIES
+          <LabelTooltip text='' tooltip='node properties' />
+        </div>
+      }
       expanded
       content={
         <Fragment>

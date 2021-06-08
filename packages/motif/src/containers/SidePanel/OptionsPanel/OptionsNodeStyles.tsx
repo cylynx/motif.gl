@@ -17,6 +17,7 @@ import {
   nodeFontSizeForm,
   nodeLabelForm,
 } from './constants';
+import LabelTooltip from '../../../components/FormSelectWithTooltip/LabelTooltip';
 
 const OptionsNodeStyles = () => {
   const dispatch = useDispatch();
@@ -25,9 +26,11 @@ const OptionsNodeStyles = () => {
     (state) => GraphSelectors.getGraph(state).styleOptions.nodeStyle,
   );
 
-  const { allNodeFields, nodeLabelFields, numericNodeFields } = useSelector(
-    (state) => GraphSelectors.getGraphFieldsOptions(state),
-  );
+  const {
+    allNodeFields,
+    nodeLabelFields,
+    numericNodeFields,
+  } = useSelector((state) => GraphSelectors.getGraphFieldsOptions(state));
 
   const updateNodeStyle = (data: any) => {
     dispatch(GraphSlices.changeNodeStyle(data));
@@ -62,6 +65,7 @@ const OptionsNodeStyles = () => {
         $style={{ letterSpacing: '1px' }}
       >
         NODE STYLES
+        <LabelTooltip text='' tooltip='node styles' />
       </HeadingXSmall>
       <NestedForm
         data={nodeSizeFormData}
