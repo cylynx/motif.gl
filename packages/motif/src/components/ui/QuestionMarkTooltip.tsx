@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { IconBaseProps } from 'react-icons';
 import { Block } from 'baseui/block';
-import { colors } from 'baseui/tokens';
+import { useStyletron } from 'baseui';
 import { SimpleTooltip } from '.';
 import * as Icon from '../Icons';
 
@@ -29,24 +29,27 @@ const QuestionMarkIconWithRef = forwardRef((props: IconBaseProps, ref) => {
   );
 });
 
-const QuestionMarkTooltip = ({ tooltip }) => (
-  <SimpleTooltip
-    tooltip={tooltip}
-    overrides={{
-      Inner: {
-        style: {
-          backgroundColor: '#0B1A29',
-          color: colors.white,
+const QuestionMarkTooltip = ({ tooltip }) => {
+  const [, theme] = useStyletron();
+  return (
+    <SimpleTooltip
+      tooltip={tooltip}
+      overrides={{
+        Inner: {
+          style: {
+            backgroundColor: theme.colors.tooltipBackground,
+            color: theme.colors.tooltipText,
+          },
         },
-      },
-    }}
-  >
-    <QuestionMarkIconWithRef
-      size={16}
-      color='#8794A1'
-      style={{ paddingTop: '2px' }}
-    />
-  </SimpleTooltip>
-);
+      }}
+    >
+      <QuestionMarkIconWithRef
+        size={16}
+        color={theme.colors.contentInverseSecondary}
+        style={{ paddingTop: '2px' }}
+      />
+    </SimpleTooltip>
+  );
+};
 
 export default QuestionMarkTooltip;

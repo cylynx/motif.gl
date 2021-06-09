@@ -29,11 +29,10 @@ const LayersPanel = () => {
               <Block width='180px'>
                 Import data to get started or view your imported data in the
                 panel below.
-                <Block paddingTop='10px'>
-                  You can group edges to combine multiple edges from the same
-                  source and target node as a single edge. Add aggregations such
-                  as max, min, or sum on properties of interest.
-                </Block>
+                {'\n'}
+                You can group edges to combine multiple edges from the same
+                source and target node as a single edge. Add aggregations such
+                as max, min, or sum on properties of interest.
               </Block>
             }
           />
