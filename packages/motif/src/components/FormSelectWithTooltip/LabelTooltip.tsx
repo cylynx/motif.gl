@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react';
 import { LabelSmall } from 'baseui/typography';
-import QuestionMarkTooltip from './QuestionMarkTooltip';
+import QuestionMarkTooltip from '../ui/QuestionMarkTooltip';
 
 type LabelTooltipProps = { text: ReactNode; tooltip?: ReactNode };
 const LabelTooltip: FC<LabelTooltipProps> = ({ text, tooltip }) => {

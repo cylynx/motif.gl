@@ -3,7 +3,7 @@ import { Block } from 'baseui/block';
 import { ParagraphSmall } from 'baseui/typography';
 import { useDispatch } from 'react-redux';
 import { useStyletron } from 'styletron-react';
-import QuestionMarkTooltip from '../../../../../components/FormSelectWithTooltip/QuestionMarkTooltip';
+import QuestionMarkTooltip from '../../../../../components/ui/QuestionMarkTooltip';
 import { ToggleAllButton } from '../../components/LayersPanelButtons';
 import ToggleTokens from '../../../../../components/ToggleTokens';
 import Accordion from '../../../../../components/Accordion';

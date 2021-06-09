@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react';
 import { IconBaseProps } from 'react-icons';
 import { Block } from 'baseui/block';
 import { colors } from 'baseui/tokens';
-import { SimpleTooltip } from '../ui';
+import { SimpleTooltip } from '.';
 import * as Icon from '../Icons';
 
 const QuestionMarkIconWithRef = forwardRef((props: IconBaseProps, ref) => {

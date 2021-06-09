@@ -7,7 +7,7 @@ import { GraphSlices, GraphSelectors } from '../../../redux/graph';
 import { Card } from '../../../components/ui';
 import { NestedForm, genNestedForm } from '../../../components/form';
 import { layoutForm } from './constants';
-import QuestionMarkTooltip from '../../../components/FormSelectWithTooltip/QuestionMarkTooltip';
+import QuestionMarkTooltip from '../../../components/ui/QuestionMarkTooltip';
 
 const OptionsLayout = () => {
   const dispatch = useDispatch();

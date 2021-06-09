@@ -18,7 +18,7 @@ import {
   edgeLabelForm,
   edgeArrowForm,
 } from './constants';
-import QuestionMarkTooltip from '../../../components/FormSelectWithTooltip/QuestionMarkTooltip';
+import QuestionMarkTooltip from '../../../components/ui/QuestionMarkTooltip';
 
 const OptionsEdgeStyles = () => {
   const dispatch = useDispatch();

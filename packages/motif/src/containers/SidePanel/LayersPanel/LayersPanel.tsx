@@ -8,7 +8,7 @@ import { ImportDataButton } from './components/LayersPanelButtons';
 import Header from '../Header';
 import PropertiesSelections from './sections/PropertiesSelection';
 import { Card } from '../../../components/ui';
-import QuestionMarkTooltip from '../../../components/FormSelectWithTooltip/QuestionMarkTooltip';
+import QuestionMarkTooltip from '../../../components/ui/QuestionMarkTooltip';
 
 const LayersPanel = () => {
   const [css, theme] = useStyletron();

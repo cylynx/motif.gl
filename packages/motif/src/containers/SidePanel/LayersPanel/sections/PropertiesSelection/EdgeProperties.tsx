@@ -7,7 +7,7 @@ import { ToggleAllButton } from '../../components/LayersPanelButtons';
 import ToggleTokens from '../../../../../components/ToggleTokens';
 import Accordion from '../../../../../components/Accordion';
 import { GraphSlices, Selection } from '../../../../../redux/graph';
-import QuestionMarkTooltip from '../../../../../components/FormSelectWithTooltip/QuestionMarkTooltip';
+import QuestionMarkTooltip from '../../../../../components/ui/QuestionMarkTooltip';
 
 type EdgePropertiesProps = { haveData: boolean; edgeFields: Selection[] };
 const EdgeProperties: FC<EdgePropertiesProps> = ({ haveData, edgeFields }) => {

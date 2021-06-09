@@ -17,7 +17,7 @@ import {
   nodeFontSizeForm,
   nodeLabelForm,
 } from './constants';
-import QuestionMarkTooltip from '../../../components/FormSelectWithTooltip/QuestionMarkTooltip';
+import QuestionMarkTooltip from '../../../components/ui/QuestionMarkTooltip';
 
 const OptionsNodeStyles = () => {
   const dispatch = useDispatch();

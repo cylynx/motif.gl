@@ -13,10 +13,9 @@ import { Block } from 'baseui/block';
 import { HeadingXSmall, ParagraphSmall } from 'baseui/typography';
 import { GraphinContextType, IUserEdge, IUserNode } from '@cylynx/graphin';
 import isEmpty from 'lodash/isEmpty';
-import { PLACEMENT } from 'baseui/toast';
 import { GraphRefContext } from '../Graph';
 import SelectVariable from '../../components/SelectVariable';
-import QuestionMarkTooltip from '../../components/FormSelectWithTooltip/QuestionMarkTooltip';
+import QuestionMarkTooltip from '../../components/ui/QuestionMarkTooltip';
 import { RangePlot } from '../../components/plots';
 import {
   AnimationController,

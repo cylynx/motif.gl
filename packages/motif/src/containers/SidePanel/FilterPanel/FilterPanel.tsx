@@ -9,7 +9,7 @@ import useGraphFilter from './hooks/UseGraphFilter';
 
 import { GraphSelectors, Field, GraphFields } from '../../../redux/graph';
 import { SelectOptions } from '../../../components/SelectVariable/SelectVariable';
-import QuestionMarkTooltip from '../../../components/FormSelectWithTooltip/QuestionMarkTooltip';
+import QuestionMarkTooltip from '../../../components/ui/QuestionMarkTooltip';
 
 const FilterPanel: FC = () => {
   const [css, theme] = useStyletron();
