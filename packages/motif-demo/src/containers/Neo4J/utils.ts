@@ -81,6 +81,7 @@ export const toMotifFormat = (records: Record[]): GraphData => {
 
   // produce duplicate free nodes to display in table preview
   nodes = uniqBy(nodes, 'id');
+  edges = uniqBy(edge, 'id');
 
   const graphData: GraphData = {
     nodes,
