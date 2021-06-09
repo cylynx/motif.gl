@@ -32,17 +32,7 @@ const QuestionMarkIconWithRef = forwardRef((props: IconBaseProps, ref) => {
 const QuestionMarkTooltip = ({ tooltip }) => {
   const [, theme] = useStyletron();
   return (
-    <SimpleTooltip
-      tooltip={tooltip}
-      overrides={{
-        Inner: {
-          style: {
-            backgroundColor: theme.colors.tooltipBackground,
-            color: theme.colors.tooltipText,
-          },
-        },
-      }}
-    >
+    <SimpleTooltip tooltip={tooltip}>
       <QuestionMarkIconWithRef
         size={16}
         color={theme.colors.contentInverseSecondary}

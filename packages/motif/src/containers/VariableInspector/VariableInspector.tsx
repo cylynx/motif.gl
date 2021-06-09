@@ -251,7 +251,7 @@ const VariableInspector = () => {
           VARIABLE INSPECTOR
           <QuestionMarkTooltip
             tooltip={
-              <Block width='160px'>
+              <Block width='182px'>
                 Add a soft filter to your graph to focus on areas of interest.
                 It can be used on a time-series attribute with the playback
                 action buttons to visualise activities over time.

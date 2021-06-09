@@ -67,7 +67,7 @@ const OptionsNodeStyles = () => {
         NODE STYLES
         <QuestionMarkTooltip
           tooltip={
-            <Block width='167px'>
+            <Block width='200px'>
               Change the size, color and labels of nodes to distinguish them.
             </Block>
           }

@@ -26,7 +26,7 @@ const LayersPanel = () => {
           DATA SOURCES{' '}
           <QuestionMarkTooltip
             tooltip={
-              <Block width='180px'>
+              <Block width='190px'>
                 Import data to get started or view your imported data in the
                 panel below.
                 {'\n'}

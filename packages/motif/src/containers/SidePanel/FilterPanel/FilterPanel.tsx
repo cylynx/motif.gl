@@ -107,7 +107,7 @@ const FilterPanel: FC = () => {
         Filters{' '}
         <QuestionMarkTooltip
           tooltip={
-            <Block width='165px'>
+            <Block width='185px'>
               Add filters to your graph to limit the data that is displayed.
               Multiple filters apply additively.
             </Block>

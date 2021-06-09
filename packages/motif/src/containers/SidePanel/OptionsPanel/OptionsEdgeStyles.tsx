@@ -67,7 +67,7 @@ const OptionsEdgeStyles = () => {
         EDGE STYLES
         <QuestionMarkTooltip
           tooltip={
-            <Block width='167px'>
+            <Block width='200px'>
               Change the size, color and labels of edges to distinguish them.
             </Block>
           }

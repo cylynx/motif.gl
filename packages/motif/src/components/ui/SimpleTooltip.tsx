@@ -22,7 +22,10 @@ const defaultOverrides: BasePopoverProps['overrides'] = {
   },
   Inner: {
     style: ({ $theme }) => ({
-      backgroundColor: $theme.colors.backgroundTertiary,
+      backgroundColor: $theme.colors.tooltipBackground,
+      color: $theme.colors.tooltipText,
+      fontSize: '12px',
+      lineHeight: '1.2',
     }),
   },
   Arrow: {
