@@ -2,7 +2,6 @@ import React, { FC, Fragment } from 'react';
 import { Block } from 'baseui/block';
 import { ParagraphSmall } from 'baseui/typography';
 import { useDispatch } from 'react-redux';
-import { useStyletron } from 'styletron-react';
 import { ToggleAllButton } from '../../components/LayersPanelButtons';
 import ToggleTokens from '../../../../../components/ToggleTokens';
 import Accordion from '../../../../../components/Accordion';
@@ -27,13 +26,11 @@ const EdgeProperties: FC<EdgePropertiesProps> = ({ haveData, edgeFields }) => {
     dispatch(GraphSlices.updateEdgeSelection({ index, status }));
   };
 
-  const [css] = useStyletron();
-
   return (
     <Accordion
       data-testid='edge-properties-accordion'
       title={
-        <div className={css({ display: 'flex', alignItems: 'center' })}>
+        <Block display='flex' alignItems='center'>
           EDGE PROPERTIES
           <QuestionMarkTooltip
             tooltip={
@@ -43,7 +40,7 @@ const EdgeProperties: FC<EdgePropertiesProps> = ({ haveData, edgeFields }) => {
               </Block>
             }
           />
-        </div>
+        </Block>
       }
       expanded
       content={

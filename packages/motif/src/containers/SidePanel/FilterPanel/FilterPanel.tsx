@@ -103,8 +103,10 @@ const FilterPanel: FC = () => {
 
   return (
     <Block data-testid='filter-panel'>
-      <HeadingMedium marginTop='scale300' marginBottom='scale300'>
-        Filters{' '}
+      <Block display='flex' alignItems='center'>
+        <HeadingMedium marginTop='scale300' marginBottom='scale300'>
+          Filters
+        </HeadingMedium>
         <QuestionMarkTooltip
           tooltip={
             <Block width='185px'>
@@ -113,7 +115,7 @@ const FilterPanel: FC = () => {
             </Block>
           }
         />
-      </HeadingMedium>
+      </Block>
       {AddFilterButtonMemo}
       <hr
         className={css({ borderColor: theme.colors.contentInverseSecondary })}

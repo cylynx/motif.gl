@@ -58,13 +58,15 @@ const OptionsNodeStyles = () => {
 
   return (
     <Card data-testid='OptionsNodeStyles'>
-      <HeadingXSmall
-        marginTop={0}
-        marginBottom={0}
-        color='contentInverseSecondary'
-        $style={{ letterSpacing: '1px' }}
-      >
-        NODE STYLES
+      <Block display='flex' alignItems='center'>
+        <HeadingXSmall
+          marginTop={0}
+          marginBottom={0}
+          color='contentInverseSecondary'
+          $style={{ letterSpacing: '1px' }}
+        >
+          NODE STYLES
+        </HeadingXSmall>
         <QuestionMarkTooltip
           tooltip={
             <Block width='200px'>
@@ -72,7 +74,7 @@ const OptionsNodeStyles = () => {
             </Block>
           }
         />
-      </HeadingXSmall>
+      </Block>
       <NestedForm
         data={nodeSizeFormData}
         key={`${nodeSizeFormData.id}-${nodeSizeFormData.value}`}

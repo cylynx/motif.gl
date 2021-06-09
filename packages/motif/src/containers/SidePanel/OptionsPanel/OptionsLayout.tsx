@@ -37,13 +37,16 @@ const OptionsLayout = () => {
 
   return (
     <Card data-testid='OptionsLayout'>
-      <HeadingXSmall
-        marginTop={0}
-        marginBottom={0}
-        color='contentInverseSecondary'
-        $style={{ letterSpacing: '1px' }}
-      >
-        LAYOUT
+      <Block display='flex' alignItems='center'>
+        <HeadingXSmall
+          marginTop={0}
+          marginBottom={0}
+          color='contentInverseSecondary'
+          $style={{ letterSpacing: '1px' }}
+        >
+          LAYOUT
+        </HeadingXSmall>
+
         <QuestionMarkTooltip
           tooltip={
             <Block width='190px'>
@@ -53,7 +56,7 @@ const OptionsLayout = () => {
             </Block>
           }
         />
-      </HeadingXSmall>
+      </Block>
       <NestedForm data={formData} key={`${formData.id}-${formData.value}`} />
     </Card>
   );

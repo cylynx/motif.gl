@@ -240,26 +240,28 @@ const VariableInspector = () => {
 
   const LabelSmallMemo = useMemo(
     () => (
-      <HeadingXSmall
-        marginTop={0}
-        marginBottom={0}
-        marginRight='scale300'
-        color='contentInverseSecondary'
-        $style={{ letterSpacing: '1px' }}
-      >
-        <Block display='flex' alignItems='center'>
+      <Block display='flex' alignItems='center' marginRight='scale300'>
+        <HeadingXSmall
+          marginTop={0}
+          marginBottom={0}
+          color='contentInverseSecondary'
+          $style={{ letterSpacing: '1px' }}
+          width='75px'
+        >
           VARIABLE INSPECTOR
-          <QuestionMarkTooltip
-            tooltip={
-              <Block width='182px'>
+        </HeadingXSmall>
+        <QuestionMarkTooltip
+          tooltip={
+            <Block width='190px'>
+              <span>
                 Add a soft filter to your graph to focus on areas of interest.
                 It can be used on a time-series attribute with the playback
                 action buttons to visualise activities over time.
-              </Block>
-            }
-          />
-        </Block>
-      </HeadingXSmall>
+              </span>
+            </Block>
+          }
+        />
+      </Block>
     ),
     [],
   );

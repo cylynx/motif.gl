@@ -58,13 +58,15 @@ const OptionsEdgeStyles = () => {
 
   return (
     <Card data-testid='OptionsEdgeStyles'>
-      <HeadingXSmall
-        marginTop={0}
-        marginBottom={0}
-        color='contentInverseSecondary'
-        $style={{ letterSpacing: '1px' }}
-      >
-        EDGE STYLES
+      <Block display='flex' alignItems='center'>
+        <HeadingXSmall
+          marginTop={0}
+          marginBottom={0}
+          color='contentInverseSecondary'
+          $style={{ letterSpacing: '1px' }}
+        >
+          EDGE STYLES
+        </HeadingXSmall>
         <QuestionMarkTooltip
           tooltip={
             <Block width='200px'>
@@ -72,7 +74,7 @@ const OptionsEdgeStyles = () => {
             </Block>
           }
         />
-      </HeadingXSmall>
+      </Block>
       <NestedForm
         data={edgeWidthFormData}
         key={`${edgeWidthFormData.id}-${edgeWidthFormData.value}`}

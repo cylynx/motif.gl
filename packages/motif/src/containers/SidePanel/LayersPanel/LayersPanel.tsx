@@ -17,16 +17,18 @@ const LayersPanel = () => {
     <Block data-testid='layers-panel'>
       <Header />
       <Card>
-        <HeadingXSmall
-          marginTop={0}
-          marginBottom='scale400'
-          color='contentInverseSecondary'
-          $style={{ letterSpacing: '1px' }}
-        >
-          DATA SOURCES{' '}
+        <Block display='flex' alignItems='end' marginBottom='scale400'>
+          <HeadingXSmall
+            marginTop={0}
+            marginBottom={0}
+            color='contentInverseSecondary'
+            $style={{ letterSpacing: '1px' }}
+          >
+            DATA SOURCES
+          </HeadingXSmall>
           <QuestionMarkTooltip
             tooltip={
-              <Block width='180px'>
+              <Block width='190px'>
                 <span>
                   Import data to get started or view your imported data in the
                   panel below.
@@ -41,7 +43,8 @@ const LayersPanel = () => {
               </Block>
             }
           />
-        </HeadingXSmall>
+        </Block>
+
         <ImportDataButton />
         <hr
           className={css({ borderColor: theme.colors.contentInverseSecondary })}
