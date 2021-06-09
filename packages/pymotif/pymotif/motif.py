@@ -94,7 +94,7 @@ class Motif(DOMWidget, ValueWidget):
             A networkx graph to be rendered
 
         neo4j_graph: neo4j.graph.Graph
-            A neo4j graph to be rendered
+            A neo4j graph to be rendered, obtained from the neo4j.Result.graph() method
 
         csv_path: str
             Path to a local CSV edgelist file
@@ -278,37 +278,37 @@ class Motif(DOMWidget, ValueWidget):
         """
         Converts a neo4j_graph into a dict format 
         suitable for plotting in Motif: { nodes: [...], edges: [...] }
+
+        From https://neo4j.com/docs/api/python-driver/current/api.html#graph:
+            1) neo4j.graph.Graph only contains nodes and relationships, no paths
+            2) neo4j.graph.Graph is still experimental. 
         """
         self._validate(neo4j_graph=neo4j_graph)
         
         def neo4j_to_motif_node(neo4j_node):
             """ Converts a neo4j node to motif node """
-            motif_node = {
+            main_properties = {
                 'id': f'node-{neo4j_node.id}',
-                'labels': next(iter(neo4j_node._labels))
+                'labels': next(iter(neo4j_node._labels))    # get only item in frozenset
             }
             
-            # ensure other node properties do not overwrite existing ones
-            for k, v in neo4j_node._properties.items():
-                if k not in motif_node:
-                    motif_node[k] = v
-            
+            # merge main props with remaining ones, main props will overwrite
+            motif_node = {**neo4j_node._properties, **main_properties}
+
             return motif_node
         
         def neo4j_to_motif_edge(neo4j_edge):
             """ Converts a neo4j edge to motif edge """
-            motif_edge = {
-                'id': neo4j_edge.id,
-                'source': neo4j_edge.start_node.id,
-                'target': neo4j_edge.end_node.id,
+            main_properties = {
+                'id': f'edge-{neo4j_edge.id}',
+                'source': f'node-{neo4j_edge.start_node.id}',
+                'target': f'node-{neo4j_edge.end_node.id}',
                 'relationship': neo4j_edge.type,
             }
             
-            # ensure other node properties do not overwrite existing ones
-            for k, v in neo4j_edge._properties.items():
-                if k not in motif_edge:
-                    motif_edge[k] = v
-            
+            # merge main props with remaining ones, main props will overwrite
+            motif_edge = {**neo4j_edge._properties, **main_properties}
+
             return motif_edge
 
         # https://stackoverflow.com/questions/59289134/constructing-networkx-graph-from-neo4j-query-result
@@ -317,8 +317,8 @@ class Motif(DOMWidget, ValueWidget):
         neo4j_edges = neo4j_graph._relationships.values()
         
         motif_data = {
-            'nodes': [neo4j_to_motif_node(n) for n in neo4j_nodes],
-            'edges': [neo4j_to_motif_edge(n) for n in neo4j_edges],
+            NODES: [neo4j_to_motif_node(n) for n in neo4j_nodes],
+            EDGES: [neo4j_to_motif_edge(e) for e in neo4j_edges],
         }
 
         return motif_data
