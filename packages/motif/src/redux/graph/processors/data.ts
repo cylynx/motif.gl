@@ -556,6 +556,12 @@ export const getFieldsFromData = (
         // Check first value of the array
         const arrayMetadata = Analyzer.computeColMeta(
           data.map((x) => {
+            // when the array value is null, we will assign an empty array to prevent errors.
+            // https://github.com/cylynx/motif.gl/issues/133
+            if (x[name] === null || x[name].length === 0) {
+              return { arrayValue: null };
+            }
+
             return { arrayValue: x[name][0] };
           }),
           [],
@@ -700,9 +706,8 @@ export const applyGroupEdges = (
 ): GroupEdges => {
   // identify whether graph edges contain duplicate connectivity.
   const graphData: GraphData = { nodes: nodeJson, edges: edgeJson };
-  const duplicateConnectivity: GroupEdgeCandidates = duplicateDictionary(
-    graphData,
-  );
+  const duplicateConnectivity: GroupEdgeCandidates =
+    duplicateDictionary(graphData);
   const isDatasetCanGroupEdge = !isEmpty(duplicateConnectivity);
 
   if (isDatasetCanGroupEdge === false) {

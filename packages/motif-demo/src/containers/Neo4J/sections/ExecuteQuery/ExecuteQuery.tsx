@@ -10,7 +10,7 @@ import { Textarea } from 'baseui/textarea';
 import { Block } from 'baseui/block';
 import { Button } from 'baseui/button';
 import { LabelSmall } from 'baseui/typography';
-import { GraphData } from '@cylynx/motif';
+import { GraphData, Dropdown } from '@cylynx/motif';
 import { ExecuteQueryProps, CypherQueryProps } from './types';
 import { TNotification } from '../ConnectDatabase/types';
 import { toMotifFormat } from '../../utils';
@@ -95,7 +95,7 @@ const CypherQuery: FC<CypherQueryProps> = ({
         {!loading && databases && (
           <>
             <FormControl label='Database'>
-              <Select
+              <Dropdown
                 value={db}
                 options={dbOptions}
                 onChange={(params: OnChangeParams) => {
