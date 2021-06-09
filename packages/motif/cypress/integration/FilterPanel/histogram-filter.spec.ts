@@ -18,10 +18,6 @@ describe('Histogram Filters', () => {
     cy.react('AddFilterButton').click();
   });
 
-  afterEach(() => {
-    cy.react('ClearDataButton').click();
-  });
-
   it('should filter with Numeric Variable', () => {
     // perform selection
     cy.selectFilterSelection('risk_score{enter}', 'first');

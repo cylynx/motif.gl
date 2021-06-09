@@ -4,7 +4,6 @@ import {
   GraphSelectors,
   GraphSlices,
   StyleOptions,
-  Field,
 } from '../../../src/redux/graph';
 
 const jsonDatasetRootPath = 'LocalFiles/Json';
@@ -23,30 +22,36 @@ describe('Import Single Local File', () => {
     });
   };
 
-  before(() => {
-    cy.visit('/');
-    cy.waitForReact();
+  // before(() => {
+  //   cy.visit('/');
+  //   cy.waitForReact();
 
-    // close modal
-    cy.get('button[aria-label="Close"]').click();
-  });
+  //   // close modal
+  //   cy.get('button[aria-label="Close"]').click();
+  // });
 
-  beforeEach(() => {
-    cy.react('ImportDataButton').click();
-  });
 
-  afterEach(() => {
-    cy.react('ClearDataButton').click();
-  });
+  // afterEach(() => {
+  //   cy.react('ClearDataButton').click();
+  // });
 
   const circleWithoutStyles = `${jsonDatasetRootPath}/circle-without-styles.json`;
   const circleWithStyles = `${jsonDatasetRootPath}/circle-with-styles.json`;
   const gridWithStyles = `${jsonDatasetRootPath}/grid-with-styles.json`;
   const simpleGraph = `${jsonDatasetRootPath}/simple-graph.json`;
-  const customGroupEdgeGraph = `${jsonDatasetRootPath}/custom-grouped-edge-graph.json`;
   const restrictedTermsGraph = `${jsonDatasetRootPath}/restricted-word-dataset.json`;
 
   describe('Local Files Import', () => {
+
+    beforeEach(() => {
+      cy.visit('/');
+      cy.waitForReact();
+  
+      // close modal
+      cy.get('button[aria-label="Close"]').click();
+      cy.react('ImportDataButton').click();
+    });  
+
     it('should import one file successfully', () => {
       cy.get('input[type="file"]').attachFile(circleWithoutStyles);
       cy.get('button[type="submit"]').click();
@@ -122,6 +127,14 @@ describe('Import Single Local File', () => {
   });
 
   describe('Single File Without Style', () => {
+
+    beforeEach(() => {
+      cy.visit('/');
+      cy.waitForReact();
+      cy.get('button[aria-label="Close"]').click();
+      cy.react('ImportDataButton').click();
+    });
+
     it('should not overwrites the default graph styles', async () => {
       cy.get('input[type="file"]').attachFile(circleWithoutStyles);
 
@@ -139,6 +152,17 @@ describe('Import Single Local File', () => {
   });
 
   describe('Single File With Style', () => {
+
+    before(() => {
+      cy.visit('/');
+      cy.waitForReact();
+      cy.get('button[aria-label="Close"]').click();
+    });
+
+    beforeEach(() => {
+      cy.react('ImportDataButton').click();
+    });
+
     it('should overwrite if graph styles are not modified', async () => {
       cy.get('input[type="file"]').attachFile(circleWithStyles);
 
@@ -260,129 +284,12 @@ describe('Import Single Local File', () => {
     });
   });
 
-  describe('Single File with Group Edge Configurations', () => {
-    const expectedGroupEdgeOutput = {
-      toggle: true,
-      availability: true,
-      type: 'numeric',
-      ids: ['group-a-b2', 'group-a-b4', 'group-c-d2'],
-      fields: {
-        'Y_-ZK2S3P': {
-          field: 'numeric',
-          aggregation: ['min', 'max', 'average', 'count', 'sum'],
-        },
-        _8X9zGku9b: {
-          field: 'value',
-          aggregation: ['first', 'last', 'most_frequent'],
-        },
-        vVENjKDSxE: {
-          field: 'date',
-          aggregation: ['first', 'last', 'most_frequent'],
-        },
-      },
-    };
-
-    beforeEach(() => {
-      cy.get('input[type="file"]').attachFile(customGroupEdgeGraph);
-
-      cy.get('button[type="submit"]').click();
-      cy.get('button[type="submit"]').click();
-
-      // waiting for loading indicator to dissappear
-      cy.wait(500);
-    });
-
-    it('application should obtain the group edge configurations', () => {
-      cy.getReact('LayerDetailed')
-        .nthNode(0)
-        .getProps('graph')
-        .then((graph: GraphData) => {
-          const { edges, nodes, metadata } = graph;
-
-          expect(edges.length).to.deep.equal(9);
-          expect(nodes.length).to.deep.equal(4);
-          expect(metadata.groupEdges).to.deep.equal(expectedGroupEdgeOutput);
-        });
-    });
-
-    it('statistic should display correct information', () => {
-      cy.getReact('GraphStatistics')
-        .nthNode(1)
-        .getProps()
-        .then((props) => {
-          const { edgeLength, hiddenEdgeLength, hiddenNodeLength, nodeLength } =
-            props;
-
-          expect(nodeLength).to.deep.equal(4);
-          expect(edgeLength).to.deep.equal(6);
-          expect(hiddenNodeLength).to.deep.equal(0);
-          expect(hiddenEdgeLength).to.deep.equal(3);
-        });
-    });
-
-    it('group by values should follows import data', () => {
-      cy.getReact('GroupByFields')
-        .nthNode(0)
-        .getProps()
-        .then((props) => {
-          const { toggle, type, disabled } = props;
-
-          expect(toggle).to.deep.equal(true);
-          expect(type).to.deep.equal('numeric');
-          expect(disabled).to.deep.equal(false);
-        });
-    });
-
-    it('fields with aggregations should render according to import data', () => {
-      cy.getReact('AggregateFields')
-        .nthNode(0)
-        .getProps('fields')
-        .should('deep.eq', expectedGroupEdgeOutput['fields']);
-    });
-
-    it('edge properties should display correct edge aggregated fields', async () => {
-      cy.react('EdgeProperties').click();
-
-      const graphState: GraphState = await getGraphStates();
-      const { edgeSelection } = graphState;
-
-      cy.getReact('EdgeProperties')
-        .nthNode(0)
-        .getProps('edgeFields')
-        .should('deep.eq', edgeSelection);
-    });
-
-    it('variable inspector should display correct selections', async () => {
-      const { graphFlatten }: GraphState = await getGraphStates();
-      const graphFields = graphFlatten.metadata.fields;
-      const validTypes = ['integer', 'real', 'timestamp', 'date'];
-
-      const nodeOptions = graphFields.edges
-        .filter((f: Field) => validTypes.includes(f.type))
-        .map((f) => {
-          const optionKey = `edges-${f.name}`;
-          return {
-            id: f.name,
-            label: f.name,
-            type: f.type,
-            analyzerType: f.analyzerType,
-            format: f.format,
-            from: 'edges',
-            optionKey,
-          };
-        });
-
-      cy.getReact('SelectVariable')
-        .nthNode(0)
-        .getProps('options.Edges')
-        .should('deep.eq', nodeOptions);
-    });
-  });
-
   describe('prevent upload restricted words dataset', () => {
-    beforeEach(() => {
-      cy.get('input[type="file"]').attachFile(restrictedTermsGraph);
 
+    beforeEach(() => {
+      cy.visit('/');
+      cy.waitForReact();
+      cy.get('input[type="file"]').attachFile(restrictedTermsGraph);
       cy.get('button[type="submit"]').click();
 
       // waiting for loading indicator to dissappear

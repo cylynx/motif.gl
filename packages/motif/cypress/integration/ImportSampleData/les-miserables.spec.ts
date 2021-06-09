@@ -36,30 +36,27 @@ describe('Import Les Misérables', () => {
   });
 
   it('should display 77 nodes count in Nodes label', () => {
-    cy.getReact('Statistic', {
-      props: { 'data-testid': 'nodes-count' },
-    })
-      .nthNode(0)
-      .getProps('value')
-      .should('deep.eq', 77);
+    cy.get('div[data-testid="nodes-count"]').should('have.text', '77/77');
   });
 
   it('should display 254 edges count in Edges label', () => {
-    cy.getReact('Statistic', {
-      props: { 'data-testid': 'edges-count' },
-    })
-      .nthNode(0)
-      .getProps('value')
-      .should('deep.eq', 254);
+    cy.get('div[data-testid="edges-count"]').should('have.text', '254/254');
   });
 
   it('should display one row for data list', () => {
-    cy.getReact('DataListAccordion').getProps('items').should('have.length', 1);
+    cy.getReact('Accordion', {
+      props: {
+        'data-testid': 'DataListAccordion',
+      },
+    }).should('have.length', 1);
   });
 
   it('should display data list name [Les Miserables]', () => {
-    cy.getReact('AccordionPanel')
-      .nthNode(0)
+    cy.getReact('Accordion', {
+      props: {
+        'data-testid': 'DataListAccordion',
+      },
+    })
       .getProps('title')
       .should('deep.eq', 'Les Miserables');
   });

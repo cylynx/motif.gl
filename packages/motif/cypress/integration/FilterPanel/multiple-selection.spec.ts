@@ -43,9 +43,8 @@ describe('Multiple Selection', () => {
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.selectFilterSelection('id{enter}', 'last');
-      cy.filterMultiString('customer_81{enter}', 'last');
-
+      cy.selectFilterSelection('id{enter}', 'first');
+      cy.filterMultiString('customer_81{enter}', 'first');
       // results
       cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 1);
 
@@ -59,8 +58,8 @@ describe('Multiple Selection', () => {
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.selectFilterSelection('id{enter}', 'last');
-      cy.filterMultiString('customer_81{enter}customer_55{enter}', 'last');
+      cy.selectFilterSelection('id{enter}', 'first');
+      cy.filterMultiString('customer_81{enter}customer_55{enter}', 'first');
 
       // results
       cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 2);
@@ -75,8 +74,8 @@ describe('Multiple Selection', () => {
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.selectFilterSelection('id{enter}', 'last');
-      cy.filterMultiString('customer_81{enter}customer_55{enter}', 'last');
+      cy.selectFilterSelection('id{enter}', 'first');
+      cy.filterMultiString('customer_81{enter}customer_55{enter}', 'first');
 
       // results
       cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 2);
@@ -103,13 +102,13 @@ describe('Multiple Selection', () => {
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.selectFilterSelection('id{enter}', 'last');
-      cy.filterMultiString('customer_81{enter}customer_55{enter}', 'last');
+      cy.selectFilterSelection('id{enter}', 'first');
+      cy.filterMultiString('customer_81{enter}customer_55{enter}', 'first');
 
       // perform third selection
       cy.react('AddFilterButton').click();
-      cy.selectFilterSelection('icon{enter}', 'last');
-      cy.filterMultiString('account_box{enter}-{enter}', 'last');
+      cy.selectFilterSelection('icon{enter}', 'first');
+      cy.filterMultiString('account_box{enter}-{enter}', 'first');
 
       // results
       cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 2);
@@ -134,8 +133,8 @@ describe('Multiple Selection', () => {
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.selectFilterSelection('id{enter}', 'last');
-      cy.filterMultiString('customer_901{enter}', 'last');
+      cy.selectFilterSelection('id{enter}', 'first');
+      cy.filterMultiString('customer_901{enter}', 'first');
 
       // results
       cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 1);
@@ -149,8 +148,8 @@ describe('Multiple Selection', () => {
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.selectFilterSelection('id{enter}', 'last');
-      cy.filterMultiString('customer_901{enter}customer_902{enter}', 'last');
+      cy.selectFilterSelection('id{enter}', 'first');
+      cy.filterMultiString('customer_901{enter}customer_902{enter}', 'first');
 
       // results
       cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 2);
@@ -170,7 +169,7 @@ describe('Multiple Selection', () => {
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.selectFilterSelection('is_different_bank{enter}', 'last');
+      cy.selectFilterSelection('is_different_bank{enter}', 'first');
 
       // results
       cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 9);
@@ -187,11 +186,11 @@ describe('Multiple Selection', () => {
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.selectFilterSelection('is_different_bank{enter}', 'last');
+      cy.selectFilterSelection('is_different_bank{enter}', 'first');
 
       // perform third selection
       cy.react('AddFilterButton').click();
-      cy.selectFilterSelection('risk_score{enter}', 'last');
+      cy.selectFilterSelection('risk_score{enter}', 'first');
 
       // results
       cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 0);
@@ -220,8 +219,8 @@ describe('Multiple Selection', () => {
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.selectFilterSelection('id{enter}', 'last');
-      cy.filterMultiString('customer_901{enter}', 'last');
+      cy.selectFilterSelection('id{enter}', 'first');
+      cy.filterMultiString('customer_901{enter}', 'first');
 
       // results
       cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 1);
@@ -246,8 +245,8 @@ describe('Multiple Selection', () => {
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.selectFilterSelection('icon{enter}', 'last');
-      cy.filterMultiString('account_balance{enter}', 'last');
+      cy.selectFilterSelection('icon{enter}', 'first');
+      cy.filterMultiString('account_balance{enter}', 'first');
 
       // results
       cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 9);
@@ -261,8 +260,8 @@ describe('Multiple Selection', () => {
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.selectFilterSelection('icon{enter}', 'last');
-      cy.filterMultiString('account_box{enter}-{enter}', 'last');
+      cy.selectFilterSelection('icon{enter}', 'first');
+      cy.filterMultiString('account_box{enter}-{enter}', 'first');
 
       // results
       cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 0);
@@ -287,8 +286,8 @@ describe('Multiple Selection', () => {
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.selectFilterSelection('icon{enter}', 'last');
-      cy.filterMultiString('account_balance{enter}', 'last');
+      cy.selectFilterSelection('icon{enter}', 'first');
+      cy.filterMultiString('account_balance{enter}', 'first');
 
       // results
       cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 9);
@@ -302,8 +301,8 @@ describe('Multiple Selection', () => {
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.selectFilterSelection('icon{enter}', 'last');
-      cy.filterMultiString('account_balance{enter}-{enter}', 'last');
+      cy.selectFilterSelection('icon{enter}', 'first');
+      cy.filterMultiString('account_balance{enter}-{enter}', 'first');
 
       // results
       cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 9);
@@ -328,8 +327,8 @@ describe('Multiple Selection', () => {
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.selectFilterSelection('icon{enter}', 'last');
-      cy.filterMultiString('account_balance{enter}', 'last');
+      cy.selectFilterSelection('icon{enter}', 'first');
+      cy.filterMultiString('account_balance{enter}', 'first');
 
       // results
       cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 9);
@@ -343,8 +342,8 @@ describe('Multiple Selection', () => {
 
       // perform second selection
       cy.react('AddFilterButton').click();
-      cy.selectFilterSelection('icon{enter}', 'last');
-      cy.filterMultiString('account_balance{enter}-{enter}', 'last');
+      cy.selectFilterSelection('icon{enter}', 'first');
+      cy.filterMultiString('account_balance{enter}-{enter}', 'first');
 
       // results
       cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 9);

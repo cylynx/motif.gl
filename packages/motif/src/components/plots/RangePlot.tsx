@@ -216,7 +216,7 @@ const RangePlot = ({
     <Block display='flex' justifyContent='center'>
       <Block height={`${height}px`} width={`${width}px`}>
         <HistogramPlot histogram={histogram} {...commonProps} />
-        {SliderMemo}
+        {/* {SliderMemo} */}
         {XAxisMemo}
       </Block>
     </Block>

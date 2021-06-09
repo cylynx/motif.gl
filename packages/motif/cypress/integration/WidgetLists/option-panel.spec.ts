@@ -14,10 +14,6 @@ describe('Option Panel', () => {
     cy.getOptionsPanel().should('exist');
   });
 
-  it('should render Header component', () => {
-    cy.getOptionsPanel().getReact('Header').should('exist');
-  });
-
   describe('Layout Options', () => {
     it('should render Layout Options', () => {
       cy.getOptionsPanel().getReact('OptionsLayout').should('exist');
@@ -26,65 +22,59 @@ describe('Option Panel', () => {
     it('should possess one layout nested form', () => {
       cy.getOptionsPanel()
         .getReact('OptionsLayout')
-        .getReact('Accordion', {
+        .getReact('Card', {
           props: {
             'data-testid': 'OptionsLayout',
           },
         })
-        .getProps('items.0')
-        .then(($item) => {
-          const { key, expanded, content } = $item;
-          cy.wrap(key).should('deep.equal', 'layout');
-          cy.wrap(expanded).should('deep.equal', true);
-          cy.wrap(content.type.name).should('deep.equal', 'NestedForm');
-          cy.wrap(content.type.length).should('deep.equal', 1);
-        });
+        .getReact('NestedForm')
+        .should('exist')
     });
   });
 
   describe('Node Style Options', () => {
+
+    before(() => {
+      cy.switchTab('nodes');
+    });
+
     it('should render Node Style Options', () => {
       cy.getOptionsPanel().getReact('OptionsNodeStyles').should('exist');
     });
 
-    it('should possess four forms', () => {
+    it('should possess forms', () => {
       cy.getOptionsPanel()
         .getReact('OptionsNodeStyles')
-        .getReact('Accordion', {
+        .getReact('Card', {
           props: {
             'data-testid': 'OptionsNodeStyles',
           },
         })
-        .getProps('items.0')
-        .then(($item) => {
-          const { key, expanded, content } = $item;
-          cy.wrap(key).should('deep.equal', 'node styles');
-          cy.wrap(expanded).should('deep.equal', true);
-          cy.wrap(content.props.children).should('have.length', 4);
-        });
+        .getReact('NestedForm')
+        .should('exist')
     });
   });
 
   describe('Edge Style Options', () => {
+
+    before(() => {
+      cy.switchTab('edges');
+    });
+
     it('should render Edge Style Filter', () => {
       cy.getOptionsPanel().getReact('OptionsEdgeStyles').should('exist');
     });
 
-    it('should possess five forms', () => {
+    it('should possess forms', () => {
       cy.getOptionsPanel()
         .getReact('OptionsEdgeStyles')
-        .getReact('Accordion', {
+        .getReact('Card', {
           props: {
             'data-testid': 'OptionsEdgeStyles',
           },
         })
-        .getProps('items.0')
-        .then(($item) => {
-          const { key, expanded, content } = $item;
-          cy.wrap(key).should('deep.equal', 'edge styles');
-          cy.wrap(expanded).should('deep.equal', true);
-          cy.wrap(content.props.children).should('have.length', 5);
-        });
+        .getReact('NestedForm')
+        .should('exist')
     });
   });
 });

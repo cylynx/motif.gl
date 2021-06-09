@@ -15,7 +15,7 @@ const PropertiesSelections = () => {
 
   return (
     <>
-      <Block marginTop='scale800'>
+      <Block marginTop='scale300'>
         <NodeProperties
           haveData={isGraphListHaveData}
           nodeFields={nodeSelection}

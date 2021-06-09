@@ -1,9 +1,9 @@
-import React, { Fragment, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
-import { Block } from 'baseui/block';
+import { HeadingXSmall } from 'baseui/typography';
 import { useDispatch, useSelector } from 'react-redux';
 import { GraphSlices, GraphSelectors } from '../../../redux/graph';
-import Accordion from '../../../components/Accordion';
+import { Card } from '../../../components/ui';
 import {
   NestedForm,
   genNestedForm,
@@ -11,7 +11,6 @@ import {
   genSimpleForm,
 } from '../../../components/form';
 
-import * as Icon from '../../../components/Icons';
 import {
   edgeWidthForm,
   edgePatternForm,
@@ -57,51 +56,34 @@ const OptionsEdgeStyles = () => {
   );
 
   return (
-    <Accordion
-      data-testid='OptionsEdgeStyles'
-      items={[
-        {
-          title: (
-            <Block display='flex' justifyContent='center'>
-              <Icon.Edge style={{ paddingRight: '8px' }} />
-              Edge Styles
-            </Block>
-          ),
-          key: 'edge styles',
-          content: (
-            <Fragment>
-              <NestedForm
-                data={edgeWidthFormData}
-                key={`${edgeWidthFormData.id}-${edgeWidthFormData.value}`}
-              />
-              <SimpleForm
-                data={genSimpleForm(edgeLabelForm, edgeStyle, updateEdgeStyle, {
-                  options: edgeLabelFields,
-                })}
-              />
-              <SimpleForm
-                data={genSimpleForm(
-                  edgePatternForm,
-                  edgeStyle,
-                  updateEdgeStyle,
-                )}
-              />
-              <SimpleForm
-                data={genSimpleForm(
-                  edgeFontSizeForm,
-                  edgeStyle,
-                  updateEdgeStyle,
-                )}
-              />
-              <SimpleForm
-                data={genSimpleForm(edgeArrowForm, edgeStyle, updateEdgeStyle)}
-              />
-            </Fragment>
-          ),
-          expanded: true,
-        },
-      ]}
-    />
+    <Card data-testid='OptionsEdgeStyles'>
+      <HeadingXSmall
+        marginTop={0}
+        marginBottom={0}
+        color='contentInverseSecondary'
+        $style={{ letterSpacing: '1px' }}
+      >
+        EDGE STYLES
+      </HeadingXSmall>
+      <NestedForm
+        data={edgeWidthFormData}
+        key={`${edgeWidthFormData.id}-${edgeWidthFormData.value}`}
+      />
+      <SimpleForm
+        data={genSimpleForm(edgeLabelForm, edgeStyle, updateEdgeStyle, {
+          options: edgeLabelFields,
+        })}
+      />
+      <SimpleForm
+        data={genSimpleForm(edgePatternForm, edgeStyle, updateEdgeStyle)}
+      />
+      <SimpleForm
+        data={genSimpleForm(edgeFontSizeForm, edgeStyle, updateEdgeStyle)}
+      />
+      <SimpleForm
+        data={genSimpleForm(edgeArrowForm, edgeStyle, updateEdgeStyle)}
+      />
+    </Card>
   );
 };
 

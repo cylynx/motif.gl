@@ -30,20 +30,10 @@ describe('Import American Airlines', () => {
   });
 
   it('should display 235 nodes count in Nodes label', () => {
-    cy.getReact('Statistic', {
-      props: { 'data-testid': 'nodes-count' },
-    })
-      .nthNode(0)
-      .getProps('value')
-      .should('deep.eq', 235);
+    cy.get('div[data-testid="nodes-count"]').should('have.text', '235/235');
   });
 
   it('should display 1298 edges count in Edges label', () => {
-    cy.getReact('Statistic', {
-      props: { 'data-testid': 'edges-count' },
-    })
-      .nthNode(0)
-      .getProps('value')
-      .should('deep.eq', 1298);
+    cy.get('div[data-testid="edges-count"]').should('have.text', '1298/1298');
   });
 });

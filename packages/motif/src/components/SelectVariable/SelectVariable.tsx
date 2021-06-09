@@ -36,9 +36,8 @@ export type SelectVariableProps = Omit<
 const getValueLabel: SelectProps['getValueLabel'] = ({ option }) => {
   return (
     <Block display='flex' alignItems='center'>
-      <Block as='span' position='relative' top='3px'>
-        {getIcon(option.from)}
-      </Block>
+      {/* node / edge icon display */}
+      {/* {getIcon(option.from)} */}
       {getIcon(option.type)}
       {option.label}
     </Block>

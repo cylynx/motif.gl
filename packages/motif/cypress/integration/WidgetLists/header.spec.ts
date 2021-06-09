@@ -1,7 +1,7 @@
 import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 
 describe('Header', () => {
-  const headerEl = 'Header$2';
+  const headerEl = 'Header$1';
   before(() => {
     cy.visit('/');
     cy.waitForReact(5000);

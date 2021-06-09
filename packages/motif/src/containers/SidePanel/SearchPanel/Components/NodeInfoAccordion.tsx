@@ -20,44 +20,17 @@ const NodeInfoAccordion: FC<NodeInformationProps> = ({
   }, [results, expanded]);
 
   return (
-    <Accordion
-      overrides={{
-        Content: {
-          style: ({ $expanded, $theme }) => ({
-            paddingTop: $expanded ? $theme.sizing.scale300 : 0,
-            paddingBottom: $expanded ? $theme.sizing.scale300 : 0,
-            paddingLeft: $theme.sizing.scale300,
-            paddingRight: $theme.sizing.scale300,
-            borderBottomWidth: 0,
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-          }),
-        },
-        Header: {
-          style: ({ $theme }) => ({
-            ...$theme.typography.LabelSmall,
-            paddingLeft: $theme.sizing.scale500,
-            paddingRight: $theme.sizing.scale300,
-            paddingTop: $theme.sizing.scale200,
-            paddingBottom: $theme.sizing.scale200,
-            borderBottomStyle: 'none',
-          }),
-        },
-        ToggleIcon: {
-          component: () => {
-            return <Icon.ChevronDown />;
-          },
-        },
-        PanelContainer: {
-          style: {
-            borderBottomStyle: 'none',
-          },
-        },
-      }}
-      key={nodeItem.key}
-      items={[nodeItem]}
-    />
+    <>
+      {[nodeItem].map((x) => (
+        <Accordion
+          title={x.title}
+          content={x.content}
+          expanded={x.expanded}
+          key={x.key}
+          iconPosition='right'
+        />
+      ))}
+    </>
   );
 };
 

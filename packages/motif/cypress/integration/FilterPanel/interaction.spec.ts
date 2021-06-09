@@ -31,7 +31,7 @@ describe('Interactions', () => {
     cy.getReact(graphinEl).getProps('data.edges').should('have.length', 0);
   });
 
-  it('should remain filters are adding data', () => {
+  it('should remain filters when adding data', () => {
     cy.switchPanel('layers');
     cy.react('ImportDataButton').click();
 
@@ -53,30 +53,30 @@ describe('Interactions', () => {
     cy.getReact(graphinEl).getProps('data.edges').should('have.length', 0);
   });
 
-  it('should remain filters after remove one data', () => {
+  it('should remain filters after one data is removed', () => {
     cy.switchPanel('layers');
 
     // remove circular graph data
-    cy.react('DeleteButton$1').last().click();
+    cy.react('DeleteButton$1').first().click();
 
     // switch back to filters
     cy.switchPanel('filters');
 
-    // results
     cy.getReact(graphinEl).getProps('data.nodes').should('have.length', 7);
     cy.getReact(graphinEl).getProps('data.edges').should('have.length', 0);
   });
 
-  it('should remove filters once all data are cleared', () => {
-    cy.switchPanel('layers');
+  // TODO: Add back when clear data button is implemented
+  // it('should remove filters once all data are cleared', () => {
+  //   cy.switchPanel('layers');
 
-    // clear all datas
-    cy.react('ClearDataButton').click();
+  //   // clear all datas
+  //   cy.react('ClearDataButton').click();
 
-    // switch back to filters
-    cy.switchPanel('filters');
+  //   // switch back to filters
+  //   cy.switchPanel('filters');
 
-    // all filters are removed and add filter button is disabled
-    cy.getReact('AddFilterButton').getProps('disabled').should('deep.eq', true);
-  });
+  //   // all filters are removed and add filter button is disabled
+  //   cy.getReact('AddFilterButton').getProps('disabled').should('deep.eq', true);
+  // });
 });

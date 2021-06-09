@@ -33,30 +33,27 @@ describe('Import Circle Graph', () => {
   });
 
   it('should display 10 nodes count in Nodes label', () => {
-    cy.getReact('Statistic', {
-      props: { 'data-testid': 'nodes-count' },
-    })
-      .nthNode(0)
-      .getProps('value')
-      .should('deep.eq', 10);
+    cy.get('div[data-testid="nodes-count"]').should('have.text', '10/10');
   });
 
   it('should display 18 edges count in Edges label', () => {
-    cy.getReact('Statistic', {
-      props: { 'data-testid': 'edges-count' },
-    })
-      .nthNode(0)
-      .getProps('value')
-      .should('deep.eq', 18);
+    cy.get('div[data-testid="edges-count"]').should('have.text', '18/18');
   });
 
   it('should display one row for data list', () => {
-    cy.getReact('DataListAccordion').getProps('items').should('have.length', 1);
+    cy.getReact('Accordion', {
+      props: {
+        'data-testid': 'DataListAccordion',
+      },
+    }).should('have.length', 1);
   });
 
   it('should display data list name [Circle Data]', () => {
-    cy.getReact('AccordionPanel')
-      .nthNode(0)
+    cy.getReact('Accordion', {
+      props: {
+        'data-testid': 'DataListAccordion',
+      },
+    })
       .getProps('title')
       .should('deep.eq', 'Circle Data');
   });

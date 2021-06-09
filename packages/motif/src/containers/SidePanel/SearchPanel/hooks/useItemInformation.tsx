@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Block } from 'baseui/block';
 import { NodeStyle } from '@cylynx/graphin';
 import { darken } from 'polished';
+import { LabelMedium, ParagraphSmall } from 'baseui/typography';
 import { Theme } from 'baseui/theme';
 import shortid from 'shortid';
 import { Node, Edge, NodeItemType, EdgeNode } from '../../../../redux/graph';
@@ -68,15 +69,17 @@ const TableContent = ({ results }: TableContentProps) => {
 
       return (
         <Block key={key} display='flex' flexWrap marginBottom='scale100'>
-          <Block
-            paddingRight='scale200'
+          <LabelMedium
+            paddingRight='scale100'
             marginTop='0'
             marginBottom='0'
-            $style={{ fontWeight: 600 }}
+            color='contentInverseSecondary'
           >
             {key}:
-          </Block>
-          <Block
+          </LabelMedium>
+          <ParagraphSmall
+            marginTop='0'
+            marginBottom='0'
             overrides={{
               Block: {
                 style: {
@@ -90,7 +93,7 @@ const TableContent = ({ results }: TableContentProps) => {
           >
             {/* Convert boolean value into string */}
             {String(value ?? '')}
-          </Block>
+          </ParagraphSmall>
         </Block>
       );
     });
