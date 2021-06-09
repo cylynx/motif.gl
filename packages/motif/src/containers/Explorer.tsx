@@ -139,7 +139,13 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
         theme={primaryTheme || MotifLightTheme}
         overrides={{
           AppContainer: {
-            style: { position: 'relative', height: '100%', width: '100%' },
+            style: {
+              position: 'relative',
+              height: '100%',
+              width: '100%',
+              overflowX: 'hidden',
+              overflowY: 'hidden',
+            },
           },
         }}
       >
