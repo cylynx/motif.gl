@@ -11,6 +11,7 @@ import pandas as pd
 
 from ipywidgets import DOMWidget, ValueWidget, register, Layout
 from traitlets import Dict, Unicode, Bool
+from typing import Tuple
 
 from ._frontend import module_name, module_version
 
@@ -198,7 +199,7 @@ class Motif(DOMWidget, ValueWidget):
                 raise ValueError(f'{k} should not be an empty string')
 
 
-    def _prep_import(self, **kwargs) -> (dict, bool):
+    def _prep_import(self, **kwargs) -> Tuple[dict, bool]:
         """ 
         Based on kwargs passed, prepares graph data from various formats
         to be imported into the Motif widget.
@@ -275,41 +276,50 @@ class Motif(DOMWidget, ValueWidget):
 
     def _neo4j_to_motif(self, neo4j_graph: neo4j.graph.Graph) -> dict:
         """
-        Converts a neo4j_graph into a networkx graph, then into a dict format 
+        Converts a neo4j_graph into a dict format 
         suitable for plotting in Motif: { nodes: [...], edges: [...] }
         """
         self._validate(neo4j_graph=neo4j_graph)
         
-        motif_data = {}
-
-        # will hold the networkx graph that's converted from neo4j
-        nx_graph = nx.MultiDiGraph()
+        def neo4j_to_motif_node(neo4j_node):
+            """ Converts a neo4j node to motif node """
+            motif_node = {
+                'id': f'node-{neo4j_node.id}',
+                'labels': next(iter(neo4j_node._labels))
+            }
+            
+            # ensure other node properties do not overwrite existing ones
+            for k, v in neo4j_node._properties.items():
+                if k not in motif_node:
+                    motif_node[k] = v
+            
+            return motif_node
         
-        # try to construct the networkx graph
-        try:
-            # https://stackoverflow.com/questions/59289134/constructing-networkx-graph-from-neo4j-query-result
-            # https://github.com/neo4j/neo4j-python-driver/blob/4.3/neo4j/graph/__init__.py
-            nodes = list(neo4j_graph._nodes.values())
-            edges = list(neo4j_graph._relationships.values())
+        def neo4j_to_motif_edge(neo4j_edge):
+            """ Converts a neo4j edge to motif edge """
+            motif_edge = {
+                'id': neo4j_edge.id,
+                'source': neo4j_edge.start_node.id,
+                'target': neo4j_edge.end_node.id,
+                'relationship': neo4j_edge.type,
+            }
             
-            for node in nodes:
-                # props are node attributes
-                props = node._properties
-
-                # somehow, 'name' is overwritten on the frontend to be set as id. replace with another key
-                if 'name' in props:
-                    props['_name'] = props.pop('name')
-
-                # next(iter(node._labels)) to extract the only item from a frozenset
-                nx_graph.add_node(node.id, entity=next(iter(node._labels)), **props)    
+            # ensure other node properties do not overwrite existing ones
+            for k, v in neo4j_edge._properties.items():
+                if k not in motif_edge:
+                    motif_edge[k] = v
             
-            for edge in edges:
-                 nx_graph.add_edge(edge.start_node.id, edge.end_node.id, relationship=edge.type)
-        except:
-            raise Exception('Could not convert neo4j_graph to nx_graph')
+            return motif_edge
 
-        # pass to nx_graph converter
-        motif_data = self._nx_to_motif(nx_graph)
+        # https://stackoverflow.com/questions/59289134/constructing-networkx-graph-from-neo4j-query-result
+        # https://github.com/neo4j/neo4j-python-driver/blob/4.3/neo4j/graph/__init__.py
+        neo4j_nodes = neo4j_graph._nodes.values()
+        neo4j_edges = neo4j_graph._relationships.values()
+        
+        motif_data = {
+            'nodes': [neo4j_to_motif_node(n) for n in neo4j_nodes],
+            'edges': [neo4j_to_motif_edge(n) for n in neo4j_edges],
+        }
 
         return motif_data
 
