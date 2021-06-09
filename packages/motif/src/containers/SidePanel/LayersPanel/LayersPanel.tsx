@@ -26,13 +26,18 @@ const LayersPanel = () => {
           DATA SOURCES{' '}
           <QuestionMarkTooltip
             tooltip={
-              <Block width='190px'>
-                Import data to get started or view your imported data in the
-                panel below.
-                {'\n'}
-                You can group edges to combine multiple edges from the same
-                source and target node as a single edge. Add aggregations such
-                as max, min, or sum on properties of interest.
+              <Block width='180px'>
+                <span>
+                  Import data to get started or view your imported data in the
+                  panel below.
+                </span>
+                <br />
+                <br />
+                <span>
+                  You can group edges to combine multiple edges from the same
+                  source and target node as a single edge. Add aggregations such
+                  as max, min, or sum on properties of interest.
+                </span>
               </Block>
             }
           />
