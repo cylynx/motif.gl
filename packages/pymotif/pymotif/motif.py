@@ -94,7 +94,8 @@ class Motif(DOMWidget, ValueWidget):
             A networkx graph to be rendered
 
         neo4j_graph: neo4j.graph.Graph
-            A neo4j graph to be rendered, obtained from the neo4j.Result.graph() method
+            A neo4j graph to be rendered, obtained from the neo4j.Result.graph() method.
+            Ref: https://neo4j.com/docs/api/python-driver/current/api.html#graph
 
         csv_path: str
             Path to a local CSV edgelist file
