@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Block } from 'baseui/block';
 import { HeadingXSmall } from 'baseui/typography';
 import { useDispatch, useSelector } from 'react-redux';
 import { GraphSlices, GraphSelectors } from '../../../redux/graph';
@@ -65,7 +65,13 @@ const OptionsNodeStyles = () => {
         $style={{ letterSpacing: '1px' }}
       >
         NODE STYLES
-        <QuestionMarkTooltip tooltip='node styles' />
+        <QuestionMarkTooltip
+          tooltip={
+            <Block width='167px'>
+              Change the size, color and labels of nodes to distinguish them.
+            </Block>
+          }
+        />
       </HeadingXSmall>
       <NestedForm
         data={nodeSizeFormData}

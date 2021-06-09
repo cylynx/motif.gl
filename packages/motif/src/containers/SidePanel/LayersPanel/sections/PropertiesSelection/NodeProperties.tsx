@@ -34,7 +34,14 @@ const NodeProperties: FC<NodePropertiesProps> = ({ haveData, nodeFields }) => {
       title={
         <div className={css({ display: 'flex', alignItems: 'center' })}>
           NODE PROPERTIES
-          <QuestionMarkTooltip tooltip='node properties' />
+          <QuestionMarkTooltip
+            tooltip={
+              <Block width='170px'>
+                Overview of all the node properties from imported data sources.
+                Selected properties are shown when hovering over nodes.
+              </Block>
+            }
+          />
         </div>
       }
       expanded

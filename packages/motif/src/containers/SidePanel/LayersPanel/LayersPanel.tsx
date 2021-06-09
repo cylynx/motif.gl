@@ -23,7 +23,20 @@ const LayersPanel = () => {
           color='contentInverseSecondary'
           $style={{ letterSpacing: '1px' }}
         >
-          DATA SOURCES <QuestionMarkTooltip tooltip='data sources' />
+          DATA SOURCES{' '}
+          <QuestionMarkTooltip
+            tooltip={
+              <Block width='180px'>
+                Import data to get started or view your imported data in the
+                panel below.
+                <Block paddingTop='10px'>
+                  You can group edges to combine multiple edges from the same
+                  source and target node as a single edge. Add aggregations such
+                  as max, min, or sum on properties of interest.
+                </Block>
+              </Block>
+            }
+          />
         </HeadingXSmall>
         <ImportDataButton />
         <hr

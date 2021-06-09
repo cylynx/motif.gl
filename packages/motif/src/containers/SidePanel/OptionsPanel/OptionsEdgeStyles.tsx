@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-
+import { Block } from 'baseui/block';
 import { HeadingXSmall } from 'baseui/typography';
 import { useDispatch, useSelector } from 'react-redux';
 import { GraphSlices, GraphSelectors } from '../../../redux/graph';
@@ -65,7 +65,13 @@ const OptionsEdgeStyles = () => {
         $style={{ letterSpacing: '1px' }}
       >
         EDGE STYLES
-        <QuestionMarkTooltip tooltip='edge styles' />
+        <QuestionMarkTooltip
+          tooltip={
+            <Block width='167px'>
+              Change the size, color and labels of edges to distinguish them.
+            </Block>
+          }
+        />
       </HeadingXSmall>
       <NestedForm
         data={edgeWidthFormData}

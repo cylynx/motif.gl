@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Block } from 'baseui/block';
 import { HeadingXSmall } from 'baseui/typography';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -44,7 +44,15 @@ const OptionsLayout = () => {
         $style={{ letterSpacing: '1px' }}
       >
         LAYOUT
-        <QuestionMarkTooltip tooltip='layout' />
+        <QuestionMarkTooltip
+          tooltip={
+            <Block width='190px'>
+              Try different layouts to better visualise your graph. E.g.
+              force-directed for a good default, sequential for ordered data or
+              xy-coordinates to fix it at a particular location.
+            </Block>
+          }
+        />
       </HeadingXSmall>
       <NestedForm data={formData} key={`${formData.id}-${formData.value}`} />
     </Card>

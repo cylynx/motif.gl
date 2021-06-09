@@ -35,7 +35,14 @@ const EdgeProperties: FC<EdgePropertiesProps> = ({ haveData, edgeFields }) => {
       title={
         <div className={css({ display: 'flex', alignItems: 'center' })}>
           EDGE PROPERTIES
-          <QuestionMarkTooltip tooltip='edge properties' />
+          <QuestionMarkTooltip
+            tooltip={
+              <Block width='170px'>
+                Overview of all the edge properties from imported data sources.
+                Selected properties are shown when hovering over edges.
+              </Block>
+            }
+          />
         </div>
       }
       expanded

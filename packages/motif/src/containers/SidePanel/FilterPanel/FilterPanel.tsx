@@ -9,6 +9,7 @@ import useGraphFilter from './hooks/UseGraphFilter';
 
 import { GraphSelectors, Field, GraphFields } from '../../../redux/graph';
 import { SelectOptions } from '../../../components/SelectVariable/SelectVariable';
+import QuestionMarkTooltip from '../../../components/FormSelectWithTooltip/QuestionMarkTooltip';
 
 const FilterPanel: FC = () => {
   const [css, theme] = useStyletron();
@@ -103,7 +104,15 @@ const FilterPanel: FC = () => {
   return (
     <Block data-testid='filter-panel'>
       <HeadingMedium marginTop='scale300' marginBottom='scale300'>
-        Filters
+        Filters{' '}
+        <QuestionMarkTooltip
+          tooltip={
+            <Block width='165px'>
+              Add filters to your graph to limit the data that is displayed.
+              Multiple filters apply additively.
+            </Block>
+          }
+        />
       </HeadingMedium>
       {AddFilterButtonMemo}
       <hr
