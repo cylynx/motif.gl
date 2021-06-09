@@ -17,26 +17,34 @@ const LayersPanel = () => {
     <Block data-testid='layers-panel'>
       <Header />
       <Card>
-        <HeadingXSmall
-          marginTop={0}
-          marginBottom='scale400'
-          color='contentInverseSecondary'
-          $style={{ letterSpacing: '1px' }}
-        >
-          DATA SOURCES{' '}
+        <Block display='flex' alignItems='end' marginBottom='scale400'>
+          <HeadingXSmall
+            marginTop={0}
+            marginBottom={0}
+            color='contentInverseSecondary'
+            $style={{ letterSpacing: '1px' }}
+          >
+            DATA SOURCES
+          </HeadingXSmall>
           <QuestionMarkTooltip
             tooltip={
               <Block width='190px'>
-                Import data to get started or view your imported data in the
-                panel below.
-                {'\n'}
-                You can group edges to combine multiple edges from the same
-                source and target node as a single edge. Add aggregations such
-                as max, min, or sum on properties of interest.
+                <span>
+                  Import data to get started or view your imported data in the
+                  panel below.
+                </span>
+                <br />
+                <br />
+                <span>
+                  You can group edges to combine multiple edges from the same
+                  source and target node as a single edge. Add aggregations such
+                  as max, min, or sum on properties of interest.
+                </span>
               </Block>
             }
           />
-        </HeadingXSmall>
+        </Block>
+
         <ImportDataButton />
         <hr
           className={css({ borderColor: theme.colors.contentInverseSecondary })}

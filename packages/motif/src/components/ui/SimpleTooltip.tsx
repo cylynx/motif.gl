@@ -25,7 +25,7 @@ const defaultOverrides: BasePopoverProps['overrides'] = {
       backgroundColor: $theme.colors.tooltipBackground,
       color: $theme.colors.tooltipText,
       fontSize: '12px',
-      lineHeight: '1.2',
+      lineHeight: '18px',
     }),
   },
   Arrow: {

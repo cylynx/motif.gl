@@ -36,7 +36,6 @@ const QuestionMarkTooltip = ({ tooltip }) => {
       <QuestionMarkIconWithRef
         size={16}
         color={theme.colors.contentInverseSecondary}
-        style={{ paddingTop: '2px' }}
       />
     </SimpleTooltip>
   );
