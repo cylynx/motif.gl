@@ -32,7 +32,7 @@ const GraphStatistics = () => {
         top='8px'
       >
         <Block display='flex'>
-          <LabelSmall marginRight='scale200' color='contentInverseSecondary'>
+          <LabelSmall marginRight='scale200' color='black'>
             Nodes:
           </LabelSmall>
           <LabelSmall data-testid='nodes-count'>
@@ -40,7 +40,7 @@ const GraphStatistics = () => {
           </LabelSmall>
         </Block>
         <Block display='flex'>
-          <LabelSmall marginRight='scale200' color='contentInverseSecondary'>
+          <LabelSmall marginRight='scale200' color='black'>
             Edges:
           </LabelSmall>
           <LabelSmall data-testid='edges-count'>
