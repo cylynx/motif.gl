@@ -66,10 +66,16 @@ npm run pymotif:build // In root directory to link it with monorepo setup
 python -m pip install -e .
 ```
 
+Install required Python packages:
+
+```
+python -m pip install -r requirements.txt
+```
+
 If you are using JupyterLab:
 
 ```
-jupyter labextension develop --overwrite pymotif
+jupyter labextension develop --overwrite .
 ```
 
 If you are using the Classic Notebook:
