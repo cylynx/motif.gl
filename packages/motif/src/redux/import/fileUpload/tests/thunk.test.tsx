@@ -70,6 +70,7 @@ describe('Import Preview - thunk.test.js', () => {
       const actions = [
         setDataPreview(singleSimpleGraph),
         setIsEdgeGroupable(false),
+        setError(null),
         setStep(2),
       ];
 
@@ -92,6 +93,7 @@ describe('Import Preview - thunk.test.js', () => {
       const actions = [
         setDataPreview(combinedData),
         setIsEdgeGroupable(false),
+        setError(null),
         setStep(2),
       ];
 

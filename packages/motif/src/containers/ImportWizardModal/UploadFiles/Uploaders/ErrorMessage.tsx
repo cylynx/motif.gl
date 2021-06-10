@@ -8,6 +8,7 @@ type ErrorMessageProps = { title: ReactNode; content?: ReactNode };
 const ErrorMessage: FC<ErrorMessageProps> = ({ title, content }) => {
   return (
     <Block
+      data-testid='error-message'
       marginTop='scale300'
       padding='scale300'
       backgroundColor='#AD52521F'
