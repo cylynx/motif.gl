@@ -745,14 +745,25 @@ export const verifySourceAndTargetExistence = (
   const { nodeID, edgeID, edgeSource, edgeTarget } = accessors;
   const nodeIds: string[] = nodes.map((node: Node) => {
     const nodeIdProperty: string = get(node, nodeID, '');
-    return nodeIdProperty;
+    return nodeIdProperty.trim();
   });
   const uniqueNodeIds: string[] = uniq(nodeIds as string[]);
 
   edges.forEach((edge: Edge) => {
-    const source = get(edge, edgeSource, '');
-    const target = get(edge, edgeTarget, '');
-    const id = get(edge, edgeID, '');
+    let source: string = get(edge, edgeSource, '');
+    if (typeof source === 'string') {
+      source = source.trim();
+    }
+
+    let target: string = get(edge, edgeTarget, '');
+    if (typeof target === 'string') {
+      target = target.trim();
+    }
+
+    let id: string = get(edge, edgeID, '');
+    if (typeof id === 'string') {
+      id = id.trim();
+    }
 
     const isPossessSource = uniqueNodeIds.includes(source);
     if (!isPossessSource) {

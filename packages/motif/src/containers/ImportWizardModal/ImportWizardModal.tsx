@@ -19,11 +19,6 @@ export const defaultImportTabs: ImportTabs[] = [
     key: 'sample-data',
     component: <SampleData />,
   },
-  {
-    title: 'Banking API',
-    key: 'banking-api',
-    component: <div>Banking API</div>,
-  },
 ];
 
 const StyledModalHeader = withStyle(ModalHeader, ({ $theme }) => ({
