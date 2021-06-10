@@ -401,7 +401,7 @@ export const processCsvData = async (rawCsv: string): Promise<ProcessedCsv> => {
   const headerRow = rawCsv.replace(/\r/g, '').split('\n')[0].split(',');
 
   if (!parsedJson || !headerRow) {
-    throw new Error('invalid input passed to process Csv data');
+    throw new Error('Missing column header in uploaded CSV file');
   }
 
   // assume the csv file that uploaded csv will have first row

@@ -105,11 +105,7 @@ const getOptionsPanel = () => {
 };
 
 const getSearchPanel = () => {
-  return cy.react('Block', {
-    props: {
-      'data-testid': 'search-panel',
-    },
-  });
+  return cy.get('[data-testid="search-panel"]');
 };
 
 Cypress.Commands.add('switchTab', switchTab);

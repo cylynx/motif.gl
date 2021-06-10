@@ -189,6 +189,7 @@ export class GraphLayer extends Component<GraphLayerProps, GraphLayerState> {
 
     return (
       <Block
+        data-testid='graph-layer'
         ref={this.blockRef}
         position='relative'
         width={width}

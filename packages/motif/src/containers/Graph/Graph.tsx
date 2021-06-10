@@ -31,13 +31,8 @@ const Graph = React.forwardRef<Graphin, GraphProps>(
       (state) => GraphSelectors.getStyleOptions(state).layout,
     );
 
-    const {
-      DragCanvas,
-      ClickSelect,
-      LassoSelect,
-      BrushSelect,
-      FontPaint,
-    } = Behaviors;
+    const { DragCanvas, ClickSelect, LassoSelect, BrushSelect, FontPaint } =
+      Behaviors;
 
     return (
       <Graphin
@@ -52,7 +47,7 @@ const Graph = React.forwardRef<Graphin, GraphProps>(
         edgeStateStyles={edgeStateStyles}
         theme={lightTheme}
       >
-        <DragCanvas shouldBegin={() => true} />
+        <DragCanvas />
         <DisplayTooltips setTooltip={setTooltip} />
         <ActivateNodeRelations />
         <ActivateEdgeRelations />
