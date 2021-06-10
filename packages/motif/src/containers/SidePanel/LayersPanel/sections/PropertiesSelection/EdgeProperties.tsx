@@ -30,7 +30,7 @@ const EdgeProperties: FC<EdgePropertiesProps> = ({ haveData, edgeFields }) => {
     <Accordion
       data-testid='edge-properties-accordion'
       title={
-        <Block display='flex' alignItems='center'>
+        <Block display='flex' alignItems='end'>
           EDGE PROPERTIES
           <QuestionMarkTooltip
             tooltip={

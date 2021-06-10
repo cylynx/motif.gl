@@ -58,7 +58,7 @@ const OptionsEdgeStyles = () => {
 
   return (
     <Card data-testid='OptionsEdgeStyles'>
-      <Block display='flex' alignItems='center'>
+      <Block display='flex' alignItems='end'>
         <HeadingXSmall
           marginTop={0}
           marginBottom={0}

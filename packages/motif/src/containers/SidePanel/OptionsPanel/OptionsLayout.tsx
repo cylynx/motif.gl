@@ -37,7 +37,7 @@ const OptionsLayout = () => {
 
   return (
     <Card data-testid='OptionsLayout'>
-      <Block display='flex' alignItems='center'>
+      <Block display='flex' alignItems='end'>
         <HeadingXSmall
           marginTop={0}
           marginBottom={0}

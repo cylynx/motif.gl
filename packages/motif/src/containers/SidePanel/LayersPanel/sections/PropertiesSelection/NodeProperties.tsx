@@ -29,7 +29,7 @@ const NodeProperties: FC<NodePropertiesProps> = ({ haveData, nodeFields }) => {
     <Accordion
       data-testid='node-properties-accordion'
       title={
-        <Block display='flex' alignItems='center'>
+        <Block display='flex' alignItems='end'>
           NODE PROPERTIES
           <QuestionMarkTooltip
             tooltip={

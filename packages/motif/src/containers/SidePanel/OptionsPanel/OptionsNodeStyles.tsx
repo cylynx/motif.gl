@@ -26,11 +26,9 @@ const OptionsNodeStyles = () => {
     (state) => GraphSelectors.getGraph(state).styleOptions.nodeStyle,
   );
 
-  const {
-    allNodeFields,
-    nodeLabelFields,
-    numericNodeFields,
-  } = useSelector((state) => GraphSelectors.getGraphFieldsOptions(state));
+  const { allNodeFields, nodeLabelFields, numericNodeFields } = useSelector(
+    (state) => GraphSelectors.getGraphFieldsOptions(state),
+  );
 
   const updateNodeStyle = (data: any) => {
     dispatch(GraphSlices.changeNodeStyle(data));
@@ -58,7 +56,7 @@ const OptionsNodeStyles = () => {
 
   return (
     <Card data-testid='OptionsNodeStyles'>
-      <Block display='flex' alignItems='center'>
+      <Block display='flex' alignItems='end'>
         <HeadingXSmall
           marginTop={0}
           marginBottom={0}
