@@ -105,11 +105,7 @@ const getOptionsPanel = () => {
 };
 
 const getSearchPanel = () => {
-  return cy.react('Block', {
-    props: {
-      'data-testid': 'search-panel',
-    },
-  });
+  return cy.get('[data-testid="search-panel"]');
 };
 
 Cypress.Commands.add('switchTab', switchTab);
@@ -121,3 +117,15 @@ Cypress.Commands.add('getFilterPanel', getFilterPanel);
 Cypress.Commands.add('getLayerPanel', getLayerPanel);
 Cypress.Commands.add('getOptionsPanel', getOptionsPanel);
 Cypress.Commands.add('getSearchPanel', getSearchPanel);
+
+// This error means that ResizeObserver was not able to deliver all observations
+// within a single animation frame, the Cypress maintainer propose this solution
+// to ignore the errors.
+// https://stackoverflow.com/a/63519375
+const resizeObserverLoopErrRe = /^[^(ResizeObserver loop limit exceeded)]/;
+Cypress.on('uncaught:exception', (err: Error) => {
+  /* returning false here prevents Cypress from failing the test */
+  if (resizeObserverLoopErrRe.test(err.message)) {
+    return false;
+  }
+});

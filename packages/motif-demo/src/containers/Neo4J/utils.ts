@@ -3,6 +3,7 @@
 import Neo4j from 'neo4j-driver';
 import { Node, Edge, GraphData } from '@cylynx/motif';
 import Record from 'neo4j-driver/types/record';
+import uniqBy from 'lodash.uniqby';
 
 export const buildNode = (n: any) => {
   let node: Node = {
@@ -77,6 +78,10 @@ export const toMotifFormat = (records: Record[]): GraphData => {
       }
     });
   });
+
+  // produce duplicate free nodes to display in table preview
+  nodes = uniqBy(nodes, 'id');
+  edges = uniqBy(edge, 'id');
 
   const graphData: GraphData = {
     nodes,

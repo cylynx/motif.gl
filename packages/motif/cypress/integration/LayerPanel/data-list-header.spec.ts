@@ -13,18 +13,14 @@ describe('Data List Header', () => {
       cy.react('VisibilityButton').click();
       cy.wait(500);
 
-      cy.getReact('GraphStatistics')
-        .nthNode(1)
-        .getProps()
-        .then((props) => {
-          const { edgeLength, hiddenEdgeLength, hiddenNodeLength, nodeLength } =
-            props;
+      cy.react('Accordion', {
+        props: {
+          'data-testid': 'DataListAccordion',
+        },
+      }).click();
 
-          expect(nodeLength).to.deep.equal(0);
-          expect(edgeLength).to.deep.equal(0);
-          expect(hiddenNodeLength).to.deep.equal(17);
-          expect(hiddenEdgeLength).to.deep.equal(23);
-        });
+      cy.get('div[data-testid="nodes-count"]').last().should('have.text', '0/17');
+      cy.get('div[data-testid="edges-count"]').last().should('have.text', '0/23');
     });
   });
 

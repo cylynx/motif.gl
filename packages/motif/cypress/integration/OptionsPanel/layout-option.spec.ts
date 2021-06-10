@@ -119,12 +119,13 @@ describe('Layout Options', () => {
         controllerName,
       );
       const { min, max } = formDefaults;
+      const value = max / 2 + min;
 
       cy.react('Controller', { props: { name: controllerName } }).type(arrows);
 
       cy.getReact(graphinEl)
         .getProps(`layout.${controllerName}`)
-        .should('deep.equal', max / 2 + min);
+        .should('be.within', value - 1, value + 1);
     });
   });
 
@@ -201,13 +202,8 @@ describe('Layout Options', () => {
   });
 
   describe('Circular', () => {
-    const {
-      type,
-      startRadius,
-      endRadius,
-      angleRatio,
-      divisions,
-    } = layoutOptions.CIRCLE_DEFAULT;
+    const { type, startRadius, endRadius, angleRatio, divisions } =
+      layoutOptions.CIRCLE_DEFAULT;
 
     it('should convert layout', () => {
       const { label, id } = findLayout(type);
@@ -318,31 +314,13 @@ describe('Layout Options', () => {
         controllerName,
       );
       const { max } = formDefaults;
+      const value = max / 2 + modifyValue;
 
       cy.react('Controller', { props: { name: controllerName } }).type(arrows);
 
       cy.getReact(graphinEl)
         .getProps(`layout.${controllerName}`)
-        .should('deep.equal', max / 2 + modifyValue);
-    });
-
-    it('should change cluster gravity', () => {
-      const modifyValue = 1;
-      const arrows = '{rightarrow}'.repeat(modifyValue);
-      const controllerName: string = 'clusterGravity';
-
-      const formDefaults = findDefaultFromLayoutForm(
-        form.layoutForm,
-        type,
-        controllerName,
-      );
-      const { max } = formDefaults;
-
-      cy.react('Controller', { props: { name: controllerName } }).type(arrows);
-
-      cy.getReact(graphinEl)
-        .getProps(`layout.${controllerName}`)
-        .should('deep.equal', max / 2 + modifyValue);
+        .should('be.within', value - 1, value + 1);
     });
   });
 

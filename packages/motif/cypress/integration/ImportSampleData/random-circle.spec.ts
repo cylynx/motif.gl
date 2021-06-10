@@ -33,37 +33,39 @@ describe('Import Random + Circle', () => {
   });
 
   it('should display 15 nodes count in Nodes label', () => {
-    cy.getReact('Statistic', {
-      props: { 'data-testid': 'nodes-count' },
-    })
-      .nthNode(0)
-      .getProps('value')
-      .should('deep.eq', 15);
+    cy.get('div[data-testid="nodes-count"]').should('have.text', '15/15');
   });
 
   it('should display 25 edges count in Edges label', () => {
-    cy.getReact('Statistic', {
-      props: { 'data-testid': 'edges-count' },
-    })
-      .nthNode(0)
-      .getProps('value')
-      .should('deep.eq', 25);
+    cy.get('div[data-testid="edges-count"]').should('have.text', '25/25');
   });
 
   it('should display two row for data list', () => {
-    cy.getReact('DataListAccordion').getProps('items').should('have.length', 2);
+    cy.getReact('Accordion', {
+      props: {
+        'data-testid': 'DataListAccordion',
+      },
+    }).should('have.length', 2);
   });
 
   it('should display data list name [Random Data]', () => {
-    cy.getReact('AccordionPanel')
-      .nthNode(0)
+    cy.getReact('Accordion', {
+      props: {
+        'data-testid': 'DataListAccordion',
+      },
+    })
+      .nthNode(1)
       .getProps('title')
       .should('deep.eq', 'Random Data');
   });
 
   it('should display data list name [Circle Data]', () => {
-    cy.getReact('AccordionPanel')
-      .nthNode(1)
+    cy.getReact('Accordion', {
+      props: {
+        'data-testid': 'DataListAccordion',
+      },
+    })
+      .nthNode(0)
       .getProps('title')
       .should('deep.eq', 'Circle Data');
   });

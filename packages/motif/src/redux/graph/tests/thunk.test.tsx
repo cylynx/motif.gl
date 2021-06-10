@@ -21,7 +21,6 @@ import {
   updateStyleOption,
   overwriteEdgeSelection,
   updateLastGroupEdgeIds,
-  updateGraphFlatten,
 } from '../slice';
 import {
   importJson,

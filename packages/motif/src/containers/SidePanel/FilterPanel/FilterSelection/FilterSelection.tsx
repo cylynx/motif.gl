@@ -7,6 +7,7 @@ import Header from './Header';
 import RangePlot, { HistogramProp } from './RangePlot';
 import StringSelect from './StringSelect';
 import useGraphFilter from '../hooks/UseGraphFilter';
+import { Card } from '../../../../components/ui';
 
 import {
   SelectOptions,
@@ -190,7 +191,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
   }, [filterAttribute]);
 
   return (
-    <Block marginBottom='scale500'>
+    <Card>
       <Header
         selectOptions={selectOptions}
         onSelectChange={onSelectChange}
@@ -199,7 +200,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
       />
       {selection}
       {dataNotFoundMessage}
-    </Block>
+    </Card>
   );
 };
 

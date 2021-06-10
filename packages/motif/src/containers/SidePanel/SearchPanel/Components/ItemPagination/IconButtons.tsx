@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
-import { Button, KIND, SIZE } from 'baseui/button';
+import { useStyletron } from 'baseui';
+import { KIND, SHAPE } from 'baseui/button';
 import { Theme } from 'baseui/theme';
+import { Button } from '../../../../../components/ui';
 import * as Icon from '../../../../../components/Icons';
 
 type IconButtonProps = {
@@ -8,27 +10,15 @@ type IconButtonProps = {
   disabled?: boolean;
 };
 export const DeleteButton: FC<IconButtonProps> = ({ onClick }) => {
+  const [, theme] = useStyletron();
   return (
     <Button
       onClick={onClick}
       kind={KIND.secondary}
-      size={SIZE.compact}
-      overrides={{
-        BaseButton: {
-          style: ({ $theme }: { $theme: Theme }) => ({
-            paddingTop: $theme.sizing.scale0,
-            paddingBottom: $theme.sizing.scale0,
-            paddingRight: $theme.sizing.scale0,
-            paddingLeft: $theme.sizing.scale0,
-            borderTopRightRadius: $theme.sizing.scale200,
-            borderBottomRightRadius: $theme.sizing.scale200,
-            borderTopLeftRadius: $theme.sizing.scale200,
-            borderBottomLeftRadius: $theme.sizing.scale200,
-            marginRight: $theme.sizing.scale200,
-            ':hover': {
-              backgroundColor: $theme.colors.backgroundNegative,
-            },
-          }),
+      shape={SHAPE.square}
+      BaseButtonStyleOverrides={{
+        ':hover': {
+          backgroundColor: theme.colors.backgroundNegative,
         },
       }}
     >
@@ -45,21 +35,8 @@ export const PreviousPageButton: FC<IconButtonProps> = ({
     <Button
       onClick={onClick}
       kind={KIND.secondary}
-      size={SIZE.compact}
+      shape={SHAPE.square}
       disabled={disabled}
-      overrides={{
-        BaseButton: {
-          style: ({ $theme }: { $theme: Theme }) => ({
-            paddingTop: $theme.sizing.scale0,
-            paddingBottom: $theme.sizing.scale0,
-            paddingRight: $theme.sizing.scale0,
-            paddingLeft: $theme.sizing.scale0,
-            borderTopLeftRadius: $theme.sizing.scale200,
-            borderBottomLeftRadius: $theme.sizing.scale200,
-            marginRight: $theme.sizing.scale0,
-          }),
-        },
-      }}
     >
       <Icon.ChevronLeft />
     </Button>
@@ -70,20 +47,8 @@ export const NextPageButton: FC<IconButtonProps> = ({ onClick, disabled }) => (
   <Button
     onClick={onClick}
     kind={KIND.secondary}
-    size={SIZE.compact}
+    shape={SHAPE.square}
     disabled={disabled}
-    overrides={{
-      BaseButton: {
-        style: ({ $theme }: { $theme: Theme }) => ({
-          paddingTop: $theme.sizing.scale0,
-          paddingBottom: $theme.sizing.scale0,
-          paddingRight: $theme.sizing.scale0,
-          paddingLeft: $theme.sizing.scale0,
-          borderTopRightRadius: $theme.sizing.scale200,
-          borderBottomRightRadius: $theme.sizing.scale200,
-        }),
-      },
-    }}
   >
     <Icon.ChevronRight />
   </Button>

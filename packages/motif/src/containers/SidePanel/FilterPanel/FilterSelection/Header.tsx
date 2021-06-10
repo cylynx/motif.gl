@@ -1,9 +1,10 @@
 import React, { FC, MouseEvent, useMemo } from 'react';
 import { Block } from 'baseui/block';
-import { Button } from 'baseui/button';
+// import { Button } from 'baseui/button';
 import { colors } from 'baseui/tokens';
-import { Theme } from 'baseui/theme';
+import { LabelSmall } from 'baseui/typography';
 import * as Icon from '../../../../components/Icons';
+import { Button } from '../../../../components/ui';
 import SelectVariable, {
   SelectOptions,
   SelectVariableOption,
@@ -28,22 +29,13 @@ const Header: FC<FilterSelectionHeaderProps> = ({
       <Block paddingLeft='scale100'>
         <Button
           data-testid='filter-selection-header:delete'
-          size='mini'
+          shape='square'
           kind='minimal'
           $as='div'
           onClick={onDeleteBtnClick}
-          overrides={{
-            BaseButton: {
-              style: ({ $theme }: { $theme: Theme }) => ({
-                paddingTop: $theme.sizing.scale400,
-                paddingRight: $theme.sizing.scale400,
-                paddingBottom: $theme.sizing.scale400,
-                paddingLeft: $theme.sizing.scale400,
-                backgroundColor: $theme.colors.backgroundTertiary,
-                ':hover': {
-                  backgroundColor: colors.red500,
-                },
-              }),
+          BaseButtonStyleOverrides={{
+            ':hover': {
+              backgroundColor: colors.red500,
             },
           }}
         >
@@ -55,21 +47,21 @@ const Header: FC<FilterSelectionHeaderProps> = ({
   );
 
   return (
-    <Block
-      backgroundColor='backgroundTertiary'
-      padding='scale300'
-      width='auto'
-      display='flex'
-    >
-      <SelectVariable
-        data-testid='filter-selection-header:select-variable'
-        value={selection}
-        options={selectOptions}
-        onChange={onSelectChange}
-        placeholder='Select a field'
-        valueKey='optionKey'
-      />
-      {ButtonGroupMemo}
+    <Block paddingBottom='scale200'>
+      <LabelSmall paddingBottom='scale100' color='contentInverseSecondary'>
+        Select variable
+      </LabelSmall>
+      <Block display='flex' width='auto'>
+        <SelectVariable
+          data-testid='filter-selection-header:select-variable'
+          value={selection}
+          options={selectOptions}
+          onChange={onSelectChange}
+          placeholder='Select a field'
+          valueKey='optionKey'
+        />
+        {ButtonGroupMemo}
+      </Block>
     </Block>
   );
 };

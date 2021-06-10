@@ -1,9 +1,9 @@
 import React from 'react';
 import { Block } from 'baseui/block';
-import { Button } from 'baseui/button';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateWidget } from '../../redux/widget/slice';
 import { WidgetSelectors } from '../../redux/widget';
+import { Button } from '../../components/ui';
 
 type IconButtonProps = {
   icon: React.ReactNode;
@@ -23,7 +23,6 @@ const IconButton = ({ icon, id, group }: IconButtonProps) => {
   return (
     <Block marginBottom='12px'>
       <Button
-        size='compact'
         shape='round'
         kind='minimal'
         onClick={updateSelection}

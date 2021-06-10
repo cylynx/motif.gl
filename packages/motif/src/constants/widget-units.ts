@@ -2,8 +2,8 @@ import { Value } from 'baseui/select';
 
 export const SIDE_NAVBAR_WIDTH = '50px';
 
-// width (310) + padding (14 * 2)
-export const LEFT_LAYER_WIDTH = '338px';
+// width (280) + padding (14 * 2)
+export const LEFT_LAYER_WIDTH = '308px';
 
 export const ITEM_PER_PAGE = 5;
 

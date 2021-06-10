@@ -21,9 +21,8 @@ const ConfigureFields: FC<ConfigureFieldsProps> = ({ graphData }) => {
   });
 
   const isEdgeGroupable = useMemo(() => {
-    const duplicateDictionary = GraphGroupEdgeProcessors.duplicateDictionary(
-      graphData,
-    );
+    const duplicateDictionary =
+      GraphGroupEdgeProcessors.duplicateDictionary(graphData);
     const isGraphGroupEdgeable = Object.keys(duplicateDictionary).length !== 0;
     return isGraphGroupEdgeable;
   }, [graphData]);

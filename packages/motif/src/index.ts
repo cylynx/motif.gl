@@ -8,6 +8,7 @@ import FormSelectWithTooltip from './components/FormSelectWithTooltip';
 import TablePreview from './components/TablePreview';
 import TableTabs, { TableTabItem } from './components/TableTabs';
 import GroupEdgeConfiguration from './components/GroupEdgeConfiguration';
+import Dropdown from './components/ui/Dropdown';
 
 import { MotifDarkTheme, MotifLightTheme } from './theme';
 
@@ -19,6 +20,7 @@ export {
   TablePreview,
   TableTabs,
   GroupEdgeConfiguration,
+  Dropdown,
 };
 
 export default Motif;

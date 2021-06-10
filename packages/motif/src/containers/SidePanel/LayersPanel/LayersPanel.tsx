@@ -1,56 +1,36 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useStyletron } from 'baseui';
+import { HeadingXSmall } from 'baseui/typography';
 import { Block } from 'baseui/block';
 
-import ImportLayers from './sections/ImportLayers/ImportLayers';
-import {
-  ImportDataButton,
-  ClearDataButton,
-} from './components/LayersPanelButtons';
-
-import { GraphSelectors } from '../../../redux/graph';
+import ImportLayers from './sections/ImportLayers';
+import { ImportDataButton } from './components/LayersPanelButtons';
 import Header from '../Header';
-import GraphStatistics from './components/GraphStatistics';
 import PropertiesSelections from './sections/PropertiesSelection';
+import { Card } from '../../../components/ui';
 
 const LayersPanel = () => {
-  const ungroupGraphFlatten = useSelector((state) => {
-    return GraphSelectors.getUngroupedGraphFlatten(state);
-  });
-
-  const graphFlatten = useSelector((state) =>
-    GraphSelectors.getGraphFlatten(state),
-  );
-
-  const hiddenNodes =
-    ungroupGraphFlatten.nodes.length - graphFlatten.nodes.length;
-  const hiddenEdges =
-    ungroupGraphFlatten.edges.length - graphFlatten.edges.length;
+  const [css, theme] = useStyletron();
 
   return (
     <Block data-testid='layers-panel'>
       <Header />
-      <Block
-        display='flex'
-        justifyContent='space-between'
-        marginLeft='scale600'
-        width='260px'
-      >
-        <GraphStatistics
-          nodeLength={graphFlatten.nodes.length}
-          edgeLength={graphFlatten.edges.length}
-          hiddenNodeLength={hiddenNodes}
-          hiddenEdgeLength={hiddenEdges}
-        />
-      </Block>
-      <PropertiesSelections />
-      <br />
-      <hr />
-      <Block width='100%' display='flex' justifyContent='space-between'>
-        <ClearDataButton />
+      <Card>
+        <HeadingXSmall
+          marginTop={0}
+          marginBottom='scale400'
+          color='contentInverseSecondary'
+          $style={{ letterSpacing: '1px' }}
+        >
+          DATA SOURCES
+        </HeadingXSmall>
         <ImportDataButton />
-      </Block>
-      <ImportLayers />
+        <hr
+          className={css({ borderColor: theme.colors.contentInverseSecondary })}
+        />
+        <ImportLayers />
+      </Card>
+      <PropertiesSelections />
       <Block marginBottom='scale300' />
     </Block>
   );

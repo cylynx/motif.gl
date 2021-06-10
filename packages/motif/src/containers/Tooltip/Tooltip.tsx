@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { styled } from 'baseui';
 import { Block } from 'baseui/block';
+import { ParagraphSmall, LabelMedium } from 'baseui/typography';
 import {
   GraphSelectors,
   Selection,
@@ -22,9 +23,8 @@ export type TooltipProps = null | {
 
 export const StyledInner = styled('div', ({ $theme }) => ({
   width: '250px',
-  backgroundColor: $theme.colors.backgroundTertiary,
+  backgroundColor: $theme.colors.tooltipBackground,
   color: $theme.colors.contentPrimary,
-  opacity: 0.9,
   paddingTop: $theme.sizing.scale400,
   paddingBottom: $theme.sizing.scale400,
   paddingRight: $theme.sizing.scale600,
@@ -63,25 +63,13 @@ const Tooltip = ({ tooltip }: { tooltip: TooltipProps }) => {
   );
 
   const contents = Object.entries(properties).map(([key, value]) => (
-    <Block key={key} display='flex' flexWrap marginBottom='scale100'>
-      <Block paddingRight='scale100' marginTop='0' marginBottom='0'>
-        <b>{`${key}:`}</b>
-      </Block>
-      <Block
-        marginTop='0'
-        marginBottom='0'
-        overrides={{
-          Block: {
-            style: {
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            },
-          },
-        }}
-      >
+    <Block key={key} display='flex' flexWrap>
+      <LabelMedium paddingRight='scale100' color='contentInverseSecondary'>
+        {`${key}:`}
+      </LabelMedium>
+      <ParagraphSmall marginTop='0' marginBottom='0'>
         {String(value ?? '')}
-      </Block>
+      </ParagraphSmall>
     </Block>
   ));
 
@@ -92,9 +80,6 @@ const Tooltip = ({ tooltip }: { tooltip: TooltipProps }) => {
         // Adjust for the side navbar and panel (if open)
         left: tooltip.x + leftLayerWidthPx + sideNavbarWidthPx,
         top: tooltip.y,
-        padding: '8px 10px',
-        fontSize: '14px',
-        lineHeight: '15px',
       }}
     >
       {contents}

@@ -48,7 +48,6 @@ describe('Import Edge List', () => {
           expect(nodes.length).to.deep.equal(3);
         });
 
-      cy.react('ClearDataButton').click();
     });
 
     describe('Wrong format provided', function () {

@@ -1,8 +1,7 @@
 import React, { Fragment } from 'react';
-import { Button } from 'baseui/button';
 import { PLACEMENT } from 'baseui/popover';
 import { Block } from 'baseui/block';
-import { SimpleTooltip } from '../../components/ui';
+import { SimpleTooltip, Button } from '../../components/ui';
 
 export type ToolbarItem = {
   key: number;
@@ -32,13 +31,13 @@ const ToolbarButton = ({ item }: ToolbarButtonProp) => {
           onClick={onClick}
           disabled={isDisabled}
           kind='secondary'
-          size='compact'
+          shape='square'
           data-testid={`ToolbarButton:${name}`}
         >
           {icon}
         </Button>
       </SimpleTooltip>
-      <Block paddingTop='5px' />
+      <Block paddingTop='4px' />
     </Fragment>
   );
 };

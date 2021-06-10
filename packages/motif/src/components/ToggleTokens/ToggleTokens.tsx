@@ -32,13 +32,13 @@ export type ToggleTokensProps = {
 const ToggleTokens = ({
   options,
   onClick,
-  shape = SHAPE.pill,
+  shape = SHAPE.default,
 }: ToggleTokensProps) => {
   return (
     <ButtonGroup
       mode={MODE.checkbox}
       shape={shape}
-      size={SIZE.mini}
+      size={SIZE.compact}
       selected={
         options
           .map((o, idx) => (o.selected === true ? idx : ''))
@@ -61,22 +61,32 @@ const ToggleTokens = ({
           key={o.id}
           overrides={{
             BaseButton: {
-              style: ({ $theme }) => {
+              style: ({ $theme, $isSelected }) => {
                 return {
-                  marginLeft: $theme.sizing.scale300,
-                  marginBottom: $theme.sizing.scale200,
+                  backgroundColor: $theme.colors.backgroundTertiary,
+                  color: $isSelected
+                    ? $theme.colors.primary
+                    : $theme.colors.contentInverseSecondary,
+                  paddingLeft: $theme.sizing.scale100,
+                  paddingBottom: $theme.sizing.scale100,
+                  paddingRight: $theme.sizing.scale100,
+                  paddingTop: $theme.sizing.scale100,
+                  marginLeft: $theme.sizing.scale100,
+                  marginBottom: $theme.sizing.scale100,
+                  marginRight: $theme.sizing.scale100,
+                  marginTop: $theme.sizing.scale100,
                   borderTopStyle: 'solid',
                   borderLeftStyle: 'solid',
                   borderRightStyle: 'solid',
                   borderBottomStyle: 'solid',
-                  borderTopWidth: '2px',
-                  borderLeftWidth: '2px',
-                  borderRightWidth: '2px',
-                  borderBottomWidth: '2px',
-                  borderTopColor: $theme.colors.primary,
-                  borderLeftColor: $theme.colors.primary,
-                  borderRightColor: $theme.colors.primary,
-                  borderBottomColor: $theme.colors.primary,
+                  borderTopWidth: '1px',
+                  borderLeftWidth: '1px',
+                  borderRightWidth: '1px',
+                  borderBottomWidth: '1px',
+                  borderTopColor: $theme.colors.inputBorder,
+                  borderLeftColor: $theme.colors.inputBorder,
+                  borderRightColor: $theme.colors.inputBorder,
+                  borderBottomColor: $theme.colors.inputBorder,
                 };
               },
             },

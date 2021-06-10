@@ -41,7 +41,7 @@ export const getIcon = (type: TypeProps) => {
         <Icon.Adjust
           size={14}
           color={colors.brown400}
-          style={{ paddingRight: '8px' }}
+          style={{ paddingRight: '4px' }}
         />
       );
     case 'date':
@@ -49,7 +49,7 @@ export const getIcon = (type: TypeProps) => {
         <Icon.Time
           size={14}
           color={colors.green400}
-          style={{ paddingRight: '8px' }}
+          style={{ paddingRight: '4px' }}
         />
       );
     case 'integer':
@@ -57,7 +57,7 @@ export const getIcon = (type: TypeProps) => {
         <Icon.Hash
           size={14}
           color={colors.yellow400}
-          style={{ paddingRight: '8px' }}
+          style={{ paddingRight: '4px' }}
         />
       );
     case 'real':
@@ -65,7 +65,7 @@ export const getIcon = (type: TypeProps) => {
         <Icon.Hash
           size={14}
           color={colors.yellow400}
-          style={{ paddingRight: '8px' }}
+          style={{ paddingRight: '4px' }}
         />
       );
     case 'string':
@@ -73,7 +73,7 @@ export const getIcon = (type: TypeProps) => {
         <Icon.Symbol
           size={16}
           color={colors.blue400}
-          style={{ paddingRight: '8px' }}
+          style={{ paddingRight: '4px' }}
         />
       );
     case 'time':
@@ -81,7 +81,7 @@ export const getIcon = (type: TypeProps) => {
         <Icon.Time
           size={14}
           color={colors.green400}
-          style={{ paddingRight: '8px' }}
+          style={{ paddingRight: '4px' }}
         />
       );
     case 'timestamp':
@@ -89,7 +89,7 @@ export const getIcon = (type: TypeProps) => {
         <Icon.Time
           size={14}
           color={colors.green400}
-          style={{ paddingRight: '8px' }}
+          style={{ paddingRight: '4px' }}
         />
       );
     case 'array':
@@ -97,7 +97,7 @@ export const getIcon = (type: TypeProps) => {
         <Icon.Bracket
           size={14}
           color={colors.purple400}
-          style={{ paddingRight: '8px' }}
+          style={{ paddingRight: '4px' }}
         />
       );
     case 'nodes':
@@ -105,7 +105,7 @@ export const getIcon = (type: TypeProps) => {
     case 'edges':
       return <Icon.Edge size={16} style={{ paddingRight: '4px' }} />;
     default:
-      return <Icon.Bracket color={colors.gray600} size={0} />;
+      return <Icon.Bracket color={colors.gray400} size={0} />;
   }
 };
 

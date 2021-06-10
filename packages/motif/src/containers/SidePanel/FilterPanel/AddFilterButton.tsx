@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react';
-import { Button, SIZE } from 'baseui/button';
-import { colors } from 'baseui/tokens';
+import { SIZE } from 'baseui/button';
 import * as Icon from '../../../components/Icons';
+import { Button } from '../../../components/ui';
 
 type AddFilterButtonType = {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => any;
@@ -13,28 +13,12 @@ const AddFilterButton: FC<AddFilterButtonType> = ({ onClick, disabled }) => {
     () => (
       <Button
         startEnhancer={<Icon.Plus />}
+        kind='primary'
         onClick={onClick}
-        size={SIZE.compact}
         disabled={disabled}
-        overrides={{
-          BaseButton: {
-            style: ({ $theme }) => {
-              return {
-                backgroundColor: colors.green500,
-                textTransform: 'capitalize',
-                color: $theme.colors.backgroundInversePrimary,
-                width: '120px',
-                marginTop: $theme.sizing.scale300,
-                ':hover:not([disabled])': {
-                  backgroundColor: colors.green400,
-                  color: $theme.colors.backgroundInversePrimary,
-                },
-              };
-            },
-          },
-        }}
+        width='100%'
       >
-        add filter
+        Add Filter
       </Button>
     ),
     [onClick],

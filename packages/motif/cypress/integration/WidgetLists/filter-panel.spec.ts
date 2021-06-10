@@ -17,10 +17,6 @@ describe('Filter Panel', () => {
     cy.getFilterPanel().should('exist');
   });
 
-  it('should render Header component', () => {
-    cy.getFilterPanel().getReact('Header$2').should('exist');
-  });
-
   it('FilterSelection should not be render when no data is present', () => {
     cy.get('[data-testid="filter-panel:filter-selection"]').should('not.exist');
   });

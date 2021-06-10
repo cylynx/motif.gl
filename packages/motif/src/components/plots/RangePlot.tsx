@@ -182,41 +182,10 @@ const RangePlot = ({
     [range, dataType],
   );
 
-  const SliderMemo = useMemo(() => {
-    let [startRange, endRange] = range;
-    let [startValue, endValue] = value;
-
-    const MS_UNIX_TIMESTAMP = 'X';
-    if (xAxisFormat === MS_UNIX_TIMESTAMP) {
-      startRange /= 1000;
-      endRange /= 1000;
-      startValue /= 1000;
-      endValue /= 1000;
-    }
-
-    return (
-      <Block marginTop='-15px'>
-        <Slider
-          value={[startValue, endValue]}
-          min={startRange}
-          max={endRange}
-          step={step}
-          onChange={({ value }) => onChangeSlider(value as [number, number])}
-          onFinalChange={({ value }) =>
-            onFinalChangeSlider(value as [number, number])
-          }
-          showThumbValue={false}
-          showTickBar={false}
-        />
-      </Block>
-    );
-  }, [value, range, xAxisFormat]);
-
   return (
     <Block display='flex' justifyContent='center'>
       <Block height={`${height}px`} width={`${width}px`}>
         <HistogramPlot histogram={histogram} {...commonProps} />
-        {SliderMemo}
         {XAxisMemo}
       </Block>
     </Block>
