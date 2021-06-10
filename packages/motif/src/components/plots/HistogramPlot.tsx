@@ -45,6 +45,7 @@ const HistogramPlot = ({
   domain,
   value,
   brushComponent,
+  step,
 }: HistogramPlotProps) => {
   // value taken from count field
   const getValue = useMemo(() => (d: HistogramBin) => d.count, []);
@@ -67,8 +68,8 @@ const HistogramPlot = ({
     <StyledSvg width={width} height={height}>
       <g className='histogram-bars'>
         {histogram.map((bar: HistogramBin) => {
-          const median: number = (bar.x1 + bar.x0) / 2;
-          const inRange: boolean = median <= value[1] && median >= value[0];
+          const inRange = bar.x0 <= value[1] && bar.x0 >= value[0];
+
           const wRatio: number = inRange
             ? histogramStyle.highlightW
             : histogramStyle.unHighlightedW;
