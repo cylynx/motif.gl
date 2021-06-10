@@ -82,7 +82,7 @@ const ImportWizardModal: FC<ImportWizardProps> = ({ overrideTabs }) => {
         overrides={{
           Root: {
             style: {
-              zIndex: 2,
+              zIndex: 1,
             },
           },
           Dialog: {

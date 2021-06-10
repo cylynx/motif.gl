@@ -57,7 +57,16 @@ export const WidgetContainer = (props: WidgetContainerProps) => {
     return (
       <>
         <ThemeProvider theme={theme}>
-          <ToasterContainer placement={PLACEMENT.top}>
+          <ToasterContainer
+            placement={PLACEMENT.top}
+            overrides={{
+              Root: {
+                style: {
+                  zIndex: 2,
+                },
+              },
+            }}
+          >
             <GraphRefContext.Provider value={graphRef.current}>
               {children}
             </GraphRefContext.Provider>
