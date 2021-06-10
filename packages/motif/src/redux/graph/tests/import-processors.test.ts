@@ -107,7 +107,7 @@ const nodeCsv = [`id,data.value\na,100\nb,200\nc,300`];
 describe('Import node edge csv', () => {
   const edgeCsv = [edgeListCsv];
 
-  it('should output valid json graph object', async () => {
+  it('should output valid json graph object', async (done) => {
     const results = await importNodeEdgeCsv(
       nodeCsv,
       edgeCsv,
@@ -115,8 +115,9 @@ describe('Import node edge csv', () => {
       false,
     );
     expect(results).toHaveProperty('nodes', 'edges', 'metadata');
+    done();
   });
-  it('should map id, source and target accessors correctly', async () => {
+  it('should map id, source and target accessors correctly', async (done) => {
     const results = await importNodeEdgeCsv(
       nodeCsv,
       edgeCsv,
@@ -128,5 +129,6 @@ describe('Import node edge csv', () => {
     expect(results.edges).toHaveLength(3);
     expect(results.edges[0]).toHaveProperty('id', 'from', 'to');
     expect(results.edges[0].id).toEqual('1');
+    done();
   });
 });
