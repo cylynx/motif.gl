@@ -9,6 +9,7 @@ import Motif, { MotifDarkTheme, MotifLightTheme } from '@cylynx/motif';
 import { Provider } from 'react-redux';
 import { EnhancedStore } from '@reduxjs/toolkit';
 import '@cylynx/motif/dist/style.css';
+import '../widget.css';
 
 const engine = new Styletron({ prefix: 'm_' });
 
@@ -33,6 +34,7 @@ function renderRoot(
             <Motif
               ref={graphRef}
               name='Motif'
+              primaryTheme={MotifLightTheme}
               secondaryTheme={MotifDarkTheme}
             />
           </Provider>
