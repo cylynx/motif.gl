@@ -45,7 +45,6 @@ const HistogramPlot = ({
   domain,
   value,
   brushComponent,
-  step,
 }: HistogramPlotProps) => {
   // value taken from count field
   const getValue = useMemo(() => (d: HistogramBin) => d.count, []);
