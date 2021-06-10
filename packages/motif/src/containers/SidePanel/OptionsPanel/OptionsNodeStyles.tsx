@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Block } from 'baseui/block';
 import { HeadingXSmall } from 'baseui/typography';
 import { useDispatch, useSelector } from 'react-redux';
 import { GraphSlices, GraphSelectors } from '../../../redux/graph';
@@ -17,6 +17,7 @@ import {
   nodeFontSizeForm,
   nodeLabelForm,
 } from './constants';
+import QuestionMarkTooltip from '../../../components/ui/QuestionMarkTooltip';
 
 const OptionsNodeStyles = () => {
   const dispatch = useDispatch();
@@ -55,14 +56,23 @@ const OptionsNodeStyles = () => {
 
   return (
     <Card data-testid='OptionsNodeStyles'>
-      <HeadingXSmall
-        marginTop={0}
-        marginBottom={0}
-        color='contentInverseSecondary'
-        $style={{ letterSpacing: '1px' }}
-      >
-        NODE STYLES
-      </HeadingXSmall>
+      <Block display='flex' alignItems='end'>
+        <HeadingXSmall
+          marginTop={0}
+          marginBottom={0}
+          color='contentInverseSecondary'
+          $style={{ letterSpacing: '1px' }}
+        >
+          NODE STYLES
+        </HeadingXSmall>
+        <QuestionMarkTooltip
+          tooltip={
+            <Block width='200px'>
+              Change the size, color and labels of nodes to distinguish them.
+            </Block>
+          }
+        />
+      </Block>
       <NestedForm
         data={nodeSizeFormData}
         key={`${nodeSizeFormData.id}-${nodeSizeFormData.value}`}
