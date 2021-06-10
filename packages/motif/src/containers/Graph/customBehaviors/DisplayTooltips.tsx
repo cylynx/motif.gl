@@ -18,6 +18,14 @@ const DisplayTooltip = ({ setTooltip }: DisplayTooltipProps): any => {
     setTooltip(null);
   };
 
+  /**
+   * Prevent display tooltip when dragging nodes.
+   * @see https://github.com/cylynx/motif.gl/issues/141
+   */
+  const onNodeDragStart = (): void => {
+    setTooltip(null);
+  };
+
   const onNodeHover = (e: IG6GraphEvent): void => {
     const item = e.item as INode;
 
@@ -49,12 +57,14 @@ const DisplayTooltip = ({ setTooltip }: DisplayTooltipProps): any => {
   useLayoutEffect(() => {
     graph.on('node:mouseenter', onNodeHover);
     graph.on('node:mouseleave', onMouseLeave);
+    graph.on('node:dragstart', onNodeDragStart);
     graph.on('edge:mouseenter', onEdgeHover);
     graph.on('edge:mouseleave', onMouseLeave);
 
     return (): void => {
       graph.off('node:mouseenter', onNodeHover);
       graph.off('node:mouseleave', onMouseLeave);
+      graph.off('node:dragstart', onNodeDragStart);
       graph.off('edge:mouseenter', onEdgeHover);
       graph.off('edge:mouseleave', onMouseLeave);
     };

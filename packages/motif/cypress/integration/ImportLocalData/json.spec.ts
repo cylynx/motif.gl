@@ -22,18 +22,13 @@ describe('Import Single Local File', () => {
     });
   };
 
-  // before(() => {
-  //   cy.visit('/');
-  //   cy.waitForReact();
+  before(() => {
+    cy.visit('/');
+    cy.waitForReact();
 
-  //   // close modal
-  //   cy.get('button[aria-label="Close"]').click();
-  // });
-
-
-  // afterEach(() => {
-  //   cy.react('ClearDataButton').click();
-  // });
+    // close modal
+    cy.get('button[aria-label="Close"]').click();
+  });
 
   const circleWithoutStyles = `${jsonDatasetRootPath}/circle-without-styles.json`;
   const circleWithStyles = `${jsonDatasetRootPath}/circle-with-styles.json`;
@@ -42,15 +37,18 @@ describe('Import Single Local File', () => {
   const restrictedTermsGraph = `${jsonDatasetRootPath}/restricted-word-dataset.json`;
 
   describe('Local Files Import', () => {
-
     beforeEach(() => {
       cy.visit('/');
       cy.waitForReact();
-  
+
       // close modal
       cy.get('button[aria-label="Close"]').click();
       cy.react('ImportDataButton').click();
-    });  
+    });
+
+    afterEach(() => {
+      cy.react('DeleteButton$1').nthNode(0).click();
+    });
 
     it('should import one file successfully', () => {
       cy.get('input[type="file"]').attachFile(circleWithoutStyles);
@@ -127,12 +125,15 @@ describe('Import Single Local File', () => {
   });
 
   describe('Single File Without Style', () => {
-
     beforeEach(() => {
       cy.visit('/');
       cy.waitForReact();
       cy.get('button[aria-label="Close"]').click();
       cy.react('ImportDataButton').click();
+    });
+
+    afterEach(() => {
+      cy.react('DeleteButton$1').nthNode(0).click();
     });
 
     it('should not overwrites the default graph styles', async () => {
@@ -152,7 +153,6 @@ describe('Import Single Local File', () => {
   });
 
   describe('Single File With Style', () => {
-
     before(() => {
       cy.visit('/');
       cy.waitForReact();
@@ -161,6 +161,10 @@ describe('Import Single Local File', () => {
 
     beforeEach(() => {
       cy.react('ImportDataButton').click();
+    });
+
+    afterEach(() => {
+      cy.react('DeleteButton$1').nthNode(0).click();
     });
 
     it('should overwrite if graph styles are not modified', async () => {
@@ -285,19 +289,15 @@ describe('Import Single Local File', () => {
   });
 
   describe('prevent upload restricted words dataset', () => {
-
     beforeEach(() => {
       cy.visit('/');
       cy.waitForReact();
       cy.get('input[type="file"]').attachFile(restrictedTermsGraph);
       cy.get('button[type="submit"]').click();
-
-      // waiting for loading indicator to dissappear
-      cy.wait(500);
     });
 
     it('should display error message', () => {
-      cy.getReact('ErrorMessage').should('exist');
+      cy.get('[data-testid="error-message"]').should('exist');
       cy.get('button[aria-label="Close"]').click();
     });
   });

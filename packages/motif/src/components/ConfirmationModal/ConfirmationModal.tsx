@@ -36,6 +36,13 @@ const ConfirmationModal: FC<ConfirmationModalProps> = ({
       isOpen={isOpen}
       unstable_ModalBackdropScroll
       closeable={false}
+      overrides={{
+        Root: {
+          style: {
+            zIndex: 3,
+          },
+        },
+      }}
     >
       <ModalHeader>{header}</ModalHeader>
       {body && <ModalBody>{body}</ModalBody>}
