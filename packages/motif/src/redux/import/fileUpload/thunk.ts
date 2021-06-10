@@ -99,7 +99,6 @@ export const previewJson =
 
       createPreviewData(graphList, dispatch, combineProcessedData);
       setEdgeGroupable(graphList, dispatch);
-      setError(null);
       nextStep(step, dispatch);
     } catch (err) {
       const { message } = err;
