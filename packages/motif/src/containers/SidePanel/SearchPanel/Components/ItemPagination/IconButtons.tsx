@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { useStyletron } from 'baseui';
 import { KIND, SHAPE } from 'baseui/button';
-import { Theme } from 'baseui/theme';
 import { Button } from '../../../../../components/ui';
 import * as Icon from '../../../../../components/Icons';
 
