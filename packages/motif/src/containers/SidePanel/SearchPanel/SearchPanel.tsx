@@ -28,7 +28,7 @@ const SearchPanel = () => {
     <Block
       position='absolute'
       height='100vh'
-      width='inherit'
+      width='92%'
       data-testid='search-panel'
     >
       <HeadingMedium marginTop='scale300' marginBottom='scale300'>
