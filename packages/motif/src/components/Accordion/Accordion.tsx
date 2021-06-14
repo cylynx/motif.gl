@@ -1,7 +1,6 @@
 // @ts-nocheck
 import React, { useState } from 'react';
 import { useStyletron } from 'baseui';
-import { Button } from 'baseui/button';
 import { Block } from 'baseui/block';
 import {
   Accordion as BaseAccordion,

@@ -2,7 +2,7 @@ import React, { FC, Fragment } from 'react';
 import { Block } from 'baseui/block';
 import { ParagraphSmall } from 'baseui/typography';
 import { useDispatch } from 'react-redux';
-import * as Icon from '../../../../../components/Icons';
+import QuestionMarkTooltip from '../../../../../components/ui/QuestionMarkTooltip';
 import { ToggleAllButton } from '../../components/LayersPanelButtons';
 import ToggleTokens from '../../../../../components/ToggleTokens';
 import Accordion from '../../../../../components/Accordion';
@@ -28,7 +28,19 @@ const NodeProperties: FC<NodePropertiesProps> = ({ haveData, nodeFields }) => {
   return (
     <Accordion
       data-testid='node-properties-accordion'
-      title='NODE PROPERTIES'
+      title={
+        <Block display='flex' alignItems='end'>
+          NODE PROPERTIES
+          <QuestionMarkTooltip
+            tooltip={
+              <Block width='170px'>
+                Overview of all the node properties from imported data sources.
+                Selected properties are shown when hovering over nodes.
+              </Block>
+            }
+          />
+        </Block>
+      }
       expanded
       content={
         <Fragment>

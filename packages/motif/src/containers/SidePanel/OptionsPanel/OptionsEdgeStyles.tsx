@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-
+import { Block } from 'baseui/block';
 import { HeadingXSmall } from 'baseui/typography';
 import { useDispatch, useSelector } from 'react-redux';
 import { GraphSlices, GraphSelectors } from '../../../redux/graph';
@@ -18,6 +18,7 @@ import {
   edgeLabelForm,
   edgeArrowForm,
 } from './constants';
+import QuestionMarkTooltip from '../../../components/ui/QuestionMarkTooltip';
 
 const OptionsEdgeStyles = () => {
   const dispatch = useDispatch();
@@ -57,14 +58,23 @@ const OptionsEdgeStyles = () => {
 
   return (
     <Card data-testid='OptionsEdgeStyles'>
-      <HeadingXSmall
-        marginTop={0}
-        marginBottom={0}
-        color='contentInverseSecondary'
-        $style={{ letterSpacing: '1px' }}
-      >
-        EDGE STYLES
-      </HeadingXSmall>
+      <Block display='flex' alignItems='end'>
+        <HeadingXSmall
+          marginTop={0}
+          marginBottom={0}
+          color='contentInverseSecondary'
+          $style={{ letterSpacing: '1px' }}
+        >
+          EDGE STYLES
+        </HeadingXSmall>
+        <QuestionMarkTooltip
+          tooltip={
+            <Block width='200px'>
+              Change the size, color and labels of edges to distinguish them.
+            </Block>
+          }
+        />
+      </Block>
       <NestedForm
         data={edgeWidthFormData}
         key={`${edgeWidthFormData.id}-${edgeWidthFormData.value}`}
