@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { Block } from 'baseui/block';
-import { styled } from 'baseui';
 import { LabelSmall } from 'baseui/typography';
 import {
   GroupEdgeReturns,

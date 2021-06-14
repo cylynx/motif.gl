@@ -34,19 +34,16 @@ const Demo = () => {
     <StyletronProvider value={engine}>
       <Provider store={store}>
         <Block height='100vh'>
-          <SampleHeader />
-          <Block height='calc(100vh - 28px)'>
-            <Motif
-              name='Motif'
-              primaryTheme={MotifLightTheme}
-              secondaryTheme={MotifDarkTheme}
-              accessors={{
-                nodeID: 'id',
-                edgeSource: 'source',
-                edgeTarget: 'target',
-              }}
-            />
-          </Block>
+          <Motif
+            name='Motif'
+            primaryTheme={MotifLightTheme}
+            secondaryTheme={MotifDarkTheme}
+            accessors={{
+              nodeID: 'id',
+              edgeSource: 'source',
+              edgeTarget: 'target',
+            }}
+          />
         </Block>
       </Provider>
     </StyletronProvider>

@@ -155,6 +155,8 @@ export const previewNodeEdge =
 
       const { availability: isEdgeGroupable } = graphData.metadata.groupEdges;
       dispatch(setIsEdgeGroupable(isEdgeGroupable));
+
+      // remove error message when upload valid data
       dispatch(setError(null));
       nextStep(step, dispatch);
     } catch (err) {

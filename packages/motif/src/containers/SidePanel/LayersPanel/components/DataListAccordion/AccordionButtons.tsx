@@ -30,7 +30,10 @@ export const VisibilityButton = ({
   );
 
   return (
-    <SimpleTooltip tooltip={isVisible ? 'Hide Layer' : 'Show Layer'}>
+    <SimpleTooltip
+      tooltip={isVisible ? 'Hide Layer' : 'Show Layer'}
+      boundariesElement='viewPort'
+    >
       <Button
         size='mini'
         shape='round'
@@ -65,7 +68,7 @@ export const DeleteButton = ({
   };
 
   return (
-    <SimpleTooltip tooltip={tooltip}>
+    <SimpleTooltip tooltip={tooltip} boundariesElement='viewPort'>
       <Button
         size='mini'
         shape={shape}
@@ -97,7 +100,7 @@ export const TableButton = ({ onClick, ...rest }: TableButtonProps) => {
   };
 
   return (
-    <SimpleTooltip tooltip='Node / Edge Table'>
+    <SimpleTooltip tooltip='Node / Edge Table' boundariesElement='viewPort'>
       <Button
         size='mini'
         shape='round'

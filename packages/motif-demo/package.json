@@ -3,16 +3,17 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "vite",
+    "start": "vite --force",
     "build": "vite build --config vite.build.config.ts",
     "serve": "vite preview --port 3000"
   },
   "dependencies": {
-    "@cylynx/motif": "^0.0.1-beta.5",
+    "@cylynx/motif": "^0.0.1-beta.6",
     "@reduxjs/toolkit": "^1.2.3",
     "attr-accept": "^2.2.2",
     "baseui": "^9.90.0",
     "helphero": "3.5.3",
+    "lodash.uniqby": "^4.7.0",
     "neo4j-driver": "4.2.3",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

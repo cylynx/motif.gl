@@ -401,7 +401,7 @@ export const processCsvData = async (rawCsv: string): Promise<ProcessedCsv> => {
   const headerRow = rawCsv.replace(/\r/g, '').split('\n')[0].split(',');
 
   if (!parsedJson || !headerRow) {
-    throw new Error('invalid input passed to process Csv data');
+    throw new Error('Missing column header in uploaded CSV file');
   }
 
   // assume the csv file that uploaded csv will have first row
@@ -556,6 +556,12 @@ export const getFieldsFromData = (
         // Check first value of the array
         const arrayMetadata = Analyzer.computeColMeta(
           data.map((x) => {
+            // when the array value is null, we will assign an empty array to prevent errors.
+            // https://github.com/cylynx/motif.gl/issues/133
+            if (x[name] === null || x[name].length === 0) {
+              return { arrayValue: null };
+            }
+
             return { arrayValue: x[name][0] };
           }),
           [],
@@ -700,9 +706,8 @@ export const applyGroupEdges = (
 ): GroupEdges => {
   // identify whether graph edges contain duplicate connectivity.
   const graphData: GraphData = { nodes: nodeJson, edges: edgeJson };
-  const duplicateConnectivity: GroupEdgeCandidates = duplicateDictionary(
-    graphData,
-  );
+  const duplicateConnectivity: GroupEdgeCandidates =
+    duplicateDictionary(graphData);
   const isDatasetCanGroupEdge = !isEmpty(duplicateConnectivity);
 
   if (isDatasetCanGroupEdge === false) {
@@ -740,14 +745,25 @@ export const verifySourceAndTargetExistence = (
   const { nodeID, edgeID, edgeSource, edgeTarget } = accessors;
   const nodeIds: string[] = nodes.map((node: Node) => {
     const nodeIdProperty: string = get(node, nodeID, '');
-    return nodeIdProperty;
+    return nodeIdProperty.trim();
   });
   const uniqueNodeIds: string[] = uniq(nodeIds as string[]);
 
   edges.forEach((edge: Edge) => {
-    const source = get(edge, edgeSource, '');
-    const target = get(edge, edgeTarget, '');
-    const id = get(edge, edgeID, '');
+    let source: string = get(edge, edgeSource, '');
+    if (typeof source === 'string') {
+      source = source.trim();
+    }
+
+    let target: string = get(edge, edgeTarget, '');
+    if (typeof target === 'string') {
+      target = target.trim();
+    }
+
+    let id: string = get(edge, edgeID, '');
+    if (typeof id === 'string') {
+      id = id.trim();
+    }
 
     const isPossessSource = uniqueNodeIds.includes(source);
     if (!isPossessSource) {

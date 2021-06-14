@@ -10,6 +10,8 @@ type SimpleTooltipProps = {
   children?: React.ReactNode;
   placement?: PopoverPlacementT;
   overrides?: BasePopoverProps['overrides'];
+  // https://popper.js.org/docs/v1/#modifiers..preventOverflow.boundariesElement
+  boundariesElement?: 'scrollParent' | 'window' | 'viewPort';
 };
 
 const defaultOverrides: BasePopoverProps['overrides'] = {
@@ -44,6 +46,9 @@ const defaultOverrides: BasePopoverProps['overrides'] = {
  * Remove warnings in console
  * 1. Configure preventOverflow to true in popper modifier as it is required by hide.
  * 2. Configure boundariesElement to "viewport" to support popper's placement.
+ *
+ * The boundariesElement is set to 'scrollParent' as default
+ * - for the widget to display nicely in Jupyter Notebook.
  */
 const SimpleTooltip = ({
   title,
@@ -51,6 +56,7 @@ const SimpleTooltip = ({
   placement = PLACEMENT.top,
   children,
   overrides = defaultOverrides,
+  boundariesElement = 'scrollParent',
 }: SimpleTooltipProps) => {
   return (
     <StatefulTooltip
@@ -63,7 +69,7 @@ const SimpleTooltip = ({
         modifiers: {
           preventOverflow: {
             enabled: true,
-            boundariesElement: 'scrollParent',
+            boundariesElement,
           },
           hide: {
             enabled: false,

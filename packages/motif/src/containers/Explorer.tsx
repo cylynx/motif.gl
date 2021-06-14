@@ -57,7 +57,16 @@ export const WidgetContainer = (props: WidgetContainerProps) => {
     return (
       <>
         <ThemeProvider theme={theme}>
-          <ToasterContainer placement={PLACEMENT.top}>
+          <ToasterContainer
+            placement={PLACEMENT.top}
+            overrides={{
+              Root: {
+                style: {
+                  zIndex: 2,
+                },
+              },
+            }}
+          >
             <GraphRefContext.Provider value={graphRef.current}>
               {children}
             </GraphRefContext.Provider>
@@ -139,7 +148,13 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
         theme={primaryTheme || MotifLightTheme}
         overrides={{
           AppContainer: {
-            style: { position: 'relative', height: '100%', width: '100%' },
+            style: {
+              position: 'relative',
+              height: '100%',
+              width: '100%',
+              overflowX: 'hidden',
+              overflowY: 'hidden',
+            },
           },
         }}
       >

@@ -5,7 +5,7 @@ import {
   Control,
   UseFormClearErrors,
   UseFormSetValue,
-  UseFormSetError
+  UseFormSetError,
 } from 'react-hook-form';
 import { OnChangeParams, Option, Value } from 'baseui/select';
 import useFileContents, { defaultField } from '../hooks/useFileContents';
@@ -104,12 +104,8 @@ const AccessorFields: FC<AccessorsFieldsProps> = ({
       return;
     };
 
-    const {
-      nodeID,
-      edgeID,
-      edgeSource,
-      edgeTarget,
-    } = getValues() as ConfigureFieldsForm;
+    const { nodeID, edgeID, edgeSource, edgeTarget } =
+      getValues() as ConfigureFieldsForm;
     setDefaultValue(nodeIDOptions, 'nodeID', nodeID);
     setDefaultValue(edgeIDOptions, 'edgeID', edgeID);
     setDefaultValue(edgeFieldOptions, 'edgeSource', edgeSource);

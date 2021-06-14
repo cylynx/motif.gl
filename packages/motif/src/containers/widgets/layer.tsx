@@ -29,7 +29,7 @@ export const BottomRightLayer: FC = ({ children }) => {
         position: 'absolute',
         bottom: '10px',
         right: '10px',
-        width: '550px',
+        width: '580px',
       }}
     >
       {children}
@@ -189,6 +189,7 @@ export class GraphLayer extends Component<GraphLayerProps, GraphLayerState> {
 
     return (
       <Block
+        data-testid='graph-layer'
         ref={this.blockRef}
         position='relative'
         width={width}

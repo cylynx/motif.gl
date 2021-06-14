@@ -19,11 +19,6 @@ export const defaultImportTabs: ImportTabs[] = [
     key: 'sample-data',
     component: <SampleData />,
   },
-  {
-    title: 'Banking API',
-    key: 'banking-api',
-    component: <div>Banking API</div>,
-  },
 ];
 
 const StyledModalHeader = withStyle(ModalHeader, ({ $theme }) => ({
@@ -80,6 +75,11 @@ const ImportWizardModal: FC<ImportWizardProps> = ({ overrideTabs }) => {
         onClose={onCloseModal}
         size={SIZE.auto}
         overrides={{
+          Root: {
+            style: {
+              zIndex: 1,
+            },
+          },
           Dialog: {
             style: {
               width: '848px',

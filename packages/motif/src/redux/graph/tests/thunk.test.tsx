@@ -21,7 +21,6 @@ import {
   updateStyleOption,
   overwriteEdgeSelection,
   updateLastGroupEdgeIds,
-  updateGraphFlatten,
 } from '../slice';
 import {
   importJson,
@@ -53,6 +52,7 @@ import {
 import { getGraph } from '../selectors';
 import { resetState } from '../../import/fileUpload/slice';
 import { TFileContent } from '../../import/fileUpload';
+import { whitespaceNodeEdge } from './constant';
 
 const mockStore = configureStore([thunk]);
 const getStore = (): RootState => {
@@ -825,6 +825,63 @@ describe('thunk.test.js', () => {
           }, 300);
         });
     });
+
+    it('should import source and target with whitespace successfully', async (done) => {
+      const store = mockStore(getStore());
+      const { nodeCsv, edgeCsv } = whitespaceNodeEdge;
+      const { accessors } = initialState;
+      const metadataKey = '123';
+      const groupEdgeToggle = false;
+
+      const nodeCsvs: string[] = nodeCsv.map(
+        (nodeCsv: TFileContent) => nodeCsv.content as string,
+      );
+      const edgeCsvs: string[] = edgeCsv.map(
+        (edgeCsv: TFileContent) => edgeCsv.content as string,
+      );
+
+      const data = await importNodeEdgeCsv(
+        nodeCsvs,
+        edgeCsvs,
+        accessors,
+        groupEdgeToggle,
+        metadataKey,
+      );
+
+      // group edge configurations
+      const groupEdgeConfig = { toggle: groupEdgeToggle, availability: false };
+      Object.assign(data.metadata.groupEdges, groupEdgeConfig);
+
+      const expectedActions = [
+        fetchBegin(),
+        addQuery(data),
+        processGraphResponse({
+          data,
+          accessors,
+        }),
+        updateToast('toast-0'),
+        resetState(),
+        fetchDone(),
+        closeModal(),
+      ];
+
+      return store
+        .dispatch(
+          importNodeEdgeData(
+            whitespaceNodeEdge,
+            groupEdgeToggle,
+            accessors,
+            metadataKey,
+          ),
+        )
+        .then(() => {
+          setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+          }, 300);
+        });
+    });
+
     it('should throw errors if importNodeEdgeData parameter is array', async () => {
       const importDataArr = [sampleNodeEdgeData];
       await expect(importNodeEdgeData(importDataArr)).toThrow(Error);
