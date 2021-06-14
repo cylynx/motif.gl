@@ -15,6 +15,7 @@ import { GraphinContextType, IUserEdge, IUserNode } from '@cylynx/graphin';
 import isEmpty from 'lodash/isEmpty';
 import { GraphRefContext } from '../Graph';
 import SelectVariable from '../../components/SelectVariable';
+import QuestionMarkTooltip from '../../components/ui/QuestionMarkTooltip';
 import { RangePlot } from '../../components/plots';
 import {
   AnimationController,
@@ -239,15 +240,28 @@ const VariableInspector = () => {
 
   const LabelSmallMemo = useMemo(
     () => (
-      <HeadingXSmall
-        marginTop={0}
-        marginBottom={0}
-        marginRight='scale300'
-        color='contentInverseSecondary'
-        $style={{ letterSpacing: '1px' }}
-      >
-        VARIABLE INSPECTOR
-      </HeadingXSmall>
+      <Block display='flex' alignItems='center' marginRight='scale300'>
+        <HeadingXSmall
+          marginTop={0}
+          marginBottom={0}
+          color='contentInverseSecondary'
+          $style={{ letterSpacing: '1px' }}
+          width='75px'
+        >
+          VARIABLE INSPECTOR
+        </HeadingXSmall>
+        <QuestionMarkTooltip
+          tooltip={
+            <Block width='190px'>
+              <span>
+                Add a soft filter to your graph to focus on areas of interest.
+                It can be used on a time-series attribute with the playback
+                action buttons to visualise activities over time.
+              </span>
+            </Block>
+          }
+        />
+      </Block>
     ),
     [],
   );

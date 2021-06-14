@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Block } from 'baseui/block';
 import { HeadingXSmall } from 'baseui/typography';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -7,6 +7,7 @@ import { GraphSlices, GraphSelectors } from '../../../redux/graph';
 import { Card } from '../../../components/ui';
 import { NestedForm, genNestedForm } from '../../../components/form';
 import { layoutForm } from './constants';
+import QuestionMarkTooltip from '../../../components/ui/QuestionMarkTooltip';
 
 const OptionsLayout = () => {
   const dispatch = useDispatch();
@@ -36,14 +37,26 @@ const OptionsLayout = () => {
 
   return (
     <Card data-testid='OptionsLayout'>
-      <HeadingXSmall
-        marginTop={0}
-        marginBottom={0}
-        color='contentInverseSecondary'
-        $style={{ letterSpacing: '1px' }}
-      >
-        LAYOUT
-      </HeadingXSmall>
+      <Block display='flex' alignItems='end'>
+        <HeadingXSmall
+          marginTop={0}
+          marginBottom={0}
+          color='contentInverseSecondary'
+          $style={{ letterSpacing: '1px' }}
+        >
+          LAYOUT
+        </HeadingXSmall>
+
+        <QuestionMarkTooltip
+          tooltip={
+            <Block width='190px'>
+              Try different layouts to better visualise your graph. E.g.
+              force-directed for a good default, sequential for ordered data or
+              xy-coordinates to fix it at a particular location.
+            </Block>
+          }
+        />
+      </Block>
       <NestedForm data={formData} key={`${formData.id}-${formData.value}`} />
     </Card>
   );

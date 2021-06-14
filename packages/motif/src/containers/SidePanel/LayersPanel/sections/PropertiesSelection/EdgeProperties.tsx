@@ -6,6 +6,7 @@ import { ToggleAllButton } from '../../components/LayersPanelButtons';
 import ToggleTokens from '../../../../../components/ToggleTokens';
 import Accordion from '../../../../../components/Accordion';
 import { GraphSlices, Selection } from '../../../../../redux/graph';
+import QuestionMarkTooltip from '../../../../../components/ui/QuestionMarkTooltip';
 
 type EdgePropertiesProps = { haveData: boolean; edgeFields: Selection[] };
 const EdgeProperties: FC<EdgePropertiesProps> = ({ haveData, edgeFields }) => {
@@ -28,7 +29,19 @@ const EdgeProperties: FC<EdgePropertiesProps> = ({ haveData, edgeFields }) => {
   return (
     <Accordion
       data-testid='edge-properties-accordion'
-      title='EDGE PROPERTIES'
+      title={
+        <Block display='flex' alignItems='end'>
+          EDGE PROPERTIES
+          <QuestionMarkTooltip
+            tooltip={
+              <Block width='170px'>
+                Overview of all the edge properties from imported data sources.
+                Selected properties are shown when hovering over edges.
+              </Block>
+            }
+          />
+        </Block>
+      }
       expanded
       content={
         <Fragment>
