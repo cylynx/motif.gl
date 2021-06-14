@@ -1,4 +1,3 @@
-
 # motif
 
 Jupyter widget bindings for the motif library
@@ -16,6 +15,7 @@ If you are using Jupyter Lab <= 2, you might need to install the extension manua
 
 If you are using Jupyter Notebook 5.2 or earlier, you may also need to enable
 the nbextension:
+
 ```
 jupyter nbextension enable --py [--sys-prefix|--user|--system] pymotif
 ```
@@ -25,6 +25,7 @@ jupyter nbextension enable --py [--sys-prefix|--user|--system] pymotif
 Demo notebooks can be found in the `examples` folder.
 
 Sample code:
+
 ```
 from pymotif import Motif
 import networkx as nx
@@ -65,6 +66,12 @@ npm run pymotif:build // In root directory to link it with monorepo setup
 python -m pip install -e .
 ```
 
+Install required Python packages:
+
+```
+python -m pip install -r requirements.txt
+```
+
 If you are using JupyterLab:
 
 ```
@@ -90,7 +97,7 @@ And in a separate session, begin watching the source directory for changes:
 npm run pymotif  // In root directory to link it with monorepo setup
 ```
 
-After a change wait for the build to finish and then refresh your browser and the changes should take effect.  
+After a change wait for the build to finish and then refresh your browser and the changes should take effect.
 
 If you make a change to the python code then you will need to restart the notebook kernel to have it take effect.
 

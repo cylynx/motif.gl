@@ -5,11 +5,13 @@
 # Distributed under the terms of the Modified BSD License.
 
 import json
+import neo4j
 import networkx as nx
 import pandas as pd
 
 from ipywidgets import DOMWidget, ValueWidget, register, Layout
 from traitlets import Dict, Unicode, Bool
+from typing import Tuple
 
 from ._frontend import module_name, module_version
 
@@ -18,6 +20,7 @@ DISPLAY = Layout(width='100%', height='600px')
 
 # minimise hard-coding elsewhere
 NX_GRAPH = 'nx_graph'
+NEO4J_GRAPH = 'neo4j_graph'
 JSON_PATH = 'json_path'
 CSV_PATH = 'csv_path'
 STYLE = 'style'
@@ -32,6 +35,7 @@ EDGES = 'edges'
 # allowed kwargs upon class instantiation
 ALLOWED = {
     NX_GRAPH: nx.Graph,
+    NEO4J_GRAPH: neo4j.graph.Graph,
     JSON_PATH: str,
     CSV_PATH: str,
     STYLE: dict,
@@ -88,6 +92,10 @@ class Motif(DOMWidget, ValueWidget):
 
         nx_graph: nx.Graph
             A networkx graph to be rendered
+
+        neo4j_graph: neo4j.graph.Graph
+            A neo4j graph to be rendered, obtained from the neo4j.Result.graph() method.
+            Ref: https://neo4j.com/docs/api/python-driver/current/api.html#graph
 
         csv_path: str
             Path to a local CSV edgelist file
@@ -164,11 +172,11 @@ class Motif(DOMWidget, ValueWidget):
         require_import=False:
             Whether it is required to pass a graph import.
         """
-        IMPORTS = { JSON_PATH, NX_GRAPH, CSV_PATH }
+        IMPORTS = { JSON_PATH, NX_GRAPH, NEO4J_GRAPH, CSV_PATH }
 
         # if required, check that only 1 import type is passed
         if require_import and len(set(kwargs) & IMPORTS) != 1:
-            raise KeyError(f'Pass 1 import type parameter: nx_graph, json_path, or csv_path.')
+            raise KeyError(f'Pass 1 import type parameter: nx_graph, neo4j_graph, json_path, or csv_path.')
 
         for k, v in kwargs.items():
             # check for accepted params
@@ -192,7 +200,7 @@ class Motif(DOMWidget, ValueWidget):
                 raise ValueError(f'{k} should not be an empty string')
 
 
-    def _prep_import(self, **kwargs) -> (dict, bool):
+    def _prep_import(self, **kwargs) -> Tuple[dict, bool]:
         """ 
         Based on kwargs passed, prepares graph data from various formats
         to be imported into the Motif widget.
@@ -225,6 +233,10 @@ class Motif(DOMWidget, ValueWidget):
             if NX_GRAPH in kwargs:
                 nx_graph = kwargs[NX_GRAPH]
                 motif_graph = self._nx_to_motif(nx_graph)  
+            
+            if NEO4J_GRAPH in kwargs:
+                neo4j_graph = kwargs[NEO4J_GRAPH]
+                motif_graph = self._neo4j_to_motif(neo4j_graph)
             
             if CSV_PATH in kwargs:
                 csv_path = kwargs[CSV_PATH]
@@ -259,6 +271,56 @@ class Motif(DOMWidget, ValueWidget):
         # take relevant parts from cyjs format and add to data
         motif_data[NODES] = [node[DATA] for node in cyjs['elements'][NODES]]
         motif_data[EDGES] = [edge[DATA] for edge in cyjs['elements'][EDGES]]
+
+        return motif_data
+    
+
+    def _neo4j_to_motif(self, neo4j_graph: neo4j.graph.Graph) -> dict:
+        """
+        Converts a neo4j_graph into a dict format 
+        suitable for plotting in Motif: { nodes: [...], edges: [...] }
+
+        From https://neo4j.com/docs/api/python-driver/current/api.html#graph:
+            1) neo4j.graph.Graph only contains nodes and relationships, no paths
+            2) neo4j.graph.Graph is still experimental. 
+        """
+        self._validate(neo4j_graph=neo4j_graph)
+        
+        def neo4j_to_motif_node(neo4j_node):
+            """ Converts a neo4j node to motif node """
+            main_properties = {
+                'id': f'node-{neo4j_node.id}',
+                'labels': next(iter(neo4j_node._labels))    # get only item in frozenset
+            }
+            
+            # merge main props with remaining ones, main props will overwrite
+            motif_node = {**neo4j_node._properties, **main_properties}
+
+            return motif_node
+        
+        def neo4j_to_motif_edge(neo4j_edge):
+            """ Converts a neo4j edge to motif edge """
+            main_properties = {
+                'id': f'edge-{neo4j_edge.id}',
+                'source': f'node-{neo4j_edge.start_node.id}',
+                'target': f'node-{neo4j_edge.end_node.id}',
+                'relationship': neo4j_edge.type,
+            }
+            
+            # merge main props with remaining ones, main props will overwrite
+            motif_edge = {**neo4j_edge._properties, **main_properties}
+
+            return motif_edge
+
+        # https://stackoverflow.com/questions/59289134/constructing-networkx-graph-from-neo4j-query-result
+        # https://github.com/neo4j/neo4j-python-driver/blob/4.3/neo4j/graph/__init__.py
+        neo4j_nodes = neo4j_graph._nodes.values()
+        neo4j_edges = neo4j_graph._relationships.values()
+        
+        motif_data = {
+            NODES: [neo4j_to_motif_node(n) for n in neo4j_nodes],
+            EDGES: [neo4j_to_motif_edge(e) for e in neo4j_edges],
+        }
 
         return motif_data
 
