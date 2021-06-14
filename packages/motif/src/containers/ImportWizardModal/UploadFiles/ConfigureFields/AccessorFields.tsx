@@ -5,6 +5,7 @@ import {
   Control,
   UseFormClearErrors,
   UseFormSetValue,
+  UseFormSetError
 } from 'react-hook-form';
 import { OnChangeParams, Option, Value } from 'baseui/select';
 import useFileContents, { defaultField } from '../hooks/useFileContents';
@@ -21,15 +22,7 @@ type AccessorsFieldsProps = {
   onSelectChange: (params: OnChangeParams, onChange: any) => any;
   control: Control<ConfigureFieldsForm>;
   watch: (names?: string | string[]) => any;
-  setError: (
-    name: keyof ConfigureFieldsForm,
-    error: {
-      type?: string;
-      types?: object;
-      message?: string;
-      shouldFocus?: boolean;
-    },
-  ) => void;
+  setError: UseFormSetError<ConfigureFieldsForm>;
   clearErrors: UseFormClearErrors<ConfigureFieldsForm>;
   getValues: (payload?: string | string[]) => Object;
   errors: Record<string, Object>;
