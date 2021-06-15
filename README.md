@@ -1,9 +1,14 @@
 [![NPM](https://img.shields.io/npm/v/@cylynx/motif.svg)](https://www.npmjs.com/package/@cylynx/motif) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-![](motif-demo.gif)
+![](motif-banner.png)
 # @cylynx/motif
 
+The no-code graph visualization platform
+
+## Features
+
 - No server required, just a web browser
+- No code, visual UI
 - Supports multiple graph imports
 - Support for rich graph structures, including time series analysis
 - Extensible with a widget based component system
@@ -13,11 +18,12 @@
 
 ## Motivation
 
-Motif is an open-sourced graph explorer born from our numerous graph visualization projects at Cylynx. We hope to make graph exploration, visualization and discovery quicker and easier.
+Motif is an open-sourced graph explorer born from our numerous graph visualisation projects at Cylynx. We hope to make graph exploration, visualisation and discovery quicker and easier.
 
 Inspired by [Kepler.gl](https://github.com/keplergl/kepler.gl) and [Neo4j Bloom](https://neo4j.com/product/bloom/)
 
 ## Demo
+![](motif-demo.gif)
 
 Try out a full-featured demo with walkthrough at https://demo.cylynx.io
 
@@ -26,8 +32,10 @@ Try out a full-featured demo with walkthrough at https://demo.cylynx.io
 - Better performance
 - Smaller bundle size
 - Improve legend support
+- Export more components
 - More import and export integrations
 - Documentation page
+
 ## Packages
 
 We use a monorepo approach to maintain our packages
@@ -35,6 +43,7 @@ We use a monorepo approach to maintain our packages
 - [@cylynx/motif](https://www.npmjs.com/package/@cylynx/motif), Core Library of Motif
 - **motif-demo**, Deployed demo of **@cylynx/motif**
 - [@cylynx/pymotif](https://www.npmjs.com/package/@cylynx/pymotif), Jupyter widget bindings for Motif (beta)
+- **ui**, playground for ui components
 
 ## Getting Started
 
@@ -94,6 +103,8 @@ const App = () => {
 
 export default App;
 ```
+
+For more information on the supported graph formats, check out [README.md in packages/motif](./packages/motif/README.md).
 
 ## Development
 
