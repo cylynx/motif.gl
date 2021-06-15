@@ -92,6 +92,9 @@ setup_args = dict(
     python_requires=">=3.6",
     install_requires = [
         'ipywidgets>=7.0.0',
+        'pandas>=1.2.4',
+        'networkx>=2.5.1',
+        'neo4j>=4.3.1'
     ],
     extras_require = {
         'test': [

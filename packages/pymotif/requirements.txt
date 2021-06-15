@@ -1,4 +1,0 @@
-networkx
-pandas
-neo4j
-jupyter_packaging

@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/lines-between-class-members */
+/* eslint-disable max-classes-per-file */
+
 // Copyright (c) Cylynx
 // Distributed under the terms of the Modified BSD License.
 
@@ -122,12 +125,12 @@ export class MotifView extends DOMWidgetView {
   // update redux store based on 'state' from Python model anytime 'state' changes
   private updateStore(): void {
     const state: TLoadFormat = this.model.get('state');
-    const group_edges: boolean = this.model.get('group_edges');
+    const groupEdges: boolean = this.model.get('group_edges');
 
     if (Array.isArray(state.data) && state.data.length) {
       const action: any = GraphThunks.importJsonData(
         [state as JsonImport],
-        group_edges,
+        groupEdges,
         null,
         true,
       );

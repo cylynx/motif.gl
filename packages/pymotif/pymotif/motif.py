@@ -83,7 +83,8 @@ class Motif(DOMWidget, ValueWidget):
             Whether to group edges if there are multiple edges from the same
             source to same target. Overwrites previous setting, if any.
         """
-        super().__init__(layout=C.DISPLAY)
+        # super().__init__(layout=C.DISPLAY)
+        super().__init__()
 
         if kwargs:
             self.state, self.group_edges = self._prep_import(**kwargs)
