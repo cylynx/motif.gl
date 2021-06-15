@@ -240,16 +240,22 @@ export const styleNodeFontSize = (
  *
  * @param {Node} node
  * @param {Partial<NodeStyle>} nodeStyle
- * @param {string} label
+ * @param {(string | string[])} label
  * @return {void}
  */
 export const styleNodeLabel = (
   node: Node,
   nodeStyle: Partial<NodeStyle>,
-  label: string,
+  label: string | string[],
 ): void => {
   const labelStyle: Partial<NodeStyle['label']> = nodeStyle.label ?? {};
-  const customLabel = get(node, label, '').toString();
+  // display comma separated string if array and display only non-empty elements
+  const customLabel = Array.isArray(label)
+    ? label
+        .map((field) => get(node, field))
+        .filter((x) => x)
+        .join(',')
+    : get(node, label, '').toString();
 
   if (label === 'none') {
     Object.assign(labelStyle, { visible: false });

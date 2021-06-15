@@ -30,8 +30,10 @@ const cleanGetValues = (obj: any) => {
   const results = {};
   Object.entries(obj).forEach(([key, value]: any[]) => {
     if (Array.isArray(value) && value[0]?.id) {
-      // select
-      results[key] = value[0].id;
+      // if multi-select return array [field1, field2]
+      // else return string e.g. "field1"
+      results[key] =
+        value.length === 1 ? value[0].id : value.map((opt) => opt.id);
     } else if (
       Array.isArray(value) &&
       typeof value[0] === 'number' &&

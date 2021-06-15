@@ -109,7 +109,6 @@ const initialState: GraphState = {
         id: 'fixed',
         value: 1,
       },
-      label: '-',
     },
   },
   filterOptions: {},
@@ -260,6 +259,7 @@ const graph = createSlice({
         [key: string]: any;
       }>,
     ) {
+      console.log(action.payload);
       Object.entries(action.payload).forEach(([key, value]) => {
         state.styleOptions.nodeStyle[key] = value;
         // Assign default color mapping for legend
