@@ -7,7 +7,6 @@ import * as Icon from '../../components/Icons';
 import { GraphRefContext } from '../Graph';
 import { GraphSlices } from '../../redux/graph';
 import ToolbarButton, { ToolbarItem } from './ToolbarButton';
-import SettingsPopover from './SettingsPopover';
 import LegendPopover from './LegendPopover';
 import useGraphBehaviors from '../Graph/hooks/useGraphBehaviors';
 import useNodeStyle from '../../redux/graph/hooks/useNodeStyle';
@@ -61,14 +60,6 @@ const Toolbar = () => {
   const menuItems: ToolbarItem[] = [
     {
       key: 1,
-      name: 'Settings',
-      icon: <Icon.Gear size={18} />,
-      isDisabled: false,
-      popoverContent: () => <SettingsPopover />,
-      onClick: null,
-    },
-    {
-      key: 2,
       name: 'Legend',
       icon: <Icon.Legend size={18} />,
       isDisabled: false,
@@ -76,7 +67,7 @@ const Toolbar = () => {
       onClick: null,
     },
     {
-      key: 3,
+      key: 2,
       name: 'Full Screen',
       icon: <Icon.FullScreen size={18} />,
       isDisabled: false,
@@ -84,7 +75,7 @@ const Toolbar = () => {
       onClick: () => toggleFullScreen(),
     },
     {
-      key: 4,
+      key: 3,
       name: 'Undo',
       icon: <Icon.Undo size={18} />,
       isDisabled: false,
@@ -92,7 +83,7 @@ const Toolbar = () => {
       onClick: () => dispatch(UndoActionCreators.undo()),
     },
     {
-      key: 5,
+      key: 4,
       name: 'Redo',
       icon: <Icon.Redo size={18} />,
       isDisabled: false,
@@ -100,7 +91,7 @@ const Toolbar = () => {
       onClick: () => dispatch(UndoActionCreators.redo()),
     },
     {
-      key: 6,
+      key: 5,
       name: 'Zoom In',
       icon: <Icon.ZoomIn size={18} />,
       isDisabled: false,
@@ -108,7 +99,7 @@ const Toolbar = () => {
       onClick: () => handleGraphZoom(true),
     },
     {
-      key: 7,
+      key: 6,
       name: 'Zoom Out',
       icon: <Icon.ZoomOut size={18} />,
       isDisabled: false,
@@ -116,7 +107,7 @@ const Toolbar = () => {
       onClick: () => handleGraphZoom(false),
     },
     {
-      key: 8,
+      key: 7,
       name: 'Clear',
       icon: <Icon.X size={18} />,
       isDisabled: false,

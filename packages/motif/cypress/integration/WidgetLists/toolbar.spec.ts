@@ -19,8 +19,8 @@ describe('Toolbar', () => {
     getToolbar().should('exist');
   });
 
-  it('should have eight icons button', () => {
-    getToolbar().getReact('ToolbarButton').should('have.length', 8);
+  it('should have 7 icons button', () => {
+    getToolbar().getReact('ToolbarButton').should('have.length', 7);
   });
 
   it('should render legend button successfully', () => {
