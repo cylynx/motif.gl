@@ -167,13 +167,13 @@ export const styleEdgeWidthByProp = (
  * Style Edge Label based on given value in Edge Filter Options
  * @param {IUserEdge} edge
  * @param {Partial<EdgeStyle>} edgeStyle
- * @param {string} label
+ * @param {(string | string[])} label
  * @return {void}
  */
 export const styleEdgeLabel = (
   edge: IUserEdge,
   edgeStyle: Partial<EdgeStyle>,
-  label: string,
+  label: string | string[],
 ): void => {
   const labelStyle: Partial<EdgeStyle['label']> = edgeStyle.label ?? {
     fill: edgeFontColor.normal,
@@ -183,7 +183,14 @@ export const styleEdgeLabel = (
     offset: DEFAULT_EDGE_STYLE.label.offset,
   };
 
-  let customLabel = get(edge, label) ?? '';
+  // display comma separated string if array and display only non-empty elements
+  let customLabel = Array.isArray(label)
+    ? label
+        .map((field) => get(edge, field))
+        .filter((x) => x)
+        .join(',')
+    : get(edge, label) ?? '';
+
   customLabel = customLabel.toString();
 
   Object.assign(labelStyle, {

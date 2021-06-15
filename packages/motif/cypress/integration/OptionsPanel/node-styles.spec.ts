@@ -128,8 +128,18 @@ describe('Node Style Filter', () => {
       changeNodeLabel(selectedLabel);
 
       const nodeStyle: NodeStyleOptions = await getNodeStyleFromReduxStore();
-      const nodeLabel: string = nodeStyle.label;
+      const nodeLabel: string | string[] = nodeStyle.label;
       expect(nodeLabel).to.deep.equal(selectedLabel);
+    });
+
+    it('should handle multiple selections', async () => {
+      const selectedLabel: string = 'create_date';
+      changeNodeLabel(selectedLabel);
+      const expectedLabel = ['id', 'create_date'];
+
+      const nodeStyle: NodeStyleOptions = await getNodeStyleFromReduxStore();
+      const nodeLabel: string | string[] = nodeStyle.label;
+      expect(nodeLabel).to.deep.equal(expectedLabel);
     });
   });
 
