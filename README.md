@@ -1,16 +1,40 @@
 [![NPM](https://img.shields.io/npm/v/@cylynx/motif.svg)](https://www.npmjs.com/package/@cylynx/motif) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
+![](motif-demo.gif)
 # @cylynx/motif
 
-> An out of the box graph visualization toolkit to assist analysis and investigation of network data.
-
 - No server required, just a web browser
-- Layered graph objects
-- Support for rich graph strctures, including time series analysis
+- Supports multiple graph imports
+- Support for rich graph structures, including time series analysis
 - Extensible with a widget based component system
 - Multiple layout algorithms (force-directed, concentric, grid etc.)
-- Multiple style options (global and local)
-- Multiple import formats (json and csv with more to come!)
+- Multiple node and edge style options
+- Multiple import formats (json, csv, neo4j with more to come!)
+
+## Motivation
+
+Motif is an open-sourced graph explorer born from our numerous graph visualization projects at Cylynx. We hope to make graph exploration, visualization and discovery quicker and easier.
+
+Inspired by [Kepler.gl](https://github.com/keplergl/kepler.gl) and [Neo4j Bloom](https://neo4j.com/product/bloom/)
+
+## Demo
+
+Try out a full-featured demo with walkthrough at https://demo.cylynx.io
+
+## Roadmap
+
+- Better performance
+- Smaller bundle size
+- Improve legend support
+- More import and export integrations
+- Documentation page
+## Packages
+
+We use a monorepo approach to maintain our packages
+
+- [@cylynx/motif](https://www.npmjs.com/package/@cylynx/motif), Core Library of Motif
+- **motif-demo**, Deployed demo of **@cylynx/motif**
+- [@cylynx/pymotif](https://www.npmjs.com/package/@cylynx/pymotif), Jupyter widget bindings for Motif (beta)
 
 ## Getting Started
 
@@ -52,13 +76,14 @@ const App = () => {
       <BaseProvider theme={MotifLightTheme}>
         <Provider store={store}>
           <Motif
-            name='Blocklynx'
+            name='Motif'
+            primaryTheme={MotifLightTheme}
             secondaryTheme={MotifDarkTheme}
             accessors={{
               nodeID: 'id',
-              nodeType: 'data.type',
-              edgeSource: 'from',
-              edgeTarget: 'to',
+              edgeID: 'id',
+              edgeSource: 'source',
+              edgeTarget: 'target',
             }}
           />
         </Provider>
@@ -70,19 +95,15 @@ const App = () => {
 export default App;
 ```
 
-## Contribution
+## Development
 
-Motif utilise [Lerna](https://github.com/lerna/lerna) to manage multi-package repositories to ease up collaboration and testing. The library is bundled with [Vite](https://github.com/vitejs/vite).
+Motif utilise [Lerna](https://github.com/lerna/lerna) to manage multi-package repositories with npm workspaces to ease collaboration and testing. 
 
-### Packages
-
-- [@cylynx/motif](https://www.npmjs.com/package/@cylynx/motif), Core Library of Motif
-- [@cylynx/pymotif](https://www.npmjs.com/package/@cylynx/pymotif), Jupyter widget bindings for Motif
-- **motif-demo**, Client side that test the functionality of **@cylynx/motif**
+The library is bundled with [Vite](https://github.com/vitejs/vite).
 
 ### Environment Installation
 
-1. Verify Node and NPM version.
+1. Verify Node and NPM version. We use nvm to manage node and npm version - `nvm use 15`.
 
 ```bash
 $ node -v
@@ -92,38 +113,44 @@ $ npm -v
 v7.7.6
 ```
 
-2. Perform dependencies installation and link any cross-dependecies in the monorepo. This process create a symlink together all `packages` that are dependent to each others.
+2. Install the dependencies and link any cross-dependencies in the monorepo.
 
 ```bash
 $ npm install --legacy-peer-deps
-$ npm run bootstrap
+```
+
+**Note**: If you are facing problems installing it might be worth to clear the cache and re-install the dependencies:
+
+```
+$ npm cache clean --force
+$ npm install --legacy-peer-deps
 ```
 
 ### Develop with Hot-Reloading
 
-The instruction below requires to be execute simultaneously during the development. We will perform watch on React component changes and strict-type checking to prevent nonsencial operation and estalish a smooth development experiences.
+We use vite with tsc for development.
 
-**Watch Component Changes**
+**Start development server with preview**
 
 ```bash
 $ npm run motif
 ```
 
-**Develop with Strict Type-Checking**
+**Develop with strict type-checking**
 
 ```bash
 $ npm run motif:tsc
 ```
 
-### Preview Library on Client Side
+### Production build
 
-**Perform Bundling into Typescript Library**
+**Build and bundling into typescript library**
 
 ```bash
 $ npm run motif:build
 ```
 
-**Preview the Production Bundle**
+**Preview the production bundle**
 
 ```bash
 $ npm run demo
@@ -131,18 +158,18 @@ $ npm run demo
 
 ### Testing
 
-**Unit Test**
+**Unit test**
 
-The test runner of **@cylynx/motif** is configure with [Jest](https://jestjs.io/) testing framework. The following commands are use to verify whether the test case are execute correctly.
+The test runner of **@cylynx/motif** is configure with [Jest](https://jestjs.io/) testing framework. The following commands are use to verify whether the test cases are executed correctly.
 
 ```bash
 $ cd ./packages/motif
 $ npm run test
 ```
 
-**Cypress Test**
+**E2E test**
 
-Test runner of **@cylynx/motif** is configure with [Cypress](https://www.cypress.io/) testing framework. The motivation of having end-to-end test is to verify the consistency and accuracy of the library in client's browser environment. Therefore, several commands and procedure are requires as prequisite to setup the test environment.
+We use [Cypress](https://www.cypress.io/) testing framework to run e2e tests. This verifies the consistency and accuracy of the library in the client's browser environment. Therefore, several commands and procedure are requires as prequisite to setup the test environment.
 
 1. Perform bundling on the `@cylynx/motif` packages to produce production bundles,
 
@@ -150,30 +177,43 @@ Test runner of **@cylynx/motif** is configure with [Cypress](https://www.cypress
 $ npm run motif:build
 ```
 
-2. The production bundle produced in **step 1** will be import by **motif-demo**, the **motif-demo** play as a role to verify how the **@cylynx/motif** library behaves in client's browser environment. We will first generate a production build in **motif-demo**.
+2. The production bundle produced in **step 1** will be imported by **motif-demo**, and helps to verify the behaviour of the library in the client's browser environment. We will first generate a production build in **motif-demo**.
 
 ```bash
 $ npm run demo:build
 ```
 
-3. Serve the demo with port 3000, access `http://localhost:3000` to verify whether the application is running.
+3. Serve the demo with port 3000, access `http://localhost:3000` to verify that the application is running.
 
 ```bash
 $ npm run demo:serve
 ```
 
-4. Once the **step 3** is execute successfully, we can launch Cypress to verify whether our test case are running accurately.
+4. Once **step 3** runs successfully, we can launch Cypress to verify whether our test case are running accurately.
 
 ```bash
 $ cd ./packages/motif && npm run cypress:open
 ```
-
 ## Built with
 
 - Antv G6 and Graphin for the graph library
 - Base Web and Styletron for the UI
 - Redux for state management
 - Typescript
+
+## Contributing
+
+Contributions are always welcome!
+
+See `contributing.md` for ways to get started.
+
+Please adhere to this project's `code of conduct`.
+
+## Commercial Support
+
+We provide commercial support for enterprises using Motif with customised backend integrations and features where necessary.
+
+Contact us at motif@cylynx.io for further information.
 
 ## License
 
