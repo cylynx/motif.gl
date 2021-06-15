@@ -1,42 +1,54 @@
-# motif
+# Pymotif
 
-Jupyter widget bindings for the motif library
+A Python package that lets you plot Motif graphs within Jupyter Notebook / Jupyter Lab:
+
+![Pymotif basic usage](img/pymotif-basic.png)
+
+It's that easy to get started!
+
+## Advantages
+
+- Seamless integration into existing Jupyter workflows
+- Multiple data import options
+- Programmatic graph manipulation
+- Easy code sharing and reuse
 
 ## Installation
 
-You can install using `pip`:
+You can install using `pip` (we recommend using virtual environments):
 
 ```
 pip install pymotif
 ```
 
-Note: You might need to enable labextension first: `jupyter labextension install @jupyter-widgets/jupyterlab-manager`
-If you are using Jupyter Lab <= 2, you might need to install the extension manually: `jupyter labextension install @cylynx/pymotif` or through the extension manager
-
-If you are using Jupyter Notebook 5.2 or earlier, you may also need to enable
-the nbextension:
+And it should work. In some cases, you may also need to install and enable Jupyter extensions:
 
 ```
+# Jupyter Lab
+jupyter labextension install @jupyter-widgets/jupyterlab-manager
+
+# For Jupyter Lab <= 2, you may need to install the extension manually
+jupyter labextension install @cylynx/pymotif
+
+# For Jupyter Notebook <= 5.2, you may need to enable nbextensions
 jupyter nbextension enable --py [--sys-prefix|--user|--system] pymotif
 ```
 
-## Try
+## Examples
 
-Demo notebooks can be found in the `examples` folder.
+Demo notebooks can be found in the `examples` folder. For a start, check out `examples/introduction.ipynb`, which gives a quick overview of the available functionality!
 
-Sample code:
+## Motif Class (TODO)
 
-```
-from pymotif import Motif
-import networkx as nx
+As shown above, using `pymotif` involves importing and instantiating the `Motif` class. Its attributes and methods are described below:
 
-gml1 = 'karate.gml'
-g1 = nx.read_gml(gml1)
-motif = Motif(nx_graph=g1, title='karate')
-motif.plot()
-```
+#### Instantiation
 
-More documentation coming soon...
+#### Attributes
+
+#### Methods
+
+---
 
 ## Development
 
