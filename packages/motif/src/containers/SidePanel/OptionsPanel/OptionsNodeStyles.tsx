@@ -2,6 +2,7 @@ import React from 'react';
 import { Block } from 'baseui/block';
 import { HeadingXSmall } from 'baseui/typography';
 import { useDispatch, useSelector } from 'react-redux';
+import { CATEGORICAL_COLOR } from '../../../constants/colors';
 import { GraphSlices, GraphSelectors } from '../../../redux/graph';
 import { Card } from '../../../components/ui';
 import {
@@ -10,7 +11,6 @@ import {
   SimpleForm,
   genSimpleForm,
 } from '../../../components/form';
-
 import {
   nodeSizeForm,
   nodeColorForm,
@@ -18,6 +18,9 @@ import {
   nodeLabelForm,
 } from './constants';
 import QuestionMarkTooltip from '../../../components/ui/QuestionMarkTooltip';
+import Legend from '../../../components/Legend';
+
+const MAX_LEGEND_SIZE = CATEGORICAL_COLOR.length;
 
 const OptionsNodeStyles = () => {
   const dispatch = useDispatch();
@@ -86,6 +89,17 @@ const OptionsNodeStyles = () => {
         data={nodeColorFormData}
         key={`${nodeColorFormData.id}-${nodeColorFormData.value}`}
       />
+      {nodeStyle.color &&
+        nodeStyle.color.id === 'legend' &&
+        nodeStyle.color.mapping && (
+          <Legend
+            label='Colors'
+            kind='node'
+            data={nodeStyle.color.mapping}
+            colorMap={CATEGORICAL_COLOR}
+            maxSize={MAX_LEGEND_SIZE}
+          />
+        )}
       <SimpleForm
         data={genSimpleForm(nodeFontSizeForm, nodeStyle, updateNodeStyle)}
       />

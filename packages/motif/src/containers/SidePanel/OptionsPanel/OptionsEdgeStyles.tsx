@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Block } from 'baseui/block';
 import { HeadingXSmall } from 'baseui/typography';
 import { useDispatch, useSelector } from 'react-redux';
+import { CATEGORICAL_COLOR } from '../../../constants/colors';
 import { GraphSlices, GraphSelectors } from '../../../redux/graph';
 import { Card } from '../../../components/ui';
 import {
@@ -20,6 +21,9 @@ import {
   edgeArrowForm,
 } from './constants';
 import QuestionMarkTooltip from '../../../components/ui/QuestionMarkTooltip';
+import Legend from '../../../components/Legend';
+
+const MAX_LEGEND_SIZE = CATEGORICAL_COLOR.length;
 
 const OptionsEdgeStyles = () => {
   const dispatch = useDispatch();
@@ -28,8 +32,8 @@ const OptionsEdgeStyles = () => {
     (state) => GraphSelectors.getGraph(state).styleOptions.edgeStyle,
   );
 
-  const { allEdgeFields, numericEdgeFields, edgeLabelFields } = useSelector((state) =>
-    GraphSelectors.getGraphFieldsOptions(state),
+  const { allEdgeFields, numericEdgeFields, edgeLabelFields } = useSelector(
+    (state) => GraphSelectors.getGraphFieldsOptions(state),
   );
 
   const updateEdgeStyle = (data: any) =>
@@ -101,6 +105,17 @@ const OptionsEdgeStyles = () => {
         data={edgeColorFormData}
         key={`${edgeColorFormData.id}-${edgeColorFormData.value}`}
       />
+      {edgeStyle.color &&
+        edgeStyle.color.id === 'legend' &&
+        edgeStyle.color.mapping && (
+          <Legend
+            label='Colors'
+            kind='edge'
+            data={edgeStyle.color.mapping}
+            colorMap={CATEGORICAL_COLOR}
+            maxSize={MAX_LEGEND_SIZE}
+          />
+        )}
       <SimpleForm
         data={genSimpleForm(edgePatternForm, edgeStyle, updateEdgeStyle)}
       />
