@@ -6,14 +6,14 @@ A Python package that lets you plot Motif graphs within Jupyter Notebook / Jupyt
 
 It's that easy to get started!
 
-## Advantages
+# Features
 
 - Seamless integration into existing Jupyter workflows
 - Multiple data import options
 - Programmatic graph manipulation
 - Easy code sharing and reuse
 
-## Installation
+# Installation
 
 You can install using `pip` (we recommend using virtual environments):
 
@@ -34,15 +34,15 @@ jupyter labextension install @cylynx/pymotif
 jupyter nbextension enable --py [--sys-prefix|--user|--system] pymotif
 ```
 
-## Demo
+# Demo
 
 Demo notebooks can be found in the `examples` folder. For a start, check out `examples/introduction.ipynb`, which gives a quick overview of the available functionality!
 
-## Motif Class
+# Motif Class
 
 As shown above, using Motif in Jupyter involves importing and instantiating the `Motif` class from `pymotif`.
 
-### Instantiation
+## Instantiation
 
 ```python
 from pymotif import Motif
@@ -81,7 +81,7 @@ title: str
 
 Other params are ignored when using JSON files because the file itself may also contain pre-defined styles, titles, or other settings.
 
-#### Example Usage
+### Example Usage
 
 ```python
 # import a csv file and set a title
@@ -95,7 +95,7 @@ style = {'layout': {'type': 'grid'}}
 motif = Motif(nx_graph=<YOUR NETWORKX GRAPH>, style=style)
 ```
 
-### Attributes
+## Attributes
 
 There is only one class attribute for now:
 
@@ -109,7 +109,7 @@ state: dict
     https://github.com/cylynx/motif.gl/blob/master/packages/motif/src/redux/graph/types.ts#L283
 ```
 
-#### Example Usage
+### Example Usage
 
 ```python
 m = Motif(<YOUR PARAMS>)
@@ -126,7 +126,7 @@ m.state
 
 This may be useful for debugging your graph objects at various points in time throughout your analysis.
 
-### Methods
+## Methods
 
 ```python
 def add_graph(self, **kwargs):
@@ -156,7 +156,7 @@ def plot(self):
     """ Plots the graphs' current state as a Jupyter widget """
 ```
 
-#### Example Usage
+### Example Usage
 
 ```python
 # create a new graph
@@ -172,16 +172,14 @@ m.set_style(style=<YOUR STYLE>, overwrite=True)
 m.plot()
 ```
 
----
-
-## Development
+# Development
 
 This section contains instructions for developing Pymotif locally.
 
 For a more thorough walkthrough check out the official Jupyter widgets guide:  
 https://ipywidgets.readthedocs.io/en/latest/examples/Widget%20Custom.html
 
-### Create a new conda environment with the dependencies
+## Create a new conda environment with the dependencies
 
 To create the environment, execute the following command:
 
@@ -195,7 +193,7 @@ Then activate the environment with:
 conda activate motif
 ```
 
-### Build and install the widget for development
+## Build and install the widget for development
 
 Since the widget contains a Python part, you need to install the package in editable mode:
 
@@ -239,7 +237,7 @@ After a change wait for the build to finish and then refresh your browser and th
 
 If you make a change to the python code then you will need to restart the notebook kernel to have it take effect.
 
-### Publishing
+## Publishing
 
 1. Update the version in package.json
 2. Relase the `@cylynx/pymotif` packages:
