@@ -164,7 +164,9 @@ m.plot()
 
 ## Development
 
-For a more thorough walkthrough check out the official guide:  
+This section contains instructions for developing Pymotif locally.
+
+For a more thorough walkthrough check out the official Jupyter widgets guide:  
 https://ipywidgets.readthedocs.io/en/latest/examples/Widget%20Custom.html
 
 ### Create a new conda environment with the dependencies
