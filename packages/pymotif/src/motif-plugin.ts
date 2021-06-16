@@ -125,12 +125,11 @@ export class MotifView extends DOMWidgetView {
   // update redux store based on 'state' from Python model anytime 'state' changes
   private updateStore(): void {
     const state: TLoadFormat = this.model.get('state');
-    const groupEdges: boolean = this.model.get('group_edges');
 
     if (Array.isArray(state.data) && state.data.length) {
       const action: any = GraphThunks.importJsonData(
         [state as JsonImport],
-        groupEdges,
+        true,
         null,
         true,
       );

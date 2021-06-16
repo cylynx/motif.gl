@@ -7,7 +7,6 @@ JSON_PATH = 'json_path'
 CSV_PATH = 'csv_path'
 STYLE = 'style'
 TITLE = 'title'
-GROUP_EDGES = 'group_edges'
 
 DATA = 'data'
 METADATA = 'metadata'
@@ -22,5 +21,4 @@ ALLOWED = {
     CSV_PATH: str,
     STYLE: dict,
     TITLE: str,
-    GROUP_EDGES: bool
 }
