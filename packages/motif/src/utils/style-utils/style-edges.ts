@@ -5,13 +5,18 @@ import {
   GraphData,
   EdgeStyleOptions,
   Edge,
+  EdgeColor,
+  ColorFixed,
+  ColorLegend,
   EdgeWidth,
   ArrowOptions,
 } from '../../redux/graph/types';
 import {
   DEFAULT_EDGE_STYLE,
+  EDGE_DEFAULT_COLOR,
   edgeFontColor,
 } from '../../constants/graph-shapes';
+import { normalizeColor } from './color-utils';
 import { EdgePattern, mapEdgePattern } from '../shape-utils';
 
 /**
@@ -48,6 +53,10 @@ export const styleEdges = (
 
     if (edgeStyleOptions.pattern) {
       styleEdgePattern(edgeStyle, edgeStyleOptions.pattern);
+    }
+
+    if (edgeStyleOptions.color) {
+      styleEdgeColor(edge, edgeStyle, edgeStyleOptions.color);
     }
 
     if (edgeStyleOptions.label) {
@@ -346,4 +355,69 @@ const deriveEdgeType = (data: GraphData): void => {
       });
     }
   }
+};
+
+/**
+ * Style Edge Color based on values given by:
+ * 1. Fixed edge color
+ * 2. Legend Selection
+ *
+ * @param {Edge} edge
+ * @param {Partial<EdgeStyle>} edgeStyle
+ * @param {EdgeColor} option
+ * @return {void}
+ */
+export const styleEdgeColor = (
+  edge: Edge,
+  edgeStyle: Partial<EdgeStyle>,
+  option: EdgeColor,
+): void => {
+  const { id } = option;
+  const edgeKeyShape: Partial<EdgeStyle['keyshape']> = edgeStyle.keyshape ?? {};
+  const edgeArrowShape: Partial<EdgeStyle['keyshape']['endArrow']> = edgeStyle
+    .keyshape.endArrow ?? { ...DEFAULT_EDGE_STYLE.keyshape.endArrow };
+
+  if (id === 'fixed') {
+    const { value } = option as ColorFixed;
+    const fixedEdgeColor = normalizeColor(value);
+
+    Object.assign(edgeStyle, {
+      keyshape: Object.assign(edgeKeyShape, {
+        stroke: fixedEdgeColor.normal,
+        endArrow: Object.assign(edgeArrowShape, {
+          fill: fixedEdgeColor.normal,
+        }),
+      }),
+    });
+
+    return;
+  }
+
+  const { variable, mapping } = option as ColorLegend;
+  const variableProperty: string | unknown = get(edge, variable);
+  const defaultEdgeColor = normalizeColor(EDGE_DEFAULT_COLOR);
+
+  if (variableProperty) {
+    const edgeColor = normalizeColor(mapping[variableProperty as string]);
+
+    Object.assign(edgeStyle, {
+      keyshape: Object.assign(edgeKeyShape, {
+        stroke: edgeColor.normal,
+        endArrow: Object.assign(edgeArrowShape, {
+          fill: edgeColor.normal,
+        }),
+      }),
+    });
+
+    return;
+  }
+
+  Object.assign(edgeStyle, {
+    keyshape: Object.assign(edgeKeyShape, {
+      stroke: defaultEdgeColor.dark,
+      endArrow: Object.assign(edgeArrowShape, {
+        fill: defaultEdgeColor.normal,
+      }),
+    }),
+  });
 };

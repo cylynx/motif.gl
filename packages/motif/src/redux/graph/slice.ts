@@ -6,7 +6,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import isUndefined from 'lodash/isUndefined';
 import { Draft } from 'immer';
 import * as LAYOUT from '../../constants/layout-options';
-import { generateDefaultColorMap } from '../../utils/style-utils/style-nodes';
+import { DARK_GREY } from '../../constants/colors';
+import { generateDefaultColorMap } from '../../utils/style-utils/color-utils';
 import {
   Accessors,
   FilterCriteria,
@@ -23,7 +24,7 @@ import {
   Selection,
   UpdateGroupEdgeIds,
 } from './types';
-import { DEFAULT_NODE_STYLE } from '../../constants/graph-shapes';
+import { DEFAULT_NODE_STYLE, EDGE_DEFAULT_COLOR } from '../../constants/graph-shapes';
 import { groupEdgesForImportation } from './processors/group-edges';
 import { combineProcessedData } from '../../utils/graph-utils/utils';
 
@@ -270,6 +271,7 @@ const graph = createSlice({
           generateDefaultColorMap(
             state.graphFlatten.nodes,
             state.styleOptions.nodeStyle.color,
+            DARK_GREY,
           );
         }
       });
@@ -282,6 +284,18 @@ const graph = createSlice({
     ) {
       Object.entries(action.payload).forEach(([key, value]) => {
         state.styleOptions.edgeStyle[key] = value;
+        // Assign default color mapping for legend
+        if (
+          key === 'color' &&
+          value.id === 'legend' &&
+          isUndefined(value.mapping)
+        ) {
+          generateDefaultColorMap(
+            state.graphFlatten.edges,
+            state.styleOptions.edgeStyle.color,
+            EDGE_DEFAULT_COLOR,
+          );
+        }
       });
     },
     processGraphResponse(

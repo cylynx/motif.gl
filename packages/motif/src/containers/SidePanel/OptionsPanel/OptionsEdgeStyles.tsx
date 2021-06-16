@@ -13,6 +13,7 @@ import {
 
 import {
   edgeWidthForm,
+  edgeColorForm,
   edgePatternForm,
   edgeFontSizeForm,
   edgeLabelForm,
@@ -27,7 +28,7 @@ const OptionsEdgeStyles = () => {
     (state) => GraphSelectors.getGraph(state).styleOptions.edgeStyle,
   );
 
-  const { numericEdgeFields, edgeLabelFields } = useSelector((state) =>
+  const { allEdgeFields, numericEdgeFields, edgeLabelFields } = useSelector((state) =>
     GraphSelectors.getGraphFieldsOptions(state),
   );
 
@@ -53,6 +54,15 @@ const OptionsEdgeStyles = () => {
     {
       'property[0].options': numericEdgeFields,
       'property[0].value': edgeWidthPropertyValue,
+    },
+  );
+
+  const edgeColorFormData = genNestedForm(
+    edgeColorForm,
+    edgeStyle,
+    updateEdgeStyle,
+    {
+      'legend[0].options': allEdgeFields,
     },
   );
 
@@ -85,10 +95,14 @@ const OptionsEdgeStyles = () => {
         })}
       />
       <SimpleForm
-        data={genSimpleForm(edgePatternForm, edgeStyle, updateEdgeStyle)}
+        data={genSimpleForm(edgeFontSizeForm, edgeStyle, updateEdgeStyle)}
+      />
+      <NestedForm
+        data={edgeColorFormData}
+        key={`${edgeColorFormData.id}-${edgeColorFormData.value}`}
       />
       <SimpleForm
-        data={genSimpleForm(edgeFontSizeForm, edgeStyle, updateEdgeStyle)}
+        data={genSimpleForm(edgePatternForm, edgeStyle, updateEdgeStyle)}
       />
       <SimpleForm
         data={genSimpleForm(edgeArrowForm, edgeStyle, updateEdgeStyle)}

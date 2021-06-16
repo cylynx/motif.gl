@@ -1,5 +1,8 @@
+import get from 'lodash/get';
 import { desaturate, lighten, transparentize } from 'polished';
-
+import isUndefined from 'lodash/isUndefined';
+import { CATEGORICAL_COLOR, DARK_GREY } from '../../constants/colors';
+import { Node, NodeColor, Edge, EdgeColor } from '../../redux/graph/types';
 export interface NormalizedColor {
   dark: string;
   normal: string;
@@ -31,4 +34,44 @@ export const normalizeColor = (
     };
   }
   return rgb as NormalizedColor;
+};
+
+/**
+ * Generate default nodes / edges color map. 
+ * defaultColor will be used for undefined variables
+ *
+ * @param {Node[]} nodes
+ * @param {NodeColor} options
+ *
+ * @return {void}
+ */
+export const generateDefaultColorMap = (
+  list: Node[] | Edge[],
+  options: NodeColor | EdgeColor,
+  defaultColor = DARK_GREY,
+): void => {
+  const uniqueKeys = [
+    ...new Set(
+      // @ts-ignore
+      list.map((obj) => get(obj, options.variable)),
+    ),
+  ];
+  const mapping = {};
+  const MAX_LEGEND_SIZE = CATEGORICAL_COLOR.length;
+  for (const [i, value] of uniqueKeys.entries()) {
+    // Assign undefined to grey and all others to last of colors
+    if (i < MAX_LEGEND_SIZE && !isUndefined(value)) {
+      // @ts-ignore
+      mapping[value] = CATEGORICAL_COLOR[i];
+    } else if (isUndefined(value)) {
+      // eslint-disable-next-line @typescript-eslint/dot-notation
+      mapping['undefined'] = defaultColor;
+    } else {
+      // eslint-disable-next-line prefer-destructuring
+      // @ts-ignore
+      mapping[value] = CATEGORICAL_COLOR[MAX_LEGEND_SIZE - 1];
+    }
+  }
+  // @ts-ignore
+  options.mapping = mapping;
 };

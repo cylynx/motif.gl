@@ -1,18 +1,17 @@
 /* eslint-disable no-param-reassign */
 import get from 'lodash/get';
-import isUndefined from 'lodash/isUndefined';
 import { NodeStyle } from '@cylynx/graphin';
 import {
   GraphData,
   NodeStyleOptions,
   Node,
   NodeColor,
-  NodeColorFixed,
-  NodeColorLegend,
+  ColorFixed,
+  ColorLegend,
   Edge,
   NodeSizeFixed,
 } from '../../redux/graph/types';
-import { CATEGORICAL_COLOR, DARK_GREY, GREY } from '../../constants/colors';
+import { GREY } from '../../constants/colors';
 import { normalizeColor } from './color-utils';
 import { DEFAULT_NODE_STYLE } from '../../constants/graph-shapes';
 
@@ -56,44 +55,6 @@ export const styleNodes = (
       style: nodeStyle,
     });
   });
-};
-
-/**
- * Generate default nodes color map
- *
- * @param {Node[]} nodes
- * @param {NodeColor} options
- *
- * @return {void}
- */
-export const generateDefaultColorMap = (
-  nodes: Node[],
-  options: NodeColor,
-): void => {
-  const uniqueKeys = [
-    ...new Set(
-      // @ts-ignore
-      nodes.map((node) => get(node, options.variable)),
-    ),
-  ];
-  const mapping = {};
-  const MAX_LEGEND_SIZE = CATEGORICAL_COLOR.length;
-  for (const [i, value] of uniqueKeys.entries()) {
-    // Assign undefined to grey and all others to last of colors
-    if (i < MAX_LEGEND_SIZE && !isUndefined(value)) {
-      // @ts-ignore
-      mapping[value] = CATEGORICAL_COLOR[i];
-    } else if (isUndefined(value)) {
-      // eslint-disable-next-line @typescript-eslint/dot-notation
-      mapping['undefined'] = DARK_GREY;
-    } else {
-      // eslint-disable-next-line prefer-destructuring
-      // @ts-ignore
-      mapping[value] = CATEGORICAL_COLOR[MAX_LEGEND_SIZE - 1];
-    }
-  }
-  // @ts-ignore
-  options.mapping = mapping;
 };
 
 /**
@@ -290,7 +251,7 @@ export const styleNodeColor = (
   const nodeHalo: Partial<NodeStyle['halo']> = nodeStyle.halo ?? {};
 
   if (id === 'fixed') {
-    const { value } = option as NodeColorFixed;
+    const { value } = option as ColorFixed;
     const fixedNodeColor = normalizeColor(value);
 
     Object.assign(nodeStyle, {
@@ -307,7 +268,7 @@ export const styleNodeColor = (
     return;
   }
 
-  const { variable, mapping } = option as NodeColorLegend;
+  const { variable, mapping } = option as ColorLegend;
   const variableProperty: string | unknown = get(node, variable);
   const grey = normalizeColor(GREY);
 
@@ -359,14 +320,14 @@ export const styleNodeIcon = (
 
   const { id } = color;
   if (id === 'fixed') {
-    const { value } = color as NodeColorFixed;
+    const { value } = color as ColorFixed;
     const fixedNodeColor = normalizeColor(value);
     iconStyle.fill = fixedNodeColor.normal;
     Object.assign(nodeStyle, { icon: iconStyle });
     return;
   }
 
-  const { variable, mapping } = color as NodeColorLegend;
+  const { variable, mapping } = color as ColorLegend;
   const variableProperty: string | unknown = get(node, variable);
   if (variableProperty) {
     const nodeColor = normalizeColor(mapping[variableProperty as string]);
