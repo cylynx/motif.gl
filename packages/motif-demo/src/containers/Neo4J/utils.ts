@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const, no-console */
 // @ts-nocheck
 import Neo4j from 'neo4j-driver';
-import { Node, Edge, GraphData } from '@cylynx/motif';
+import { Node, Edge, GraphData, json2csv, processCsvData } from '@cylynx/motif';
 import Record from 'neo4j-driver/types/record';
 import uniqBy from 'lodash.uniqby';
 
@@ -35,8 +35,21 @@ export const buildEdge = (e: any) => {
   return { ...edge };
 };
 
+export const processJson = async (json: GraphData) => {
+  const nodeCsv = await json2csv(json.nodes);
+  const edgeCsv = await json2csv(json.edges);
+
+  const { json: nodes } = await processCsvData(nodeCsv as string);
+  const { json: edges } = await processCsvData(edgeCsv as string);
+
+  return {
+    nodes,
+    edges,
+  };
+};
+
 /* Adapted from https://github.com/neo4j-contrib/neovis.js/blob/master/src/neovis.js */
-export const toMotifFormat = (records: Record[]): GraphData => {
+export const toMotifFormat = async (records: Record[]): GraphData => {
   let nodes: Node[] = [];
   let edges: Edge[] = [];
   records.forEach((record) => {
@@ -83,10 +96,10 @@ export const toMotifFormat = (records: Record[]): GraphData => {
   nodes = uniqBy(nodes, 'id');
   edges = uniqBy(edges, 'id');
 
-  const graphData: GraphData = {
+  const graphData: GraphData = await processJson({
     nodes,
     edges,
-  };
-  
+  });
+
   return graphData;
 };

@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC, useContext, useMemo, useState } from 'react';
 import { Neo4jContext, Neo4jProvider, useDatabases } from 'use-neo4j';
 import { Neo4jContextState } from 'use-neo4j/dist/neo4j.context';
-import { Select, OnChangeParams } from 'baseui/select';
+import { OnChangeParams } from 'baseui/select';
 import { Driver } from 'neo4j-driver/types/driver';
 import { QueryResult } from 'neo4j-driver/types/result';
 import Record from 'neo4j-driver/types/record';
@@ -53,8 +53,8 @@ const CypherQuery: FC<CypherQueryProps> = ({
     (driver as Driver)
       .session({ database: db[0].id as string })
       .run(query)
-      .then((res: QueryResult) => {
-        const { nodes, edges } = toMotifFormat(res.records as Record[]);
+      .then(async (res: QueryResult) => {
+        const { nodes, edges } = await toMotifFormat(res.records as Record[]);
         return { nodes, edges };
       })
       .then((data: GraphData) => {

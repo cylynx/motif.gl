@@ -109,7 +109,6 @@ const initialState: GraphState = {
         id: 'fixed',
         value: 1,
       },
-      label: '-',
     },
   },
   filterOptions: {},

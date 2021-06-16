@@ -9,6 +9,7 @@ import TablePreview from './components/TablePreview';
 import TableTabs, { TableTabItem } from './components/TableTabs';
 import GroupEdgeConfiguration from './components/GroupEdgeConfiguration';
 import Dropdown from './components/ui/Dropdown';
+import { json2csv, processCsvData } from './redux/graph/processors/data';
 
 import { MotifDarkTheme, MotifLightTheme } from './theme';
 
@@ -24,7 +25,7 @@ export {
 };
 
 export default Motif;
-export { investigateReducer, Tooltip };
+export { investigateReducer, Tooltip, json2csv, processCsvData };
 
 export { MotifDarkTheme, MotifLightTheme };
 export * from './utils/utils';

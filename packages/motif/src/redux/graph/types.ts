@@ -178,7 +178,7 @@ export interface EdgeStyleOptions {
   width?: EdgeWidth;
   pattern?: 'none' | 'dot' | 'dash' | 'dash-dot';
   fontSize?: number;
-  label?: string;
+  label?: string | string[];
   arrow?: ArrowOptions;
 }
 
@@ -232,7 +232,7 @@ export interface NodeStyleOptions {
   size?: NodeSize;
   color?: NodeColor;
   fontSize?: number;
-  label?: string;
+  label?: string | string[];
 }
 
 export type GraphAttribute = 'nodes' | 'edges';

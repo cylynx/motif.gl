@@ -268,7 +268,8 @@ export const nodeLabelForm: SimpleFormData = {
   labelPosition: 'top',
   kind: 'select',
   value: '-',
-  options: [{ id: '-', label: '-' }],
+  multi: true,
+  options: [],
   callback: (data: any) => console.log(data),
 };
 
@@ -347,8 +348,9 @@ export const edgeLabelForm: SimpleFormData = {
   label: 'Label',
   labelPosition: 'top',
   kind: 'select',
+  multi: true,
   value: '-',
-  options: [{ id: '-', label: '-' }],
+  options: [],
   callback: (data: any) => console.log(data),
 };
 

@@ -110,26 +110,27 @@ describe('Edge Style Filter', () => {
   describe('Edge Label', () => {
     const changeLabelField = (value: string) => {
       cy.react('Controller', { props: { name: 'label' } })
-        .last()
+        .first()
         .type(`${value}{enter}`);
     };
 
-    it('should not display label when None', async () => {
-      const selectedLabelField = '-';
+    it('should display label when selected', async () => {
+      const selectedLabelField = 'id';
       changeLabelField(selectedLabelField);
 
       const edgeStyle = await getEdgeStyleFromReduxStore();
-      const edgeLabel: string = edgeStyle.label;
+      const edgeLabel: string | string[] = edgeStyle.label;
       expect(edgeLabel).to.deep.equal(selectedLabelField);
     });
 
-    it('should not display label when selected', async () => {
+    it('should handle multiple selections', async () => {
       const selectedLabelField = 'is_foreign_target';
       changeLabelField(selectedLabelField);
+      const expectedLabel = ['id', 'is_foreign_target']
 
       const edgeStyle = await getEdgeStyleFromReduxStore();
-      const edgeLabel: string = edgeStyle.label;
-      expect(edgeLabel).to.deep.equal(selectedLabelField);
+      const edgeLabel: string | string[] = edgeStyle.label;
+      expect(edgeLabel).to.deep.equal(expectedLabel);
     });
   });
 

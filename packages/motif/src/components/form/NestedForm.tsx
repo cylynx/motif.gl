@@ -35,8 +35,10 @@ const cleanGetValues = (obj: any, mainKey: string) => {
   const results: any = {};
   Object.entries(obj).forEach(([key, value]) => {
     if (Array.isArray(value) && value[0]?.id) {
-      // select
-      results[key] = value[0].id;
+      // if multi-select return array [field1, field2]
+      // else return string e.g. "field1"
+      results[key] =
+        value.length === 1 ? value[0].id : value.map((opt) => opt.id);
     } else if (
       Array.isArray(value) &&
       typeof value[0] === 'number' &&
@@ -177,17 +179,20 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
         {data[watchSelection[0].id] &&
           data[watchSelection[0].id].map((d: any) => {
             const { id, label, kind, value, ...rest } = d;
-            let parsedValue =
-              // eslint-disable-next-line no-nested-ternary
-              kind === 'select' || kind === 'batchSelect'
-                ? d.options.find((x: any) => x.id === value)
-                  ? [d.options.find((x: any) => x.id === value)]
-                  : []
-                : value;
-            parsedValue =
-              kind === 'slider' && !Array.isArray(value)
-                ? [value]
-                : parsedValue;
+            let parsedValue;
+            if (kind === 'slider' && !Array.isArray(value)) {
+              parsedValue = [value];
+            } else if (kind === 'select') {
+              const arrayValue = Array.isArray(value) ? value : [value];
+              // find id and filter out undefined values
+              parsedValue = arrayValue
+                .map((v) => data.options.find((x: any) => x.id === v))
+                .filter((x) => x);
+            } else {
+              // input
+              parsedValue = value;
+            }
+
             return (
               <Block
                 key={`${data.id}-${d.id}`}
