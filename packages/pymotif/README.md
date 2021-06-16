@@ -34,7 +34,7 @@ jupyter labextension install @cylynx/pymotif
 jupyter nbextension enable --py [--sys-prefix|--user|--system] pymotif
 ```
 
-## Examples
+## Demo
 
 Demo notebooks can be found in the `examples` folder. For a start, check out `examples/introduction.ipynb`, which gives a quick overview of the available functionality!
 
@@ -72,16 +72,27 @@ csv_path: str
     Path to a local CSV edgelist file
 
 style: dict
-    The rendered graph's style. Its format depends on Motif's StyleOptions interface: https://github.com/cylynx/motif.gl/blob/c79ba6549407979a4ec0214cc6c7c7d0f2a3be41/packages/motif/src/redux/graph/types.ts#L206
+    The rendered graph's style. Its format depends on Motif's StyleOptions interface:
+    https://github.com/cylynx/motif.gl/blob/c79ba6549407979a4ec0214cc6c7c7d0f2a3be41/packages/motif/src/redux/graph/types.ts#L206
 
 title: str
     The rendered graph's title
 ```
 
-e.g. to import a graph from a CSV:
+Other params are ignored when using JSON files because the file itself may also contain pre-defined styles, titles, or other settings.
+
+#### Example Usage
 
 ```python
-motif = Motif(csv_path=<YOUR CSV PATH>)
+# import a csv file and set a title
+motif = Motif(csv_path=<YOUR CSV PATH>, title='my first csv import')
+
+# import a json file. as mentioned above, using json ignores all other params
+motif = Motif(json_path=<YOUR JSON PATH>, title='ignored parameter')
+
+# import a networkx graph and arrange it in a grid layout
+style = {'layout': {'type': 'grid'}}
+motif = Motif(nx_graph=<YOUR NETWORKX GRAPH>, style=style)
 ```
 
 ### Attributes
@@ -98,7 +109,7 @@ state: dict
     https://github.com/cylynx/motif.gl/blob/master/packages/motif/src/redux/graph/types.ts#L283
 ```
 
-e.g.
+#### Example Usage
 
 ```python
 m = Motif(<YOUR PARAMS>)
@@ -145,12 +156,13 @@ def plot(self):
     """ Plots the graphs' current state as a Jupyter widget """
 ```
 
-e.g.
+#### Example Usage
 
 ```python
+# create a new graph
 m = Motif(<YOUR PARAMS>)
 
-# add another JSON graph
+# add another previously-saved graph from a JSON file
 m.add_graph(json_path=<YOUR JSON PATH>)
 
 # adjust and overwrite the combined graphs' style
