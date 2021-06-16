@@ -1,9 +1,11 @@
 import React, { useMemo } from 'react';
+import { useStyletron } from 'baseui';
 import { Block } from 'baseui/block';
 import { HeadingXSmall } from 'baseui/typography';
 import { useDispatch, useSelector } from 'react-redux';
 import { CATEGORICAL_COLOR } from '../../../constants/colors';
 import { GraphSlices, GraphSelectors } from '../../../redux/graph';
+import useEdgeStyle from '../../../redux/graph/hooks/useEdgeStyle';
 import { Card } from '../../../components/ui';
 import {
   NestedForm,
@@ -26,11 +28,9 @@ import Legend from '../../../components/Legend';
 const MAX_LEGEND_SIZE = CATEGORICAL_COLOR.length;
 
 const OptionsEdgeStyles = () => {
+  const [, theme] = useStyletron();
   const dispatch = useDispatch();
-
-  const edgeStyle = useSelector(
-    (state) => GraphSelectors.getGraph(state).styleOptions.edgeStyle,
-  );
+  const { edgeStyle } = useEdgeStyle();
 
   const { allEdgeFields, numericEdgeFields, edgeLabelFields } = useSelector(
     (state) => GraphSelectors.getGraphFieldsOptions(state),
@@ -71,7 +71,7 @@ const OptionsEdgeStyles = () => {
   );
 
   return (
-    <Card data-testid='OptionsEdgeStyles'>
+    <Block data-testid='OptionsEdgeStyles'>
       <Block display='flex' alignItems='end'>
         <HeadingXSmall
           marginTop={0}
@@ -89,40 +89,68 @@ const OptionsEdgeStyles = () => {
           }
         />
       </Block>
-      <NestedForm
-        data={edgeWidthFormData}
-        key={`${edgeWidthFormData.id}-${edgeWidthFormData.value}`}
-      />
-      <SimpleForm
-        data={genSimpleForm(edgeLabelForm, edgeStyle, updateEdgeStyle, {
-          options: edgeLabelFields,
-        })}
-      />
-      <SimpleForm
-        data={genSimpleForm(edgeFontSizeForm, edgeStyle, updateEdgeStyle)}
-      />
-      <NestedForm
-        data={edgeColorFormData}
-        key={`${edgeColorFormData.id}-${edgeColorFormData.value}`}
-      />
-      {edgeStyle.color &&
-        edgeStyle.color.id === 'legend' &&
-        edgeStyle.color.mapping && (
-          <Legend
-            label='Colors'
-            kind='edge'
-            data={edgeStyle.color.mapping}
-            colorMap={CATEGORICAL_COLOR}
-            maxSize={MAX_LEGEND_SIZE}
-          />
-        )}
-      <SimpleForm
-        data={genSimpleForm(edgePatternForm, edgeStyle, updateEdgeStyle)}
-      />
-      <SimpleForm
-        data={genSimpleForm(edgeArrowForm, edgeStyle, updateEdgeStyle)}
-      />
-    </Card>
+      <Card
+        $style={{
+          backgroundColor: theme.colors.backgroundTertiary,
+          marginBottom: theme.sizing.scale300,
+        }}
+      >
+        <NestedForm
+          data={edgeWidthFormData}
+          key={`${edgeWidthFormData.id}-${edgeWidthFormData.value}`}
+        />
+      </Card>
+      <Card
+        $style={{
+          backgroundColor: theme.colors.backgroundTertiary,
+          marginBottom: theme.sizing.scale300,
+        }}
+      >
+        <SimpleForm
+          data={genSimpleForm(edgeLabelForm, edgeStyle, updateEdgeStyle, {
+            options: edgeLabelFields,
+          })}
+        />
+        <SimpleForm
+          data={genSimpleForm(edgeFontSizeForm, edgeStyle, updateEdgeStyle)}
+        />
+      </Card>
+      <Card
+        $style={{
+          backgroundColor: theme.colors.backgroundTertiary,
+          marginBottom: theme.sizing.scale300,
+        }}
+      >
+        <NestedForm
+          data={edgeColorFormData}
+          key={`${edgeColorFormData.id}-${edgeColorFormData.value}`}
+        />
+        {edgeStyle.color &&
+          edgeStyle.color.id === 'legend' &&
+          edgeStyle.color.mapping && (
+            <Legend
+              label='Colors'
+              kind='edge'
+              data={edgeStyle.color.mapping}
+              colorMap={CATEGORICAL_COLOR}
+              maxSize={MAX_LEGEND_SIZE}
+            />
+          )}
+      </Card>
+      <Card
+        $style={{
+          backgroundColor: theme.colors.backgroundTertiary,
+          marginBottom: theme.sizing.scale300,
+        }}
+      >
+        <SimpleForm
+          data={genSimpleForm(edgePatternForm, edgeStyle, updateEdgeStyle)}
+        />
+        <SimpleForm
+          data={genSimpleForm(edgeArrowForm, edgeStyle, updateEdgeStyle)}
+        />
+      </Card>
+    </Block>
   );
 };
 

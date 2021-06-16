@@ -1,25 +1,8 @@
 import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
-import {
-  GraphSelectors,
-  NodeColorFixed,
-  NodeColorLegend,
-  NodeStyleOptions,
-} from '../../../src/redux/graph';
 
 describe('Legend Popover', () => {
-  const getNodeStyleFromReduxStore = (): Promise<NodeStyleOptions> => {
-    return new Promise((resolve) => {
-      cy.getReact('Provider$1')
-        .getProps('store')
-        .then((store) => {
-          const globalStore = store.getState();
-          const { nodeStyle } = GraphSelectors.getGraph(
-            globalStore,
-          ).styleOptions;
-          return resolve(nodeStyle);
-        });
-    });
-  };
+
+  const controllerName = 'color';
 
   before(() => {
     cy.visit('/');
@@ -28,13 +11,19 @@ describe('Legend Popover', () => {
     cy.importSampleData(SampleData.BANK);
   });
 
-  describe('Functionality', () => {
-    const changeNodeColor = (type: string): void => {
-      cy.react('Select', { props: { id: 'legendSelection' } })
-        .eq(0)
-        .type(`${type}{enter}`);
-    };
+  const changeColorType = (value: string) => {
+    cy.react('Controller', { props: { name: controllerName } })
+      .first()
+      .type(`${value}{enter}`);
+  };
 
+  const changeColorVariable = (value: string) => {
+    cy.react('Controller', { props: { name: 'variable' } }).type(
+      `${value}{enter}`,
+    );
+  };
+
+  describe('Functionality', () => {
     it('should display legend popover', () => {
       cy.react('Button', {
         props: { 'data-testid': 'ToolbarButton:Legend' },
@@ -44,29 +33,56 @@ describe('Legend Popover', () => {
 
       cy.getReact('LegendPopover').should('exist');
     });
+  });
 
-    it('should change the colours of nodes', async () => {
-      const selectedProperty = 'id';
-      changeNodeColor('id');
-
-      const nodeStyle = await getNodeStyleFromReduxStore();
-      const { id, variable, mapping } = nodeStyle.color as NodeColorLegend;
-      expect(id).to.deep.equal('legend');
-      expect(variable).to.deep.equal(selectedProperty);
-      assert.isObject(mapping);
+  describe('Node legend selection', () => {
+    before(() => {
+      cy.switchPanel('options');
+      const selectedType: string = 'legend';
+      changeColorType(selectedType);
+      const selectedVariable = 'id';
+      changeColorVariable(selectedVariable);
+      cy.switchPanel('search');
     });
 
-    it('should change to fixed color', async () => {
+    it('should display node legend', async () => {
       cy.react('Button', {
-        props: { 'data-testid': 'switchFixedColor' },
+        props: { 'data-testid': 'ToolbarButton:Legend' },
       })
         .eq(0)
         .click();
+      cy.getReact('LegendPopover')
+        .getReact('Legend', { props: { kind: 'node' } })
+        .getProps('data')
+        .should('deep.equal', {
+          '-': '#e15759',
+          account_balance: '#4e79a7',
+          account_box: '#f28e2c',
+        });
+    });
+  });
 
-      const nodeStyle = await getNodeStyleFromReduxStore();
-      const { id, value } = nodeStyle.color as NodeColorFixed;
-      expect(id).to.deep.equal('fixed');
-      expect(value).to.deep.equal('#66c2a5');
+  describe('Edge legend selection', () => {
+    before(() => {
+      cy.switchPanel('options');
+      cy.switchTab('edges');
+      const selectedType: string = 'legend';
+      changeColorType(selectedType);
+      const selectedVariable = 'category';
+      changeColorVariable(selectedVariable);
+      cy.switchPanel('search');
+    });
+
+    it('should display edge legend', async () => {
+      cy.react('Button', {
+        props: { 'data-testid': 'ToolbarButton:Legend' },
+      })
+        .eq(0)
+        .click();
+      cy.getReact('LegendPopover')
+        .getReact('Legend', { props: { kind: 'edge' } })
+        .getProps('data')
+        .should('deep.equal', { ib_txn: '#4e79a7', ownership: '#f28e2c' });
     });
   });
 });

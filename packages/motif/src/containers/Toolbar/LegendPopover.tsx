@@ -1,117 +1,88 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { useStyletron } from 'baseui';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Block } from 'baseui/block';
-import { Button } from 'baseui/button';
-import { FormControl } from 'baseui/form-control';
 import { LabelSmall, ParagraphSmall } from 'baseui/typography';
-import { GraphSelectors, GraphSlices } from '../../redux/graph';
 import { CATEGORICAL_COLOR } from '../../constants/colors';
+import { Card } from '../../components/ui';
+import Legend from '../../components/Legend';
+import { GraphSelectors } from '../../redux/graph';
 import useNodeStyle from '../../redux/graph/hooks/useNodeStyle';
-import { Dropdown } from '../../components/ui/Dropdown';
+import useEdgeStyle from '../../redux/graph/hooks/useEdgeStyle';
 
 const MAX_LEGEND_SIZE = CATEGORICAL_COLOR.length;
 
-const Legend = ({ data }: { data: { [_: string]: string } }) => {
-  const [css] = useStyletron();
-  let valueArr = Object.keys(data);
-  let colorArr = Object.values(data);
-  if (valueArr.length > MAX_LEGEND_SIZE) {
-    valueArr = valueArr.slice(0, MAX_LEGEND_SIZE);
-    valueArr.push('Others');
-    colorArr = colorArr.slice(0, MAX_LEGEND_SIZE);
-    colorArr.push(CATEGORICAL_COLOR[MAX_LEGEND_SIZE - 1]);
-  }
-  return (
-    <Fragment>
-      {valueArr.map((value, i) => (
-        <Block key={value} display='flex' alignItems='center'>
-          <div
-            className={css({
-              height: '18px',
-              width: '18px',
-              marginRight: '16px',
-              marginLeft: '8px',
-              marginTop: '8px',
-              marginBottom: '8px',
-              backgroundColor: colorArr[i],
-              borderRadius: '50%',
-            })}
-          />
-          <LabelSmall width='250px' marginBottom='8px'>
-            {value}
-          </LabelSmall>
-        </Block>
-      ))}
-    </Fragment>
-  );
-};
-
 const LegendPopover = () => {
-  const dispatch = useDispatch();
-  const { switchToFixNodeColor } = useNodeStyle();
-  const nodeStyle = useSelector(
-    (state) => GraphSelectors.getStyleOptions(state).nodeStyle,
-  );
+  const [, theme] = useStyletron();
+  const { nodeStyle } = useNodeStyle();
+  const { edgeStyle } = useEdgeStyle();
+  const graphList = useSelector((state) => GraphSelectors.getGraphList(state));
 
-  let selectValue: any;
-  if (
+  const haveData: boolean = graphList.length > 0;
+
+  const haveNodeLegend =
     nodeStyle.color &&
     nodeStyle.color.id === 'legend' &&
-    nodeStyle.color.mapping
-  ) {
-    selectValue = [
-      { id: nodeStyle.color.variable, label: nodeStyle.color.variable },
-    ];
-  } else {
-    selectValue = [];
-  }
+    nodeStyle.color.mapping;
 
-  const { allNodeFields } = useSelector((state) =>
-    GraphSelectors.getGraphFieldsOptions(state),
-  );
-
-  const updateNodeStyle = (data: any): void => {
-    const dispatchData = { color: { id: 'legend', variable: data[0].id } };
-    dispatch(GraphSlices.changeNodeStyle(dispatchData));
-  };
-
-  const switchToFixedColor = (e: React.MouseEvent): void => {
-    e.preventDefault();
-    switchToFixNodeColor();
-  };
+  const haveEdgeLegend =
+    edgeStyle.color &&
+    edgeStyle.color.id === 'legend' &&
+    edgeStyle.color.mapping;
 
   return (
-    <Block width='300px'>
-      <FormControl label='Legend Selection'>
-        <Dropdown
-          id='legendSelection'
-          options={allNodeFields}
-          onChange={(params: any) => updateNodeStyle(params.value)}
-          size='compact'
-          clearable={false}
-          value={selectValue}
-          maxDropdownHeight='300px'
-        />
-      </FormControl>
-      {nodeStyle.color &&
-      nodeStyle.color.id === 'legend' &&
-      nodeStyle.color.mapping ? (
-        <Fragment>
-          <Legend data={nodeStyle.color.mapping} />
-          <Block display='flex' justifyContent='flex-end'>
-            <Button
-              data-testid='switchFixedColor'
-              kind='tertiary'
-              size='compact'
-              onClick={(e) => switchToFixedColor(e)}
-            >
-              Switch to fixed color
-            </Button>
-          </Block>
-        </Fragment>
-      ) : (
-        <ParagraphSmall>Select a variable to map as legend</ParagraphSmall>
+    <Block width='220px'>
+      <LabelSmall>Legend</LabelSmall>
+      {!haveData && (
+        <ParagraphSmall color='contentTertiary'>
+          Import data to get started.
+        </ParagraphSmall>
+      )}
+      {haveData && !haveNodeLegend && !haveEdgeLegend && (
+        <ParagraphSmall color='contentTertiary'>
+          Node or edge properties can be mapped to different colors using the
+          styles panel.
+        </ParagraphSmall>
+      )}
+      {haveNodeLegend && (
+        <Card
+          $style={{
+            backgroundColor: theme.colors.backgroundTertiary,
+            paddingTop: theme.sizing.scale100,
+            marginTop: theme.sizing.scale200,
+            marginBottom: theme.sizing.scale200,
+          }}
+        >
+          <Legend
+            // @ts-ignore
+            label={`node: ${nodeStyle.color.variable}`}
+            kind='node'
+            // @ts-ignore
+            data={nodeStyle.color.mapping}
+            colorMap={CATEGORICAL_COLOR}
+            maxSize={MAX_LEGEND_SIZE}
+          />
+        </Card>
+      )}
+      {haveEdgeLegend && (
+        <Card
+          $style={{
+            backgroundColor: theme.colors.backgroundTertiary,
+            paddingTop: theme.sizing.scale100,
+            marginTop: theme.sizing.scale200,
+            marginBottom: theme.sizing.scale200,
+          }}
+        >
+          <Legend
+            // @ts-ignore
+            label={`edge: ${edgeStyle.color.variable}`}
+            kind='edge'
+            // @ts-ignore
+            data={edgeStyle.color.mapping}
+            colorMap={CATEGORICAL_COLOR}
+            maxSize={MAX_LEGEND_SIZE}
+          />
+        </Card>
       )}
     </Block>
   );
