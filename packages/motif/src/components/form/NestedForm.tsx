@@ -186,7 +186,7 @@ const NestedForm = ({ data }: NestedFormProps): JSX.Element => {
               const arrayValue = Array.isArray(value) ? value : [value];
               // find id and filter out undefined values
               parsedValue = arrayValue
-                .map((v) => data.options.find((x: any) => x.id === v))
+                .map((v) => d.options.find((x: any) => x.id === v))
                 .filter((x) => x);
             } else {
               // input
