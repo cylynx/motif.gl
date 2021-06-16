@@ -69,7 +69,7 @@ const overrides = {
     inputPlaceholder: primitives.primary300,
     menuFontDefault: primitives.primary300,
     // Override tooltip
-    tooltipBackground: backgroundTertiary,
+    tooltipBackground: backgroundSecondary,
     tooltipText: primitives.primaryA,
 
     // Components

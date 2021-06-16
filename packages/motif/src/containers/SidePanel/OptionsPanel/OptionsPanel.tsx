@@ -38,9 +38,12 @@ const OptionsPanel = () => {
               },
             },
             TabPanel: {
-              style: {
-                paddingLeft: 0,
-                paddingRight: 0,
+              style: ({ $theme }) => {
+                return {
+                  paddingTop: $theme.sizing.scale400,
+                  paddingLeft: 0,
+                  paddingRight: 0,
+                };
               },
             },
           }}
@@ -60,9 +63,12 @@ const OptionsPanel = () => {
               },
             },
             TabPanel: {
-              style: {
-                paddingLeft: 0,
-                paddingRight: 0,
+              style: ({ $theme }) => {
+                return {
+                  paddingTop: $theme.sizing.scale400,
+                  paddingLeft: 0,
+                  paddingRight: 0,
+                };
               },
             },
           }}

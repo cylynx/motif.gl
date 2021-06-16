@@ -3,8 +3,8 @@ import * as form from '../../../src/containers/SidePanel/OptionsPanel/constants'
 import { NestedFormData } from '../../../src/components/form/NestedForm';
 import {
   GraphSelectors,
-  NodeColorFixed,
-  NodeColorLegend,
+  ColorFixed,
+  ColorLegend,
   NodeSizeDegree,
   NodeSizeFixed,
   NodeSizeProperty,
@@ -179,7 +179,7 @@ describe('Node Style Filter', () => {
         changeColorValue(selectedColor);
 
         const nodeStyle: NodeStyleOptions = await getNodeStyleFromReduxStore();
-        const { id, value } = nodeStyle.color as NodeColorFixed;
+        const { id, value } = nodeStyle.color as ColorFixed;
         expect(id).to.deep.equal(selectedType);
         expect(value).to.deep.equal(selectedColor);
       };
@@ -211,7 +211,7 @@ describe('Node Style Filter', () => {
       it('should display grey when variable is empty', async () => {
         changeColorType(selectedType);
         const nodeStyle: NodeStyleOptions = await getNodeStyleFromReduxStore();
-        const { id, variable, mapping } = nodeStyle.color as NodeColorLegend;
+        const { id, variable, mapping } = nodeStyle.color as ColorLegend;
 
         const { value } = findDefaultFromForm(
           form.nodeColorForm,
@@ -230,7 +230,7 @@ describe('Node Style Filter', () => {
         changeColorVariable(selectedVariable);
 
         const nodeStyle: NodeStyleOptions = await getNodeStyleFromReduxStore();
-        const { id, variable, mapping } = nodeStyle.color as NodeColorLegend;
+        const { id, variable, mapping } = nodeStyle.color as ColorLegend;
         expect(id).to.deep.equal(selectedType);
         expect(variable).to.deep.equal(selectedVariable);
         assert.isObject(mapping);

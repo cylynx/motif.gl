@@ -111,7 +111,7 @@ const SimpleForm = ({ data }: { data: SimpleFormData }) => {
       >
         <LabelSmall
           marginBottom='scale100'
-          marginTop='scale200'
+          marginTop='scale100'
           marginRight='scale200'
           color='contentInverseSecondary'
           width='100px'

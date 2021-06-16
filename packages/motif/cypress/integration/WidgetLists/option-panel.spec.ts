@@ -45,7 +45,7 @@ describe('Option Panel', () => {
     it('should possess forms', () => {
       cy.getOptionsPanel()
         .getReact('OptionsNodeStyles')
-        .getReact('Card', {
+        .getReact('Block', {
           props: {
             'data-testid': 'OptionsNodeStyles',
           },
@@ -68,7 +68,7 @@ describe('Option Panel', () => {
     it('should possess forms', () => {
       cy.getOptionsPanel()
         .getReact('OptionsEdgeStyles')
-        .getReact('Card', {
+        .getReact('Block', {
           props: {
             'data-testid': 'OptionsEdgeStyles',
           },

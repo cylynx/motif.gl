@@ -2,6 +2,7 @@
 import { SimpleFormData, NestedFormData } from '../../../components/form';
 import * as LAYOUT from '../../../constants/layout-options';
 import {
+  EDGE_DEFAULT_COLOR,
   DEFAULT_EDGE_STYLE,
   DEFAULT_NODE_STYLE,
 } from '../../../constants/graph-shapes';
@@ -231,8 +232,9 @@ export const nodeColorForm: NestedFormData = {
       id: 'value',
       label: 'Value',
       kind: 'select',
-      value: 'teal',
+      value: DEFAULT_NODE_STYLE.color,
       options: [
+        { id: DEFAULT_NODE_STYLE.color, label: 'Default' },
         { id: 'teal', label: 'Teal' },
         { id: 'blue', label: 'Blue' },
         { id: 'green', label: 'Green' },
@@ -365,4 +367,39 @@ export const edgeArrowForm: SimpleFormData = {
     { id: 'display', label: 'Display' },
   ],
   callback: (data: any) => console.log(data),
+};
+
+export const edgeColorForm: NestedFormData = {
+  id: 'color',
+  label: 'Edge Color',
+  labelPosition: 'top',
+  value: 'fixed',
+  callback: (data: any) => console.log(data),
+  options: [
+    { id: 'fixed', label: 'Fixed' },
+    { id: 'legend', label: 'Legend' },
+  ],
+  fixed: [
+    {
+      id: 'value',
+      label: 'Value',
+      kind: 'select',
+      value: EDGE_DEFAULT_COLOR,
+      options: [
+        { id: EDGE_DEFAULT_COLOR, label: 'Default' },
+        { id: 'blue', label: 'Blue' },
+        { id: 'green', label: 'Green' },
+        { id: 'orange', label: 'Orange' },
+      ],
+    },
+  ],
+  legend: [
+    {
+      id: 'variable',
+      label: 'Variable',
+      kind: 'select',
+      value: null,
+      options: [],
+    },
+  ],
 };
