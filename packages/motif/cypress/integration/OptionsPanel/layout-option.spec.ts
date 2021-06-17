@@ -230,7 +230,7 @@ describe('Layout Options', () => {
 
       cy.getReact(graphinEl)
         .getProps(`layout.${controllerName}`)
-        .should('be.within', 248, 251);
+        .should('be.within', 495, 505);
     });
 
     it('should change end radius', () => {
@@ -242,7 +242,7 @@ describe('Layout Options', () => {
 
       cy.getReact(graphinEl)
         .getProps(`layout.${controllerName}`)
-        .should('be.within', 248, 251);
+        .should('be.within', 495, 505);
     });
 
     it('should change angle ratio', () => {
@@ -278,7 +278,7 @@ describe('Layout Options', () => {
   });
 
   describe('Force-Directed', () => {
-    const { type } = layoutOptions.GRAPHIN_FORCE_DEFAULT;
+    const { type } = layoutOptions.FORCE_DEFAULT;
 
     it('should convert to layout', () => {
       const { label, id } = findLayout(type);

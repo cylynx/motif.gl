@@ -51,7 +51,7 @@ export const layoutForm: NestedFormData = {
       kind: 'slider',
       value: LAYOUT.CIRCLE_DEFAULT.startRadius,
       min: 10,
-      max: 500,
+      max: 1000,
     },
     {
       id: 'endRadius',
@@ -59,7 +59,7 @@ export const layoutForm: NestedFormData = {
       kind: 'slider',
       value: LAYOUT.CIRCLE_DEFAULT.endRadius,
       min: 0,
-      max: 500,
+      max: 1000,
     },
     {
       id: 'angleRatio',
@@ -97,7 +97,44 @@ export const layoutForm: NestedFormData = {
       options: [{ id: 'degree', label: 'degree' }],
     },
   ],
-  'graphin-force': [],
+  gForce: [
+    {
+      id: 'nodeStrength',
+      label: 'Node Strength',
+      kind: 'slider',
+      value: LAYOUT.FORCE_DEFAULT.nodeStrength,
+      min: 1,
+      max: 1000,
+      step: 1,
+    },
+    {
+      id: 'edgeStrength',
+      label: 'Edge Strength',
+      kind: 'slider',
+      value: LAYOUT.FORCE_DEFAULT.edgeStrength,
+      min: 1,
+      max: 1000,
+      step: 1,
+    },
+    {
+      id: 'coulombDisScale',
+      label: 'Force constant',
+      kind: 'slider',
+      value: LAYOUT.FORCE_DEFAULT.coulombDisScale,
+      min: 0.001,
+      max: 0.01,
+      step: 0.001,
+    },
+    {
+      id: 'linkDistance',
+      label: 'Link distance',
+      kind: 'slider',
+      value: LAYOUT.FORCE_DEFAULT.linkDistance,
+      min: 1,
+      max: 400,
+      step: 1,
+    },
+  ],
   fruchterman: [
     {
       id: 'gravity',

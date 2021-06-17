@@ -1,7 +1,6 @@
 import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 
 describe('Legend Popover', () => {
-
   const controllerName = 'color';
 
   before(() => {
@@ -64,6 +63,7 @@ describe('Legend Popover', () => {
 
   describe('Edge legend selection', () => {
     before(() => {
+      cy.waitForReact(2000);
       cy.switchPanel('options');
       cy.switchTab('edges');
       const selectedType: string = 'legend';
