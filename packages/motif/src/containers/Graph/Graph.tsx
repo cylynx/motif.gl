@@ -30,7 +30,7 @@ const Graph = React.forwardRef<Graphin, GraphProps>(
     const layout: Layout = useSelector(
       (state) => GraphSelectors.getStyleOptions(state).layout,
     );
-
+    console.log(layout);
     const { DragCanvas, ClickSelect, LassoSelect, BrushSelect, FontPaint } =
       Behaviors;
 
