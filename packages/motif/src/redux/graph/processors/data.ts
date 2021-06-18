@@ -401,6 +401,7 @@ export const processCsvData = async (rawCsv: string): Promise<ProcessedCsv> => {
   let headerRow = rawCsv.replace(/\r/g, '').split('\n')[0].split(',');
 
   // remove double quotes if they are first and last character of the string
+  // https://stackoverflow.com/a/19156525
   headerRow = headerRow.map((row: string) => row.replace(/^"(.*)"$/, '$1'));
 
   if (!parsedJson || !headerRow) {

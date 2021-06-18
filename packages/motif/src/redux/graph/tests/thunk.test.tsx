@@ -904,14 +904,67 @@ describe('thunk.test.js', () => {
   });
 
   describe('importEdgeListData', () => {
-    const store = mockStore(getStore());
-
     const firstEdgeListCsv =
       'id,relation,source,target\ntxn1,works,jason,cylynx\ntxn3,abc,cylynx,timothy\ntxn4,says hi to,swan,cylynx';
 
     const secondEdgeListCsv = 'id,source,target\n123,x,y\n456,y,z\n789,z,x';
 
+    const quotesHeaderCsv =
+      '"id","relation","source","target"\ntxn1,works,jason,cylynx\ntxn3,abc,cylynx,timothy\ntxn4,says hi to,swan,cylynx';
+
+    it('should import header with quotes successfully', async (done) => {
+      const store = mockStore(getStore());
+      const importDataArr = [quotesHeaderCsv];
+      const groupEdgeToggle = false;
+
+      // processes
+      const batchDataPromises = importDataArr.map((graphData) => {
+        return importEdgeListCsv(
+          graphData,
+          initialState.accessors,
+          groupEdgeToggle,
+        );
+      });
+
+      const graphDataArr = await Promise.all(batchDataPromises);
+      const [graphData] = graphDataArr;
+
+      const groupEdgeConfig = { toggle: groupEdgeToggle, availability: false };
+      Object.assign(graphData.metadata.groupEdges, groupEdgeConfig);
+
+      const expectedActions = [
+        fetchBegin(),
+        addQuery(graphData),
+        processGraphResponse({
+          data: graphData,
+          accessors: initialState.accessors,
+        }),
+        updateToast('toast-0'),
+        resetState(),
+        fetchDone(),
+        closeModal(),
+      ];
+
+      // assertions
+      return store
+        .dispatch(
+          importEdgeListData(
+            importDataArr,
+            groupEdgeToggle,
+            initialState.accessors,
+          ),
+        )
+        .then(() => {
+          setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+          }, 300);
+        });
+    });
+
     it('should receive importData as array and process graph responses accurately', async (done) => {
+      const store = mockStore(getStore());
+
       // input
       const importDataArr = [firstEdgeListCsv, secondEdgeListCsv];
       const groupEdgeToggle = false;
