@@ -155,3 +155,6 @@ export const multipleNodeEdgeData = {
 
 export const edgeListCsv =
   'id,type,source,target\ntxn1,works,jason,cylynx\ntxn3,abc,cylynx,timothy\ntxn4,says hi to,swan,cylynx';
+
+export const csvWithDoubleString =
+  '"id","type","source","target"\ntxn1,works,jason,cylynx\ntxn3,abc,cylynx,timothy\ntxn4,says hi to,swan,cylynx';
