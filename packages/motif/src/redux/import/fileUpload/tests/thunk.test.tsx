@@ -19,6 +19,7 @@ import {
   multipleNodeEdgeData,
   restrictedNodeEdge,
   edgeListCsv,
+  csvWithDoubleString,
 } from './constant';
 import { previewEdgeList, previewJson, previewNodeEdge } from '../thunk';
 import { TFileContent } from '../types';
@@ -157,6 +158,27 @@ describe('Import Preview - thunk.test.js', () => {
 
       const actions = [
         setDataPreview(combinedGraph),
+        setIsEdgeGroupable(false),
+        setStep(2),
+      ];
+
+      // @ts-ignore
+      await store.dispatch(previewEdgeList(attachments));
+      expect(store.getActions()).toEqual(actions);
+    });
+
+    it('should import header with string successfully', async () => {
+      const attachments = [
+        {
+          fileName: 'double-string-header.csv',
+          content: csvWithDoubleString,
+        },
+      ];
+
+      const graph = await processPreviewEdgeList(edgeListCsv);
+
+      const actions = [
+        setDataPreview(graph),
         setIsEdgeGroupable(false),
         setStep(2),
       ];
