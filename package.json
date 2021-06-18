@@ -6,6 +6,7 @@
     "motif": "cd ./packages/motif && npm run start",
     "motif:tsc": "cd ./packages/motif && npm run transpile",
     "motif:build": "cd ./packages/motif && npm run build",
+    "motif:publish": "cd ./packages/motif && npm publish",
     "demo": "cd ./packages/motif-demo && npm run start",
     "demo:build": "cd ./packages/motif-demo && npm run build",
     "demo:serve": "cd ./packages/motif-demo && npm run serve",

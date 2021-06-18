@@ -1,8 +1,11 @@
 import React from 'react';
+import { useStyletron } from 'baseui';
 import { Block } from 'baseui/block';
 import { HeadingXSmall } from 'baseui/typography';
 import { useDispatch, useSelector } from 'react-redux';
+import { CATEGORICAL_COLOR } from '../../../constants/colors';
 import { GraphSlices, GraphSelectors } from '../../../redux/graph';
+import useNodeStyle from '../../../redux/graph/hooks/useNodeStyle';
 import { Card } from '../../../components/ui';
 import {
   NestedForm,
@@ -10,7 +13,6 @@ import {
   SimpleForm,
   genSimpleForm,
 } from '../../../components/form';
-
 import {
   nodeSizeForm,
   nodeColorForm,
@@ -18,13 +20,14 @@ import {
   nodeLabelForm,
 } from './constants';
 import QuestionMarkTooltip from '../../../components/ui/QuestionMarkTooltip';
+import Legend from '../../../components/Legend';
+
+const MAX_LEGEND_SIZE = CATEGORICAL_COLOR.length;
 
 const OptionsNodeStyles = () => {
+  const [, theme] = useStyletron();
   const dispatch = useDispatch();
-
-  const nodeStyle = useSelector(
-    (state) => GraphSelectors.getGraph(state).styleOptions.nodeStyle,
-  );
+  const { nodeStyle } = useNodeStyle();
 
   const { allNodeFields, nodeLabelFields, numericNodeFields } = useSelector(
     (state) => GraphSelectors.getGraphFieldsOptions(state),
@@ -55,7 +58,7 @@ const OptionsNodeStyles = () => {
   );
 
   return (
-    <Card data-testid='OptionsNodeStyles'>
+    <Block data-testid='OptionsNodeStyles'>
       <Block display='flex' alignItems='end'>
         <HeadingXSmall
           marginTop={0}
@@ -73,23 +76,55 @@ const OptionsNodeStyles = () => {
           }
         />
       </Block>
-      <NestedForm
-        data={nodeSizeFormData}
-        key={`${nodeSizeFormData.id}-${nodeSizeFormData.value}`}
-      />
-      <SimpleForm
-        data={genSimpleForm(nodeLabelForm, nodeStyle, updateNodeStyle, {
-          options: nodeLabelFields,
-        })}
-      />
-      <NestedForm
-        data={nodeColorFormData}
-        key={`${nodeColorFormData.id}-${nodeColorFormData.value}`}
-      />
-      <SimpleForm
-        data={genSimpleForm(nodeFontSizeForm, nodeStyle, updateNodeStyle)}
-      />
-    </Card>
+      <Card
+        $style={{
+          backgroundColor: theme.colors.backgroundTertiary,
+          marginBottom: theme.sizing.scale300,
+        }}
+      >
+        <NestedForm
+          data={nodeSizeFormData}
+          key={`${nodeSizeFormData.id}-${nodeSizeFormData.value}`}
+        />
+      </Card>
+      <Card
+        $style={{
+          backgroundColor: theme.colors.backgroundTertiary,
+          marginBottom: theme.sizing.scale300,
+        }}
+      >
+        <SimpleForm
+          data={genSimpleForm(nodeLabelForm, nodeStyle, updateNodeStyle, {
+            options: nodeLabelFields,
+          })}
+        />
+        <SimpleForm
+          data={genSimpleForm(nodeFontSizeForm, nodeStyle, updateNodeStyle)}
+        />
+      </Card>
+      <Card
+        $style={{
+          backgroundColor: theme.colors.backgroundTertiary,
+          marginBottom: theme.sizing.scale300,
+        }}
+      >
+        <NestedForm
+          data={nodeColorFormData}
+          key={`${nodeColorFormData.id}-${nodeColorFormData.value}`}
+        />
+        {nodeStyle.color &&
+          nodeStyle.color.id === 'legend' &&
+          nodeStyle.color.mapping && (
+            <Legend
+              label='Colors'
+              kind='node'
+              data={nodeStyle.color.mapping}
+              colorMap={CATEGORICAL_COLOR}
+              maxSize={MAX_LEGEND_SIZE}
+            />
+          )}
+      </Card>
+    </Block>
   );
 };
 

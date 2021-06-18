@@ -10,6 +10,7 @@ import {
 } from '../../../../../redux/graph';
 
 import useNodeStyle from '../../../../../redux/graph/hooks/useNodeStyle';
+import useEdgeStyle from '../../../../../redux/graph/hooks/useEdgeStyle';
 import useSearchOption from '../../../SearchPanel/hooks/useSearchOption';
 import LayerDetailed from './LayerDetailed';
 import Accordion from '../../../../../components/Accordion';
@@ -24,6 +25,7 @@ import { UISlices } from '../../../../../redux/ui';
 const ImportLayers = () => {
   const dispatch = useDispatch();
   const { nodeStyle, switchToFixNodeColor } = useNodeStyle();
+  const { edgeStyle, switchToFixEdgeColor } = useEdgeStyle();
   const { resetSearchOptions } = useSearchOption();
   const graphList: GraphList = useSelector((state) =>
     GraphSelectors.getGraphList(state),
@@ -45,6 +47,9 @@ const ImportLayers = () => {
 
     if (nodeStyle.color.id === 'legend') {
       switchToFixNodeColor();
+    }
+    if (edgeStyle.color.id === 'legend') {
+      switchToFixEdgeColor();
     }
   };
 

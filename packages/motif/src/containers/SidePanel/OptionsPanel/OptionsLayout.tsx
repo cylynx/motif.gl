@@ -1,4 +1,5 @@
 import React from 'react';
+import { useStyletron } from 'baseui';
 import { Block } from 'baseui/block';
 import { HeadingXSmall } from 'baseui/typography';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +11,7 @@ import { layoutForm } from './constants';
 import QuestionMarkTooltip from '../../../components/ui/QuestionMarkTooltip';
 
 const OptionsLayout = () => {
+  const [, theme] = useStyletron();
   const dispatch = useDispatch();
 
   const layout = useSelector(
@@ -36,7 +38,13 @@ const OptionsLayout = () => {
   });
 
   return (
-    <Card data-testid='OptionsLayout'>
+    <Card
+      data-testid='OptionsLayout'
+      $style={{
+        backgroundColor: theme.colors.backgroundTertiary,
+        marginBottom: theme.sizing.scale300,
+      }}
+    >
       <Block display='flex' alignItems='end'>
         <HeadingXSmall
           marginTop={0}

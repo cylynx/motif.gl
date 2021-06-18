@@ -3,6 +3,8 @@ import * as form from '../../../src/containers/SidePanel/OptionsPanel/constants'
 import { SampleData } from '../../../src/containers/ImportWizardModal/SampleData';
 import {
   GraphSelectors,
+  ColorFixed,
+  ColorLegend,
   EdgeStyleOptions,
   EdgeWidthFixed,
   EdgeWidthProperty,
@@ -110,26 +112,111 @@ describe('Edge Style Filter', () => {
   describe('Edge Label', () => {
     const changeLabelField = (value: string) => {
       cy.react('Controller', { props: { name: 'label' } })
-        .last()
+        .first()
         .type(`${value}{enter}`);
     };
 
-    it('should not display label when None', async () => {
-      const selectedLabelField = '-';
+    it('should display label when selected', async () => {
+      const selectedLabelField = 'id';
       changeLabelField(selectedLabelField);
 
       const edgeStyle = await getEdgeStyleFromReduxStore();
-      const edgeLabel: string = edgeStyle.label;
+      const edgeLabel: string | string[] = edgeStyle.label;
       expect(edgeLabel).to.deep.equal(selectedLabelField);
     });
 
-    it('should not display label when selected', async () => {
+    it('should handle multiple selections', async () => {
       const selectedLabelField = 'is_foreign_target';
       changeLabelField(selectedLabelField);
+      const expectedLabel = ['id', 'is_foreign_target']
 
       const edgeStyle = await getEdgeStyleFromReduxStore();
-      const edgeLabel: string = edgeStyle.label;
-      expect(edgeLabel).to.deep.equal(selectedLabelField);
+      const edgeLabel: string | string[] = edgeStyle.label;
+      expect(edgeLabel).to.deep.equal(expectedLabel);
+    });
+  });
+
+  describe('Edge Colours', () => {
+    const controllerName = 'color';
+
+    before(() => {
+      cy.visit('/');
+      cy.waitForReact(5000);
+      cy.switchTab('sample-data');
+      cy.importSampleData(SampleData.BANK);
+      cy.switchPanel('options');
+      cy.switchTab('edges');
+    });
+
+    const changeColorType = (value: string) => {
+      cy.react('Controller', { props: { name: controllerName } })
+        .first()
+        .type(`${value}{enter}`);
+    };
+
+    const changeColorValue = (value: string) => {
+      cy.react('Controller', { props: { name: 'value' } })
+        .nthNode(1)
+        .type(`${value}{enter}`);
+    };
+
+    const changeColorVariable = (value: string) => {
+      cy.react('Controller', { props: { name: 'variable' } }).type(
+        `${value}{enter}`,
+      );
+    };
+
+    describe('should change with fixed edge color', () => {
+      const selectedType: string = 'fixed';
+
+      const assertEdgeColour = async (selectedColor: string) => {
+        changeColorValue(selectedColor);
+
+        const edgeStyle: EdgeStyleOptions = await getEdgeStyleFromReduxStore();
+        const { id, value } = edgeStyle.color as ColorFixed;
+        expect(id).to.deep.equal(selectedType);
+        expect(value).to.deep.equal(selectedColor);
+      };
+
+      
+      it('should change to blue', async () => {
+        cy.wait(5000)
+        changeColorType(selectedType);
+        await assertEdgeColour('blue');
+      });
+
+    });
+
+    describe('should change with legends', () => {
+      const selectedType: string = 'legend';
+
+      it('should display grey when variable is empty', async () => {
+        changeColorType(selectedType);
+        const edgeStyle: EdgeStyleOptions = await getEdgeStyleFromReduxStore();
+        const { id, variable, mapping } = edgeStyle.color as ColorLegend;
+
+        const { value } = findDefaultFromForm(
+          form.edgeColorForm,
+          selectedType,
+          'variable',
+        );
+        expect(id).to.deep.equal(selectedType);
+        expect(variable).to.deep.equal(value);
+        assert.isObject(mapping);
+      });
+
+      it('should display colours based on mapping', async () => {
+        changeColorType(selectedType);
+
+        const selectedVariable = 'id';
+        changeColorVariable(selectedVariable);
+
+        const edgeStyle: EdgeStyleOptions = await getEdgeStyleFromReduxStore();
+        const { id, variable, mapping } = edgeStyle.color as ColorLegend;
+        expect(id).to.deep.equal(selectedType);
+        expect(variable).to.deep.equal(selectedVariable);
+        assert.isObject(mapping);
+      });
     });
   });
 
@@ -164,7 +251,7 @@ describe('Edge Style Filter', () => {
         .then((edge: Edge) => {
           const { lineWidth } = edge.style.keyshape;
 
-          expect(lineWidth).to.deep.equal(3.8338044591773945);
+          expect(lineWidth).to.deep.equal(1);
         });
     });
 

@@ -12,12 +12,12 @@ export type Field = {
   filterProps?: any;
 };
 
-export type NodeColorFixed = {
+export type ColorFixed = {
   id: 'fixed';
   value: string;
 };
 
-export type NodeColorLegend = {
+export type ColorLegend = {
   id: 'legend';
   variable: string;
   /** Map of variable keys to color strings */
@@ -174,11 +174,13 @@ export type EdgeWidthProperty = {
 
 export type EdgeWidth = EdgeWidthFixed | EdgeWidthProperty;
 
+export type EdgeColor = ColorFixed | ColorLegend;
 export interface EdgeStyleOptions {
   width?: EdgeWidth;
   pattern?: 'none' | 'dot' | 'dash' | 'dash-dot';
   fontSize?: number;
-  label?: string;
+  color?: EdgeColor;
+  label?: string | string[];
   arrow?: ArrowOptions;
 }
 
@@ -227,12 +229,12 @@ export interface FilterOptions {
   [key: string]: FilterCriteria;
 }
 
-export type NodeColor = NodeColorFixed | NodeColorLegend;
+export type NodeColor = ColorFixed | ColorLegend;
 export interface NodeStyleOptions {
   size?: NodeSize;
   color?: NodeColor;
   fontSize?: number;
-  label?: string;
+  label?: string | string[];
 }
 
 export type GraphAttribute = 'nodes' | 'edges';

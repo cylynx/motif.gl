@@ -188,6 +188,14 @@ export const unixTimeConverter = (
   return parse(dateString, dateFormat, new Date()).getTime();
 };
 
+export const removeInvalidData = (data: any[]) => {
+  return data.filter((data: any) => {
+    const invalidValue = ['', null, undefined];
+    const isInvalidData = invalidValue.includes(data);
+    return isInvalidData === false;
+  });
+};
+
 /**
  * Calculate timestamp domain and suitable step
  *
@@ -207,16 +215,16 @@ export const getFieldDomain = (
   // every time we compare we store a value mapped to int in filter domain
 
   const accessedValues = data.map(valueAccessor);
+
   let mappedValue: any = [];
-  if (Array.isArray(data) && Array.isArray(accessedValues[0])) {
+  if (Array.isArray(accessedValues[0])) {
     // Grouped edges
     for (const d of accessedValues) {
-      mappedValue = mappedValue.concat(d.filter((el: any) => el != null));
+      const cleanedData = removeInvalidData(d);
+      mappedValue = mappedValue.concat(cleanedData);
     }
-  } else if (Array.isArray(data)) {
-    for (const d of accessedValues) {
-      if (d != null) mappedValue.push(d);
-    }
+  } else {
+    mappedValue = removeInvalidData(accessedValues);
   }
 
   // mapped value is undefined and empty, do not proceed.

@@ -5,13 +5,18 @@ import {
   GraphData,
   EdgeStyleOptions,
   Edge,
+  EdgeColor,
+  ColorFixed,
+  ColorLegend,
   EdgeWidth,
   ArrowOptions,
 } from '../../redux/graph/types';
 import {
   DEFAULT_EDGE_STYLE,
+  EDGE_DEFAULT_COLOR,
   edgeFontColor,
 } from '../../constants/graph-shapes';
+import { normalizeColor } from './color-utils';
 import { EdgePattern, mapEdgePattern } from '../shape-utils';
 
 /**
@@ -48,6 +53,10 @@ export const styleEdges = (
 
     if (edgeStyleOptions.pattern) {
       styleEdgePattern(edgeStyle, edgeStyleOptions.pattern);
+    }
+
+    if (edgeStyleOptions.color) {
+      styleEdgeColor(edge, edgeStyle, edgeStyleOptions.color);
     }
 
     if (edgeStyleOptions.label) {
@@ -167,13 +176,13 @@ export const styleEdgeWidthByProp = (
  * Style Edge Label based on given value in Edge Filter Options
  * @param {IUserEdge} edge
  * @param {Partial<EdgeStyle>} edgeStyle
- * @param {string} label
+ * @param {(string | string[])} label
  * @return {void}
  */
 export const styleEdgeLabel = (
   edge: IUserEdge,
   edgeStyle: Partial<EdgeStyle>,
-  label: string,
+  label: string | string[],
 ): void => {
   const labelStyle: Partial<EdgeStyle['label']> = edgeStyle.label ?? {
     fill: edgeFontColor.normal,
@@ -183,7 +192,14 @@ export const styleEdgeLabel = (
     offset: DEFAULT_EDGE_STYLE.label.offset,
   };
 
-  let customLabel = get(edge, label) ?? '';
+  // display comma separated string if array and display only non-empty elements
+  let customLabel = Array.isArray(label)
+    ? label
+        .map((field) => get(edge, field))
+        .filter((x) => x)
+        .join(',')
+    : get(edge, label) ?? '';
+
   customLabel = customLabel.toString();
 
   Object.assign(labelStyle, {
@@ -339,4 +355,69 @@ const deriveEdgeType = (data: GraphData): void => {
       });
     }
   }
+};
+
+/**
+ * Style Edge Color based on values given by:
+ * 1. Fixed edge color
+ * 2. Legend Selection
+ *
+ * @param {Edge} edge
+ * @param {Partial<EdgeStyle>} edgeStyle
+ * @param {EdgeColor} option
+ * @return {void}
+ */
+export const styleEdgeColor = (
+  edge: Edge,
+  edgeStyle: Partial<EdgeStyle>,
+  option: EdgeColor,
+): void => {
+  const { id } = option;
+  const edgeKeyShape: Partial<EdgeStyle['keyshape']> = edgeStyle.keyshape ?? {};
+  const edgeArrowShape: Partial<EdgeStyle['keyshape']['endArrow']> = edgeStyle
+    .keyshape.endArrow ?? { ...DEFAULT_EDGE_STYLE.keyshape.endArrow };
+
+  if (id === 'fixed') {
+    const { value } = option as ColorFixed;
+    const fixedEdgeColor = normalizeColor(value);
+
+    Object.assign(edgeStyle, {
+      keyshape: Object.assign(edgeKeyShape, {
+        stroke: fixedEdgeColor.normal,
+        endArrow: Object.assign(edgeArrowShape, {
+          fill: fixedEdgeColor.normal,
+        }),
+      }),
+    });
+
+    return;
+  }
+
+  const { variable, mapping } = option as ColorLegend;
+  const variableProperty: string | unknown = get(edge, variable);
+  const defaultEdgeColor = normalizeColor(EDGE_DEFAULT_COLOR);
+
+  if (variableProperty) {
+    const edgeColor = normalizeColor(mapping[variableProperty as string]);
+
+    Object.assign(edgeStyle, {
+      keyshape: Object.assign(edgeKeyShape, {
+        stroke: edgeColor.normal,
+        endArrow: Object.assign(edgeArrowShape, {
+          fill: edgeColor.normal,
+        }),
+      }),
+    });
+
+    return;
+  }
+
+  Object.assign(edgeStyle, {
+    keyshape: Object.assign(edgeKeyShape, {
+      stroke: defaultEdgeColor.dark,
+      endArrow: Object.assign(edgeArrowShape, {
+        fill: defaultEdgeColor.normal,
+      }),
+    }),
+  });
 };

@@ -24,8 +24,8 @@ const defaultOverrides: BasePopoverProps['overrides'] = {
   },
   Inner: {
     style: ({ $theme }) => ({
-      backgroundColor: $theme.colors.tooltipBackground,
-      color: $theme.colors.tooltipText,
+      paddingRight: $theme.sizing.scale300,
+      paddingLeft: $theme.sizing.scale300,
       fontSize: '12px',
       lineHeight: '18px',
     }),

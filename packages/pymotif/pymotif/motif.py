@@ -5,39 +5,15 @@
 # Distributed under the terms of the Modified BSD License.
 
 import json
+import neo4j
 import networkx as nx
 import pandas as pd
 
-from ipywidgets import DOMWidget, ValueWidget, register, Layout
-from traitlets import Dict, Unicode, Bool
+from ipywidgets import DOMWidget, ValueWidget, register
+from traitlets import Dict, Unicode
 
+from . import constants as C
 from ._frontend import module_name, module_version
-
-# determines how the widget is displayed in the cell
-DISPLAY = Layout(width='100%', height='600px')
-
-# minimise hard-coding elsewhere
-NX_GRAPH = 'nx_graph'
-JSON_PATH = 'json_path'
-CSV_PATH = 'csv_path'
-STYLE = 'style'
-TITLE = 'title'
-GROUP_EDGES = 'group_edges'
-
-DATA = 'data'
-METADATA = 'metadata'
-NODES = 'nodes'
-EDGES = 'edges'
-
-# allowed kwargs upon class instantiation
-ALLOWED = {
-    NX_GRAPH: nx.Graph,
-    JSON_PATH: str,
-    CSV_PATH: str,
-    STYLE: dict,
-    TITLE: str,
-    GROUP_EDGES: bool
-}
 
 
 @register
@@ -49,14 +25,12 @@ class Motif(DOMWidget, ValueWidget):
      Attributes 
     ------------
     state: dict
-        Follows the TLoadFormat interface defined in Motif's types.ts.
-        
         There are 2 possible keys: data, style.
         Data is a list of graph data describing what will be rendered in the widget.
         Style is a dict describing how the graphs will be rendered.
-    
-    group_edges: bool = True
-        Whether to group edges for the currently-rendered graph
+
+        Follows the TLoadFormat interface defined in Motif's types.ts:
+        https://github.com/cylynx/motif.gl/blob/master/packages/motif/src/redux/graph/types.ts#L283 
     """
 
     # widget boilerplate: specify which front-end model / view to associate with
@@ -68,10 +42,8 @@ class Motif(DOMWidget, ValueWidget):
     _view_module = Unicode(module_name).tag(sync=True)
     _view_module_version = Unicode(module_version).tag(sync=True)
 
-    # variables with defaults that sync with JS side.
-    # group_edges will be overwritten if the setting is set in 'state'
-    state = Dict({ DATA: [], STYLE: {} }).tag(sync=True)
-    group_edges = Bool(True).tag(sync=True)
+    # variable with defaults that sync with JS side.
+    state = Dict({ C.DATA: [], C.STYLE: {} }).tag(sync=True)
 
 
     def __init__(self, **kwargs):
@@ -80,7 +52,7 @@ class Motif(DOMWidget, ValueWidget):
          Parameters
         ------------
         All parameters are optional.
-        Only one graph import (json_path, nx_graph, or csv_path) can be passed each time.
+        Only one graph import (json_path, nx_graph, neo4j_graph, or csv_path) can be passed each time.
 
         json_path: str
             Path to a local JSON file containing the graph data.
@@ -89,23 +61,24 @@ class Motif(DOMWidget, ValueWidget):
         nx_graph: nx.Graph
             A networkx graph to be rendered
 
+        neo4j_graph: neo4j.graph.Graph
+            A neo4j graph to be rendered, obtained from the neo4j.Result.graph() method.
+            Ref: https://neo4j.com/docs/api/python-driver/current/api.html#graph
+
         csv_path: str
             Path to a local CSV edgelist file
 
         style: dict
-            The rendered graph's style
+            The rendered graph's style. Its format depends on Motif's StyleOptions interface:
+            https://github.com/cylynx/motif.gl/blob/c79ba6549407979a4ec0214cc6c7c7d0f2a3be41/packages/motif/src/redux/graph/types.ts#L206
 
         title: str
             The rendered graph's title
-        
-        group_edges: bool = True
-            Whether to group edges if there are multiple edges from the same
-            source to same target. Overwrites previous setting, if any.
         """
-        super().__init__(layout=DISPLAY)
+        super().__init__()
 
         if kwargs:
-            self.state, self.group_edges = self._prep_import(**kwargs)
+            self.state = self._prep_import(**kwargs)
             self._update_state()
 
 
@@ -115,10 +88,10 @@ class Motif(DOMWidget, ValueWidget):
         Takes the same parameters as __init__.
         If provided, graph settings here will overwrite those set previously (e.g. style).
         """
-        graph, self.group_edges = self._prep_import(**kwargs)
+        graph = self._prep_import(**kwargs)
 
-        self.state[DATA] += graph[DATA]
-        self.state[STYLE] = graph.get(STYLE, self.state[STYLE])
+        self.state[C.DATA] += graph[C.DATA]
+        self.state[C.STYLE] = graph.get(C.STYLE, self.state[C.STYLE])
 
         self._update_state()
 
@@ -139,9 +112,9 @@ class Motif(DOMWidget, ValueWidget):
         self._validate(style=style)
 
         if overwrite:
-            self.state[STYLE] = style
+            self.state[C.STYLE] = style
         else:
-            self.state[STYLE].update(style)
+            self.state[C.STYLE].update(style)
 
         self._update_state()
 
@@ -164,35 +137,35 @@ class Motif(DOMWidget, ValueWidget):
         require_import=False:
             Whether it is required to pass a graph import.
         """
-        IMPORTS = { JSON_PATH, NX_GRAPH, CSV_PATH }
+        IMPORTS = { C.JSON_PATH, C.NX_GRAPH, C.NEO4J_GRAPH, C.CSV_PATH }
 
         # if required, check that only 1 import type is passed
         if require_import and len(set(kwargs) & IMPORTS) != 1:
-            raise KeyError(f'Pass 1 import type parameter: nx_graph, json_path, or csv_path.')
+            raise KeyError(f'Pass 1 import type parameter: nx_graph, neo4j_graph, json_path, or csv_path.')
 
         for k, v in kwargs.items():
             # check for accepted params
-            if k not in ALLOWED:
+            if k not in C.ALLOWED:
                 raise KeyError(f'{k} is not an accepted parameter')
 
             # check types
-            if not isinstance(v, ALLOWED[k]):
-                raise TypeError(f'{k} must be of type {ALLOWED[k]}')
+            if not isinstance(v, C.ALLOWED[k]):
+                raise TypeError(f'{k} must be of type {C.ALLOWED[k]}')
             
             # param-specific checks
-            if k == JSON_PATH:
+            if k == C.JSON_PATH:
                 if not v.endswith('.json'):
                     raise ValueError(f'{k} should end with .json')
 
-            if k == CSV_PATH:
+            if k == C.CSV_PATH:
                 if not v.endswith('.csv'):
                     raise ValueError(f'{k} should end with .csv')
             
-            if k == TITLE and not v:
+            if k == C.TITLE and not v:
                 raise ValueError(f'{k} should not be an empty string')
 
 
-    def _prep_import(self, **kwargs) -> (dict, bool):
+    def _prep_import(self, **kwargs) -> dict:
         """ 
         Based on kwargs passed, prepares graph data from various formats
         to be imported into the Motif widget.
@@ -200,19 +173,14 @@ class Motif(DOMWidget, ValueWidget):
         Actual import is done elsewhere by adding the returned dict
         to self.state.
 
-        Returns a tuple of (graph: dict, group_edges: bool):
-            graph - Graph to import
-            group_edges - Whether to group edges, default True
+        Returns a dict which contains the graph to import.
         """
         self._validate(require_import=True, **kwargs)
 
-        graph = {}
-        group_edges = True
-
         # a JSON file will be directly set as the graph to import
-        if JSON_PATH in kwargs:
+        if C.JSON_PATH in kwargs:
             print('Reading JSON file, all other params will be ignored...')
-            json_path = kwargs[JSON_PATH]
+            json_path = kwargs[C.JSON_PATH]
             
             with open(json_path, 'r') as json_data:
                 graph = json.load(json_data)
@@ -220,25 +188,28 @@ class Motif(DOMWidget, ValueWidget):
         # other formats require pre-processing
         else:
             motif_graph = {}
-            style = kwargs.get(STYLE, {})
+            style = kwargs.get(C.STYLE, {})
 
-            if NX_GRAPH in kwargs:
-                nx_graph = kwargs[NX_GRAPH]
+            if C.NX_GRAPH in kwargs:
+                nx_graph = kwargs[C.NX_GRAPH]
                 motif_graph = self._nx_to_motif(nx_graph)  
             
-            if CSV_PATH in kwargs:
-                csv_path = kwargs[CSV_PATH]
+            if C.NEO4J_GRAPH in kwargs:
+                neo4j_graph = kwargs[C.NEO4J_GRAPH]
+                motif_graph = self._neo4j_to_motif(neo4j_graph)
+            
+            if C.CSV_PATH in kwargs:
+                csv_path = kwargs[C.CSV_PATH]
                 motif_graph = self._csv_to_motif(csv_path)
 
             # add title to data if provided
-            if TITLE in kwargs:
-                metadata_title = { TITLE: kwargs[TITLE] }
-                motif_graph[METADATA] = metadata_title
+            if C.TITLE in kwargs:
+                metadata_title = { C.TITLE: kwargs[C.TITLE] }
+                motif_graph[C.METADATA] = metadata_title
 
-            graph = { DATA: [motif_graph], STYLE: style }
-            group_edges: bool = kwargs.get(GROUP_EDGES, True)
+            graph = { C.DATA: [motif_graph], C.STYLE: style }
         
-        return graph, group_edges
+        return graph
 
 
     def _nx_to_motif(self, nx_graph: nx.Graph) -> dict:
@@ -248,8 +219,6 @@ class Motif(DOMWidget, ValueWidget):
         """
         self._validate(nx_graph=nx_graph)
         
-        motif_data = {}
-
         # convert nx_graph to cyjs format: (http://manual.graphspace.org/en/latest/GraphSpace_Network_Model.html#cyjs-format)
         try:
             cyjs = nx.readwrite.json_graph.cytoscape_data(nx_graph)
@@ -257,8 +226,63 @@ class Motif(DOMWidget, ValueWidget):
             raise Exception('Could not convert nx_graph to cyjs format')
 
         # take relevant parts from cyjs format and add to data
-        motif_data[NODES] = [node[DATA] for node in cyjs['elements'][NODES]]
-        motif_data[EDGES] = [edge[DATA] for edge in cyjs['elements'][EDGES]]
+        motif_data = {
+            C.NODES: [node[C.DATA] for node in cyjs['elements'][C.NODES]],
+            C.EDGES: [edge[C.DATA] for edge in cyjs['elements'][C.EDGES]]
+        }
+
+        return motif_data
+    
+
+    def _neo4j_to_motif(self, neo4j_graph: neo4j.graph.Graph) -> dict:
+        """
+        Converts a neo4j_graph into a dict format 
+        suitable for plotting in Motif: { nodes: [...], edges: [...] }
+
+        From https://neo4j.com/docs/api/python-driver/current/api.html#graph:
+            1) neo4j.graph.Graph only contains nodes and relationships, no paths
+            2) neo4j.graph.Graph is still experimental. 
+        """
+        self._validate(neo4j_graph=neo4j_graph)
+        
+        def neo4j_to_motif_node(neo4j_node):
+            """ Converts a neo4j node to motif node """
+            main_properties = {
+                'id': f'node-{neo4j_node.id}',
+                'labels': next(iter(neo4j_node._labels))    # get only item in frozenset
+            }
+            
+            # merge main props with remaining ones, main props will overwrite
+            motif_node = {**neo4j_node._properties, **main_properties}
+
+            return motif_node
+        
+        def neo4j_to_motif_edge(neo4j_edge):
+            """ Converts a neo4j edge to motif edge """
+            main_properties = {
+                'id': f'edge-{neo4j_edge.id}',
+                'source': f'node-{neo4j_edge.start_node.id}',
+                'target': f'node-{neo4j_edge.end_node.id}',
+                'relationship': neo4j_edge.type,
+            }
+            
+            # merge main props with remaining ones, main props will overwrite
+            motif_edge = {**neo4j_edge._properties, **main_properties}
+
+            return motif_edge
+
+        try:
+            # https://stackoverflow.com/questions/59289134/constructing-networkx-graph-from-neo4j-query-result
+            # https://github.com/neo4j/neo4j-python-driver/blob/4.3/neo4j/graph/__init__.py
+            neo4j_nodes = neo4j_graph._nodes.values()
+            neo4j_edges = neo4j_graph._relationships.values()
+            
+            motif_nodes = [neo4j_to_motif_node(n) for n in neo4j_nodes]
+            motif_edges = [neo4j_to_motif_edge(e) for e in neo4j_edges]
+        except:
+            raise Exception('Could not convert neo4j graph')
+
+        motif_data = { C.NODES: motif_nodes, C.EDGES: motif_edges }
 
         return motif_data
 

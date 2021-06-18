@@ -30,8 +30,10 @@ const cleanGetValues = (obj: any) => {
   const results = {};
   Object.entries(obj).forEach(([key, value]: any[]) => {
     if (Array.isArray(value) && value[0]?.id) {
-      // select
-      results[key] = value[0].id;
+      // if multi-select return array [field1, field2]
+      // else return string e.g. "field1"
+      results[key] =
+        value.length === 1 ? value[0].id : value.map((opt) => opt.id);
     } else if (
       Array.isArray(value) &&
       typeof value[0] === 'number' &&
@@ -84,16 +86,19 @@ const SimpleForm = ({ data }: { data: SimpleFormData }) => {
     callback(cleanGetValues(getValues()));
   };
 
-  // Select needs to have an options
-  let parsedValue =
-    // eslint-disable-next-line no-nested-ternary
-    kind === 'select'
-      ? data.options.find((x: any) => x.id === value)
-        ? [data.options.find((x: any) => x.id === value)]
-        : []
-      : value;
-  parsedValue =
-    kind === 'slider' && !Array.isArray(value) ? [value] : parsedValue;
+  let parsedValue;
+  if (kind === 'slider' && !Array.isArray(value)) {
+    parsedValue = [value];
+  } else if (kind === 'select') {
+    const arrayValue = Array.isArray(value) ? value : [value];
+    // find id and filter out undefined values
+    parsedValue = arrayValue
+      .map((v) => data.options.find((x: any) => x.id === v))
+      .filter((x) => x);
+  } else {
+    // input
+    parsedValue = value;
+  }
 
   return (
     <Fragment>
@@ -106,7 +111,7 @@ const SimpleForm = ({ data }: { data: SimpleFormData }) => {
       >
         <LabelSmall
           marginBottom='scale100'
-          marginTop='scale200'
+          marginTop='scale100'
           marginRight='scale200'
           color='contentInverseSecondary'
           width='100px'

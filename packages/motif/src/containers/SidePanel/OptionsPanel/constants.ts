@@ -2,6 +2,7 @@
 import { SimpleFormData, NestedFormData } from '../../../components/form';
 import * as LAYOUT from '../../../constants/layout-options';
 import {
+  EDGE_DEFAULT_COLOR,
   DEFAULT_EDGE_STYLE,
   DEFAULT_NODE_STYLE,
 } from '../../../constants/graph-shapes';
@@ -50,7 +51,7 @@ export const layoutForm: NestedFormData = {
       kind: 'slider',
       value: LAYOUT.CIRCLE_DEFAULT.startRadius,
       min: 10,
-      max: 500,
+      max: 1000,
     },
     {
       id: 'endRadius',
@@ -58,7 +59,7 @@ export const layoutForm: NestedFormData = {
       kind: 'slider',
       value: LAYOUT.CIRCLE_DEFAULT.endRadius,
       min: 0,
-      max: 500,
+      max: 1000,
     },
     {
       id: 'angleRatio',
@@ -96,7 +97,44 @@ export const layoutForm: NestedFormData = {
       options: [{ id: 'degree', label: 'degree' }],
     },
   ],
-  'graphin-force': [],
+  gForce: [
+    {
+      id: 'nodeStrength',
+      label: 'Node Strength',
+      kind: 'slider',
+      value: LAYOUT.FORCE_DEFAULT.nodeStrength,
+      min: 1,
+      max: 1000,
+      step: 1,
+    },
+    {
+      id: 'edgeStrength',
+      label: 'Edge Strength',
+      kind: 'slider',
+      value: LAYOUT.FORCE_DEFAULT.edgeStrength,
+      min: 1,
+      max: 1000,
+      step: 1,
+    },
+    {
+      id: 'coulombDisScale',
+      label: 'Force constant',
+      kind: 'slider',
+      value: LAYOUT.FORCE_DEFAULT.coulombDisScale,
+      min: 0.001,
+      max: 0.01,
+      step: 0.001,
+    },
+    {
+      id: 'linkDistance',
+      label: 'Link distance',
+      kind: 'slider',
+      value: LAYOUT.FORCE_DEFAULT.linkDistance,
+      min: 1,
+      max: 400,
+      step: 1,
+    },
+  ],
   fruchterman: [
     {
       id: 'gravity',
@@ -231,8 +269,9 @@ export const nodeColorForm: NestedFormData = {
       id: 'value',
       label: 'Value',
       kind: 'select',
-      value: 'teal',
+      value: DEFAULT_NODE_STYLE.color,
       options: [
+        { id: DEFAULT_NODE_STYLE.color, label: 'Default' },
         { id: 'teal', label: 'Teal' },
         { id: 'blue', label: 'Blue' },
         { id: 'green', label: 'Green' },
@@ -268,7 +307,8 @@ export const nodeLabelForm: SimpleFormData = {
   labelPosition: 'top',
   kind: 'select',
   value: '-',
-  options: [{ id: '-', label: '-' }],
+  multi: true,
+  options: [],
   callback: (data: any) => console.log(data),
 };
 
@@ -347,8 +387,9 @@ export const edgeLabelForm: SimpleFormData = {
   label: 'Label',
   labelPosition: 'top',
   kind: 'select',
+  multi: true,
   value: '-',
-  options: [{ id: '-', label: '-' }],
+  options: [],
   callback: (data: any) => console.log(data),
 };
 
@@ -363,4 +404,39 @@ export const edgeArrowForm: SimpleFormData = {
     { id: 'display', label: 'Display' },
   ],
   callback: (data: any) => console.log(data),
+};
+
+export const edgeColorForm: NestedFormData = {
+  id: 'color',
+  label: 'Edge Color',
+  labelPosition: 'top',
+  value: 'fixed',
+  callback: (data: any) => console.log(data),
+  options: [
+    { id: 'fixed', label: 'Fixed' },
+    { id: 'legend', label: 'Legend' },
+  ],
+  fixed: [
+    {
+      id: 'value',
+      label: 'Value',
+      kind: 'select',
+      value: EDGE_DEFAULT_COLOR,
+      options: [
+        { id: EDGE_DEFAULT_COLOR, label: 'Default' },
+        { id: 'blue', label: 'Blue' },
+        { id: 'green', label: 'Green' },
+        { id: 'orange', label: 'Orange' },
+      ],
+    },
+  ],
+  legend: [
+    {
+      id: 'variable',
+      label: 'Variable',
+      kind: 'select',
+      value: null,
+      options: [],
+    },
+  ],
 };
