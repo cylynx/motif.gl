@@ -63,7 +63,7 @@ describe('Legend Popover', () => {
 
   describe('Edge legend selection', () => {
     before(() => {
-      cy.waitForReact(2000);
+      cy.waitForReact(4000);
       cy.switchPanel('options');
       cy.switchTab('edges');
       const selectedType: string = 'legend';
