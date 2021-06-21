@@ -398,7 +398,11 @@ export const processCsvData = async (rawCsv: string): Promise<ProcessedCsv> => {
     parsedJson = await csv2json(rawCsv);
   }
 
-  const headerRow = rawCsv.replace(/\r/g, '').split('\n')[0].split(',');
+  let headerRow = rawCsv.replace(/\r/g, '').split('\n')[0].split(',');
+
+  // remove double quotes if they are first and last character of the string
+  // https://stackoverflow.com/a/19156525
+  headerRow = headerRow.map((row: string) => row.replace(/^"(.*)"$/, '$1'));
 
   if (!parsedJson || !headerRow) {
     throw new Error('Missing column header in uploaded CSV file');
@@ -458,7 +462,6 @@ export const getSampleForTypeAnalyze = (
   sampleCount = 50,
 ) => {
   const total = Math.min(sampleCount, allData.length);
-  // const fieldOrder = fields.map(f => f.name);
   const sample = range(0, total, 1).map(() => ({}));
 
   // collect sample data for each field
