@@ -12,16 +12,16 @@ export const ONE_YEAR = ONE_DAY * 365;
 export type Millisecond = number;
 
 export const StepMap = [
-  { max: 0.001, step: 0.00005 },
-  { max: 0.01, step: 0.0005 },
-  { max: 0.1, step: 0.005 },
-  { max: 1, step: 0.05 },
+  { max: 0.001, step: 0.00001 },
+  { max: 0.01, step: 0.0001 },
+  { max: 0.1, step: 0.001 },
+  { max: 1, step: 0.01 },
   { max: 10, step: 0.1 },
   { max: 100, step: 1 },
-  { max: 500, step: 5 },
   { max: 1000, step: 10 },
-  { max: 5000, step: 50 },
-  { max: Number.POSITIVE_INFINITY, step: 1000 },
+  { max: 10000, step: 100 },
+  { max: 100000, step: 1000 },
+  { max: Number.POSITIVE_INFINITY, step: 10000 },
 ];
 
 /**
