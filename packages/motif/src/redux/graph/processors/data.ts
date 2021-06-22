@@ -748,6 +748,10 @@ export const verifySourceAndTargetExistence = (
   const { nodeID, edgeID, edgeSource, edgeTarget } = accessors;
   const nodeIds: string[] = nodes.map((node: Node) => {
     const nodeIdProperty: string = get(node, nodeID, '');
+    if (typeof nodeIdProperty !== 'string') {
+      return nodeIdProperty;
+    }
+
     return nodeIdProperty.trim();
   });
   const uniqueNodeIds: string[] = uniq(nodeIds as string[]);

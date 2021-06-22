@@ -35,6 +35,7 @@ import {
 } from '../../../constants/sample-data';
 import { RootState } from '../../investigate';
 import {
+  Accessors,
   Field,
   GraphData,
   GraphList,
@@ -52,7 +53,7 @@ import {
 import { getGraph } from '../selectors';
 import { resetState } from '../../import/fileUpload/slice';
 import { TFileContent } from '../../import/fileUpload';
-import { whitespaceNodeEdge } from './constant';
+import { numericAccessorsNodeEdge, whitespaceNodeEdge } from './constant';
 
 const mockStore = configureStore([thunk]);
 const getStore = (): RootState => {
@@ -159,10 +160,75 @@ describe('thunk.test.js', () => {
       ],
     };
 
-    const store = mockStore(getStore());
+    const simpleGraphThree = {
+      data: [
+        {
+          nodes: [{ custom_id: 1 }, { custom_id: 2 }],
+          edges: [{ id: 'custom-edge', custom_source: 2, custom_target: 1 }],
+          metadata: {
+            key: 234,
+          },
+        },
+      ],
+    };
+
+    let store;
+
+    beforeEach(() => {
+      store = mockStore(getStore());
+    });
 
     afterEach(() => {
       store.clearActions();
+    });
+
+    it('should process custom accessors with numeric values accurately', async (done) => {
+      const importDataArr = [simpleGraphThree];
+      const groupEdgeToggle = false;
+
+      const customAccessors: Accessors = {
+        nodeID: 'custom_id',
+        edgeID: 'id',
+        edgeSource: 'custom_source',
+        edgeTarget: 'custom_target',
+      };
+
+      // processes
+      const batchDataPromises = importDataArr.map((graphData: ImportFormat) => {
+        const { data } = graphData;
+        return importJson(data, customAccessors, groupEdgeToggle);
+      });
+
+      const graphDataArr = await Promise.all(batchDataPromises);
+      const [graphData] = flatten(graphDataArr);
+
+      // group edge configuration arrangements
+      const groupEdgeConfig = { availability: false, toggle: groupEdgeToggle };
+      Object.assign(graphData.metadata.groupEdges, groupEdgeConfig);
+
+      const expectedActions = [
+        fetchBegin(),
+        addQuery(graphData),
+        processGraphResponse({
+          data: graphData,
+          accessors: customAccessors,
+        }),
+        updateToast('toast-0'),
+        resetState(),
+        fetchDone(),
+        closeModal(),
+      ];
+
+      return store
+        .dispatch(
+          importJsonData(importDataArr, groupEdgeToggle, customAccessors),
+        )
+        .then(() => {
+          setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+          }, 300);
+        });
     });
 
     it('should receive array of importData and process graph responses accurately', async (done) => {
@@ -793,7 +859,10 @@ describe('thunk.test.js', () => {
       );
 
       // group edge configurations
-      const groupEdgeConfig = { toggle: groupEdgeToggle, availability: false };
+      const groupEdgeConfig = {
+        toggle: groupEdgeToggle,
+        availability: false,
+      };
       Object.assign(data.metadata.groupEdges, groupEdgeConfig);
 
       const expectedActions = [
@@ -869,6 +938,68 @@ describe('thunk.test.js', () => {
         .dispatch(
           importNodeEdgeData(
             whitespaceNodeEdge,
+            groupEdgeToggle,
+            accessors,
+            metadataKey,
+          ),
+        )
+        .then(() => {
+          setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+          }, 300);
+        });
+    });
+
+    it('should process numeric custom nodeID, edgeSource and edgeTarget successfully', async (done) => {
+      const store = mockStore(getStore());
+      const { nodeCsv, edgeCsv } = numericAccessorsNodeEdge;
+      const accessors = {
+        nodeID: 'custom_id',
+        edgeID: 'id',
+        edgeSource: 'numeric_source',
+        edgeTarget: 'numeric_target',
+      };
+
+      const metadataKey = '123';
+      const groupEdgeToggle = false;
+
+      const nodeCsvs: string[] = nodeCsv.map(
+        (nodeCsv: TFileContent) => nodeCsv.content as string,
+      );
+      const edgeCsvs: string[] = edgeCsv.map(
+        (edgeCsv: TFileContent) => edgeCsv.content as string,
+      );
+
+      const data = await importNodeEdgeCsv(
+        nodeCsvs,
+        edgeCsvs,
+        accessors,
+        groupEdgeToggle,
+        metadataKey,
+      );
+
+      // group edge configurations
+      const groupEdgeConfig = { toggle: groupEdgeToggle, availability: true };
+      Object.assign(data.metadata.groupEdges, groupEdgeConfig);
+
+      const expectedActions = [
+        fetchBegin(),
+        addQuery(data),
+        processGraphResponse({
+          data,
+          accessors,
+        }),
+        updateToast('toast-0'),
+        resetState(),
+        fetchDone(),
+        closeModal(),
+      ];
+
+      return store
+        .dispatch(
+          importNodeEdgeData(
+            numericAccessorsNodeEdge,
             groupEdgeToggle,
             accessors,
             metadataKey,
