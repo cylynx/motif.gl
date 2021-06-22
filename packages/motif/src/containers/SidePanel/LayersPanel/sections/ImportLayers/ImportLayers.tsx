@@ -45,10 +45,10 @@ const ImportLayers = () => {
     dispatch(GraphSlices.deleteGraphList(index));
     resetSearchOptions();
 
-    if (nodeStyle.color.id === 'legend') {
+    if (nodeStyle.color?.id === 'legend') {
       switchToFixNodeColor();
     }
-    if (edgeStyle.color.id === 'legend') {
+    if (edgeStyle.color?.id === 'legend') {
       switchToFixEdgeColor();
     }
   };

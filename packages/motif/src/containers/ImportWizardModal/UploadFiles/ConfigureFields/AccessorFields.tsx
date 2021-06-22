@@ -84,34 +84,33 @@ const AccessorFields: FC<AccessorsFieldsProps> = ({
     [nodeIDOptions, edgeIDOptions, edgeFieldOptions],
   );
 
-  // useEffect(() => {
-  //   const setDefaultValue = (
-  //     options: Value,
-  //     name: keyof ConfigureFieldsForm,
-  //     value: string,
-  //   ) => {
-  //     const defaultOption = options.find(
-  //       (option: Option) => option.id === value,
-  //     );
+  useEffect(() => {
+    const setDefaultValue = (
+      options: Value,
+      name: keyof ConfigureFieldsForm,
+      value: string,
+    ) => {
+      const defaultOption = options.find(
+        (option: Option) => option.id === value,
+      );
 
-  //     if (defaultOption === undefined) {
-  //       const [firstOption] = options;
-  //       debugger;
-  //       setValue(name, firstOption.id as string);
-  //       return;
-  //     }
+      if (defaultOption === undefined) {
+        const [firstOption] = options;
+        setValue(name, firstOption.id as string);
+        return;
+      }
 
-  //     setValue(name, defaultOption.id as string);
-  //     return;
-  //   };
+      setValue(name, defaultOption.id as string);
+      return;
+    };
 
-  //   const { nodeID, edgeID, edgeSource, edgeTarget } =
-  //     getValues() as ConfigureFieldsForm;
-  //   setDefaultValue(nodeIDOptions, 'nodeID', nodeID);
-  //   setDefaultValue(edgeIDOptions, 'edgeID', edgeID);
-  //   setDefaultValue(edgeFieldOptions, 'edgeSource', edgeSource);
-  //   setDefaultValue(edgeFieldOptions, 'edgeTarget', edgeTarget);
-  // }, []);
+    const { nodeID, edgeID, edgeSource, edgeTarget } =
+      getValues() as ConfigureFieldsForm;
+    setDefaultValue(nodeIDOptions, 'nodeID', nodeID);
+    setDefaultValue(edgeIDOptions, 'edgeID', edgeID);
+    setDefaultValue(edgeFieldOptions, 'edgeSource', edgeSource);
+    setDefaultValue(edgeFieldOptions, 'edgeTarget', edgeTarget);
+  }, []);
 
   useEffect(() => {
     clearErrors();
