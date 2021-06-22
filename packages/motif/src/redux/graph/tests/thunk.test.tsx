@@ -35,6 +35,7 @@ import {
 } from '../../../constants/sample-data';
 import { RootState } from '../../investigate';
 import {
+  Accessors,
   Field,
   GraphData,
   GraphList,
@@ -159,10 +160,74 @@ describe('thunk.test.js', () => {
       ],
     };
 
+    const simpleGraphThree = {
+      data: [
+        {
+          nodes: [{ id: 1 }, { id: 2 }],
+          edges: [
+            { custom_source: 2, custom_target: 1 },
+            { custom_source: 1, custom_target: 2 },
+          ],
+          metadata: {
+            key: 234,
+          },
+        },
+      ],
+    };
+
     const store = mockStore(getStore());
 
     afterEach(() => {
       store.clearActions();
+    });
+
+    it('should process custom accessors with numeric values accurately', async (done) => {
+      const importDataArr = [simpleGraphThree];
+      const groupEdgeToggle = true;
+
+      const customAccessors: Accessors = {
+        nodeID: 'id',
+        edgeID: 'id',
+        edgeSource: 'custom_source',
+        edgeTarget: 'custom_target',
+      };
+
+      // processes
+      const batchDataPromises = importDataArr.map((graphData: ImportFormat) => {
+        const { data } = graphData as JsonImport;
+        return importJson(data, customAccessors, groupEdgeToggle);
+      });
+
+      const graphDataArr = await Promise.all(batchDataPromises);
+      const [graphData] = flatten(graphDataArr);
+
+      // group edge configuration arrangements
+      const groupEdgeConfig = { availability: true, toggle: groupEdgeToggle };
+      Object.assign(graphData.metadata.groupEdges, groupEdgeConfig);
+
+      const expectedActions = [
+        fetchBegin(),
+        addQuery(graphData),
+        processGraphResponse({
+          data: graphData,
+          accessors: customAccessors,
+        }),
+        updateToast('toast-0'),
+        resetState(),
+        fetchDone(),
+        closeModal(),
+      ];
+
+      return store
+        .dispatch(
+          importJsonData(importDataArr, groupEdgeToggle, customAccessors),
+        )
+        .then(() => {
+          setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+          }, 300);
+        });
     });
 
     it('should receive array of importData and process graph responses accurately', async (done) => {
@@ -793,7 +858,10 @@ describe('thunk.test.js', () => {
       );
 
       // group edge configurations
-      const groupEdgeConfig = { toggle: groupEdgeToggle, availability: false };
+      const groupEdgeConfig = {
+        toggle: groupEdgeToggle,
+        availability: false,
+      };
       Object.assign(data.metadata.groupEdges, groupEdgeConfig);
 
       const expectedActions = [
