@@ -262,22 +262,23 @@ export const importNodeEdgeData =
       metadataKey,
     );
 
-    return newData.then((graphData: GraphData) => {
-      dispatch(UISlices.fetchBegin());
+    return newData
+      .then((graphData: GraphData) => {
+        dispatch(UISlices.fetchBegin());
 
-      setTimeout(() => {
-        processResponse(dispatch, mainAccessors, graphData);
-        showImportDataToast(dispatch, filterOptions);
-        dispatch(FileUploadSlices.resetState());
+        setTimeout(() => {
+          processResponse(dispatch, mainAccessors, graphData);
+          showImportDataToast(dispatch, filterOptions);
+          dispatch(FileUploadSlices.resetState());
+          dispatch(UISlices.fetchDone());
+          dispatch(UISlices.closeModal());
+        }, 200);
+      })
+      .catch((err: Error) => {
+        const { message } = err;
+        dispatch(UIThunks.show(message, 'negative'));
         dispatch(UISlices.fetchDone());
-        dispatch(UISlices.closeModal());
-      }, 200);
-    });
-    // .catch((err: Error) => {
-    //   const { message } = err;
-    //   dispatch(UIThunks.show(message, 'negative'));
-    //   dispatch(UISlices.fetchDone());
-    // });
+      });
   };
 
 /**
