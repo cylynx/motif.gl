@@ -160,7 +160,7 @@ export const importJsonData =
   (
     importData: JsonImport[],
     groupEdges = true,
-    importAccessors: ImportAccessors = null,
+    importAccessors: Partial<ImportAccessors> = {},
     overwriteStyles = false,
   ) =>
   (dispatch: any, getState: any) => {
@@ -168,8 +168,13 @@ export const importJsonData =
       throw new Error('Provided import data is not an array');
     }
 
+    const isCustomAccessorEmpty = isEmpty(importAccessors);
+
     const { accessors: mainAccessors } = getGraph(getState());
-    const accessors = { ...mainAccessors, ...importAccessors };
+    const accessors = isCustomAccessorEmpty
+      ? mainAccessors
+      : (importAccessors as ImportAccessors);
+
     const filterOptions: FilterOptions = getFilterOptions(getState());
     let isDataPossessStyle = false;
     let styleOptions: StyleOptions = getStyleOptions(getState());
@@ -206,7 +211,7 @@ export const importJsonData =
             dispatch(updateStyleOption(styleOptions));
           }
 
-          processResponse(dispatch, mainAccessors, graphData);
+          processResponse(dispatch, accessors, graphData);
 
           showImportDataToast(dispatch, filterOptions);
           dispatch(FileUploadSlices.resetState());
@@ -226,7 +231,7 @@ export const importJsonData =
  *
  * @param {SingleFileForms} importData - attachment contains one or more node edge attachments
  * @param {boolean} groupEdges - group graph's edges
- * @param {ImportAccessors} importAccessors [importAccessors=null] - to customize node Id / edge Id / edge source or target
+ * @param {Partial<ImportAccessors>} importAccessors [importAccessors={}] - to customize node Id / edge Id / edge source or target
  * @param {number} metadataKey [metadataKey=null]
  * @return {Promise<GraphData>}
  */
@@ -234,7 +239,7 @@ export const importNodeEdgeData =
   (
     importData: SingleFileForms,
     groupEdges = true,
-    importAccessors: ImportAccessors = null,
+    importAccessors: Partial<ImportAccessors> = {},
     metadataKey: string = null,
   ) =>
   (dispatch: any, getState: any) => {
@@ -243,7 +248,9 @@ export const importNodeEdgeData =
     }
 
     const { accessors: mainAccessors } = getGraph(getState());
-    const accessors = { ...mainAccessors, ...importAccessors };
+    const accessors = isEmpty(importAccessors)
+      ? mainAccessors
+      : (importAccessors as ImportAccessors);
     const filterOptions: FilterOptions = getFilterOptions(getState());
 
     const { nodeCsv: nodeContents, edgeCsv: edgeContents } = importData;
@@ -267,7 +274,7 @@ export const importNodeEdgeData =
         dispatch(UISlices.fetchBegin());
 
         setTimeout(() => {
-          processResponse(dispatch, mainAccessors, graphData);
+          processResponse(dispatch, accessors, graphData);
           showImportDataToast(dispatch, filterOptions);
           dispatch(FileUploadSlices.resetState());
           dispatch(UISlices.fetchDone());
@@ -286,17 +293,20 @@ export const importNodeEdgeData =
  *
  * @param {JsonImport} importData
  * @param {boolean} groupEdges [groupEdges=true] - group graph's edges
- * @param {ImportAccessors} importAccessors [importAccessors=null] - to customize node Id / edge Id / edge source or target
+ * @param {Partial<ImportAccessors>} importAccessors [importAccessors={}] - to customize node Id / edge Id / edge source or target
  */
 export const importSampleData =
   (
     importData: JsonImport,
-    importAccessors: ImportAccessors = null,
+    importAccessors: Partial<ImportAccessors> = {},
     groupEdges = false,
   ) =>
   async (dispatch: any, getState: any): Promise<void> => {
     const { accessors: mainAccessors } = getGraph(getState());
-    const accessors = { ...mainAccessors, ...importAccessors };
+
+    const accessors = isEmpty(importAccessors)
+      ? mainAccessors
+      : (importAccessors as ImportAccessors);
     const filterOptions: FilterOptions = getFilterOptions(getState());
 
     const newData: Promise<GraphList> = importJson(
@@ -310,7 +320,7 @@ export const importSampleData =
         dispatch(UISlices.fetchBegin());
 
         setTimeout(() => {
-          processResponse(dispatch, mainAccessors, graphData);
+          processResponse(dispatch, accessors, graphData);
           showImportDataToast(dispatch, filterOptions);
           dispatch(FileUploadSlices.resetState());
           dispatch(UISlices.fetchDone());

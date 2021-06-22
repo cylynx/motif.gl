@@ -13,3 +13,19 @@ export const whitespaceNodeEdge = {
     },
   ],
 };
+
+export const numericAccessorsNodeEdge = {
+  edgeCsv: [
+    {
+      fileName: 'numeric-accessors-1.csv',
+      content:
+        'id,relation,numeric_source,numeric_target\ntxn1,hello,1,2\ntxn2,works,2,3\ntxn3,abc,3,1\n',
+    },
+  ],
+  nodeCsv: [
+    {
+      fileName: 'numeric-accessors-2.csv',
+      content: 'custom_id,value,score\n1,20,80\n2,40,100\n3,60,123',
+    },
+  ],
+};
