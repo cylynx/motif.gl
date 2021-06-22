@@ -272,7 +272,8 @@ export const styleNodeColor = (
   const variableProperty: string | unknown = get(node, variable);
   const grey = normalizeColor(GREY);
 
-  if (variableProperty) {
+  // Exclude null or undefined
+  if (!(variableProperty == null)) {
     const nodeColor = normalizeColor(mapping[variableProperty as string]);
 
     Object.assign(nodeStyle, {

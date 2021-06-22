@@ -397,7 +397,8 @@ export const styleEdgeColor = (
   const variableProperty: string | unknown = get(edge, variable);
   const defaultEdgeColor = normalizeColor(EDGE_DEFAULT_COLOR);
 
-  if (variableProperty) {
+  // Exclude null or undefined
+  if (!(variableProperty == null)) {
     const edgeColor = normalizeColor(mapping[variableProperty as string]);
 
     Object.assign(edgeStyle, {
@@ -408,6 +409,7 @@ export const styleEdgeColor = (
         }),
       }),
     });
+    console.log(edgeStyle);
 
     return;
   }
