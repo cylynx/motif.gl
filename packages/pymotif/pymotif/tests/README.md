@@ -1,0 +1,2 @@
+- install pytest and nbval
+- run `pytest`
