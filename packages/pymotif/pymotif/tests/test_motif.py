@@ -17,12 +17,6 @@ NODE_0 = 'node-0'
 NODE_1 = 'node-1'
 
 
-def p(obj):
-    """ Function to print. Pytest only prints when an error is raised """
-    print(obj)
-    assert False
-
-
 def test_initial_empty_state():
     """ Data and style should be empty when nothing is passed """
     m = Motif()
@@ -42,24 +36,11 @@ def test_json_import():
 def test_csv_import():
     """ Motif state should match CSV test file """
     motif = Motif(csv_path=TEST_CSV_PATH)
-
-    # expect 1 graph with 2 nodes and 1 edge
     motif_graph_list = motif.state[C.DATA]
 
+    # expect 1 graph with 2 nodes and 1 edge
     assert len(motif_graph_list) == 1
-
-    nodes = motif_graph_list[0][C.NODES]
-    edges = motif_graph_list[0][C.EDGES]
-
-    assert len(nodes) == 2
-    assert len(edges) == 1
-
-    assert nodes[0]['id'] == NODE_0
-    assert nodes[1]['id'] == NODE_1
-    
-    assert edges[0]['source'] == NODE_0
-    assert edges[0]['target'] == NODE_1
-    assert edges[0]['relation'] == 'points_to'
+    assert _check_motif_graph_format(motif_graph_list[0])
 
 
 def test_nx_import():
@@ -74,13 +55,20 @@ def test_nx_import():
     # import into motif
     motif = Motif(nx_graph=G)
 
-    # expect 1 graph with 2 nodes and 1 edge
     motif_graph_list = motif.state[C.DATA]
 
+    # expect 1 graph with 2 nodes and 1 edge
     assert len(motif_graph_list) == 1
+    assert _check_motif_graph_format(motif_graph_list[0])
 
-    nodes = motif_graph_list[0][C.NODES]
-    edges = motif_graph_list[0][C.EDGES]
+
+def _check_motif_graph_format(motif_graph):
+    """ 
+    Checks that a motif_graph dict has 2 nodes ('node-0', 'node-1) and 1 edge between
+    """
+
+    nodes = motif_graph[C.NODES]
+    edges = motif_graph[C.EDGES]
 
     assert len(nodes) == 2
     assert len(edges) == 1
@@ -91,6 +79,4 @@ def test_nx_import():
     assert edges[0]['source'] == NODE_0
     assert edges[0]['target'] == NODE_1
 
-
-
-
+    return True
