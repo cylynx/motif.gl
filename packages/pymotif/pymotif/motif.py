@@ -247,9 +247,13 @@ class Motif(DOMWidget, ValueWidget):
         
         def neo4j_to_motif_node(neo4j_node):
             """ Converts a neo4j node to motif node """
+            # neo4j node labels are stored in a frozenset (can also be empty).
+            # currently, we take only the first label if it exists
+            node_label = next(iter(neo4j_node._labels)) if neo4j_node._labels else ''
+
             main_properties = {
                 'id': f'node-{neo4j_node.id}',
-                'labels': next(iter(neo4j_node._labels))    # get only item in frozenset
+                'label': node_label
             }
             
             # merge main props with remaining ones, main props will overwrite
@@ -298,11 +302,12 @@ class Motif(DOMWidget, ValueWidget):
 
         # read csv into df, then into nx_graph, then into motif format
         try:
+            # edge_attr only be true if df has cols other than source+target
             df = pd.read_csv(csv_path)
             nx_graph = nx.from_pandas_edgelist(
                 df=df,
                 create_using=nx.MultiDiGraph, 
-                edge_attr=True
+                edge_attr=True if len(df.columns) > 2 else None
             )
         except:
             raise Exception('Could not convert CSV file') 

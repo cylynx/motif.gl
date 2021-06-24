@@ -5,78 +5,101 @@
 # Distributed under the terms of the Modified BSD License.
 
 import json
-import networkx as nx
 
 from ..motif import Motif
 from .. import constants as C
-
-# test objects
-TEST_JSON_PATH = 'objects/test.json'
-TEST_CSV_PATH = 'objects/test.csv'
-NODE_0 = 'node-0'
-NODE_1 = 'node-1'
+from . import constants as TC
+from .data.neo4j import create_neo4j_test_graph
+from .data.nx import create_nx_test_graph
 
 
 def test_initial_empty_state():
     """ Data and style should be empty when nothing is passed """
-    m = Motif()
-    assert m.state == { C.DATA: [], C.STYLE: {} }
+    motif = Motif()
+
+    assert motif.state == { C.DATA: [], C.STYLE: {} }
 
 
 def test_json_import():
-    """ Motif state should match JSON test file """
-    motif = Motif(json_path=TEST_JSON_PATH)
+    """ JSON test file """
+    motif = Motif(json_path=TC.TEST_JSON_PATH)
 
-    with open(TEST_JSON_PATH, 'r') as f:
+    with open(TC.TEST_JSON_PATH, 'r') as f:
         test_json_graph = json.load(f)
     
     assert motif.state[C.DATA] == test_json_graph[C.DATA]
 
 
-def test_csv_import():
-    """ Motif state should match CSV test file """
-    motif = Motif(csv_path=TEST_CSV_PATH)
-    motif_graph_list = motif.state[C.DATA]
+def test_2_col_csv_import():
+    """ CSV test file that only has 'source' and 'target' cols """
+    motif = Motif(csv_path=TC.TEST_2_COLS_CSV_PATH)
 
-    # expect 1 graph with 2 nodes and 1 edge
-    assert len(motif_graph_list) == 1
-    assert _check_motif_graph_format(motif_graph_list[0])
+    assert _motif_obj_has_expected_test_structure(motif)
+
+
+def test_gt_2_col_csv_import():
+    """ CSV test file that has cols other than 'source' and 'target' """
+    motif = Motif(csv_path=TC.TEST_GT_2_COLS_CSV_PATH)
+
+    assert _motif_obj_has_expected_test_structure(motif)
 
 
 def test_nx_import():
-    """ Motif state should match imported networkx graph """
-    # build a simple networkx graph
-    G = nx.Graph()
-    G.add_edges_from([(NODE_0, NODE_1)])
+    """ NetworkX test graph """
+    motif = Motif(nx_graph=create_nx_test_graph())
 
-    assert list(G.nodes) == [NODE_0, NODE_1]
-    assert list(G.edges) == [(NODE_0, NODE_1)]
-
-    # import into motif
-    motif = Motif(nx_graph=G)
-
-    motif_graph_list = motif.state[C.DATA]
-
-    # expect 1 graph with 2 nodes and 1 edge
-    assert len(motif_graph_list) == 1
-    assert _check_motif_graph_format(motif_graph_list[0])
+    assert _motif_obj_has_expected_test_structure(motif)
 
 
-def _check_motif_graph_format(motif_graph):
+def test_neo4j_import():
+    """ Neo4j test graph """
+    motif = Motif(neo4j_graph=create_neo4j_test_graph())
+
+    assert _motif_obj_has_expected_test_structure(motif)
+
+
+def test_import_style():
+    """  """
+    # TODO
+
+
+def test_import_title():
+    """  """
+    # TODO
+
+
+def test_add_graph():
+    """  """
+    # TODO
+
+
+def test_set_style():
+    """  """
+    # TODO
+
+
+def _motif_obj_has_expected_test_structure(motif_obj: Motif) -> bool:
     """ 
-    Checks that a motif_graph dict has 2 nodes ('node-0', 'node-1) and 1 edge between
+    Checks that a motif class instance has the expected test structure:
+        - only 1 graph
+        - graph has 2 nodes that have at least an 'id' key
+        - graph has 1 edge that has at least a 'source' and 'target' col with the 2 nodes above
     """
+    # extract list of graphs
+    motif_graph_list = motif_obj.state[C.DATA]
 
-    nodes = motif_graph[C.NODES]
-    edges = motif_graph[C.EDGES]
+    assert len(motif_graph_list) == 1
+
+    nodes = motif_graph_list[0][C.NODES]
+    edges = motif_graph_list[0][C.EDGES]
 
     assert len(nodes) == 2
     assert len(edges) == 1
 
-    assert nodes[0]['id'] == NODE_0
-    assert nodes[1]['id'] == NODE_1
+    assert nodes[0]['id'] == TC.NODE_0
+    assert nodes[1]['id'] == TC.NODE_1
     
-    assert edges[0]['source'] == NODE_0
-    assert edges[0]['target'] == NODE_1
+    assert edges[0]['source'] == TC.NODE_0
+    assert edges[0]['target'] == TC.NODE_1
 
     return True
