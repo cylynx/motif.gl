@@ -1,0 +1,2 @@
+source,relation,target,other_col
+node-0,points_to,node-1,other_data
