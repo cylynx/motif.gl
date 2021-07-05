@@ -8,15 +8,11 @@ import { HeadingSmall, ParagraphSmall } from 'baseui/typography';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { SampleData, SampleDataItem } from './types';
-import {
-  GraphSelectors,
-  GraphSlices,
-  GraphThunks,
-  JsonImport,
-} from '../../../redux/graph';
+import { GraphSelectors, GraphThunks, JsonImport } from '../../../redux/graph';
 import { UISelectors } from '../../../redux/ui';
 import { defaultAccessors, sampleData } from './constant';
 import useNodeStyle from '../../../redux/graph/hooks/useNodeStyle';
+import useLayout from '../../../redux/graph/hooks/useLayout';
 
 const ExtraLargeSpinner = withStyle(StyledSpinnerNext, {
   width: '48px',
@@ -71,6 +67,7 @@ const StyledItem: FC<StyledItemProps> = ({ item }): JSX.Element => {
     (state) => GraphSelectors.getStyleOptions(state).nodeStyle,
   );
   const { switchToFixNodeColor } = useNodeStyle();
+  const { changeGraphLayout } = useLayout();
 
   const trySampleData = (
     item: SampleDataItem,
@@ -84,7 +81,7 @@ const StyledItem: FC<StyledItemProps> = ({ item }): JSX.Element => {
 
     // These two datasets come with x-y coordinates
     if (item.key === SampleData.AA || item.key === SampleData.NETWORK) {
-      dispatch(GraphSlices.changeLayout({ layout: { id: 'preset' } }));
+      changeGraphLayout({ layout: { id: 'preset' } });
       Promise.resolve(item.data()).then((d: void) => {
         const sampleDataset: JsonImport = d;
         dispatch(GraphThunks.importSampleData(sampleDataset, defaultAccessors));
@@ -92,7 +89,7 @@ const StyledItem: FC<StyledItemProps> = ({ item }): JSX.Element => {
       return;
     }
 
-    dispatch(GraphSlices.changeLayout({ layout: { id: 'concentric' } }));
+    changeGraphLayout({ layout: { id: 'concentric' } });
     Promise.resolve(item.data()).then((d: void) => {
       const sampleDataset: JsonImport = d;
       dispatch(GraphThunks.importSampleData(sampleDataset, defaultAccessors));

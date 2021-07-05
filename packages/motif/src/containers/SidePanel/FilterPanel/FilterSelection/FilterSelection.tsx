@@ -81,6 +81,7 @@ const FilterSelection: FC<FilterSelectionProps> = ({
         if (fieldDomain === false) {
           filterCriteria.analyzerType = null;
           updateFilterCriteria(idx, filterCriteria);
+
           return;
         }
 

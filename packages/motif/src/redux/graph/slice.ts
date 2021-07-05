@@ -23,6 +23,7 @@ import {
   DeleteGroupEdgeFieldPayload,
   Selection,
   UpdateGroupEdgeIds,
+  LayoutParams,
 } from './types';
 import {
   DEFAULT_NODE_STYLE,
@@ -240,15 +241,7 @@ const graph = createSlice({
     updateStyleOption(state, action: PayloadAction<StyleOptions>) {
       Object.assign(state.styleOptions, action.payload);
     },
-    changeLayout(
-      state,
-      action: PayloadAction<{
-        layout: {
-          id: Layout['types'];
-          [key: string]: any;
-        };
-      }>,
-    ): void {
+    changeLayout(state, action: PayloadAction<LayoutParams>): void {
       const { id, ...options } = action.payload.layout;
       const defaultOptions = LAYOUT.OPTIONS.find((x) => x.type === id);
       state.styleOptions.layout = {

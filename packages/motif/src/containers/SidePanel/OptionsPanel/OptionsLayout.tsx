@@ -2,9 +2,10 @@ import React from 'react';
 import { useStyletron } from 'baseui';
 import { Block } from 'baseui/block';
 import { HeadingXSmall } from 'baseui/typography';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { GraphSlices, GraphSelectors } from '../../../redux/graph';
+import { GraphSelectors } from '../../../redux/graph';
+import useLayout from '../../../redux/graph/hooks/useLayout';
 import { Card } from '../../../components/ui';
 import { NestedForm, genNestedForm } from '../../../components/form';
 import { layoutForm } from './constants';
@@ -12,7 +13,7 @@ import QuestionMarkTooltip from '../../../components/ui/QuestionMarkTooltip';
 
 const OptionsLayout = () => {
   const [, theme] = useStyletron();
-  const dispatch = useDispatch();
+  const { changeGraphLayout } = useLayout();
 
   const layout = useSelector(
     (state) => GraphSelectors.getGraph(state).styleOptions.layout,
@@ -28,7 +29,7 @@ const OptionsLayout = () => {
 
   const layoutOptions = { layout: { id: layout.type, ...layout } };
 
-  const updateLayout = (data: any) => dispatch(GraphSlices.changeLayout(data));
+  const updateLayout = (data: any) => changeGraphLayout(data);
 
   const formData = genNestedForm(layoutForm, layoutOptions, updateLayout, {
     'grid[1].options': layoutFields,

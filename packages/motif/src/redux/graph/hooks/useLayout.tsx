@@ -1,0 +1,18 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { changeLayout } from '../slice';
+import { LayoutParams } from '../types';
+import { getStyleOptions } from '../selectors';
+
+const useLayout = () => {
+  const dispatch = useDispatch();
+
+  const layout = useSelector((state) => getStyleOptions(state).layout);
+
+  const changeGraphLayout = (layout: LayoutParams) => {
+    dispatch(changeLayout(layout));
+  };
+
+  return { layout, changeGraphLayout };
+};
+
+export default useLayout;

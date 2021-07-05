@@ -286,3 +286,10 @@ export interface TLoadFormat {
   data: GraphList;
   style: StyleOptions;
 }
+
+export type LayoutParams = {
+  layout: {
+    id: Layout['types'];
+    [key: string]: any;
+  };
+};

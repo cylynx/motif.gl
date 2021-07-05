@@ -4,29 +4,29 @@ import {
   IG6GraphEvent,
 } from '@cylynx/graphin';
 import { useContext, useLayoutEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { GraphSelectors, GraphSlices } from '../../../redux/graph';
+
+import useLayout from '../../../redux/graph/hooks/useLayout';
 
 const DragGraph = () => {
   const { graph } = useContext(GraphinContext) as GraphinContextType;
-  const dispatch = useDispatch();
-  const layout = useSelector(
-    (state) => GraphSelectors.getStyleOptions(state).layout,
-  );
+  const { layout, changeGraphLayout } = useLayout();
 
   const onDragEnd = (_: IG6GraphEvent): void => {
     if (layout.type === 'preset') {
       return;
     }
 
-    dispatch(GraphSlices.changeLayout({ layout: { id: 'preset' } }));
+    const params = {
+      layout: { id: 'preset' },
+    };
+    changeGraphLayout(params);
   };
 
   useLayoutEffect(() => {
-    graph.on('dragleave', onDragEnd);
+    graph.on('node:dragleave', onDragEnd);
 
     return (): void => {
-      graph.off('dragleave', onDragEnd);
+      graph.off('node:dragleave', onDragEnd);
     };
   });
 

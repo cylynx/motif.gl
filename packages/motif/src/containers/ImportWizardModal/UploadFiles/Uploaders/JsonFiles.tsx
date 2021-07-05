@@ -97,7 +97,7 @@ const JsonFiles: FC = () => {
       });
   };
 
-  /*  tslint:disable-next-line  */
+  /*  ts-ignore */
   const isEmptyAttachments: boolean =
     (watch('attachments') as TFileContent[]).length === 0;
 
