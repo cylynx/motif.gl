@@ -1,19 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { FILL } from 'baseui/tabs-motion';
 import { IUseSearchOptions, TActiveKey } from '../../types';
 import SearchEdge from './SearchEdge';
 import SearchNode from './SearchNode';
 import useSearchOption from '../../hooks/useSearchOption';
 import { GraphAttribute, SearchOptions } from '../../../../../redux/graph';
-import { GraphRefContext } from '../../../../Graph';
 import { Tab, Tabs } from '../../../../../components/ui';
-import useGraphBehaviors from '../../../../Graph/hooks/useGraphBehaviors';
 
 const SearchTabs = () => {
   const { searchOptions, updateTabs } = useSearchOption() as IUseSearchOptions;
   const { activeTabs } = searchOptions as SearchOptions;
-  const { graph } = useContext(GraphRefContext);
-  const { centerCanvas } = useGraphBehaviors(graph);
 
   const onTabChange = ({ activeKey }: TActiveKey) => {
     if (activeTabs === activeKey) {
@@ -21,7 +17,6 @@ const SearchTabs = () => {
     }
 
     updateTabs(activeKey as GraphAttribute);
-    centerCanvas();
   };
 
   return (

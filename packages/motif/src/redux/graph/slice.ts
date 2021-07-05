@@ -24,7 +24,10 @@ import {
   Selection,
   UpdateGroupEdgeIds,
 } from './types';
-import { DEFAULT_NODE_STYLE, EDGE_DEFAULT_COLOR } from '../../constants/graph-shapes';
+import {
+  DEFAULT_NODE_STYLE,
+  EDGE_DEFAULT_COLOR,
+} from '../../constants/graph-shapes';
 import { groupEdgesForImportation } from './processors/group-edges';
 import { combineProcessedData } from '../../utils/graph-utils/utils';
 

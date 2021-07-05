@@ -21,11 +21,8 @@ import { ITEM_PER_PAGE } from '../../../constants/widget-units';
 const DisplaySelectedProperty = (): null => {
   const { graph } = useContext(GraphinContext) as GraphinContextType;
   const { searchNodes } = useGraphSearch();
-  const {
-    updateEdgeResults,
-    updateNodeResults,
-    updatePagination,
-  } = useSearchOption();
+  const { updateEdgeResults, updateNodeResults, updatePagination } =
+    useSearchOption();
   const graphVisible = useSelector((state) =>
     GraphSelectors.getGraphVisible(state),
   );

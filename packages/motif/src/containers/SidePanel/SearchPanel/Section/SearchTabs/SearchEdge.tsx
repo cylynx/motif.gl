@@ -23,9 +23,8 @@ import BatchSingleSelect from '../../../../../components/BatchSingleSelect';
 const SearchEdge = () => {
   const { edgeOptions, searchEdges, searchNodes } = useGraphSearch();
   const { graph } = useContext(GraphRefContext);
-  const { centerCanvas, centerEdge, clearEdgeHoverState } = useGraphBehaviors(
-    graph,
-  );
+  const { centerCanvas, centerEdge, clearEdgeHoverState } =
+    useGraphBehaviors(graph);
 
   const {
     searchOptions,

@@ -18,9 +18,8 @@ import BatchSingleSelect from '../../../../../components/BatchSingleSelect';
 const SearchNode = () => {
   const { nodeOptions, searchNodes } = useGraphSearch();
   const { graph } = useContext(GraphRefContext);
-  const { centerCanvas, clearNodeHoverState, centerNode } = useGraphBehaviors(
-    graph,
-  );
+  const { centerCanvas, clearNodeHoverState, centerNode } =
+    useGraphBehaviors(graph);
 
   const {
     searchOptions,

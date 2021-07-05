@@ -16,6 +16,7 @@ import DisplayTooltips from './customBehaviors/DisplayTooltips';
 import ActivateEdgeRelations from './customBehaviors/ActivateEdgeRelations';
 import ActivateNodeRelations from './customBehaviors/ActivateNodeRelations';
 import DisplaySelectedProperty from './customBehaviors/DisplaySelectedProperty';
+import DragGraph from './customBehaviors/DragGraph';
 
 export type GraphProps = {
   setTooltip: (tooltip: Partial<TooltipProps>) => void;
@@ -31,23 +32,20 @@ const Graph = React.forwardRef<Graphin, GraphProps>(
       (state) => GraphSelectors.getStyleOptions(state).layout,
     );
 
-    const { DragCanvas, ClickSelect, LassoSelect, BrushSelect, FontPaint } =
-      Behaviors;
+    const { ClickSelect, LassoSelect, BrushSelect, FontPaint } = Behaviors;
 
     return (
       <Graphin
         data={graphVisible as GraphinData}
         ref={ref}
         layout={layout}
-        // @ts-ignore
         defaultNode={defaultNode}
-        // @ts-ignore
         defaultEdge={defaultEdge}
         nodeStateStyles={nodeStateStyles}
         edgeStateStyles={edgeStateStyles}
         theme={lightTheme}
       >
-        <DragCanvas />
+        <DragGraph />
         <DisplayTooltips setTooltip={setTooltip} />
         <ActivateNodeRelations />
         <ActivateEdgeRelations />
