@@ -704,8 +704,9 @@ export const combineDataWithDuplicates = (
 
 /**
  * Remove duplicates from array by checking on prop
- * - the attributes should be merged after remove the duplicates
  *
+ * @see https://github.com/cylynx/motif.gl/issues/173
+ * - the attributes should be merged after remove the duplicates
  *
  * @param {(Node[] | Edge[] | Field[] | [])} myArr
  * @return {Node[] | Edge[] | Field[]}
