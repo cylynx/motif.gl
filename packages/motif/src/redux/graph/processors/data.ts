@@ -49,7 +49,6 @@ export const ACCEPTED_ANALYZER_TYPES = [
   AnalyzerDatatypes.BOOLEAN,
   AnalyzerDatatypes.STRING,
   AnalyzerDatatypes.ARRAY,
-  AnalyzerDatatypes.OBJECT,
 ];
 
 // if any of these value occurs in csv, parse it to null;
