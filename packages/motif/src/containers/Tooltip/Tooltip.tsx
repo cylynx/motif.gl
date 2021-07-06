@@ -10,7 +10,10 @@ import {
   Edge,
   Node,
 } from '../../redux/graph';
-import { extractIntegerFromString } from '../../utils/data-utils/data-utils';
+import {
+  extractIntegerFromString,
+  removeEmptyValueInObject,
+} from '../../utils/data-utils/data-utils';
 import { SIDE_NAVBAR_WIDTH } from '../../constants/widget-units';
 
 export type TooltipProps = null | {
@@ -46,21 +49,35 @@ const Tooltip = ({ tooltip }: { tooltip: TooltipProps }) => {
   const edgeFields: Selection[] = useSelector(
     (state) => GraphSelectors.getGraph(state).edgeSelection,
   );
-  const properties = useMemo(
-    () =>
-      tooltip.type === 'node'
-        ? GraphUtils.getNodeProperties(
-            graphFlatten.nodes.find((x: Node) => x.id === tooltip.id),
-            'data',
-            nodeFields.filter((x: Selection) => !x.selected).map((x) => x.id),
-          )
-        : GraphUtils.getEdgeProperties(
-            graphFlatten.edges.find((x: Edge) => x.id === tooltip.id),
-            'data',
-            edgeFields.filter((x: Selection) => !x.selected).map((x) => x.id),
-          ),
-    [graphFlatten, edgeFields, nodeFields, tooltip.id],
-  );
+
+  /**
+   * Omit array or object value from the tooltip for aesthethic
+   * Change requested on July 6.
+   */
+  const properties = useMemo(() => {
+    if (tooltip.type === 'node') {
+      const nodeProperties = GraphUtils.getNodeProperties(
+        graphFlatten.nodes.find((x: Node) => x.id === tooltip.id),
+        'data',
+        nodeFields.filter((x: Selection) => !x.selected).map((x) => x.id),
+      );
+
+      removeEmptyValueInObject(nodeProperties);
+
+      return nodeProperties;
+    }
+
+    // tooltip type is edge
+    const edgeProperties = GraphUtils.getEdgeProperties(
+      graphFlatten.edges.find((x: Edge) => x.id === tooltip.id),
+      'data',
+      edgeFields.filter((x: Selection) => !x.selected).map((x) => x.id),
+    );
+
+    removeEmptyValueInObject(edgeProperties);
+
+    return edgeProperties;
+  }, [graphFlatten, edgeFields, nodeFields, tooltip.id]);
 
   const contents = Object.entries(properties).map(([key, value]) => (
     <Block key={key} display='flex' flexWrap>

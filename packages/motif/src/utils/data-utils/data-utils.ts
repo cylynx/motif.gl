@@ -471,9 +471,9 @@ export const removeEmptyValueInObject = (object: Record<string, any>): void => {
     const [key, value] = property;
 
     const isEmptyArray: boolean = Array.isArray(value) && value.length === 0;
-    const isEmptyObj: boolean = typeof value === 'object' && value !== null;
+    const isObj: boolean = typeof value === 'object' && value !== null;
 
-    if (isEmptyArray || isEmptyObj) {
+    if (isEmptyArray || isObj) {
       // eslint-disable-next-line no-param-reassign
       delete object[key];
     }
