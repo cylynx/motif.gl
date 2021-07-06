@@ -64,11 +64,11 @@ const ActivateNodeRelations = (): null => {
   }, []);
 
   useLayoutEffect(() => {
-    graph.on('node:mouseenter', onNodeHover);
+    graph.on('node:dblclick', onNodeHover);
     graph.on('node:mouseleave', resetNodeEdgeStates);
 
     return (): void => {
-      graph.off('node:mouseenter', onNodeHover);
+      graph.off('node:dblclick', onNodeHover);
       graph.off('node:mouseleave', resetNodeEdgeStates);
     };
   }, []);

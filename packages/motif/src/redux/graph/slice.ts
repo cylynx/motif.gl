@@ -14,7 +14,6 @@ import {
   GraphState,
   StyleOptions,
   GraphData,
-  Layout,
   SearchOptionPayload,
   SearchResultPayload,
   GroupEdgePayload,
@@ -24,6 +23,7 @@ import {
   Selection,
   UpdateGroupEdgeIds,
   LayoutParams,
+  NodePosParams,
 } from './types';
 import {
   DEFAULT_NODE_STYLE,
@@ -469,6 +469,21 @@ const graph = createSlice({
 
       state.graphList[lastGraphIndex].metadata.groupEdges.ids = action.payload;
     },
+    updateNodePosition(state, action: PayloadAction<NodePosParams[]>) {
+      action.payload.forEach((params) => {
+        const { nodeId, x, y } = params;
+        const nodeIndex = state.graphFlatten.nodes.findIndex(
+          (node) => node.id === nodeId,
+        );
+
+        const selectedNode = state.graphFlatten.nodes[nodeIndex];
+        state.graphFlatten.nodes[nodeIndex] = {
+          ...selectedNode,
+          x,
+          y,
+        };
+      });
+    },
   },
 });
 
@@ -507,6 +522,7 @@ export const {
   updateGroupEdgeIds,
   updateLastGroupEdgeIds,
   overwriteEdgeSelection,
+  updateNodePosition,
 } = graph.actions;
 
 export default graph.reducer;

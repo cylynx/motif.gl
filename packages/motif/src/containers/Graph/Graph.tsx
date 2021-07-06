@@ -1,6 +1,6 @@
 import React, { ForwardedRef } from 'react';
 import { useSelector } from 'react-redux';
-import Graphin, { Behaviors, GraphinData } from '@cylynx/graphin';
+import Graphin, { Behaviors, GraphinData, Utils } from '@cylynx/graphin';
 import { GraphSelectors, Layout } from '../../redux/graph';
 import { TooltipProps } from '../Tooltip/Tooltip';
 import {
@@ -16,7 +16,7 @@ import DisplayTooltips from './customBehaviors/DisplayTooltips';
 import ActivateEdgeRelations from './customBehaviors/ActivateEdgeRelations';
 import ActivateNodeRelations from './customBehaviors/ActivateNodeRelations';
 import DisplaySelectedProperty from './customBehaviors/DisplaySelectedProperty';
-import DragGraph from './customBehaviors/DragGraph';
+import PositionGraph from './customBehaviors/PositionGraph';
 
 export type GraphProps = {
   setTooltip: (tooltip: Partial<TooltipProps>) => void;
@@ -45,7 +45,7 @@ const Graph = React.forwardRef<Graphin, GraphProps>(
         edgeStateStyles={edgeStateStyles}
         theme={lightTheme}
       >
-        <DragGraph />
+        <PositionGraph />
         <DisplayTooltips setTooltip={setTooltip} />
         <ActivateNodeRelations />
         <ActivateEdgeRelations />

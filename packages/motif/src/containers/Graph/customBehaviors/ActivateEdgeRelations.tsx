@@ -49,11 +49,11 @@ const ActivateEdgeRelations = (): null => {
   }, []);
 
   useLayoutEffect(() => {
-    graph.on('edge:mouseenter', onEdgeClick);
+    graph.on('edge:dblclick', onEdgeClick);
     graph.on('edge:mouseleave', resetNodeEdgeStates);
 
     return (): void => {
-      graph.off('edge:mouseenter', onEdgeClick);
+      graph.off('edge:dblclick', onEdgeClick);
       graph.off('edge:mouseleave', resetNodeEdgeStates);
     };
   }, []);

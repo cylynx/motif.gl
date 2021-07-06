@@ -1,5 +1,6 @@
 import { Value } from 'baseui/select';
 import { IUserEdge, IUserNode } from '@cylynx/graphin';
+import { RestNode } from '@cylynx/graphin/lib/typings/type';
 import { SelectVariableOption } from '../../components/SelectVariable/SelectVariable';
 import { HistogramProp } from '../../containers/SidePanel/FilterPanel/FilterSelection/RangePlot';
 
@@ -75,6 +76,11 @@ export type NodeEdgeCsv = NodeEdgeDataType;
 
 export declare type Edge = IUserEdge;
 export declare type Node = IUserNode;
+
+export type NodePositions = {
+  x: RestNode['x'];
+  y: RestNode['y'];
+};
 
 export type GraphFields = {
   nodes: Field[];
@@ -160,6 +166,13 @@ export interface Accessors {
 
 export type ArrowOptions = 'none' | 'display';
 export type NodeItemType = 'source' | 'target' | 'normal';
+
+export type LayoutParams = {
+  layout: {
+    id: Layout['types'];
+    [key: string]: any;
+  };
+};
 
 export type EdgeWidthFixed = {
   id: 'fixed';
@@ -287,9 +300,6 @@ export interface TLoadFormat {
   style: StyleOptions;
 }
 
-export type LayoutParams = {
-  layout: {
-    id: Layout['types'];
-    [key: string]: any;
-  };
+export type NodePosParams = NodePositions & {
+  nodeId: Node['id'];
 };

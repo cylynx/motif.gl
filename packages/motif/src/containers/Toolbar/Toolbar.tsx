@@ -45,6 +45,7 @@ const Toolbar = () => {
       x: graph.getWidth() / 2,
       y: graph.getHeight() / 2,
     };
+
     graph.zoomTo(newZoom, centerPoint);
   };
 
