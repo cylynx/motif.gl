@@ -44,7 +44,7 @@ const PositionGraph = () => {
 
   const onDragEnd = (e: IG6GraphEvent): void => {
     if (layout.type === 'preset') {
-      dispatchNodePos(e);
+      // dispatchNodePos(e);
       return;
     }
 
@@ -52,7 +52,7 @@ const PositionGraph = () => {
       layout: { id: 'preset' },
     };
     changeGraphLayout(params);
-    dispatchNodePos(e);
+    // dispatchNodePos(e);
   };
 
   /**
@@ -74,11 +74,11 @@ const PositionGraph = () => {
 
   useLayoutEffect(() => {
     graph.on('node:dragend', onDragEnd);
-    graph.on('afterlayout', onLayoutChange);
+    // graph.on('afterlayout', onLayoutChange);
 
     return (): void => {
       graph.off('node:dragend', onDragEnd);
-      graph.off('afterlayout', onLayoutChange);
+      // graph.off('afterlayout', onLayoutChange);
     };
   });
 
