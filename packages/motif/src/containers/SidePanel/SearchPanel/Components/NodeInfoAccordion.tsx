@@ -1,6 +1,5 @@
 import React, { useMemo, FC } from 'react';
 import Accordion from '../../../../components/Accordion';
-import * as Icon from '../../../../components/Icons';
 import { Node } from '../../../../redux/graph';
 import useItemInformation from '../hooks/useItemInformation';
 
