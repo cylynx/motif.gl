@@ -105,13 +105,9 @@ export class GraphLayer extends Component<GraphLayerProps, GraphLayerState> {
 
   shouldComponentUpdate(
     nextProps: GraphLayerProps,
-    nextState: GraphLayerState,
+    _: GraphLayerState,
   ): boolean {
     if (this.props.isMainWidgetExpanded !== nextProps.isMainWidgetExpanded) {
-      return true;
-    }
-
-    if (this.state.width !== nextState.width) {
       return true;
     }
 
