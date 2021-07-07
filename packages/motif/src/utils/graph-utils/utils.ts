@@ -660,6 +660,7 @@ export const combineProcessedData = (
       [...newData.nodes, ...oldData.nodes],
       'id',
     ) as Node[];
+
     modData.edges = removeDuplicates(
       [...newData.edges, ...oldData.edges],
       'id',
@@ -704,19 +705,34 @@ export const combineDataWithDuplicates = (
 /**
  * Remove duplicates from array by checking on prop
  *
+ * @see https://github.com/cylynx/motif.gl/issues/173
+ * - the attributes should be merged after remove the duplicates
+ *
  * @param {(Node[] | Edge[] | Field[] | [])} myArr
- * @param {string} prop
  * @return {Node[] | Edge[] | Field[]}
  */
 export const removeDuplicates = (
-  myArr: Node[] | Edge[] | Field[] | [],
+  myArr: Node[] | Edge[] | Field[] | any[],
   prop: string,
 ): Node[] | Edge[] | Field[] => {
-  const seen = new Set();
-  const filteredArr = (myArr as any[]).filter((el) => {
-    const duplicate = seen.has(el[prop]);
-    seen.add(el[prop]);
-    return !duplicate;
-  });
+  const seen = {};
+
+  const filteredArr = myArr
+    .filter((el) => {
+      const duplicate = has(seen, [el[prop]]);
+      seen[el[prop]] = el;
+      return !duplicate;
+    })
+    .map((el) => {
+      const duplicate = has(seen, [el[prop]]);
+      if (!duplicate) return el;
+
+      const propAttributes = seen[el[prop]];
+      return {
+        ...el,
+        ...propAttributes,
+      };
+    });
+
   return filteredArr;
 };

@@ -29,3 +29,57 @@ export const numericAccessorsNodeEdge = {
     },
   ],
 };
+
+export const sampleJson1 = {
+  nodes: [
+    {
+      id: 'node-1',
+      node1: '1',
+    },
+    {
+      id: 'node-2',
+      node1: '2',
+    },
+  ],
+  edges: [
+    {
+      id: 'edge-1',
+      source: 'node-1',
+      target: 'node-2',
+      edge1: '1',
+    },
+    {
+      id: 'edge-2',
+      source: 'node-2',
+      target: 'node-1',
+      edge1: '2',
+    },
+  ],
+};
+
+export const sampleJson2 = {
+  nodes: [
+    {
+      id: 'node-1',
+      node2: '1',
+    },
+    {
+      id: 'node-2',
+      node2: '2',
+    },
+  ],
+  edges: [
+    {
+      id: 'edge-1',
+      source: 'node-1',
+      target: 'node-2',
+      edge2: '1',
+    },
+    {
+      id: 'edge-2',
+      source: 'node-2',
+      target: 'node-1',
+      edge2: '2',
+    },
+  ],
+};
