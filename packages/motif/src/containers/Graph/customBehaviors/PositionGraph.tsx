@@ -3,7 +3,7 @@ import {
   GraphinContextType,
   IG6GraphEvent,
 } from '@cylynx/graphin';
-import { useContext, useLayoutEffect } from 'react';
+import { useContext, useEffect, useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { GraphSlices, NodePosParams } from '../../../redux/graph';
 
@@ -13,6 +13,10 @@ const PositionGraph = () => {
   const { graph } = useContext(GraphinContext) as GraphinContextType;
   const { layout, changeGraphLayout } = useLayout();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log(layout);
+  }, [layout]);
 
   const handlePosChange = (params: NodePosParams[]) => {
     dispatch(GraphSlices.updateNodePosition(params));
@@ -44,7 +48,7 @@ const PositionGraph = () => {
 
   const onDragEnd = (e: IG6GraphEvent): void => {
     if (layout.type === 'preset') {
-      // dispatchNodePos(e);
+      dispatchNodePos(e);
       return;
     }
 
@@ -52,33 +56,31 @@ const PositionGraph = () => {
       layout: { id: 'preset' },
     };
     changeGraphLayout(params);
-    // dispatchNodePos(e);
+    dispatchNodePos(e);
   };
 
   /**
    * Update all the node position when layout is changed
    * - For GraphFlatten to remember the node position to handle visibilities.
    */
-  const onLayoutChange = () => {
-    const nodePositions: NodePosParams[] = [];
-    const nodePosCollection = graph.getNodes().reduce((acc, node) => {
-      const { id, x, y } = node.getModel();
-      const params: NodePosParams = { nodeId: id, x, y };
-      acc.push(params);
+  // const registerNodePosition = () => {
+  //   const nodePositions: NodePosParams[] = [];
+  //   console.log(graph);
+  //   // const nodePosCollection = graph.getNodes().reduce((acc, node) => {
+  //   //   const { id, x, y } = node.getModel();
+  //   //   const params: NodePosParams = { nodeId: id, x, y };
+  //   //   acc.push(params);
+  //   //   return acc;
+  //   // }, nodePositions);
 
-      return acc;
-    }, nodePositions);
-
-    handlePosChange(nodePosCollection);
-  };
+  //   // dispatch(GraphSlices.updateNodePosition(nodePosCollection));
+  // };
 
   useLayoutEffect(() => {
     graph.on('node:dragend', onDragEnd);
-    // graph.on('afterlayout', onLayoutChange);
 
     return (): void => {
       graph.off('node:dragend', onDragEnd);
-      // graph.off('afterlayout', onLayoutChange);
     };
   });
 

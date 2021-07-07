@@ -29,7 +29,12 @@ const OptionsLayout = () => {
 
   const layoutOptions = { layout: { id: layout.type, ...layout } };
 
-  const updateLayout = (data: any) => changeGraphLayout(data);
+  const updateLayout = (data: any) => {
+    // prevent unnecessary changes if values are the same.
+    if (data.layout.id === layout.type) return;
+
+    changeGraphLayout(data);
+  };
 
   const formData = genNestedForm(layoutForm, layoutOptions, updateLayout, {
     'grid[1].options': layoutFields,
