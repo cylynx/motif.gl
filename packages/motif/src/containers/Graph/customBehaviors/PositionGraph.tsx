@@ -3,7 +3,7 @@ import {
   GraphinContextType,
   IG6GraphEvent,
 } from '@cylynx/graphin';
-import { useContext, useEffect, useLayoutEffect } from 'react';
+import { useContext, useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { GraphSlices, NodePosParams } from '../../../redux/graph';
 
@@ -13,10 +13,6 @@ const PositionGraph = () => {
   const { graph } = useContext(GraphinContext) as GraphinContextType;
   const { layout, changeGraphLayout } = useLayout();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    console.log(layout);
-  }, [layout]);
 
   const handlePosChange = (params: NodePosParams[]) => {
     dispatch(GraphSlices.updateNodePosition(params));
@@ -58,23 +54,6 @@ const PositionGraph = () => {
     changeGraphLayout(params);
     dispatchNodePos(e);
   };
-
-  /**
-   * Update all the node position when layout is changed
-   * - For GraphFlatten to remember the node position to handle visibilities.
-   */
-  // const registerNodePosition = () => {
-  //   const nodePositions: NodePosParams[] = [];
-  //   console.log(graph);
-  //   // const nodePosCollection = graph.getNodes().reduce((acc, node) => {
-  //   //   const { id, x, y } = node.getModel();
-  //   //   const params: NodePosParams = { nodeId: id, x, y };
-  //   //   acc.push(params);
-  //   //   return acc;
-  //   // }, nodePositions);
-
-  //   // dispatch(GraphSlices.updateNodePosition(nodePosCollection));
-  // };
 
   useLayoutEffect(() => {
     graph.on('node:dragend', onDragEnd);
