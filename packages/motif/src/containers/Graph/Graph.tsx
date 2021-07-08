@@ -1,6 +1,6 @@
 import React, { ForwardedRef } from 'react';
 import { useSelector } from 'react-redux';
-import Graphin, { Behaviors, GraphinData, Utils } from '@cylynx/graphin';
+import Graphin, { Behaviors, GraphinData } from '@cylynx/graphin';
 import { GraphSelectors, Layout } from '../../redux/graph';
 import { TooltipProps } from '../Tooltip/Tooltip';
 import {
