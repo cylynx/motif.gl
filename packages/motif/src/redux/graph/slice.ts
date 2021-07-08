@@ -24,6 +24,7 @@ import {
   UpdateGroupEdgeIds,
   LayoutParams,
   NodePosParams,
+  Node,
 } from './types';
 import {
   DEFAULT_NODE_STYLE,
@@ -470,19 +471,25 @@ const graph = createSlice({
       state.graphList[lastGraphIndex].metadata.groupEdges.ids = action.payload;
     },
     updateNodePosition(state, action: PayloadAction<NodePosParams[]>) {
-      action.payload.forEach((params) => {
-        const { nodeId, x, y } = params;
-        const nodeIndex = state.graphFlatten.nodes.findIndex(
-          (node) => node.id === nodeId,
-        );
+      const modifiedNodes = state.graphFlatten.nodes.map(
+        (node: Draft<Node>, index: number) => {
+          const foundNode: NodePosParams | undefined = action.payload.find(
+            (params: NodePosParams) => params.nodeId === node.id,
+          );
 
-        const selectedNode = state.graphFlatten.nodes[nodeIndex];
-        state.graphFlatten.nodes[nodeIndex] = {
-          ...selectedNode,
-          x,
-          y,
-        };
-      });
+          if (!foundNode) return node;
+
+          const { x, y } = foundNode;
+          const specificNode = state.graphFlatten.nodes[index];
+          return {
+            ...specificNode,
+            x,
+            y,
+          };
+        },
+      );
+
+      state.graphFlatten.nodes = modifiedNodes;
     },
   },
 });
