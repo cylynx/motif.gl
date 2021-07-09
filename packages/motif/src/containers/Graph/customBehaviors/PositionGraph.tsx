@@ -5,6 +5,7 @@ import {
 } from '@cylynx/graphin';
 import { useContext, useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { debounce } from 'lodash';
 import { GraphSlices, NodePosParams } from '../../../redux/graph';
 
 import useLayout from '../../../redux/graph/hooks/useLayout';
@@ -18,7 +19,7 @@ const PositionGraph = () => {
     dispatch(GraphSlices.updateNodePosition(params));
   };
 
-  const dispatchNodePos = (e: IG6GraphEvent) => {
+  const registerDragPosition = (e: IG6GraphEvent) => {
     const { id, x, y } = e.item.getModel();
 
     // user perform drags without brush select and lasso select
@@ -42,9 +43,9 @@ const PositionGraph = () => {
     handlePosChange(nodePosCollection);
   };
 
-  const onDragEnd = (e: IG6GraphEvent): void => {
+  const onDragEnd = (e: IG6GraphEvent) => {
     if (layout.type === 'preset') {
-      dispatchNodePos(e);
+      registerDragPosition(e);
       return;
     }
 
@@ -52,7 +53,28 @@ const PositionGraph = () => {
       layout: { id: 'preset' },
     };
     changeGraphLayout(params);
-    dispatchNodePos(e);
+    registerAllPosition();
+  };
+
+  /**
+   * Update all the node position when layout is changed
+   * - For GraphFlatten to remember the node position to handle visibilities.
+   */
+
+  const registerAllPosition = () => {
+    const registerNodePosition = debounce(() => {
+      const nodePositions: NodePosParams[] = [];
+      const nodePosCollection = graph.getNodes().reduce((acc, node) => {
+        const { id, x, y } = node.getModel();
+        const params: NodePosParams = { nodeId: id, x, y };
+        acc.push(params);
+        return acc;
+      }, nodePositions);
+
+      handlePosChange(nodePosCollection);
+    }, 250);
+
+    registerNodePosition();
   };
 
   useLayoutEffect(() => {

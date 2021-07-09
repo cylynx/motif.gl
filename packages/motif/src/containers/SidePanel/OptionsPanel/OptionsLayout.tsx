@@ -2,15 +2,10 @@ import React, { useContext } from 'react';
 import { useStyletron } from 'baseui';
 import { Block } from 'baseui/block';
 import { HeadingXSmall } from 'baseui/typography';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { debounce } from 'lodash';
 import { GraphRefContext } from '../../Graph';
-import {
-  GraphSelectors,
-  GraphSlices,
-  NodePosParams,
-} from '../../../redux/graph';
+import { GraphSelectors } from '../../../redux/graph';
 import useLayout from '../../../redux/graph/hooks/useLayout';
 import { Card } from '../../../components/ui';
 import { NestedForm, genNestedForm } from '../../../components/form';
@@ -20,7 +15,6 @@ import QuestionMarkTooltip from '../../../components/ui/QuestionMarkTooltip';
 const OptionsLayout = () => {
   const [, theme] = useStyletron();
   const { changeGraphLayout } = useLayout();
-  const dispatch = useDispatch();
   const { graph } = useContext(GraphRefContext);
 
   const layout = useSelector(
@@ -39,7 +33,7 @@ const OptionsLayout = () => {
 
   const updateLayout = (data: any) => {
     changeGraphLayout(data);
-    registerNodePosition();
+    graph.emit('motif:layoutchange');
   };
 
   const formData = genNestedForm(layoutForm, layoutOptions, updateLayout, {
@@ -48,22 +42,6 @@ const OptionsLayout = () => {
     'radial[2].options': nodeIds,
     'radial[2].value': layout.focusNode || nodeIds[0]?.id || '',
   });
-
-  /**
-   * Update all the node position when layout is changed
-   * - For GraphFlatten to remember the node position to handle visibilities.
-   */
-  const registerNodePosition = debounce(() => {
-    const nodePositions: NodePosParams[] = [];
-    const nodePosCollection = graph.getNodes().reduce((acc, node) => {
-      const { id, x, y } = node.getModel();
-      const params: NodePosParams = { nodeId: id, x, y };
-      acc.push(params);
-      return acc;
-    }, nodePositions);
-
-    dispatch(GraphSlices.updateNodePosition(nodePosCollection));
-  }, 250);
 
   return (
     <Card

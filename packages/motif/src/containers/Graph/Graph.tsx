@@ -50,7 +50,7 @@ const Graph = React.forwardRef<Graphin, GraphProps>(
         <ActivateNodeRelations />
         <ActivateEdgeRelations />
         <LassoSelect trigger='alt' includeEdges />
-        <ClickSelect trigger='shift' />
+        <ClickSelect disabled />
         <BrushSelect trigger='shift' includeEdges />
         <DisplaySelectedProperty />
         <FontPaint />
