@@ -30,6 +30,7 @@ const SearchPanel = () => {
       height='100vh'
       width='92%'
       data-testid='search-panel'
+      $style={{ userSelect: 'none' }}
     >
       <HeadingMedium marginTop='scale300' marginBottom='scale300'>
         Search
@@ -37,7 +38,11 @@ const SearchPanel = () => {
       <SearchTabs />
       {isResultEmpty === false && (
         <>
-          <Block position='relative' height='calc(100% - 200px)'>
+          <Block
+            position='relative'
+            height='calc(100% - 200px)'
+            $style={{ userSelect: 'text' }}
+          >
             <ItemResults />
           </Block>
           <ItemPagination

@@ -14,7 +14,7 @@ const LayersPanel = () => {
   const [css, theme] = useStyletron();
 
   return (
-    <Block data-testid='layers-panel'>
+    <Block data-testid='layers-panel' $style={{ userSelect: 'none' }}>
       <Header />
       <Card>
         <Block display='flex' alignItems='end' marginBottom='scale400'>

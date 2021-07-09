@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Block } from 'baseui/block';
 import { HeadingMedium } from 'baseui/typography';
 import { FILL } from 'baseui/tabs-motion';
-import Header from '../Header';
 import { Tabs, Tab } from '../../../components/ui';
 
 import OptionsLayout from './OptionsLayout';
@@ -18,7 +17,7 @@ const OptionsPanel = () => {
   };
 
   return (
-    <Block data-testid='options-panel'>
+    <Block data-testid='options-panel' $style={{ userSelect: 'none' }}>
       <HeadingMedium marginTop='scale300' marginBottom='scale300'>
         Styles
       </HeadingMedium>

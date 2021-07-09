@@ -106,7 +106,7 @@ const FilterPanel: FC = () => {
   }, [onAddFilterClick, isEnableAddFilter]);
 
   return (
-    <Block data-testid='filter-panel'>
+    <Block data-testid='filter-panel' $style={{ userSelect: 'none' }}>
       <Block display='flex' alignItems='center'>
         <HeadingMedium marginTop='scale300' marginBottom='scale300'>
           Filters
