@@ -1,10 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useStyletron } from 'baseui';
 import { Block } from 'baseui/block';
 import { HeadingXSmall } from 'baseui/typography';
 import { useSelector } from 'react-redux';
 
-import { GraphRefContext } from '../../Graph';
 import { GraphSelectors } from '../../../redux/graph';
 import useLayout from '../../../redux/graph/hooks/useLayout';
 import { Card } from '../../../components/ui';
@@ -15,7 +14,6 @@ import QuestionMarkTooltip from '../../../components/ui/QuestionMarkTooltip';
 const OptionsLayout = () => {
   const [, theme] = useStyletron();
   const { changeGraphLayout } = useLayout();
-  const { graph } = useContext(GraphRefContext);
 
   const layout = useSelector(
     (state) => GraphSelectors.getGraph(state).styleOptions.layout,
@@ -33,14 +31,13 @@ const OptionsLayout = () => {
 
   const updateLayout = (data: any) => {
     changeGraphLayout(data);
-    graph.emit('motif:layoutchange');
   };
 
   const formData = genNestedForm(layoutForm, layoutOptions, updateLayout, {
     'grid[1].options': layoutFields,
     'concentric[1].options': layoutFields,
     'radial[2].options': nodeIds,
-    'radial[2].value': layout.focusNode || nodeIds[0]?.id || '',
+    'radial[2].value': layout.focusNode || nodeIds[0]?.id || [],
   });
 
   return (

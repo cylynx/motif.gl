@@ -472,8 +472,9 @@ export const removeEmptyValueInObject = (object: Record<string, any>): void => {
 
     const isEmptyArray: boolean = Array.isArray(value) && value.length === 0;
     const isObj: boolean = typeof value === 'object' && value !== null;
+    const isGraphinPosition: boolean = key === 'x' || key === 'y';
 
-    if (isEmptyArray || isObj) {
+    if (isEmptyArray || isObj || isGraphinPosition) {
       // eslint-disable-next-line no-param-reassign
       delete object[key];
     }
