@@ -3,12 +3,14 @@ import html2canvas from 'html2canvas';
 
 import { Block } from 'baseui/block';
 import { useDispatch, useSelector } from 'react-redux';
+import { setGraphListPosition } from '../../../utils/export-utils/export-utils';
 import { UISelectors, UISlices } from '../../../redux/ui';
 import {
   GraphSelectors,
   StyleOptions,
   TLoadFormat,
   GraphList,
+  GraphData,
 } from '../../../redux/graph';
 import * as Icon from '../../../components/Icons';
 import Editable from '../../../components/Editable';
@@ -18,6 +20,10 @@ const Header = () => {
   const name: string = useSelector((state) => UISelectors.getUI(state).name);
   const graphList: GraphList = useSelector((state) =>
     GraphSelectors.getGraphList(state),
+  );
+
+  const graphFlatten: GraphData = useSelector((state) =>
+    GraphSelectors.getGraphFlatten(state),
   );
 
   const styleOptions: StyleOptions = useSelector((state) =>
@@ -48,8 +54,9 @@ const Header = () => {
   }, [isCanvasHasGraph]);
 
   const exportJSON = (graphList: GraphList, styleOptions: StyleOptions) => {
+    const positionGraphList = setGraphListPosition(graphList, graphFlatten);
     const exportData: TLoadFormat = {
-      data: graphList,
+      data: positionGraphList,
       style: styleOptions,
     };
 
@@ -80,7 +87,7 @@ const Header = () => {
         onClick: () => exportJSON(graphList, styleOptions),
       },
     ],
-    [dispatch, exportPNG, exportJSON, graphList, styleOptions],
+    [dispatch, exportPNG, exportJSON, graphList, styleOptions, graphFlatten],
   );
 
   return useMemo(
