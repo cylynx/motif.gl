@@ -31,7 +31,10 @@ import {
   EDGE_DEFAULT_COLOR,
 } from '../../constants/graph-shapes';
 import { groupEdgesForImportation } from './processors/group-edges';
-import { combineProcessedData } from '../../utils/graph-utils/utils';
+import {
+  combineGraphs,
+  combineProcessedData,
+} from '../../utils/graph-utils/utils';
 
 /**
  * Perform update on node and edge selections.
@@ -214,26 +217,29 @@ const graph = createSlice({
       const { index, isVisible } = action.payload;
       const { graphList } = state;
       graphList[index].metadata.visible = isVisible;
-      let graphData;
-      for (const data of graphList) {
-        if (data?.metadata?.visible !== false) {
-          let modData = data;
 
-          // perform group edge if enable when toggle against visibility
-          if (data.metadata.groupEdges.toggle) {
-            const { graphData: groupedEdgeData } = groupEdgesForImportation(
-              data,
-              data.metadata.groupEdges,
-            );
-            modData = groupedEdgeData;
-          }
+      const groupedEdgeGraph = graphList.map((graphData) => {
+        const { groupEdges } = graphData.metadata;
 
-          graphData = combineProcessedData(modData as GraphData, graphData);
+        if (groupEdges.toggle) {
+          const { graphData: groupedEdgeData } = groupEdgesForImportation(
+            graphData,
+            groupEdges,
+          );
+          return groupedEdgeData;
         }
-      }
+
+        return graphData;
+      });
+
+      const mergedGraph = combineGraphs(groupedEdgeGraph);
+      const graphFlatten = combineProcessedData(
+        initialState.graphFlatten,
+        mergedGraph,
+      );
 
       Object.assign(state, {
-        graphFlatten: graphData ?? initialState.graphFlatten,
+        graphFlatten,
       });
     },
     addQuery(state, action: PayloadAction<GraphData[]>) {
