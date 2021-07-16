@@ -236,8 +236,8 @@ const graph = createSlice({
         graphFlatten: graphData ?? initialState.graphFlatten,
       });
     },
-    addQuery(state, action: PayloadAction<GraphData>) {
-      state.graphList.push(action.payload);
+    addQuery(state, action: PayloadAction<GraphData[]>) {
+      state.graphList.push(...action.payload);
     },
     updateStyleOption(state, action: PayloadAction<StyleOptions>) {
       Object.assign(state.styleOptions, action.payload);
@@ -304,12 +304,14 @@ const graph = createSlice({
     ) {
       const { data } = action.payload;
       const { graphFlatten } = state;
-      let graphData;
-      if (data?.metadata?.visible !== false) {
-        graphData = combineProcessedData(data, graphFlatten as GraphData);
-        updateAll(state, graphData);
-        updateSelections(state, data);
-      }
+
+      const graphData = combineProcessedData(
+        data as GraphData,
+        graphFlatten as GraphData,
+      );
+
+      updateAll(state, graphData);
+      updateSelections(state, graphData);
     },
     setAccessors(state, action: PayloadAction<Accessors>) {
       state.accessors = action.payload;

@@ -27,6 +27,7 @@ import {
   StyleOptions,
   TimeRange,
   TimeSeries,
+  GraphList,
 } from '../../redux/graph/types';
 
 import { ITEM_PER_PAGE } from '../../constants/widget-units';
@@ -677,6 +678,68 @@ export const combineProcessedData = (
     return modData;
   }
   return newData;
+};
+
+/**
+ * Combine graphs in Graph List to form Graph Flatten.
+ */
+export const combineGraphs = (graphList: GraphList): GraphData => {
+  const initial: GraphData = {
+    nodes: [],
+    edges: [],
+    metadata: {
+      fields: {
+        nodes: [],
+        edges: [],
+      },
+    },
+  };
+
+  if (graphList.length === 0) return initial;
+
+  if (graphList.length === 1) {
+    const [graphData] = graphList;
+    return graphData;
+  }
+
+  const mergedGraph = graphList
+    .filter((graphData) => {
+      const { visible = true } = graphData.metadata;
+      return visible === true;
+    })
+    .reduce((graphFlatten, graphData) => {
+      const {
+        nodes,
+        edges,
+        metadata: {
+          fields: { nodes: nodeFields, edges: edgeFields },
+        },
+      } = graphData;
+
+      const combinedNodes = graphFlatten.nodes.concat(nodes);
+      const combinedEdges = graphFlatten.edges.concat(edges);
+      const combineNodeFields =
+        graphFlatten.metadata.fields.nodes.concat(nodeFields);
+      const combineEdgeFields =
+        graphFlatten.metadata.fields.edges.concat(edgeFields);
+
+      Object.assign(graphFlatten, {
+        nodes: combinedNodes,
+        edges: combinedEdges,
+        metadata: {
+          ...graphData.metadata,
+          visible: true,
+          fields: {
+            nodes: combineNodeFields,
+            edges: combineEdgeFields,
+          },
+        },
+      });
+
+      return graphFlatten;
+    }, initial);
+
+  return mergedGraph;
 };
 
 export const combineDataWithDuplicates = (

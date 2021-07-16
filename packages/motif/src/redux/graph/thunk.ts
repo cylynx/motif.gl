@@ -1,4 +1,5 @@
 import { flatten, isEmpty, cloneDeep, uniqBy } from 'lodash';
+import { combineGraphs } from '../../utils/graph-utils/utils';
 import { getFilterOptions, getGraph, getStyleOptions } from './selectors';
 
 import {
@@ -8,7 +9,6 @@ import {
   updateStyleOption,
   overwriteEdgeSelection,
   updateGroupEdgeIds,
-  updateLastGroupEdgeIds,
 } from './slice';
 import {
   importEdgeListCsv,
@@ -50,24 +50,28 @@ const processResponse = (
 ) => {
   const graphList: GraphList = Array.isArray(newData) ? newData : [newData];
 
-  graphList.forEach((graphData: GraphData) => {
-    // appends graph data into graph list.
-    dispatch(addQuery(graphData));
+  const modifiedGraphList = [];
+  const groupedEdgeGraphList: GraphList = graphList.map(
+    (graphData: GraphData) => {
+      if (graphData.metadata.groupEdges.toggle) {
+        const { graphData: groupedEdgeData, groupEdgeIds } =
+          groupEdgesForImportation(graphData, graphData.metadata.groupEdges);
+        const modData = cloneDeep(graphData);
+        modData.metadata.groupEdges.ids = groupEdgeIds;
+        modifiedGraphList.push(modData);
 
-    // create a new copies of object to modify immutable objects.
-    let modData = graphData;
+        return groupedEdgeData;
+      }
 
-    // perform group edges based on user preferences during data importation.
-    if (graphData.metadata.groupEdges.toggle) {
-      const { graphData: groupedEdgeData, groupEdgeIds } =
-        groupEdgesForImportation(graphData, graphData.metadata.groupEdges);
-      modData = groupedEdgeData;
-      dispatch(updateLastGroupEdgeIds(groupEdgeIds));
-    }
+      return graphData;
+    },
+  );
 
-    // combine new graph data with existing graph data to form graph flattens.
-    dispatch(processGraphResponse({ data: modData, accessors }));
-  });
+  dispatch(addQuery(modifiedGraphList));
+  const mergedGraph = combineGraphs(groupedEdgeGraphList);
+
+  // combine new graph data with existing graph data to form graph flattens.
+  dispatch(processGraphResponse({ data: mergedGraph, accessors }));
 };
 
 /**
