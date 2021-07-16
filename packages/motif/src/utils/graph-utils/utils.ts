@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import inRange from 'lodash/inRange';
 import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
@@ -681,7 +682,31 @@ export const combineProcessedData = (
 };
 
 /**
- * Combine graphs in Graph List to form Graph Flatten.
+ * Remove duplicate nodes, edges, node fields and edge fields from a single graph.
+ *
+ * @param {GraphData} graphData
+ */
+export const removeGraphDuplicates = (graphData: GraphData) => {
+  graphData.nodes = removeDuplicates(graphData.nodes, 'id') as Node[];
+  graphData.edges = removeDuplicates(graphData.edges, 'id') as Edge[];
+  graphData.metadata.fields.nodes = removeDuplicates(
+    graphData.metadata.fields.nodes,
+    'name',
+  ) as Field[];
+
+  graphData.metadata.fields.edges = removeDuplicates(
+    graphData.metadata.fields.edges,
+    'name',
+  ) as Field[];
+
+  return graphData;
+};
+
+/**
+ * Combine list of graphs into a single graph without remove duplicate.
+ *
+ * @param {GraphList} graphList
+ * @return {GraphData}
  */
 export const combineGraphs = (graphList: GraphList): GraphData => {
   const initial: GraphData = {
