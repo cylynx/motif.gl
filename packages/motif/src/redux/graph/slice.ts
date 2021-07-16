@@ -218,19 +218,24 @@ const graph = createSlice({
       const { graphList } = state;
       graphList[index].metadata.visible = isVisible;
 
-      const groupedEdgeGraph = graphList.map((graphData) => {
-        const { groupEdges } = graphData.metadata;
+      const groupedEdgeGraph = graphList
+        .filter((graph) => {
+          const { visible = true } = graph.metadata;
+          return visible === true;
+        })
+        .map((graphData) => {
+          const { groupEdges } = graphData.metadata;
 
-        if (groupEdges.toggle) {
-          const { graphData: groupedEdgeData } = groupEdgesForImportation(
-            graphData,
-            groupEdges,
-          );
-          return groupedEdgeData;
-        }
+          if (groupEdges.toggle) {
+            const { graphData: groupedEdgeData } = groupEdgesForImportation(
+              graphData,
+              groupEdges,
+            );
+            return groupedEdgeData;
+          }
 
-        return graphData;
-      });
+          return graphData;
+        });
 
       const mergedGraph = combineGraphs(groupedEdgeGraph);
       const graphFlatten = combineProcessedData(
