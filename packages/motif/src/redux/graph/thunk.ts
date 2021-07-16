@@ -63,6 +63,7 @@ const processResponse = (
         return groupedEdgeData;
       }
 
+      modifiedGraphList.push(graphData);
       return graphData;
     },
   );
@@ -137,7 +138,7 @@ export const importEdgeListData =
           dispatch(FileUploadSlices.resetState());
           dispatch(UISlices.fetchDone());
           dispatch(UISlices.closeModal());
-        }, 200);
+        }, 50);
       })
       .catch((err: Error) => {
         const { message } = err;
@@ -221,7 +222,7 @@ export const importJsonData =
           dispatch(FileUploadSlices.resetState());
           dispatch(UISlices.fetchDone());
           dispatch(UISlices.closeModal());
-        }, 200);
+        }, 50);
       })
       .catch((err: Error) => {
         const { message } = err;
@@ -283,7 +284,7 @@ export const importNodeEdgeData =
           dispatch(FileUploadSlices.resetState());
           dispatch(UISlices.fetchDone());
           dispatch(UISlices.closeModal());
-        }, 200);
+        }, 50);
       })
       .catch((err: Error) => {
         const { message } = err;
@@ -329,7 +330,7 @@ export const importSampleData =
           dispatch(FileUploadSlices.resetState());
           dispatch(UISlices.fetchDone());
           dispatch(UISlices.closeModal());
-        }, 200);
+        }, 50);
       })
       .catch((err: Error) => {
         const { message } = err;
