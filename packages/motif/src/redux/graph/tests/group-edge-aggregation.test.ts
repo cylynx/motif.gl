@@ -2,9 +2,6 @@
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import cloneDeep from 'lodash/cloneDeep';
-import { render } from '@testing-library/react';
-import { ToasterContainer } from 'baseui/toast';
-import React from 'react';
 import { flatten } from 'underscore';
 import { addQuery, initialState, processGraphResponse } from '../slice';
 import { resetState } from '../../import/fileUpload/slice';
@@ -37,7 +34,6 @@ const getStore = () => {
 describe('Group Edge Aggregation', () => {
   let store;
   beforeEach(() => {
-    render(<ToasterContainer />);
     store = mockStore(getStore());
   });
 
