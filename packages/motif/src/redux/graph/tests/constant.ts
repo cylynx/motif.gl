@@ -1,6 +1,7 @@
 import * as LAYOUT from '../../../constants/layout-options';
 import { DEFAULT_NODE_STYLE } from '../../../constants/graph-shapes';
 import { GraphList } from '../types';
+import { GraphData } from '..';
 
 export const whitespaceNodeEdge = {
   edgeCsv: [
@@ -183,4 +184,217 @@ export const simpleGraphThree = {
       },
     },
   ],
+};
+
+export const simpleGraphWithGroupEdge = {
+  data: {
+    nodes: [{ id: 'node-3' }, { id: 'node-4' }],
+    edges: [
+      { id: 'edge-2', source: 'node-3', target: 'node-4' },
+      { id: 'edge-3', source: 'node-3', target: 'node-4' },
+    ],
+    metadata: {
+      key: 234,
+    },
+  },
+};
+
+export const SimpleGraphWithGroupEdge = (): GraphData => ({
+  nodes: [{ id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' }],
+  edges: [
+    {
+      source: 'a',
+      target: 'b',
+      id: 'a-b1',
+      numeric: 1,
+      value: 'first',
+      date: '19-05-1996',
+    },
+    {
+      source: 'a',
+      target: 'b',
+      id: 'a-b2',
+      numeric: 2,
+      value: 'Last',
+      date: '20-05-1996',
+    },
+    {
+      source: 'a',
+      target: 'b',
+      id: 'a-b3',
+      numeric: 2,
+      value: 'last',
+      date: '20-05-1996',
+    },
+    { source: 'a', target: 'b', id: 'a-b4' },
+    {
+      source: 'a',
+      target: 'b',
+      id: 'a-b5',
+      value: 'last',
+      date: '21-05-1996',
+    },
+    { source: 'c', target: 'd', id: 'c-d1', numeric: 1 },
+    { source: 'c', target: 'd', id: 'c-d2', numeric: 2 },
+    { source: 'c', target: 'd', id: 'c-d3', numeric: 2 },
+    { source: 'c', target: 'd', id: 'c-d4' },
+  ],
+  metadata: {
+    key: 'QoFR2RwSM',
+    fields: {
+      nodes: [
+        {
+          name: 'id',
+          format: '',
+          type: 'string',
+          analyzerType: 'string',
+        },
+      ],
+      edges: [
+        {
+          name: 'id',
+          format: '',
+          type: 'string',
+          analyzerType: 'string',
+        },
+        {
+          name: 'source',
+          format: '',
+          type: 'string',
+          analyzerType: 'string',
+        },
+        {
+          name: 'target',
+          format: '',
+          type: 'string',
+          analyzerType: 'string',
+        },
+        {
+          name: 'numeric',
+          format: '',
+          type: 'integer',
+          analyzerType: 'INT',
+        },
+        {
+          name: 'value',
+          format: '',
+          type: 'string',
+          analyzerType: 'STRING',
+        },
+        {
+          name: 'date',
+          format: '',
+          type: 'string',
+          analyzerType: 'STRING',
+        },
+      ],
+    },
+    groupEdges: {
+      toggle: true,
+      availability: true,
+      type: 'numeric',
+      fields: {
+        'Y_-ZK2S3P': {
+          field: 'numeric',
+          aggregation: ['min', 'max', 'average', 'count', 'sum'],
+        },
+        _8X9zGku9b: {
+          field: 'value',
+          aggregation: ['first', 'last', 'most_frequent'],
+        },
+        vVENjKDSxE: {
+          field: 'date',
+          aggregation: ['first', 'last', 'most_frequent'],
+        },
+      },
+    },
+  },
+});
+
+export const graphWithGroupEdge = {
+  nodes: [{ id: 'a' }, { id: 'b' }],
+  edges: [
+    {
+      id: 'a-b1',
+      source: 'a',
+      target: 'b',
+      Value: 300000,
+      TokenName: 'Tether USD',
+    },
+    {
+      id: 'a-b2',
+      source: 'a',
+      target: 'b',
+      Value: 300000,
+      TokenName: 'Tether USD',
+    },
+    {
+      id: 'a-b3',
+      source: 'a',
+      target: 'b',
+      Value: 147000,
+      TokenName: 'ETH',
+    },
+    {
+      id: 'a-b4',
+      source: 'a',
+      target: 'b',
+      Value: 38000,
+      TokenName: 'Tether USD',
+    },
+    {
+      id: 'a-b5',
+      source: 'a',
+      target: 'b',
+      Value: 31000,
+      TokenName: 'Tether USD',
+    },
+  ],
+  metadata: {
+    fields: {
+      // @ts-ignore
+      nodes: [],
+      edges: [
+        {
+          name: 'source',
+          format: '',
+          type: 'string',
+          analyzerType: 'STRING',
+        },
+        {
+          name: 'target',
+          format: '',
+          type: 'string',
+          analyzerType: 'STRING',
+        },
+        {
+          name: 'Value',
+          format: '',
+          type: 'integer',
+          analyzerType: 'INT',
+        },
+        {
+          name: 'TokenName',
+          format: '',
+          type: 'string',
+          analyzerType: 'STRING',
+        },
+      ],
+    },
+    groupEdges: {
+      toggle: true,
+      availability: true,
+      type: 'TokenName',
+      fields: {
+        Or2fv2L2W: {
+          field: 'Value',
+          aggregation: ['count', 'sum', 'max'],
+        },
+        Sfdjksdf2: {
+          field: 'TokenName',
+          aggregation: ['first', 'last', 'most_frequent'],
+        },
+      },
+    },
+  },
 };

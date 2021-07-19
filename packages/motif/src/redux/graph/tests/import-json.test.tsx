@@ -13,7 +13,7 @@ import {
   updateStyleOption,
 } from '../slice';
 import { importJson } from '../processors/import';
-import { Accessors, TLoadFormat } from '../types';
+import { Accessors } from '../types';
 
 import * as Constant from './constant';
 import { importJsonData } from '../thunk';
@@ -501,6 +501,58 @@ describe('Import JSON', () => {
           expect(store.getActions()).toEqual(expectedActions);
           done();
         }, 300);
+      });
+  });
+
+  it('should determine whether graph possess duplicate connectivity', async (done) => {
+    // arrange
+    const importDataArr = [Constant.simpleGraphWithGroupEdge];
+    const groupEdgeToggle = false;
+
+    // act
+    const batchDataPromises = importDataArr.map((graphData) => {
+      const { data } = graphData;
+      return importJson(data, initialState.accessors, groupEdgeToggle);
+    });
+
+    const graphDataArr = await Promise.all(batchDataPromises);
+    const [firstGraphData] = flatten(graphDataArr);
+
+    // group edge configuration arrangements
+    const groupEdgeConfig = {
+      availability: true,
+      toggle: groupEdgeToggle,
+    };
+    firstGraphData.metadata.groupEdges = groupEdgeConfig;
+
+    // expected results
+    const expectedActions = [
+      fetchBegin(),
+      addQuery([firstGraphData]),
+      processGraphResponse({
+        data: firstGraphData,
+        accessors: initialState.accessors,
+      }),
+      updateToast('toast-0'),
+      resetState(),
+      fetchDone(),
+      closeModal(),
+    ];
+
+    // assertions
+    return store
+      .dispatch(
+        importJsonData(
+          importDataArr as any,
+          groupEdgeToggle,
+          initialState.accessors,
+        ),
+      )
+      .then(() => {
+        setTimeout(() => {
+          expect(store.getActions()).toEqual(expectedActions);
+          done();
+        }, 50);
       });
   });
 });
