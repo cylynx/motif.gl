@@ -25,7 +25,7 @@
     "test:watch": "jest --watchAll",
     "test:coverage": "jest --coverage --watchAll=false",
     "cypress:open": "cypress open",
-    "cypress:test": "cypress cache clear && cypress run",
+    "cypress:test": "cypress run",
     "clean": "rimraf -rf ./dist"
   },
   "dependencies": {
