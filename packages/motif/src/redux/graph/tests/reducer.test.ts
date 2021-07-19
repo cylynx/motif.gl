@@ -54,7 +54,7 @@ describe('graph reducer', () => {
     const sampleGraphData = (await sampleGraphList)[0];
     const results = graph(initialState, {
       type: addQuery.type,
-      payload: sampleGraphData,
+      payload: [sampleGraphData],
     });
     expect(results.graphList).toHaveLength(1);
     expect(results.graphList).toEqual([sampleGraphData]);
@@ -246,7 +246,7 @@ describe('graph reducer', () => {
 
       const addQueryResults = graph(initialState, {
         type: addQuery.type,
-        payload: sampleGraphData,
+        payload: [sampleGraphData],
       });
 
       importedResults = graph(addQueryResults, {

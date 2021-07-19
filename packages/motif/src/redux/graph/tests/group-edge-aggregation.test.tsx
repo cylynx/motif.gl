@@ -3,13 +3,25 @@ import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import cloneDeep from 'lodash/cloneDeep';
 import { flatten } from 'underscore';
-import { addQuery, initialState, processGraphResponse } from '../slice';
+import React from 'react';
+import { render } from '@testing-library/react';
+import { ToasterContainer } from 'baseui/toast';
+import {
+  addQuery,
+  initialState,
+  processGraphResponse,
+  overwriteEdgeSelection,
+} from '../slice';
 import { resetState } from '../../import/fileUpload/slice';
 import * as Constant from './constant';
 import { importJson } from '../processors/import';
 import { closeModal, fetchBegin, fetchDone, updateToast } from '../../ui/slice';
-import { groupEdgesWithAggregation, importJsonData } from '../thunk';
-import { Field, GraphData } from '../types';
+import {
+  groupEdgesWithAggregation,
+  importJsonData,
+  computeEdgeSelection,
+} from '../thunk';
+import { Field, GraphData, Selection } from '../types';
 import {
   groupEdgesForImportation,
   groupEdgesWithConfiguration,
@@ -31,9 +43,10 @@ const getStore = () => {
   return store;
 };
 
-describe('Group Edge Aggregation', () => {
+describe('Group Edges', () => {
   let store;
   beforeEach(() => {
+    render(<ToasterContainer />);
     store = mockStore(getStore());
   });
 
@@ -383,6 +396,188 @@ describe('Group Edge Aggregation', () => {
           }
         });
       });
+    });
+  });
+
+  describe('computeEdgeSelection', () => {
+    const { sampleGraphFlatten } = Constant;
+    const aggregatedEdgeFields: Field[] = [
+      {
+        name: 'id',
+        format: '',
+        type: 'string',
+        analyzerType: 'string',
+      },
+      {
+        name: 'source',
+        format: '',
+        type: 'string',
+        analyzerType: 'string',
+      },
+      {
+        name: 'target',
+        format: '',
+        type: 'string',
+        analyzerType: 'string',
+      },
+      {
+        name: 'numeric',
+        format: '',
+        type: 'integer',
+        analyzerType: 'INT',
+      },
+      {
+        name: 'value',
+        format: '',
+        type: 'string',
+        analyzerType: 'STRING',
+      },
+      {
+        name: 'date',
+        format: '',
+        type: 'string',
+        analyzerType: 'STRING',
+      },
+
+      {
+        analyzerType: 'INT',
+        format: '',
+        name: 'min numeric',
+        type: 'integer',
+      },
+      {
+        analyzerType: 'INT',
+        format: '',
+        name: 'max numeric',
+        type: 'integer',
+      },
+      {
+        analyzerType: 'INT',
+        format: '',
+        name: 'average numeric',
+        type: 'integer',
+      },
+      {
+        analyzerType: 'INT',
+        format: '',
+        name: 'count numeric',
+        type: 'integer',
+      },
+      {
+        analyzerType: 'INT',
+        format: '',
+        name: 'sum numeric',
+        type: 'integer',
+      },
+      {
+        analyzerType: 'STRING',
+        format: '',
+        name: 'first value',
+        type: 'string',
+      },
+      {
+        analyzerType: 'STRING',
+        format: '',
+        name: 'last value',
+        type: 'string',
+      },
+      {
+        analyzerType: 'STRING',
+        format: '',
+        name: 'most_frequent value',
+        type: 'string',
+      },
+      {
+        analyzerType: 'STRING',
+        format: '',
+        name: 'first date',
+        type: 'string',
+      },
+      {
+        analyzerType: 'STRING',
+        format: '',
+        name: 'last date',
+        type: 'string',
+      },
+      {
+        analyzerType: 'STRING',
+        format: '',
+        name: 'most_frequent date',
+        type: 'string',
+      },
+    ];
+
+    Object.assign((sampleGraphFlatten as any).metadata.fields, {
+      edges: aggregatedEdgeFields,
+    });
+
+    const importedGraphState = () => {
+      const store = {
+        investigate: {
+          ui: {},
+          widget: {},
+          graph: {
+            present: {
+              graphFlatten: sampleGraphFlatten,
+              edgeSelection: [
+                {
+                  label: 'id',
+                  id: 'id',
+                  type: 'string',
+                  selected: true,
+                },
+                {
+                  label: 'source',
+                  id: 'source',
+                  type: 'string',
+                  selected: true,
+                },
+                {
+                  label: 'target',
+                  id: 'target',
+                  type: 'string',
+                  selected: true,
+                },
+              ],
+            },
+          },
+        },
+      };
+      return store;
+    };
+
+    const store = mockStore(importedGraphState());
+
+    beforeEach(() => {
+      store.dispatch(computeEdgeSelection() as any);
+    });
+
+    afterEach(() => {
+      store.clearActions();
+    });
+
+    it('should append edge selection based on edge fields', () => {
+      const { edgeSelection, graphFlatten } = getGraph(store.getState());
+      const { edges: edgeFields } = graphFlatten.metadata.fields;
+
+      const computedEdgeSelection = edgeFields.map((edgeField: Field) => {
+        const { name, type } = edgeField;
+        const existingSelection = edgeSelection.find(
+          (selection: Selection) => selection.id === edgeField.name,
+        );
+        const isSelected: boolean = existingSelection?.selected ?? false;
+
+        return {
+          id: name,
+          label: name,
+          type,
+          selected: isSelected,
+        };
+      });
+
+      const expectedActions = [overwriteEdgeSelection(computedEdgeSelection)];
+
+      expect(store.getActions()).toEqual(expectedActions);
     });
   });
 });
