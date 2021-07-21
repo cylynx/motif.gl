@@ -1,6 +1,6 @@
 {
   "name": "@cylynx/motif",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "An out of the box graph visualization toolkit to assist analysis and investigation of network data.",
   "author": "Timothy Lin",
   "keywords": [
@@ -29,8 +29,8 @@
     "clean": "rimraf -rf ./dist"
   },
   "dependencies": {
-    "@antv/g6": "4.1.13",
-    "@cylynx/graphin": "2.0.20",
+    "@antv/g6": "4.3.4",
+    "@cylynx/graphin": "2.1.1",
     "@reduxjs/toolkit": "^1.5.0",
     "d3-array": "^2.12.1",
     "d3-axis": "^2.1.0",
@@ -113,7 +113,7 @@
     "ts-loader": "^8.0.15",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.4",
-    "vite": "2.2.4",
+    "vite": "2.4.3",
     "webpack": "4.42.0",
     "workerloader-jest-transformer": "^0.0.2"
   },
