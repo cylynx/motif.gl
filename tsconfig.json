@@ -17,7 +17,7 @@
     "noUnusedParameters": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "target": "es5",
+    "target": "esnext",
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
