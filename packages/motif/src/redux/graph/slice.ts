@@ -31,7 +31,11 @@ import {
   EDGE_DEFAULT_COLOR,
 } from '../../constants/graph-shapes';
 import { groupEdgesForImportation } from './processors/group-edges';
-import { combineProcessedData } from '../../utils/graph-utils/utils';
+import {
+  combineGraphs,
+  combineProcessedData,
+  removeGraphDuplicates,
+} from '../../utils/graph-utils/utils';
 
 /**
  * Perform update on node and edge selections.
@@ -172,39 +176,37 @@ const graph = createSlice({
     deleteGraphList(state, action: PayloadAction<number>) {
       const { graphList } = state;
       graphList.splice(action.payload, 1);
-      // Loop through graphList to generate new graphData and update node / edge selection
-      let graphData;
-      const existingNodeFields: string[] = ['id'];
-      const existingEdgeFields: string[] = ['id', 'source', 'target'];
-      for (const data of graphList) {
-        let modData = data;
-        if (modData?.metadata?.visible !== false) {
-          // perform group edge if enable when perform data list deletion
-          if (modData.metadata.groupEdges.toggle) {
+
+      const groupedEdgeGraphList = graphList
+        .filter((graph) => {
+          const { visible = true } = graph.metadata;
+          return visible === true;
+        })
+        .map((graphData) => {
+          const { groupEdges } = graphData.metadata;
+
+          if (groupEdges.toggle) {
             const { graphData: groupedEdgeData } = groupEdgesForImportation(
-              data,
-              data.metadata.groupEdges,
+              graphData,
+              groupEdges,
             );
-            modData = groupedEdgeData;
+            return groupedEdgeData;
           }
 
-          graphData = combineProcessedData(modData as GraphData, graphData);
-        }
-        for (const field of modData.metadata.fields.nodes) {
-          existingNodeFields.push(field.name);
-        }
-        for (const field of modData.metadata.fields.edges) {
-          existingEdgeFields.push(field.name);
-        }
-      }
-      updateAll(state, graphData);
+          return graphData;
+        });
+
+      const mergedGraph = combineGraphs(groupedEdgeGraphList);
+      const graphFlatten = removeGraphDuplicates(mergedGraph);
+
+      updateAll(state, graphFlatten);
 
       // update node and edge selection with existing fields
       state.edgeSelection = state.edgeSelection.filter((f) =>
-        existingEdgeFields.includes(f.id),
+        ['id'].includes(f.id),
       );
       state.nodeSelection = state.nodeSelection.filter((f) =>
-        existingNodeFields.includes(f.id),
+        ['id', 'source', 'target'].includes(f.id),
       );
     },
     changeVisibilityGraphList(
@@ -214,30 +216,35 @@ const graph = createSlice({
       const { index, isVisible } = action.payload;
       const { graphList } = state;
       graphList[index].metadata.visible = isVisible;
-      let graphData;
-      for (const data of graphList) {
-        if (data?.metadata?.visible !== false) {
-          let modData = data;
 
-          // perform group edge if enable when toggle against visibility
-          if (data.metadata.groupEdges.toggle) {
+      const groupedEdgeGraph = graphList
+        .filter((graph) => {
+          const { visible = true } = graph.metadata;
+          return visible === true;
+        })
+        .map((graphData) => {
+          const { groupEdges } = graphData.metadata;
+
+          if (groupEdges.toggle) {
             const { graphData: groupedEdgeData } = groupEdgesForImportation(
-              data,
-              data.metadata.groupEdges,
+              graphData,
+              groupEdges,
             );
-            modData = groupedEdgeData;
+            return groupedEdgeData;
           }
 
-          graphData = combineProcessedData(modData as GraphData, graphData);
-        }
-      }
+          return graphData;
+        });
+
+      const mergedGraph = combineGraphs(groupedEdgeGraph);
+      const graphFlatten = removeGraphDuplicates(mergedGraph);
 
       Object.assign(state, {
-        graphFlatten: graphData ?? initialState.graphFlatten,
+        graphFlatten,
       });
     },
-    addQuery(state, action: PayloadAction<GraphData>) {
-      state.graphList.push(action.payload);
+    addQuery(state, action: PayloadAction<GraphData[]>) {
+      state.graphList.push(...action.payload);
     },
     updateStyleOption(state, action: PayloadAction<StyleOptions>) {
       Object.assign(state.styleOptions, action.payload);
@@ -304,12 +311,14 @@ const graph = createSlice({
     ) {
       const { data } = action.payload;
       const { graphFlatten } = state;
-      let graphData;
-      if (data?.metadata?.visible !== false) {
-        graphData = combineProcessedData(data, graphFlatten as GraphData);
-        updateAll(state, graphData);
-        updateSelections(state, data);
-      }
+
+      const graphData = combineProcessedData(
+        data as GraphData,
+        graphFlatten as GraphData,
+      );
+
+      updateAll(state, graphData);
+      updateSelections(state, graphData);
     },
     setAccessors(state, action: PayloadAction<Accessors>) {
       state.accessors = action.payload;
