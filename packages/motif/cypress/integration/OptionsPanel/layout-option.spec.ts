@@ -180,25 +180,25 @@ describe('Layout Options', () => {
       it('should change vertical spacing', () => {
         const arrows = '{rightarrow}'.repeat(1);
         const controllerName: string = 'rankSep';
-  
+
         cy.react('Controller', { props: { name: controllerName } }).type(arrows);
-  
+
         cy.getReact(graphinEl)
           .getProps(`layout.${controllerName}`)
           .should('be.within', 248, 251);
       });
-  
+
       it('should change horizontal spacing', () => {
         const arrows = '{rightarrow}'.repeat(1);
         const controllerName: string = 'nodeSep';
-  
+
         cy.react('Controller', { props: { name: controllerName } }).type(arrows);
-  
+
         cy.getReact(graphinEl)
           .getProps(`layout.${controllerName}`)
           .should('be.within', 248, 251);
       });
-  
+
     });
   });
 

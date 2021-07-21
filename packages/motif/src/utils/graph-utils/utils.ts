@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import inRange from 'lodash/inRange';
 import isUndefined from 'lodash/isUndefined';
 import get from 'lodash/get';
@@ -27,6 +28,7 @@ import {
   StyleOptions,
   TimeRange,
   TimeSeries,
+  GraphList,
 } from '../../redux/graph/types';
 
 import { ITEM_PER_PAGE } from '../../constants/widget-units';
@@ -677,6 +679,92 @@ export const combineProcessedData = (
     return modData;
   }
   return newData;
+};
+
+/**
+ * Remove duplicate nodes, edges, node fields and edge fields from a single graph.
+ *
+ * @param {GraphData} graphData
+ */
+export const removeGraphDuplicates = (graphData: GraphData) => {
+  graphData.nodes = removeDuplicates(graphData.nodes, 'id') as Node[];
+  graphData.edges = removeDuplicates(graphData.edges, 'id') as Edge[];
+  graphData.metadata.fields.nodes = removeDuplicates(
+    graphData.metadata.fields.nodes,
+    'name',
+  ) as Field[];
+
+  graphData.metadata.fields.edges = removeDuplicates(
+    graphData.metadata.fields.edges,
+    'name',
+  ) as Field[];
+
+  return graphData;
+};
+
+/**
+ * Combine list of graphs into a single graph without remove duplicate.
+ *
+ * @param {GraphList} graphList
+ * @return {GraphData}
+ */
+export const combineGraphs = (graphList: GraphList): GraphData => {
+  const initial: GraphData = {
+    nodes: [],
+    edges: [],
+    metadata: {
+      fields: {
+        nodes: [],
+        edges: [],
+      },
+    },
+  };
+
+  if (graphList.length === 0) return initial;
+
+  if (graphList.length === 1) {
+    const [graphData] = graphList;
+    return graphData;
+  }
+
+  const mergedGraph = graphList
+    .filter((graphData) => {
+      const { visible = true } = graphData.metadata;
+      return visible === true;
+    })
+    .reduce((graphFlatten, graphData) => {
+      const {
+        nodes,
+        edges,
+        metadata: {
+          fields: { nodes: nodeFields, edges: edgeFields },
+        },
+      } = graphData;
+
+      const combinedNodes = graphFlatten.nodes.concat(nodes);
+      const combinedEdges = graphFlatten.edges.concat(edges);
+      const combineNodeFields =
+        graphFlatten.metadata.fields.nodes.concat(nodeFields);
+      const combineEdgeFields =
+        graphFlatten.metadata.fields.edges.concat(edgeFields);
+
+      Object.assign(graphFlatten, {
+        nodes: combinedNodes,
+        edges: combinedEdges,
+        metadata: {
+          ...graphData.metadata,
+          visible: true,
+          fields: {
+            nodes: combineNodeFields,
+            edges: combineEdgeFields,
+          },
+        },
+      });
+
+      return graphFlatten;
+    }, initial);
+
+  return mergedGraph;
 };
 
 export const combineDataWithDuplicates = (
