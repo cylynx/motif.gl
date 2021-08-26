@@ -49,7 +49,7 @@ export type ExplorerProps = {
   styleOptions?: StyleOptions;
   primaryTheme?: Theme;
   secondaryTheme?: Theme;
-  onSaveCloud?: ExplorerContextProps['onSaveCloud'];
+  onExportExternal?: ExplorerContextProps['onExportExternal'];
 };
 
 export const WidgetContainer = (props: WidgetContainerProps) => {
@@ -91,7 +91,7 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
       primaryTheme,
       secondaryTheme,
       styleOptions = GraphSlices.initialState.styleOptions,
-      onSaveCloud,
+      onExportExternal,
     } = props;
     const localRef = useRef<Graphin>(null);
     const graphRef: ForwardedRef<Graphin> | MutableRefObject<Graphin> =
@@ -161,7 +161,7 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
           },
         }}
       >
-        <ExplorerContext.Provider value={{ onSaveCloud }}>
+        <ExplorerContext.Provider value={{ onExportExternal }}>
           <DataTableModal />
           <ImportWizardModal overrideTabs={overrides?.Tabs} />
 

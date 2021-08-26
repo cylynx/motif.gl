@@ -3,7 +3,7 @@ import Graphin from '@cylynx/graphin';
 import { TLoadFormat } from '../../redux/graph';
 
 export type ExplorerContextProps = {
-  onSaveCloud?: (exportData: TLoadFormat) => void;
+  onExportExternal?: (exportData: TLoadFormat) => void;
 };
 
 /*  const graphContext = useContext(GraphRefContext); */

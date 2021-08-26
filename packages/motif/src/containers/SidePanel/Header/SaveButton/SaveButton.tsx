@@ -19,13 +19,13 @@ const SaveButton = ({
       placement={PLACEMENT.bottom}
       content={({ close }) => (
         <ExplorerContext.Consumer>
-          {({ onSaveCloud }) => (
+          {({ onExportExternal }) => (
             <SaveChoicesMenu
               close={close}
               graphList={graphList}
               graphFlatten={graphFlatten}
               styleOptions={styleOptions}
-              onSaveCloud={onSaveCloud}
+              onExportExternal={onExportExternal}
             />
           )}
         </ExplorerContext.Consumer>

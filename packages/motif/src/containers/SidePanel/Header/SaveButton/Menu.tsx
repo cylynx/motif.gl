@@ -12,7 +12,7 @@ const SaveChoicesMenu: FC<SaveChoicesMenuProps> = ({
   graphList,
   styleOptions,
   graphFlatten,
-  onSaveCloud,
+  onExportExternal,
 }) => {
   const [, theme] = useStyletron();
 
@@ -43,7 +43,7 @@ const SaveChoicesMenu: FC<SaveChoicesMenuProps> = ({
       style: styleOptions,
     };
 
-    onSaveCloud(exportData);
+    onExportExternal(exportData);
   };
 
   const items = useMemo(() => {
@@ -54,7 +54,7 @@ const SaveChoicesMenu: FC<SaveChoicesMenuProps> = ({
       },
     ];
 
-    if (onSaveCloud) {
+    if (onExportExternal) {
       items.push({
         label: <Label.CloudUpload theme={theme} />,
         onClick: () => saveToCloud(graphList, styleOptions),
