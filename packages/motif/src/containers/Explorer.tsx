@@ -34,6 +34,7 @@ import Graph, { GraphRefContext } from './Graph';
 import Tooltip from './Tooltip';
 import { LEFT_LAYER_WIDTH } from '../constants/widget-units';
 import { GraphLayer } from './widgets/layer';
+import { ExplorerContext, ExplorerContextProps } from './Graph/context';
 
 export interface WidgetContainerProps {
   children: ReactNode;
@@ -48,6 +49,7 @@ export type ExplorerProps = {
   styleOptions?: StyleOptions;
   primaryTheme?: Theme;
   secondaryTheme?: Theme;
+  onSaveCloud?: ExplorerContextProps['onSaveCloud'];
 };
 
 export const WidgetContainer = (props: WidgetContainerProps) => {
@@ -89,6 +91,7 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
       primaryTheme,
       secondaryTheme,
       styleOptions = GraphSlices.initialState.styleOptions,
+      onSaveCloud,
     } = props;
     const localRef = useRef<Graphin>(null);
     const graphRef: ForwardedRef<Graphin> | MutableRefObject<Graphin> =
@@ -158,28 +161,32 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
           },
         }}
       >
-        <DataTableModal />
-        <ImportWizardModal overrideTabs={overrides?.Tabs} />
+        <ExplorerContext.Provider value={{ onSaveCloud }}>
+          <DataTableModal />
+          <ImportWizardModal overrideTabs={overrides?.Tabs} />
 
-        <GraphLayer
-          isMainWidgetExpanded={isMainWidgetExpanded}
-          leftLayerWidth={leftLayerWidth}
-          graphRef={graphRef}
-        >
-          <GraphStatistic />
-          <Graph ref={graphRef} setTooltip={setTooltip} />
-        </GraphLayer>
-        <WidgetContainer
-          graphRef={graphRef}
-          theme={secondaryTheme || MotifDarkTheme}
-        >
-          <SideNavBars />
-          {tooltip && <UserTooltip tooltip={{ ...tooltip, leftLayerWidth }} />}
-          {activeWidgetList.length > 0 &&
-            activeWidgetList.map((item) => (
-              <Block key={item.id}>{item.widget}</Block>
-            ))}
-        </WidgetContainer>
+          <GraphLayer
+            isMainWidgetExpanded={isMainWidgetExpanded}
+            leftLayerWidth={leftLayerWidth}
+            graphRef={graphRef}
+          >
+            <GraphStatistic />
+            <Graph ref={graphRef} setTooltip={setTooltip} />
+          </GraphLayer>
+          <WidgetContainer
+            graphRef={graphRef}
+            theme={secondaryTheme || MotifDarkTheme}
+          >
+            <SideNavBars />
+            {tooltip && (
+              <UserTooltip tooltip={{ ...tooltip, leftLayerWidth }} />
+            )}
+            {activeWidgetList.length > 0 &&
+              activeWidgetList.map((item) => (
+                <Block key={item.id}>{item.widget}</Block>
+              ))}
+          </WidgetContainer>
+        </ExplorerContext.Provider>
       </BaseProvider>
     );
   },

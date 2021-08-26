@@ -9,7 +9,7 @@ export type HeaderButtonProp = {
   name: string;
   icon: React.ReactNode;
   isDisabled: boolean;
-  onClick: () => any;
+  onClick?: () => any;
 };
 
 const HeaderButton = (props: HeaderButtonProp) => {

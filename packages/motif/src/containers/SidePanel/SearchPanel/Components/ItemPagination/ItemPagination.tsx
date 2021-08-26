@@ -6,7 +6,7 @@ import useSearchOption from '../../hooks/useSearchOption';
 import { IUseSearchOptions } from '../../types';
 import { SearchOptPagination } from '../../../../../redux/graph';
 import { ITEM_PER_PAGE } from '../../../../../constants/widget-units';
-import GraphRefContext from '../../../../Graph/context';
+import { GraphRefContext } from '../../../../Graph/context';
 import useGraphBehaviors from '../../../../Graph/hooks/useGraphBehaviors';
 import {
   DeleteButton,

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { Theme } from 'baseui/theme';
 import { INode, IEdge } from '@antv/g6';
 import { GraphSelectors } from '../../../../../redux/graph';
-import GraphRefContext from '../../../../Graph/context';
+import { GraphRefContext } from '../../../../Graph/context';
 import useGraphBehaviors from '../../../../Graph/hooks/useGraphBehaviors';
 import NodeResults from './NodeResults';
 import EdgeResults from './EdgeResults';

@@ -3,18 +3,17 @@ import html2canvas from 'html2canvas';
 
 import { Block } from 'baseui/block';
 import { useDispatch, useSelector } from 'react-redux';
-import { setGraphListPosition } from '../../../utils/export-utils/export-utils';
 import { UISelectors, UISlices } from '../../../redux/ui';
 import {
   GraphSelectors,
   StyleOptions,
-  TLoadFormat,
   GraphList,
   GraphData,
 } from '../../../redux/graph';
 import * as Icon from '../../../components/Icons';
 import Editable from '../../../components/Editable';
-import HeaderButton, { HeaderButtonProp } from './HeaderButton';
+import HeaderButton from './HeaderButton';
+import SaveButton from './SaveButton/SaveButton';
 
 const Header = () => {
   const name: string = useSelector((state) => UISelectors.getUI(state).name);
@@ -53,43 +52,6 @@ const Header = () => {
     });
   }, [isCanvasHasGraph]);
 
-  const exportJSON = (graphList: GraphList, styleOptions: StyleOptions) => {
-    const positionGraphList = setGraphListPosition(graphList, graphFlatten);
-    const exportData: TLoadFormat = {
-      data: positionGraphList,
-      style: styleOptions,
-    };
-
-    const contentType = 'application/json;charset=utf-8;';
-    const jsonInfo: string = JSON.stringify(exportData);
-    const file: HTMLAnchorElement = document.createElement('a');
-    file.download = 'graph.json';
-    file.href = `data:${contentType},${encodeURIComponent(jsonInfo)}`;
-    document.body.appendChild(file);
-    file.click();
-    document.body.removeChild(file);
-  };
-
-  const headerButtons: HeaderButtonProp[] = useMemo(
-    () => [
-      {
-        key: 1,
-        name: 'Screenshot',
-        icon: <Icon.Camera />,
-        isDisabled: false,
-        onClick: exportPNG,
-      },
-      {
-        key: 2,
-        name: 'Save',
-        icon: <Icon.Save />,
-        isDisabled: false,
-        onClick: () => exportJSON(graphList, styleOptions),
-      },
-    ],
-    [dispatch, exportPNG, exportJSON, graphList, styleOptions, graphFlatten],
-  );
-
   return useMemo(
     () => (
       <Block
@@ -103,10 +65,22 @@ const Header = () => {
           <Editable text={name} onChange={onChangeName} />
         </Block>
         <Block>
-          {isCanvasHasGraph &&
-            headerButtons.map((item) => (
-              <HeaderButton key={item.key} {...item} />
-            ))}
+          {isCanvasHasGraph && (
+            <>
+              <HeaderButton
+                key={1}
+                name='Screenshot'
+                icon={<Icon.Camera />}
+                isDisabled={false}
+                onClick={exportPNG}
+              />
+              <SaveButton
+                graphList={graphList}
+                styleOptions={styleOptions}
+                graphFlatten={graphFlatten}
+              />
+            </>
+          )}
         </Block>
       </Block>
     ),

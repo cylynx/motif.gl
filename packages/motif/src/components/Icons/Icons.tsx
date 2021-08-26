@@ -46,8 +46,10 @@ import {
 } from 'react-icons/bi';
 import { BsSlash } from 'react-icons/bs';
 import { VscSymbolKey, VscCircleOutline } from 'react-icons/vsc';
-import { AiOutlineWarning } from 'react-icons/ai';
+import { AiOutlineCloudUpload, AiOutlineWarning } from 'react-icons/ai';
 import { IconBaseProps } from 'react-icons';
+import { GrDocumentCsv } from 'react-icons/gr';
+import { FaFileCode, FaFileCsv } from 'react-icons/fa';
 
 export const Node = ({ children, size = 16, ...rest }: IconBaseProps) => (
   <VscCircleOutline size={size} {...rest}>
@@ -341,4 +343,20 @@ export const WarningSign = ({
   <AiOutlineWarning size={size} {...rest}>
     {children}
   </AiOutlineWarning>
+);
+
+export const FileCode = ({ size = 16, children, ...rest }: IconBaseProps) => (
+  <FaFileCode size={size} {...rest}>
+    {children}
+  </FaFileCode>
+);
+
+export const UploadCloud = ({
+  size = 16,
+  children,
+  ...rest
+}: IconBaseProps) => (
+  <AiOutlineCloudUpload size={size} {...rest}>
+    {children}
+  </AiOutlineCloudUpload>
 );
