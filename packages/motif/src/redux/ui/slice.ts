@@ -59,6 +59,11 @@ const ui = createSlice({
         toast: null,
       });
     },
+    setContainerId(state, action: PayloadAction<string>): void {
+      Object.assign(state, {
+        containerId: action.payload,
+      });
+    },
   },
 });
 
@@ -71,6 +76,7 @@ export const {
   setName,
   updateToast,
   removeToast,
+  setContainerId,
 } = ui.actions;
 
 export default ui.reducer;

@@ -8,6 +8,7 @@ import React, {
   ReactNode,
   MutableRefObject,
   ForwardedRef,
+  useLayoutEffect,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BaseProvider, ThemeProvider } from 'baseui';
@@ -16,6 +17,7 @@ import { Block } from 'baseui/block';
 
 import { ToasterContainer, PLACEMENT } from 'baseui/toast';
 import Graphin from '@cylynx/graphin';
+import shortid from 'shortid';
 import DataTableModal from './DataTableModal';
 import ImportWizardModal from './ImportWizardModal';
 import { defaultWidgetList } from './widgets';
@@ -125,6 +127,15 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
 
       setLeftLayerWidth('0px');
     }, [isMainWidgetExpanded]);
+
+    useLayoutEffect(() => {
+      const containerId = shortid.generate();
+      const graphinContainer = document
+        .querySelector('canvas')
+        .closest('#graphin-container');
+      graphinContainer.setAttribute('data-container-id', containerId);
+      dispatch(UISlices.setContainerId(containerId));
+    }, []);
 
     useEffect(() => {
       // Filter out components

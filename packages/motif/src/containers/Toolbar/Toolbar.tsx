@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 import { Block } from 'baseui/block';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ActionCreators as UndoActionCreators } from 'redux-undo';
 import fscreen from 'fscreen';
+import { UISelectors } from '../../redux/ui';
 import * as Icon from '../../components/Icons';
 import { GraphRefContext } from '../Graph';
 import { GraphSlices } from '../../redux/graph';
@@ -24,14 +25,16 @@ const getNextZoom = (currentZoom: number, isZoomIn: boolean) => {
 const Toolbar = () => {
   const graphRef = useContext(GraphRefContext);
   const { graph } = graphRef;
-  const graphContainer = document.getElementById('graphin-container');
   const dispatch = useDispatch();
   const { centerCanvas } = useGraphBehaviors(graph);
   const { nodeStyle, switchToFixNodeColor } = useNodeStyle();
+  const { containerId } = useSelector(UISelectors.getUI);
 
   const toggleFullScreen = () => {
     // Exit will be handled by the esc key (no button is available)
-    if (!fscreen.fullscreenElement) {
+    if (!fscreen.fullscreenElement && containerId) {
+      const query = `[data-container-id="${containerId}"]`;
+      const graphContainer = document.querySelector(query);
       fscreen.requestFullscreen(graphContainer);
     }
   };
