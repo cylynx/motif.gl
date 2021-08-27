@@ -44,9 +44,10 @@ const DatatableModal = () => {
       size={SIZE.auto}
       overrides={{
         Root: {
-          style: () => ({
+          style: {
             position: 'absolute',
-          }),
+            zIndex: 1,
+          },
         },
       }}
     >
