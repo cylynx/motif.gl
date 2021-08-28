@@ -9,4 +9,4 @@ Information about the frontend package of the widgets.
 """
 
 module_name = "@cylynx/pymotif"
-module_version = "^0.0.4"
+module_version = "^0.0.5"
