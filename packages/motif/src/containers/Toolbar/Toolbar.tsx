@@ -24,16 +24,13 @@ const getNextZoom = (currentZoom: number, isZoomIn: boolean) => {
 const Toolbar = () => {
   const graphRef = useContext(GraphRefContext);
   const { graph } = graphRef;
-  const graphContainer = document.getElementById('graphin-container');
   const dispatch = useDispatch();
   const { centerCanvas } = useGraphBehaviors(graph);
   const { nodeStyle, switchToFixNodeColor } = useNodeStyle();
 
   const toggleFullScreen = () => {
     // Exit will be handled by the esc key (no button is available)
-    if (!fscreen.fullscreenElement) {
-      fscreen.requestFullscreen(graphContainer);
-    }
+    fscreen.requestFullscreen(graphRef.graphDOM);
   };
 
   const handleGraphZoom = (isZoomIn: boolean) => {

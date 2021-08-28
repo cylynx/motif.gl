@@ -1,6 +1,6 @@
 {
   "name": "@cylynx/pymotif",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "jupyter widget bindings for the motif library",
   "keywords": [
     "jupyter",
@@ -50,9 +50,9 @@
     "watch:labextension": "jupyter labextension watch ."
   },
   "dependencies": {
-    "@cylynx/motif": "^0.0.4",
+    "@cylynx/motif": "^0.0.5",
     "@jupyter-widgets/base": "^1.1.10 || ^2.0.0 || ^3.0.0 || ^4.0.0",
-    "@reduxjs/toolkit": "^1.2.3",
+    "@reduxjs/toolkit": "^1.5.0",
     "baseui": "^9.90.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

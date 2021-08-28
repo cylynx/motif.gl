@@ -100,7 +100,7 @@ export const previewJson =
       createPreviewData(graphList, dispatch, combineProcessedData);
       setEdgeGroupable(graphList, dispatch);
       nextStep(step, dispatch);
-    } catch (err) {
+    } catch (err: any) {
       const { message } = err;
       dispatch(UIThunks.show(message, 'negative'));
     }
@@ -159,7 +159,7 @@ export const previewNodeEdge =
       // remove error message when upload valid data
       dispatch(setError(null));
       nextStep(step, dispatch);
-    } catch (err) {
+    } catch (err: any) {
       const { message } = err;
       dispatch(UIThunks.show(message, 'negative'));
     }

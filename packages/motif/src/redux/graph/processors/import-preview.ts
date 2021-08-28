@@ -125,7 +125,7 @@ export const processPreviewNodeEdge = async (
     };
 
     return graphData;
-  } catch (err) {
+  } catch (err: any) {
     const { message } = err;
     throw new Error(`Import Node Edge Data Error: ${message}`);
   }
