@@ -8,9 +8,6 @@ export interface UIState {
   modal: ModalState;
   score: any;
   toast: ToastState;
-
-  // use to uniquely identify the DOM of `graphin-container`
-  containerId?: string;
 }
 
 export type NullableReactNode = ReactNode | null;
