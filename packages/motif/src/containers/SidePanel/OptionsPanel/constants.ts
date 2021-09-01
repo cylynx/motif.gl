@@ -97,7 +97,7 @@ export const layoutForm: NestedFormData = {
       options: [{ id: 'degree', label: 'degree' }],
     },
   ],
-  gForce: [
+  'graphin-force': [
     {
       id: 'nodeStrength',
       label: 'Node Strength',

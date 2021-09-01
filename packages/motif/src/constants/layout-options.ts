@@ -147,7 +147,7 @@ export const LAYOUT_NAMES = [
   { label: 'Grid', id: 'grid' },
   { label: 'Sequential', id: 'dagre' },
   { label: 'Circular', id: 'circular' },
-  { label: 'Force-directed', id: 'gForce' },
+  { label: 'Force-directed', id: 'graphin-force' },
   { label: 'Fruchterman-force', id: 'fruchterman' },
   { label: 'X Y Coordinates', id: 'preset' },
   // { label: 'Fruchterman', id: 'fruchterman' },
