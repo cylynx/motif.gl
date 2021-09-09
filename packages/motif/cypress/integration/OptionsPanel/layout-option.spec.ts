@@ -181,7 +181,9 @@ describe('Layout Options', () => {
         const arrows = '{rightarrow}'.repeat(1);
         const controllerName: string = 'rankSep';
 
-        cy.react('Controller', { props: { name: controllerName } }).type(arrows);
+        cy.react('Controller', { props: { name: controllerName } }).type(
+          arrows,
+        );
 
         cy.getReact(graphinEl)
           .getProps(`layout.${controllerName}`)
@@ -192,13 +194,14 @@ describe('Layout Options', () => {
         const arrows = '{rightarrow}'.repeat(1);
         const controllerName: string = 'nodeSep';
 
-        cy.react('Controller', { props: { name: controllerName } }).type(arrows);
+        cy.react('Controller', { props: { name: controllerName } }).type(
+          arrows,
+        );
 
         cy.getReact(graphinEl)
           .getProps(`layout.${controllerName}`)
           .should('be.within', 248, 251);
       });
-
     });
   });
 
@@ -278,7 +281,7 @@ describe('Layout Options', () => {
   });
 
   describe('Force-Directed', () => {
-    const { type } = layoutOptions.FORCE_DEFAULT;
+    const { type } = layoutOptions.GRAPHIN_FORCE_DEFAULT;
 
     it('should convert to layout', () => {
       const { label, id } = findLayout(type);
