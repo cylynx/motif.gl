@@ -12,6 +12,7 @@ import Dropdown from './components/ui/Dropdown';
 import { json2csv, processCsvData } from './redux/graph/processors/data';
 
 import { MotifDarkTheme, MotifLightTheme } from './theme';
+import useGraphBehaviors from './containers/Graph/hooks/useGraphBehaviors';
 
 // eslint-disable-next-line prettier/prettier
 export type { TableTabItem, StepperItems };
@@ -25,7 +26,13 @@ export {
 };
 
 export default Motif;
-export { investigateReducer, Tooltip, json2csv, processCsvData };
+export {
+  investigateReducer,
+  Tooltip,
+  json2csv,
+  processCsvData,
+  useGraphBehaviors,
+};
 
 export { MotifDarkTheme, MotifLightTheme };
 export * from './utils/utils';
