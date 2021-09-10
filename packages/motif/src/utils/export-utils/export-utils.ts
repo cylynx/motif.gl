@@ -11,8 +11,6 @@ export const setGraphListPosition = (
     return has(node, 'x') && has(node, 'y');
   });
 
-  console.log(nodesWithPosition);
-
   if (nodesWithPosition.length === 0) return graphList;
 
   const nodePositionDict = nodesWithPosition.reduce((arr, node) => {
