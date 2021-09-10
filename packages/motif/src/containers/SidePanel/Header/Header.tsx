@@ -84,7 +84,14 @@ const Header = () => {
         </Block>
       </Block>
     ),
-    [name, onChangeName, isCanvasHasGraph, styleOptions, graphList],
+    [
+      name,
+      onChangeName,
+      isCanvasHasGraph,
+      styleOptions,
+      graphList,
+      graphFlatten,
+    ],
   );
 };
 

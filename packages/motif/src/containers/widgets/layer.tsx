@@ -154,8 +154,8 @@ export class GraphLayer extends Component<GraphLayerProps, GraphLayerState> {
     const { clientWidth, clientHeight } = this.blockRef.current;
 
     // to prevent the browser round off decimals to cause overflow
-    const innerWidth: number = Math.floor(clientWidth - 1);
-    const innerHeight: number = Math.floor(clientHeight - 1);
+    const innerWidth: number = Math.floor(clientWidth);
+    const innerHeight: number = Math.floor(clientHeight);
 
     return { innerWidth, innerHeight };
   };
@@ -193,7 +193,6 @@ export class GraphLayer extends Component<GraphLayerProps, GraphLayerState> {
         ref={this.blockRef}
         position='relative'
         width={width}
-        height='100%'
         paddingTop='0'
         paddingBottom='0'
         top='0'
@@ -202,7 +201,7 @@ export class GraphLayer extends Component<GraphLayerProps, GraphLayerState> {
         overrides={{
           Block: {
             style: {
-              overflowX: 'hidden',
+              // overflowX: 'hidden',
             },
           },
         }}
