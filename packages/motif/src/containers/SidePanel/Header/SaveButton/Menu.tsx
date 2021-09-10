@@ -62,7 +62,7 @@ const SaveChoicesMenu: FC<SaveChoicesMenuProps> = ({
     }
 
     return items;
-  }, [graphList, styleOptions, exportJSON, theme]);
+  }, [graphList, styleOptions, exportJSON, theme, graphFlatten]);
 
   return (
     <StatefulMenu
