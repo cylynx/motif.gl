@@ -1,4 +1,4 @@
-import Motif from './containers/Explorer';
+import Motif, { ExplorerProps } from './containers/Explorer';
 import Tooltip from './containers/Tooltip';
 
 import investigateReducer from './redux';
@@ -15,7 +15,7 @@ import { MotifDarkTheme, MotifLightTheme } from './theme';
 import useGraphBehaviors from './containers/Graph/hooks/useGraphBehaviors';
 
 // eslint-disable-next-line prettier/prettier
-export type { TableTabItem, StepperItems };
+export type { TableTabItem, StepperItems, ExplorerProps };
 export {
   ProgressStepper,
   FormSelectWithTooltip,
