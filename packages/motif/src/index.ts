@@ -36,6 +36,7 @@ export {
 
 export { MotifDarkTheme, MotifLightTheme };
 export * from './utils/utils';
+export * from './utils/export-utils';
 export * from './redux';
 export * from './containers/ImportWizardModal';
 export * from './components/form';
