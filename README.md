@@ -1,6 +1,7 @@
 [![NPM](https://img.shields.io/npm/v/@cylynx/motif.svg)](https://www.npmjs.com/package/@cylynx/motif) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ![](motif-banner.png)
+
 # @cylynx/motif
 
 The no-code graph visualization platform
@@ -23,6 +24,7 @@ Motif is an open-sourced graph explorer born from our numerous graph visualisati
 Inspired by [Kepler.gl](https://github.com/keplergl/kepler.gl) and [Neo4j Bloom](https://neo4j.com/product/bloom/)
 
 ## Demo
+
 ![](motif-demo.gif)
 
 Try out a full-featured demo with walkthrough at https://demo.cylynx.io
@@ -62,7 +64,7 @@ $ npm install --save @cylynx/motif
 
 | Development Environment | Version |
 | :---------------------- | :------ |
-| `node`                  | >=15    |
+| `node`                  | >=16    |
 | `npm`                   | >=7     |
 
 ### Usage
@@ -108,17 +110,17 @@ For more information on the supported graph formats, check out [README.md in pac
 
 ## Development
 
-Motif utilise [Lerna](https://github.com/lerna/lerna) to manage multi-package repositories with npm workspaces to ease collaboration and testing. 
+Motif utilise [Lerna](https://github.com/lerna/lerna) to manage multi-package repositories with npm workspaces to ease collaboration and testing.
 
 The library is bundled with [Vite](https://github.com/vitejs/vite).
 
 ### Environment Installation
 
-1. Verify Node and NPM version. We use nvm to manage node and npm version - `nvm use 15`.
+1. Verify Node and NPM version. We use nvm to manage node and npm version - `nvm use 16`.
 
 ```bash
 $ node -v
-v15.14.0
+v16.1.0
 
 $ npm -v
 v7.7.6
@@ -205,6 +207,7 @@ $ npm run demo:serve
 ```bash
 $ cd ./packages/motif && npm run cypress:open
 ```
+
 ## Built with
 
 - Antv G6 and Graphin for the graph library
