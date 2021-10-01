@@ -62,10 +62,10 @@ $ npm install --save @cylynx/motif
 | `styletron-engine-atomic` | >= 1.4.7   |
 | `styletron-react`         | >= 5.2.7   |
 
-| Development Environment | Version |
-| :---------------------- | :------ |
-| `node`                  | >=16    |
-| `npm`                   | >=7     |
+| Development Environment | Version        |
+| :---------------------- | :------------- |
+| `node`                  | ^14.0 or ^16.0 |
+| `npm`                   | >=6            |
 
 ### Usage
 
