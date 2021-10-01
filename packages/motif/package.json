@@ -12,7 +12,7 @@
   "typings": "dist/index.d.ts",
   "module": "dist/motif.es.js",
   "engines": {
-    "node": ">=16.1"
+    "node": "^14 || ^16"
   },
   "files": [
     "dist"

@@ -50,7 +50,7 @@
     "watch:labextension": "jupyter labextension watch ."
   },
   "dependencies": {
-    "@cylynx/motif": "^0.0.5",
+    "@cylynx/motif": "^0.0.10",
     "@jupyter-widgets/base": "^1.1.10 || ^2.0.0 || ^3.0.0 || ^4.0.0",
     "@reduxjs/toolkit": "^1.5.0",
     "baseui": "^9.90.0",
