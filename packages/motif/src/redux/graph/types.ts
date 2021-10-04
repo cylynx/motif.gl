@@ -297,7 +297,8 @@ export interface SearchOptions {
 
 export interface TLoadFormat {
   data: GraphList;
-  style: StyleOptions;
+  // not necessary to enforce overwrite styles.
+  style?: StyleOptions;
 }
 
 export type NodePosParams = NodePositions & {

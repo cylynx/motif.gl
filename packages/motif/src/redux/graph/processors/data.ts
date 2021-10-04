@@ -155,9 +155,8 @@ export const processJson = async (
       metadata: graphMetadata,
     };
   }
-  throw new Error(
-    'Process JSON Data Failed: Json must contain both nodes & edges object',
-  );
+
+  throw new Error('missing-nodes-or-edges');
 };
 
 /**
@@ -307,8 +306,9 @@ export const json2csv = async (json: any): Promise<string | void> => {
   const csv = converter
     .json2csvAsync(json)
     .then()
-    // eslint-disable-next-line no-console
-    .catch((err) => console.log(`ERROR: ${err.message}`));
+    .catch(() => {
+      throw new Error('invalid-json-format');
+    });
   return csv;
 };
 

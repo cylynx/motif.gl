@@ -10,7 +10,9 @@ import { UIConstants } from '../../../../redux/ui';
 import useFileContents from '../hooks/useFileContents';
 import { TFileContentState } from '../../../../redux/import/fileUpload';
 import { Dropdown } from '../../../../components/ui/Dropdown';
-import ErrorMessage from './ErrorMessage';
+import RestrictedDataType from './JsonErrors/RestrictedDataType';
+import EmptyData from './JsonErrors/EmptyData';
+import MissingNodeOrEdge from './JsonErrors/MissingNodeOrEdge';
 
 const importOptions = Object.values(UIConstants.OPTIONS);
 
@@ -32,41 +34,19 @@ const DataTypeSelection: FC<DataTypeSelectionProps> = () => {
   }, [fileUpload.dataType]);
 
   const errorMessage = useMemo(() => {
-    if (error === null) return null;
+    if (error === 'restricted-words') {
+      return <RestrictedDataType />;
+    }
 
-    return (
-      <ErrorMessage
-        title={
-          <Block
-            overrides={{ Block: { style: { textTransform: 'uppercase' } } }}
-          >
-            The uploaded datasets contain type column in node properties
-          </Block>
-        }
-        content={
-          <Block marginTop='scale300'>
-            <b>
-              <code>type</code>
-            </b>{' '}
-            is a reserve words used as identifiers to perform styling.
-            <br />
-            You can rename{' '}
-            <b>
-              <code>type</code>
-            </b>{' '}
-            column to{' '}
-            <b>
-              <code>node_type</code>
-            </b>{' '}
-            or{' '}
-            <b>
-              <code>types</code>
-            </b>{' '}
-            to import data successfully.
-          </Block>
-        }
-      />
-    );
+    if (error === 'empty-dataset') {
+      return <EmptyData />;
+    }
+
+    if (error === 'missing-nodes-or-edges') {
+      return <MissingNodeOrEdge />;
+    }
+
+    return null;
   }, [error]);
 
   return (

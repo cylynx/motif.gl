@@ -22,6 +22,10 @@ export const processPreviewJson = async (
   const results: GraphList = [];
   const graphList: GraphList = Array.isArray(json) ? json : [json];
 
+  if (graphList.length === 0) {
+    throw new Error('empty-dataset');
+  }
+
   for (const data of graphList) {
     // eslint-disable-next-line no-await-in-loop
     const processedData = await processJson(

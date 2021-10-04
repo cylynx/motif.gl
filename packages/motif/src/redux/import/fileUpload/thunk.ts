@@ -1,9 +1,9 @@
 import flatten from 'lodash/flatten';
 import cloneDeep from 'lodash/cloneDeep';
 import { SingleFileForms, TFileContent } from './types';
+import * as FileUploadUtils from './utils';
 import {
   EdgeListCsv,
-  Field,
   GraphData,
   GraphList,
   TLoadFormat,
@@ -25,27 +25,6 @@ const emptyGraphData: GraphData = {
   nodes: [],
   edges: [],
   metadata: { fields: { nodes: [], edges: [] } },
-};
-
-/**
- * Prevent uploaded data set contain node properties "type".
- *  - "type" is a restricted word in node property for Graphin to perform styling
- *
- * @param {GraphList} graphList
- * @return {boolean}
- */
-const containRestrictWords = (graphList: GraphList): boolean => {
-  const isValidData = graphList.some((graph: GraphData) => {
-    const { nodes } = graph.metadata.fields;
-
-    const isContainType = nodes.find((field: Field) => {
-      return field.name === 'type';
-    });
-
-    return isContainType;
-  });
-
-  return isValidData;
 };
 
 const createPreviewData = (
@@ -91,7 +70,7 @@ export const previewJson =
     try {
       const graphDataArr = await Promise.all(contentPromises);
       const graphList: GraphList = flatten(graphDataArr);
-      const isDataInvalid = containRestrictWords(graphList);
+      const isDataInvalid = FileUploadUtils.containRestrictWords(graphList);
       if (isDataInvalid) {
         dispatch(setError('restricted-words'));
         return;
@@ -102,7 +81,7 @@ export const previewJson =
       nextStep(step, dispatch);
     } catch (err: any) {
       const { message } = err;
-      dispatch(UIThunks.show(message, 'negative'));
+      dispatch(setError(message));
     }
   };
 
@@ -145,7 +124,9 @@ export const previewNodeEdge =
 
     try {
       const graphData = await processPreviewNodeEdge(nodeData, edgeData);
-      const isDatasetInvalid = containRestrictWords([graphData]);
+      const isDatasetInvalid = FileUploadUtils.containRestrictWords([
+        graphData,
+      ]);
       if (isDatasetInvalid) {
         dispatch(setError('restricted-words'));
         return;
