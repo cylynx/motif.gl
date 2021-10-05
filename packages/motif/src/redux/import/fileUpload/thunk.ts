@@ -18,7 +18,6 @@ import {
   combineDataWithDuplicates,
 } from '../../../utils/graph-utils/utils';
 import { setDataPreview, setIsEdgeGroupable, setError } from './slice';
-import { UIThunks } from '../../ui';
 import { getFileUpload } from './selectors';
 
 export const previewJson =

@@ -2,6 +2,7 @@ import React, { FC, useMemo } from 'react';
 
 import * as JsonError from '../../ErrorCollections/JsonErrors';
 import * as CsvError from '../../ErrorCollections/CsvErrors';
+import * as NodeEdgeCsvError from '../../ErrorCollections/NodeEdgeCsvErrors';
 
 export type ImportErrorDisplayProps = { error: Error };
 const ImportErrorDisplay: FC<ImportErrorDisplayProps> = ({ error }) => {
@@ -29,6 +30,22 @@ const ImportErrorDisplay: FC<ImportErrorDisplayProps> = ({ error }) => {
 
     if (errorName === 'empty-csv-row') {
       return <CsvError.EmptyCsvRow />;
+    }
+
+    if (errorName === 'invalid-node-csv-format') {
+      return <NodeEdgeCsvError.InvalidNodeCsvFormat />;
+    }
+
+    if (errorName === 'invalid-edge-csv-format') {
+      return <NodeEdgeCsvError.InvalidEdgeCsvFormat />;
+    }
+
+    if (errorName === 'empty-node-csv-row') {
+      return <NodeEdgeCsvError.EmptyNodeCsvRow />;
+    }
+
+    if (errorName === 'empty-edge-csv-row') {
+      return <NodeEdgeCsvError.EmptyEdgeCsvRow />;
     }
 
     return null;

@@ -12,8 +12,8 @@ export const InvalidCsvFormat = () => {
       }
       content={
         <Block marginTop='scale300'>
-          Motif unable to parse the dataset because the provided CSV file is
-          invalid.
+          Motif unable to parse one of the dataset because the provided CSV
+          format is invalid.
         </Block>
       }
     />

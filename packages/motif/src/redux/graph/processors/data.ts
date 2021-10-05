@@ -329,8 +329,9 @@ export const csv2json = async (csv: string): Promise<void | any[]> => {
   const json = converter
     .csv2jsonAsync(csv)
     .then()
-    // eslint-disable-next-line no-console
-    .catch((err) => console.log(`ERROR: ${err.message}`));
+    .catch(() => {
+      throw new Error('invalid-csv-format');
+    });
   return json;
 };
 
