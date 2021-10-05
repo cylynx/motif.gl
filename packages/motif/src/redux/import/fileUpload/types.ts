@@ -26,7 +26,7 @@ export type TFileContentState = {
   /** Determine whether datasets possess duplicate connectivity */
   isEdgeGroupable: boolean;
   /** dataset contains error or prohibited format */
-  error: 'restricted-words';
+  error: Error;
 };
 
 export type MultipleFileForms = {

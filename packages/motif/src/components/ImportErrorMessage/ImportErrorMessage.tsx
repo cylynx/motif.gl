@@ -1,10 +1,10 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC } from 'react';
 import { Block } from 'baseui/block';
 import { Theme } from 'baseui/theme';
 import { LabelSmall } from 'baseui/typography';
-import * as Icons from '../../../../components/Icons';
+import * as Icons from '../Icons';
+import { ErrorMessageProps } from './type';
 
-type ErrorMessageProps = { title: ReactNode; content?: ReactNode };
 const ErrorMessage: FC<ErrorMessageProps> = ({ title, content }) => {
   return (
     <Block

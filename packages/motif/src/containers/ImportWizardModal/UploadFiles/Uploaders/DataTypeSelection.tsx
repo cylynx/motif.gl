@@ -10,9 +10,7 @@ import { UIConstants } from '../../../../redux/ui';
 import useFileContents from '../hooks/useFileContents';
 import { TFileContentState } from '../../../../redux/import/fileUpload';
 import { Dropdown } from '../../../../components/ui/Dropdown';
-import RestrictedDataType from './JsonErrors/RestrictedDataType';
-import EmptyData from './JsonErrors/EmptyData';
-import MissingNodeOrEdge from './JsonErrors/MissingNodeOrEdge';
+import * as JsonError from '../../ErrorCollections/JsonErrors';
 
 const importOptions = Object.values(UIConstants.OPTIONS);
 
@@ -34,16 +32,17 @@ const DataTypeSelection: FC<DataTypeSelectionProps> = () => {
   }, [fileUpload.dataType]);
 
   const errorMessage = useMemo(() => {
-    if (error === 'restricted-words') {
-      return <RestrictedDataType />;
+    const errorName = error?.name ?? '';
+    if (errorName === 'restricted-words') {
+      return <JsonError.RestrictedDataType />;
     }
 
-    if (error === 'empty-dataset') {
-      return <EmptyData />;
+    if (errorName === 'empty-dataset') {
+      return <JsonError.EmptyData />;
     }
 
-    if (error === 'missing-nodes-or-edges') {
-      return <MissingNodeOrEdge />;
+    if (errorName === 'missing-nodes-or-edges') {
+      return <JsonError.MissingNodeOrEdge />;
     }
 
     return null;

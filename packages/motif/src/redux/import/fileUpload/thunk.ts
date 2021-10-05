@@ -1,7 +1,7 @@
 import flatten from 'lodash/flatten';
-import cloneDeep from 'lodash/cloneDeep';
 import { SingleFileForms, TFileContent } from './types';
 import * as FileUploadUtils from './utils';
+import { MotifImportError } from '../../../components/ImportErrorMessage';
 import {
   EdgeListCsv,
   GraphData,
@@ -17,39 +17,9 @@ import {
   combineProcessedData,
   combineDataWithDuplicates,
 } from '../../../utils/graph-utils/utils';
-import { setDataPreview, setIsEdgeGroupable, setStep, setError } from './slice';
+import { setDataPreview, setIsEdgeGroupable, setError } from './slice';
 import { UIThunks } from '../../ui';
 import { getFileUpload } from './selectors';
-
-const emptyGraphData: GraphData = {
-  nodes: [],
-  edges: [],
-  metadata: { fields: { nodes: [], edges: [] } },
-};
-
-const createPreviewData = (
-  graphList: GraphList,
-  dispatch: any,
-  combineData: any,
-) => {
-  const combinedGraphData = graphList.reduce(
-    (acc: GraphData, graphData: GraphData) => {
-      const clonedGraphData: GraphData = cloneDeep(graphData);
-      const combinedGraph = combineData(acc, clonedGraphData);
-      return combinedGraph;
-    },
-    emptyGraphData,
-  );
-
-  dispatch(setDataPreview(combinedGraphData));
-};
-
-const setEdgeGroupable = (graphList: GraphList, dispatch: any) => {
-  const isEdgeGroupable: boolean = graphList.some((graphData: GraphData) => {
-    return graphData.metadata.groupEdges.availability === true;
-  });
-  dispatch(setIsEdgeGroupable(isEdgeGroupable));
-};
 
 export const previewJson =
   (attachments: TFileContent[]) => async (dispatch: any, getState: any) => {
@@ -72,22 +42,22 @@ export const previewJson =
       const graphList: GraphList = flatten(graphDataArr);
       const isDataInvalid = FileUploadUtils.containRestrictWords(graphList);
       if (isDataInvalid) {
-        dispatch(setError('restricted-words'));
+        const restrictedWordError = new MotifImportError('restricted-words');
+        dispatch(setError(restrictedWordError));
         return;
       }
 
-      createPreviewData(graphList, dispatch, combineProcessedData);
-      setEdgeGroupable(graphList, dispatch);
-      nextStep(step, dispatch);
+      FileUploadUtils.createPreviewData(
+        graphList,
+        dispatch,
+        combineProcessedData,
+      );
+      FileUploadUtils.setEdgeGroupable(graphList, dispatch);
+      FileUploadUtils.nextStep(step, dispatch);
     } catch (err: any) {
-      const { message } = err;
-      dispatch(setError(message));
+      dispatch(setError(err));
     }
   };
-
-const nextStep = (step: number, dispatch: any) => {
-  dispatch(setStep(step + 1));
-};
 
 export const previewEdgeList =
   (attachments: TFileContent[]) => (dispatch: any, getState: any) => {
@@ -100,9 +70,13 @@ export const previewEdgeList =
 
     return Promise.all(batchDataPromises)
       .then((graphList: GraphList) => {
-        createPreviewData(graphList, dispatch, combineDataWithDuplicates);
-        setEdgeGroupable(graphList, dispatch);
-        nextStep(step, dispatch);
+        FileUploadUtils.createPreviewData(
+          graphList,
+          dispatch,
+          combineDataWithDuplicates,
+        );
+        FileUploadUtils.setEdgeGroupable(graphList, dispatch);
+        FileUploadUtils.nextStep(step, dispatch);
       })
       .catch((err: Error) => {
         const { message } = err;
@@ -128,7 +102,8 @@ export const previewNodeEdge =
         graphData,
       ]);
       if (isDatasetInvalid) {
-        dispatch(setError('restricted-words'));
+        const restrictedWordError = new MotifImportError('restricted-words');
+        dispatch(setError(restrictedWordError));
         return;
       }
 
@@ -139,7 +114,7 @@ export const previewNodeEdge =
 
       // remove error message when upload valid data
       dispatch(setError(null));
-      nextStep(step, dispatch);
+      FileUploadUtils.nextStep(step, dispatch);
     } catch (err: any) {
       const { message } = err;
       dispatch(UIThunks.show(message, 'negative'));

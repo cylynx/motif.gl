@@ -1,3 +1,4 @@
+import { MotifImportError } from '../../../components/ImportErrorMessage';
 import { removeDuplicates } from '../../../utils/graph-utils/utils';
 import {
   Edge,
@@ -23,18 +24,26 @@ export const processPreviewJson = async (
   const graphList: GraphList = Array.isArray(json) ? json : [json];
 
   if (graphList.length === 0) {
-    throw new Error('empty-dataset');
+    throw new MotifImportError('empty-dataset');
   }
 
   for (const data of graphList) {
+    // uniquely identify the graph data within the list
+    const metadataKey = data?.key || data?.metadata?.key;
+
     // eslint-disable-next-line no-await-in-loop
     const processedData = await processJson(
       data,
       groupEdges,
-      data?.key || data?.metadata?.key,
-    );
+      metadataKey,
+    ).catch((err) => {
+      // error returns from the processor
+      // should convert into this format for display
+      throw new MotifImportError(err.message);
+    });
     results.push(processedData);
   }
+
   return results;
 };
 

@@ -126,7 +126,13 @@ export const processJson = async (
     return modJson;
   }
 
-  if (json.nodes && json.edges) {
+  // nodes or edges not found in the json, the format is invalid.
+  const { nodes, edges } = json;
+  if (!nodes || !edges) {
+    throw new Error('missing-nodes-or-edges');
+  }
+
+  try {
     const nodeCsv = await json2csv(json.nodes);
     const edgeCsv = await json2csv(json.edges);
     const { fields: nodeFields, json: nodeJson } = await processCsvData(
@@ -154,9 +160,9 @@ export const processJson = async (
       edges: edgeJson as Edge[],
       metadata: graphMetadata,
     };
+  } catch (err: any) {
+    throw new Error(err.message);
   }
-
-  throw new Error('missing-nodes-or-edges');
 };
 
 /**
@@ -405,7 +411,7 @@ export const processCsvData = async (rawCsv: string): Promise<ProcessedCsv> => {
   headerRow = headerRow.map((row: string) => row.replace(/^"(.*)"$/, '$1'));
 
   if (!parsedJson || !headerRow) {
-    throw new Error('Missing column header in uploaded CSV file');
+    throw new Error('missing-column-header');
   }
 
   // assume the csv file that uploaded csv will have first row
