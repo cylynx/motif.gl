@@ -51,6 +51,11 @@ export const processPreviewEdgeList = async (
   edgeList: string,
 ): Promise<GraphData> => {
   const { fields: edgeFields, json: edgeJson } = await processCsvData(edgeList);
+
+  if (edgeJson.length === 0) {
+    throw new MotifImportError('empty-csv-row');
+  }
+
   const nodeJson: Node[] = [];
   const groupEdge = false;
 

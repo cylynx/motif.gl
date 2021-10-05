@@ -68,3 +68,21 @@ export const RestrictedDataType = () => {
     />
   );
 };
+
+export const InvalidJsonFormat = () => {
+  return (
+    <ErrorMessage
+      title={
+        <Block overrides={{ Block: { style: { textTransform: 'uppercase' } } }}>
+          Invalid JSON Format.
+        </Block>
+      }
+      content={
+        <Block marginTop='scale300'>
+          Motif unable to parse the dataset because it contains invalid JSON
+          format.
+        </Block>
+      }
+    />
+  );
+};

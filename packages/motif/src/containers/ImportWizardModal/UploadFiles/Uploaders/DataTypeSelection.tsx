@@ -10,7 +10,7 @@ import { UIConstants } from '../../../../redux/ui';
 import useFileContents from '../hooks/useFileContents';
 import { TFileContentState } from '../../../../redux/import/fileUpload';
 import { Dropdown } from '../../../../components/ui/Dropdown';
-import * as JsonError from '../../ErrorCollections/JsonErrors';
+import ImportErrorDisplay from './ImportErrorDisplay';
 
 const importOptions = Object.values(UIConstants.OPTIONS);
 
@@ -30,23 +30,6 @@ const DataTypeSelection: FC<DataTypeSelectionProps> = () => {
 
     return selectedDataType;
   }, [fileUpload.dataType]);
-
-  const errorMessage = useMemo(() => {
-    const errorName = error?.name ?? '';
-    if (errorName === 'restricted-words') {
-      return <JsonError.RestrictedDataType />;
-    }
-
-    if (errorName === 'empty-dataset') {
-      return <JsonError.EmptyData />;
-    }
-
-    if (errorName === 'missing-nodes-or-edges') {
-      return <JsonError.MissingNodeOrEdge />;
-    }
-
-    return null;
-  }, [error]);
 
   return (
     <Block marginTop='scale600'>
@@ -77,7 +60,7 @@ const DataTypeSelection: FC<DataTypeSelectionProps> = () => {
       {dataType.id === 'edgeListCsv' && <EdgeListCsv />}
       {dataType.id === 'nodeEdgeCsv' && <NodeEdgeCsv />}
 
-      {errorMessage}
+      <ImportErrorDisplay error={error} />
     </Block>
   );
 };

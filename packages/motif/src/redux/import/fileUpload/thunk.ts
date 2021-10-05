@@ -77,10 +77,10 @@ export const previewEdgeList =
         );
         FileUploadUtils.setEdgeGroupable(graphList, dispatch);
         FileUploadUtils.nextStep(step, dispatch);
+        dispatch(setError(null));
       })
       .catch((err: Error) => {
-        const { message } = err;
-        dispatch(UIThunks.show(message, 'negative'));
+        dispatch(setError(err));
       });
   };
 
@@ -116,7 +116,6 @@ export const previewNodeEdge =
       dispatch(setError(null));
       FileUploadUtils.nextStep(step, dispatch);
     } catch (err: any) {
-      const { message } = err;
-      dispatch(UIThunks.show(message, 'negative'));
+      dispatch(setError(err));
     }
   };

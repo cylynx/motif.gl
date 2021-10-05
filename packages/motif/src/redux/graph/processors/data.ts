@@ -411,7 +411,7 @@ export const processCsvData = async (rawCsv: string): Promise<ProcessedCsv> => {
   headerRow = headerRow.map((row: string) => row.replace(/^"(.*)"$/, '$1'));
 
   if (!parsedJson || !headerRow) {
-    throw new Error('missing-column-header');
+    throw new Error('invalid-csv-format');
   }
 
   // assume the csv file that uploaded csv will have first row
