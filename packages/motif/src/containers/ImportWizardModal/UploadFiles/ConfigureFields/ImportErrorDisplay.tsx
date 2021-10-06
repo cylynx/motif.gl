@@ -1,5 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import * as JsonError from '../../ErrorCollections/JsonErrors';
+import * as MotifError from '../../ErrorCollections/MotifErrors';
 
 export type ImportErrorDisplayProps = { error: Error };
 const ImportErrorDisplay: FC<ImportErrorDisplayProps> = ({ error }) => {
@@ -17,6 +18,16 @@ const ImportErrorDisplay: FC<ImportErrorDisplayProps> = ({ error }) => {
     if (errorName === 'node-edge-id-conflicts') {
       const conflictIds = JSON.parse(error.message);
       return <JsonError.ConflictNodeEdgeID conflictIds={conflictIds} />;
+    }
+
+    if (errorName === 'edge-source-not-exist') {
+      const edgeId = error.message;
+      return <MotifError.EdgeSourceNotExist edgeId={edgeId} />;
+    }
+
+    if (errorName === 'edge-target-not-exist') {
+      const edgeId = error.message;
+      return <MotifError.EdgeTargetNotExist edgeId={edgeId} />;
     }
 
     return null;

@@ -30,6 +30,7 @@ import {
 } from '../import/fileUpload';
 import { MotifImportError } from '../../components/ImportErrorMessage';
 import { displayError, fetchDone } from '../ui/slice';
+import * as DataProcessor from './processors/data';
 
 type ImportAccessors = T.Accessors | null;
 
@@ -43,6 +44,7 @@ const processResponse = (
   const modifiedGraphList = [];
   const groupedEdgeGraphList: T.GraphList = graphList.map(
     (graphData: T.GraphData) => {
+      // prevent node ids and edge ids conflicting with each others.
       const duplicateId = Utils.findDuplicateID(graphData, accessors);
       if (duplicateId.length > 0) {
         const duplicateIdStr = JSON.stringify(duplicateId);
@@ -53,6 +55,16 @@ const processResponse = (
         dispatch(displayError(error));
         dispatch(fetchDone());
         throw error;
+      }
+
+      // verify whether source and target are pointing to valid node ids.
+      try {
+        const { nodes, edges } = graphData;
+        DataProcessor.verifySourceAndTargetExistence(nodes, edges, accessors);
+      } catch (err: any) {
+        dispatch(displayError(err));
+        dispatch(fetchDone());
+        throw err;
       }
 
       if (graphData.metadata.groupEdges.toggle) {

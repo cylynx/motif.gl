@@ -3,7 +3,7 @@ import { Block } from 'baseui/block';
 import { useStyletron } from 'baseui';
 import ErrorMessage from '../../../components/ImportErrorMessage';
 
-const BoldCodeText: React.FC = ({ children }) => {
+export const BoldCodeText: React.FC = ({ children }) => {
   return (
     <b>
       <code>{children}</code>
@@ -163,15 +163,15 @@ export const ConflictNodeEdgeID = ({
             id between <BoldCodeText>nodes</BoldCodeText> and{' '}
             <BoldCodeText>edges</BoldCodeText>. <br />
             <Block marginTop='scale0'>
-              The follow approach may help you to solve the error:
+              The follow approach may help you to solve this error:
               <ol style={{ margin: '4px 0' }}>
                 <li>
                   Remove the duplicate id from the dataset and perform data
                   importation again.
                 </li>
                 <li>
-                  Select non-duplicate <BoldCodeText>NodeID</BoldCodeText> and{' '}
-                  <BoldCodeText>EdgeID</BoldCodeText> above.
+                  Select unique <BoldCodeText>NodeID</BoldCodeText> and{' '}
+                  <BoldCodeText>EdgeID</BoldCodeText> fieldabove.
                 </li>
               </ol>
             </Block>

@@ -21,6 +21,8 @@ export interface UploadError {
 export interface ImportError {
   EDGE_SOURCE_VALUE_UNDEFINED: 'edge-source-value-undefined';
   EDGE_TARGET_VALUE_UNDEFINED: 'edge-target-value-undefined';
+  EDGE_SOURCE_NOT_EXIST: 'edge-source-not-exist';
+  EDGE_TARGET_NOT_EXIST: 'edge-target-not-exist';
   NODE_EDGE_ID_CONFLICTS: 'node-edge-id-conflicts';
 }
 

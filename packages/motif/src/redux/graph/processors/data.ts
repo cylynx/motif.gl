@@ -5,6 +5,7 @@ import shortid from 'shortid';
 // @ts-ignore
 import { Analyzer, DATA_TYPES as AnalyzerDatatypes } from 'type-analyzer';
 import { isEmpty, uniq, get, uniqBy, cloneDeep } from 'lodash';
+import { MotifImportError } from '../../../components/ImportErrorMessage';
 import { notNullorUndefined } from '../../../utils/data-utils/data-utils';
 import {
   Accessors,
@@ -781,16 +782,12 @@ export const verifySourceAndTargetExistence = (
 
     const isPossessSource = uniqueNodeIds.includes(source);
     if (!isPossessSource) {
-      throw new Error(
-        `The source or target node of edge ${id} does not exist.`,
-      );
+      throw new MotifImportError('edge-source-not-exist', id);
     }
 
     const isPossessTarget = uniqueNodeIds.includes(target);
     if (!isPossessTarget) {
-      throw new Error(
-        `The source or target node of edge ${id} does not exist.`,
-      );
+      throw new MotifImportError('edge-target-not-exist', id);
     }
   });
 };
