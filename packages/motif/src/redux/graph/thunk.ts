@@ -1,4 +1,5 @@
 import { flatten, isEmpty, cloneDeep, uniqBy } from 'lodash';
+import { MotifImportError } from 'src/components/ImportErrorMessage';
 import { combineGraphs } from '../../utils/graph-utils/utils';
 import { getFilterOptions, getGraph, getStyleOptions } from './selectors';
 

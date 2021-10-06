@@ -41,7 +41,9 @@ const ConfigureFields = () => {
   } = useFileContents();
 
   // loading indicator progress states
-  const { loading } = useSelector((state) => UISelectors.getUI(state));
+  const { loading, importError } = useSelector((state) =>
+    UISelectors.getUI(state),
+  );
 
   const { styleOptions } = useSelector((state) => getGraph(state));
   const { importJson, importEdgeList, importNodeEdge } = useImportData();
@@ -161,21 +163,28 @@ const ConfigureFields = () => {
           />
         </Block>
 
-        <DataPreview isEdgeGroupable={isEdgeGroupable} dataType={dataType} />
-        {isEdgeGroupable && <GroupEdgeConfiguration control={control} />}
+        {!importError && (
+          <>
+            <DataPreview
+              isEdgeGroupable={isEdgeGroupable}
+              dataType={dataType}
+            />
+            {isEdgeGroupable && <GroupEdgeConfiguration control={control} />}
 
-        <Block position='absolute' bottom='scale300' right='0'>
-          <Button
-            type='submit'
-            disabled={loading || isSubmitDisabled}
-            isLoading={loading}
-            kind={KIND.primary}
-            size={SIZE.compact}
-            endEnhancer={<Icon.ChevronRight size={16} />}
-          >
-            Continue
-          </Button>
-        </Block>
+            <Block position='absolute' bottom='scale300' right='0'>
+              <Button
+                type='submit'
+                disabled={loading || isSubmitDisabled}
+                isLoading={loading}
+                kind={KIND.primary}
+                size={SIZE.compact}
+                endEnhancer={<Icon.ChevronRight size={16} />}
+              >
+                Continue
+              </Button>
+            </Block>
+          </>
+        )}
       </form>
 
       {modalOpen && (

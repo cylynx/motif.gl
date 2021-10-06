@@ -1,7 +1,7 @@
 import flatten from 'lodash/flatten';
 import { SingleFileForms, TFileContent } from './types';
 import * as FileUploadUtils from './utils';
-import { MotifImportError } from '../../../components/ImportErrorMessage';
+import { MotifUploadError } from '../../../components/ImportErrorMessage';
 import {
   EdgeListCsv,
   GraphData,
@@ -41,7 +41,7 @@ export const previewJson =
       const graphList: GraphList = flatten(graphDataArr);
       const isDataInvalid = FileUploadUtils.containRestrictWords(graphList);
       if (isDataInvalid) {
-        const restrictedWordError = new MotifImportError('restricted-words');
+        const restrictedWordError = new MotifUploadError('restricted-words');
         dispatch(setError(restrictedWordError));
         return;
       }
@@ -101,7 +101,7 @@ export const previewNodeEdge =
         graphData,
       ]);
       if (isDatasetInvalid) {
-        const restrictedWordError = new MotifImportError('restricted-words');
+        const restrictedWordError = new MotifUploadError('restricted-words');
         dispatch(setError(restrictedWordError));
         return;
       }

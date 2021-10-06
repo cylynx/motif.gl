@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export interface ImportError {
+export interface UploadError {
   RESTRICTED_WORDS: 'restricted-words';
   EMPTY_DATASET: 'empty-dataset';
   MISSING_NODES_OR_EDGES: 'missing-nodes-or-edges';
@@ -16,6 +16,10 @@ export interface ImportError {
   INVALID_EDGE_CSV_FORMAT: 'invalid-edge-csv-format';
   EMPTY_NODE_CSV_ROW: 'empty-node-csv-row';
   EMPTY_EDGE_CSV_ROW: 'empty-edge-csv-row';
+}
+
+export interface ImportError {
+  JSON_NOT_ARRAY: 'json-not-array';
 }
 
 export type ErrorMessageProps = { title: ReactNode; content?: ReactNode };

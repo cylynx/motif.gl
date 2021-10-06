@@ -1,4 +1,4 @@
-import { MotifImportError } from '../../../components/ImportErrorMessage';
+import { MotifUploadError } from '../../../components/ImportErrorMessage';
 import { removeDuplicates } from '../../../utils/graph-utils/utils';
 import {
   Edge,
@@ -24,7 +24,7 @@ export const processPreviewJson = async (
   const graphList: GraphList = Array.isArray(json) ? json : [json];
 
   if (graphList.length === 0) {
-    throw new MotifImportError('empty-dataset');
+    throw new MotifUploadError('empty-dataset');
   }
 
   for (const data of graphList) {
@@ -39,7 +39,7 @@ export const processPreviewJson = async (
     ).catch((err) => {
       // error returns from the processor
       // should convert into this format for display
-      throw new MotifImportError(err.message);
+      throw new MotifUploadError(err.message);
     });
     results.push(processedData);
   }
@@ -54,11 +54,11 @@ export const processPreviewEdgeList = async (
     edgeList,
   ).catch((err: any) => {
     // invalid-csv-format
-    throw new MotifImportError(err.message);
+    throw new MotifUploadError(err.message);
   });
 
   if (edgeJson.length === 0) {
-    throw new MotifImportError('empty-csv-row');
+    throw new MotifUploadError('empty-csv-row');
   }
 
   const nodeJson: Node[] = [];
@@ -106,13 +106,13 @@ export const processPreviewNodeEdge = async (
 
   const nodeDataPromises = nodeCsvs.map((nodeCsv: string) =>
     processCsvData(nodeCsv).catch(() => {
-      throw new MotifImportError('invalid-node-csv-format');
+      throw new MotifUploadError('invalid-node-csv-format');
     }),
   );
 
   const edgeDataPromises = edgeCsvs.map((edgeCsv: string) =>
     processCsvData(edgeCsv).catch(() => {
-      throw new MotifImportError('invalid-edge-csv-format');
+      throw new MotifUploadError('invalid-edge-csv-format');
     }),
   );
 
@@ -126,7 +126,7 @@ export const processPreviewNodeEdge = async (
   );
 
   if (nodeJson.length === 0) {
-    throw new MotifImportError('empty-node-csv-row');
+    throw new MotifUploadError('empty-node-csv-row');
   }
 
   // obtain edge json and edge fields from batch uploaded edge csv
@@ -139,7 +139,7 @@ export const processPreviewNodeEdge = async (
   );
 
   if (edgeJson.length === 0) {
-    throw new MotifImportError('empty-edge-csv-row');
+    throw new MotifUploadError('empty-edge-csv-row');
   }
 
   try {
