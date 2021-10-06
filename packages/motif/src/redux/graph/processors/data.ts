@@ -279,7 +279,7 @@ export const processEdgeListCsv = async (
   });
   const uniqueNodes = [...new Set(edgeIds)];
   const nodeJson = uniqueNodes.map((node) => {
-    return { id: node };
+    return { id: node.toString() };
   });
 
   const groupEdgeConfig: GroupEdges = applyGroupEdges(
@@ -754,8 +754,9 @@ export const verifySourceAndTargetExistence = (
   accessors: Accessors,
 ) => {
   const { nodeID, edgeID, edgeSource, edgeTarget } = accessors;
+  const nodeIDAccessor = nodeID === 'auto-generate' ? 'id' : nodeID;
   const nodeIds: string[] = nodes.map((node: Node) => {
-    const nodeIdProperty: string = get(node, nodeID, '');
+    const nodeIdProperty: string = get(node, nodeIDAccessor, '');
     if (typeof nodeIdProperty !== 'string') {
       return nodeIdProperty;
     }

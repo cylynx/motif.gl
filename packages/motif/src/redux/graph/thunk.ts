@@ -28,9 +28,6 @@ import {
   SingleFileForms,
   TFileContent,
 } from '../import/fileUpload';
-import { MotifImportError } from '../../components/ImportErrorMessage';
-import { displayError, fetchDone } from '../ui/slice';
-import * as DataProcessor from './processors/data';
 
 type ImportAccessors = T.Accessors | null;
 
@@ -107,10 +104,6 @@ export const importEdgeListData =
     metadataKey: string = null,
   ) =>
   (dispatch: any, getState: any) => {
-    if (Array.isArray(importData) === false) {
-      throw new Error('importData parameter must be array');
-    }
-
     const { accessors: mainAccessors } = getGraph(getState());
     const accessors = { ...mainAccessors, ...importAccessors };
     const filterOptions: T.FilterOptions = getFilterOptions(getState());
@@ -132,8 +125,7 @@ export const importEdgeListData =
         }, 50);
       })
       .catch((err: Error) => {
-        const { message } = err;
-        dispatch(UIThunks.show(message, 'negative'));
+        dispatch(UISlices.displayError(err));
         dispatch(UISlices.fetchDone());
       });
   };

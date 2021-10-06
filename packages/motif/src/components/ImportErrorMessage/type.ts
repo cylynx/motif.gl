@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 
 export interface UploadError {
-  RESTRICTED_WORDS: 'restricted-words';
+  NODE_RESTRICTED_WORDS: 'node-restricted-words';
+  EDGE_RESTRICTED_WORDS: 'edge-restricted-words';
   EMPTY_DATASET: 'empty-dataset';
   MISSING_NODES_OR_EDGES: 'missing-nodes-or-edges';
 

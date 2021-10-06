@@ -103,3 +103,47 @@ export const EdgeTargetNotExist = ({ edgeTarget }: EdgeTargetNotExistProps) => {
     />
   );
 };
+
+export const RestrictedNodeDataType = () => {
+  return (
+    <ErrorMessage
+      title={
+        <Block overrides={{ Block: { style: { textTransform: 'uppercase' } } }}>
+          The uploaded datasets contain type column in node properties
+        </Block>
+      }
+      content={
+        <Block marginTop='scale300'>
+          <BoldCodeText>type</BoldCodeText> is a reserve words used as
+          identifiers to perform styling.
+          <br />
+          You can rename <BoldCodeText>type</BoldCodeText> column to{' '}
+          <BoldCodeText>node_type</BoldCodeText> or{' '}
+          <BoldCodeText>types</BoldCodeText> to import data successfully.
+        </Block>
+      }
+    />
+  );
+};
+
+export const RestrictedEdgeDataType = () => {
+  return (
+    <ErrorMessage
+      title={
+        <Block overrides={{ Block: { style: { textTransform: 'uppercase' } } }}>
+          The uploaded datasets contain type column in edge properties
+        </Block>
+      }
+      content={
+        <Block marginTop='scale300'>
+          <BoldCodeText>type</BoldCodeText> is a reserve words used as
+          identifiers to perform styling.
+          <br />
+          You can rename <BoldCodeText>type</BoldCodeText> column to{' '}
+          <BoldCodeText>edge_type</BoldCodeText> or{' '}
+          <BoldCodeText>types</BoldCodeText> to import data successfully.
+        </Block>
+      }
+    />
+  );
+};

@@ -10,13 +10,36 @@ import * as GraphSlice from './slice';
  * @param {GraphType.GraphList} graphList
  * @return {boolean}
  */
-export const containRestrictWords = (
+export const nodeContainRestrictedWords = (
   graphList: GraphType.GraphList,
 ): boolean => {
   const isValidData = graphList.some((graph: GraphType.GraphData) => {
     const { nodes } = graph.metadata.fields;
 
     const isContainType = nodes.find((field: GraphType.Field) => {
+      return field.name === 'type';
+    });
+
+    return isContainType;
+  });
+
+  return isValidData;
+};
+
+/**
+ * Prevent uploaded data set contain edge properties "type".
+ *  - "type" is a restricted word in edge property for Graphin to perform styling
+ *
+ * @param {GraphType.GraphList} graphList
+ * @return {boolean}
+ */
+export const edgeContainRestrictedWords = (
+  graphList: GraphType.GraphList,
+): boolean => {
+  const isValidData = graphList.some((graph: GraphType.GraphData) => {
+    const { edges } = graph.metadata.fields;
+
+    const isContainType = edges.find((field: GraphType.Field) => {
       return field.name === 'type';
     });
 

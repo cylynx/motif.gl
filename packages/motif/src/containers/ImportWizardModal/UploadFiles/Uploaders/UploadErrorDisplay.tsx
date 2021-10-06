@@ -2,14 +2,19 @@ import React, { FC, useMemo } from 'react';
 
 import * as JsonError from '../../ErrorCollections/JsonErrors';
 import * as CsvError from '../../ErrorCollections/CsvErrors';
+import * as MotifError from '../../ErrorCollections/MotifErrors';
 import * as NodeEdgeCsvError from '../../ErrorCollections/NodeEdgeCsvErrors';
 
 export type UploadErrorDisplayProps = { error: Error };
 const UploadErrorDisplay: FC<UploadErrorDisplayProps> = ({ error }) => {
   const errorMessage = useMemo(() => {
     const errorName = error?.name ?? '';
-    if (errorName === 'restricted-words') {
-      return <JsonError.RestrictedDataType />;
+    if (errorName === 'node-restricted-words') {
+      return <MotifError.RestrictedNodeDataType />;
+    }
+
+    if (errorName === 'edge-restricted-words') {
+      return <MotifError.RestrictedEdgeDataType />;
     }
 
     if (errorName === 'empty-dataset') {

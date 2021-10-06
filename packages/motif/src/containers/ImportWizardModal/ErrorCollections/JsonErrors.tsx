@@ -48,28 +48,6 @@ export const MissingNodeOrEdge = () => {
   );
 };
 
-export const RestrictedDataType = () => {
-  return (
-    <ErrorMessage
-      title={
-        <Block overrides={{ Block: { style: { textTransform: 'uppercase' } } }}>
-          The uploaded datasets contain type column in node properties
-        </Block>
-      }
-      content={
-        <Block marginTop='scale300'>
-          <BoldCodeText>type</BoldCodeText> is a reserve words used as
-          identifiers to perform styling.
-          <br />
-          You can rename <BoldCodeText>type</BoldCodeText> column to{' '}
-          <BoldCodeText>node_type</BoldCodeText> or{' '}
-          <BoldCodeText>types</BoldCodeText> to import data successfully.
-        </Block>
-      }
-    />
-  );
-};
-
 export const InvalidJsonFormat = () => {
   return (
     <ErrorMessage
@@ -100,8 +78,8 @@ export const EdgeSourceValueUndefined = () => {
         <Block marginTop='scale300'>
           <Block>
             Motif unable to establish a relationship between nodes with the
-            provided <b>edge target</b> because selected attribute might be
-            missing.
+            provided <b>edge source</b> because the selected attribute might be
+            missing, <code>undefined</code> or <code>null</code>.
           </Block>
 
           <Block marginTop='scale300'>

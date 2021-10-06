@@ -39,9 +39,22 @@ export const previewJson =
     try {
       const graphDataArr = await Promise.all(contentPromises);
       const graphList: GraphList = flatten(graphDataArr);
-      const isDataInvalid = FileUploadUtils.containRestrictWords(graphList);
-      if (isDataInvalid) {
-        const restrictedWordError = new MotifUploadError('restricted-words');
+      const isInvalidNodes =
+        FileUploadUtils.nodeContainRestrictedWords(graphList);
+      if (isInvalidNodes) {
+        const restrictedWordError = new MotifUploadError(
+          'node-restricted-words',
+        );
+        dispatch(setError(restrictedWordError));
+        return;
+      }
+
+      const isInvalidEdges =
+        FileUploadUtils.edgeContainRestrictedWords(graphList);
+      if (isInvalidEdges) {
+        const restrictedWordError = new MotifUploadError(
+          'edge-restricted-words',
+        );
         dispatch(setError(restrictedWordError));
         return;
       }
@@ -97,11 +110,24 @@ export const previewNodeEdge =
 
     try {
       const graphData = await processPreviewNodeEdge(nodeData, edgeData);
-      const isDatasetInvalid = FileUploadUtils.containRestrictWords([
+      const isInvalidNodes = FileUploadUtils.nodeContainRestrictedWords([
         graphData,
       ]);
-      if (isDatasetInvalid) {
-        const restrictedWordError = new MotifUploadError('restricted-words');
+      if (isInvalidNodes) {
+        const restrictedWordError = new MotifUploadError(
+          'node-restricted-words',
+        );
+        dispatch(setError(restrictedWordError));
+        return;
+      }
+
+      const isInvalidEdges = FileUploadUtils.edgeContainRestrictedWords([
+        graphData,
+      ]);
+      if (isInvalidEdges) {
+        const restrictedWordError = new MotifUploadError(
+          'edge-restricted-words',
+        );
         dispatch(setError(restrictedWordError));
         return;
       }

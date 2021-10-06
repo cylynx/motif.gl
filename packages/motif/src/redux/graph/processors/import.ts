@@ -1,7 +1,6 @@
 import { get, isUndefined } from 'lodash';
 import shortid from 'shortid';
 import { MotifImportError } from '../../../components/ImportErrorMessage';
-
 import { Node, Edge, GraphList, GraphData, Accessors } from '../types';
 import {
   processJson,
@@ -81,23 +80,32 @@ export const importEdgeListCsv = async (
   metadataKey: string = null,
 ): Promise<GraphData> => {
   const { edgeSource, edgeTarget } = accessors;
-  const processedData = await processEdgeListCsv(
-    csv,
-    edgeSource,
-    edgeTarget,
-    groupEdges,
-    metadataKey,
-  );
 
-  if (processedData.nodes.length < 1 || processedData.edges.length < 1) {
-    throw new Error('process Csv Data Failed: CSV is empty');
+  try {
+    const processedData = await processEdgeListCsv(
+      csv,
+      edgeSource,
+      edgeTarget,
+      groupEdges,
+      metadataKey,
+    );
+
+    processedData.edges.forEach((edge: Edge) => {
+      addEdgeFields(edge, accessors);
+    });
+
+    const { nodes, edges } = processedData;
+    verifySourceAndTargetExistence(nodes, edges, accessors);
+
+    return processedData;
+  } catch (err: any) {
+    if (err instanceof MotifImportError) {
+      const { name, message } = err;
+      throw new MotifImportError(name as any, message);
+    }
+
+    throw new MotifImportError(err.message);
   }
-
-  processedData.edges.forEach((edge: Edge) => {
-    addEdgeFields(edge, accessors);
-  });
-
-  return processedData;
 };
 
 /**
@@ -175,11 +183,11 @@ export const addEdgeFields = (edge: Edge, accessors: Accessors): void => {
   const edgeSourceValue = get(edge, edgeSource);
   const edgeTargetValue = get(edge, edgeTarget);
 
-  if (isUndefined(edgeSourceValue)) {
+  if (!edgeSourceValue) {
     throw new Error('edge-source-value-undefined');
   }
 
-  if (isUndefined(edgeTargetValue)) {
+  if (!edgeTargetValue) {
     throw new Error('edge-target-value-undefined');
   }
 
