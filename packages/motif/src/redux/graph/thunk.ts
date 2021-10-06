@@ -15,20 +15,7 @@ import {
   importNodeEdgeCsv,
   importJson,
 } from './processors/import';
-import {
-  JsonImport,
-  Accessors,
-  GraphList,
-  GraphData,
-  FilterOptions,
-  TLoadFormat,
-  StyleOptions,
-  GraphState,
-  Field,
-  Selection,
-  EdgeListCsv,
-} from './types';
-
+import * as T from './types';
 import { UISlices, UIThunks } from '../ui';
 import {
   aggregateMetadataFields,
@@ -41,18 +28,18 @@ import {
   TFileContent,
 } from '../import/fileUpload';
 
-type ImportAccessors = Accessors | null;
+type ImportAccessors = T.Accessors | null;
 
 const processResponse = (
   dispatch: any,
-  accessors: Accessors,
-  newData: GraphData | GraphList,
+  accessors: T.Accessors,
+  newData: T.GraphData | T.GraphList,
 ) => {
-  const graphList: GraphList = Array.isArray(newData) ? newData : [newData];
+  const graphList: T.GraphList = Array.isArray(newData) ? newData : [newData];
 
   const modifiedGraphList = [];
-  const groupedEdgeGraphList: GraphList = graphList.map(
-    (graphData: GraphData) => {
+  const groupedEdgeGraphList: T.GraphList = graphList.map(
+    (graphData: T.GraphData) => {
       if (graphData.metadata.groupEdges.toggle) {
         const { graphData: groupedEdgeData, groupEdgeIds } =
           groupEdgesForImportation(graphData, graphData.metadata.groupEdges);
@@ -87,7 +74,7 @@ const processResponse = (
  */
 const showImportDataToast = (
   dispatch: any,
-  filterOptions: FilterOptions,
+  filterOptions: T.FilterOptions,
 ): void => {
   const isFilterEmpty: boolean = isEmpty(filterOptions);
   if (isFilterEmpty) {
@@ -110,7 +97,7 @@ const showImportDataToast = (
  */
 export const importEdgeListData =
   (
-    importData: EdgeListCsv[],
+    importData: T.EdgeListCsv[],
     groupEdges = true,
     importAccessors: ImportAccessors = null,
     metadataKey: string = null,
@@ -122,14 +109,14 @@ export const importEdgeListData =
 
     const { accessors: mainAccessors } = getGraph(getState());
     const accessors = { ...mainAccessors, ...importAccessors };
-    const filterOptions: FilterOptions = getFilterOptions(getState());
+    const filterOptions: T.FilterOptions = getFilterOptions(getState());
 
-    const batchDataPromises = importData.map((graphData: EdgeListCsv) => {
+    const batchDataPromises = importData.map((graphData: T.EdgeListCsv) => {
       return importEdgeListCsv(graphData, accessors, groupEdges, metadataKey);
     });
 
     return Promise.all(batchDataPromises)
-      .then((graphData: GraphList) => {
+      .then((graphData: T.GraphList) => {
         dispatch(UISlices.fetchBegin());
 
         setTimeout(() => {
@@ -163,7 +150,7 @@ export const importEdgeListData =
  */
 export const importJsonData =
   (
-    importData: JsonImport[],
+    importData: T.JsonImport[],
     groupEdges = true,
     importAccessors: Partial<ImportAccessors> = {},
     overwriteStyles = false,
@@ -180,37 +167,37 @@ export const importJsonData =
       ? mainAccessors
       : (importAccessors as ImportAccessors);
 
-    const filterOptions: FilterOptions = getFilterOptions(getState());
+    const filterOptions: T.FilterOptions = getFilterOptions(getState());
     let isDataPossessStyle = false;
-    let styleOptions: StyleOptions = getStyleOptions(getState());
+    let styleOptions: T.StyleOptions = getStyleOptions(getState());
 
-    const batchDataPromises = importData.map((graphData: JsonImport) => {
-      const { data: dataWithStyle } = graphData as TLoadFormat;
+    const batchDataPromises = importData.map((graphData: T.JsonImport) => {
+      const { data: dataWithStyle } = graphData as T.TLoadFormat;
 
       if (dataWithStyle) {
-        const { style: importStyleOption } = graphData as TLoadFormat;
+        const { style: importStyleOption } = graphData as T.TLoadFormat;
 
         if (importStyleOption) {
           isDataPossessStyle = true;
           styleOptions = importStyleOption;
         }
 
-        return importJson(dataWithStyle as GraphList, accessors, groupEdges);
+        return importJson(dataWithStyle as T.GraphList, accessors, groupEdges);
       }
 
       return importJson(
-        graphData as GraphList | GraphData,
+        graphData as T.GraphList | T.GraphData,
         accessors,
         groupEdges,
       );
     });
 
     return Promise.all(batchDataPromises)
-      .then((graphDataArr: GraphList[]) => {
+      .then((graphDataArr: T.GraphList[]) => {
         dispatch(UISlices.fetchBegin());
 
         setTimeout(() => {
-          const graphData: GraphList = flatten(graphDataArr);
+          const graphData: T.GraphList = flatten(graphDataArr);
 
           if (isDataPossessStyle && overwriteStyles) {
             dispatch(updateStyleOption(styleOptions));
@@ -256,7 +243,7 @@ export const importNodeEdgeData =
     const accessors = isEmpty(importAccessors)
       ? mainAccessors
       : (importAccessors as ImportAccessors);
-    const filterOptions: FilterOptions = getFilterOptions(getState());
+    const filterOptions: T.FilterOptions = getFilterOptions(getState());
 
     const { nodeCsv: nodeContents, edgeCsv: edgeContents } = importData;
     const nodeCsvs: string[] = nodeContents.map(
@@ -266,7 +253,7 @@ export const importNodeEdgeData =
       (edgeCsv: TFileContent) => edgeCsv.content as string,
     );
 
-    const newData: Promise<GraphData> = importNodeEdgeCsv(
+    const newData: Promise<T.GraphData> = importNodeEdgeCsv(
       nodeCsvs,
       edgeCsvs,
       accessors,
@@ -275,7 +262,7 @@ export const importNodeEdgeData =
     );
 
     return newData
-      .then((graphData: GraphData) => {
+      .then((graphData: T.GraphData) => {
         dispatch(UISlices.fetchBegin());
 
         setTimeout(() => {
@@ -302,7 +289,7 @@ export const importNodeEdgeData =
  */
 export const importSampleData =
   (
-    importData: JsonImport,
+    importData: T.JsonImport,
     importAccessors: Partial<ImportAccessors> = {},
     groupEdges = false,
   ) =>
@@ -312,16 +299,16 @@ export const importSampleData =
     const accessors = isEmpty(importAccessors)
       ? mainAccessors
       : (importAccessors as ImportAccessors);
-    const filterOptions: FilterOptions = getFilterOptions(getState());
+    const filterOptions: T.FilterOptions = getFilterOptions(getState());
 
-    const newData: Promise<GraphList> = importJson(
-      importData as GraphData,
+    const newData: Promise<T.GraphList> = importJson(
+      importData as T.GraphData,
       accessors,
       groupEdges,
     );
 
     return newData
-      .then((graphData: GraphList) => {
+      .then((graphData: T.GraphList) => {
         dispatch(UISlices.fetchBegin());
 
         setTimeout(() => {
@@ -347,8 +334,8 @@ export const importSampleData =
  */
 export const groupEdgesWithAggregation =
   (graphIndex: number) => (dispatch: any, getState: any) => {
-    const { graphList, graphFlatten }: GraphState = getGraph(getState());
-    const selectedGraphList: GraphData = graphList[graphIndex];
+    const { graphList, graphFlatten }: T.GraphState = getGraph(getState());
+    const selectedGraphList: T.GraphData = graphList[graphIndex];
 
     const { groupEdges } = selectedGraphList.metadata;
 
@@ -356,11 +343,11 @@ export const groupEdgesWithAggregation =
       groupEdgesWithConfiguration(selectedGraphList, graphFlatten, groupEdges);
 
     // obtain the combined aggregated edge fields of entire graph.
-    const combinedAggregatedEdgeFields: Field[][] = graphList.reduce(
-      (acc: Field[][], graphData: GraphData) => {
+    const combinedAggregatedEdgeFields: T.Field[][] = graphList.reduce(
+      (acc: T.Field[][], graphData: T.GraphData) => {
         const { metadata } = graphData;
 
-        const edgeAggregateFields: Field[] = aggregateMetadataFields(
+        const edgeAggregateFields: T.Field[] = aggregateMetadataFields(
           graphData,
           metadata.groupEdges.fields,
         );
@@ -368,7 +355,7 @@ export const groupEdgesWithAggregation =
         const combinedEdgeField = uniqBy(
           [...metadata.fields.edges, ...edgeAggregateFields],
           'name',
-        ) as Field[];
+        ) as T.Field[];
 
         acc.push(combinedEdgeField);
         return acc;
@@ -377,8 +364,8 @@ export const groupEdgesWithAggregation =
     );
 
     // map the aggregated edge fields as edge selections
-    const flattenEdgeFields: Field[] = flatten(combinedAggregatedEdgeFields);
-    const uniqueEdgeFields = uniqBy(flattenEdgeFields, 'name') as Field[];
+    const flattenEdgeFields: T.Field[] = flatten(combinedAggregatedEdgeFields);
+    const uniqueEdgeFields = uniqBy(flattenEdgeFields, 'name') as T.Field[];
 
     const modData = cloneDeep(newGraphData);
 
@@ -398,14 +385,14 @@ export const groupEdgesWithAggregation =
 export const computeEdgeSelection =
   () =>
   (dispatch: any, getState: any): void => {
-    const { graphFlatten, edgeSelection }: GraphState = getGraph(getState());
+    const { graphFlatten, edgeSelection }: T.GraphState = getGraph(getState());
     const { edges: edgeFields } = graphFlatten.metadata.fields;
 
-    const computedEdgeSelection: Selection[] = edgeFields.map(
-      (edgeField: Field) => {
+    const computedEdgeSelection: T.Selection[] = edgeFields.map(
+      (edgeField: T.Field) => {
         const { name, type } = edgeField;
         const existingSelection = edgeSelection.find(
-          (selection: Selection) => selection.id === edgeField.name,
+          (selection: T.Selection) => selection.id === edgeField.name,
         );
         const isSelected: boolean = existingSelection?.selected ?? false;
 

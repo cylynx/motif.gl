@@ -8,24 +8,7 @@ import { Draft } from 'immer';
 import * as LAYOUT from '../../constants/layout-options';
 import { DARK_GREY } from '../../constants/colors';
 import { generateDefaultColorMap } from '../../utils/style-utils/color-utils';
-import {
-  Accessors,
-  FilterCriteria,
-  GraphState,
-  StyleOptions,
-  GraphData,
-  SearchOptionPayload,
-  SearchResultPayload,
-  GroupEdgePayload,
-  UpdateGroupEdgeFieldPayload,
-  FieldAndAggregation,
-  DeleteGroupEdgeFieldPayload,
-  Selection,
-  UpdateGroupEdgeIds,
-  LayoutParams,
-  NodePosParams,
-  Node,
-} from './types';
+import * as T from './types';
 import {
   DEFAULT_NODE_STYLE,
   EDGE_DEFAULT_COLOR,
@@ -45,8 +28,8 @@ import {
  * @return {void}
  */
 export const updateSelections = (
-  state: Draft<GraphState>,
-  data: GraphData,
+  state: Draft<T.GraphState>,
+  data: T.GraphData,
 ): void => {
   const currentNodeFields = state.nodeSelection.map((x) => x.id);
   const currentEdgeFields = state.edgeSelection.map((x) => x.id);
@@ -80,8 +63,8 @@ export const updateSelections = (
  * @param {GraphData} graphData
  */
 export const updateAll = (
-  state: GraphState | Draft<GraphState>,
-  graphData: GraphData,
+  state: T.GraphState | Draft<T.GraphState>,
+  graphData: T.GraphData,
 ) => {
   if (graphData) {
     state.graphFlatten = graphData;
@@ -95,7 +78,7 @@ export const updateAll = (
   }
 };
 
-const initialState: GraphState = {
+const initialState: T.GraphState = {
   accessors: {
     nodeID: 'id',
     edgeID: 'id',
@@ -243,13 +226,13 @@ const graph = createSlice({
         graphFlatten,
       });
     },
-    addQuery(state, action: PayloadAction<GraphData[]>) {
+    addQuery(state, action: PayloadAction<T.GraphData[]>) {
       state.graphList.push(...action.payload);
     },
-    updateStyleOption(state, action: PayloadAction<StyleOptions>) {
+    updateStyleOption(state, action: PayloadAction<T.StyleOptions>) {
       Object.assign(state.styleOptions, action.payload);
     },
-    changeLayout(state, action: PayloadAction<LayoutParams>): void {
+    changeLayout(state, action: PayloadAction<T.LayoutParams>): void {
       const { id, ...options } = action.payload.layout;
       const defaultOptions = LAYOUT.OPTIONS.find((x) => x.type === id);
       state.styleOptions.layout = {
@@ -305,25 +288,25 @@ const graph = createSlice({
     processGraphResponse(
       state,
       action: PayloadAction<{
-        data: GraphData;
-        accessors: Accessors;
+        data: T.GraphData;
+        accessors: T.Accessors;
       }>,
     ) {
       const { data } = action.payload;
       const { graphFlatten } = state;
 
       const graphData = combineProcessedData(
-        data as GraphData,
-        graphFlatten as GraphData,
+        data as T.GraphData,
+        graphFlatten as T.GraphData,
       );
 
       updateAll(state, graphData);
       updateSelections(state, graphData);
     },
-    setAccessors(state, action: PayloadAction<Accessors>) {
+    setAccessors(state, action: PayloadAction<T.Accessors>) {
       state.accessors = action.payload;
     },
-    overrideStyles(state, action: PayloadAction<StyleOptions>) {
+    overrideStyles(state, action: PayloadAction<T.StyleOptions>) {
       state.styleOptions = { ...state.styleOptions, ...action.payload };
     },
     updateNodeSelection(
@@ -357,7 +340,7 @@ const graph = createSlice({
     },
     updateFilterAttributes(
       state,
-      action: PayloadAction<{ key: string; criteria: FilterCriteria }>,
+      action: PayloadAction<{ key: string; criteria: T.FilterCriteria }>,
     ) {
       const { key, criteria } = action.payload;
       Object.assign(state.filterOptions, {
@@ -369,24 +352,24 @@ const graph = createSlice({
       const { [key]: value, ...res } = state.filterOptions;
       state.filterOptions = res;
     },
-    updateSearchOptions(state, action: PayloadAction<SearchOptionPayload>) {
+    updateSearchOptions(state, action: PayloadAction<T.SearchOptionPayload>) {
       const { key, value } = action.payload;
       Object.assign(state.searchOptions, {
         [key]: value,
       });
     },
-    updateNodeResults(state, action: PayloadAction<SearchResultPayload>) {
+    updateNodeResults(state, action: PayloadAction<T.SearchResultPayload>) {
       const { value } = action.payload;
       Object.assign(state.searchOptions.results, { nodes: value });
     },
-    updateEdgeResults(state, action: PayloadAction<SearchResultPayload>) {
+    updateEdgeResults(state, action: PayloadAction<T.SearchResultPayload>) {
       const { value } = action.payload;
       Object.assign(state.searchOptions.results, { edges: value });
     },
     resetSearchOptions(state) {
       Object.assign(state.searchOptions, initialState.searchOptions);
     },
-    setGroupEdgeOptions(state, action: PayloadAction<GroupEdgePayload>) {
+    setGroupEdgeOptions(state, action: PayloadAction<T.GroupEdgePayload>) {
       const { index, key, value } = action.payload;
       Object.assign(state.graphList[index].metadata.groupEdges, {
         [key]: value,
@@ -404,14 +387,14 @@ const graph = createSlice({
     },
     updateGroupEdgeField(
       state,
-      action: PayloadAction<UpdateGroupEdgeFieldPayload>,
+      action: PayloadAction<T.UpdateGroupEdgeFieldPayload>,
     ) {
       const { index, fieldId, value } = action.payload;
 
       const groupEdgeFields =
         state.graphList[index].metadata.groupEdges.fields ?? {};
 
-      const fieldAndAggregation: FieldAndAggregation = {
+      const fieldAndAggregation: T.FieldAndAggregation = {
         field: value as string,
         aggregation: [],
       };
@@ -426,7 +409,7 @@ const graph = createSlice({
     },
     updateGroupEdgeAggregate(
       state,
-      action: PayloadAction<UpdateGroupEdgeFieldPayload>,
+      action: PayloadAction<T.UpdateGroupEdgeFieldPayload>,
     ) {
       const { index, fieldId, value } = action.payload;
 
@@ -444,7 +427,7 @@ const graph = createSlice({
     },
     deleteGroupEdgeField(
       state,
-      action: PayloadAction<DeleteGroupEdgeFieldPayload>,
+      action: PayloadAction<T.DeleteGroupEdgeFieldPayload>,
     ) {
       const { graphIndex, fieldIndex } = action.payload;
 
@@ -457,15 +440,15 @@ const graph = createSlice({
         fields: res,
       });
     },
-    updateGraphFlatten(state, action: PayloadAction<GraphData>) {
+    updateGraphFlatten(state, action: PayloadAction<T.GraphData>) {
       Object.assign(state.graphFlatten, action.payload);
     },
-    overwriteEdgeSelection(state, action: PayloadAction<Selection[]>) {
+    overwriteEdgeSelection(state, action: PayloadAction<T.Selection[]>) {
       Object.assign(state, {
         edgeSelection: action.payload,
       });
     },
-    updateGroupEdgeIds(state, action: PayloadAction<UpdateGroupEdgeIds>) {
+    updateGroupEdgeIds(state, action: PayloadAction<T.UpdateGroupEdgeIds>) {
       const { graphIndex, groupEdgeIds } = action.payload;
 
       state.graphList[graphIndex].metadata.groupEdges.ids = groupEdgeIds;
@@ -479,11 +462,11 @@ const graph = createSlice({
 
       state.graphList[lastGraphIndex].metadata.groupEdges.ids = action.payload;
     },
-    updateNodePosition(state, action: PayloadAction<NodePosParams[]>) {
+    updateNodePosition(state, action: PayloadAction<T.NodePosParams[]>) {
       const modifiedNodes = state.graphFlatten.nodes.map(
-        (node: Draft<Node>, index: number) => {
-          const foundNode: NodePosParams | undefined = action.payload.find(
-            (params: NodePosParams) => params.nodeId === node.id,
+        (node: Draft<T.Node>, index: number) => {
+          const foundNode: T.NodePosParams | undefined = action.payload.find(
+            (params: T.NodePosParams) => params.nodeId === node.id,
           );
 
           if (!foundNode) return node;

@@ -5,7 +5,6 @@ import { OnChangeParams } from 'baseui/select';
 import { useForm, UnpackNestedValue, SubmitHandler } from 'react-hook-form';
 import { Button, KIND, SIZE } from 'baseui/button';
 
-import { LabelMedium, ParagraphSmall } from 'baseui/typography';
 import { useSelector } from 'react-redux';
 import { UISelectors } from '../../../../redux/ui';
 import DataPreview from './DataPreview';
@@ -25,9 +24,9 @@ import {
   GraphSlices,
   ImportFormat,
 } from '../../../../redux/graph';
-import ConfirmationModal from '../../../../components/ConfirmationModal';
 import { getGraph } from '../../../../redux/graph/selectors';
 import GroupEdgeConfiguration from '../../../../components/GroupEdgeConfiguration';
+import OverwriteStyleModal from './OverwriteStyleModal';
 
 const ConfigureFields = () => {
   const {
@@ -160,9 +159,9 @@ const ConfigureFields = () => {
             setValue={setValue}
             dataType={dataType}
           />
-          <DataPreview isEdgeGroupable={isEdgeGroupable} dataType={dataType} />
         </Block>
 
+        <DataPreview isEdgeGroupable={isEdgeGroupable} dataType={dataType} />
         {isEdgeGroupable && <GroupEdgeConfiguration control={control} />}
 
         <Block position='absolute' bottom='scale300' right='0'>
@@ -179,39 +178,12 @@ const ConfigureFields = () => {
         </Block>
       </form>
 
-      <ConfirmationModal
-        onClose={() => {
-          importJsonOverwriteStyles(false);
-        }}
-        isOpen={modalOpen}
-        onReject={() => {
-          importJsonOverwriteStyles(false);
-        }}
-        onAccept={() => {
-          importJsonOverwriteStyles(true);
-        }}
-        rejectBtnText='No'
-        confirmBtnText='Yes'
-        header={
-          <LabelMedium
-            as='span'
-            overrides={{
-              Block: {
-                style: {
-                  textTransform: 'capitalize',
-                },
-              },
-            }}
-          >
-            Overwrite existing styles?
-          </LabelMedium>
-        }
-        body={
-          <ParagraphSmall>
-            Import file styles differ from currently applied styles.
-          </ParagraphSmall>
-        }
-      />
+      {modalOpen && (
+        <OverwriteStyleModal
+          isOpen={modalOpen}
+          onAction={importJsonOverwriteStyles}
+        />
+      )}
     </>
   );
 };
