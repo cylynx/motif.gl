@@ -3,7 +3,12 @@ import shortid from 'shortid';
 import { MotifImportError } from '../../../components/ImportErrorMessage';
 
 import { Node, Edge, GraphList, GraphData, Accessors } from '../types';
-import { processJson, processNodeEdgeCsv, processEdgeListCsv } from './data';
+import {
+  processJson,
+  processNodeEdgeCsv,
+  processEdgeListCsv,
+  verifySourceAndTargetExistence,
+} from './data';
 
 /**
  * Initial function to process json object with node, edge fields or motif json to required format
@@ -31,10 +36,19 @@ export const importJson = async (
         data?.key || data?.metadata?.key,
       );
 
-      results.push(addRequiredFieldsJson(processedData, accessors));
+      const graphData = addRequiredFieldsJson(processedData, accessors);
+      const { nodes, edges } = graphData;
+      verifySourceAndTargetExistence(nodes, edges, accessors);
+
+      results.push(graphData);
     }
     return results;
   } catch (err: any) {
+    if (err instanceof MotifImportError) {
+      const { name, message } = err;
+      throw new MotifImportError(name as any, message);
+    }
+
     throw new MotifImportError(err.message);
   }
 };

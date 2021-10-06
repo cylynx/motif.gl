@@ -4,8 +4,8 @@ import { useStyletron } from 'baseui';
 import ErrorMessage from '../../../components/ImportErrorMessage';
 import { BoldCodeText } from './JsonErrors';
 
-type EdgeSourceNotExistProps = { edgeId: string };
-export const EdgeSourceNotExist = ({ edgeId }: EdgeSourceNotExistProps) => {
+type EdgeSourceNotExistProps = { edgeSource: string };
+export const EdgeSourceNotExist = ({ edgeSource }: EdgeSourceNotExistProps) => {
   const [, theme] = useStyletron();
 
   return (
@@ -45,7 +45,8 @@ export const EdgeSourceNotExist = ({ edgeId }: EdgeSourceNotExistProps) => {
           />
 
           <Block marginTop='scale300' color='contentSecondary'>
-            Related Edge ID: <b style={{ marginLeft: '4px' }}>{edgeId}</b>
+            Related Edge Source:{' '}
+            <b style={{ marginLeft: '4px' }}>{edgeSource}</b>
           </Block>
         </Block>
       }
@@ -53,8 +54,8 @@ export const EdgeSourceNotExist = ({ edgeId }: EdgeSourceNotExistProps) => {
   );
 };
 
-type EdgeTargetNotExistProps = EdgeSourceNotExistProps;
-export const EdgeTargetNotExist = ({ edgeId }: EdgeTargetNotExistProps) => {
+type EdgeTargetNotExistProps = { edgeTarget: string };
+export const EdgeTargetNotExist = ({ edgeTarget }: EdgeTargetNotExistProps) => {
   const [, theme] = useStyletron();
 
   return (
@@ -94,7 +95,8 @@ export const EdgeTargetNotExist = ({ edgeId }: EdgeTargetNotExistProps) => {
           />
 
           <Block marginTop='scale300' color='contentSecondary'>
-            Related Edge ID: <b style={{ marginLeft: '4px' }}>{edgeId}</b>
+            Related Edge Target:{' '}
+            <b style={{ marginLeft: '4px' }}>{edgeTarget}</b>
           </Block>
         </Block>
       }

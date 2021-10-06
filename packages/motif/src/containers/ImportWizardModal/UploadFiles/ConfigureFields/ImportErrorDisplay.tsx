@@ -21,13 +21,13 @@ const ImportErrorDisplay: FC<ImportErrorDisplayProps> = ({ error }) => {
     }
 
     if (errorName === 'edge-source-not-exist') {
-      const edgeId = error.message;
-      return <MotifError.EdgeSourceNotExist edgeId={edgeId} />;
+      const edgeSource = error.message;
+      return <MotifError.EdgeSourceNotExist edgeSource={edgeSource} />;
     }
 
     if (errorName === 'edge-target-not-exist') {
-      const edgeId = error.message;
-      return <MotifError.EdgeTargetNotExist edgeId={edgeId} />;
+      const edgeTarget = error.message;
+      return <MotifError.EdgeTargetNotExist edgeTarget={edgeTarget} />;
     }
 
     return null;

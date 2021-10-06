@@ -782,12 +782,12 @@ export const verifySourceAndTargetExistence = (
 
     const isPossessSource = uniqueNodeIds.includes(source);
     if (!isPossessSource) {
-      throw new MotifImportError('edge-source-not-exist', id);
+      throw new MotifImportError('edge-source-not-exist', target);
     }
 
     const isPossessTarget = uniqueNodeIds.includes(target);
     if (!isPossessTarget) {
-      throw new MotifImportError('edge-target-not-exist', id);
+      throw new MotifImportError('edge-target-not-exist', target);
     }
   });
 };

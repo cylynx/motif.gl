@@ -57,16 +57,6 @@ const processResponse = (
         throw error;
       }
 
-      // verify whether source and target are pointing to valid node ids.
-      try {
-        const { nodes, edges } = graphData;
-        DataProcessor.verifySourceAndTargetExistence(nodes, edges, accessors);
-      } catch (err: any) {
-        dispatch(displayError(err));
-        dispatch(fetchDone());
-        throw err;
-      }
-
       if (graphData.metadata.groupEdges.toggle) {
         const { graphData: groupedEdgeData, groupEdgeIds } =
           groupEdgesForImportation(graphData, graphData.metadata.groupEdges);
