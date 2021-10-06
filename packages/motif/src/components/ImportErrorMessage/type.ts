@@ -21,6 +21,7 @@ export interface UploadError {
 export interface ImportError {
   EDGE_SOURCE_VALUE_UNDEFINED: 'edge-source-value-undefined';
   EDGE_TARGET_VALUE_UNDEFINED: 'edge-target-value-undefined';
+  NODE_EDGE_ID_CONFLICTS: 'node-edge-id-conflicts';
 }
 
 export type ErrorMessageProps = { title: ReactNode; content?: ReactNode };

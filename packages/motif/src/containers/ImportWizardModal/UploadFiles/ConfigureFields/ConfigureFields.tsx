@@ -77,18 +77,16 @@ const ConfigureFields = () => {
   useEffect(() => {
     const { groupEdge, ...accessors } = getValues() as ConfigureFieldsForm;
     setAccessors(accessors);
+
+    if (importError) {
+      dispatch(UISlices.clearError());
+    }
   }, [
     watch('nodeID'),
     watch('edgeID'),
     watch('edgeSource'),
     watch('edgeTarget'),
   ]);
-
-  useEffect(() => {
-    if (importError) {
-      dispatch(UISlices.clearError());
-    }
-  }, [watch('edgeSource'), watch('edgeTarget')]);
 
   const onSelectChange = (params: OnChangeParams, onChange: any) => {
     const [selectedOption] = params.value;

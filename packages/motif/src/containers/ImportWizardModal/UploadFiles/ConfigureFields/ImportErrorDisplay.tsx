@@ -14,6 +14,11 @@ const ImportErrorDisplay: FC<ImportErrorDisplayProps> = ({ error }) => {
       return <JsonError.EdgeTargetValueUndefined />;
     }
 
+    if (errorName === 'node-edge-id-conflicts') {
+      const conflictIds = JSON.parse(error.message);
+      return <JsonError.ConflictNodeEdgeID conflictIds={conflictIds} />;
+    }
+
     return null;
   }, [error]);
 

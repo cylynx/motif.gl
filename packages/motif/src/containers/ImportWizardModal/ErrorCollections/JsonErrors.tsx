@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Block } from 'baseui/block';
+import { useStyletron } from 'baseui';
 import ErrorMessage from '../../../components/ImportErrorMessage';
 
 const BoldCodeText: React.FC = ({ children }) => {
@@ -132,6 +133,49 @@ export const EdgeTargetValueUndefined = () => {
           <Block marginTop='scale300'>
             Please fix the missing attribute or select an appropriate{' '}
             <b>Target</b> above to try again.
+          </Block>
+        </Block>
+      }
+    />
+  );
+};
+
+type ConflictNodeEdgeIDProps = { conflictIds: string[] };
+export const ConflictNodeEdgeID = ({
+  conflictIds,
+}: ConflictNodeEdgeIDProps) => {
+  const [, theme] = useStyletron();
+  const conflictIdList = useMemo(
+    () => conflictIds.join(', '),
+    [conflictIds.length],
+  );
+  return (
+    <ErrorMessage
+      title={
+        <Block overrides={{ Block: { style: { textTransform: 'uppercase' } } }}>
+          Node and Edge ID conflicts.
+        </Block>
+      }
+      content={
+        <Block marginTop='scale300'>
+          <Block>
+            Motif unable to parse one of the graph because it contains duplicate
+            id between <BoldCodeText>nodes</BoldCodeText> and{' '}
+            <BoldCodeText>edges</BoldCodeText>. Please remove the duplicate id
+            from the dataset and perform data importation again.
+          </Block>
+
+          <div
+            style={{
+              width: '100%',
+              padding: '4px 0',
+              borderBottom: `1px solid ${theme.colors.contentTertiary}`,
+            }}
+          />
+
+          <Block marginTop='scale300' color='contentSecondary'>
+            Duplicate ID found:{' '}
+            <b style={{ marginLeft: '4px' }}>{conflictIdList}</b>
           </Block>
         </Block>
       }

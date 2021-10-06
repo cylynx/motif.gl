@@ -1,6 +1,7 @@
 import { flatten, isEmpty, cloneDeep, uniqBy } from 'lodash';
 import { combineGraphs } from '../../utils/graph-utils/utils';
 import { getFilterOptions, getGraph, getStyleOptions } from './selectors';
+import * as Utils from './utils';
 
 import {
   updateGraphFlatten,
@@ -27,6 +28,8 @@ import {
   SingleFileForms,
   TFileContent,
 } from '../import/fileUpload';
+import { MotifImportError } from '../../components/ImportErrorMessage';
+import { displayError, fetchDone } from '../ui/slice';
 
 type ImportAccessors = T.Accessors | null;
 
@@ -40,6 +43,18 @@ const processResponse = (
   const modifiedGraphList = [];
   const groupedEdgeGraphList: T.GraphList = graphList.map(
     (graphData: T.GraphData) => {
+      const duplicateId = Utils.findDuplicateID(graphData);
+      if (duplicateId.length > 0) {
+        const duplicateIdStr = JSON.stringify(duplicateId);
+        const error = new MotifImportError(
+          'node-edge-id-conflicts',
+          duplicateIdStr,
+        );
+        dispatch(displayError(error));
+        dispatch(fetchDone());
+        throw error;
+      }
+
       if (graphData.metadata.groupEdges.toggle) {
         const { graphData: groupedEdgeData, groupEdgeIds } =
           groupEdgesForImportation(graphData, graphData.metadata.groupEdges);
