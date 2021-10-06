@@ -161,8 +161,20 @@ export const ConflictNodeEdgeID = ({
           <Block>
             Motif unable to parse one of the graph because it contains duplicate
             id between <BoldCodeText>nodes</BoldCodeText> and{' '}
-            <BoldCodeText>edges</BoldCodeText>. Please remove the duplicate id
-            from the dataset and perform data importation again.
+            <BoldCodeText>edges</BoldCodeText>. <br />
+            <Block marginTop='scale0'>
+              The follow approach may help you to solve the error:
+              <ol style={{ margin: '4px 0' }}>
+                <li>
+                  Remove the duplicate id from the dataset and perform data
+                  importation again.
+                </li>
+                <li>
+                  Select non-duplicate <BoldCodeText>NodeID</BoldCodeText> and{' '}
+                  <BoldCodeText>EdgeID</BoldCodeText> above.
+                </li>
+              </ol>
+            </Block>
           </Block>
 
           <div
