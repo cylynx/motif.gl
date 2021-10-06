@@ -193,8 +193,9 @@ const generateIdKey = (object: any, idAccessor: string | undefined): void => {
       id: shortid.generate(),
     });
   } else {
+    const id = get(object, idAccessor).toString();
     Object.assign(object, {
-      id: get(object, idAccessor).toString(),
+      [idAccessor]: id,
     });
   }
 };
