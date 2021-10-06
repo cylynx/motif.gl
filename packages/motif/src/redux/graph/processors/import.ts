@@ -9,6 +9,7 @@ import {
   processEdgeListCsv,
   verifySourceAndTargetExistence,
 } from './data';
+import * as Utils from '../utils';
 
 /**
  * Initial function to process json object with node, edge fields or motif json to required format
@@ -37,8 +38,17 @@ export const importJson = async (
       );
 
       const graphData = addRequiredFieldsJson(processedData, accessors);
+
+      // verify whether source and target are valid.
       const { nodes, edges } = graphData;
       verifySourceAndTargetExistence(nodes, edges, accessors);
+
+      // prevent node ids and edge ids conflicting with each others.
+      const duplicateId = Utils.findDuplicateID(graphData, accessors);
+      if (duplicateId.length > 0) {
+        const duplicateIdStr = JSON.stringify(duplicateId);
+        throw new MotifImportError('node-edge-id-conflicts', duplicateIdStr);
+      }
 
       results.push(graphData);
     }

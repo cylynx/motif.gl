@@ -44,19 +44,6 @@ const processResponse = (
   const modifiedGraphList = [];
   const groupedEdgeGraphList: T.GraphList = graphList.map(
     (graphData: T.GraphData) => {
-      // prevent node ids and edge ids conflicting with each others.
-      const duplicateId = Utils.findDuplicateID(graphData, accessors);
-      if (duplicateId.length > 0) {
-        const duplicateIdStr = JSON.stringify(duplicateId);
-        const error = new MotifImportError(
-          'node-edge-id-conflicts',
-          duplicateIdStr,
-        );
-        dispatch(displayError(error));
-        dispatch(fetchDone());
-        throw error;
-      }
-
       if (graphData.metadata.groupEdges.toggle) {
         const { graphData: groupedEdgeData, groupEdgeIds } =
           groupEdgesForImportation(graphData, graphData.metadata.groupEdges);
