@@ -5,8 +5,8 @@ import { OnChangeParams } from 'baseui/select';
 import { useForm, UnpackNestedValue, SubmitHandler } from 'react-hook-form';
 import { Button, KIND, SIZE } from 'baseui/button';
 
-import { useSelector } from 'react-redux';
-import { UISelectors } from '../../../../redux/ui';
+import { useDispatch, useSelector } from 'react-redux';
+import { UISelectors, UISlices } from '../../../../redux/ui';
 import DataPreview from './DataPreview';
 import AccessorFields from './AccessorFields';
 
@@ -27,6 +27,7 @@ import {
 import { getGraph } from '../../../../redux/graph/selectors';
 import GroupEdgeConfiguration from '../../../../components/GroupEdgeConfiguration';
 import OverwriteStyleModal from './OverwriteStyleModal';
+import ImportErrorDisplay from './ImportErrorDisplay';
 
 const ConfigureFields = () => {
   const {
@@ -39,6 +40,7 @@ const ConfigureFields = () => {
     },
     setAccessors,
   } = useFileContents();
+  const dispatch = useDispatch();
 
   // loading indicator progress states
   const { loading, importError } = useSelector((state) =>
@@ -81,6 +83,12 @@ const ConfigureFields = () => {
     watch('edgeSource'),
     watch('edgeTarget'),
   ]);
+
+  useEffect(() => {
+    if (importError) {
+      dispatch(UISlices.clearError());
+    }
+  }, [watch('edgeSource'), watch('edgeTarget')]);
 
   const onSelectChange = (params: OnChangeParams, onChange: any) => {
     const [selectedOption] = params.value;
@@ -186,6 +194,12 @@ const ConfigureFields = () => {
           </>
         )}
       </form>
+
+      {importError && (
+        <Block marginTop='scale300'>
+          <ImportErrorDisplay error={importError} />
+        </Block>
+      )}
 
       {modalOpen && (
         <OverwriteStyleModal

@@ -1,6 +1,5 @@
 import { IToaster, ToastProps } from 'baseui/toast';
 import { ReactNode, ReactText } from 'react';
-import { MotifImportError } from '../../components/ImportErrorMessage';
 
 export interface UIState {
   name: string;
@@ -9,7 +8,7 @@ export interface UIState {
   modal: ModalState;
   score: any;
   toast: ToastState;
-  importError: MotifImportError;
+  importError: Error;
 }
 
 export type NullableReactNode = ReactNode | null;

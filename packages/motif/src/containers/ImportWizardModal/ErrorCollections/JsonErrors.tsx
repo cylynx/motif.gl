@@ -86,3 +86,55 @@ export const InvalidJsonFormat = () => {
     />
   );
 };
+
+export const EdgeSourceValueUndefined = () => {
+  return (
+    <ErrorMessage
+      title={
+        <Block overrides={{ Block: { style: { textTransform: 'uppercase' } } }}>
+          Missing value in edge source column.
+        </Block>
+      }
+      content={
+        <Block marginTop='scale300'>
+          <Block>
+            Motif unable to establish a relationship between nodes with the
+            provided <b>edge target</b> because selected attribute might be
+            missing.
+          </Block>
+
+          <Block marginTop='scale300'>
+            Please fix the missing attribute or select an appropriate{' '}
+            <b>Source</b> to try again.
+          </Block>
+        </Block>
+      }
+    />
+  );
+};
+
+export const EdgeTargetValueUndefined = () => {
+  return (
+    <ErrorMessage
+      title={
+        <Block overrides={{ Block: { style: { textTransform: 'uppercase' } } }}>
+          Missing value in edge target column.
+        </Block>
+      }
+      content={
+        <Block marginTop='scale300'>
+          <Block>
+            Motif unable to establish a relationship between nodes with the
+            provided <b>edge target</b> because selected attribute might be
+            missing.
+          </Block>
+
+          <Block marginTop='scale300'>
+            Please fix the missing attribute or select an appropriate{' '}
+            <b>Target</b> above to try again.
+          </Block>
+        </Block>
+      }
+    />
+  );
+};

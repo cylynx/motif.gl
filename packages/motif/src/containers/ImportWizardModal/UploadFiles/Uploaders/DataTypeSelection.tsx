@@ -10,7 +10,7 @@ import { UIConstants } from '../../../../redux/ui';
 import useFileContents from '../hooks/useFileContents';
 import { TFileContentState } from '../../../../redux/import/fileUpload';
 import { Dropdown } from '../../../../components/ui/Dropdown';
-import ImportErrorDisplay from './ImportErrorDisplay';
+import UploadErrorDisplay from './UploadErrorDisplay';
 
 const importOptions = Object.values(UIConstants.OPTIONS);
 
@@ -60,7 +60,7 @@ const DataTypeSelection: FC<DataTypeSelectionProps> = () => {
       {dataType.id === 'edgeListCsv' && <EdgeListCsv />}
       {dataType.id === 'nodeEdgeCsv' && <NodeEdgeCsv />}
 
-      <ImportErrorDisplay error={error} />
+      <UploadErrorDisplay error={error} />
     </Block>
   );
 };

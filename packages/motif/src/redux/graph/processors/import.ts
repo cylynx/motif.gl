@@ -1,5 +1,6 @@
 import { get, isUndefined } from 'lodash';
 import shortid from 'shortid';
+import { MotifImportError } from '../../../components/ImportErrorMessage';
 
 import { Node, Edge, GraphList, GraphData, Accessors } from '../types';
 import { processJson, processNodeEdgeCsv, processEdgeListCsv } from './data';
@@ -21,16 +22,21 @@ export const importJson = async (
   const results: GraphList = [];
   const graphList: GraphList = Array.isArray(json) ? json : [json];
 
-  for (const data of graphList) {
-    // eslint-disable-next-line no-await-in-loop
-    const processedData = await processJson(
-      data,
-      groupEdges,
-      data?.key || data?.metadata?.key,
-    );
-    results.push(addRequiredFieldsJson(processedData, accessors));
+  try {
+    for (const data of graphList) {
+      // eslint-disable-next-line no-await-in-loop
+      const processedData = await processJson(
+        data,
+        groupEdges,
+        data?.key || data?.metadata?.key,
+      );
+
+      results.push(addRequiredFieldsJson(processedData, accessors));
+    }
+    return results;
+  } catch (err: any) {
+    throw new MotifImportError(err.message);
   }
-  return results;
 };
 
 /**
@@ -145,8 +151,12 @@ export const addEdgeFields = (edge: Edge, accessors: Accessors): void => {
   const edgeSourceValue = get(edge, edgeSource);
   const edgeTargetValue = get(edge, edgeTarget);
 
-  if (isUndefined(edgeSourceValue) || isUndefined(edgeTargetValue)) {
-    throw new Error('Source and Target fields not found in Edges');
+  if (isUndefined(edgeSourceValue)) {
+    throw new Error('edge-source-value-undefined');
+  }
+
+  if (isUndefined(edgeTargetValue)) {
+    throw new Error('edge-target-value-undefined');
   }
 
   Object.assign(edge, {

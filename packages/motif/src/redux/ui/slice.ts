@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { MotifImportError } from 'src/components/ImportErrorMessage';
 import { UIState, ShowToastAction } from './types';
 
 export const initialStateUi: UIState = {
@@ -62,7 +61,7 @@ const ui = createSlice({
         toast: null,
       });
     },
-    displayError: (state, action: PayloadAction<MotifImportError>) => {
+    displayError: (state, action: PayloadAction<Error>) => {
       const importError = action.payload;
       state.importError = importError;
     },
@@ -82,6 +81,7 @@ export const {
   updateToast,
   removeToast,
   displayError,
+  clearError,
 } = ui.actions;
 
 export default ui.reducer;

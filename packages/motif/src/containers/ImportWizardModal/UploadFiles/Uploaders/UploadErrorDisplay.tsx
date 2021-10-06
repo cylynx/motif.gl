@@ -4,8 +4,8 @@ import * as JsonError from '../../ErrorCollections/JsonErrors';
 import * as CsvError from '../../ErrorCollections/CsvErrors';
 import * as NodeEdgeCsvError from '../../ErrorCollections/NodeEdgeCsvErrors';
 
-export type ImportErrorDisplayProps = { error: Error };
-const ImportErrorDisplay: FC<ImportErrorDisplayProps> = ({ error }) => {
+export type UploadErrorDisplayProps = { error: Error };
+const UploadErrorDisplay: FC<UploadErrorDisplayProps> = ({ error }) => {
   const errorMessage = useMemo(() => {
     const errorName = error?.name ?? '';
     if (errorName === 'restricted-words') {
@@ -54,4 +54,4 @@ const ImportErrorDisplay: FC<ImportErrorDisplayProps> = ({ error }) => {
   return errorMessage;
 };
 
-export default ImportErrorDisplay;
+export default UploadErrorDisplay;

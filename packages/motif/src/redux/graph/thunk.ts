@@ -1,5 +1,4 @@
 import { flatten, isEmpty, cloneDeep, uniqBy } from 'lodash';
-import { MotifImportError } from 'src/components/ImportErrorMessage';
 import { combineGraphs } from '../../utils/graph-utils/utils';
 import { getFilterOptions, getGraph, getStyleOptions } from './selectors';
 
@@ -157,10 +156,6 @@ export const importJsonData =
     overwriteStyles = false,
   ) =>
   (dispatch: any, getState: any) => {
-    if (Array.isArray(importData) === false) {
-      throw new Error('Provided import data is not an array');
-    }
-
     const isCustomAccessorEmpty = isEmpty(importAccessors);
 
     const { accessors: mainAccessors } = getGraph(getState());
@@ -208,13 +203,13 @@ export const importJsonData =
 
           showImportDataToast(dispatch, filterOptions);
           dispatch(FileUploadSlices.resetState());
+          dispatch(UISlices.clearError());
           dispatch(UISlices.fetchDone());
           dispatch(UISlices.closeModal());
         }, 50);
       })
-      .catch((err: Error) => {
-        const { message } = err;
-        dispatch(UIThunks.show(message, 'negative'));
+      .catch((err: any) => {
+        dispatch(UISlices.displayError(err));
         dispatch(UISlices.fetchDone());
       });
   };

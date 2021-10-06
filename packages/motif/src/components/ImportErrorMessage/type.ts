@@ -19,7 +19,8 @@ export interface UploadError {
 }
 
 export interface ImportError {
-  JSON_NOT_ARRAY: 'json-not-array';
+  EDGE_SOURCE_VALUE_UNDEFINED: 'edge-source-value-undefined';
+  EDGE_TARGET_VALUE_UNDEFINED: 'edge-target-value-undefined';
 }
 
 export type ErrorMessageProps = { title: ReactNode; content?: ReactNode };
