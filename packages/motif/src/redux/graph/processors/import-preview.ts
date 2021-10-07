@@ -163,7 +163,6 @@ export const processPreviewNodeEdge = async (
 
     return graphData;
   } catch (err: any) {
-    const { message } = err;
-    throw new Error(`Import Node Edge Data Error: ${message}`);
+    throw new MotifUploadError(`unknown-import-error`);
   }
 };

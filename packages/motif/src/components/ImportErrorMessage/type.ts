@@ -17,6 +17,7 @@ export interface UploadError {
   INVALID_EDGE_CSV_FORMAT: 'invalid-edge-csv-format';
   EMPTY_NODE_CSV_ROW: 'empty-node-csv-row';
   EMPTY_EDGE_CSV_ROW: 'empty-edge-csv-row';
+  UNKNOWN_IMPORT_ERROR: 'unknown-import-error';
 }
 
 export interface ImportError {
@@ -25,6 +26,7 @@ export interface ImportError {
   EDGE_SOURCE_NOT_EXIST: 'edge-source-not-exist';
   EDGE_TARGET_NOT_EXIST: 'edge-target-not-exist';
   NODE_EDGE_ID_CONFLICTS: 'node-edge-id-conflicts';
+  UNKNOWN_IMPORT_ERROR: 'unknown-import-error';
 }
 
 export type ErrorMessageProps = { title: ReactNode; content?: ReactNode };

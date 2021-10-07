@@ -30,6 +30,10 @@ const ImportErrorDisplay: FC<ImportErrorDisplayProps> = ({ error }) => {
       return <MotifError.EdgeTargetNotExist edgeTarget={edgeTarget} />;
     }
 
+    if (errorName === 'unknown-error-occurs') {
+      return <MotifError.UnknownErrorOccurs />;
+    }
+
     return null;
   }, [error]);
 

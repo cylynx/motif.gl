@@ -172,6 +172,7 @@ export const processJson = async (
  * @param {string[]} nodeCsvs
  * @param {string[]} edgeCsvs
  * @param {boolean} groupEdges
+ * @param {Accessors} accessors
  * @param {*} [key=shortid.generate()]
  * @return {*}  {Promise<Graph.GraphData>}
  */
@@ -180,7 +181,7 @@ export const processNodeEdgeCsv = async (
   edgeCsvs: string[],
   groupEdges: boolean,
   accessors: Accessors,
-  key = shortid.generate(),
+  key: string = shortid.generate(),
 ): Promise<GraphData> => {
   const combineFieldsAndJson = (
     acc: ProcessedCsv,
@@ -249,8 +250,12 @@ export const processNodeEdgeCsv = async (
 
     return graphData;
   } catch (err: any) {
-    const { message } = err;
-    throw new Error(`Import Node Edge Data Error: ${message}`);
+    if (err instanceof MotifImportError) {
+      const { name, message } = err;
+      throw new MotifImportError(name as any, message);
+    }
+
+    throw new Error(err.message);
   }
 };
 
@@ -783,7 +788,7 @@ export const verifySourceAndTargetExistence = (
 
     const isPossessSource = uniqueNodeIds.includes(source);
     if (!isPossessSource) {
-      throw new MotifImportError('edge-source-not-exist', target);
+      throw new MotifImportError('edge-source-not-exist', source);
     }
 
     const isPossessTarget = uniqueNodeIds.includes(target);

@@ -53,6 +53,10 @@ const UploadErrorDisplay: FC<UploadErrorDisplayProps> = ({ error }) => {
       return <NodeEdgeCsvError.EmptyEdgeCsvRow />;
     }
 
+    if (errorName === 'unknown-error-occurs') {
+      return <MotifError.UnknownErrorOccurs />;
+    }
+
     return null;
   }, [error]);
 

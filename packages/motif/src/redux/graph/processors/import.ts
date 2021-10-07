@@ -127,17 +127,30 @@ export const importNodeEdgeCsv = async (
   groupEdges: boolean,
   metadataKey: string = null,
 ): Promise<GraphData> => {
-  const processedData: GraphData = await processNodeEdgeCsv(
-    nodeCsv,
-    edgeCsv,
-    groupEdges,
-    accessors,
-    metadataKey,
-  );
-  if (processedData.nodes.length < 1) {
-    throw new Error('process Csv Data Failed: CSV is empty');
+  try {
+    const processedData: GraphData = await processNodeEdgeCsv(
+      nodeCsv,
+      edgeCsv,
+      groupEdges,
+      accessors,
+      metadataKey,
+    );
+
+    const graphData = addRequiredFieldsJson(processedData, accessors);
+    const { nodes, edges } = graphData;
+    verifySourceAndTargetExistence(nodes, edges, accessors);
+
+    // prevent node ids and edge ids conflicting with each others.
+    const duplicateId = Utils.findDuplicateID(graphData, accessors);
+    if (duplicateId.length > 0) {
+      const duplicateIdStr = JSON.stringify(duplicateId);
+      throw new MotifImportError('node-edge-id-conflicts', duplicateIdStr);
+    }
+
+    return graphData;
+  } catch (err: any) {
+    throw new MotifImportError(err.name, err.message);
   }
-  return addRequiredFieldsJson(processedData, accessors);
 };
 
 /**

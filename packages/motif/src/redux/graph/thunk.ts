@@ -1,7 +1,6 @@
 import { flatten, isEmpty, cloneDeep, uniqBy } from 'lodash';
 import { combineGraphs } from '../../utils/graph-utils/utils';
 import { getFilterOptions, getGraph, getStyleOptions } from './selectors';
-import * as Utils from './utils';
 
 import {
   updateGraphFlatten,
@@ -227,10 +226,6 @@ export const importNodeEdgeData =
     metadataKey: string = null,
   ) =>
   (dispatch: any, getState: any) => {
-    if (Array.isArray(importData)) {
-      throw new Error('importData parameter must not be an array');
-    }
-
     const { accessors: mainAccessors } = getGraph(getState());
     const accessors = isEmpty(importAccessors)
       ? mainAccessors
@@ -265,9 +260,8 @@ export const importNodeEdgeData =
           dispatch(UISlices.closeModal());
         }, 50);
       })
-      .catch((err: Error) => {
-        const { message } = err;
-        dispatch(UIThunks.show(message, 'negative'));
+      .catch((err: any) => {
+        dispatch(UISlices.displayError(err));
         dispatch(UISlices.fetchDone());
       });
   };
