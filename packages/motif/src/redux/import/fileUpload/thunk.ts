@@ -82,6 +82,16 @@ export const previewEdgeList =
 
     return Promise.all(batchDataPromises)
       .then((graphList: GraphList) => {
+        const isInvalidEdges =
+          FileUploadUtils.edgeContainRestrictedWords(graphList);
+        if (isInvalidEdges) {
+          const restrictedWordError = new MotifUploadError(
+            'edge-restricted-words',
+          );
+          dispatch(setError(restrictedWordError));
+          return;
+        }
+
         FileUploadUtils.createPreviewData(
           graphList,
           dispatch,
