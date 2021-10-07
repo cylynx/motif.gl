@@ -97,6 +97,13 @@ export const importEdgeListCsv = async (
     const { nodes, edges } = processedData;
     verifySourceAndTargetExistence(nodes, edges, accessors);
 
+    // prevent node ids and edge ids conflicting with each others.
+    const duplicateId = Utils.findDuplicateID(processedData, accessors);
+    if (duplicateId.length > 0) {
+      const duplicateIdStr = JSON.stringify(duplicateId);
+      throw new MotifImportError('node-edge-id-conflicts', duplicateIdStr);
+    }
+
     return processedData;
   } catch (err: any) {
     if (err instanceof MotifImportError) {

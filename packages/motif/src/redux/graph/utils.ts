@@ -21,8 +21,14 @@ export const findDuplicateID = (
 
   // motif help elimiate duplicate node/edge id,
   // thus we only cross check id between nodes and edges.
-  const nodeIds: string[] = uniq(nodes.map((node) => get(node, nodeID)));
-  const edgeIds: string[] = uniq(edges.map((edge) => get(edge, edgeID)));
+  const nodeIDAccessor = nodeID === 'auto-generate' ? 'id' : nodeID;
+  const edgeIDAccessor = nodeID === 'auto-generate' ? 'id' : edgeID;
+  const nodeIds: string[] = uniq(
+    nodes.map((node) => get(node, nodeIDAccessor)),
+  );
+  const edgeIds: string[] = uniq(
+    edges.map((edge) => get(edge, edgeIDAccessor)),
+  );
 
   const ids = [...nodeIds, ...edgeIds];
   const duplicateItems = findDuplicateItem(ids);

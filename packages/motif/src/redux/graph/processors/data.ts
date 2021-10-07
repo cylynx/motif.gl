@@ -284,6 +284,10 @@ export const processEdgeListCsv = async (
   });
   const uniqueNodes = [...new Set(edgeIds)];
   const nodeJson = uniqueNodes.map((node) => {
+    if (!node) {
+      return { id: node };
+    }
+
     return { id: node.toString() };
   });
 
@@ -759,7 +763,10 @@ export const verifySourceAndTargetExistence = (
   accessors: Accessors,
 ) => {
   const { nodeID, edgeID, edgeSource, edgeTarget } = accessors;
+
   const nodeIDAccessor = nodeID === 'auto-generate' ? 'id' : nodeID;
+  const edgeIDAccessor = edgeID === 'auto-generate' ? 'id' : edgeID;
+
   const nodeIds: string[] = nodes.map((node: Node) => {
     const nodeIdProperty: string = get(node, nodeIDAccessor, '');
     if (typeof nodeIdProperty !== 'string') {
@@ -781,7 +788,7 @@ export const verifySourceAndTargetExistence = (
       target = target.trim();
     }
 
-    let id: string = get(edge, edgeID, '');
+    let id: string = get(edge, edgeIDAccessor, '');
     if (typeof id === 'string') {
       id = id.trim();
     }

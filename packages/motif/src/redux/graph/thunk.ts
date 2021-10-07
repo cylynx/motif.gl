@@ -119,6 +119,7 @@ export const importEdgeListData =
           processResponse(dispatch, mainAccessors, graphData);
           showImportDataToast(dispatch, filterOptions);
           dispatch(FileUploadSlices.resetState());
+          dispatch(UISlices.clearError());
           dispatch(UISlices.fetchDone());
           dispatch(UISlices.closeModal());
         }, 50);
@@ -301,6 +302,7 @@ export const importSampleData =
           processResponse(dispatch, accessors, graphData);
           showImportDataToast(dispatch, filterOptions);
           dispatch(FileUploadSlices.resetState());
+          dispatch(UISlices.clearError());
           dispatch(UISlices.fetchDone());
           dispatch(UISlices.closeModal());
         }, 50);

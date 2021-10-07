@@ -149,7 +149,7 @@ export const ConflictNodeEdgeID = ({
                 </li>
                 <li>
                   Select unique <BoldCodeText>NodeID</BoldCodeText> and{' '}
-                  <BoldCodeText>EdgeID</BoldCodeText> fieldabove.
+                  <BoldCodeText>EdgeID</BoldCodeText> field above.
                 </li>
               </ol>
             </Block>
