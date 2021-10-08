@@ -144,8 +144,8 @@ export const ConflictNodeEdgeID = ({
               The follow approach may help you to solve this error:
               <ol style={{ margin: '4px 0' }}>
                 <li>
-                  Remove the duplicate id from the dataset and re-import data
-                  again.
+                  Remove the duplicate id from the dataset and re-import the
+                  data again.
                 </li>
                 <li>
                   Select a unique <BoldCodeText>Node ID</BoldCodeText> and{' '}
