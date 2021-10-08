@@ -21,7 +21,7 @@ export const EmptyData = () => {
       }
       content={
         <Block marginTop='scale300'>
-          Motif unable to import your dataset because the provided JSON is
+          Motif is unable to import the dataset because the provided JSON is
           empty.
         </Block>
       }
@@ -58,8 +58,8 @@ export const InvalidJsonFormat = () => {
       }
       content={
         <Block marginTop='scale300'>
-          Motif unable to parse the dataset because it contains invalid JSON
-          format.
+          Motif is unable to parse the dataset because the JSON format is
+          invalid.
         </Block>
       }
     />
@@ -77,14 +77,14 @@ export const EdgeSourceValueUndefined = () => {
       content={
         <Block marginTop='scale300'>
           <Block>
-            Motif unable to establish a relationship between nodes with the
-            provided <b>edge source</b> because the selected attribute might be
+            Motif is unable to establish the relationship between nodes with the
+            specified <b>edge source</b> because the selected attribute might be
             missing, <code>undefined</code> or <code>null</code>.
           </Block>
 
           <Block marginTop='scale300'>
             Please fix the missing attribute or select an appropriate{' '}
-            <b>Source</b> to try again.
+            <b>Source</b> in the above dropdown to try again.
           </Block>
         </Block>
       }
@@ -103,14 +103,14 @@ export const EdgeTargetValueUndefined = () => {
       content={
         <Block marginTop='scale300'>
           <Block>
-            Motif unable to establish a relationship between nodes with the
-            provided <b>edge target</b> because selected attribute might be
-            missing.
+            Motif is unable to establish the relationship between nodes with the
+            specified <b>edge target</b> because the selected attribute might be
+            missing, <code>undefined</code> or <code>null</code>.
           </Block>
 
           <Block marginTop='scale300'>
             Please fix the missing attribute or select an appropriate{' '}
-            <b>Target</b> above to try again.
+            <b>Target</b> in the above dropdown to try again.
           </Block>
         </Block>
       }
@@ -137,19 +137,19 @@ export const ConflictNodeEdgeID = ({
       content={
         <Block marginTop='scale300'>
           <Block>
-            Motif unable to parse one of the graph because it contains duplicate
-            id between <BoldCodeText>nodes</BoldCodeText> and{' '}
+            Motif is unable to parse one of the graph because it contains
+            duplicate id between <BoldCodeText>nodes</BoldCodeText> and{' '}
             <BoldCodeText>edges</BoldCodeText>. <br />
             <Block marginTop='scale0'>
               The follow approach may help you to solve this error:
               <ol style={{ margin: '4px 0' }}>
                 <li>
-                  Remove the duplicate id from the dataset and perform data
-                  importation again.
+                  Remove the duplicate id from the dataset and re-import data
+                  again.
                 </li>
                 <li>
-                  Select unique <BoldCodeText>NodeID</BoldCodeText> and{' '}
-                  <BoldCodeText>EdgeID</BoldCodeText> field above.
+                  Select a unique <BoldCodeText>Node ID</BoldCodeText> and{' '}
+                  <BoldCodeText>Edge ID</BoldCodeText> in the above dropdown.
                 </li>
               </ol>
             </Block>

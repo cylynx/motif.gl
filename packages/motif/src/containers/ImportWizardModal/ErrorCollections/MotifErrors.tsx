@@ -19,8 +19,8 @@ export const EdgeSourceNotExist = ({ edgeSource }: EdgeSourceNotExistProps) => {
       content={
         <Block marginTop='scale300'>
           <Block>
-            Motif unable to parse one of the graph because one of the edge
-            source value are pointing to non-existence node id. <br />
+            Motif is unable to parse one of the graphs because one of the edge
+            source is pointing to non-existence node id. <br />
             <Block marginTop='scale0'>
               The follow approach may help you to solve this error:
               <ol style={{ margin: '4px 0' }}>
@@ -30,8 +30,8 @@ export const EdgeSourceNotExist = ({ edgeSource }: EdgeSourceNotExistProps) => {
                   <BoldCodeText>node.id</BoldCodeText>
                 </li>
                 <li>
-                  Select suitable <BoldCodeText>Source</BoldCodeText> field
-                  above.
+                  Select a suitable <BoldCodeText>Source</BoldCodeText> field
+                  from the above dropdown.
                 </li>
               </ol>
             </Block>
@@ -63,25 +63,25 @@ export const EdgeTargetNotExist = ({ edgeTarget }: EdgeTargetNotExistProps) => {
     <ErrorMessage
       title={
         <Block overrides={{ Block: { style: { textTransform: 'uppercase' } } }}>
-          edge target not exist.
+          edge target does not exist.
         </Block>
       }
       content={
         <Block marginTop='scale300'>
           <Block>
-            Motif unable to parse one of the graph because one of the edge
-            target value are pointing to non-existence node id. <br />
+            Motif is unable to parse one of the graphs because the edge target
+            values are pointing to a non-existence node id. <br />
             <Block marginTop='scale0'>
               The follow approach may help you to solve this error:
               <ol style={{ margin: '4px 0' }}>
                 <li>
                   Refactor and correct the{' '}
-                  <BoldCodeText>edge.target</BoldCodeText> value to existing{' '}
+                  <BoldCodeText>edge.target</BoldCodeText> value to an existing{' '}
                   <BoldCodeText>node.id</BoldCodeText>
                 </li>
                 <li>
-                  Select suitable <BoldCodeText>Target</BoldCodeText> field
-                  above.
+                  Select a suitable <BoldCodeText>Target</BoldCodeText> in the
+                  dropdown above.
                 </li>
               </ol>
             </Block>
@@ -115,12 +115,12 @@ export const RestrictedNodeDataType = () => {
       }
       content={
         <Block marginTop='scale300'>
-          <BoldCodeText>type</BoldCodeText> is a reserve words used as
-          identifiers to perform styling.
+          <BoldCodeText>type</BoldCodeText> is a reserve property used
+          internally for styling.
           <br />
           You can rename <BoldCodeText>type</BoldCodeText> column to{' '}
           <BoldCodeText>node_type</BoldCodeText> or{' '}
-          <BoldCodeText>types</BoldCodeText> to import data successfully.
+          <BoldCodeText>types</BoldCodeText> to import the data successfully.
         </Block>
       }
     />
@@ -137,12 +137,12 @@ export const RestrictedEdgeDataType = () => {
       }
       content={
         <Block marginTop='scale300'>
-          <BoldCodeText>type</BoldCodeText> is a reserve words used as
-          identifiers to perform styling.
+          <BoldCodeText>type</BoldCodeText> is a reserve property used
+          internally for styling.
           <br />
           You can rename <BoldCodeText>type</BoldCodeText> column to{' '}
           <BoldCodeText>edge_type</BoldCodeText> or{' '}
-          <BoldCodeText>types</BoldCodeText> to import data successfully.
+          <BoldCodeText>types</BoldCodeText> to import the data successfully.
         </Block>
       }
     />

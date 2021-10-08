@@ -12,8 +12,8 @@ export const InvalidNodeCsvFormat = () => {
       }
       content={
         <Block marginTop='scale300'>
-          Motif unable to parse the one of the dataset because the provided Node
-          CSV file is invalid.
+          Motif is unable to parse the one of the datasets because the provided
+          Node CSV file is invalid.
         </Block>
       }
     />
@@ -30,8 +30,8 @@ export const InvalidEdgeCsvFormat = () => {
       }
       content={
         <Block marginTop='scale300'>
-          Motif unable to parse one of the dataset because the provided Edge CSV
-          file is invalid.
+          Motif is unable to parse one of the datasets because the provided Edge
+          CSV file is invalid.
         </Block>
       }
     />
@@ -48,8 +48,8 @@ export const EmptyNodeCsvRow = () => {
       }
       content={
         <Block marginTop='scale300'>
-          Motif unable to parse one of the dataset because the provided Node CSV
-          does not contain a single row.
+          Motif is unable to parse one of the datasets because the provided Node
+          CSV does not contain a single row.
         </Block>
       }
     />
@@ -66,8 +66,8 @@ export const EmptyEdgeCsvRow = () => {
       }
       content={
         <Block marginTop='scale300'>
-          Motif unable to parse one of the dataset because the provided Edge CSV
-          does not contain a single row.
+          Motif is unable to parse one of the dataset because the provided Edge
+          CSV does not contain a single row.
         </Block>
       }
     />

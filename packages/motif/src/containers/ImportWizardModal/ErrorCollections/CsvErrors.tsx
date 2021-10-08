@@ -12,7 +12,7 @@ export const InvalidCsvFormat = () => {
       }
       content={
         <Block marginTop='scale300'>
-          Motif unable to parse one of the dataset because the provided CSV
+          Motif is unable to parse one of the datasets because the provided CSV
           format is invalid.
         </Block>
       }
@@ -30,8 +30,8 @@ export const EmptyCsvRow = () => {
       }
       content={
         <Block marginTop='scale300'>
-          Motif unable to parse the dataset because one of the provided CSV file
-          do not possess single row.
+          Motif is unable to parse the datasets because one of the provided CSV
+          files do not possess a single row.
         </Block>
       }
     />
