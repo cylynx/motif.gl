@@ -193,8 +193,8 @@ export const DuplicateNodeID = ({ conflictIds }: ConflictNodeIDProps) => {
       content={
         <Block marginTop='scale300'>
           <Block>
-            Motif unable to parse one of the graph because it contains duplicate
-            id between <BoldCodeText>nodes</BoldCodeText>.<br />
+            Motif is unable to parse one of the graph because it contains
+            duplicate id(s) in <BoldCodeText>nodes</BoldCodeText>.<br />
             <Block marginTop='scale0'>
               The follow approach may help you to solve this error:
               <ol style={{ margin: '4px 0' }}>
@@ -203,7 +203,8 @@ export const DuplicateNodeID = ({ conflictIds }: ConflictNodeIDProps) => {
                   importation again.
                 </li>
                 <li>
-                  Select unique <BoldCodeText>NodeID</BoldCodeText> field above.
+                  Select unique <BoldCodeText>NodeID</BoldCodeText> field in the
+                  dropdown above.
                 </li>
               </ol>
             </Block>
@@ -246,8 +247,8 @@ export const DuplicateEdgeID = ({ conflictIds }: ConflictEdgeIDProps) => {
       content={
         <Block marginTop='scale300'>
           <Block>
-            Motif unable to parse one of the graph because it contains duplicate
-            id between <BoldCodeText>edges</BoldCodeText>.<br />
+            Motif is unable to parse one of the graph because it contains
+            duplicate id(s) in <BoldCodeText>edges</BoldCodeText>.<br />
             <Block marginTop='scale0'>
               The follow approach may help you to solve this error:
               <ol style={{ margin: '4px 0' }}>
@@ -256,7 +257,8 @@ export const DuplicateEdgeID = ({ conflictIds }: ConflictEdgeIDProps) => {
                   importation again.
                 </li>
                 <li>
-                  Select unique <BoldCodeText>EdgeID</BoldCodeText> field above.
+                  Select unique <BoldCodeText>EdgeID</BoldCodeText> field in the
+                  dropdown above.
                 </li>
               </ol>
             </Block>
