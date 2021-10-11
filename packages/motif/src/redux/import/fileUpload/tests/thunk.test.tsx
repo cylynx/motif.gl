@@ -73,6 +73,7 @@ describe('Import Preview - thunk.test.tsx', () => {
         setDataPreview(singleSimpleGraph),
         setIsEdgeGroupable(false),
         setStep(2),
+        setError(null),
       ];
 
       // @ts-ignore
@@ -95,6 +96,7 @@ describe('Import Preview - thunk.test.tsx', () => {
         setDataPreview(combinedData),
         setIsEdgeGroupable(false),
         setStep(2),
+        setError(null),
       ];
 
       // @ts-ignore
@@ -134,6 +136,7 @@ describe('Import Preview - thunk.test.tsx', () => {
         setDataPreview(graphData),
         setIsEdgeGroupable(false),
         setStep(2),
+        setError(null),
       ];
 
       // @ts-ignore
@@ -162,6 +165,7 @@ describe('Import Preview - thunk.test.tsx', () => {
         setDataPreview(combinedGraph),
         setIsEdgeGroupable(false),
         setStep(2),
+        setError(null),
       ];
 
       // @ts-ignore
@@ -183,6 +187,7 @@ describe('Import Preview - thunk.test.tsx', () => {
         setDataPreview(graph),
         setIsEdgeGroupable(false),
         setStep(2),
+        setError(null),
       ];
 
       // @ts-ignore

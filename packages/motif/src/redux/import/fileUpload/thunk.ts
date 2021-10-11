@@ -66,6 +66,7 @@ export const previewJson =
       );
       FileUploadUtils.setEdgeGroupable(graphList, dispatch);
       FileUploadUtils.nextStep(step, dispatch);
+      dispatch(setError(null));
     } catch (err: any) {
       dispatch(setError(err));
     }

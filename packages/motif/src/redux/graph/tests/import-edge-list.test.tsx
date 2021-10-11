@@ -158,20 +158,4 @@ describe('Import Edge List Data', () => {
         }, 300);
       });
   });
-
-  it('should throw errors if importData parameter is not array', async () => {
-    await expect(importEdgeListData(Constant.firstEdgeListCsv as any)).toThrow(
-      Error,
-    );
-  });
-
-  it('should throw errors if source and target fields are invalid', async () => {
-    const firstErrorEdgeCsv =
-      'id,relation,from,to\ntxn1,works,jason,cylynx\ntxn3,abc,cylynx,timothy\ntxn4,says hi to,swan,cylynx';
-
-    const secondValidEdgeCsv = 'id,source,target\n123,x,y\n456,y,z\n789,z,x';
-    await expect(
-      importEdgeListData([firstErrorEdgeCsv, secondValidEdgeCsv]),
-    ).toThrow(new MotifImportError('edge-source-not-exist', 'x'));
-  });
 });

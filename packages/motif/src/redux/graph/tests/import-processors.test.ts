@@ -99,7 +99,14 @@ describe('Import edge list csv', () => {
     expect(results.nodes).toHaveLength(3);
     expect(results.nodes[0]).toHaveProperty('id');
     expect(results.edges).toHaveLength(3);
-    expect(results.edges[0]).toHaveProperty('id', 'from', 'to');
+    expect(results.edges[0]).toHaveProperty(
+      'custom_id',
+      'data',
+      'from',
+      'to',
+      'source',
+      'target',
+    );
   });
 });
 
@@ -136,7 +143,7 @@ describe('Import node edge csv', () => {
       'source',
       'target',
     );
-    expect(results.edges[0].custom_id).toEqual('1');
+    expect(results.edges[0].id).toEqual('1');
     done();
   });
 });

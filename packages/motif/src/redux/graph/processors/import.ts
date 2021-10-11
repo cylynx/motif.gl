@@ -196,11 +196,11 @@ export const addEdgeFields = (edge: Edge, accessors: Accessors): void => {
   const edgeSourceValue = get(edge, edgeSource);
   const edgeTargetValue = get(edge, edgeTarget);
 
-  if (!edgeSourceValue) {
+  if (edgeSourceValue === undefined) {
     throw new Error('edge-source-value-undefined');
   }
 
-  if (!edgeTargetValue) {
+  if (edgeTargetValue === undefined) {
     throw new Error('edge-target-value-undefined');
   }
 
@@ -232,6 +232,11 @@ const generateIdKey = (object: any, idAccessor: string | undefined): void => {
   } else if (isUndefined(get(object, idAccessor))) {
     Object.assign(object, {
       id: shortid.generate(),
+    });
+  } else if (isUndefined(object.id) && idAccessor) {
+    const id = get(object, idAccessor).toString();
+    Object.assign(object, {
+      id,
     });
   } else if (idAccessor === 'auto-generated') {
     Object.assign(object, {
