@@ -309,7 +309,6 @@ export const importSampleData =
       })
       .catch((err: Error) => {
         const { message } = err;
-        console.log(err.name);
         dispatch(UIThunks.show(message, 'negative'));
         dispatch(UISlices.fetchDone());
       });

@@ -275,11 +275,6 @@ describe('Import Node Edge Data', () => {
       });
   });
 
-  it('should throw errors if importNodeEdgeData parameter is array', async () => {
-    const importDataArr = [Constant.sampleNodeEdgeData];
-    await expect(importNodeEdgeData(importDataArr as any)).toThrow(Error);
-  });
-
   it('should throw errors if source and target fields are invalid', async () => {
     const invalidNodeEdgeData = {
       data: {
