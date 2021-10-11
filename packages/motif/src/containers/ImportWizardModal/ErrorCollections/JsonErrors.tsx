@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { Block } from 'baseui/block';
 import { useStyletron } from 'baseui';
+import { StyledLink } from 'baseui/link';
 import ErrorMessage from '../../../components/ImportErrorMessage';
 
 export const BoldCodeText: React.FC = ({ children }) => {
@@ -150,6 +151,112 @@ export const ConflictNodeEdgeID = ({
                 <li>
                   Select a unique <BoldCodeText>Node ID</BoldCodeText> and{' '}
                   <BoldCodeText>Edge ID</BoldCodeText> in the above dropdown.
+                </li>
+              </ol>
+            </Block>
+          </Block>
+
+          <div
+            style={{
+              width: '100%',
+              padding: '4px 0',
+              borderBottom: `1px solid ${theme.colors.contentTertiary}`,
+            }}
+          />
+
+          <Block marginTop='scale300' color='contentSecondary'>
+            Duplicate ID found:{' '}
+            <b style={{ marginLeft: '4px' }}>{conflictIdList}</b>
+          </Block>
+        </Block>
+      }
+    />
+  );
+};
+
+type ConflictNodeIDProps = ConflictNodeEdgeIDProps;
+export const DuplicateNodeID = ({ conflictIds }: ConflictNodeIDProps) => {
+  const [, theme] = useStyletron();
+
+  const conflictIdList = useMemo(
+    () => conflictIds.join(', '),
+    [conflictIds.length],
+  );
+
+  return (
+    <ErrorMessage
+      title={
+        <Block overrides={{ Block: { style: { textTransform: 'uppercase' } } }}>
+          Node ID Conflicts.
+        </Block>
+      }
+      content={
+        <Block marginTop='scale300'>
+          <Block>
+            Motif unable to parse one of the graph because it contains duplicate
+            id between <BoldCodeText>nodes</BoldCodeText>.<br />
+            <Block marginTop='scale0'>
+              The follow approach may help you to solve this error:
+              <ol style={{ margin: '4px 0' }}>
+                <li>
+                  Remove the duplicate id from the dataset and perform data
+                  importation again.
+                </li>
+                <li>
+                  Select unique <BoldCodeText>NodeID</BoldCodeText> field above.
+                </li>
+              </ol>
+            </Block>
+          </Block>
+
+          <div
+            style={{
+              width: '100%',
+              padding: '4px 0',
+              borderBottom: `1px solid ${theme.colors.contentTertiary}`,
+            }}
+          />
+
+          <Block marginTop='scale300' color='contentSecondary'>
+            Duplicate ID found:{' '}
+            <b style={{ marginLeft: '4px' }}>{conflictIdList}</b>
+          </Block>
+        </Block>
+      }
+    />
+  );
+};
+
+type ConflictEdgeIDProps = ConflictNodeIDProps;
+export const DuplicateEdgeID = ({ conflictIds }: ConflictEdgeIDProps) => {
+  const [, theme] = useStyletron();
+
+  const conflictIdList = useMemo(
+    () => conflictIds.join(', '),
+    [conflictIds.length],
+  );
+
+  return (
+    <ErrorMessage
+      title={
+        <Block overrides={{ Block: { style: { textTransform: 'uppercase' } } }}>
+          Edge ID Conflicts.
+        </Block>
+      }
+      content={
+        <Block marginTop='scale300'>
+          <Block>
+            Motif unable to parse one of the graph because it contains duplicate
+            id between <BoldCodeText>edges</BoldCodeText>.<br />
+            <Block marginTop='scale0'>
+              The follow approach may help you to solve this error:
+              <ol style={{ margin: '4px 0' }}>
+                <li>
+                  Remove the duplicate id from the dataset and perform data
+                  importation again.
+                </li>
+                <li>
+                  Select unique <BoldCodeText>EdgeID</BoldCodeText> field above.
                 </li>
               </ol>
             </Block>

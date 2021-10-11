@@ -34,6 +34,16 @@ const ImportErrorDisplay: FC<ImportErrorDisplayProps> = ({ error }) => {
       return <MotifError.UnknownErrorOccurs />;
     }
 
+    if (errorName === 'conflict-node-id') {
+      const conflictIds = JSON.parse(error.message);
+      return <JsonError.DuplicateNodeID conflictIds={conflictIds} />;
+    }
+
+    if (errorName === 'conflict-edge-id') {
+      const conflictIds = JSON.parse(error.message);
+      return <JsonError.DuplicateEdgeID conflictIds={conflictIds} />;
+    }
+
     return null;
   }, [error]);
 

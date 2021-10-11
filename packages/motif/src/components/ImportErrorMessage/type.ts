@@ -26,6 +26,8 @@ export interface ImportError {
   EDGE_SOURCE_NOT_EXIST: 'edge-source-not-exist';
   EDGE_TARGET_NOT_EXIST: 'edge-target-not-exist';
   NODE_EDGE_ID_CONFLICTS: 'node-edge-id-conflicts';
+  CONFLICT_NODE_ID: 'conflict-node-id';
+  CONFLICT_EDGE_ID: 'conflict-edge-id';
   UNKNOWN_IMPORT_ERROR: 'unknown-import-error';
 }
 

@@ -1,4 +1,5 @@
-import { uniq, get } from 'lodash';
+import { get } from 'lodash';
+import { MotifImportError } from '../../components/ImportErrorMessage';
 import * as T from './types';
 
 const findDuplicateItem = (items: string[]) => {
@@ -15,23 +16,31 @@ const findDuplicateItem = (items: string[]) => {
 export const findDuplicateID = (
   graphData: T.GraphData,
   accessors: T.Accessors,
-): string[] => {
+): void => {
   const { nodes, edges } = graphData;
   const { nodeID, edgeID } = accessors;
 
-  // motif help elimiate duplicate node/edge id,
-  // thus we only cross check id between nodes and edges.
   const nodeIDAccessor = nodeID === 'auto-generate' ? 'id' : nodeID;
   const edgeIDAccessor = nodeID === 'auto-generate' ? 'id' : edgeID;
-  const nodeIds: string[] = uniq(
-    nodes.map((node) => get(node, nodeIDAccessor)),
-  );
-  const edgeIds: string[] = uniq(
-    edges.map((edge) => get(edge, edgeIDAccessor)),
-  );
+  const nodeIds = nodes.map((node) => get(node, nodeIDAccessor));
+  const edgeIds = edges.map((edge) => get(edge, edgeIDAccessor));
+
+  const duplicateNodeIds = findDuplicateItem(nodeIds);
+  if (duplicateNodeIds.length > 0) {
+    const message = JSON.stringify(duplicateNodeIds);
+    throw new MotifImportError('conflict-node-id', message);
+  }
+
+  const duplicateEdgeIds = findDuplicateItem(edgeIds);
+  if (duplicateEdgeIds.length > 0) {
+    const message = JSON.stringify(duplicateEdgeIds);
+    throw new MotifImportError('conflict-edge-id', message);
+  }
 
   const ids = [...nodeIds, ...edgeIds];
   const duplicateItems = findDuplicateItem(ids);
-
-  return duplicateItems;
+  if (duplicateItems.length > 0) {
+    const message = JSON.stringify(duplicateItems);
+    throw new MotifImportError('node-edge-id-conflicts', message);
+  }
 };

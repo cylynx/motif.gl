@@ -42,12 +42,8 @@ export const importJson = async (
       const { nodes, edges } = graphData;
       verifySourceAndTargetExistence(nodes, edges, accessors);
 
-      // prevent node ids and edge ids conflicting with each others.
-      const duplicateId = Utils.findDuplicateID(graphData, accessors);
-      if (duplicateId.length > 0) {
-        const duplicateIdStr = JSON.stringify(duplicateId);
-        throw new MotifImportError('node-edge-id-conflicts', duplicateIdStr);
-      }
+      // prevent id conflicting with each other.
+      Utils.findDuplicateID(graphData, accessors);
 
       results.push(graphData);
     }
@@ -98,11 +94,7 @@ export const importEdgeListCsv = async (
     verifySourceAndTargetExistence(nodes, edges, accessors);
 
     // prevent node ids and edge ids conflicting with each others.
-    const duplicateId = Utils.findDuplicateID(processedData, accessors);
-    if (duplicateId.length > 0) {
-      const duplicateIdStr = JSON.stringify(duplicateId);
-      throw new MotifImportError('node-edge-id-conflicts', duplicateIdStr);
-    }
+    Utils.findDuplicateID(processedData, accessors);
 
     return processedData;
   } catch (err: any) {
@@ -148,15 +140,16 @@ export const importNodeEdgeCsv = async (
     verifySourceAndTargetExistence(nodes, edges, accessors);
 
     // prevent node ids and edge ids conflicting with each others.
-    const duplicateId = Utils.findDuplicateID(graphData, accessors);
-    if (duplicateId.length > 0) {
-      const duplicateIdStr = JSON.stringify(duplicateId);
-      throw new MotifImportError('node-edge-id-conflicts', duplicateIdStr);
-    }
+    Utils.findDuplicateID(graphData, accessors);
 
     return graphData;
   } catch (err: any) {
-    throw new MotifImportError(err.name, err.message);
+    if (err instanceof MotifImportError) {
+      const { name, message } = err;
+      throw new MotifImportError(name as any, message);
+    }
+
+    throw new MotifImportError(err.message);
   }
 };
 
