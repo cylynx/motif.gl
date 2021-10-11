@@ -18,10 +18,10 @@ export const findDuplicateID = (
   accessors: T.Accessors,
 ): void => {
   const { nodes, edges } = graphData;
-  const { nodeID, edgeID } = accessors;
+  const { nodeID = 'id', edgeID = 'id' } = accessors;
 
   const nodeIDAccessor = nodeID === 'auto-generate' ? 'id' : nodeID;
-  const edgeIDAccessor = nodeID === 'auto-generate' ? 'id' : edgeID;
+  const edgeIDAccessor = edgeID === 'auto-generate' ? 'id' : edgeID;
   const nodeIds = nodes.map((node) => get(node, nodeIDAccessor));
   const edgeIds = edges.map((edge) => get(edge, edgeIDAccessor));
 

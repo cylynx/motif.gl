@@ -762,15 +762,14 @@ export const verifySourceAndTargetExistence = (
   edges: Edge[],
   accessors: Accessors,
 ) => {
-  const { nodeID, edgeID, edgeSource, edgeTarget } = accessors;
+  const { nodeID, edgeSource, edgeTarget } = accessors;
 
   const nodeIDAccessor = nodeID === 'auto-generate' ? 'id' : nodeID;
-  const edgeIDAccessor = edgeID === 'auto-generate' ? 'id' : edgeID;
 
   const nodeIds: string[] = nodes.map((node: Node) => {
     const nodeIdProperty: string = get(node, nodeIDAccessor, '');
     if (typeof nodeIdProperty !== 'string') {
-      return nodeIdProperty;
+      return (nodeIdProperty as any).toString();
     }
 
     return nodeIdProperty.trim();
@@ -778,20 +777,8 @@ export const verifySourceAndTargetExistence = (
   const uniqueNodeIds: string[] = uniq(nodeIds as string[]);
 
   edges.forEach((edge: Edge) => {
-    let source: string = get(edge, edgeSource, '');
-    if (typeof source === 'string') {
-      source = source.trim();
-    }
-
-    let target: string = get(edge, edgeTarget, '');
-    if (typeof target === 'string') {
-      target = target.trim();
-    }
-
-    let id: string = get(edge, edgeIDAccessor, '');
-    if (typeof id === 'string') {
-      id = id.trim();
-    }
+    const source: string = get(edge, edgeSource, '').toString().trim();
+    const target: string = get(edge, edgeTarget, '').toString().trim();
 
     const isPossessSource = uniqueNodeIds.includes(source);
     if (!isPossessSource) {

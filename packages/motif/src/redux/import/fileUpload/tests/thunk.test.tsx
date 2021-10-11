@@ -32,6 +32,7 @@ import {
   processPreviewEdgeList,
   processPreviewNodeEdge,
 } from '../../../graph/processors/import-preview';
+import { MotifUploadError } from '../../../../components/ImportErrorMessage';
 
 const mockStore = configureStore([thunk]);
 const getStore = () => {
@@ -49,7 +50,7 @@ const getStore = () => {
   return store;
 };
 
-describe('Import Preview - thunk.test.js', () => {
+describe('Import Preview - thunk.test.tsx', () => {
   const store = mockStore(getStore());
   beforeEach(() => {
     render(<ToasterContainer />);
@@ -109,7 +110,8 @@ describe('Import Preview - thunk.test.js', () => {
         },
       ];
 
-      const actions = [setError('restricted-words')];
+      const restrictedWordErr = new MotifUploadError('node-restricted-words');
+      const actions = [setError(restrictedWordErr)];
 
       // @ts-ignore
       await store.dispatch(previewJson(singleImport));
@@ -237,7 +239,8 @@ describe('Import Preview - thunk.test.js', () => {
     });
 
     it('should display error message when import restricted datasets', async () => {
-      const actions = [setError('restricted-words')];
+      const restrictedWordErr = new MotifUploadError('node-restricted-words');
+      const actions = [setError(restrictedWordErr)];
 
       // @ts-ignore
       await store.dispatch(previewNodeEdge(restrictedNodeEdge));
