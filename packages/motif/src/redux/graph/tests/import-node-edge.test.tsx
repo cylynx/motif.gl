@@ -8,7 +8,7 @@ import React from 'react';
 import { addQuery, initialState, processGraphResponse } from '../slice';
 import { resetState } from '../../import/fileUpload/slice';
 
-import * as Constant from './constant';
+import * as Constant from './constants/positive';
 import { TFileContent } from '../../import/fileUpload';
 import { importNodeEdgeCsv } from '../processors/import';
 import { closeModal, fetchBegin, fetchDone, updateToast } from '../../ui/slice';

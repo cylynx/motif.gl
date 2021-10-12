@@ -14,11 +14,10 @@ import {
 } from '../../ui/slice';
 import { resetState } from '../../import/fileUpload/slice';
 
-import * as Constant from './constant';
+import * as Constant from './constants/positive';
 import { importEdgeListCsv } from '../processors/import';
 import { importEdgeListData } from '../thunk';
 import { combineGraphs } from '../../../utils/graph-utils/utils';
-import { MotifImportError } from '../../../components/ImportErrorMessage';
 
 const mockStore = configureStore([thunk]);
 const getStore = () => {

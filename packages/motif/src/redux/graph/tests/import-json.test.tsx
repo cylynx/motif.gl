@@ -15,7 +15,7 @@ import {
 import { importJson } from '../processors/import';
 import { Accessors } from '../types';
 
-import * as Constant from './constant';
+import * as Constant from './constants/positive';
 import { importJsonData } from '../thunk';
 import {
   clearError,

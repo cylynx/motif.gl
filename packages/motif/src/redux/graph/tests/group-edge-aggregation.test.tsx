@@ -13,7 +13,7 @@ import {
   overwriteEdgeSelection,
 } from '../slice';
 import { resetState } from '../../import/fileUpload/slice';
-import * as Constant from './constant';
+import * as Constant from './constants/positive';
 import { importJson } from '../processors/import';
 import {
   clearError,

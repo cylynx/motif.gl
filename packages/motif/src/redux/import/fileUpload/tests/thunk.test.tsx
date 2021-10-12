@@ -20,7 +20,7 @@ import {
   restrictedNodeEdge,
   edgeListCsv,
   csvWithDoubleString,
-} from './constant';
+} from './constant/positive';
 import { previewEdgeList, previewJson, previewNodeEdge } from '../thunk';
 import { TFileContent } from '../types';
 import { GraphList } from '../../../graph';
