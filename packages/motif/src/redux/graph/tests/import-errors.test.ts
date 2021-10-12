@@ -7,7 +7,13 @@ import duplicateNodeID from './constants/negative/json/06-duplicate-node-id.json
 import duplicateEdgeID from './constants/negative/json/13-duplicate-edge-id.json';
 
 import * as edgeListCsv from './constants/negative/edgeListCsv';
-import { importEdgeListCsv, importJson } from '../processors/import';
+import * as nodeEdgeCsv from './constants/negative/nodeEdgeCsv';
+
+import {
+  importEdgeListCsv,
+  importJson,
+  importNodeEdgeCsv,
+} from '../processors/import';
 import { MotifImportError } from '../../../components/ImportErrorMessage';
 import * as T from '../types';
 
@@ -222,18 +228,158 @@ describe('Import Errors', () => {
   });
   describe('Node Edge CSV', () => {
     // edge source attribute is missing in the data.
-    it('Missing Edge Source Attributes', () => {});
+    it('Missing Edge Source Attributes', (done) => {
+      const nodeCsvs = [nodeEdgeCsv.conflictNodeId.one];
+      const edgeCsvs = [nodeEdgeCsv.conflictEdgeId.one];
+      const accessors = {
+        nodeID: 'id',
+        edgeID: 'id',
+        edgeSource: 'source',
+        edgeTarget: 'target',
+      };
+
+      importNodeEdgeCsv(nodeCsvs, edgeCsvs, accessors, false).catch((err) => {
+        expect(err).toBeInstanceOf(MotifImportError);
+        expect(err.name).toEqual('edge-source-not-exist');
+        expect(err.message).toEqual('three');
+
+        done();
+      });
+    });
 
     // edge target attribute is missing in the data.
-    it('Missing Edge Target Attributes', () => {});
+    it('Missing Edge Target Attributes', (done) => {
+      const nodeCsvs = [nodeEdgeCsv.sampleNode];
+      const edgeCsvs = [nodeEdgeCsv.edgeTargetInvalidNode];
+      const accessors = {
+        nodeID: 'id',
+        edgeID: 'id',
+        edgeSource: 'source',
+        edgeTarget: 'target',
+      };
+
+      importNodeEdgeCsv(nodeCsvs, edgeCsvs, accessors, false).catch((err) => {
+        expect(err).toBeInstanceOf(MotifImportError);
+        expect(err.name).toEqual('edge-target-not-exist');
+        expect(err.message).toEqual('d');
+
+        done();
+      });
+    });
 
     // node id and edge id are found conflicting with each others.
-    it('Conflicting ID between Nodes and Edges', () => {});
+    it('Conflicting ID between Nodes and Edges', (done) => {
+      const nodeCsvs = [
+        nodeEdgeCsv.conflictNodeId.one,
+        nodeEdgeCsv.conflictNodeId.two,
+      ];
+      const edgeCsvs = [nodeEdgeCsv.conflictEdgeId.one];
+      const accessors = {
+        nodeID: 'id',
+        edgeID: 'id',
+        edgeSource: 'source',
+        edgeTarget: 'target',
+      };
+
+      importNodeEdgeCsv(nodeCsvs, edgeCsvs, accessors, false).catch((err) => {
+        const conflictingId = JSON.stringify(['three', 'four']);
+        expect(err).toBeInstanceOf(MotifImportError);
+        expect(err.name).toEqual('node-edge-id-conflicts');
+        expect(err.message).toEqual(conflictingId);
+
+        done();
+      });
+    });
+
+    // conflict node id
+    it('Conflict Node ID', (done) => {
+      const nodeCsvs = [
+        nodeEdgeCsv.conflictNodeId.one,
+        nodeEdgeCsv.conflictNodeId.one,
+      ];
+      const edgeCsvs = [nodeEdgeCsv.conflictEdgeId.two];
+      const accessors = {
+        nodeID: 'id',
+        edgeID: 'id',
+        edgeSource: 'source',
+        edgeTarget: 'target',
+      };
+
+      importNodeEdgeCsv(nodeCsvs, edgeCsvs, accessors, false).catch((err) => {
+        const conflictNodeId = JSON.stringify(['one', 'two']);
+        expect(err).toBeInstanceOf(MotifImportError);
+        expect(err.name).toEqual('conflict-node-id');
+        expect(err.message).toEqual(conflictNodeId);
+
+        done();
+      });
+    });
+
+    // conflict edge id
+    it('Conflict Edge ID', (done) => {
+      const nodeCsvs = [nodeEdgeCsv.conflictNodeId.one];
+      const edgeCsvs = [
+        nodeEdgeCsv.conflictEdgeId.two,
+        nodeEdgeCsv.conflictEdgeId.two,
+      ];
+      const accessors = {
+        nodeID: 'id',
+        edgeID: 'id',
+        edgeSource: 'source',
+        edgeTarget: 'target',
+      };
+
+      importNodeEdgeCsv(nodeCsvs, edgeCsvs, accessors, false).catch((err) => {
+        const conflictEdgeID = JSON.stringify(['one', 'two']);
+        expect(err).toBeInstanceOf(MotifImportError);
+        expect(err.name).toEqual('conflict-edge-id');
+        expect(err.message).toEqual(conflictEdgeID);
+
+        done();
+      });
+    });
 
     // edge source pointing to non-existence node id.
-    it('Invalid Edge Source', () => {});
+    it('Invalid Edge Source', (done) => {
+      const nodeCsvs = [nodeEdgeCsv.conflictNodeId.one];
+      const edgeCsvs = [
+        nodeEdgeCsv.conflictEdgeId.two,
+        nodeEdgeCsv.conflictNodeId.two,
+      ];
+      const accessors = {
+        nodeID: 'id',
+        edgeID: 'id',
+        edgeSource: 'source',
+        edgeTarget: 'target',
+      };
+
+      importNodeEdgeCsv(nodeCsvs, edgeCsvs, accessors, false).catch((err) => {
+        expect(err).toBeInstanceOf(MotifImportError);
+        expect(err.name).toEqual('edge-source-not-exist');
+        expect(err.message).toEqual('');
+
+        done();
+      });
+    });
 
     // edge target pointing to non-existence node id.
-    it('Invalid Edge Target', () => {});
+    it('Invalid Edge Target', (done) => {
+      const nodeCsvs = [nodeEdgeCsv.conflictNodeId.one];
+      const edgeCsvs = [nodeEdgeCsv.sampleEdge];
+      const accessors = {
+        nodeID: 'id',
+        edgeID: 'id',
+        edgeSource: 'source',
+        edgeTarget: 'target',
+      };
+
+      importNodeEdgeCsv(nodeCsvs, edgeCsvs, accessors, false).catch((err) => {
+        expect(err).toBeInstanceOf(MotifImportError);
+        expect(err.name).toEqual('edge-target-not-exist');
+        expect(err.message).toEqual('three');
+
+        done();
+      });
+    });
   });
 });
