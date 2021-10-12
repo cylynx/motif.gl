@@ -17,6 +17,7 @@
     "**/*.test.ts",
     "**/*.spec.tsx",
     "**/*.test.tsx",
+    "**/*.json",
     "cypress",
     "index.html"
   ]

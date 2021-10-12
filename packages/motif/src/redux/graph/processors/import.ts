@@ -196,11 +196,11 @@ export const addEdgeFields = (edge: Edge, accessors: Accessors): void => {
   const edgeSourceValue = get(edge, edgeSource);
   const edgeTargetValue = get(edge, edgeTarget);
 
-  if (edgeSourceValue === undefined) {
+  if (edgeSourceValue === undefined || edgeSourceValue === null) {
     throw new Error('edge-source-value-undefined');
   }
 
-  if (edgeTargetValue === undefined) {
+  if (edgeTargetValue === undefined || edgeTargetValue === null) {
     throw new Error('edge-target-value-undefined');
   }
 
