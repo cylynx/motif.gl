@@ -1,6 +1,6 @@
-import * as LAYOUT from '../../../constants/layout-options';
-import { DEFAULT_NODE_STYLE } from '../../../constants/graph-shapes';
-import { GraphData } from '..';
+import * as LAYOUT from '../../../../constants/layout-options';
+import { DEFAULT_NODE_STYLE } from '../../../../constants/graph-shapes';
+import { GraphData } from '../..';
 
 export const whitespaceNodeEdge = {
   edgeCsv: [
