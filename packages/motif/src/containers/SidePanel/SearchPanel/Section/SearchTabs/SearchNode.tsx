@@ -47,7 +47,7 @@ const SearchNode = () => {
     updateNodeResults([result]);
     updateEdgeResults([]);
 
-    const node = graph.findById(nodeId as string) as INode;
+    const node = graph.findById(nodeId as string) as unknown as INode;
     graph.setAutoPaint(false);
     clearNodeHoverState();
     setNodeToHoverState(node);

@@ -3,7 +3,7 @@ import {
   IG6GraphEvent,
   GraphinContextType,
 } from '@cylynx/graphin';
-import { INode, IEdge } from '@antv/g6';
+import { IEdge } from '@antv/g6';
 import { useContext, useLayoutEffect } from 'react';
 import { TooltipProps } from '../../Tooltip/Tooltip';
 
@@ -27,7 +27,7 @@ const DisplayTooltip = ({ setTooltip }: DisplayTooltipProps): any => {
   };
 
   const onNodeHover = (e: IG6GraphEvent): void => {
-    const item = e.item as INode;
+    const item = e.item as unknown as IEdge;
 
     const node = item.get('model');
     const point = graph.getPointByClient(e.clientX, e.clientY);
@@ -41,7 +41,7 @@ const DisplayTooltip = ({ setTooltip }: DisplayTooltipProps): any => {
   };
 
   const onEdgeHover = (e: IG6GraphEvent): void => {
-    const item = e.item as IEdge;
+    const item = e.item as unknown as IEdge;
 
     const edge = item.get('model');
     const point = graph.getPointByClient(e.clientX, e.clientY);

@@ -102,12 +102,12 @@ const DisplaySelectedProperty = (): null => {
       const selectEdgeWithMouseEvent = graph.findAllByState(
         'edge',
         'selected',
-      ) as IEdge[];
+      ) as unknown as IEdge[];
 
       const selectNodeWithMouseEvent = graph.findAllByState(
         'node',
         'selected',
-      ) as INode[];
+      ) as unknown as INode[];
 
       if (selectNodeWithMouseEvent.length === 0) return;
       const selectedEdgesLength = setSelectedEdges(selectEdgeWithMouseEvent);

@@ -33,7 +33,7 @@ const ItemResults: FC = () => {
     nodeId: string,
   ) => {
     event.stopPropagation();
-    const node = graph.findById(nodeId) as INode;
+    const node = graph.findById(nodeId) as unknown as INode;
     if (node === null) {
       return;
     }
@@ -51,7 +51,7 @@ const ItemResults: FC = () => {
     edgeId: string,
   ) => {
     event.stopPropagation();
-    const edge = graph.findById(edgeId) as IEdge;
+    const edge = graph.findById(edgeId) as unknown as IEdge;
     if (!edge) {
       return;
     }

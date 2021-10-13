@@ -19,10 +19,10 @@ const ActivateEdgeRelations = (): null => {
   }, []);
 
   const highlightNodes = useCallback((source: INode, target: INode): void => {
-    const sourceNode = graph.findById(source.getID()) as INode;
-    const targetNode = graph.findById(target.getID()) as INode;
+    const sourceNode = graph.findById(source.getID());
+    const targetNode = graph.findById(target.getID());
 
-    [sourceNode, targetNode].forEach((node: INode) => {
+    [sourceNode, targetNode].forEach((node) => {
       const nodeID: string = node.getID();
       graph.setItemState(nodeID, 'inactive', false);
       graph.setItemState(nodeID, 'active', true);
