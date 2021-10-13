@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { INode, Item } from '@antv/g6';
+import { INode } from '@antv/g6';
 
 import { OnChangeParams } from 'baseui/select';
 
