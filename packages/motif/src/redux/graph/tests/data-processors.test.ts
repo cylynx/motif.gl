@@ -1,3 +1,4 @@
+import { MotifImportError } from '../../../components/ImportErrorMessage';
 import { TriangleJSON } from '../../../constants/sample-data';
 import {
   json2csv,
@@ -338,7 +339,7 @@ describe('verifySourceAndTargetExistence', () => {
 
     expect(() => {
       verifySourceAndTargetExistence(nodes, edges, accessors);
-    }).toThrow('The source or target node of edge edge-1 does not exist.');
+    }).toThrow(new MotifImportError('edge-source-not-exist', '1'));
   });
 
   it('should identify missing edge source', () => {
@@ -353,7 +354,7 @@ describe('verifySourceAndTargetExistence', () => {
 
     expect(() => {
       verifySourceAndTargetExistence(nodes, edges, accessors);
-    }).toThrow('The source or target node of edge edge-1 does not exist.');
+    }).toThrow(new MotifImportError('edge-source-not-exist', '3'));
   });
 
   it('should identify missing edge target', () => {
@@ -368,6 +369,6 @@ describe('verifySourceAndTargetExistence', () => {
 
     expect(() => {
       verifySourceAndTargetExistence(nodes, edges, accessors);
-    }).toThrow('The source or target node of edge edge-1 does not exist.');
+    }).toThrow(new MotifImportError('edge-target-not-exist', '3'));
   });
 });

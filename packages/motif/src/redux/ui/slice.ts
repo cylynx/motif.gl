@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UIState, ShowToastAction } from './types';
 
@@ -8,6 +9,7 @@ export const initialStateUi: UIState = {
   modal: { isOpen: true, content: 'import' },
   score: null,
   toast: {},
+  importError: null,
 };
 
 const ui = createSlice({
@@ -59,6 +61,13 @@ const ui = createSlice({
         toast: null,
       });
     },
+    displayError: (state, action: PayloadAction<Error>) => {
+      const importError = action.payload;
+      state.importError = importError;
+    },
+    clearError: (state) => {
+      state.importError = null;
+    },
   },
 });
 
@@ -71,6 +80,8 @@ export const {
   setName,
   updateToast,
   removeToast,
+  displayError,
+  clearError,
 } = ui.actions;
 
 export default ui.reducer;

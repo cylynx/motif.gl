@@ -1,0 +1,26 @@
+{
+  "data": [
+    {
+      "nodes": [
+        {
+          "id": "node-one"
+        },
+        {
+          "id": "node-two"
+        }
+      ],
+      "edges": [
+        {
+          "id": "edge-two",
+          "source": "node-two",
+          "target": "node-two"
+        },
+        {
+          "id": "edge-two",
+          "source": "node-one",
+          "target": "node-one"
+        }
+      ]
+    }
+  ]
+}

@@ -8,33 +8,35 @@ const DEFAULT_TOAST_PROPS: ToastProps = {
   autoHideDuration: 3500,
 };
 
-export const show = (
-  message: ReactNode,
-  kind: ToastKind,
-  props: ToastProps = DEFAULT_TOAST_PROPS,
-) => (dispatch: any) => {
-  let toastKey: NullableReactText;
+export const show =
+  (
+    message: ReactNode,
+    kind: ToastKind,
+    props: ToastProps = DEFAULT_TOAST_PROPS,
+  ) =>
+  (dispatch: any) => {
+    let toastKey: NullableReactText;
 
-  switch (kind) {
-    case 'info':
-      toastKey = toaster.info(message, props);
-      break;
-    case 'negative':
-      toastKey = toaster.negative(message, props);
-      break;
-    case 'positive':
-      toastKey = toaster.positive(message, props);
-      break;
-    case 'warning':
-      toastKey = toaster.warning(message, props);
-      break;
-    default:
-      toastKey = toaster.info(message, props);
-      break;
-  }
+    switch (kind) {
+      case 'info':
+        toastKey = toaster.info(message, props);
+        break;
+      case 'negative':
+        toastKey = toaster.negative(message, props);
+        break;
+      case 'positive':
+        toastKey = toaster.positive(message, props);
+        break;
+      case 'warning':
+        toastKey = toaster.warning(message, props);
+        break;
+      default:
+        toastKey = toaster.info(message, props);
+        break;
+    }
 
-  dispatch(updateToast(toastKey));
-};
+    dispatch(updateToast(toastKey));
+  };
 
 export const remove = () => (dispatch: any, getState: any) => {
   const { toast } = getUI(getState());

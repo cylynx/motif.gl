@@ -14,7 +14,7 @@ describe('Import American Airlines', () => {
     // import sample data
     cy.importSampleData(SampleData.AA);
 
-    cy.wait(3000);
+    cy.wait(3500);
   });
 
   it('should display layout as x y coordinate', () => {

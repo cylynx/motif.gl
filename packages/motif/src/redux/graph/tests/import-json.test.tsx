@@ -15,9 +15,15 @@ import {
 import { importJson } from '../processors/import';
 import { Accessors } from '../types';
 
-import * as Constant from './constant';
+import * as Constant from './constants/positive';
 import { importJsonData } from '../thunk';
-import { fetchBegin, fetchDone, updateToast, closeModal } from '../../ui/slice';
+import {
+  clearError,
+  fetchBegin,
+  fetchDone,
+  updateToast,
+  closeModal,
+} from '../../ui/slice';
 import { resetState } from '../../import/fileUpload/slice';
 import { combineGraphs } from '../../../utils/graph-utils/utils';
 
@@ -80,6 +86,7 @@ describe('Import JSON', () => {
       }),
       updateToast('toast-0'),
       resetState(),
+      clearError(),
       fetchDone(),
       closeModal(),
     ];
@@ -127,6 +134,7 @@ describe('Import JSON', () => {
       }),
       updateToast('toast-0'),
       resetState(),
+      clearError(),
       fetchDone(),
       closeModal(),
     ];
@@ -186,6 +194,7 @@ describe('Import JSON', () => {
       }),
       updateToast('toast-0'),
       resetState(),
+      clearError(),
       fetchDone(),
       closeModal(),
     ];
@@ -245,6 +254,7 @@ describe('Import JSON', () => {
       }),
       updateToast('toast-0'),
       resetState(),
+      clearError(),
       fetchDone(),
       closeModal(),
     ];
@@ -300,6 +310,7 @@ describe('Import JSON', () => {
       }),
       updateToast('toast-0'),
       resetState(),
+      clearError(),
       fetchDone(),
       closeModal(),
     ];
@@ -365,6 +376,7 @@ describe('Import JSON', () => {
       }),
       updateToast('toast-0'),
       resetState(),
+      clearError(),
       fetchDone(),
       closeModal(),
     ];
@@ -422,6 +434,7 @@ describe('Import JSON', () => {
 
       updateToast('toast-0'),
       resetState(),
+      clearError(),
       fetchDone(),
       closeModal(),
     ];
@@ -483,6 +496,7 @@ describe('Import JSON', () => {
       }),
       updateToast('toast-0'),
       resetState(),
+      clearError(),
       fetchDone(),
       closeModal(),
     ];
@@ -535,6 +549,7 @@ describe('Import JSON', () => {
       }),
       updateToast('toast-0'),
       resetState(),
+      clearError(),
       fetchDone(),
       closeModal(),
     ];

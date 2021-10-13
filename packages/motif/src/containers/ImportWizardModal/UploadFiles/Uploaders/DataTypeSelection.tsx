@@ -10,7 +10,7 @@ import { UIConstants } from '../../../../redux/ui';
 import useFileContents from '../hooks/useFileContents';
 import { TFileContentState } from '../../../../redux/import/fileUpload';
 import { Dropdown } from '../../../../components/ui/Dropdown';
-import ErrorMessage from './ErrorMessage';
+import UploadErrorDisplay from './UploadErrorDisplay';
 
 const importOptions = Object.values(UIConstants.OPTIONS);
 
@@ -30,44 +30,6 @@ const DataTypeSelection: FC<DataTypeSelectionProps> = () => {
 
     return selectedDataType;
   }, [fileUpload.dataType]);
-
-  const errorMessage = useMemo(() => {
-    if (error === null) return null;
-
-    return (
-      <ErrorMessage
-        title={
-          <Block
-            overrides={{ Block: { style: { textTransform: 'uppercase' } } }}
-          >
-            The uploaded datasets contain type column in node properties
-          </Block>
-        }
-        content={
-          <Block marginTop='scale300'>
-            <b>
-              <code>type</code>
-            </b>{' '}
-            is a reserve words used as identifiers to perform styling.
-            <br />
-            You can rename{' '}
-            <b>
-              <code>type</code>
-            </b>{' '}
-            column to{' '}
-            <b>
-              <code>node_type</code>
-            </b>{' '}
-            or{' '}
-            <b>
-              <code>types</code>
-            </b>{' '}
-            to import data successfully.
-          </Block>
-        }
-      />
-    );
-  }, [error]);
 
   return (
     <Block marginTop='scale600'>
@@ -98,7 +60,7 @@ const DataTypeSelection: FC<DataTypeSelectionProps> = () => {
       {dataType.id === 'edgeListCsv' && <EdgeListCsv />}
       {dataType.id === 'nodeEdgeCsv' && <NodeEdgeCsv />}
 
-      {errorMessage}
+      <UploadErrorDisplay error={error} />
     </Block>
   );
 };

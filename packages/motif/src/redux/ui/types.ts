@@ -8,6 +8,7 @@ export interface UIState {
   modal: ModalState;
   score: any;
   toast: ToastState;
+  importError: Error;
 }
 
 export type NullableReactNode = ReactNode | null;

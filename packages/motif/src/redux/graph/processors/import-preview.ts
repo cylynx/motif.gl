@@ -1,3 +1,4 @@
+import { MotifUploadError } from '../../../components/ImportErrorMessage';
 import { removeDuplicates } from '../../../utils/graph-utils/utils';
 import {
   Edge,
@@ -22,22 +23,44 @@ export const processPreviewJson = async (
   const results: GraphList = [];
   const graphList: GraphList = Array.isArray(json) ? json : [json];
 
+  if (graphList.length === 0) {
+    throw new MotifUploadError('empty-dataset');
+  }
+
   for (const data of graphList) {
+    // uniquely identify the graph data within the list
+    const metadataKey = data?.key || data?.metadata?.key;
+
     // eslint-disable-next-line no-await-in-loop
     const processedData = await processJson(
       data,
       groupEdges,
-      data?.key || data?.metadata?.key,
-    );
+      metadataKey,
+    ).catch((err) => {
+      // error returns from the processor
+      // should convert into this format for display
+      throw new MotifUploadError(err.message);
+    });
     results.push(processedData);
   }
+
   return results;
 };
 
 export const processPreviewEdgeList = async (
   edgeList: string,
 ): Promise<GraphData> => {
-  const { fields: edgeFields, json: edgeJson } = await processCsvData(edgeList);
+  const { fields: edgeFields, json: edgeJson } = await processCsvData(
+    edgeList,
+  ).catch((err: any) => {
+    // invalid-csv-format
+    throw new MotifUploadError(err.message);
+  });
+
+  if (edgeJson.length === 0) {
+    throw new MotifUploadError('empty-csv-row');
+  }
+
   const nodeJson: Node[] = [];
   const groupEdge = false;
 
@@ -62,50 +85,64 @@ export const processPreviewEdgeList = async (
   return graphData;
 };
 
+const combineFieldsAndJson = (
+  acc: ProcessedCsv,
+  processedNode: ProcessedCsv,
+): ProcessedCsv => {
+  return {
+    fields: removeDuplicates(
+      [...acc.fields, ...processedNode.fields],
+      'name',
+    ) as Field[],
+    json: [...acc.json, ...processedNode.json] as Node[] | Edge[],
+  };
+};
+
 export const processPreviewNodeEdge = async (
   nodeCsvs: string[],
   edgeCsvs: string[],
 ): Promise<GraphData> => {
-  const combineFieldsAndJson = (
-    acc: ProcessedCsv,
-    processedNode: ProcessedCsv,
-  ): ProcessedCsv => {
-    return {
-      fields: removeDuplicates(
-        [...acc.fields, ...processedNode.fields],
-        'name',
-      ) as Field[],
-      json: [...acc.json, ...processedNode.json] as Node[] | Edge[],
-    };
-  };
-
   const emptyFieldsWithJson: ProcessedCsv = { fields: [], json: [] };
+
   const nodeDataPromises = nodeCsvs.map((nodeCsv: string) =>
-    processCsvData(nodeCsv),
+    processCsvData(nodeCsv).catch(() => {
+      throw new MotifUploadError('invalid-node-csv-format');
+    }),
   );
+
   const edgeDataPromises = edgeCsvs.map((edgeCsv: string) =>
-    processCsvData(edgeCsv),
+    processCsvData(edgeCsv).catch(() => {
+      throw new MotifUploadError('invalid-edge-csv-format');
+    }),
   );
+
+  // obtain node json and node fields from batch uploaded node csv
+  const processedNodeDatas: ProcessedCsv[] = await Promise.all(
+    nodeDataPromises,
+  );
+  const { fields: nodeFields, json: nodeJson } = processedNodeDatas.reduce(
+    combineFieldsAndJson,
+    emptyFieldsWithJson,
+  );
+
+  if (nodeJson.length === 0) {
+    throw new MotifUploadError('empty-node-csv-row');
+  }
+
+  // obtain edge json and edge fields from batch uploaded edge csv
+  const processedEdgeDatas: ProcessedCsv[] = await Promise.all(
+    edgeDataPromises,
+  );
+  const { fields: edgeFields, json: edgeJson } = processedEdgeDatas.reduce(
+    combineFieldsAndJson,
+    emptyFieldsWithJson,
+  );
+
+  if (edgeJson.length === 0) {
+    throw new MotifUploadError('empty-edge-csv-row');
+  }
 
   try {
-    // obtain node json and node fields from batch uploaded node csv
-    const processedNodeDatas: ProcessedCsv[] = await Promise.all(
-      nodeDataPromises,
-    );
-    const { fields: nodeFields, json: nodeJson } = processedNodeDatas.reduce(
-      combineFieldsAndJson,
-      emptyFieldsWithJson,
-    );
-
-    // obtain edge json and edge fields from batch uploaded edge csv
-    const processedEdgeDatas: ProcessedCsv[] = await Promise.all(
-      edgeDataPromises,
-    );
-    const { fields: edgeFields, json: edgeJson } = processedEdgeDatas.reduce(
-      combineFieldsAndJson,
-      emptyFieldsWithJson,
-    );
-
     const groupEdgeConfig: GroupEdges = applyGroupEdges(
       false,
       nodeJson as Node[],
@@ -126,7 +163,6 @@ export const processPreviewNodeEdge = async (
 
     return graphData;
   } catch (err: any) {
-    const { message } = err;
-    throw new Error(`Import Node Edge Data Error: ${message}`);
+    throw new MotifUploadError(`unknown-import-error`);
   }
 };

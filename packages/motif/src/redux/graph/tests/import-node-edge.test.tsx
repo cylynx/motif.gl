@@ -8,7 +8,7 @@ import React from 'react';
 import { addQuery, initialState, processGraphResponse } from '../slice';
 import { resetState } from '../../import/fileUpload/slice';
 
-import * as Constant from './constant';
+import * as Constant from './constants/positive';
 import { TFileContent } from '../../import/fileUpload';
 import { importNodeEdgeCsv } from '../processors/import';
 import { closeModal, fetchBegin, fetchDone, updateToast } from '../../ui/slice';
@@ -273,11 +273,6 @@ describe('Import Node Edge Data', () => {
           done();
         }, 300);
       });
-  });
-
-  it('should throw errors if importNodeEdgeData parameter is array', async () => {
-    const importDataArr = [Constant.sampleNodeEdgeData];
-    await expect(importNodeEdgeData(importDataArr as any)).toThrow(Error);
   });
 
   it('should throw errors if source and target fields are invalid', async () => {

@@ -4,21 +4,20 @@ import cloneDeep from 'lodash/cloneDeep';
 import { render } from '@testing-library/react';
 import React from 'react';
 import { ToasterContainer } from 'baseui/toast';
+import { addQuery, initialState, processGraphResponse } from '../slice';
 import {
-  addQuery,
-  initialState,
-  overwriteEdgeSelection,
-  processGraphResponse,
-} from '../slice';
-import { closeModal, fetchBegin, fetchDone, updateToast } from '../../ui/slice';
+  clearError,
+  closeModal,
+  fetchBegin,
+  fetchDone,
+  updateToast,
+} from '../../ui/slice';
 import { resetState } from '../../import/fileUpload/slice';
 
-import * as Constant from './constant';
+import * as Constant from './constants/positive';
 import { importEdgeListCsv } from '../processors/import';
-import { computeEdgeSelection, importEdgeListData } from '../thunk';
+import { importEdgeListData } from '../thunk';
 import { combineGraphs } from '../../../utils/graph-utils/utils';
-import { Field, Selection } from '../types';
-import { getGraph } from '../selectors';
 
 const mockStore = configureStore([thunk]);
 const getStore = () => {
@@ -75,6 +74,7 @@ describe('Import Edge List Data', () => {
       }),
       updateToast('toast-0'),
       resetState(),
+      clearError(),
       fetchDone(),
       closeModal(),
     ];
@@ -136,6 +136,7 @@ describe('Import Edge List Data', () => {
 
       updateToast('toast-0'),
       resetState(),
+      clearError(),
       fetchDone(),
       closeModal(),
     ];
@@ -155,21 +156,5 @@ describe('Import Edge List Data', () => {
           done();
         }, 300);
       });
-  });
-
-  it('should throw errors if importData parameter is not array', async () => {
-    await expect(importEdgeListData(Constant.firstEdgeListCsv as any)).toThrow(
-      Error,
-    );
-  });
-
-  it('should throw errors if source and target fields are invalid', async () => {
-    const firstErrorEdgeCsv =
-      'id,relation,from,to\ntxn1,works,jason,cylynx\ntxn3,abc,cylynx,timothy\ntxn4,says hi to,swan,cylynx';
-
-    const secondValidEdgeCsv = 'id,source,target\n123,x,y\n456,y,z\n789,z,x';
-    await expect(
-      importEdgeListData([firstErrorEdgeCsv, secondValidEdgeCsv]),
-    ).toThrow(Error);
   });
 });

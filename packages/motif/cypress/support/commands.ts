@@ -8,10 +8,10 @@ declare namespace Cypress {
     filterMultiString(text: string, type?: FilterSelectionType): void;
     switchPanel(type: string): void;
     importSampleData(type: any): void;
-    getFilterPanel(): Chainable<any>;
-    getLayerPanel(): Chainable<any>;
-    getOptionsPanel(): Chainable<any>;
-    getSearchPanel(): Chainable<any>;
+    getFilterPanel(): Chainable;
+    getLayerPanel(): Chainable;
+    getOptionsPanel(): Chainable;
+    getSearchPanel(): Chainable;
   }
 }
 

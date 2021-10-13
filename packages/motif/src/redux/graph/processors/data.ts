@@ -5,6 +5,7 @@ import shortid from 'shortid';
 // @ts-ignore
 import { Analyzer, DATA_TYPES as AnalyzerDatatypes } from 'type-analyzer';
 import { isEmpty, uniq, get, uniqBy, cloneDeep } from 'lodash';
+import { MotifImportError } from '../../../components/ImportErrorMessage';
 import { notNullorUndefined } from '../../../utils/data-utils/data-utils';
 import {
   Accessors,
@@ -126,7 +127,13 @@ export const processJson = async (
     return modJson;
   }
 
-  if (json.nodes && json.edges) {
+  // nodes or edges not found in the json, the format is invalid.
+  const { nodes, edges } = json;
+  if (!nodes || !edges) {
+    throw new Error('missing-nodes-or-edges');
+  }
+
+  try {
     const nodeCsv = await json2csv(json.nodes);
     const edgeCsv = await json2csv(json.edges);
     const { fields: nodeFields, json: nodeJson } = await processCsvData(
@@ -154,10 +161,9 @@ export const processJson = async (
       edges: edgeJson as Edge[],
       metadata: graphMetadata,
     };
+  } catch (err: any) {
+    throw new Error(err.message);
   }
-  throw new Error(
-    'Process JSON Data Failed: Json must contain both nodes & edges object',
-  );
 };
 
 /**
@@ -166,6 +172,7 @@ export const processJson = async (
  * @param {string[]} nodeCsvs
  * @param {string[]} edgeCsvs
  * @param {boolean} groupEdges
+ * @param {Accessors} accessors
  * @param {*} [key=shortid.generate()]
  * @return {*}  {Promise<Graph.GraphData>}
  */
@@ -174,7 +181,7 @@ export const processNodeEdgeCsv = async (
   edgeCsvs: string[],
   groupEdges: boolean,
   accessors: Accessors,
-  key = shortid.generate(),
+  key: string = shortid.generate(),
 ): Promise<GraphData> => {
   const combineFieldsAndJson = (
     acc: ProcessedCsv,
@@ -243,8 +250,12 @@ export const processNodeEdgeCsv = async (
 
     return graphData;
   } catch (err: any) {
-    const { message } = err;
-    throw new Error(`Import Node Edge Data Error: ${message}`);
+    if (err instanceof MotifImportError) {
+      const { name, message } = err;
+      throw new MotifImportError(name as any, message);
+    }
+
+    throw new Error(err.message);
   }
 };
 
@@ -273,7 +284,11 @@ export const processEdgeListCsv = async (
   });
   const uniqueNodes = [...new Set(edgeIds)];
   const nodeJson = uniqueNodes.map((node) => {
-    return { id: node };
+    if (!node) {
+      return { id: node };
+    }
+
+    return { id: node.toString() };
   });
 
   const groupEdgeConfig: GroupEdges = applyGroupEdges(
@@ -307,8 +322,9 @@ export const json2csv = async (json: any): Promise<string | void> => {
   const csv = converter
     .json2csvAsync(json)
     .then()
-    // eslint-disable-next-line no-console
-    .catch((err) => console.log(`ERROR: ${err.message}`));
+    .catch(() => {
+      throw new Error('invalid-json-format');
+    });
   return csv;
 };
 
@@ -323,8 +339,9 @@ export const csv2json = async (csv: string): Promise<void | any[]> => {
   const json = converter
     .csv2jsonAsync(csv)
     .then()
-    // eslint-disable-next-line no-console
-    .catch((err) => console.log(`ERROR: ${err.message}`));
+    .catch(() => {
+      throw new Error('invalid-csv-format');
+    });
   return json;
 };
 
@@ -405,7 +422,7 @@ export const processCsvData = async (rawCsv: string): Promise<ProcessedCsv> => {
   headerRow = headerRow.map((row: string) => row.replace(/^"(.*)"$/, '$1'));
 
   if (!parsedJson || !headerRow) {
-    throw new Error('Missing column header in uploaded CSV file');
+    throw new Error('invalid-csv-format');
   }
 
   // assume the csv file that uploaded csv will have first row
@@ -745,11 +762,14 @@ export const verifySourceAndTargetExistence = (
   edges: Edge[],
   accessors: Accessors,
 ) => {
-  const { nodeID, edgeID, edgeSource, edgeTarget } = accessors;
+  const { nodeID, edgeSource, edgeTarget } = accessors;
+
+  const nodeIDAccessor = nodeID === 'auto-generate' ? 'id' : nodeID;
+
   const nodeIds: string[] = nodes.map((node: Node) => {
-    const nodeIdProperty: string = get(node, nodeID, '');
+    const nodeIdProperty: string = get(node, nodeIDAccessor, '');
     if (typeof nodeIdProperty !== 'string') {
-      return nodeIdProperty;
+      return (nodeIdProperty as any).toString();
     }
 
     return nodeIdProperty.trim();
@@ -757,33 +777,17 @@ export const verifySourceAndTargetExistence = (
   const uniqueNodeIds: string[] = uniq(nodeIds as string[]);
 
   edges.forEach((edge: Edge) => {
-    let source: string = get(edge, edgeSource, '');
-    if (typeof source === 'string') {
-      source = source.trim();
-    }
-
-    let target: string = get(edge, edgeTarget, '');
-    if (typeof target === 'string') {
-      target = target.trim();
-    }
-
-    let id: string = get(edge, edgeID, '');
-    if (typeof id === 'string') {
-      id = id.trim();
-    }
+    const source: string = get(edge, edgeSource, '').toString().trim();
+    const target: string = get(edge, edgeTarget, '').toString().trim();
 
     const isPossessSource = uniqueNodeIds.includes(source);
     if (!isPossessSource) {
-      throw new Error(
-        `The source or target node of edge ${id} does not exist.`,
-      );
+      throw new MotifImportError('edge-source-not-exist', source);
     }
 
     const isPossessTarget = uniqueNodeIds.includes(target);
     if (!isPossessTarget) {
-      throw new Error(
-        `The source or target node of edge ${id} does not exist.`,
-      );
+      throw new MotifImportError('edge-target-not-exist', target);
     }
   });
 };

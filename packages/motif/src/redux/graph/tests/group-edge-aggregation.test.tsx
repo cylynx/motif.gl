@@ -13,9 +13,15 @@ import {
   overwriteEdgeSelection,
 } from '../slice';
 import { resetState } from '../../import/fileUpload/slice';
-import * as Constant from './constant';
+import * as Constant from './constants/positive';
 import { importJson } from '../processors/import';
-import { closeModal, fetchBegin, fetchDone, updateToast } from '../../ui/slice';
+import {
+  clearError,
+  closeModal,
+  fetchBegin,
+  fetchDone,
+  updateToast,
+} from '../../ui/slice';
 import {
   groupEdgesWithAggregation,
   importJsonData,
@@ -93,6 +99,7 @@ describe('Group Edges', () => {
         }),
         updateToast('toast-0'),
         resetState(),
+        clearError(),
         fetchDone(),
         closeModal(),
       ];

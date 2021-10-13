@@ -1,8 +1,14 @@
 import { get, isUndefined } from 'lodash';
 import shortid from 'shortid';
-
+import { MotifImportError } from '../../../components/ImportErrorMessage';
 import { Node, Edge, GraphList, GraphData, Accessors } from '../types';
-import { processJson, processNodeEdgeCsv, processEdgeListCsv } from './data';
+import {
+  processJson,
+  processNodeEdgeCsv,
+  processEdgeListCsv,
+  verifySourceAndTargetExistence,
+} from './data';
+import * as Utils from '../utils';
 
 /**
  * Initial function to process json object with node, edge fields or motif json to required format
@@ -21,16 +27,35 @@ export const importJson = async (
   const results: GraphList = [];
   const graphList: GraphList = Array.isArray(json) ? json : [json];
 
-  for (const data of graphList) {
-    // eslint-disable-next-line no-await-in-loop
-    const processedData = await processJson(
-      data,
-      groupEdges,
-      data?.key || data?.metadata?.key,
-    );
-    results.push(addRequiredFieldsJson(processedData, accessors));
+  try {
+    for (const data of graphList) {
+      // eslint-disable-next-line no-await-in-loop
+      const processedData = await processJson(
+        data,
+        groupEdges,
+        data?.key || data?.metadata?.key,
+      );
+
+      const graphData = addRequiredFieldsJson(processedData, accessors);
+
+      // verify whether source and target are valid.
+      const { nodes, edges } = graphData;
+      verifySourceAndTargetExistence(nodes, edges, accessors);
+
+      // prevent id conflicting with each other.
+      Utils.findDuplicateID(graphData, accessors);
+
+      results.push(graphData);
+    }
+    return results;
+  } catch (err: any) {
+    if (err instanceof MotifImportError) {
+      const { name, message } = err;
+      throw new MotifImportError(name as any, message);
+    }
+
+    throw new MotifImportError(err.message);
   }
-  return results;
 };
 
 /**
@@ -51,23 +76,35 @@ export const importEdgeListCsv = async (
   metadataKey: string = null,
 ): Promise<GraphData> => {
   const { edgeSource, edgeTarget } = accessors;
-  const processedData = await processEdgeListCsv(
-    csv,
-    edgeSource,
-    edgeTarget,
-    groupEdges,
-    metadataKey,
-  );
 
-  if (processedData.nodes.length < 1 || processedData.edges.length < 1) {
-    throw new Error('process Csv Data Failed: CSV is empty');
+  try {
+    const processedData = await processEdgeListCsv(
+      csv,
+      edgeSource,
+      edgeTarget,
+      groupEdges,
+      metadataKey,
+    );
+
+    processedData.edges.forEach((edge: Edge) => {
+      addEdgeFields(edge, accessors);
+    });
+
+    const { nodes, edges } = processedData;
+    verifySourceAndTargetExistence(nodes, edges, accessors);
+
+    // prevent node ids and edge ids conflicting with each others.
+    Utils.findDuplicateID(processedData, accessors);
+
+    return processedData;
+  } catch (err: any) {
+    if (err instanceof MotifImportError) {
+      const { name, message } = err;
+      throw new MotifImportError(name as any, message);
+    }
+
+    throw new MotifImportError(err.message);
   }
-
-  processedData.edges.forEach((edge: Edge) => {
-    addEdgeFields(edge, accessors);
-  });
-
-  return processedData;
 };
 
 /**
@@ -89,17 +126,31 @@ export const importNodeEdgeCsv = async (
   groupEdges: boolean,
   metadataKey: string = null,
 ): Promise<GraphData> => {
-  const processedData: GraphData = await processNodeEdgeCsv(
-    nodeCsv,
-    edgeCsv,
-    groupEdges,
-    accessors,
-    metadataKey,
-  );
-  if (processedData.nodes.length < 1) {
-    throw new Error('process Csv Data Failed: CSV is empty');
+  try {
+    const processedData: GraphData = await processNodeEdgeCsv(
+      nodeCsv,
+      edgeCsv,
+      groupEdges,
+      accessors,
+      metadataKey,
+    );
+
+    const graphData = addRequiredFieldsJson(processedData, accessors);
+    const { nodes, edges } = graphData;
+    verifySourceAndTargetExistence(nodes, edges, accessors);
+
+    // prevent node ids and edge ids conflicting with each others.
+    Utils.findDuplicateID(graphData, accessors);
+
+    return graphData;
+  } catch (err: any) {
+    if (err instanceof MotifImportError) {
+      const { name, message } = err;
+      throw new MotifImportError(name as any, message);
+    }
+
+    throw new MotifImportError(err.message);
   }
-  return addRequiredFieldsJson(processedData, accessors);
 };
 
 /**
@@ -145,8 +196,12 @@ export const addEdgeFields = (edge: Edge, accessors: Accessors): void => {
   const edgeSourceValue = get(edge, edgeSource);
   const edgeTargetValue = get(edge, edgeTarget);
 
-  if (isUndefined(edgeSourceValue) || isUndefined(edgeTargetValue)) {
-    throw new Error('Source and Target fields not found in Edges');
+  if (edgeSourceValue === undefined || edgeSourceValue === null) {
+    throw new Error('edge-source-value-undefined');
+  }
+
+  if (edgeTargetValue === undefined || edgeTargetValue === null) {
+    throw new Error('edge-target-value-undefined');
   }
 
   Object.assign(edge, {
@@ -178,13 +233,19 @@ const generateIdKey = (object: any, idAccessor: string | undefined): void => {
     Object.assign(object, {
       id: shortid.generate(),
     });
+  } else if (isUndefined(object.id) && idAccessor) {
+    const id = get(object, idAccessor).toString();
+    Object.assign(object, {
+      id,
+    });
   } else if (idAccessor === 'auto-generated') {
     Object.assign(object, {
       id: shortid.generate(),
     });
   } else {
+    const id = get(object, idAccessor).toString();
     Object.assign(object, {
-      id: get(object, idAccessor).toString(),
+      [idAccessor]: id,
     });
   }
 };
