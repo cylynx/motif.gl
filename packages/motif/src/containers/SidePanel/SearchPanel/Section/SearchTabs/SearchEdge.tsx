@@ -49,7 +49,7 @@ const SearchEdge = () => {
 
     const [{ id: edgeId }] = value;
     const result: Edge = searchEdges(edgeId as string);
-    const edge = graph.findById(edgeId as string) as IEdge;
+    const edge = graph.findById(edgeId as string) as unknown as IEdge;
     const sourceNodeID: string = edge.getSource().getID();
     const sourceNode: Node = searchNodes(sourceNodeID);
     const targetNodeID: string = edge.getTarget().getID();

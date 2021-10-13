@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { INode } from '@antv/g6';
+import { INode, Item } from '@antv/g6';
 
 import { OnChangeParams } from 'baseui/select';
 
@@ -47,7 +47,7 @@ const SearchNode = () => {
     updateNodeResults([result]);
     updateEdgeResults([]);
 
-    const node = graph.findById(nodeId as string) as INode;
+    const node = graph.findById(nodeId as string) as unknown as INode;
     graph.setAutoPaint(false);
     clearNodeHoverState();
     setNodeToHoverState(node);
