@@ -76,6 +76,7 @@
     "@types/d3-axis": "^2.0.0",
     "@types/d3-brush": "^2.1.0",
     "@types/d3-format": "^2.0.0",
+    "@types/d3-quadtree": "^3.0.2",
     "@types/d3-scale": "^3.2.1",
     "@types/d3-scale-chromatic": "^2.0.0",
     "@types/d3-selection": "^2.0.0",
