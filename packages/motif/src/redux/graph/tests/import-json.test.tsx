@@ -598,5 +598,74 @@ describe('Import JSON', () => {
     });
   });
 
-  // it('should override the filter attributes', async () => {});
+  describe('Import With Filters', () => {
+    it('should override both filter and style attributes', async (done) => {
+      const groupEdgeToggle = false;
+      const importDataArr = [Json.graphWithFilter];
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental
+      let { styleOptions, filterOptions } = GraphSlice.initialState;
+
+      // processes
+      const batchDataPromises = importDataArr.map((graphData) => {
+        const { data, style, filter } = graphData as any;
+
+        if (style) {
+          styleOptions = style;
+        }
+
+        if (filter) {
+          filterOptions = filter;
+        }
+
+        return importJson(
+          data,
+          GraphSlice.initialState.accessors,
+          groupEdgeToggle,
+        );
+      });
+
+      const graphDataArr = await Promise.all(batchDataPromises);
+      const [firstGraphData] = flatten(graphDataArr);
+
+      // group edge configuration arrangements
+      const groupEdgeConfig = { availability: false, toggle: groupEdgeToggle };
+      firstGraphData.metadata.groupEdges = groupEdgeConfig;
+
+      const mergedGraph = combineGraphs([firstGraphData]);
+
+      // expected results
+      const expectedActions = [
+        UiSlice.fetchBegin(),
+        GraphSlice.updateStyleOption(styleOptions),
+        GraphSlice.updateFilterOption(filterOptions),
+        GraphSlice.addQuery([firstGraphData]),
+        GraphSlice.processGraphResponse({
+          data: mergedGraph,
+          accessors: GraphSlice.initialState.accessors,
+        }),
+        UiSlice.updateToast('toast-0'),
+        resetState(),
+        UiSlice.clearError(),
+        UiSlice.fetchDone(),
+        UiSlice.closeModal(),
+      ];
+
+      // assertions
+      return store
+        .dispatch(
+          importJsonData(
+            importDataArr as any,
+            groupEdgeToggle,
+            GraphSlice.initialState.accessors,
+            true,
+          ),
+        )
+        .then(() => {
+          setTimeout(() => {
+            expect(store.getActions()).toEqual(expectedActions);
+            done();
+          }, 300);
+        });
+    });
+  });
 });

@@ -365,3 +365,133 @@ export const sampleGraphFlatten: GraphData = {
     },
   },
 };
+
+export const graphWithFilter = {
+  data: [
+    {
+      nodes: [
+        { id: 'node-0', label: 'node-0' },
+        { id: 'node-1', label: 'node-1' },
+        { id: 'node-2', label: 'node-2' },
+        { id: 'node-3', label: 'node-3' },
+        { id: 'node-4', label: 'node-4' },
+        { id: 'node-5', label: 'node-5' },
+        { id: 'node-6', label: 'node-6' },
+        { id: 'node-7', label: 'node-7' },
+        { id: 'node-8', label: 'node-8' },
+        { id: 'node-9', label: 'node-9' },
+      ],
+      edges: [
+        { source: 'node-0', target: 'node-0', numeric: 2, id: 'l5O4mnNhR5' },
+        { source: 'node-0', target: 'node-1', numeric: 10, id: '64l4IOP-qf' },
+        { source: 'node-0', target: 'node-2', numeric: 7, id: 'lj01TmTzLy' },
+        { source: 'node-0', target: 'node-3', numeric: 9, id: 'mCpGU2GpGl' },
+        { source: 'node-0', target: 'node-4', numeric: 6, id: 'YzhGFuNL_c' },
+        { source: 'node-0', target: 'node-5', numeric: 4, id: 'M_xjfLXSsH' },
+        { source: 'node-0', target: 'node-6', numeric: 6, id: 'Puxu6Q0ZIW' },
+        { source: 'node-0', target: 'node-7', numeric: 1, id: 'BJb1lYPq6_' },
+        { source: 'node-0', target: 'node-8', numeric: 9, id: 'IbLAWDjY-T' },
+        { source: 'node-1', target: 'node-0', numeric: 8, id: 'Q-3JBeWh_I' },
+        { source: 'node-2', target: 'node-0', numeric: 5, id: 'ic19cuNzLI' },
+        { source: 'node-3', target: 'node-0', numeric: 6, id: 'UYWF5odnoI' },
+        { source: 'node-4', target: 'node-0', numeric: 2, id: '4IWQ5BJ-p9' },
+        { source: 'node-5', target: 'node-0', numeric: 4, id: 'uB6DGIRXSw' },
+        { source: 'node-6', target: 'node-0', numeric: 3, id: 'G8LkkiRv5X' },
+        { source: 'node-7', target: 'node-0', numeric: 7, id: 'tZzIzcOeErQ' },
+        { source: 'node-8', target: 'node-0', numeric: 4, id: 'xsW6KdHI41O' },
+        { source: 'node-9', target: 'node-0', numeric: 7, id: 'CtUMCSLt1HH' },
+      ],
+      metadata: {
+        title: 'Circle Data',
+        fields: {
+          nodes: [
+            { name: 'id', format: '', type: 'string', analyzerType: 'STRING' },
+            {
+              name: 'label',
+              format: '',
+              type: 'string',
+              analyzerType: 'STRING',
+            },
+          ],
+          edges: [
+            {
+              name: 'source',
+              format: '',
+              type: 'string',
+              analyzerType: 'STRING',
+            },
+            {
+              name: 'target',
+              format: '',
+              type: 'string',
+              analyzerType: 'STRING',
+            },
+            {
+              name: 'numeric',
+              format: '',
+              type: 'integer',
+              analyzerType: 'INT',
+            },
+            { name: 'id', format: '', type: 'string', analyzerType: 'STRING' },
+          ],
+        },
+        key: 'ius8Qbjao',
+        groupEdges: { toggle: false, availability: false },
+      },
+    },
+  ],
+  style: {
+    layout: {
+      type: 'concentric',
+      minNodeSpacing: 50,
+      sortBy: 'degree',
+      preventOverlap: true,
+      workerEnabled: true,
+    },
+    nodeStyle: {
+      color: { value: 'green', id: 'fixed' },
+      size: { id: 'fixed', value: 20 },
+    },
+    edgeStyle: { width: { id: 'fixed', value: 1 } },
+  },
+  filter: {
+    '6gTFk8X0Q': {
+      id: 'id',
+      from: 'nodes',
+      selection: [
+        {
+          id: 'id',
+          label: 'id',
+          type: 'string',
+          analyzerType: 'STRING',
+          format: '',
+          from: 'nodes',
+          optionKey: 'nodes-id',
+          __optgroup: 'Nodes',
+        },
+      ],
+      analyzerType: 'STRING',
+      isFilterReady: true,
+      stringOptions: [
+        { id: 'node-0', label: 'node-0' },
+        { id: 'node-1', label: 'node-1' },
+        { id: 'node-2', label: 'node-2' },
+        { id: 'node-3', label: 'node-3' },
+        { id: 'node-4', label: 'node-4' },
+        { id: 'node-5', label: 'node-5' },
+        { id: 'node-6', label: 'node-6' },
+        { id: 'node-7', label: 'node-7' },
+        { id: 'node-8', label: 'node-8' },
+        { id: 'node-9', label: 'node-9' },
+      ],
+      caseSearch: [
+        { id: 'node-1', label: 'node-1' },
+        { id: 'node-0', label: 'node-0' },
+        { id: 'node-3', label: 'node-3' },
+        { id: 'node-4', label: 'node-4' },
+        { id: 'node-5', label: 'node-5' },
+        { id: 'node-2', label: 'node-2' },
+      ],
+    },
+  },
+};
