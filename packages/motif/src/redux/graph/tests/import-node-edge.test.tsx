@@ -5,10 +5,10 @@ import cloneDeep from 'lodash/cloneDeep';
 import { render } from '@testing-library/react';
 import { ToasterContainer } from 'baseui/toast';
 import React from 'react';
-import { addQuery, initialState, processGraphResponse } from '../slice';
+import * as GraphSlices from '../slice';
 import { resetState } from '../../import/fileUpload/slice';
 
-import * as Constant from './constants/positive';
+import * as NodeEdgeCsv from './constants/positive/nodeEdgeCsv';
 import { TFileContent } from '../../import/fileUpload';
 import { importNodeEdgeCsv } from '../processors/import';
 import { closeModal, fetchBegin, fetchDone, updateToast } from '../../ui/slice';
@@ -16,7 +16,7 @@ import { importNodeEdgeData } from '../thunk';
 
 const mockStore = configureStore([thunk]);
 const getStore = () => {
-  const graphState = cloneDeep(initialState);
+  const graphState = cloneDeep(GraphSlices.initialState);
   const store = {
     investigate: {
       ui: {},
@@ -41,8 +41,8 @@ describe('Import Node Edge Data', () => {
   });
   it('should receive nodeCsv and edgeCsv as array and process graph responses accurately', async (done) => {
     const store = mockStore(getStore());
-    const { nodeCsv, edgeCsv } = Constant.sampleNodeEdgeData;
-    const { accessors } = initialState;
+    const { nodeCsv, edgeCsv } = NodeEdgeCsv.sampleNodeEdgeData;
+    const { accessors } = GraphSlices.initialState;
     const metadataKey = '123';
     const groupEdgeToggle = false;
 
@@ -70,8 +70,8 @@ describe('Import Node Edge Data', () => {
 
     const expectedActions = [
       fetchBegin(),
-      addQuery([data]),
-      processGraphResponse({
+      GraphSlices.addQuery([data]),
+      GraphSlices.processGraphResponse({
         data,
         accessors,
       }),
@@ -84,7 +84,7 @@ describe('Import Node Edge Data', () => {
     return store
       .dispatch(
         importNodeEdgeData(
-          Constant.sampleNodeEdgeData,
+          NodeEdgeCsv.sampleNodeEdgeData,
           groupEdgeToggle,
           accessors,
           metadataKey,
@@ -100,8 +100,8 @@ describe('Import Node Edge Data', () => {
 
   it('should receive nodeCsv and edgeCsv as array and process graph responses accurately', async (done) => {
     const store = mockStore(getStore());
-    const { nodeCsv, edgeCsv } = Constant.sampleNodeEdgeData;
-    const { accessors } = initialState;
+    const { nodeCsv, edgeCsv } = NodeEdgeCsv.sampleNodeEdgeData;
+    const { accessors } = GraphSlices.initialState;
     const metadataKey = '123';
     const groupEdgeToggle = false;
 
@@ -129,8 +129,8 @@ describe('Import Node Edge Data', () => {
 
     const expectedActions = [
       fetchBegin(),
-      addQuery([data]),
-      processGraphResponse({
+      GraphSlices.addQuery([data]),
+      GraphSlices.processGraphResponse({
         data,
         accessors,
       }),
@@ -143,7 +143,7 @@ describe('Import Node Edge Data', () => {
     return store
       .dispatch(
         importNodeEdgeData(
-          Constant.sampleNodeEdgeData,
+          NodeEdgeCsv.sampleNodeEdgeData,
           groupEdgeToggle,
           accessors,
           metadataKey,
@@ -159,8 +159,8 @@ describe('Import Node Edge Data', () => {
 
   it('should import source and target with whitespace successfully', async (done) => {
     const store = mockStore(getStore());
-    const { nodeCsv, edgeCsv } = Constant.whitespaceNodeEdge;
-    const { accessors } = initialState;
+    const { nodeCsv, edgeCsv } = NodeEdgeCsv.whitespaceNodeEdge;
+    const { accessors } = GraphSlices.initialState;
     const metadataKey = '123';
     const groupEdgeToggle = false;
 
@@ -185,8 +185,8 @@ describe('Import Node Edge Data', () => {
 
     const expectedActions = [
       fetchBegin(),
-      addQuery([data]),
-      processGraphResponse({
+      GraphSlices.addQuery([data]),
+      GraphSlices.processGraphResponse({
         data,
         accessors,
       }),
@@ -199,7 +199,7 @@ describe('Import Node Edge Data', () => {
     return store
       .dispatch(
         importNodeEdgeData(
-          Constant.whitespaceNodeEdge,
+          NodeEdgeCsv.whitespaceNodeEdge,
           groupEdgeToggle,
           accessors,
           metadataKey,
@@ -215,7 +215,7 @@ describe('Import Node Edge Data', () => {
 
   it('should process numeric custom nodeID, edgeSource and edgeTarget successfully', async (done) => {
     const store = mockStore(getStore());
-    const { nodeCsv, edgeCsv } = Constant.numericAccessorsNodeEdge;
+    const { nodeCsv, edgeCsv } = NodeEdgeCsv.numericAccessorsNodeEdge;
     const accessors = {
       nodeID: 'custom_id',
       edgeID: 'id',
@@ -247,8 +247,8 @@ describe('Import Node Edge Data', () => {
 
     const expectedActions = [
       fetchBegin(),
-      addQuery([data]),
-      processGraphResponse({
+      GraphSlices.addQuery([data]),
+      GraphSlices.processGraphResponse({
         data,
         accessors,
       }),
@@ -261,7 +261,7 @@ describe('Import Node Edge Data', () => {
     return store
       .dispatch(
         importNodeEdgeData(
-          Constant.numericAccessorsNodeEdge,
+          NodeEdgeCsv.numericAccessorsNodeEdge,
           groupEdgeToggle,
           accessors,
           metadataKey,

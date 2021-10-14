@@ -1,37 +1,93 @@
-import * as LAYOUT from '../../../../constants/layout-options';
-import { DEFAULT_NODE_STYLE } from '../../../../constants/graph-shapes';
-import { GraphData } from '../..';
+import * as LAYOUT from '../../../../../constants/layout-options';
+import { DEFAULT_NODE_STYLE } from '../../../../../constants/graph-shapes';
+import { GraphData } from '../../..';
 
-export const whitespaceNodeEdge = {
-  edgeCsv: [
+export const graphWithGroupEdge = {
+  nodes: [{ id: 'a' }, { id: 'b' }],
+  edges: [
     {
-      fileName: 'test-1.csv',
-      content:
-        'id,relation,source,target\ntxn1,hello,   a,b   \ntxn2,works,b  ,c \ntxn3,abc,c  ,  a',
+      id: 'a-b1',
+      source: 'a',
+      target: 'b',
+      Value: 300000,
+      TokenName: 'Tether USD',
+    },
+    {
+      id: 'a-b2',
+      source: 'a',
+      target: 'b',
+      Value: 300000,
+      TokenName: 'Tether USD',
+    },
+    {
+      id: 'a-b3',
+      source: 'a',
+      target: 'b',
+      Value: 147000,
+      TokenName: 'ETH',
+    },
+    {
+      id: 'a-b4',
+      source: 'a',
+      target: 'b',
+      Value: 38000,
+      TokenName: 'Tether USD',
+    },
+    {
+      id: 'a-b5',
+      source: 'a',
+      target: 'b',
+      Value: 31000,
+      TokenName: 'Tether USD',
     },
   ],
-  nodeCsv: [
-    {
-      fileName: 'test-2.csv',
-      content: 'id,value,score\n   a,20,80\nb   ,40,100\n   c,60,123',
+  metadata: {
+    fields: {
+      // @ts-ignore
+      nodes: [],
+      edges: [
+        {
+          name: 'source',
+          format: '',
+          type: 'string',
+          analyzerType: 'STRING',
+        },
+        {
+          name: 'target',
+          format: '',
+          type: 'string',
+          analyzerType: 'STRING',
+        },
+        {
+          name: 'Value',
+          format: '',
+          type: 'integer',
+          analyzerType: 'INT',
+        },
+        {
+          name: 'TokenName',
+          format: '',
+          type: 'string',
+          analyzerType: 'STRING',
+        },
+      ],
     },
-  ],
-};
-
-export const numericAccessorsNodeEdge = {
-  edgeCsv: [
-    {
-      fileName: 'numeric-accessors-1.csv',
-      content:
-        'id,relation,numeric_source,numeric_target\ntxn1,hello,1,2\ntxn2,works,2,3\ntxn3,abc,3,1\n',
+    groupEdges: {
+      toggle: true,
+      availability: true,
+      type: 'TokenName',
+      fields: {
+        Or2fv2L2W: {
+          field: 'Value',
+          aggregation: ['count', 'sum', 'max'],
+        },
+        Sfdjksdf2: {
+          field: 'TokenName',
+          aggregation: ['first', 'last', 'most_frequent'],
+        },
+      },
     },
-  ],
-  nodeCsv: [
-    {
-      fileName: 'numeric-accessors-2.csv',
-      content: 'custom_id,value,score\n1,20,80\n2,40,100\n3,60,123',
-    },
-  ],
+  },
 };
 
 export const sampleJson1 = {
@@ -309,115 +365,3 @@ export const sampleGraphFlatten: GraphData = {
     },
   },
 };
-
-export const graphWithGroupEdge = {
-  nodes: [{ id: 'a' }, { id: 'b' }],
-  edges: [
-    {
-      id: 'a-b1',
-      source: 'a',
-      target: 'b',
-      Value: 300000,
-      TokenName: 'Tether USD',
-    },
-    {
-      id: 'a-b2',
-      source: 'a',
-      target: 'b',
-      Value: 300000,
-      TokenName: 'Tether USD',
-    },
-    {
-      id: 'a-b3',
-      source: 'a',
-      target: 'b',
-      Value: 147000,
-      TokenName: 'ETH',
-    },
-    {
-      id: 'a-b4',
-      source: 'a',
-      target: 'b',
-      Value: 38000,
-      TokenName: 'Tether USD',
-    },
-    {
-      id: 'a-b5',
-      source: 'a',
-      target: 'b',
-      Value: 31000,
-      TokenName: 'Tether USD',
-    },
-  ],
-  metadata: {
-    fields: {
-      // @ts-ignore
-      nodes: [],
-      edges: [
-        {
-          name: 'source',
-          format: '',
-          type: 'string',
-          analyzerType: 'STRING',
-        },
-        {
-          name: 'target',
-          format: '',
-          type: 'string',
-          analyzerType: 'STRING',
-        },
-        {
-          name: 'Value',
-          format: '',
-          type: 'integer',
-          analyzerType: 'INT',
-        },
-        {
-          name: 'TokenName',
-          format: '',
-          type: 'string',
-          analyzerType: 'STRING',
-        },
-      ],
-    },
-    groupEdges: {
-      toggle: true,
-      availability: true,
-      type: 'TokenName',
-      fields: {
-        Or2fv2L2W: {
-          field: 'Value',
-          aggregation: ['count', 'sum', 'max'],
-        },
-        Sfdjksdf2: {
-          field: 'TokenName',
-          aggregation: ['first', 'last', 'most_frequent'],
-        },
-      },
-    },
-  },
-};
-
-export const sampleNodeEdgeData = {
-  edgeCsv: [
-    {
-      fileName: 'test-1.csv',
-      content:
-        'id,relation,source,target\ntxn1,hello,a,b\ntxn2,works,b,c\ntxn3,abc,c,a',
-    },
-  ],
-  nodeCsv: [
-    {
-      fileName: 'test-2.csv',
-      content: 'id,value,score\na,20,80\nb,40,100\nc,60,123',
-    },
-  ],
-};
-
-export const firstEdgeListCsv =
-  'id,relation,source,target\ntxn1,works,jason,cylynx\ntxn3,abc,cylynx,timothy\ntxn4,says hi to,swan,cylynx';
-
-export const secondEdgeListCsv = 'id,source,target\n123,x,y\n456,y,z\n789,z,x';
-
-export const quotesHeaderCsv =
-  '"id","relation","source","target"\ntxn1,works,jason,cylynx\ntxn3,abc,cylynx,timothy\ntxn4,says hi to,swan,cylynx';
