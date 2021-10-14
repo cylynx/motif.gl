@@ -9,6 +9,7 @@ import {
   StyleOptions,
   GraphList,
   GraphData,
+  FilterOptions,
 } from '../../../redux/graph';
 import * as Icon from '../../../components/Icons';
 import Editable from '../../../components/Editable';
@@ -27,6 +28,10 @@ const Header = () => {
 
   const styleOptions: StyleOptions = useSelector((state) =>
     GraphSelectors.getStyleOptions(state),
+  );
+
+  const filterOptions: FilterOptions = useSelector((state) =>
+    GraphSelectors.getFilterOptions(state),
   );
   const dispatch = useDispatch();
 
@@ -78,6 +83,7 @@ const Header = () => {
                 graphList={graphList}
                 styleOptions={styleOptions}
                 graphFlatten={graphFlatten}
+                filterOptions={filterOptions}
               />
             </>
           )}
@@ -91,6 +97,7 @@ const Header = () => {
       styleOptions,
       graphList,
       graphFlatten,
+      filterOptions,
     ],
   );
 };

@@ -232,6 +232,9 @@ const graph = createSlice({
     updateStyleOption(state, action: PayloadAction<T.StyleOptions>) {
       Object.assign(state.styleOptions, action.payload);
     },
+    updateFilterOption(state, action: PayloadAction<T.FilterOptions>) {
+      Object.assign(state.filterOptions, action.payload);
+    },
     changeLayout(state, action: PayloadAction<T.LayoutParams>): void {
       const { id, ...options } = action.payload.layout;
       const defaultOptions = LAYOUT.OPTIONS.find((x) => x.type === id);
@@ -522,6 +525,7 @@ export const {
   updateLastGroupEdgeIds,
   overwriteEdgeSelection,
   updateNodePosition,
+  updateFilterOption,
 } = graph.actions;
 
 export default graph.reducer;
