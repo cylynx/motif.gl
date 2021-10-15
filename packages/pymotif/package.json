@@ -1,6 +1,6 @@
 {
   "name": "@cylynx/pymotif",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "jupyter widget bindings for the motif library",
   "keywords": [
     "jupyter",
