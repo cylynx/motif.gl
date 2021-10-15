@@ -1,6 +1,6 @@
 {
   "name": "@cylynx/motif",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "An out of the box graph visualization toolkit to assist analysis and investigation of network data.",
   "author": "Timothy Lin",
   "keywords": [
