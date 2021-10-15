@@ -5,16 +5,10 @@ import { render } from '@testing-library/react';
 import React from 'react';
 import { ToasterContainer } from 'baseui/toast';
 import { addQuery, initialState, processGraphResponse } from '../slice';
-import {
-  clearError,
-  closeModal,
-  fetchBegin,
-  fetchDone,
-  updateToast,
-} from '../../ui/slice';
+import * as UISlices from '../../ui/slice';
 import { resetState } from '../../import/fileUpload/slice';
 
-import * as Constant from './constants/positive';
+import * as EdgeListCsv from './constants/positive/edgeListCsv';
 import { importEdgeListCsv } from '../processors/import';
 import { importEdgeListData } from '../thunk';
 import { combineGraphs } from '../../../utils/graph-utils/utils';
@@ -47,7 +41,7 @@ describe('Import Edge List Data', () => {
 
   it('should import header with quotes successfully', async (done) => {
     const store = mockStore(getStore());
-    const importDataArr = [Constant.quotesHeaderCsv];
+    const importDataArr = [EdgeListCsv.quotesHeaderCsv];
     const groupEdgeToggle = false;
 
     // processes
@@ -66,17 +60,17 @@ describe('Import Edge List Data', () => {
     Object.assign(graphData.metadata.groupEdges, groupEdgeConfig);
 
     const expectedActions = [
-      fetchBegin(),
+      UISlices.fetchBegin(),
       addQuery([graphData]),
       processGraphResponse({
         data: graphData,
         accessors: initialState.accessors,
       }),
-      updateToast('toast-0'),
+      UISlices.updateToast('toast-0'),
       resetState(),
-      clearError(),
-      fetchDone(),
-      closeModal(),
+      UISlices.clearError(),
+      UISlices.fetchDone(),
+      UISlices.closeModal(),
     ];
 
     // assertions
@@ -101,8 +95,8 @@ describe('Import Edge List Data', () => {
 
     // input
     const importDataArr = [
-      Constant.firstEdgeListCsv,
-      Constant.secondEdgeListCsv,
+      EdgeListCsv.firstEdgeListCsv,
+      EdgeListCsv.secondEdgeListCsv,
     ];
     const groupEdgeToggle = false;
 
@@ -127,18 +121,18 @@ describe('Import Edge List Data', () => {
 
     // expected results
     const expectedActions = [
-      fetchBegin(),
+      UISlices.fetchBegin(),
       addQuery([firstGraphData, secondGraphData]),
       processGraphResponse({
         data: mergedGraph,
         accessors: initialState.accessors,
       }),
 
-      updateToast('toast-0'),
+      UISlices.updateToast('toast-0'),
       resetState(),
-      clearError(),
-      fetchDone(),
-      closeModal(),
+      UISlices.clearError(),
+      UISlices.fetchDone(),
+      UISlices.closeModal(),
     ];
 
     // assertions

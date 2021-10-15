@@ -12,18 +12,17 @@ const SaveChoicesMenu: FC<SaveChoicesMenuProps> = ({
   graphList,
   styleOptions,
   graphFlatten,
+  filterOptions,
   onExportExternal,
 }) => {
   const [, theme] = useStyletron();
 
-  const exportJSON = (
-    graphList: GraphT.GraphList,
-    styleOptions: GraphT.StyleOptions,
-  ) => {
+  const exportJSON = () => {
     const positionGraphList = setGraphListPosition(graphList, graphFlatten);
     const exportData: GraphT.TLoadFormat = {
       data: positionGraphList,
       style: styleOptions,
+      filter: filterOptions,
     };
 
     const contentType = 'application/json;charset=utf-8;';
@@ -36,11 +35,12 @@ const SaveChoicesMenu: FC<SaveChoicesMenuProps> = ({
     document.body.removeChild(file);
   };
 
-  const saveToCloud = (graphList, styleOptions) => {
+  const saveToCloud = () => {
     const positionGraphList = setGraphListPosition(graphList, graphFlatten);
     const exportData: GraphT.TLoadFormat = {
       data: positionGraphList,
       style: styleOptions,
+      filter: filterOptions,
     };
 
     onExportExternal(exportData);
@@ -50,19 +50,19 @@ const SaveChoicesMenu: FC<SaveChoicesMenuProps> = ({
     const items = [
       {
         label: <Label.JsonAttachment theme={theme} />,
-        onClick: () => exportJSON(graphList, styleOptions),
+        onClick: () => exportJSON(),
       },
     ];
 
     if (onExportExternal) {
       items.push({
         label: <Label.CloudUpload theme={theme} />,
-        onClick: () => saveToCloud(graphList, styleOptions),
+        onClick: () => saveToCloud(),
       });
     }
 
     return items;
-  }, [graphList, styleOptions, exportJSON, theme, graphFlatten]);
+  }, [graphList, styleOptions, exportJSON, theme, graphFlatten, filterOptions]);
 
   return (
     <StatefulMenu

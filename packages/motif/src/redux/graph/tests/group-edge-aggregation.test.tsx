@@ -6,27 +6,12 @@ import { flatten } from 'underscore';
 import React from 'react';
 import { render } from '@testing-library/react';
 import { ToasterContainer } from 'baseui/toast';
-import {
-  addQuery,
-  initialState,
-  processGraphResponse,
-  overwriteEdgeSelection,
-} from '../slice';
+import * as GraphSlice from '../slice';
 import { resetState } from '../../import/fileUpload/slice';
-import * as Constant from './constants/positive';
+import * as Json from './constants/positive/json';
 import { importJson } from '../processors/import';
-import {
-  clearError,
-  closeModal,
-  fetchBegin,
-  fetchDone,
-  updateToast,
-} from '../../ui/slice';
-import {
-  groupEdgesWithAggregation,
-  importJsonData,
-  computeEdgeSelection,
-} from '../thunk';
+import * as UiSlice from '../../ui/slice';
+import * as GraphThunk from '../thunk';
 import { Field, GraphData, Selection } from '../types';
 import {
   groupEdgesForImportation,
@@ -36,7 +21,7 @@ import { getGraph } from '../selectors';
 
 const mockStore = configureStore([thunk]);
 const getStore = () => {
-  const graphState = cloneDeep(initialState);
+  const graphState = cloneDeep(GraphSlice.initialState);
   const store = {
     investigate: {
       ui: {},
@@ -63,13 +48,17 @@ describe('Group Edges', () => {
   describe('Group Edge For Importation', () => {
     it('should perform group edge during importation', async (done) => {
       // arrange
-      const importDataArr = [Constant.simpleGraphWithGroupEdge];
+      const importDataArr = [Json.simpleGraphWithGroupEdge];
       const groupEdgeToggle = true;
 
       // act
       const batchDataPromises = importDataArr.map((graphData) => {
         const { data } = graphData;
-        return importJson(data, initialState.accessors, groupEdgeToggle);
+        return importJson(
+          data,
+          GraphSlice.initialState.accessors,
+          groupEdgeToggle,
+        );
       });
 
       const graphDataArr = await Promise.all(batchDataPromises);
@@ -91,26 +80,26 @@ describe('Group Edges', () => {
 
       // expected results
       const expectedActions = [
-        fetchBegin(),
-        addQuery([firstGraphData]),
-        processGraphResponse({
+        UiSlice.fetchBegin(),
+        GraphSlice.addQuery([firstGraphData]),
+        GraphSlice.processGraphResponse({
           data: modData,
-          accessors: initialState.accessors,
+          accessors: GraphSlice.initialState.accessors,
         }),
-        updateToast('toast-0'),
+        UiSlice.updateToast('toast-0'),
         resetState(),
-        clearError(),
-        fetchDone(),
-        closeModal(),
+        UiSlice.clearError(),
+        UiSlice.fetchDone(),
+        UiSlice.closeModal(),
       ];
 
       // assertions
       return store
         .dispatch(
-          importJsonData(
+          GraphThunk.importJsonData(
             importDataArr as any,
             groupEdgeToggle,
-            initialState.accessors,
+            GraphSlice.initialState.accessors,
           ),
         )
         .then(() => {
@@ -129,7 +118,7 @@ describe('Group Edges', () => {
 
   describe('Group Edges With Aggregation', () => {
     describe('Group By All', () => {
-      const simpleGraphWithGroupEdge = Constant.graphWithGroupEdge;
+      const simpleGraphWithGroupEdge = Json.graphWithGroupEdge;
 
       const importedGraphState = () => {
         const store = {
@@ -172,7 +161,9 @@ describe('Group Edges', () => {
       });
 
       it('should display the correct title and visibility', async () => {
-        await store.dispatch(groupEdgesWithAggregation(graphIndex) as any);
+        await store.dispatch(
+          GraphThunk.groupEdgesWithAggregation(graphIndex) as any,
+        );
 
         store.getActions().forEach((actions) => {
           const { payload, type } = actions;
@@ -189,7 +180,9 @@ describe('Group Edges', () => {
       });
 
       it('should compute the correct grouped edges', async () => {
-        await store.dispatch(groupEdgesWithAggregation(graphIndex) as any);
+        await store.dispatch(
+          GraphThunk.groupEdgesWithAggregation(graphIndex) as any,
+        );
 
         store.getActions().forEach((actions) => {
           const { payload, type } = actions;
@@ -202,7 +195,9 @@ describe('Group Edges', () => {
       });
 
       it('should derive the correct group edge configurations', async () => {
-        await store.dispatch(groupEdgesWithAggregation(graphIndex) as any);
+        await store.dispatch(
+          GraphThunk.groupEdgesWithAggregation(graphIndex) as any,
+        );
 
         store.getActions().forEach((actions) => {
           const { payload } = actions;
@@ -216,7 +211,9 @@ describe('Group Edges', () => {
       });
 
       it('should display the correct edge properties', async () => {
-        await store.dispatch(groupEdgesWithAggregation(graphIndex) as any);
+        await store.dispatch(
+          GraphThunk.groupEdgesWithAggregation(graphIndex) as any,
+        );
 
         const aggregatedEdgeFields: Field[] = [
           {
@@ -310,7 +307,9 @@ describe('Group Edges', () => {
       });
 
       it('should update valid group edge ids', async () => {
-        await store.dispatch(groupEdgesWithAggregation(graphIndex) as any);
+        await store.dispatch(
+          GraphThunk.groupEdgesWithAggregation(graphIndex) as any,
+        );
 
         store.getActions().forEach((actions) => {
           const { payload, type } = actions;
@@ -323,7 +322,7 @@ describe('Group Edges', () => {
     });
 
     describe('Group By Types', () => {
-      const { graphWithGroupEdge } = Constant;
+      const { graphWithGroupEdge } = Json;
 
       const importedGraphState = () => {
         const store = {
@@ -366,7 +365,9 @@ describe('Group Edges', () => {
       });
 
       it('should compute the correct grouped edges', async () => {
-        await store.dispatch(groupEdgesWithAggregation(graphIndex) as any);
+        await store.dispatch(
+          GraphThunk.groupEdgesWithAggregation(graphIndex) as any,
+        );
 
         store.getActions().forEach((actions) => {
           const { payload, type } = actions;
@@ -379,7 +380,9 @@ describe('Group Edges', () => {
       });
 
       it('should derive correct group edge configuration', async () => {
-        await store.dispatch(groupEdgesWithAggregation(graphIndex) as any);
+        await store.dispatch(
+          GraphThunk.groupEdgesWithAggregation(graphIndex) as any,
+        );
 
         store.getActions().forEach((actions) => {
           const { payload, type } = actions;
@@ -393,7 +396,9 @@ describe('Group Edges', () => {
       });
 
       it('should update valid group edge ids', async () => {
-        await store.dispatch(groupEdgesWithAggregation(graphIndex) as any);
+        await store.dispatch(
+          GraphThunk.groupEdgesWithAggregation(graphIndex) as any,
+        );
 
         store.getActions().forEach((actions) => {
           const { payload, type } = actions;
@@ -407,7 +412,7 @@ describe('Group Edges', () => {
   });
 
   describe('computeEdgeSelection', () => {
-    const { sampleGraphFlatten } = Constant;
+    const { sampleGraphFlatten } = Json;
     const aggregatedEdgeFields: Field[] = [
       {
         name: 'id',
@@ -556,7 +561,7 @@ describe('Group Edges', () => {
     const store = mockStore(importedGraphState());
 
     beforeEach(() => {
-      store.dispatch(computeEdgeSelection() as any);
+      store.dispatch(GraphThunk.computeEdgeSelection() as any);
     });
 
     afterEach(() => {
@@ -582,7 +587,9 @@ describe('Group Edges', () => {
         };
       });
 
-      const expectedActions = [overwriteEdgeSelection(computedEdgeSelection)];
+      const expectedActions = [
+        GraphSlice.overwriteEdgeSelection(computedEdgeSelection),
+      ];
 
       expect(store.getActions()).toEqual(expectedActions);
     });

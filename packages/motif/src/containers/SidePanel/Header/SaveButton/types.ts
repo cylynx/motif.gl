@@ -7,6 +7,7 @@ export type SaveButtonProps = {
   graphList: GraphT.GraphList;
   graphFlatten: GraphT.GraphData;
   styleOptions: GraphT.StyleOptions;
+  filterOptions: GraphT.FilterOptions;
   onExportExternal?: ExplorerContextProps['onExportExternal'];
 };
 export type LabelProps = { theme: Theme };

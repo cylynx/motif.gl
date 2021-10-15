@@ -2,14 +2,7 @@ import { flatten, isEmpty, cloneDeep, uniqBy } from 'lodash';
 import { combineGraphs } from '../../utils/graph-utils/utils';
 import { getFilterOptions, getGraph, getStyleOptions } from './selectors';
 
-import {
-  updateGraphFlatten,
-  addQuery,
-  processGraphResponse,
-  updateStyleOption,
-  overwriteEdgeSelection,
-  updateGroupEdgeIds,
-} from './slice';
+import * as GraphSlices from './slice';
 import {
   importEdgeListCsv,
   importNodeEdgeCsv,
@@ -55,11 +48,11 @@ const processResponse = (
     },
   );
 
-  dispatch(addQuery(modifiedGraphList));
+  dispatch(GraphSlices.addQuery(modifiedGraphList));
   const mergedGraph = combineGraphs(groupedEdgeGraphList);
 
   // combine new graph data with existing graph data to form graph flattens.
-  dispatch(processGraphResponse({ data: mergedGraph, accessors }));
+  dispatch(GraphSlices.processGraphResponse({ data: mergedGraph, accessors }));
 };
 
 /**
@@ -159,19 +152,26 @@ export const importJsonData =
       ? mainAccessors
       : (importAccessors as ImportAccessors);
 
-    const filterOptions: T.FilterOptions = getFilterOptions(getState());
-    let isDataPossessStyle = false;
+    let filterOptions: T.FilterOptions = getFilterOptions(getState());
     let styleOptions: T.StyleOptions = getStyleOptions(getState());
+    let isDataPossessStyle = false;
+    let isDataPossessFilter = false;
 
     const batchDataPromises = importData.map((graphData: T.JsonImport) => {
       const { data: dataWithStyle } = graphData as T.TLoadFormat;
 
       if (dataWithStyle) {
-        const { style: importStyleOption } = graphData as T.TLoadFormat;
+        const { style: importStyleOption, filter: importFilterOption } =
+          graphData as T.TLoadFormat;
 
         if (importStyleOption) {
           isDataPossessStyle = true;
           styleOptions = importStyleOption;
+        }
+
+        if (importFilterOption) {
+          isDataPossessFilter = true;
+          filterOptions = importFilterOption;
         }
 
         return importJson(dataWithStyle as T.GraphList, accessors, groupEdges);
@@ -192,7 +192,11 @@ export const importJsonData =
           const graphData: T.GraphList = flatten(graphDataArr);
 
           if (isDataPossessStyle && overwriteStyles) {
-            dispatch(updateStyleOption(styleOptions));
+            dispatch(GraphSlices.updateStyleOption(styleOptions));
+          }
+
+          if (isDataPossessFilter) {
+            dispatch(GraphSlices.updateFilterOption(filterOptions));
           }
 
           processResponse(dispatch, accessors, graphData);
@@ -361,8 +365,8 @@ export const groupEdgesWithAggregation =
       edges: uniqueEdgeFields,
     });
 
-    dispatch(updateGraphFlatten(modData));
-    dispatch(updateGroupEdgeIds({ graphIndex, groupEdgeIds }));
+    dispatch(GraphSlices.updateGraphFlatten(modData));
+    dispatch(GraphSlices.updateGroupEdgeIds({ graphIndex, groupEdgeIds }));
   };
 
 /**
@@ -393,5 +397,5 @@ export const computeEdgeSelection =
       },
     );
 
-    dispatch(overwriteEdgeSelection(computedEdgeSelection));
+    dispatch(GraphSlices.overwriteEdgeSelection(computedEdgeSelection));
   };

@@ -11,6 +11,7 @@ const SaveButton = ({
   graphList,
   styleOptions,
   graphFlatten,
+  filterOptions,
 }: SaveButtonProps) => {
   return (
     <StatefulPopover
@@ -25,6 +26,7 @@ const SaveButton = ({
               graphList={graphList}
               graphFlatten={graphFlatten}
               styleOptions={styleOptions}
+              filterOptions={filterOptions}
               onExportExternal={onExportExternal}
             />
           )}
