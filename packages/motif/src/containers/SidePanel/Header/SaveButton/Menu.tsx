@@ -3,46 +3,19 @@ import { StatefulMenu } from 'baseui/menu';
 import React, { FC, useMemo } from 'react';
 import { colors } from 'baseui/tokens';
 import * as Label from './Labels';
-import { setGraphListPosition } from '../../../../utils/export-utils';
 import * as GraphT from '../../../../redux/graph';
 import { SaveChoicesMenuProps } from './types';
+import useGraphSnapshot from '../useGraphSnapshot';
 
 const SaveChoicesMenu: FC<SaveChoicesMenuProps> = ({
   close,
-  graphList,
-  styleOptions,
-  graphFlatten,
-  filterOptions,
   onExportExternal,
 }) => {
   const [, theme] = useStyletron();
-
-  const exportJSON = () => {
-    const positionGraphList = setGraphListPosition(graphList, graphFlatten);
-    const exportData: GraphT.TLoadFormat = {
-      data: positionGraphList,
-      style: styleOptions,
-      filter: filterOptions,
-    };
-
-    const contentType = 'application/json;charset=utf-8;';
-    const jsonInfo: string = JSON.stringify(exportData);
-    const file: HTMLAnchorElement = document.createElement('a');
-    file.download = 'graph.json';
-    file.href = `data:${contentType},${encodeURIComponent(jsonInfo)}`;
-    document.body.appendChild(file);
-    file.click();
-    document.body.removeChild(file);
-  };
+  const { exportJSON, exportCurrentData } = useGraphSnapshot();
 
   const saveToCloud = () => {
-    const positionGraphList = setGraphListPosition(graphList, graphFlatten);
-    const exportData: GraphT.TLoadFormat = {
-      data: positionGraphList,
-      style: styleOptions,
-      filter: filterOptions,
-    };
-
+    const exportData: GraphT.TLoadFormat = exportCurrentData();
     onExportExternal(exportData);
   };
 
@@ -62,7 +35,7 @@ const SaveChoicesMenu: FC<SaveChoicesMenuProps> = ({
     }
 
     return items;
-  }, [graphList, styleOptions, exportJSON, theme, graphFlatten, filterOptions]);
+  }, [exportJSON, theme]);
 
   return (
     <StatefulMenu

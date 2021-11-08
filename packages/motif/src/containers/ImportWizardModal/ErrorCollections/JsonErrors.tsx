@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { Block } from 'baseui/block';
 import { useStyletron } from 'baseui';
-import { StyledLink } from 'baseui/link';
 import ErrorMessage from '../../../components/ImportErrorMessage';
 
 export const BoldCodeText: React.FC = ({ children }) => {

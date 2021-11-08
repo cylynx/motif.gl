@@ -43,6 +43,11 @@ const Demo = () => {
               edgeSource: 'source',
               edgeTarget: 'target',
             }}
+            // overrides={{
+            //   SidePanelHeader: (
+            //     <Block style={{ color: 'white' }}>Data to Work With</Block>
+            //   ),
+            // }}
             // onExportExternal={(exportData) => {
             //   console.log(exportData);
             // }}

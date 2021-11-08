@@ -5,14 +5,8 @@ import { ExplorerContext } from '../../../Graph/context';
 import * as Icon from '../../../../components/Icons';
 import HeaderButton from '../HeaderButton';
 import SaveChoicesMenu from './Menu';
-import { SaveButtonProps } from './types';
 
-const SaveButton = ({
-  graphList,
-  styleOptions,
-  graphFlatten,
-  filterOptions,
-}: SaveButtonProps) => {
+const SaveButton = () => {
   return (
     <StatefulPopover
       focusLock
@@ -23,10 +17,6 @@ const SaveButton = ({
           {({ onExportExternal }) => (
             <SaveChoicesMenu
               close={close}
-              graphList={graphList}
-              graphFlatten={graphFlatten}
-              styleOptions={styleOptions}
-              filterOptions={filterOptions}
               onExportExternal={onExportExternal}
             />
           )}
