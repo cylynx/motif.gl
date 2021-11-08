@@ -1,4 +1,4 @@
-import { createSelector, OutputSelector } from '@reduxjs/toolkit';
+import { createSelector } from '@reduxjs/toolkit';
 import { Option } from 'baseui/select';
 import produce from 'immer';
 import {
@@ -37,14 +37,7 @@ const getSelectedItems = (state: any): ItemProperties =>
 const getItemsPagination = (state: any): SearchOptPagination =>
   getSearchOptions(state).pagination;
 
-const getPaginateItems: OutputSelector<
-  any,
-  ItemProperties,
-  (
-    selectedItems: ItemProperties,
-    pagination: SearchOptPagination,
-  ) => ItemProperties
-> = createSelector(
+const getPaginateItems = createSelector(
   [getSelectedItems, getItemsPagination],
   (selectedItems: ItemProperties, pagination: SearchOptPagination) => {
     const paginatedItems = paginateItems(selectedItems, pagination);
