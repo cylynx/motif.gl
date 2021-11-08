@@ -1,5 +1,4 @@
 import { createLightTheme } from 'baseui';
-import { Theme } from 'baseui/theme';
 import typography from './shared/typography';
 import borders from './shared/borders';
 import themeColors from './shared/themeColors';

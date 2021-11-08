@@ -1,5 +1,4 @@
 import React, { FC, useMemo } from 'react';
-import { SIZE } from 'baseui/button';
 import * as Icon from '../../../components/Icons';
 import { Button } from '../../../components/ui';
 
