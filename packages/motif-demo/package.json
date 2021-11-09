@@ -8,7 +8,7 @@
     "serve": "vite preview --port 3000"
   },
   "dependencies": {
-    "@cylynx/motif": "^0.0.15",
+    "@cylynx/motif": "^0.0.14",
     "@reduxjs/toolkit": "^1.2.3",
     "attr-accept": "^2.2.2",
     "baseui": "^9.90.0",
