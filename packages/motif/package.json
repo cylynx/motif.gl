@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "start": "vite --force --config vite.dev.config.ts",
-    "build": "npm run clean && tsc -b && vite build --config vite.prod.config.ts",
+    "build": "npm run clean && tsc && vite build --config vite.prod.config.ts",
     "transpile": "tsc --p ./tsconfig.json --noEmit true --strict --watch",
     "test": "jest",
     "test:watch": "jest --watchAll",

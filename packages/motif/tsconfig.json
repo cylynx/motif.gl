@@ -7,7 +7,8 @@
     "noImplicitAny": false,
     "noEmit": false,
     "types": ["@types/node", "@types/react", "@types/jest"],
-    "noEmitOnError": true
+    "noEmitOnError": true,
+    "emitDeclarationOnly": true
   },
   "include": ["src"],
   "exclude": [
