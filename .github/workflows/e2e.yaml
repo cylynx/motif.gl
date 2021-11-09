@@ -27,6 +27,9 @@ jobs:
       - name: Install All Dependencies
         run: yarn install --link-duplicates
 
+      - name: View Typescript Version
+        run: npx tsc -v
+
       - name: Build Motif Bundle
         working-directory: './packages/motif'
         run: npm run build
