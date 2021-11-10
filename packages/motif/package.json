@@ -1,6 +1,6 @@
 {
   "name": "@cylynx/motif",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "An out of the box graph visualization toolkit to assist analysis and investigation of network data.",
   "author": "Timothy Lin",
   "keywords": [
@@ -19,8 +19,8 @@
   ],
   "scripts": {
     "start": "vite --force --config vite.dev.config.ts",
-    "build": "npm run clean && tsc -b && vite build --config vite.prod.config.ts",
-    "transpile": "tsc --p ./tsconfig.json --noEmit true --strict --watch",
+    "build": "npm run clean && npx -p typescript tsc && vite build --config vite.prod.config.ts",
+    "transpile": "npx -p typescript tsc --p ./tsconfig.json --strict --watch",
     "test": "jest",
     "test:watch": "jest --watchAll",
     "test:coverage": "jest --coverage --watchAll=false",

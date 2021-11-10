@@ -48,8 +48,7 @@ import { BsSlash } from 'react-icons/bs';
 import { VscSymbolKey, VscCircleOutline } from 'react-icons/vsc';
 import { AiOutlineCloudUpload, AiOutlineWarning } from 'react-icons/ai';
 import { IconBaseProps } from 'react-icons';
-import { GrDocumentCsv } from 'react-icons/gr';
-import { FaFileCode, FaFileCsv } from 'react-icons/fa';
+import { FaFileCode } from 'react-icons/fa';
 
 export const Node = ({ children, size = 16, ...rest }: IconBaseProps) => (
   <VscCircleOutline size={size} {...rest}>

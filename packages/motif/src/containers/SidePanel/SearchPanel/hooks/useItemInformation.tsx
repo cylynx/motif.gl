@@ -3,44 +3,11 @@ import { Block } from 'baseui/block';
 import { NodeStyle } from '@cylynx/graphin';
 import { darken } from 'polished';
 import { LabelMedium, ParagraphSmall } from 'baseui/typography';
-import { Theme } from 'baseui/theme';
 import shortid from 'shortid';
 import { Node, Edge, NodeItemType, EdgeNode } from '../../../../redux/graph';
 import { flattenObject } from '../../../../redux/graph/processors/data';
 import { removeEmptyValueInObject } from '../../../../utils/data-utils/data-utils';
 import * as Icon from '../../../../components/Icons';
-
-/**
- * This component is leave for future implementation for better UI/UX.
- */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental
-const EdgeShape = () => {
-  return (
-    <Block top='-14px' left='4px' position='absolute'>
-      <Block
-        height='45px'
-        backgroundColor='contentTertiary'
-        marginLeft='3px'
-        width='2px'
-      />
-      <Block
-        width='0'
-        height='0'
-        overrides={{
-          Block: {
-            style: ({ $theme }: { $theme: Theme }) => {
-              return {
-                borderLeft: `${$theme.sizing.scale100} solid transparent`,
-                borderRight: `${$theme.sizing.scale100} solid transparent`,
-                borderTop: `${$theme.sizing.scale100} solid ${$theme.colors.contentTertiary}`,
-              };
-            },
-          },
-        }}
-      />
-    </Block>
-  );
-};
 
 type NodeShapeProps = { fill: string; borderColor: string };
 const NodeShape = ({ fill, borderColor }: NodeShapeProps) => {

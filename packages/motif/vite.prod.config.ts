@@ -36,8 +36,8 @@ export default defineConfig({
   build: {
     outDir: outputDir,
 
-    // generate source map for debugging in the client
-    sourcemap: true,
+    // remove source map for debugging in the client to reduce package size
+    sourcemap: false,
     minify: 'terser',
 
     // prevent empty output directory as it contains typescript declarations.

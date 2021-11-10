@@ -3,6 +3,7 @@ import { Block, BlockOverrides } from 'baseui/block';
 import { useSelector } from 'react-redux';
 import { Theme } from 'baseui/theme';
 import { INode, IEdge } from '@antv/g6';
+import { RootState } from '../../../../../redux';
 import { GraphSelectors } from '../../../../../redux/graph';
 import { GraphRefContext } from '../../../../Graph/context';
 import useGraphBehaviors from '../../../../Graph/hooks/useGraphBehaviors';
@@ -20,7 +21,7 @@ const itemBlockOverrides: BlockOverrides = {
 };
 
 const ItemResults: FC = () => {
-  const { nodes, edges } = useSelector((state) =>
+  const { nodes, edges } = useSelector((state: RootState) =>
     GraphSelectors.getPaginateItems(state),
   );
 

@@ -19,6 +19,7 @@ import {
   getField,
   combineProcessedData,
 } from '../../utils/graph-utils/utils';
+import { IGraphSelector } from './interfaces';
 
 const getGraph = (state: any): GraphState => state.investigate.graph.present;
 const getAccessors = (state: any): Accessors => getGraph(state).accessors;
@@ -37,7 +38,7 @@ const getSelectedItems = (state: any): ItemProperties =>
 const getItemsPagination = (state: any): SearchOptPagination =>
   getSearchOptions(state).pagination;
 
-const getPaginateItems = createSelector(
+const getPaginateItems: IGraphSelector['getPaginateItems'] = createSelector(
   [getSelectedItems, getItemsPagination],
   (selectedItems: ItemProperties, pagination: SearchOptPagination) => {
     const paginatedItems = paginateItems(selectedItems, pagination);
@@ -46,7 +47,7 @@ const getPaginateItems = createSelector(
 );
 
 /** Selector to get graph data after it is filtered */
-const getGraphFiltered = createSelector(
+const getGraphFiltered: IGraphSelector['getGraphFiltered'] = createSelector(
   [getGraphFlatten, getFilterOptions],
   (graphFlatten: GraphData, filterOptions: FilterOptions) => {
     const graphFiltered = produce(graphFlatten, (draftState: GraphData) => {
@@ -58,7 +59,7 @@ const getGraphFiltered = createSelector(
 );
 
 /** Selector to derive visible data */
-const getGraphVisible = createSelector(
+const getGraphVisible: IGraphSelector['getGraphVisible'] = createSelector(
   [getGraphFiltered, getStyleOptions],
   (graphFiltered: GraphData, styleOptions: StyleOptions) => {
     const graphVisible = produce(graphFiltered, (draftState: GraphData) => {
@@ -70,20 +71,17 @@ const getGraphVisible = createSelector(
 );
 
 /** Selector to derive visible node ids */
-const getGraphVisibleNodeOptions = createSelector(
-  [getGraphVisible],
-  (graphVisible: GraphData) => {
+const getGraphVisibleNodeOptions: IGraphSelector['getGraphVisibleNodeOptions'] =
+  createSelector([getGraphVisible], (graphVisible: GraphData) => {
     const nodeIdOptions: Option[] = graphVisible.nodes.map((n) => {
       return { id: n.id, label: n.id };
     });
     return nodeIdOptions;
-  },
-);
+  });
 
 /** Selector to get node fields as select options */
-const getGraphFieldsOptions = createSelector(
-  [getGraphFlatten],
-  (graphFlatten: GraphData) => {
+const getGraphFieldsOptions: IGraphSelector['getGraphFieldsOptions'] =
+  createSelector([getGraphFlatten], (graphFlatten: GraphData) => {
     const graphFields = graphFlatten.metadata.fields;
 
     const allNodeFields: Option[] = [{ id: 'id', label: 'id' }];
@@ -127,13 +125,11 @@ const getGraphFieldsOptions = createSelector(
       edgeLabelFields,
       numericEdgeFields,
     };
-  },
-);
+  });
 
 // obtain the ungroup edges graph flatten
-const getUngroupedGraphFlatten = createSelector(
-  [getGraphList],
-  (graphList: GraphList) => {
+const getUngroupedGraphFlatten: IGraphSelector['getUngroupedGraphFlatten'] =
+  createSelector([getGraphList], (graphList: GraphList) => {
     let ungroupedGraphFlatten: GraphData = {
       nodes: [],
       edges: [],
@@ -147,8 +143,7 @@ const getUngroupedGraphFlatten = createSelector(
     });
 
     return ungroupedGraphFlatten;
-  },
-);
+  });
 
 export {
   getGraph,

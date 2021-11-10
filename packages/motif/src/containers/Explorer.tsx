@@ -23,6 +23,7 @@ import {
   Overrides,
   getTooltipOverride,
   getWidgetOverride,
+  getSidePanelHeaderOverride,
 } from '../utils/overrides';
 import { UISlices } from '../redux/ui';
 import { MotifLightTheme, MotifDarkTheme } from '../theme';
@@ -110,6 +111,7 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
 
     const UserTooltip = getTooltipOverride(overrides, Tooltip);
     const widgetList = getWidgetOverride(overrides, defaultWidgetList);
+    const customSidePanelHeader = getSidePanelHeaderOverride(overrides);
     const activeWidgetList: WidgetItem[] =
       widgetList.filter((x: WidgetItem) => widgetStateIds.includes(x.id)) || [];
 
@@ -161,7 +163,9 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
           },
         }}
       >
-        <ExplorerContext.Provider value={{ onExportExternal }}>
+        <ExplorerContext.Provider
+          value={{ onExportExternal, customSidePanelHeader }}
+        >
           <DataTableModal />
           <ImportWizardModal overrideTabs={overrides?.Tabs} />
 

@@ -1,4 +1,4 @@
-import { isEmpty, get, set, cloneDeep, uniqBy, uniq } from 'lodash';
+import { isEmpty, get, set, cloneDeep, uniqBy } from 'lodash';
 import {
   Edge,
   FieldAndAggregation,

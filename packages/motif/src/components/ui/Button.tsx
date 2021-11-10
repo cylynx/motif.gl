@@ -1,9 +1,8 @@
-import React, { FC } from 'react';
+import React from 'react';
 import {
   Button as BaseButton,
   SHAPE,
   ButtonProps as BaseButtonProps,
-  ButtonOverrides,
 } from 'baseui/button';
 
 type ButtonProps = BaseButtonProps & {

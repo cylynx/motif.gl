@@ -14,6 +14,8 @@ import { json2csv, processCsvData } from './redux/graph/processors/data';
 import { MotifDarkTheme, MotifLightTheme } from './theme';
 import useGraphBehaviors from './containers/Graph/hooks/useGraphBehaviors';
 
+import { useGraphSnapshot } from './containers/SidePanel/Header';
+
 // eslint-disable-next-line prettier/prettier
 export type { TableTabItem, StepperItems, ExplorerProps };
 export {
@@ -32,6 +34,7 @@ export {
   json2csv,
   processCsvData,
   useGraphBehaviors,
+  useGraphSnapshot,
 };
 
 export { MotifDarkTheme, MotifLightTheme };

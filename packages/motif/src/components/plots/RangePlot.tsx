@@ -5,7 +5,6 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { Block } from 'baseui/block';
 import RangeBrush from './RangeBrush';
 import HistogramPlot from './HistogramPlot';
-import { Slider } from '../ui';
 import { HistogramBin } from '../../utils/data-utils/data-utils';
 import NumericAxis from './NumericAxis';
 import DateTimeAxis from './DateTimeAxis';
@@ -82,37 +81,12 @@ const RangePlot = ({
     [onChange],
   );
 
-  const onChangeSlider = useCallback(
-    (value: [number, number]) => {
-      if (value) {
-        setBrushing(false);
-        onMouseMove(null);
-        setEnableChartHover(false);
-      }
-      if (value && onChange) {
-        onChange(value);
-      }
-    },
-    [setBrushing, onMouseMove, setEnableChartHover, onChange],
-  );
-
   const onBrushEnd = useCallback(
     (v0: number, v1: number) => {
       setBrushing(false);
       setEnableChartHover(true);
       if (onFinalChange) {
         onFinalChange([v0, v1]);
-      }
-    },
-    [setBrushing, setEnableChartHover, onFinalChange],
-  );
-
-  const onFinalChangeSlider = useCallback(
-    (value: [number, number]) => {
-      setBrushing(false);
-      setEnableChartHover(true);
-      if (onFinalChange) {
-        onFinalChange(value);
       }
     },
     [setBrushing, setEnableChartHover, onFinalChange],

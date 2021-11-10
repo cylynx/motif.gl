@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { TooltipProps } from '../containers/Tooltip';
 import { WidgetItem } from '../redux/widget';
@@ -8,6 +8,7 @@ export interface Overrides {
   Tabs?: ImportTabs[];
   Tooltip?: React.ComponentType<{ tooltip: TooltipProps }>;
   widgetList?: WidgetItem[];
+  SidePanelHeader?: ReactNode;
 }
 
 export const getTabsOverride = (
@@ -29,4 +30,10 @@ export const getWidgetOverride = (
   defaultWidgetList: WidgetItem[],
 ): WidgetItem[] => {
   return overrides?.widgetList || defaultWidgetList;
+};
+
+export const getSidePanelHeaderOverride = (
+  overrides: Overrides,
+): ReactNode | undefined => {
+  return overrides?.SidePanelHeader;
 };
