@@ -31,14 +31,14 @@ export interface IGraphSelector {
       graphFiltered: GraphT.GraphData,
       styleOptions: GraphT.StyleOptions,
     ) => GraphT.GraphData,
-    any
+    never
   >;
 
   getGraphVisibleNodeOptions: OutputSelector<
     [(state: any) => GraphT.GraphData],
     Option[],
     (graphVisible: GraphT.GraphData) => Option[],
-    any
+    never
   >;
 
   getGraphFieldsOptions: OutputSelector<
