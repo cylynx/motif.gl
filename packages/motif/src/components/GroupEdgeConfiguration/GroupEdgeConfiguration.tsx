@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC } from 'react';
-import { Controller, ControllerRenderProps } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { Checkbox, LABEL_PLACEMENT, STYLE_TYPE } from 'baseui/checkbox';
 import { Block } from 'baseui/block';
 import { Theme } from 'baseui/theme';
@@ -10,36 +10,6 @@ type GroupEdgeConfigurationProps = { control: any };
 const GroupEdgeConfiguration: FC<GroupEdgeConfigurationProps> = ({
   control,
 }) => {
-  const groupEdgeToggle = (props: {
-    field: ControllerRenderProps<Record<string, any>>;
-  }) => {
-    const { onChange, value, name } = props.field;
-    const onCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
-      onChange(e.target.checked);
-    };
-
-    return (
-      <Checkbox
-        ariaLabel='Group Edges'
-        name={name}
-        checked={value}
-        onChange={onCheckboxChange}
-        checkmarkType={STYLE_TYPE.toggle_round}
-        labelPlacement={LABEL_PLACEMENT.right}
-        overrides={{
-          Label: {
-            style: ({ $theme }) => ({
-              fontSize: $theme.sizing.scale500,
-              paddingRight: $theme.sizing.scale0,
-            }),
-          },
-        }}
-      >
-        Group Edges
-      </Checkbox>
-    );
-  };
-
   return (
     <Block
       display='flex'
@@ -69,7 +39,33 @@ const GroupEdgeConfiguration: FC<GroupEdgeConfigurationProps> = ({
           <Controller
             control={control}
             name='groupEdge'
-            render={groupEdgeToggle}
+            render={({ field }) => {
+              const { onChange, value, name } = field;
+              const onCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
+                onChange(e.target.checked);
+              };
+
+              return (
+                <Checkbox
+                  ariaLabel='Group Edges'
+                  name={name}
+                  checked={value}
+                  onChange={onCheckboxChange}
+                  checkmarkType={STYLE_TYPE.toggle_round}
+                  labelPlacement={LABEL_PLACEMENT.right}
+                  overrides={{
+                    Label: {
+                      style: ({ $theme }) => ({
+                        fontSize: $theme.sizing.scale500,
+                        paddingRight: $theme.sizing.scale0,
+                      }),
+                    },
+                  }}
+                >
+                  Group Edges
+                </Checkbox>
+              );
+            }}
           />
         </Block>
       </Block>
