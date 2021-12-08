@@ -113,7 +113,7 @@
     "ts-jest": "^26.5.5",
     "ts-loader": "^8.0.15",
     "ts-node": "^9.1.1",
-    "typescript": "^4.2.4",
+    "typescript": "^4.5.2",
     "vite": "2.4.3",
     "webpack": "4.42.0",
     "workerloader-jest-transformer": "^0.0.2"
