@@ -30,13 +30,15 @@ export interface IGraphSelector {
     (
       graphFiltered: GraphT.GraphData,
       styleOptions: GraphT.StyleOptions,
-    ) => GraphT.GraphData
+    ) => GraphT.GraphData,
+    any
   >;
 
   getGraphVisibleNodeOptions: OutputSelector<
     [(state: any) => GraphT.GraphData],
     Option[],
-    (graphVisible: GraphT.GraphData) => Option[]
+    (graphVisible: GraphT.GraphData) => Option[],
+    any
   >;
 
   getGraphFieldsOptions: OutputSelector<
