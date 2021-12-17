@@ -6,14 +6,7 @@ import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
 import { Button } from '../ui';
 import * as Icons from '../Icons';
-
-type ColorMaps = [string, string];
-export type ObjectColourPickerProps = {
-  selectedAttr: ColorMaps;
-  onChangeColor: (target: ColorMaps) => void;
-  onComplete: (confirmedColor: ColorMaps) => void;
-  onCancel: (defaultColor: ColorMaps) => void;
-};
+import { ColorMaps, ObjectColourPickerProps } from './type';
 
 const ObjectColourPicker: FC<ObjectColourPickerProps> = ({
   selectedAttr,
