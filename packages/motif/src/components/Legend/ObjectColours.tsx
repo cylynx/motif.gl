@@ -2,13 +2,14 @@ import React, { FC, useMemo } from 'react';
 import { useStyletron } from 'baseui';
 import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
+import { normalizeColor } from '../../utils/style-utils/color-utils';
 import { GraphAttributeColourProps, ObjectColourProps } from './type';
 
 const ObjectColours: FC<ObjectColourProps> = ({
+  label,
   kind,
   onClick,
   backgroundColor,
-  value,
 }) => {
   const graphAttribute = useMemo(() => {
     if (kind === 'node') {
@@ -21,7 +22,7 @@ const ObjectColours: FC<ObjectColourProps> = ({
   return (
     <Block display='flex' alignItems='center' height='24px'>
       {graphAttribute}
-      <LabelSmall>{value}</LabelSmall>
+      <LabelSmall>{label}</LabelSmall>
     </Block>
   );
 };
@@ -31,6 +32,8 @@ const NodeColour: FC<GraphAttributeColourProps> = ({
   backgroundColor,
 }) => {
   const [css] = useStyletron();
+  const color = normalizeColor(backgroundColor);
+
   return (
     <div
       role='button'
@@ -38,14 +41,17 @@ const NodeColour: FC<GraphAttributeColourProps> = ({
       aria-label='Node Colour Picker'
       onClick={onClick}
       className={css({
-        height: '16px',
-        width: '16px',
+        height: '14px',
+        width: '14px',
         marginRight: '6px',
         marginTop: '4px',
         marginBottom: '4px',
-        backgroundColor,
+        backgroundColor: color.dark,
         borderRadius: '50%',
         cursor: 'pointer',
+        outlineColor: color.normal,
+        outlineWidth: '3px',
+        outlineStyle: 'solid',
       })}
     />
   );

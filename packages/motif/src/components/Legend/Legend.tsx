@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 
 import { LabelSmall } from 'baseui/typography';
 import { Block } from 'baseui/block';
@@ -6,16 +6,41 @@ import { LegendProps } from './type';
 import ObjectColours from './ObjectColours';
 import ObjectColourPicker from './ObjectColourPicker';
 
-const Legend = ({ data, colorMap, kind, maxSize = 8, label }: LegendProps) => {
+const Legend = ({
+  data,
+  colorMap,
+  kind,
+  maxSize = 8,
+  label,
+  onChangeColor,
+}: LegendProps) => {
   const [showPicker, setShowPicker] = useState(false);
-  let valueArr = Object.keys(data);
-  let colorArr = Object.values(data);
-  if (valueArr.length > maxSize) {
-    valueArr = valueArr.slice(0, maxSize);
-    valueArr.push('Others');
-    colorArr = colorArr.slice(0, maxSize);
-    colorArr.push(colorMap[maxSize - 1]);
-  }
+  const selectedAttrRef = useRef<[string, string]>([undefined, undefined]);
+
+  const collections = useMemo(() => {
+    const colorMaps = Object.entries(data);
+
+    if (colorMaps.length > maxSize) {
+      const sliceMaps = colorMaps.slice(0, maxSize);
+      const lastColorHex = colorMap[maxSize - 1];
+
+      sliceMaps[maxSize] = ['Others', lastColorHex];
+      return sliceMaps;
+    }
+
+    return colorMaps;
+  }, [data, colorMap, maxSize]);
+
+  const openColourPicker = (attrLabel: string, colorHex: string) => {
+    const selectedAttr = [attrLabel, colorHex] as [string, string];
+    selectedAttrRef.current = selectedAttr;
+    setShowPicker(true);
+  };
+
+  const closeColourPicker = () => {
+    selectedAttrRef.current = [undefined, undefined];
+    setShowPicker(false);
+  };
 
   return (
     <div>
@@ -30,35 +55,33 @@ const Legend = ({ data, colorMap, kind, maxSize = 8, label }: LegendProps) => {
             {label}
           </LabelSmall>
         )}
-        {valueArr.map((value, i) => (
-          <ObjectColours
-            key={value}
-            value={value}
-            kind={kind}
-            onClick={() => setShowPicker(true)}
-            backgroundColor={colorArr[i]}
-          />
-        ))}
+        {collections.map((data) => {
+          const [attrKey, colorHex] = data;
+
+          return (
+            <ObjectColours
+              key={attrKey}
+              label={attrKey}
+              kind={kind}
+              onClick={() => openColourPicker(attrKey, colorHex)}
+              backgroundColor={colorHex}
+            />
+          );
+        })}
       </Block>
 
       {showPicker && (
-        <>
-          <LabelSmall
-            marginBottom='scale100'
-            marginTop='scale200'
-            marginRight='scale200'
-            color='contentInverseSecondary'
-          >
-            Change a <span style={{ textTransform: 'capitalize' }}>{kind}</span>{' '}
-            Color
-          </LabelSmall>
-
-          <ObjectColourPicker
-            onComplete={() => {
-              setShowPicker(false);
-            }}
-          />
-        </>
+        <ObjectColourPicker
+          selectedAttr={selectedAttrRef.current}
+          onCancel={(defaultColor) => {
+            onChangeColor(defaultColor);
+            closeColourPicker();
+          }}
+          onChangeColor={onChangeColor}
+          onComplete={() => {
+            closeColourPicker();
+          }}
+        />
       )}
     </div>
   );

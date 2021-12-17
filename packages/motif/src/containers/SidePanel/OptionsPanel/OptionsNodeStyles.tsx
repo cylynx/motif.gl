@@ -4,7 +4,7 @@ import { Block } from 'baseui/block';
 import { HeadingXSmall } from 'baseui/typography';
 import { useDispatch, useSelector } from 'react-redux';
 import { CATEGORICAL_COLOR } from '../../../constants/colors';
-import { GraphSlices, GraphSelectors } from '../../../redux/graph';
+import { GraphSelectors } from '../../../redux/graph';
 import useNodeStyle from '../../../redux/graph/hooks/useNodeStyle';
 import { Card } from '../../../components/ui';
 import {
@@ -26,16 +26,11 @@ const MAX_LEGEND_SIZE = CATEGORICAL_COLOR.length;
 
 const OptionsNodeStyles = () => {
   const [, theme] = useStyletron();
-  const dispatch = useDispatch();
-  const { nodeStyle } = useNodeStyle();
+  const { nodeStyle, updateNodeStyle, updateNodeMappingColor } = useNodeStyle();
 
   const { allNodeFields, nodeLabelFields, numericNodeFields } = useSelector(
     (state) => GraphSelectors.getGraphFieldsOptions(state),
   );
-
-  const updateNodeStyle = (data: any) => {
-    dispatch(GraphSlices.changeNodeStyle(data));
-  };
 
   const nodeSizeFormData = genNestedForm(
     nodeSizeForm,
@@ -121,6 +116,7 @@ const OptionsNodeStyles = () => {
               data={nodeStyle.color.mapping}
               colorMap={CATEGORICAL_COLOR}
               maxSize={MAX_LEGEND_SIZE}
+              onChangeColor={updateNodeMappingColor}
             />
           )}
       </Card>
