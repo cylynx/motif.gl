@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useMemo, MouseEvent } from 'react';
 import { useStyletron } from 'baseui';
 import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
@@ -10,13 +10,29 @@ const ObjectColours: FC<ObjectColourProps> = ({
   kind,
   onClick,
   backgroundColor,
+  disableClick,
 }) => {
   const graphAttribute = useMemo(() => {
+    const isLabelUndefined = label === 'undefined';
+    const isDisable = disableClick || isLabelUndefined;
+
     if (kind === 'node') {
-      return <NodeColour onClick={onClick} backgroundColor={backgroundColor} />;
+      return (
+        <NodeColour
+          onClick={onClick}
+          backgroundColor={backgroundColor}
+          disableClick={isDisable}
+        />
+      );
     }
 
-    return <EdgeColour onClick={onClick} backgroundColor={backgroundColor} />;
+    return (
+      <EdgeColour
+        onClick={onClick}
+        backgroundColor={backgroundColor}
+        disableClick={isDisable}
+      />
+    );
   }, [kind, backgroundColor, onClick]);
 
   return (
@@ -30,16 +46,23 @@ const ObjectColours: FC<ObjectColourProps> = ({
 const NodeColour: FC<GraphAttributeColourProps> = ({
   onClick,
   backgroundColor,
+  disableClick,
 }) => {
   const [css] = useStyletron();
   const color = normalizeColor(backgroundColor);
+
+  const onDivClick = (e: MouseEvent<HTMLDivElement>) => {
+    if (disableClick) return;
+
+    onClick(e);
+  };
 
   return (
     <div
       role='button'
       tabIndex={0}
       aria-label='Node Colour Picker'
-      onClick={onClick}
+      onClick={onDivClick}
       className={css({
         height: '14px',
         width: '14px',
@@ -48,7 +71,7 @@ const NodeColour: FC<GraphAttributeColourProps> = ({
         marginBottom: '4px',
         backgroundColor: color.dark,
         borderRadius: '50%',
-        cursor: 'pointer',
+        cursor: disableClick ? 'initial' : 'pointer',
         outlineColor: color.normal,
         outlineWidth: '3px',
         outlineStyle: 'solid',
@@ -60,14 +83,22 @@ const NodeColour: FC<GraphAttributeColourProps> = ({
 const EdgeColour: FC<GraphAttributeColourProps> = ({
   onClick,
   backgroundColor,
+  disableClick,
 }) => {
   const [css] = useStyletron();
+
+  const onDivClick = (e: MouseEvent<HTMLDivElement>) => {
+    if (disableClick) return;
+
+    onClick(e);
+  };
+
   return (
     <div
       role='button'
       tabIndex={0}
       aria-label='Edge Colour Picker'
-      onClick={onClick}
+      onClick={onDivClick}
       className={css({
         height: '8px',
         width: '24px',
@@ -75,7 +106,7 @@ const EdgeColour: FC<GraphAttributeColourProps> = ({
         marginTop: '4px',
         marginBottom: '4px',
         backgroundColor,
-        cursor: 'pointer',
+        cursor: disableClick ? 'initial' : 'pointer',
       })}
     />
   );

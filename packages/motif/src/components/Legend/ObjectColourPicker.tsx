@@ -32,8 +32,6 @@ const ObjectColourPicker: FC<ObjectColourPickerProps> = ({
   const onCancelClick = () => {
     const defaultColor = [attrKey, defaultHex] as ColorMaps;
 
-    if (defaultHex === color.hex) return;
-
     onCancel(defaultColor);
   };
 

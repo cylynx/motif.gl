@@ -61,6 +61,7 @@ const LegendPopover = () => {
             data={nodeStyle.color.mapping}
             colorMap={CATEGORICAL_COLOR}
             maxSize={MAX_LEGEND_SIZE}
+            isAllowChangeColor={false}
           />
         </Card>
       )}
@@ -81,6 +82,7 @@ const LegendPopover = () => {
             data={edgeStyle.color.mapping}
             colorMap={CATEGORICAL_COLOR}
             maxSize={MAX_LEGEND_SIZE}
+            isAllowChangeColor={false}
           />
         </Card>
       )}

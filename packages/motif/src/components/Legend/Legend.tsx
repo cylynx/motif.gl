@@ -13,6 +13,7 @@ const Legend = ({
   maxSize = 8,
   label,
   onChangeColor,
+  isAllowChangeColor = true,
 }: LegendProps) => {
   const [showPicker, setShowPicker] = useState(false);
   const selectedAttrRef = useRef<[string, string]>([undefined, undefined]);
@@ -65,6 +66,7 @@ const Legend = ({
               kind={kind}
               onClick={() => openColourPicker(attrKey, colorHex)}
               backgroundColor={colorHex}
+              disableClick={!isAllowChangeColor}
             />
           );
         })}

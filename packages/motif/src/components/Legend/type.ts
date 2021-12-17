@@ -8,11 +8,13 @@ export type LegendProps = {
   maxSize?: number;
   label?: string;
   onChangeColor?: (target: ColorMaps) => void;
+  isAllowChangeColor?: boolean;
 };
 
 export type GraphAttributeColourProps = {
   onClick: MouseEventHandler<HTMLDivElement>;
   backgroundColor: string;
+  disableClick?: boolean;
 };
 
 export type ObjectColourProps = GraphAttributeColourProps &
