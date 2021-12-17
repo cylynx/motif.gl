@@ -19,7 +19,6 @@ import {
   combineProcessedData,
   removeGraphDuplicates,
 } from '../../utils/graph-utils/utils';
-import * as GraphSelectors from './selectors';
 
 /**
  * Perform update on node and edge selections.
@@ -272,6 +271,15 @@ const graph = createSlice({
 
       const { nodeStyle } = state.styleOptions;
       const { mapping = undefined } = nodeStyle.color as T.ColorLegend;
+      if (!mapping) return;
+
+      mapping[attrKey] = colorHex;
+    },
+    changeEdgeMappingColor(state, action: PayloadAction<[string, string]>) {
+      const [attrKey, colorHex] = action.payload;
+
+      const { edgeStyle } = state.styleOptions;
+      const { mapping = undefined } = edgeStyle.color as T.ColorLegend;
       if (!mapping) return;
 
       mapping[attrKey] = colorHex;
@@ -537,6 +545,7 @@ export const {
   updateNodePosition,
   updateFilterOption,
   changeNodeMappingColor,
+  changeEdgeMappingColor,
 } = graph.actions;
 
 export default graph.reducer;

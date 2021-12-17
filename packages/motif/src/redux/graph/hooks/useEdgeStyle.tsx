@@ -15,7 +15,19 @@ const useEdgeStyle = () => {
     dispatch(GraphSlices.changeEdgeStyle(dispatchData));
   };
 
-  return { edgeStyle, switchToFixEdgeColor };
+  const updateEdgeStyle = (data: any) =>
+    dispatch(GraphSlices.changeEdgeStyle(data));
+
+  const updateEdgeMappingColor = (target: [string, string]) => {
+    dispatch(GraphSlices.changeEdgeMappingColor(target));
+  };
+
+  return {
+    edgeStyle,
+    switchToFixEdgeColor,
+    updateEdgeMappingColor,
+    updateEdgeStyle,
+  };
 };
 
 export default useEdgeStyle;

@@ -2,7 +2,7 @@ import React from 'react';
 import { useStyletron } from 'baseui';
 import { Block } from 'baseui/block';
 import { HeadingXSmall } from 'baseui/typography';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { CATEGORICAL_COLOR } from '../../../constants/colors';
 import { GraphSelectors } from '../../../redux/graph';
 import useNodeStyle from '../../../redux/graph/hooks/useNodeStyle';
