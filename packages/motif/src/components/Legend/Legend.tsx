@@ -1,18 +1,13 @@
-import React from 'react';
-import { useStyletron } from 'baseui';
-import { Block } from 'baseui/block';
-import { LabelSmall } from 'baseui/typography';
+import React, { useState } from 'react';
 
-type LegendProps = {
-  data: { [_: string]: string };
-  colorMap: string[];
-  kind: 'node' | 'edge';
-  maxSize?: number;
-  label?: string;
-};
+import { LabelSmall } from 'baseui/typography';
+import { Block } from 'baseui/block';
+import { LegendProps } from './type';
+import ObjectColours from './ObjectColours';
+import ObjectColourPicker from './ObjectColourPicker';
 
 const Legend = ({ data, colorMap, kind, maxSize = 8, label }: LegendProps) => {
-  const [css] = useStyletron();
+  const [showPicker, setShowPicker] = useState(false);
   let valueArr = Object.keys(data);
   let colorArr = Object.values(data);
   if (valueArr.length > maxSize) {
@@ -21,49 +16,51 @@ const Legend = ({ data, colorMap, kind, maxSize = 8, label }: LegendProps) => {
     colorArr = colorArr.slice(0, maxSize);
     colorArr.push(colorMap[maxSize - 1]);
   }
+
   return (
-    <>
-      {label && (
-        <LabelSmall
-          marginBottom='scale100'
-          marginTop='scale200'
-          marginRight='scale200'
-          color='contentInverseSecondary'
-        >
-          {label}
-        </LabelSmall>
+    <div>
+      <Block display={showPicker ? 'none' : 'block'}>
+        {label && (
+          <LabelSmall
+            marginBottom='scale100'
+            marginTop='scale200'
+            marginRight='scale200'
+            color='contentInverseSecondary'
+          >
+            {label}
+          </LabelSmall>
+        )}
+        {valueArr.map((value, i) => (
+          <ObjectColours
+            key={value}
+            value={value}
+            kind={kind}
+            onClick={() => setShowPicker(true)}
+            backgroundColor={colorArr[i]}
+          />
+        ))}
+      </Block>
+
+      {showPicker && (
+        <>
+          <LabelSmall
+            marginBottom='scale100'
+            marginTop='scale200'
+            marginRight='scale200'
+            color='contentInverseSecondary'
+          >
+            Change a <span style={{ textTransform: 'capitalize' }}>{kind}</span>{' '}
+            Color
+          </LabelSmall>
+
+          <ObjectColourPicker
+            onComplete={() => {
+              setShowPicker(false);
+            }}
+          />
+        </>
       )}
-      {valueArr.map((value, i) => (
-        <Block key={value} display='flex' alignItems='center' height='24px'>
-          {kind === 'node' && (
-            <div
-              className={css({
-                height: '16px',
-                width: '16px',
-                marginRight: '6px',
-                marginTop: '4px',
-                marginBottom: '4px',
-                backgroundColor: colorArr[i],
-                borderRadius: '50%',
-              })}
-            />
-          )}
-          {kind === 'edge' && (
-            <div
-              className={css({
-                height: '8px',
-                width: '24px',
-                marginRight: '6px',
-                marginTop: '4px',
-                marginBottom: '4px',
-                backgroundColor: colorArr[i],
-              })}
-            />
-          )}
-          <LabelSmall>{value}</LabelSmall>
-        </Block>
-      ))}
-    </>
+    </div>
   );
 };
 
