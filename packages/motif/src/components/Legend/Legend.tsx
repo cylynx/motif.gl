@@ -30,7 +30,7 @@ const Legend = ({
     }
 
     return colorMaps;
-  }, [data, colorMap, maxSize]);
+  }, [data, colorMap, maxSize, onChangeColor]);
 
   const openColourPicker = (attrLabel: string, colorHex: string) => {
     const selectedAttr = [attrLabel, colorHex] as [string, string];
