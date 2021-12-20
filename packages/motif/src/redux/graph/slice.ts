@@ -293,6 +293,18 @@ const graph = createSlice({
       const { edgeStyle } = state.styleOptions;
       const { mapping = undefined } = edgeStyle.color as T.ColorLegend;
       if (!mapping) return;
+      if (attrKey === 'Others') {
+        const maxSize = 8;
+        const otherEdgeKeys = Object.keys(mapping);
+        const mappingLength = otherEdgeKeys.length;
+
+        const otherKeys = otherEdgeKeys.slice(maxSize + 1, mappingLength);
+        otherKeys.forEach((key) => {
+          mapping[key] = colorHex;
+        });
+
+        return;
+      }
 
       mapping[attrKey] = colorHex;
     },
