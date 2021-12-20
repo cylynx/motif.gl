@@ -72,9 +72,9 @@ const NodeColour: FC<GraphAttributeColourProps> = ({
         backgroundColor: color.dark,
         borderRadius: '50%',
         cursor: disableClick ? 'initial' : 'pointer',
-        outlineColor: color.normal,
-        outlineWidth: '3px',
-        outlineStyle: 'solid',
+        borderColor: color.normal,
+        borderWidth: '3px',
+        borderStyle: 'solid',
       })}
     />
   );
