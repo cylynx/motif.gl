@@ -25,7 +25,7 @@ const Legend = ({
       const sliceMaps = colorMaps.slice(0, maxSize);
       const lastColorHex = colorMap[maxSize - 1];
 
-      sliceMaps[maxSize] = ['Others', lastColorHex];
+      sliceMaps[maxSize] = ['Others', data.Others ?? lastColorHex];
       return sliceMaps;
     }
 

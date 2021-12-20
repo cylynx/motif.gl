@@ -294,6 +294,7 @@ const graph = createSlice({
       if (attrKey === 'Others') {
         const maxSize = 8;
         const otherEdgeKeys = Object.keys(mapping);
+
         const mappingLength = otherEdgeKeys.length;
 
         const otherKeys = otherEdgeKeys.slice(maxSize + 1, mappingLength);
