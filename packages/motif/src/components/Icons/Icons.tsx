@@ -49,6 +49,7 @@ import { VscSymbolKey, VscCircleOutline } from 'react-icons/vsc';
 import { AiOutlineCloudUpload, AiOutlineWarning } from 'react-icons/ai';
 import { IconBaseProps } from 'react-icons';
 import { FaFileCode } from 'react-icons/fa';
+import { ImCross } from 'react-icons/im';
 
 export const Node = ({ children, size = 16, ...rest }: IconBaseProps) => (
   <VscCircleOutline size={size} {...rest}>
@@ -359,3 +360,11 @@ export const UploadCloud = ({
     {children}
   </AiOutlineCloudUpload>
 );
+
+export const Cross = ({ size = 16, children, ...rest }: IconBaseProps) => {
+  return (
+    <ImCross size={size} {...rest}>
+      {children}
+    </ImCross>
+  );
+};

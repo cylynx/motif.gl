@@ -57,12 +57,12 @@ const ObjectColourPicker: FC<ObjectColourPickerProps> = ({
 
       <Block marginTop='scale300' display='flex' gridGap='scale200'>
         <Button kind='secondary' onClick={onCancelClick} width='100%'>
-          <Icons.Trash size={14} />
+          <Icons.Cross size={10} />
           <ButtonText>Cancel</ButtonText>
         </Button>
         <Button kind='primary' onClick={onConfirmClick} width='100%'>
           <Icons.CheckCircle size={14} />
-          <ButtonText>Done</ButtonText>
+          <ButtonText>Apply</ButtonText>
         </Button>
       </Block>
     </Block>

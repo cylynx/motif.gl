@@ -281,8 +281,6 @@ const graph = createSlice({
         otherKeys.forEach((key) => {
           mapping[key] = colorHex;
         });
-
-        return;
       }
 
       mapping[attrKey] = colorHex;
@@ -302,8 +300,6 @@ const graph = createSlice({
         otherKeys.forEach((key) => {
           mapping[key] = colorHex;
         });
-
-        return;
       }
 
       mapping[attrKey] = colorHex;
