@@ -4,6 +4,7 @@ import 'react-color-palette/lib/css/styles.css';
 import './ObjectColourPicker.css';
 import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
+import { OnChangeCallback } from 'react-color-palette/lib/interfaces/ColorPicker.interface';
 import { Button } from '../ui';
 import * as Icons from '../Icons';
 import { ColorMaps, ObjectColourPickerProps } from './type';
@@ -17,7 +18,7 @@ const ObjectColourPicker: FC<ObjectColourPickerProps> = ({
   const [attrKey, defaultHex] = selectedAttr;
   const [color, setColor] = useColor('hex', defaultHex);
 
-  const onChangeComplete = () => {
+  const onChangeComplete: OnChangeCallback = (color) => {
     const targetChange = [attrKey, color.hex] as ColorMaps;
     onChangeColor(targetChange);
   };
