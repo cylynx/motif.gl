@@ -128,6 +128,7 @@ const OptionsEdgeStyles = () => {
               label='Colors'
               kind='edge'
               data={edgeStyle.color.mapping}
+              variable={edgeStyle.color.variable}
               colorMap={CATEGORICAL_COLOR}
               maxSize={MAX_LEGEND_SIZE}
               onChangeColor={updateEdgeMappingColor}

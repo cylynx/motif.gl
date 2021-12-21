@@ -114,6 +114,7 @@ const OptionsNodeStyles = () => {
               label='Colors'
               kind='node'
               data={nodeStyle.color.mapping}
+              variable={nodeStyle.color.variable}
               colorMap={CATEGORICAL_COLOR}
               maxSize={MAX_LEGEND_SIZE}
               onChangeColor={updateNodeMappingColor}

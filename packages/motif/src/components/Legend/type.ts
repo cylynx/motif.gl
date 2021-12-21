@@ -17,8 +17,10 @@ export type LegendProps = {
 
   // prevent legend popover to change graph attribute colour
   isAllowChangeColor?: boolean;
-};
 
+  // changing the edge/node variable in style panel shall trigger re-render
+  variable?: string;
+};
 export type GraphAttributeColourProps = {
   onClick: MouseEventHandler<HTMLDivElement>;
   backgroundColor: string;

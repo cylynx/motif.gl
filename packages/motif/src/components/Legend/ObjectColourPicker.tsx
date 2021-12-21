@@ -45,7 +45,7 @@ const ObjectColourPicker: FC<ObjectColourPickerProps> = ({
         setColor(color);
         const targetChange = [attrKey, color.hex] as ColorMaps;
         onChangeColor(targetChange);
-      }, 250),
+      }, 100),
     [attrKey],
   );
 

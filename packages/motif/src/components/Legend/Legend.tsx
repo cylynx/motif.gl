@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState, useEffect } from 'react';
 
 import { LabelSmall } from 'baseui/typography';
 import { Block } from 'baseui/block';
@@ -13,6 +13,7 @@ const Legend = ({
   maxSize = 8,
   label,
   onChangeColor,
+  variable = '',
   isAllowChangeColor = true,
 }: LegendProps) => {
   const [showPicker, setShowPicker] = useState(false);
@@ -42,6 +43,10 @@ const Legend = ({
     selectedAttrRef.current = [undefined, undefined];
     setShowPicker(false);
   };
+
+  useEffect(() => {
+    closeColourPicker();
+  }, [variable]);
 
   return (
     <div>
