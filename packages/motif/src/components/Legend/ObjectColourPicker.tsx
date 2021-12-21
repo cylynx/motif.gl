@@ -1,7 +1,9 @@
 import { ColorPicker, useColor } from 'react-color-palette';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import 'react-color-palette/lib/css/styles.css';
 import './ObjectColourPicker.css';
+import debounce from 'lodash/debounce';
+
 import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
 import { OnChangeCallback } from 'react-color-palette/lib/interfaces/ColorPicker.interface';
@@ -18,11 +20,6 @@ const ObjectColourPicker: FC<ObjectColourPickerProps> = ({
   const [attrKey, defaultHex] = selectedAttr;
   const [color, setColor] = useColor('hex', defaultHex);
 
-  const onChangeComplete: OnChangeCallback = (color) => {
-    const targetChange = [attrKey, color.hex] as ColorMaps;
-    onChangeColor(targetChange);
-  };
-
   const onCancelClick = () => {
     const defaultColor = [attrKey, defaultHex] as ColorMaps;
 
@@ -33,6 +30,33 @@ const ObjectColourPicker: FC<ObjectColourPickerProps> = ({
     const targetChange = [attrKey, color.hex] as ColorMaps;
     onComplete(targetChange);
   };
+
+  const onChange: OnChangeCallback = (color) => {
+    setColor(color);
+    onColorChangeDebounce(color);
+  };
+
+  /**
+   * Execute the function after a cooling period
+   */
+  const onColorChangeDebounce = useMemo(
+    () =>
+      debounce((color) => {
+        setColor(color);
+        const targetChange = [attrKey, color.hex] as ColorMaps;
+        onChangeColor(targetChange);
+      }, 250),
+    [attrKey],
+  );
+
+  /**
+   * cancel the debounced function when the component unmounts.
+   */
+  useEffect(() => {
+    return () => {
+      onColorChangeDebounce.cancel();
+    };
+  }, []);
 
   return (
     <Block>
@@ -49,8 +73,7 @@ const ObjectColourPicker: FC<ObjectColourPickerProps> = ({
         width={260}
         height={200}
         color={color}
-        onChange={setColor}
-        onChangeComplete={onChangeComplete}
+        onChange={onChange}
         hideHSV
         hideRGB
         dark
