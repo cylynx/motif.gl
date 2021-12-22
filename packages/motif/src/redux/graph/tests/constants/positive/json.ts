@@ -495,3 +495,43 @@ export const graphWithFilter = {
     },
   },
 };
+
+export const sampleNodeColourMap = {
+  color: {
+    variable: 'label',
+    id: 'legend',
+    mapping: {
+      'node-0': '#4e79a7',
+      'node-1': '#f28e2c',
+      'node-2': '#e15759',
+      'node-3': '#76b7b2',
+      'node-4': '#59a14f',
+      'node-5': '#edc949',
+      'node-6': '#af7aa1',
+      'node-7': '#ff9da7',
+      'node-8': '#9c755f',
+      'node-9': '#9c755f',
+    },
+  },
+  size: { id: 'fixed', value: 20 },
+  variable: 'label',
+};
+
+export const sampleEdgeColourMap = {
+  color: {
+    variable: 'source',
+    id: 'legend',
+    mapping: {
+      'node-0': '#4e79a7',
+      'node-1': '#f28e2c',
+      'node-2': '#e15759',
+      'node-3': '#76b7b2',
+      'node-4': '#59a14f',
+      'node-5': '#edc949',
+      'node-6': '#af7aa1',
+      'node-7': '#ff9da7',
+      'node-8': '#9c755f',
+      'node-9': '#9c755f',
+    },
+  },
+};

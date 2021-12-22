@@ -56,6 +56,7 @@ module.exports = {
     '@typescript-eslint/no-shadow': 'off',
     'no-useless-return': 'off',
     'import/no-extraneous-dependencies': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
     'max-len': [
       'warn',
       {

@@ -61,13 +61,6 @@ export const json2Blob = (json: any): any =>
     type: 'application/json',
   });
 
-export const shortifyLabel = (label: string): string => {
-  if (label.length <= 8) {
-    return label;
-  }
-  return `${label.substring(0, 5)}...`;
-};
-
 export const isBigDataSet = (
   nodeLength: number,
   edgeLength: number,

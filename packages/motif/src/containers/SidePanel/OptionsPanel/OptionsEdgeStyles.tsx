@@ -2,9 +2,9 @@ import React, { useMemo } from 'react';
 import { useStyletron } from 'baseui';
 import { Block } from 'baseui/block';
 import { HeadingXSmall } from 'baseui/typography';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { CATEGORICAL_COLOR } from '../../../constants/colors';
-import { GraphSlices, GraphSelectors } from '../../../redux/graph';
+import { GraphSelectors } from '../../../redux/graph';
 import useEdgeStyle from '../../../redux/graph/hooks/useEdgeStyle';
 import { Card } from '../../../components/ui';
 import {
@@ -29,15 +29,11 @@ const MAX_LEGEND_SIZE = CATEGORICAL_COLOR.length;
 
 const OptionsEdgeStyles = () => {
   const [, theme] = useStyletron();
-  const dispatch = useDispatch();
-  const { edgeStyle } = useEdgeStyle();
+  const { edgeStyle, updateEdgeMappingColor, updateEdgeStyle } = useEdgeStyle();
 
   const { allEdgeFields, numericEdgeFields, edgeLabelFields } = useSelector(
     (state) => GraphSelectors.getGraphFieldsOptions(state),
   );
-
-  const updateEdgeStyle = (data: any) =>
-    dispatch(GraphSlices.changeEdgeStyle(data));
 
   const edgeWidthPropertyValue = useMemo(() => {
     if (edgeStyle.width.id === 'property') {
@@ -132,8 +128,10 @@ const OptionsEdgeStyles = () => {
               label='Colors'
               kind='edge'
               data={edgeStyle.color.mapping}
+              variable={edgeStyle.color.variable}
               colorMap={CATEGORICAL_COLOR}
               maxSize={MAX_LEGEND_SIZE}
+              onChangeColor={updateEdgeMappingColor}
             />
           )}
       </Card>

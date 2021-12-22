@@ -1,0 +1,17 @@
+.rcp,
+.rcp-radius,
+.rcp-saturation {
+  border-radius: 4px !important;
+  font-family: 'Poppins';
+}
+
+.rcp-body {
+  gap: 10px !important;
+  width: 100%;
+  padding: 8px 16px;
+}
+
+.rcp-fields-element-input {
+  font-weight: 500;
+  padding: 6px;
+}

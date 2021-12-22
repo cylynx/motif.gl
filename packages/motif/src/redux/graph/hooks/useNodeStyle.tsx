@@ -15,7 +15,20 @@ const useNodeStyle = () => {
     dispatch(GraphSlices.changeNodeStyle(dispatchData));
   };
 
-  return { nodeStyle, switchToFixNodeColor };
+  const updateNodeStyle = (data: any) => {
+    dispatch(GraphSlices.changeNodeStyle(data));
+  };
+
+  const updateNodeMappingColor = (target: [string, string]) => {
+    dispatch(GraphSlices.changeNodeMappingColor(target));
+  };
+
+  return {
+    nodeStyle,
+    switchToFixNodeColor,
+    updateNodeStyle,
+    updateNodeMappingColor,
+  };
 };
 
 export default useNodeStyle;

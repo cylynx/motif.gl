@@ -266,6 +266,45 @@ const graph = createSlice({
         }
       });
     },
+    changeNodeMappingColor(state, action: PayloadAction<[string, string]>) {
+      const [attrKey, colorHex] = action.payload;
+
+      const { nodeStyle } = state.styleOptions;
+      const { mapping = undefined } = nodeStyle.color as T.ColorLegend;
+      if (!mapping) return;
+      if (attrKey === 'Others') {
+        const maxSize = 8;
+        const otherNodeKeys = Object.keys(mapping);
+        const mappingLength = otherNodeKeys.length;
+
+        const otherKeys = otherNodeKeys.slice(maxSize + 1, mappingLength);
+        otherKeys.forEach((key) => {
+          mapping[key] = colorHex;
+        });
+      }
+
+      mapping[attrKey] = colorHex;
+    },
+    changeEdgeMappingColor(state, action: PayloadAction<[string, string]>) {
+      const [attrKey, colorHex] = action.payload;
+
+      const { edgeStyle } = state.styleOptions;
+      const { mapping = undefined } = edgeStyle.color as T.ColorLegend;
+      if (!mapping) return;
+      if (attrKey === 'Others') {
+        const maxSize = 8;
+        const otherEdgeKeys = Object.keys(mapping);
+
+        const mappingLength = otherEdgeKeys.length;
+
+        const otherKeys = otherEdgeKeys.slice(maxSize + 1, mappingLength);
+        otherKeys.forEach((key) => {
+          mapping[key] = colorHex;
+        });
+      }
+
+      mapping[attrKey] = colorHex;
+    },
     changeEdgeStyle(
       state,
       action: PayloadAction<{
@@ -526,6 +565,8 @@ export const {
   overwriteEdgeSelection,
   updateNodePosition,
   updateFilterOption,
+  changeNodeMappingColor,
+  changeEdgeMappingColor,
 } = graph.actions;
 
 export default graph.reducer;

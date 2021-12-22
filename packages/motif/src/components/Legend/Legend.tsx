@@ -1,69 +1,96 @@
-import React from 'react';
-import { useStyletron } from 'baseui';
-import { Block } from 'baseui/block';
+import React, { useMemo, useRef, useState, useEffect } from 'react';
+
 import { LabelSmall } from 'baseui/typography';
+import { Block } from 'baseui/block';
+import { LegendProps } from './type';
+import ObjectColours from './ObjectColours';
+import ObjectColourPicker from './ObjectColourPicker';
 
-type LegendProps = {
-  data: { [_: string]: string };
-  colorMap: string[];
-  kind: 'node' | 'edge';
-  maxSize?: number;
-  label?: string;
-};
+const Legend = ({
+  data,
+  colorMap,
+  kind,
+  maxSize = 8,
+  label,
+  onChangeColor,
+  variable = '',
+  isAllowChangeColor = true,
+}: LegendProps) => {
+  const [showPicker, setShowPicker] = useState(false);
+  const selectedAttrRef = useRef<[string, string]>([undefined, undefined]);
 
-const Legend = ({ data, colorMap, kind, maxSize = 8, label }: LegendProps) => {
-  const [css] = useStyletron();
-  let valueArr = Object.keys(data);
-  let colorArr = Object.values(data);
-  if (valueArr.length > maxSize) {
-    valueArr = valueArr.slice(0, maxSize);
-    valueArr.push('Others');
-    colorArr = colorArr.slice(0, maxSize);
-    colorArr.push(colorMap[maxSize - 1]);
-  }
+  const collections = useMemo(() => {
+    const colorMaps = Object.entries(data);
+
+    if (colorMaps.length > maxSize) {
+      const sliceMaps = colorMaps.slice(0, maxSize);
+      const lastColorHex = colorMap[maxSize - 1];
+
+      sliceMaps[maxSize] = ['Others', data.Others ?? lastColorHex];
+      return sliceMaps;
+    }
+
+    return colorMaps;
+  }, [data, colorMap, maxSize, onChangeColor]);
+
+  const openColourPicker = (attrLabel: string, colorHex: string) => {
+    const selectedAttr = [attrLabel, colorHex] as [string, string];
+    selectedAttrRef.current = selectedAttr;
+    setShowPicker(true);
+  };
+
+  const closeColourPicker = () => {
+    selectedAttrRef.current = [undefined, undefined];
+    setShowPicker(false);
+  };
+
+  useEffect(() => {
+    closeColourPicker();
+  }, [variable]);
+
   return (
-    <>
-      {label && (
-        <LabelSmall
-          marginBottom='scale100'
-          marginTop='scale200'
-          marginRight='scale200'
-          color='contentInverseSecondary'
-        >
-          {label}
-        </LabelSmall>
+    <div>
+      <Block display={showPicker ? 'none' : 'block'}>
+        {label && (
+          <LabelSmall
+            marginBottom='scale100'
+            marginTop='scale200'
+            marginRight='scale200'
+            color='contentInverseSecondary'
+          >
+            {label}
+          </LabelSmall>
+        )}
+        {collections.map((data) => {
+          const [attrKey, colorHex] = data;
+
+          return (
+            <ObjectColours
+              key={attrKey}
+              label={attrKey}
+              kind={kind}
+              onClick={() => openColourPicker(attrKey, colorHex)}
+              backgroundColor={colorHex}
+              disableClick={!isAllowChangeColor}
+            />
+          );
+        })}
+      </Block>
+
+      {showPicker && (
+        <ObjectColourPicker
+          selectedAttr={selectedAttrRef.current}
+          onCancel={(defaultColor) => {
+            onChangeColor(defaultColor);
+            closeColourPicker();
+          }}
+          onChangeColor={onChangeColor}
+          onComplete={() => {
+            closeColourPicker();
+          }}
+        />
       )}
-      {valueArr.map((value, i) => (
-        <Block key={value} display='flex' alignItems='center' height='24px'>
-          {kind === 'node' && (
-            <div
-              className={css({
-                height: '16px',
-                width: '16px',
-                marginRight: '6px',
-                marginTop: '4px',
-                marginBottom: '4px',
-                backgroundColor: colorArr[i],
-                borderRadius: '50%',
-              })}
-            />
-          )}
-          {kind === 'edge' && (
-            <div
-              className={css({
-                height: '8px',
-                width: '24px',
-                marginRight: '6px',
-                marginTop: '4px',
-                marginBottom: '4px',
-                backgroundColor: colorArr[i],
-              })}
-            />
-          )}
-          <LabelSmall>{value}</LabelSmall>
-        </Block>
-      ))}
-    </>
+    </div>
   );
 };
 
