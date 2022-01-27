@@ -3,6 +3,8 @@ import { StatefulDataTable } from 'baseui/data-table';
 import { GraphData, EdgeNode, GraphAttribute } from '../../redux/graph';
 import { graphData2Columns } from './utils';
 
+// https://github.com/uber/baseweb/blob/master/src/data-table/types.js#L51
+
 type AttributeTableProps = { graphData: GraphData; types: GraphAttribute };
 const AttributeTable: FC<AttributeTableProps> = ({ graphData, types }) => {
   const rows = (graphData[types] as EdgeNode[]).map((r: EdgeNode) => ({
