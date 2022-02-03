@@ -33,7 +33,10 @@ const useGraphSearch = () => {
     const node: Node = graphVisible.nodes.find((node: Node) => {
       const nodeProperty: string = get(node, accessor, '');
 
-      return nodeProperty.toLowerCase() === searchCase.toLowerCase();
+      return (
+        nodeProperty.toString().toLowerCase() ===
+        searchCase.toString().toLowerCase()
+      );
     });
 
     return node;
@@ -43,7 +46,10 @@ const useGraphSearch = () => {
     const node: Edge = graphVisible.edges.find((edge: Edge) => {
       const nodeProperty: string = get(edge, accessor, '');
 
-      return nodeProperty.toLowerCase() === searchCase.toLowerCase();
+      return (
+        nodeProperty.toString().toLowerCase() ===
+        searchCase.toString().toLowerCase()
+      );
     });
 
     return node;

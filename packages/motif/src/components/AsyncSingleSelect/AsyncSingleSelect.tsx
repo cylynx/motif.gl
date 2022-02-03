@@ -47,7 +47,10 @@ const AsyncSingleSelect: FC<AsyncSingleSelectProps> = ({
         const nextOptions = options
           .filter((option: Option) => {
             const optionLabel = option.label as string;
-            return optionLabel.toLowerCase().includes(term.toLowerCase());
+            return optionLabel
+              .toString()
+              .toLowerCase()
+              .includes(term.toString().toLowerCase());
           })
           .slice(0, 10);
         setAsyncOptions(nextOptions);
