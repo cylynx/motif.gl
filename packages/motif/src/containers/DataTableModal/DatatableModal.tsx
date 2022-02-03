@@ -46,7 +46,6 @@ const DatatableModal = () => {
         Root: {
           style: {
             position: 'absolute',
-            zIndex: 1,
           },
         },
       }}
