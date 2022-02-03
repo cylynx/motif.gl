@@ -26,7 +26,7 @@ const GraphStatistics = () => {
   return useMemo(
     () => (
       <Block
-        $style={{ zIndex: 0, userSelect: 'none' }}
+        $style={{ userSelect: 'none' }}
         position='absolute'
         left='8px'
         top='8px'
