@@ -174,8 +174,8 @@ const Explorer = React.forwardRef<Graphin, ExplorerProps>(
             leftLayerWidth={leftLayerWidth}
             graphRef={graphRef}
           >
-            <GraphStatistic />
             <Graph ref={graphRef} setTooltip={setTooltip} />
+            <GraphStatistic />
           </GraphLayer>
           <WidgetContainer
             graphRef={graphRef}
