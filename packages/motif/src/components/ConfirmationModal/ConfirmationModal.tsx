@@ -10,7 +10,9 @@ import {
 
 type TButtonEvent = (event: MouseEvent<HTMLButtonElement>) => any;
 export type ConfirmationModalProps = {
-  onClose: (args: { closeSource?: CLOSE_SOURCE[keyof CLOSE_SOURCE] }) => any;
+  onClose: (args: {
+    closeSource?: (typeof CLOSE_SOURCE)[keyof typeof CLOSE_SOURCE];
+  }) => any;
   isOpen: boolean;
   onReject: TButtonEvent;
   onAccept: TButtonEvent;
@@ -34,7 +36,6 @@ const ConfirmationModal: FC<ConfirmationModalProps> = ({
     <Modal
       onClose={onClose}
       isOpen={isOpen}
-      unstable_ModalBackdropScroll
       closeable={false}
       overrides={{
         Root: {

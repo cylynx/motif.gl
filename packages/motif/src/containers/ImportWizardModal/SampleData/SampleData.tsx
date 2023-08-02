@@ -3,7 +3,7 @@ import { withStyle } from 'baseui';
 import { ALIGNMENT, Cell, Grid } from 'baseui/layout-grid';
 import { Button } from 'baseui/button';
 import { Block } from 'baseui/block';
-import { StyledSpinnerNext } from 'baseui/spinner';
+import { Spinner } from 'baseui/spinner';
 import { HeadingSmall, ParagraphSmall } from 'baseui/typography';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,7 +14,7 @@ import { defaultAccessors, sampleData } from './constant';
 import useNodeStyle from '../../../redux/graph/hooks/useNodeStyle';
 import useLayout from '../../../redux/graph/hooks/useLayout';
 
-const ExtraLargeSpinner = withStyle(StyledSpinnerNext, {
+const ExtraLargeSpinner = withStyle(Spinner, {
   width: '48px',
   height: '48px',
   borderLeftWidth: '8px',
@@ -97,7 +97,7 @@ const StyledItem: FC<StyledItemProps> = ({ item }): JSX.Element => {
   };
 
   return (
-    <Button onClick={(e): void => trySampleData(item, e)} kind='minimal'>
+    <Button onClick={(e): void => trySampleData(item, e)} kind='tertiary'>
       <Block width='200px'>
         <img src={item.src} height='120px' width='180px' alt={item.title} />
         <HeadingSmall marginTop='6px' marginBottom='0'>

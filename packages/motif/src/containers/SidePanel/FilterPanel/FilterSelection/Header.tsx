@@ -30,7 +30,7 @@ const Header: FC<FilterSelectionHeaderProps> = ({
         <Button
           data-testid='filter-selection-header:delete'
           shape='square'
-          kind='minimal'
+          kind='tertiary'
           $as='div'
           onClick={onDeleteBtnClick}
           BaseButtonStyleOverrides={{

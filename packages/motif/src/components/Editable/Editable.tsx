@@ -169,7 +169,7 @@ const Editable = ({
             <Button
               shape='round'
               onClick={() => setEditing(true)}
-              kind='minimal'
+              kind='tertiary'
               size='mini'
             >
               <Icon.Pencil />

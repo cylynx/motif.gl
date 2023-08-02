@@ -10,7 +10,7 @@ import React, {
 import { useStyletron } from 'baseui';
 import { Block } from 'baseui/block';
 
-import Graphin from '@cylynx/graphin';
+import Graphin from '@antv/graphin';
 import {
   SIDE_NAVBAR_WIDTH,
   LEFT_LAYER_WIDTH,

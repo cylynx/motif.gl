@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { IEdge, INode, IG6GraphEvent } from '@antv/g6';
-import { Graph } from '@cylynx/graphin';
+import { Graph } from '@antv/graphin';
 import { isBigDataSet } from '../../../utils/utils';
 
 const useGraphBehaviors = (graph: Graph) => {

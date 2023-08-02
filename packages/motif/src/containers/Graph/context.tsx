@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import Graphin from '@cylynx/graphin';
+import Graphin from '@antv/graphin';
 import { TLoadFormat } from '../../redux/graph';
 
 export type ExplorerContextProps = {

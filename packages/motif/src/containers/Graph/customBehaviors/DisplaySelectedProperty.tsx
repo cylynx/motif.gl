@@ -5,7 +5,7 @@ import {
   GraphinContextType,
   IG6GraphEvent,
   IUserEdge,
-} from '@cylynx/graphin';
+} from '@antv/graphin';
 import { useDispatch, useSelector } from 'react-redux';
 import uniq from 'lodash/uniq';
 import { EdgeInformation, GraphSelectors, Node } from '../../../redux/graph';

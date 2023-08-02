@@ -45,16 +45,16 @@ import {
   BiPalette,
 } from 'react-icons/bi';
 import { BsSlash } from 'react-icons/bs';
-import { VscSymbolKey, VscCircleOutline } from 'react-icons/vsc';
+import { VscSymbolKey, VscCircle } from 'react-icons/vsc';
 import { AiOutlineCloudUpload, AiOutlineWarning } from 'react-icons/ai';
 import { IconBaseProps } from 'react-icons';
 import { FaFileCode } from 'react-icons/fa';
 import { ImCross } from 'react-icons/im';
 
 export const Node = ({ children, size = 16, ...rest }: IconBaseProps) => (
-  <VscCircleOutline size={size} {...rest}>
+  <VscCircle size={size} {...rest}>
     {children}
-  </VscCircleOutline>
+  </VscCircle>
 );
 
 export const Edge = ({ children, size = 16, ...rest }: IconBaseProps) => (

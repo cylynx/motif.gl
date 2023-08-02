@@ -91,7 +91,7 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
             <Block marginLeft='scale200'>
               <Button
                 data-testid='aggregate-fields:delete'
-                kind='minimal'
+                kind='tertiary'
                 shape='square'
                 $as='div'
                 onClick={() => onDeleteClick(uniqueFieldId)}

@@ -24,7 +24,7 @@ const IconButton = ({ icon, id, group }: IconButtonProps) => {
     <Block marginBottom='12px'>
       <Button
         shape='round'
-        kind='minimal'
+        kind='tertiary'
         onClick={updateSelection}
         isSelected={activeId === id}
       >

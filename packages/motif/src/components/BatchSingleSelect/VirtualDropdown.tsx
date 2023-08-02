@@ -55,46 +55,53 @@ const FixedSizeListItem = ({
     </ListItem>
   );
 };
-const VirtualDropdown = React.forwardRef((props: any, ref) => {
-  const children = React.Children.toArray(props.children);
-  // @ts-ignore
-  if (!children[0] || !children[0].props.item) {
+
+const VirtualDropdown = React.forwardRef<HTMLUListElement>(
+  (props: any, ref) => {
+    const children = React.Children.toArray(props.children);
+    // @ts-ignore
+    if (!children[0] || !children[0].props.item) {
+      return (
+        <StyledList ref={ref}>
+          <Block
+            margin='0 auto'
+            color='contentSecondary'
+            paddingTop='scale300'
+            paddingLeft='scale300'
+          >
+            <LabelXSmall>No Results Found.</LabelXSmall>
+          </Block>
+        </StyledList>
+      );
+    }
+
+    const height = Math.min(
+      MAX_LIST_HEIGHT,
+      children.length * LIST_ITEM_HEIGHT,
+    );
     return (
-      <StyledList ref={ref}>
-        <Block
-          margin='0 auto'
-          color='contentSecondary'
-          paddingTop='scale300'
-          paddingLeft='scale300'
+      <StyledList
+        // @ts-ignore
+        $style={{ height: `${height}px`, overflowX: 'none !important' }}
+        ref={ref}
+      >
+        <FixedSizeList
+          width='100%'
+          height={height}
+          itemCount={children.length}
+          // @ts-ignore
+          itemData={children}
+          itemKey={(index: number, data: { props: OptionListProps }[]) =>
+            data[index].props.item.id
+          }
+          itemSize={LIST_ITEM_HEIGHT}
+          style={{ overflowX: 'hidden' }}
         >
-          <LabelXSmall>No Results Found.</LabelXSmall>
-        </Block>
+          {FixedSizeListItem}
+        </FixedSizeList>
       </StyledList>
     );
-  }
-
-  const height = Math.min(MAX_LIST_HEIGHT, children.length * LIST_ITEM_HEIGHT);
-  return (
-    <StyledList
-      $style={{ height: `${height}px`, overflowX: 'none !important' }}
-      ref={ref}
-    >
-      <FixedSizeList
-        width='100%'
-        height={height}
-        itemCount={children.length}
-        // @ts-ignore
-        itemData={children}
-        itemKey={(index: number, data: { props: OptionListProps }[]) =>
-          data[index].props.item.id
-        }
-        itemSize={LIST_ITEM_HEIGHT}
-        style={{ overflowX: 'hidden' }}
-      >
-        {FixedSizeListItem}
-      </FixedSizeList>
-    </StyledList>
-  );
-});
+  },
+);
 
 export default VirtualDropdown;

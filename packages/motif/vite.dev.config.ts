@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite';
 import svgr from '@svgr/rollup';
-import reactRefresh from '@vitejs/plugin-react-refresh';
+import react from '@vitejs/plugin-react-swc';
+
+const reactPlugin = react();
 
 // @ts-ignore
 const svgrPlugin = svgr({
@@ -8,19 +10,22 @@ const svgrPlugin = svgr({
   memo: true,
   svgoConfig: {
     plugins: [
-      { removeViewBox: false },
-      { removeAttrs: { attrs: 'g:(stroke|fill):((?!^none$).)*' } },
+      {
+        name: 'removeViewBox',
+      },
+      {
+        name: 'removeAttrs',
+        params: { attrs: 'g:(stroke|fill):((?!^none$).)*' },
+      },
     ],
   },
-}) as Plugin;
-
-const reactRefreshPlugin = reactRefresh();
+});
 
 export default defineConfig({
   mode: 'development',
   logLevel: 'info',
   clearScreen: false,
-  plugins: [reactRefreshPlugin, svgrPlugin],
+  plugins: [reactPlugin, svgrPlugin],
   optimizeDeps: {
     esbuildOptions: {
       // prevent produce extra index behind the React component namespaces.

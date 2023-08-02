@@ -40,7 +40,6 @@ const DatatableModal = () => {
       isOpen={isOpen}
       onClose={onCloseModal}
       closeable
-      unstable_ModalBackdropScroll
       size={SIZE.auto}
       overrides={{
         Root: {

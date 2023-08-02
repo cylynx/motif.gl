@@ -18,15 +18,15 @@ const svgrPlugin = svgr({
       { removeAttrs: { attrs: 'g:(stroke|fill):((?!^none$).)*' } },
     ],
   },
-}) as Plugin;
+});
 
 // locate and bundle third party plugins into current package, target specific environments
 const resolvePlugin = resolve({
   mainFields: ['module', 'main', 'node', 'browser'],
   extensions: ['.js', 'jsx'],
-}) as Plugin;
+});
 
-const visualiserPlugin = visualizer() as Plugin;
+const visualiserPlugin = visualizer();
 
 export default defineConfig({
   mode: 'production',
@@ -51,7 +51,6 @@ export default defineConfig({
       // keep the function name during minification to ease up debugging
       keep_fnames: true,
     },
-    brotliSize: true,
     rollupOptions: {
       treeshake: true,
 

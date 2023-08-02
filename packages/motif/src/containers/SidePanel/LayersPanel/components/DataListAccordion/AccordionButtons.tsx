@@ -37,7 +37,7 @@ export const VisibilityButton = ({
       <Button
         size='mini'
         shape='round'
-        kind='minimal'
+        kind='tertiary'
         $as='div' // Avoid button in button error
         onClick={toggleVisibility}
         {...rest}
@@ -72,7 +72,7 @@ export const DeleteButton = ({
       <Button
         size='mini'
         shape={shape}
-        kind='minimal'
+        kind='tertiary'
         $as='div'
         onClick={toggleDelete}
         overrides={{
@@ -104,7 +104,7 @@ export const TableButton = ({ onClick, ...rest }: TableButtonProps) => {
       <Button
         size='mini'
         shape='round'
-        kind='minimal'
+        kind='tertiary'
         $as='div'
         onClick={onDatatableClick}
         {...rest}

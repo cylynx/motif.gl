@@ -2,7 +2,7 @@ import {
   GraphinContext,
   GraphinContextType,
   IG6GraphEvent,
-} from '@cylynx/graphin';
+} from '@antv/graphin';
 import { useContext, useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { debounce } from 'lodash';

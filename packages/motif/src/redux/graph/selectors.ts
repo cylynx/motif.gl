@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { Option } from 'baseui/select';
-import produce from 'immer';
+import { produce } from 'immer';
 import {
   Accessors,
   GraphList,

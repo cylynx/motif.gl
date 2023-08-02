@@ -1,7 +1,6 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { useStyletron, withStyle } from 'baseui';
-import { StyledSpinnerNext } from 'baseui/spinner';
+import { Spinner } from 'baseui/spinner';
 
 const getAlignment = (align: string) => {
   switch (align) {
@@ -14,7 +13,8 @@ const getAlignment = (align: string) => {
   }
 };
 
-const Loader = withStyle(StyledSpinnerNext, ({ align }: { align: string }) => {
+// @ts-ignore
+const Loader = withStyle(Spinner, ({ align }: { align: string }) => {
   return {
     ...getAlignment(align),
   };

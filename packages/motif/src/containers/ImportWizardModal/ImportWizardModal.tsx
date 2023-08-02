@@ -70,7 +70,6 @@ const ImportWizardModal: FC<ImportWizardProps> = ({ overrideTabs }) => {
     <>
       <Modal
         closeable
-        unstable_ModalBackdropScroll
         isOpen={isModalOpen}
         onClose={onCloseModal}
         size={SIZE.auto}

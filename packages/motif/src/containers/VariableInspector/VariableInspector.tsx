@@ -11,7 +11,7 @@ import get from 'lodash/get';
 import { styled } from 'baseui';
 import { Block } from 'baseui/block';
 import { HeadingXSmall, ParagraphSmall } from 'baseui/typography';
-import { GraphinContextType, IUserEdge, IUserNode } from '@cylynx/graphin';
+import { GraphinContextType, IUserEdge, IUserNode } from '@antv/graphin';
 import isEmpty from 'lodash/isEmpty';
 import { GraphRefContext } from '../Graph';
 import SelectVariable from '../../components/SelectVariable';

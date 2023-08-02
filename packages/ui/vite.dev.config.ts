@@ -11,6 +11,8 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    keepNames: true,
+    esbuildOptions: {
+      keepNames: true,
+    },
   },
 });

@@ -1,6 +1,6 @@
 import { Value } from 'baseui/select';
-import { IUserEdge, IUserNode } from '@cylynx/graphin';
-import { RestNode } from '@cylynx/graphin/lib/typings/type';
+import { IUserEdge, IUserNode } from '@antv/graphin';
+import { RestNode } from '@antv/graphin/lib/typings/type';
 import { SelectVariableOption } from '../../components/SelectVariable/SelectVariable';
 import { HistogramProp } from '../../containers/SidePanel/FilterPanel/FilterSelection/RangePlot';
 
