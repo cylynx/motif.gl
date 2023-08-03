@@ -1,11 +1,10 @@
-// @ts-nocheck
-import React, { useState } from 'react';
+import React from 'react';
 import { useStyletron } from 'baseui';
 import { Block } from 'baseui/block';
 import {
   Accordion as BaseAccordion,
   AccordionOverrides,
-  SharedProps,
+  Panel,
   StatefulPanel,
 } from 'baseui/accordion';
 import * as Icon from '../Icons';
@@ -17,7 +16,7 @@ export type AccordionProps = {
   width?: 'full' | 'default';
   actionButtons?: React.ReactNode;
   expanded?: boolean;
-  overrides?: AccordionOverrides<SharedProps>;
+  overrides?: AccordionOverrides;
 };
 
 export const Content = ({ children }: { children: React.ReactNode }) => {
@@ -46,7 +45,7 @@ const Accordion = ({
   expanded = false,
   overrides,
 }: AccordionProps) => {
-  const BASE_ACCORDION_OVERRIDES: AccordionOverrides<SharedProps> = {
+  const BASE_ACCORDION_OVERRIDES: AccordionOverrides = {
     ToggleIcon: {
       component: () => {
         return iconPosition === 'left' ? (
@@ -96,25 +95,24 @@ const Accordion = ({
   };
 
   return (
-    <BaseAccordion overrides={overrides ?? BASE_ACCORDION_OVERRIDES}>
-      <StatefulPanel
-        title={
-          <Block display='flex' alignItems='center'>
-            {iconPosition === 'left' ? (
-              <>
-                <Icon.ChevronDown />
-                <Block marginLeft='8px'>{title}</Block>
-              </>
-            ) : (
-              title
-            )}
-          </Block>
-        }
-        initialState={{ expanded }}
-      >
-        {content}
-      </StatefulPanel>
-    </BaseAccordion>
+    <StatefulPanel
+      overrides={overrides ?? BASE_ACCORDION_OVERRIDES}
+      title={
+        <Block display='flex' alignItems='center'>
+          {iconPosition === 'left' ? (
+            <>
+              <Icon.ChevronDown />
+              <Block marginLeft='8px'>{title}</Block>
+            </>
+          ) : (
+            title
+          )}
+        </Block>
+      }
+      initialState={{ expanded }}
+    >
+      {content}
+    </StatefulPanel>
   );
 };
 

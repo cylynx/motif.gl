@@ -1,6 +1,6 @@
 import get from 'lodash/get';
 import groupBy from 'lodash/groupBy';
-import { EdgeStyle, IUserEdge } from '@cylynx/graphin';
+import { EdgeStyle, IUserEdge } from '@antv/graphin';
 import {
   GraphData,
   EdgeStyleOptions,

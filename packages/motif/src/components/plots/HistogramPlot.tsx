@@ -30,12 +30,16 @@ const histogramStyle = {
   unHighlightedW: 0.6,
 };
 
-const StyledSvg = styled('svg', ({ $theme, width, height }: StyledSvgType) => ({
-  overflow: 'visible',
-  width,
-  height,
-  marginTop: $theme.sizing.scale300,
-}));
+const StyledSvg = styled<'svg', StyledSvgType>(
+  'svg',
+  // @ts-ignore
+  ({ $theme, width, height }: StyledSvgType) => ({
+    overflow: 'visible',
+    width,
+    height,
+    marginTop: $theme.sizing.scale300,
+  }),
+);
 
 const HistogramPlot = ({
   width,

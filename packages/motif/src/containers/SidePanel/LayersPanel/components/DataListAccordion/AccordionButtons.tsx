@@ -1,4 +1,9 @@
-import React, { MouseEvent, ReactNode, useCallback } from 'react';
+import React, {
+  MouseEvent,
+  ReactNode,
+  SyntheticEvent,
+  useCallback,
+} from 'react';
 import { Button, ButtonProps } from 'baseui/button';
 import debounce from 'lodash/debounce';
 import { SimpleTooltip } from '../../../../../components/ui';
@@ -14,7 +19,7 @@ export const VisibilityButton = ({
   isVisible,
   ...rest
 }: VisibilityButtonProps) => {
-  const toggleVisibility = (e: MouseEvent<HTMLButtonElement>) => {
+  const toggleVisibility = (e: SyntheticEvent<HTMLButtonElement, Event>) => {
     e.stopPropagation();
     onToggleDebounce();
   };
@@ -37,7 +42,7 @@ export const VisibilityButton = ({
       <Button
         size='mini'
         shape='round'
-        kind='minimal'
+        kind='tertiary'
         $as='div' // Avoid button in button error
         onClick={toggleVisibility}
         {...rest}
@@ -60,7 +65,7 @@ export const DeleteButton = ({
   tooltip,
   ...rest
 }: DeleteButtonProps) => {
-  const toggleDelete = (e: MouseEvent<HTMLButtonElement>): void => {
+  const toggleDelete = (e: SyntheticEvent<HTMLButtonElement, Event>): void => {
     e.stopPropagation();
     if (onClickDelete) {
       onClickDelete();
@@ -72,7 +77,7 @@ export const DeleteButton = ({
       <Button
         size='mini'
         shape={shape}
-        kind='minimal'
+        kind='tertiary'
         $as='div'
         onClick={toggleDelete}
         overrides={{
@@ -94,7 +99,9 @@ export const DeleteButton = ({
 
 type TableButtonProps = { onClick: () => any; [key: string]: any };
 export const TableButton = ({ onClick, ...rest }: TableButtonProps) => {
-  const onDatatableClick = (event: MouseEvent<HTMLButtonElement>): void => {
+  const onDatatableClick = (
+    event: SyntheticEvent<HTMLButtonElement, Event>,
+  ): void => {
     event.stopPropagation();
     onClick();
   };
@@ -104,7 +111,7 @@ export const TableButton = ({ onClick, ...rest }: TableButtonProps) => {
       <Button
         size='mini'
         shape='round'
-        kind='minimal'
+        kind='tertiary'
         $as='div'
         onClick={onDatatableClick}
         {...rest}

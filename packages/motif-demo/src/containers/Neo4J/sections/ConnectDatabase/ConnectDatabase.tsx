@@ -67,6 +67,7 @@ const ConnectDatabase: FC<ConnectDatabaseProps> = ({
 
   const onConnectDb = (e: React.FormEvent) => {
     e.preventDefault();
+    // @ts-ignore
     const connectionDriver: Driver = createDriver(
       'bolt',
       dbSettings.neo4jHost,
@@ -78,7 +79,7 @@ const ConnectDatabase: FC<ConnectDatabaseProps> = ({
     setIsLoading(true);
 
     connectionDriver
-      .verifyConnectivity()
+      .getServerInfo()
       .then(() => {
         setDriver(connectionDriver);
 

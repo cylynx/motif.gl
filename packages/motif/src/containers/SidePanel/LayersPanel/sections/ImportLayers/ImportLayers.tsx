@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../../../../redux/hooks';
 import { Block } from 'baseui/block';
 import {
   GraphSlices,

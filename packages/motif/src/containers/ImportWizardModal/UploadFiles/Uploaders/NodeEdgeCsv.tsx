@@ -47,7 +47,7 @@ const NodeEdgeCsv: FC = () => {
   const isEdgeCsvEmpty: boolean = watch('edgeCsv') === null;
 
   const onSubmitForm: SubmitHandler<SingleFileForms> = (
-    data: UnpackNestedValue<SingleFileForms>,
+    data,
     e: BaseSyntheticEvent,
   ) => {
     e.preventDefault();

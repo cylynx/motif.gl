@@ -1,14 +1,14 @@
 /* eslint-disable prefer-const, no-console */
-// @ts-nocheck
 import Neo4j from 'neo4j-driver';
 import { Node, Edge, GraphData, json2csv, processCsvData } from '@cylynx/motif';
-import Record from 'neo4j-driver/types/record';
+import { Record } from 'neo4j-driver';
+// @ts-ignore
 import uniqBy from 'lodash.uniqby';
 
 export const buildNode = (n: any) => {
   let node: Node = {
     id: `node-${n.identity.toString()}`,
-    labels: n.labels[0],
+    labels: n.labels[0]
   };
   if (n.properties) {
     for (let [key, value] of Object.entries(n.properties)) {
@@ -23,7 +23,7 @@ export const buildEdge = (e: any) => {
     id: `edge-${e.identity.toString()}`,
     source: `node-${e.start.toString()}`,
     target: `node-${e.end.toString()}`,
-    relationship: e.type,
+    relationship: e.type
   };
 
   if (e.properties) {
@@ -44,12 +44,12 @@ export const processJson = async (json: GraphData) => {
 
   return {
     nodes,
-    edges,
+    edges
   };
 };
 
 /* Adapted from https://github.com/neo4j-contrib/neovis.js/blob/master/src/neovis.js */
-export const toMotifFormat = async (records: Record[]): GraphData => {
+export const toMotifFormat = async (records: Record[]): Promise<GraphData> => {
   let nodes: Node[] = [];
   let edges: Edge[] = [];
   records.forEach((record) => {
@@ -98,7 +98,7 @@ export const toMotifFormat = async (records: Record[]): GraphData => {
 
   const graphData: GraphData = await processJson({
     nodes,
-    edges,
+    edges
   });
 
   return graphData;

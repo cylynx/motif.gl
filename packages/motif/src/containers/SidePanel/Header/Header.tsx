@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 
 import { Block } from 'baseui/block';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../../redux/hooks';
 import useGraphSnapshot from './useGraphSnapshot';
 import { UISelectors, UISlices } from '../../../redux/ui';
 import { GraphSelectors, GraphList } from '../../../redux/graph';

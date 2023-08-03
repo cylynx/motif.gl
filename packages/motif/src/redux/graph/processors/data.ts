@@ -1,5 +1,8 @@
 /* eslint-disable no-param-reassign */
-import converter from 'json-2-csv';
+import {
+  json2csv as convertJson2Csv,
+  csv2json as convertCsv2Json,
+} from 'json-2-csv';
 import { range } from 'd3-array';
 import shortid from 'shortid';
 // @ts-ignore
@@ -273,7 +276,7 @@ export const processEdgeListCsv = async (
   edgeCsv: string,
   edgeSourceAccessor = 'source',
   edgeTargetAccessor = 'target',
-  groupEdges: boolean,
+  groupEdges = false,
   key = shortid.generate(),
 ): Promise<GraphData> => {
   const { fields: edgeFields, json: edgeJson } = await processCsvData(edgeCsv);
@@ -319,8 +322,7 @@ export const processEdgeListCsv = async (
  * @return {*}
  */
 export const json2csv = async (json: any): Promise<string | void> => {
-  const csv = converter
-    .json2csvAsync(json)
+  const csv = convertJson2Csv(json)
     .then()
     .catch(() => {
       throw new Error('invalid-json-format');
@@ -336,8 +338,7 @@ export const json2csv = async (json: any): Promise<string | void> => {
  * @return {Promise<void | any[]>}
  */
 export const csv2json = async (csv: string): Promise<void | any[]> => {
-  const json = converter
-    .csv2jsonAsync(csv)
+  const json = convertCsv2Json(csv)
     .then()
     .catch(() => {
       throw new Error('invalid-csv-format');

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStyletron } from 'baseui';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../redux/hooks';
 import { Block } from 'baseui/block';
 import { LabelSmall, ParagraphSmall } from 'baseui/typography';
 import { CATEGORICAL_COLOR } from '../../constants/colors';

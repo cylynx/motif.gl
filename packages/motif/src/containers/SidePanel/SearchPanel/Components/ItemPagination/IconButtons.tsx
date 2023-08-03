@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, SyntheticEvent } from 'react';
 import { useStyletron } from 'baseui';
 import { KIND, SHAPE } from 'baseui/button';
 import { Button } from '../../../../../components/ui';
 import * as Icon from '../../../../../components/Icons';
 
 type IconButtonProps = {
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => any;
+  onClick: (event: SyntheticEvent<HTMLButtonElement, Event>) => any;
   disabled?: boolean;
 };
 export const DeleteButton: FC<IconButtonProps> = ({ onClick }) => {

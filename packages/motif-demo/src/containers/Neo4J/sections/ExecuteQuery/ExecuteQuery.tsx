@@ -3,8 +3,7 @@ import { Neo4jContext, Neo4jProvider, useDatabases } from 'use-neo4j';
 import { Neo4jContextState } from 'use-neo4j/dist/neo4j.context';
 import { OnChangeParams } from 'baseui/select';
 import { Driver } from 'neo4j-driver/types/driver';
-import { QueryResult } from 'neo4j-driver/types/result';
-import Record from 'neo4j-driver/types/record';
+import type { Record, QueryResult } from 'neo4j-driver';
 import { FormControl } from 'baseui/form-control';
 import { Textarea } from 'baseui/textarea';
 import { Block } from 'baseui/block';
@@ -19,7 +18,7 @@ import BaseNotification from '../../../../components/BaseNotification';
 const CypherQuery: FC<CypherQueryProps> = ({
   nextStep,
   states: { db, query, graphData },
-  onStateChange,
+  onStateChange
 }) => {
   const { driver } = useContext(Neo4jContext) as Neo4jContextState;
   const { loading, databases } = useDatabases();
@@ -50,6 +49,7 @@ const CypherQuery: FC<CypherQueryProps> = ({
 
     setIsLoading(true);
 
+    // @ts-ignore
     (driver as Driver)
       .session({ database: db[0].id as string })
       .run(query)
@@ -71,17 +71,17 @@ const CypherQuery: FC<CypherQueryProps> = ({
               Imported <b>{nodeLength} Node(s)</b> and{' '}
               <b>{edgesLength} Edge(s)</b>.
             </Block>
-          ),
+          )
         });
       })
       .catch((error) => {
         onStateChange('graphData', {
           nodes: [],
-          edges: [],
+          edges: []
         });
         setNotification({
           kind: 'negative',
-          children: error.message,
+          children: error.message
         });
       })
       .finally(() => {
@@ -140,9 +140,9 @@ const CypherQuery: FC<CypherQueryProps> = ({
                         style: {
                           height: '200px',
                           width: '100vw',
-                          fontSize: '14px`',
-                        },
-                      },
+                          fontSize: '14px`'
+                        }
+                      }
                     }}
                   />
                 </Block>
@@ -170,9 +170,9 @@ const CypherQuery: FC<CypherQueryProps> = ({
           overrides={{
             BaseButton: {
               style: {
-                width: '120px',
-              },
-            },
+                width: '120px'
+              }
+            }
           }}
         >
           Continue
@@ -186,9 +186,10 @@ const ExecuteQuery: FC<ExecuteQueryProps> = ({
   driver,
   nextStep,
   states,
-  onStateChange,
+  onStateChange
 }) => {
   return (
+    // @ts-ignore
     <Neo4jProvider driver={driver}>
       <CypherQuery
         nextStep={nextStep}

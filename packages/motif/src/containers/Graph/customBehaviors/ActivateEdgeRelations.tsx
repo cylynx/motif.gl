@@ -1,5 +1,5 @@
 import { useCallback, useContext, useLayoutEffect } from 'react';
-import { GraphinContext, GraphinContextType } from '@cylynx/graphin';
+import { GraphinContext, GraphinContextType } from '@antv/graphin';
 
 import { IEdge, INode, IG6GraphEvent } from '@antv/g6';
 import { isBigDataSet } from '../../../utils/utils';

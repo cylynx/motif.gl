@@ -6,12 +6,12 @@ import React, {
   useMemo,
   Fragment,
 } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../redux/hooks';
 import get from 'lodash/get';
 import { styled } from 'baseui';
 import { Block } from 'baseui/block';
 import { HeadingXSmall, ParagraphSmall } from 'baseui/typography';
-import { GraphinContextType, IUserEdge, IUserNode } from '@cylynx/graphin';
+import { GraphinContextType, IUserEdge, IUserNode } from '@antv/graphin';
 import isEmpty from 'lodash/isEmpty';
 import { GraphRefContext } from '../Graph';
 import SelectVariable from '../../components/SelectVariable';
@@ -32,17 +32,20 @@ import { TPlotDiv, THistogramProp } from './types';
 const dateTimeAnalyzerTypes = ['DATETIME', 'DATE', 'TIME'];
 const validTypes = ['integer', 'real', 'timestamp', 'date'];
 
-export const PlotDiv = styled('div', ({ $theme, $expanded }: TPlotDiv) => {
-  const { animation, sizing } = $theme;
-  return {
-    paddingLeft: sizing.scale300,
-    paddingRight: sizing.scale300,
-    height: $expanded ? '120px' : 0,
-    transitionProperty: 'all',
-    transitionDuration: animation.timing400,
-    transitionTimingFunction: animation.easeInOutCurve,
-  };
-});
+export const PlotDiv = styled<'div', TPlotDiv>(
+  'div',
+  ({ $theme, $expanded }: TPlotDiv) => {
+    const { animation, sizing } = $theme;
+    return {
+      paddingLeft: sizing.scale300,
+      paddingRight: sizing.scale300,
+      height: $expanded ? '120px' : 0,
+      transitionProperty: 'all',
+      transitionDuration: animation.timing400,
+      transitionTimingFunction: animation.easeInOutCurve,
+    };
+  },
+);
 
 const SelectFieldPopoverOverrides = {
   props: {

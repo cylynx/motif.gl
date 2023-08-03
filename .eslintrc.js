@@ -4,9 +4,9 @@ module.exports = {
     'airbnb-typescript',
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
-    'plugin:prettier/recommended',
     'prettier',
   ],
+  plugins: ['@typescript-eslint', 'react', 'prettier'],
   env: {
     node: true,
   },
@@ -37,7 +37,7 @@ module.exports = {
     '@typescript-eslint/ban-ts-ignore': 0,
     '@typescript-eslint/ban-types': 0,
     '@typescript-eslint/no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars-experimental': ['warn'],
+    '@typescript-eslint/no-unused-vars-experimental': 0,
     '@typescript-eslint/no-use-before-define': [
       'error',
       { variables: false, functions: false },
@@ -53,6 +53,7 @@ module.exports = {
     'react/no-array-index-key': 0,
     'arrow-parens': 1,
     'comma-dangle': 1,
+    'import/extensions': 0,
     '@typescript-eslint/no-shadow': 'off',
     'no-useless-return': 'off',
     'import/no-extraneous-dependencies': 'off',

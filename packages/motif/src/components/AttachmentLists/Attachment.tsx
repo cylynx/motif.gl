@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent } from 'react';
+import React, { FC, SyntheticEvent } from 'react';
 import { Block } from 'baseui/block';
 import { ParagraphSmall } from 'baseui/typography';
 import { Button, KIND, SIZE, SHAPE } from 'baseui/button';
@@ -7,7 +7,7 @@ import * as Icons from '../Icons';
 
 type AttachmentProps = {
   fileName: string;
-  onDeleteBtnClick?: (event: MouseEvent<HTMLButtonElement>) => any;
+  onDeleteBtnClick?: (event: SyntheticEvent<HTMLButtonElement, Event>) => any;
 };
 const Attachment: FC<AttachmentProps> = ({ fileName, onDeleteBtnClick }) => {
   return (

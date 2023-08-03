@@ -1,5 +1,3 @@
-// @ts-nocheck
-/* eslint-disable import/no-extraneous-dependencies */
 import React, { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import { Client as Styletron } from 'styletron-engine-atomic';
@@ -16,7 +14,7 @@ const engine = new Styletron({ prefix: 'm_' });
 function renderRoot(
   div: HTMLDivElement,
   store: EnhancedStore,
-  onRefChange: (ref: any) => void,
+  onRefChange: (ref: any) => void
 ) {
   const Root = () => {
     const graphRef = useRef<any>(null);

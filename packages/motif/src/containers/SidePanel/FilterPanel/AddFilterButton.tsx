@@ -3,7 +3,7 @@ import * as Icon from '../../../components/Icons';
 import { Button } from '../../../components/ui';
 
 type AddFilterButtonType = {
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => any;
+  onClick?: (event: React.SyntheticEvent<HTMLButtonElement, Event>) => any;
   disabled?: boolean;
 };
 

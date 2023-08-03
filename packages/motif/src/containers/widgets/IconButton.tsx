@@ -1,6 +1,6 @@
 import React from 'react';
 import { Block } from 'baseui/block';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../redux/hooks';
 import { updateWidget } from '../../redux/widget/slice';
 import { WidgetSelectors } from '../../redux/widget';
 import { Button } from '../../components/ui';
@@ -24,7 +24,7 @@ const IconButton = ({ icon, id, group }: IconButtonProps) => {
     <Block marginBottom='12px'>
       <Button
         shape='round'
-        kind='minimal'
+        kind='tertiary'
         onClick={updateSelection}
         isSelected={activeId === id}
       >

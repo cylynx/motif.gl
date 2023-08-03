@@ -1,4 +1,3 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { useMemo } from 'react';
 import shortid from 'shortid';
 import {
@@ -13,11 +12,11 @@ import {
   GroupEdges,
   UpdateGroupEdgeFieldPayload,
 } from '../../../../redux/graph';
-import { RootState } from '../../../../redux/investigate';
+import { useDispatch, useSelector } from '../../../../redux/hooks';
 
 const useGroupEdges = (graphIndex: number) => {
   const dispatch = useDispatch();
-  const graphList: GraphList = useSelector((state: RootState) =>
+  const graphList: GraphList = useSelector((state) =>
     GraphSelectors.getGraphList(state),
   );
 

@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-properties */
 /* eslint-disable no-param-reassign */
 
-import { EdgeStyle, Utils, IUserNode, IUserEdge } from '@cylynx/graphin';
+import { EdgeStyle, Utils, IUserNode, IUserEdge } from '@antv/graphin';
 import { GraphData, GraphList } from '../redux/graph';
 import { mapNodeSize, styleNodeSize } from '../utils/style-utils/style-nodes';
 import { DEFAULT_EDGE_STYLE } from './graph-shapes';

@@ -5,11 +5,12 @@ import { Theme } from 'baseui/theme';
 export type BaseNotificationProps = {
   kind?: 'negative' | 'positive' | 'info';
   height?: string;
+  children?: React.ReactNode;
 };
 const BaseNotification: React.FC<BaseNotificationProps> = ({
   kind,
   height = 'auto',
-  children,
+  children
 }) => {
   return (
     <Notification
@@ -24,16 +25,16 @@ const BaseNotification: React.FC<BaseNotificationProps> = ({
             paddingRight: $theme.sizing.scale300,
             paddingBottom: $theme.sizing.scale300,
             height,
-            overflowX: 'hidden',
-          }),
+            overflowX: 'hidden'
+          })
         },
         InnerContainer: {
           style: {
             fontSize: '14px',
             width: '100%',
-            alignSelf: 'center',
-          },
-        },
+            alignSelf: 'center'
+          }
+        }
       }}
     >
       {children}

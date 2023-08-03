@@ -2,7 +2,6 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "bootstrap": "lerna bootstrap --no-ci --hoist --strict -- --legacy-peer-deps",
     "motif": "cd ./packages/motif && npm run start",
     "motif:tsc": "cd ./packages/motif && npm run transpile",
     "motif:build": "cd ./packages/motif && npm run build",
@@ -18,49 +17,41 @@
     "ui:serve": "cd ./packages/ui && npm run serve",
     "clean": "lerna clean && npm run rm-package-lock",
     "cypress": "cd ./packages/motif && npm run cypress:test",
-    "rm-package-lock": "rm -rf ./package-lock.json ./packages/*/package-lock.json"
+    "rm-package-lock": "rm -rf ./package-lock.json ./packages/*/package-lock.json",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/cylynx/motif.gl"
   },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
-    "./packages/*/src/**/*.+(js|jsx|ts|tsx)": [
-      "eslint --fix"
-    ],
     "./packages/*/src/**/*.+(js|jsx|ts|tsx|json|css|md)": [
       "prettier --write"
+    ],
+    "./packages/*/src/**/*.+(js|jsx|ts|tsx)": [
+      "eslint --fix"
     ]
   },
-  "resolutions": {
-    "**/neo4j-driver": "4.2.3"
-  },
   "devDependencies": {
-    "@commitlint/cli": "^11.0.0",
-    "@commitlint/config-conventional": "^8.0.0",
-    "@types/webpack": "^4.41.26",
-    "@typescript-eslint/eslint-plugin": "^4.22.0",
-    "eslint": "^7.24.0",
-    "eslint-config-airbnb-typescript": "^12.3.1",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-import": "2.22.1",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-prettier": "^3.3.1",
-    "eslint-plugin-react": "^7.23.2",
-    "husky": "^4.2.1",
+    "@commitlint/cli": "^17.0.0",
+    "@commitlint/config-conventional": "^17.0.0",
+    "@types/webpack": "^5.28.1",
+    "@typescript-eslint/eslint-plugin": "^6.2.0",
+    "eslint": "^8.46.0",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-config-prettier": "^8.9.0",
+    "eslint-plugin-import": "2.28.0",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-react": "^7.33.1",
+    "husky": "^8.0.3",
     "identity-obj-proxy": "^3.0.0",
-    "lerna": "^4.0.0",
-    "lint-staged": "^10.0.3",
-    "prettier": "^2.2.1",
-    "tslib": "^2.3.0",
-    "typescript": "^4.2.4",
-    "webpack": "4.42.0"
+    "lerna": "^7.0.0",
+    "lint-staged": "^13.2.3",
+    "prettier": "^3.0.0",
+    "tslib": "^2.6.1",
+    "typescript": "^5.1.6",
+    "webpack": "5.88.2"
   },
   "workspaces": [
     "packages/*"

@@ -6,7 +6,7 @@ import {
   processJson,
   processNodeEdgeCsv,
   processEdgeListCsv,
-  verifySourceAndTargetExistence,
+  verifySourceAndTargetExistence
 } from './data';
 import * as Utils from '../utils';
 
@@ -22,7 +22,7 @@ import * as Utils from '../utils';
 export const importJson = async (
   json: GraphList | GraphData,
   accessors: Accessors,
-  groupEdges: boolean,
+  groupEdges = false
 ): Promise<GraphList> => {
   const results: GraphList = [];
   const graphList: GraphList = Array.isArray(json) ? json : [json];
@@ -33,7 +33,7 @@ export const importJson = async (
       const processedData = await processJson(
         data,
         groupEdges,
-        data?.key || data?.metadata?.key,
+        data?.key || data?.metadata?.key
       );
 
       const graphData = addRequiredFieldsJson(processedData, accessors);
@@ -73,7 +73,7 @@ export const importEdgeListCsv = async (
   csv: string,
   accessors: Accessors,
   groupEdges: boolean,
-  metadataKey: string = null,
+  metadataKey: string = null
 ): Promise<GraphData> => {
   const { edgeSource, edgeTarget } = accessors;
 
@@ -83,7 +83,7 @@ export const importEdgeListCsv = async (
       edgeSource,
       edgeTarget,
       groupEdges,
-      metadataKey,
+      metadataKey
     );
 
     processedData.edges.forEach((edge: Edge) => {
@@ -124,7 +124,7 @@ export const importNodeEdgeCsv = async (
   edgeCsv: string[],
   accessors: Accessors,
   groupEdges: boolean,
-  metadataKey: string = null,
+  metadataKey: string = null
 ): Promise<GraphData> => {
   try {
     const processedData: GraphData = await processNodeEdgeCsv(
@@ -132,7 +132,7 @@ export const importNodeEdgeCsv = async (
       edgeCsv,
       groupEdges,
       accessors,
-      metadataKey,
+      metadataKey
     );
 
     const graphData = addRequiredFieldsJson(processedData, accessors);
@@ -162,7 +162,7 @@ export const importNodeEdgeCsv = async (
  */
 export const addRequiredFieldsJson = (
   data: GraphData,
-  accessors: Accessors,
+  accessors: Accessors
 ): GraphData => {
   for (const node of data.nodes) {
     addNodeFields(node, accessors);
@@ -206,7 +206,7 @@ export const addEdgeFields = (edge: Edge, accessors: Accessors): void => {
 
   Object.assign(edge, {
     source: edgeSourceValue.toString(),
-    target: edgeTargetValue.toString(),
+    target: edgeTargetValue.toString()
   });
 
   generateIdKey(edge, edgeID);
@@ -226,26 +226,26 @@ const generateIdKey = (object: any, idAccessor: string | undefined): void => {
   if (isUndefined(idAccessor)) {
     if (isUndefined(object.id)) {
       Object.assign(object, {
-        id: shortid.generate(),
+        id: shortid.generate()
       });
     }
   } else if (isUndefined(get(object, idAccessor))) {
     Object.assign(object, {
-      id: shortid.generate(),
+      id: shortid.generate()
     });
   } else if (isUndefined(object.id) && idAccessor) {
     const id = get(object, idAccessor).toString();
     Object.assign(object, {
-      id,
+      id
     });
   } else if (idAccessor === 'auto-generated') {
     Object.assign(object, {
-      id: shortid.generate(),
+      id: shortid.generate()
     });
   } else {
     const id = get(object, idAccessor).toString();
     Object.assign(object, {
-      [idAccessor]: id,
+      [idAccessor]: id
     });
   }
 };

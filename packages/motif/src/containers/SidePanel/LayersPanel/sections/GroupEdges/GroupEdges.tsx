@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import { Block } from 'baseui/block';
 import { OnChangeParams, Value, Option } from 'baseui/select';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../../../../redux/hooks';
 import AddAttributesButton from '../../components/AddAttributesButton';
 import useGroupEdges from '../../hooks/useGroupEdges';
 import GroupByFields from './GroupByFields';
@@ -27,9 +27,7 @@ const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
   } = useGroupEdges(graphListIndex);
 
   const { resetSearchOptions } = useSearchOption();
-  const graphList: GraphList = useSelector((state: RootState) =>
-    getGraphList(state),
-  );
+  const graphList: GraphList = useSelector((state) => getGraphList(state));
   const { edges: allEdgeFields } = graphList[graphListIndex].metadata.fields;
 
   // this edge options are use by group by selections

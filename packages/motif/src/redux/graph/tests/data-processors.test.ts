@@ -11,7 +11,7 @@ import {
   processJson,
   processNodeEdgeCsv,
   processEdgeListCsv,
-  verifySourceAndTargetExistence,
+  verifySourceAndTargetExistence
 } from '../processors/data';
 import { Edge, GraphData, Node } from '../types';
 
@@ -58,7 +58,7 @@ describe('Parsing csv to json', () => {
     expect((edgeJson as Edge[]).map((x: Edge) => x.id)).toMatchObject([
       'txn a-b',
       'txn b-c',
-      'txn c-b',
+      'txn c-b'
     ]);
   });
   it('should convert falsy values to null', async () => {
@@ -78,20 +78,20 @@ describe('Parsing csv to json', () => {
       nodeID: 'id',
       edgeID: 'id',
       edgeSource: 'source',
-      edgeTarget: 'target',
+      edgeTarget: 'target'
     };
 
     const output = await processNodeEdgeCsv(
       [nodeCsv] as string[],
       [testCsv] as string[],
       toggleGroupEdge,
-      accessors,
+      accessors
     );
     expect(output).toHaveProperty('nodes');
     expect(output).toHaveProperty('edges');
     expect(output).toHaveProperty('metadata');
-    expect(output.metadata.fields.nodes).toHaveLength(2);
-    expect(output.metadata.fields.edges).toHaveLength(5);
+    expect(output.metadata?.fields?.nodes).toHaveLength(2);
+    expect(output.metadata?.fields?.edges).toHaveLength(5);
   });
   it('should return distinct nodes in an edgelist csv format', async () => {
     const toggleGroupEdge = false;
@@ -99,7 +99,7 @@ describe('Parsing csv to json', () => {
       testCsv as string,
       'source',
       'target',
-      toggleGroupEdge,
+      toggleGroupEdge
     );
     const nodeIds = output.nodes.map((n: Node) => n.id);
     expect(output).toHaveProperty('nodes');
@@ -114,9 +114,9 @@ const testObj = {
   b: {
     c: 'hello',
     e: {
-      f: [4, 5, 6],
-    },
-  },
+      f: [4, 5, 6]
+    }
+  }
 };
 
 describe('Flatten object', () => {
@@ -125,7 +125,7 @@ describe('Flatten object', () => {
     expect(flattenObj).toMatchObject({
       a: 1,
       'b.c': 'hello',
-      'b.e.f': [4, 5, 6],
+      'b.e.f': [4, 5, 6]
     });
   });
 });
@@ -160,7 +160,7 @@ describe('Process csv data to required json format', () => {
       'data.value',
       'data.blk_ts_unix',
       'source',
-      'target',
+      'target'
     ]);
   });
   it('should parse timestamps and array correctly', async () => {
@@ -176,7 +176,7 @@ describe('Process csv data to required json format', () => {
       'timestamp',
       'array<integer>',
       'string',
-      'string',
+      'string'
     ]);
   });
   it('should parse simple arrays correctly', async () => {
@@ -190,7 +190,7 @@ describe('Process csv data to required json format', () => {
       'string',
       'string',
       'array<string>',
-      'array<string>',
+      'array<string>'
     ]);
   });
   it('should parse the dataset correctly', async () => {
@@ -211,8 +211,8 @@ const testJson = {
   edges: [{ id: 'a-b', source: 'a', target: 'b' }],
   metadata: {
     customField: 'hello',
-    key: 10,
-  },
+    key: 10
+  }
 };
 
 describe('processJson', () => {
@@ -231,11 +231,11 @@ describe('processJson', () => {
         ...testJson,
 
         // @ts-ignore
-        udf: undefined,
+        udf: undefined
       };
       const groupEdgeToggle = false;
       const results = await processJson(testJsonWithUdf, groupEdgeToggle);
-      expect(results.metadata.fields).not.toHaveProperty('udf');
+      expect(results.metadata?.fields).not.toHaveProperty('udf');
     });
   });
   describe('Accuracy', () => {
@@ -246,38 +246,41 @@ describe('processJson', () => {
     });
 
     afterEach(() => {
+      // @ts-ignore
       results = undefined;
     });
 
     it('should return the exact object if all the main keys are there', () => {
+      // @ts-ignore
       results.metadata.groupEdges = { toggle: false, availability: false };
+      // @ts-ignore
       Object.assign(results.metadata, {
         groupEdges: { toggle: false, availability: false },
         fields: {
           nodes: [
-            { analyzerType: 'STRING', format: '', name: 'id', type: 'string' },
+            { analyzerType: 'STRING', format: '', name: 'id', type: 'string' }
           ],
           edges: [
             {
               analyzerType: 'STRING',
               format: '',
               name: 'id',
-              type: 'string',
+              type: 'string'
             },
             {
               analyzerType: 'STRING',
               format: '',
               name: 'source',
-              type: 'string',
+              type: 'string'
             },
             {
               analyzerType: 'STRING',
               format: '',
               name: 'target',
-              type: 'string',
-            },
-          ],
-        },
+              type: 'string'
+            }
+          ]
+        }
       });
 
       expect(results).toMatchObject(testJson);
@@ -288,19 +291,20 @@ describe('processJson', () => {
       expect(metadata).toHaveProperty('customField');
       expect(metadata).toHaveProperty('groupEdges');
       expect(metadata).toHaveProperty('fields');
-      expect(metadata.customField).toEqual('hello');
+      expect(metadata?.customField).toEqual('hello');
     });
 
     it('should return the json object parsed, with the added metadata', () => {
       const { metadata } = results;
-      expect(metadata.key).not.toBeNull();
-      expect(metadata.groupEdges).not.toBeNull();
-      expect(metadata.fields.nodes).not.toBeNull();
-      expect(metadata.fields.edges).not.toBeNull();
+      expect(metadata?.key).not.toBeNull();
+      expect(metadata?.groupEdges).not.toBeNull();
+      expect(metadata?.fields?.nodes).not.toBeNull();
+      expect(metadata?.fields?.edges).not.toBeNull();
     });
 
     it('should return metadata with the correct number of fields for nodes and edges', () => {
-      const { nodes: nodeFields, edges: edgeFields } = results.metadata.fields;
+      // @ts-ignore
+      const { nodes: nodeFields, edges: edgeFields } = results.metadata?.fields;
       expect(nodeFields).toHaveLength(1);
       expect(edgeFields).toHaveLength(3);
     });
@@ -317,7 +321,7 @@ describe('verifySourceAndTargetExistence', () => {
       nodeID: 'id',
       edgeID: 'id',
       edgeSource: 'source',
-      edgeTarget: 'target',
+      edgeTarget: 'target'
     };
     const nodes = [{ id: '1' }, { id: '2' }];
     const edges = [{ id: 'edge-1', source: '1', target: '2' }];
@@ -332,7 +336,7 @@ describe('verifySourceAndTargetExistence', () => {
       nodeID: 'nodeID',
       edgeID: 'id',
       edgeSource: 'source',
-      edgeTarget: 'target',
+      edgeTarget: 'target'
     };
     const nodes = [{ id: '1' }, { id: '2' }];
     const edges = [{ id: 'edge-1', source: '1', target: '2' }];
@@ -347,7 +351,7 @@ describe('verifySourceAndTargetExistence', () => {
       nodeID: 'id',
       edgeID: 'id',
       edgeSource: 'source',
-      edgeTarget: 'target',
+      edgeTarget: 'target'
     };
     const nodes = [{ id: '1' }, { id: '2' }];
     const edges = [{ id: 'edge-1', source: '3', target: '2' }];
@@ -362,7 +366,7 @@ describe('verifySourceAndTargetExistence', () => {
       nodeID: 'id',
       edgeID: 'id',
       edgeSource: 'source',
-      edgeTarget: 'target',
+      edgeTarget: 'target'
     };
     const nodes = [{ id: '1' }, { id: '2' }];
     const edges = [{ id: 'edge-1', source: '2', target: '3' }];

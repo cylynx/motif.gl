@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import get from 'lodash/get';
-import { NodeStyle } from '@cylynx/graphin';
+import { NodeStyle } from '@antv/graphin';
 import {
   GraphData,
   NodeStyleOptions,

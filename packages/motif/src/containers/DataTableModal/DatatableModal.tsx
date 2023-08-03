@@ -1,6 +1,6 @@
 import React, { Key, useMemo, useState } from 'react';
 import { Tabs, Tab } from 'baseui/tabs-motion';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../redux/hooks';
 import { Block } from 'baseui/block';
 import { Modal, ModalBody, SIZE } from 'baseui/modal';
 import { GraphAttribute, GraphData, GraphSelectors } from '../../redux/graph';
@@ -40,7 +40,6 @@ const DatatableModal = () => {
       isOpen={isOpen}
       onClose={onCloseModal}
       closeable
-      unstable_ModalBackdropScroll
       size={SIZE.auto}
       overrides={{
         Root: {

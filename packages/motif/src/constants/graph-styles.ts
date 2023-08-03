@@ -1,4 +1,4 @@
-import { EdgeStyle, NodeStyle, ThemeType } from '@cylynx/graphin';
+import { EdgeStyle, NodeStyle, ThemeType } from '@antv/graphin';
 import { DEFAULT_EDGE_STYLE, DEFAULT_NODE_STYLE, grey } from './graph-shapes';
 
 export const nodeStateStyles: { status: NodeStyle['status'] } = {

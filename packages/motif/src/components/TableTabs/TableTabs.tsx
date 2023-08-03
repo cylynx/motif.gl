@@ -5,15 +5,11 @@ import { Block } from 'baseui/block';
 import { GraphAttribute } from '../../redux/graph';
 
 type TableTabProps = { $theme?: Theme; $isActive: boolean };
-const TableTab = styled<TableTabProps, 'div', Theme>(
+const TableTab = styled<'div', TableTabProps, Theme>(
   'div',
   ({ $theme, $isActive }) => {
-    const {
-      backgroundPrimary,
-      backgroundSecondary,
-      contentPrimary,
-      mono200,
-    } = $theme.colors;
+    const { backgroundPrimary, backgroundSecondary, contentPrimary, mono200 } =
+      $theme.colors;
     const { scale0 } = $theme.sizing;
     return {
       paddingTop: $theme.sizing.scale300,

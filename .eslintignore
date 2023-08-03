@@ -12,6 +12,7 @@ vite.config.js
 vite.dev.config.ts
 vite.prod.config.ts
 jest.config.ts
+.eslintrc.js
 
 dist/
 coverage/

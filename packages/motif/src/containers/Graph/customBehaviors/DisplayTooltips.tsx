@@ -2,7 +2,7 @@ import {
   GraphinContext,
   IG6GraphEvent,
   GraphinContextType,
-} from '@cylynx/graphin';
+} from '@antv/graphin';
 import { IEdge } from '@antv/g6';
 import { useContext, useLayoutEffect } from 'react';
 import { TooltipProps } from '../../Tooltip/Tooltip';

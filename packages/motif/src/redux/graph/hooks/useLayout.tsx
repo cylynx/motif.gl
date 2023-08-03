@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../../redux/hooks';
 import { changeLayout } from '../slice';
 import { LayoutParams } from '../types';
 import { getStyleOptions } from '../selectors';

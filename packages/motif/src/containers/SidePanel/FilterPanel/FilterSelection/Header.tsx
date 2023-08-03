@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent, useMemo } from 'react';
+import React, { FC, SyntheticEvent, useMemo } from 'react';
 import { Block } from 'baseui/block';
 // import { Button } from 'baseui/button';
 import { colors } from 'baseui/tokens';
@@ -15,7 +15,7 @@ type FilterSelectionHeaderProps = {
   selectOptions: SelectOptions;
   selection: SelectVariableOption[];
   onSelectChange: SelectVariableProps['onChange'];
-  onDeleteBtnClick: (event: MouseEvent<HTMLButtonElement>) => void;
+  onDeleteBtnClick: (event: SyntheticEvent<HTMLButtonElement, Event>) => void;
 };
 
 const Header: FC<FilterSelectionHeaderProps> = ({
@@ -30,7 +30,8 @@ const Header: FC<FilterSelectionHeaderProps> = ({
         <Button
           data-testid='filter-selection-header:delete'
           shape='square'
-          kind='minimal'
+          kind='tertiary'
+          // @ts-ignore
           $as='div'
           onClick={onDeleteBtnClick}
           BaseButtonStyleOverrides={{

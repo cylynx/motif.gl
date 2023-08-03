@@ -6,7 +6,7 @@
     "outDir": "dist",
     "noImplicitAny": false,
     "noEmit": false,
-    "types": ["@types/node", "@types/react", "@types/jest"],
+    "types": ["node", "react", "jest"],
     "noEmitOnError": true,
     "emitDeclarationOnly": true
   },
@@ -20,6 +20,7 @@
     "**/*.test.tsx",
     "**/*.json",
     "cypress",
+    "./cypress.config.ts",
     "index.html"
   ]
 }

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Block } from 'baseui/block';
 import { LabelSmall } from 'baseui/typography';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../redux/hooks';
 import { GraphSelectors } from '../../redux/graph';
 
 const GraphStatistics = () => {

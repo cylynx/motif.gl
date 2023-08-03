@@ -1,6 +1,5 @@
-// @ts-nocheck
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { Block } from 'baseui/block';
 import { Client as Styletron } from 'styletron-engine-atomic';
 import { Provider as StyletronProvider } from 'styletron-react';
@@ -58,4 +57,6 @@ const Demo = () => {
   );
 };
 
-ReactDOM.render(<Demo />, document.getElementById('root'));
+const rootElement = document.getElementById('root') as HTMLElement;
+
+ReactDOM.createRoot(rootElement).render(<Demo />);
