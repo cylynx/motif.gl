@@ -17,18 +17,19 @@
     "ui:serve": "cd ./packages/ui && npm run serve",
     "clean": "lerna clean && npm run rm-package-lock",
     "cypress": "cd ./packages/motif && npm run cypress:test",
-    "rm-package-lock": "rm -rf ./package-lock.json ./packages/*/package-lock.json"
+    "rm-package-lock": "rm -rf ./package-lock.json ./packages/*/package-lock.json",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/cylynx/motif.gl"
   },
   "lint-staged": {
-    "./packages/*/src/**/*.+(js|jsx|ts|tsx)": [
-      "eslint --fix"
-    ],
     "./packages/*/src/**/*.+(js|jsx|ts|tsx|json|css|md)": [
       "prettier --write"
+    ],
+    "./packages/*/src/**/*.+(js|jsx|ts|tsx)": [
+      "eslint --fix"
     ]
   },
   "devDependencies": {

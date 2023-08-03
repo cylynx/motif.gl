@@ -1,14 +1,14 @@
-import React, { BaseSyntheticEvent, FC, useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Block } from 'baseui/block';
 import {
   GraphData,
   GraphThunks,
   GraphGroupEdgeProcessors,
-  GroupEdgeConfiguration,
+  GroupEdgeConfiguration
 } from '@cylynx/motif';
 import { Button, KIND, SIZE } from 'baseui/button';
-import { useDispatch } from 'react-redux';
-import { SubmitHandler, UnpackNestedValue, useForm } from 'react-hook-form';
+import { useDispatch } from '../../../../redux-store';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import DataPreview from './DataPreview';
 
 type ConfigureFieldsProps = { graphData: GraphData };
@@ -16,8 +16,8 @@ const ConfigureFields: FC<ConfigureFieldsProps> = ({ graphData }) => {
   const dispatch = useDispatch();
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      groupEdge: true,
-    },
+      groupEdge: true
+    }
   });
 
   const isEdgeGroupable = useMemo(() => {
@@ -27,17 +27,14 @@ const ConfigureFields: FC<ConfigureFieldsProps> = ({ graphData }) => {
     return isGraphGroupEdgeable;
   }, [graphData]);
 
-  const onSubmit: SubmitHandler<any> = (
-    data: UnpackNestedValue<any>,
-    e: BaseSyntheticEvent,
-  ) => {
+  const onSubmit: SubmitHandler<any> = (data, e) => {
     e.preventDefault();
 
     const { groupEdge } = data;
     const accessors = {
       nodeID: 'id',
       edgeSource: 'source',
-      edgeTarget: 'target',
+      edgeTarget: 'target'
     };
     dispatch(GraphThunks.importSampleData(graphData, accessors, groupEdge));
   };

@@ -1,4 +1,3 @@
-// @ts-ignore
 import React, { useMemo, useState } from 'react';
 import { Block } from 'baseui/block';
 import { ProgressStepper, GraphData, StepperItems } from '@cylynx/motif';
@@ -15,7 +14,7 @@ const Neo4J = ({ driver, setDriver }) => {
   const [executeQuery, setExecuteQuery] = useState<ExecuteQueryState>({
     query: '',
     db: [],
-    graphData: { nodes: [], edges: [] },
+    graphData: { nodes: [], edges: [] }
   });
 
   const onStepChange = (step: number) => {
@@ -26,12 +25,12 @@ const Neo4J = ({ driver, setDriver }) => {
 
   const onExecuteQueryChange = (
     name: string,
-    value: string | Value | GraphData,
+    value: string | Value | GraphData
   ) => {
     setExecuteQuery((state: ExecuteQueryState) => {
       return {
         ...state,
-        [name]: value,
+        [name]: value
       };
     });
   };
@@ -43,16 +42,16 @@ const Neo4J = ({ driver, setDriver }) => {
     return [
       {
         children: '1. Connect Database',
-        disabled: true,
+        disabled: true
       },
       {
         children: '2. Execute Query',
-        disabled: isSecondStepDisabled,
+        disabled: isSecondStepDisabled
       },
       {
         children: '3. Configure Fields',
-        disabled: isThirdStepDisabled,
-      },
+        disabled: isThirdStepDisabled
+      }
     ];
   }, [currentStep, driver]);
 
