@@ -16,11 +16,9 @@ declare namespace Cypress {
 }
 
 const switchTab = (tabActiveKey: string) => {
-  cy.react('Tabs$1')
-    .react('InternalTab', {
-      props: { childKey: tabActiveKey },
-    })
-    .click();
+  cy.react('InternalTab', {
+    props: { childKey: tabActiveKey },
+  }).click();
 };
 
 const selectFilterSelection = (
