@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 /*
 Copyright (c) 2018-2020 Uber Technologies, Inc.
 
@@ -7,20 +6,20 @@ LICENSE file in the root directory of this source tree.
 */
 // @flow
 
-import * as React from "react"
-import { LightTheme } from "baseui"
-import { Property } from "./common"
+import * as React from 'react';
+import { LightTheme } from 'baseui';
+import { Property } from './common';
 
 export function Breakpoint({ name, media = false }) {
   return (
     <Property
       name={name}
-      concern={media ? "mediaQuery" : "breakpoints"}
+      concern={media ? 'mediaQuery' : 'breakpoints'}
       renderValue={() =>
         media
           ? LightTheme.mediaQuery[name]
           : `${LightTheme.breakpoints[name]}px`
       }
     />
-  )
+  );
 }
