@@ -322,7 +322,6 @@ export const processEdgeListCsv = async (
  * @return {*}
  */
 export const json2csv = async (json: any): Promise<string | void> => {
-  console.log('running json2csv');
   const csv = convertJson2Csv(json)
     .then()
     .catch(() => {
