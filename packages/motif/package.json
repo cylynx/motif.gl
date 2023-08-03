@@ -8,9 +8,9 @@
   ],
   "license": "MIT",
   "repository": "cylynx/motif.gl",
-  "main": "dist/index.js",
+  "main": "dist/motif.js",
   "typings": "dist/index.d.ts",
-  "module": "dist/motif.es.js",
+  "module": "dist/motif.mjs",
   "engines": {
     "node": ">16"
   },

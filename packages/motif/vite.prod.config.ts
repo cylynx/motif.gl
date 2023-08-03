@@ -2,20 +2,23 @@ import { defineConfig } from 'vite';
 import path from 'path';
 import resolve from '@rollup/plugin-node-resolve';
 import { visualizer } from 'rollup-plugin-visualizer';
-// @ts-ignore
 import svgr from '@svgr/rollup';
 
 const libEntryPath = path.resolve(__dirname, 'src/index.ts');
 const outputDir = path.resolve(__dirname, 'dist');
 
-// @ts-ignore
 const svgrPlugin = svgr({
   ref: true,
   memo: true,
   svgoConfig: {
     plugins: [
-      { removeViewBox: false },
-      { removeAttrs: { attrs: 'g:(stroke|fill):((?!^none$).)*' } },
+      {
+        name: 'removeViewBox',
+      },
+      {
+        name: 'removeAttrs',
+        params: { attrs: 'g:(stroke|fill):((?!^none$).)*' },
+      },
     ],
   },
 });
