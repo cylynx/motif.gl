@@ -1,5 +1,4 @@
 import React, { ForwardedRef } from 'react';
-import { Utils } from '@antv/graphin';
 import { useSelector } from '../../redux/hooks';
 import Graphin, { Behaviors, GraphinData } from '@antv/graphin';
 import { GraphSelectors, Layout } from '../../redux/graph';
@@ -35,16 +34,11 @@ const Graph = React.forwardRef<Graphin, GraphProps>(
 
     const { ClickSelect, LassoSelect, BrushSelect, FontPaint } = Behaviors;
 
-    const graphinlayout = {
-      type: 'concentric',
-      minNodeSpacing: 50,
-    };
-    console.log(layout);
     return (
       <Graphin
         data={graphVisible as GraphinData}
         ref={ref}
-        layout={graphinlayout}
+        layout={layout}
         defaultNode={defaultNode}
         defaultEdge={defaultEdge}
         nodeStateStyles={nodeStateStyles}

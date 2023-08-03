@@ -7,7 +7,7 @@ export const DAGRE_DEFAULT: Layout = {
   rankdir: 'TB',
   rankSep: 50,
   nodeSep: 12,
-  // workerEnabled: true,
+  workerEnabled: false,
   // align: 'UL',
   // controlPoints: true,
 };
@@ -18,7 +18,7 @@ export const CIRCLE_DEFAULT: Layout = {
   endRadius: 250,
   angleRatio: 1,
   divisions: 5,
-  workerEnabled: true,
+  workerEnabled: false,
   // center: [200, 200],
   // radius: null,
   // clockwise: false,
@@ -33,7 +33,7 @@ export const GRID_DEFAULT: Layout = {
   sortBy: 'degree',
   condense: false,
   preventOverlap: true,
-  workerEnabled: true,
+  workerEnabled: false,
   // nodeSize: 30,
 };
 
@@ -44,7 +44,7 @@ export const RADIAL_DEFAULT: Layout = {
   focusNode: '',
   preventOverlap: true,
   strictRadial: true,
-  workerEnabled: true,
+  workerEnabled: false,
   // center: [200, 200],
   // maxIteration: 1000,
   // nodeSize: 30,
@@ -56,7 +56,7 @@ export const CONCENTRIC_DEFAULT: Layout = {
   minNodeSpacing: 50,
   sortBy: 'degree',
   preventOverlap: true,
-  workerEnabled: true,
+  workerEnabled: false,
   // nodeSize: 30,
   // center: [200, 200],
   // sweep: 10,
@@ -106,7 +106,7 @@ export const FRUCHTERMAN_DEFAULT: Layout = {
   gravity: 10,
   clusterGravity: 10,
   speed: 2,
-  workerEnabled: true,
+  workerEnabled: false,
   gpuEnabled: true,
   // center: [200, 200],
   // gravity: 20,
@@ -115,7 +115,7 @@ export const FRUCHTERMAN_DEFAULT: Layout = {
 
 export const MDS_DEFAULT: Layout = {
   type: 'mds',
-  workerEnabled: true,
+  workerEnabled: false,
   // linkDistance: 50
 };
 
