@@ -1,6 +1,5 @@
 import React, { FC, useMemo, useState } from 'react';
 import { Modal, ModalHeader, ModalBody, SIZE, ModalProps } from 'baseui/modal';
-import { useDispatch, useSelector } from 'react-redux';
 import { withStyle } from 'baseui';
 import { HeadingLarge, LabelMedium, ParagraphSmall } from 'baseui/typography';
 import { Tabs, Tab } from '../../components/ui';
@@ -11,6 +10,7 @@ import UploadFiles from './UploadFiles';
 import ConfirmationModal from '../../components/ConfirmationModal';
 import useFileContents from './UploadFiles/hooks/useFileContents';
 import SampleData from './SampleData';
+import { useDispatch, useSelector } from '../../redux/hooks';
 
 export const defaultImportTabs: ImportTabs[] = [
   { title: 'File', key: 'file', component: <UploadFiles /> },

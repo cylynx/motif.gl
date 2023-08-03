@@ -39,6 +39,7 @@ const ProgressStepper: FC<StepperProps> = ({
         return (
           <StyledStepperItem
             key={step}
+            // @ts-ignore
             $isDisabled={isDisabled}
             $isStart={isStart}
             $isEnd={isEnd}

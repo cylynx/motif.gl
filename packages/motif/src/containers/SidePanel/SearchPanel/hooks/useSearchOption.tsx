@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../../../redux/hooks';
 import { Value } from 'baseui/select';
 import {
   GraphSlices,
@@ -14,7 +14,7 @@ import { RootState } from '../../../../redux/investigate';
 
 const useSearchOption = (): IUseSearchOptions => {
   const dispatch = useDispatch();
-  const searchOptions = useSelector((state: RootState) =>
+  const searchOptions = useSelector((state) =>
     GraphSelectors.getSearchOptions(state),
   );
 

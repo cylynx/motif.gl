@@ -7,7 +7,7 @@ export const DAGRE_DEFAULT: Layout = {
   rankdir: 'TB',
   rankSep: 50,
   nodeSep: 12,
-  workerEnabled: true,
+  // workerEnabled: true,
   // align: 'UL',
   // controlPoints: true,
 };

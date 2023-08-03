@@ -1,4 +1,3 @@
-import { useDispatch } from 'react-redux';
 import {
   GraphThunks,
   JsonImport,
@@ -9,6 +8,7 @@ import {
   TFileContent,
   SingleFileForms,
 } from '../../../../redux/import/fileUpload';
+import { useDispatch } from '../../../../redux/hooks';
 
 const useImportData = () => {
   const dispatch = useDispatch();

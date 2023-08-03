@@ -1,12 +1,10 @@
-// @ts-nocheck
-import React, { useState } from 'react';
+import React from 'react';
 import { useStyletron } from 'baseui';
 import { Block } from 'baseui/block';
 import {
   Accordion as BaseAccordion,
   AccordionOverrides,
-  SharedProps,
-  StatefulPanel,
+  Panel,
 } from 'baseui/accordion';
 import * as Icon from '../Icons';
 
@@ -17,7 +15,7 @@ export type AccordionProps = {
   width?: 'full' | 'default';
   actionButtons?: React.ReactNode;
   expanded?: boolean;
-  overrides?: AccordionOverrides<SharedProps>;
+  overrides?: AccordionOverrides;
 };
 
 export const Content = ({ children }: { children: React.ReactNode }) => {
@@ -46,7 +44,7 @@ const Accordion = ({
   expanded = false,
   overrides,
 }: AccordionProps) => {
-  const BASE_ACCORDION_OVERRIDES: AccordionOverrides<SharedProps> = {
+  const BASE_ACCORDION_OVERRIDES: AccordionOverrides = {
     ToggleIcon: {
       component: () => {
         return iconPosition === 'left' ? (
@@ -97,7 +95,7 @@ const Accordion = ({
 
   return (
     <BaseAccordion overrides={overrides ?? BASE_ACCORDION_OVERRIDES}>
-      <StatefulPanel
+      <Panel
         title={
           <Block display='flex' alignItems='center'>
             {iconPosition === 'left' ? (
@@ -113,7 +111,7 @@ const Accordion = ({
         initialState={{ expanded }}
       >
         {content}
-      </StatefulPanel>
+      </Panel>
     </BaseAccordion>
   );
 };

@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../../redux/hooks';
 import { useCallback } from 'react';
 import html2canvas from 'html2canvas';
 import { setGraphListPosition } from '../../../utils/export-utils';

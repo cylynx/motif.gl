@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Block } from 'baseui/block';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../redux/hooks';
 import { ActionCreators as UndoActionCreators } from 'redux-undo';
 import fscreen from 'fscreen';
 import * as Icon from '../../components/Icons';

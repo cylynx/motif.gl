@@ -18,7 +18,7 @@ import {
 import { Card } from '../../components/ui';
 import { extractIntegerFromString } from '../../utils/data-utils/data-utils';
 
-export const BottomRightLayer: FC = ({ children }) => {
+export const BottomRightLayer = ({ children }) => {
   const [, theme] = useStyletron();
   return (
     <Card
@@ -38,7 +38,7 @@ export const BottomRightLayer: FC = ({ children }) => {
 };
 
 type LeftLayerProps = { padding?: boolean };
-export const LeftLayer: FC<LeftLayerProps> = ({ children, padding = true }) => {
+export const LeftLayer = ({ children, padding = true }) => {
   return (
     <Block
       position='absolute'
@@ -58,7 +58,7 @@ export const LeftLayer: FC<LeftLayerProps> = ({ children, padding = true }) => {
   );
 };
 
-export const TopRightLayer: FC = ({ children }) => {
+export const TopRightLayer = ({ children }) => {
   return (
     <Block
       display='flex'

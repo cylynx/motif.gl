@@ -2,7 +2,7 @@ import get from 'lodash/get';
 import shortid from 'shortid';
 
 import { Value } from 'baseui/select';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../../../../redux/hooks';
 import { GraphFilterActions } from './types';
 
 import {

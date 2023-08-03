@@ -1,5 +1,5 @@
-import React, { MouseEvent, useContext } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { SyntheticEvent, useContext } from 'react';
+import { useDispatch } from '../../../../redux/hooks';
 import { Block } from 'baseui/block';
 import useGraphBehaviors from '../../../Graph/hooks/useGraphBehaviors';
 import { GraphRefContext } from '../../../Graph';
@@ -37,7 +37,7 @@ export const ToggleAllButton = ({
 
 export const ImportDataButton = () => {
   const dispatch = useDispatch();
-  const onClickImport = (e: MouseEvent<HTMLButtonElement>) => {
+  const onClickImport = (e: SyntheticEvent<HTMLButtonElement, Event>) => {
     e.preventDefault();
     dispatch(UISlices.openImportModal());
   };
@@ -66,10 +66,10 @@ export const ClearDataButton = () => {
    * https://github.com/cylynx/motif.gl/pull/73#issuecomment-789393660
    * 1. Switch to original node colour when node style is legend to prevent crash.
    *
-   * @param {MouseEvent<HTMLButtonElement>} e
+   * @param {SyntheticEvent<HTMLButtonElement, Event>} e
    * @return {void}
    */
-  const onClickClearAll = (e: MouseEvent<HTMLButtonElement>) => {
+  const onClickClearAll = (e: SyntheticEvent<HTMLButtonElement, Event>) => {
     e.preventDefault();
     dispatch(GraphSlices.resetState());
     centerCanvas();

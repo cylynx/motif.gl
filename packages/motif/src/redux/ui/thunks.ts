@@ -6,6 +6,7 @@ import { removeToast, updateToast } from './slice';
 
 const DEFAULT_TOAST_PROPS: ToastProps = {
   autoHideDuration: 3500,
+  children: null,
 };
 
 export const show =

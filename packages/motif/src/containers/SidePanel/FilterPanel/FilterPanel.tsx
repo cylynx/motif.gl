@@ -1,8 +1,8 @@
-import React, { FC, useMemo, MouseEvent, useCallback } from 'react';
+import React, { FC, useMemo, useCallback, SyntheticEvent } from 'react';
 import { useStyletron } from 'baseui';
 import { Block } from 'baseui/block';
 import { HeadingMedium } from 'baseui/typography';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../../redux/hooks';
 import FilterSelection from './FilterSelection';
 import AddFilterButton from './AddFilterButton';
 import useGraphFilter from './hooks/UseGraphFilter';
@@ -71,7 +71,7 @@ const FilterPanel: FC = () => {
   }, [graphFlatten]);
 
   const onAddFilterClick = useCallback(
-    (_: MouseEvent<HTMLButtonElement>) => {
+    (_: SyntheticEvent<HTMLButtonElement, Event>) => {
       if (isEnableAddFilter === false) {
         return;
       }

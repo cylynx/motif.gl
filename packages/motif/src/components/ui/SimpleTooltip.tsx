@@ -1,14 +1,16 @@
 import React from 'react';
 import { StatefulTooltip, PLACEMENT, TRIGGER_TYPE } from 'baseui/tooltip';
 import { BasePopoverProps } from 'baseui/popover';
-// @ts-ignore
-import { PopoverPlacementT } from 'baseui/popover/types';
+import {
+  PopoverPlacement,
+  StatefulContentRenderProp,
+} from 'baseui/popover/types';
 
 type SimpleTooltipProps = {
-  tooltip: React.ReactNode;
+  tooltip: React.ReactNode | StatefulContentRenderProp;
   title?: string;
   children?: React.ReactNode;
-  placement?: PopoverPlacementT;
+  placement?: PopoverPlacement;
   overrides?: BasePopoverProps['overrides'];
   // https://popper.js.org/docs/v1/#modifiers..preventOverflow.boundariesElement
   boundariesElement?: 'scrollParent' | 'window' | 'viewPort';

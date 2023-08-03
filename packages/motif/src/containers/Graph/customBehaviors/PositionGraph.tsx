@@ -4,7 +4,7 @@ import {
   IG6GraphEvent,
 } from '@antv/graphin';
 import { useContext, useLayoutEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../../redux/hooks';
 import { debounce } from 'lodash';
 import { GraphSlices, NodePosParams } from '../../../redux/graph';
 

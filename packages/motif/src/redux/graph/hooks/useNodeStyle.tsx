@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../../redux/hooks';
 import { DEFAULT_NODE_STYLE } from '../../../constants/graph-shapes';
 import { GraphSelectors, GraphSlices } from '../index';
 

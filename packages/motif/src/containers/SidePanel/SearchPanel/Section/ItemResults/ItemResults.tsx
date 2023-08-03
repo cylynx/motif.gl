@@ -1,6 +1,6 @@
 import React, { FC, useContext, MouseEvent } from 'react';
 import { Block, BlockOverrides } from 'baseui/block';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../../../../redux/hooks';
 import { Theme } from 'baseui/theme';
 import { INode, IEdge } from '@antv/g6';
 import { RootState } from '../../../../../redux';

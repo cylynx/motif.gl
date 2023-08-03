@@ -1,6 +1,4 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, ChangeEvent } from 'react';
 
 import { useStyletron } from 'baseui';
 import {
@@ -90,7 +88,9 @@ const Editable = ({
     setEditing(false);
   };
 
-  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeInput = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setValue(e.target.value);
     if (onChange) {
       onChange(e.target.value);
@@ -111,6 +111,7 @@ const Editable = ({
 
   return (
     <div
+      // @ts-ignore
       className={css({ height: theme.typography[textComponent].lineHeight })}
     >
       {isEditing ? (

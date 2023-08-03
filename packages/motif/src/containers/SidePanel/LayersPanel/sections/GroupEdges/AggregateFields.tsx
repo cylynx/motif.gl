@@ -93,6 +93,7 @@ const AggregateFields: FC<AggregateFieldsProps> = ({
                 data-testid='aggregate-fields:delete'
                 kind='tertiary'
                 shape='square'
+                // @ts-ignore
                 $as='div'
                 onClick={() => onDeleteClick(uniqueFieldId)}
                 BaseButtonStyleOverrides={{

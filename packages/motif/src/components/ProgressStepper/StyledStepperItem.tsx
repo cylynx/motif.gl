@@ -129,7 +129,7 @@ const themeByState = (
   };
 };
 
-const StyledStepperItem = styled(
+const StyledStepperItem = styled<'div', StepperItemProps>(
   'div',
   ({
     $theme,

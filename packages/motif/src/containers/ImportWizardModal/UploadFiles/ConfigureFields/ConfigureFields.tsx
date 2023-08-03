@@ -5,7 +5,7 @@ import { OnChangeParams } from 'baseui/select';
 import { useForm, UnpackNestedValue, SubmitHandler } from 'react-hook-form';
 import { Button, KIND, SIZE } from 'baseui/button';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../../../redux/hooks';
 import { UISelectors, UISlices } from '../../../../redux/ui';
 import DataPreview from './DataPreview';
 import AccessorFields from './AccessorFields';

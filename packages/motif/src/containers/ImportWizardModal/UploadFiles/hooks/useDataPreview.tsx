@@ -1,5 +1,4 @@
-import { useDispatch } from 'react-redux';
-
+import { useDispatch } from '../../../../redux/hooks';
 import {
   FileUploadThunks,
   SingleFileForms,

@@ -36,8 +36,8 @@ export type BatchSingleSelectProps = {
   valueKey?: string;
   placeholder?: string;
   overrides?: SelectOverrides;
-  type?: TYPE[keyof TYPE];
-  size?: SIZE[keyof SIZE];
+  type?: (typeof TYPE)[keyof typeof TYPE];
+  size?: (typeof SIZE)[keyof typeof SIZE];
   maxDropdownHeight?: string;
   clearable?: boolean;
   multi?: boolean;

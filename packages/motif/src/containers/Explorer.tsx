@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-nested-ternary */
 import React, {
   useState,
@@ -9,7 +8,7 @@ import React, {
   MutableRefObject,
   ForwardedRef,
 } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../redux/hooks';
 import { BaseProvider, ThemeProvider } from 'baseui';
 import { Theme } from 'baseui/theme';
 import { Block } from 'baseui/block';

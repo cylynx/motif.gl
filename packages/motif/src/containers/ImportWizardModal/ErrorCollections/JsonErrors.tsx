@@ -3,7 +3,7 @@ import { Block } from 'baseui/block';
 import { useStyletron } from 'baseui';
 import ErrorMessage from '../../../components/ImportErrorMessage';
 
-export const BoldCodeText: React.FC = ({ children }) => {
+export const BoldCodeText = ({ children }) => {
   return (
     <b>
       <code>{children}</code>

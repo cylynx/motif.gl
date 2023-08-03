@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../../redux/hooks';
 import {
   FileUploadSelectors,
   FileUploadSlices,

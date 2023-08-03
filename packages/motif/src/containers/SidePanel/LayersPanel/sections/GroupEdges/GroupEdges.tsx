@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import { Block } from 'baseui/block';
 import { OnChangeParams, Value, Option } from 'baseui/select';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../../../../redux/hooks';
 import AddAttributesButton from '../../components/AddAttributesButton';
 import useGroupEdges from '../../hooks/useGroupEdges';
 import GroupByFields from './GroupByFields';

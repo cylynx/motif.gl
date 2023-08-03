@@ -27,6 +27,7 @@ const ToolbarButton = ({ item }: ToolbarButtonProp) => {
         placement={PLACEMENT.left}
       >
         <Button
+          // @ts-ignore
           $as='div'
           onClick={onClick}
           disabled={isDisabled}

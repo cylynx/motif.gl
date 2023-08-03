@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../../../redux/hooks';
 import { Value } from 'baseui/select';
 import get from 'lodash/get';
 import { GraphData, GraphSelectors, Node, Edge } from '../../../../redux/graph';

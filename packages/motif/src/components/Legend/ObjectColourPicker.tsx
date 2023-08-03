@@ -93,7 +93,7 @@ const ObjectColourPicker: FC<ObjectColourPickerProps> = ({
   );
 };
 
-const ButtonText: FC = ({ children }) => {
+const ButtonText = ({ children }) => {
   return (
     <span style={{ marginLeft: '4px', paddingTop: '2px' }}>{children}</span>
   );

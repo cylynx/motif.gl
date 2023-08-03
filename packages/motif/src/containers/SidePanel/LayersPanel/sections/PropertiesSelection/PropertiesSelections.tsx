@@ -1,6 +1,6 @@
 import React from 'react';
 import { Block } from 'baseui/block';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../../../../redux/hooks';
 import { GraphSelectors } from '../../../../../redux/graph';
 import NodeProperties from './NodeProperties';
 import EdgeProperties from './EdgeProperties';

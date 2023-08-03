@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent, ReactNode } from 'react';
+import React, { FC, ReactNode, SyntheticEvent } from 'react';
 import {
   Modal,
   ModalHeader,
@@ -8,7 +8,7 @@ import {
   CLOSE_SOURCE,
 } from 'baseui/modal';
 
-type TButtonEvent = (event: MouseEvent<HTMLButtonElement>) => any;
+type TButtonEvent = (event: SyntheticEvent<HTMLButtonElement, Event>) => any;
 export type ConfirmationModalProps = {
   onClose: (args: {
     closeSource?: (typeof CLOSE_SOURCE)[keyof typeof CLOSE_SOURCE];

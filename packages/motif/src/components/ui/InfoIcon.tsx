@@ -8,7 +8,7 @@ import {
 import { Button, SHAPE } from 'baseui/button';
 import { MdInfoOutline } from 'react-icons/md';
 
-type InfoIconProps = StatefulTooltipProps & {
+type InfoIconProps = Partial<StatefulTooltipProps> & {
   info: string;
 };
 

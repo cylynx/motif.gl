@@ -18,7 +18,7 @@ export type AsyncSingleSelectProps = {
   valueKey?: string;
   placeholder?: string;
   overrides?: SelectOverrides;
-  type?: TYPE[keyof TYPE];
+  type?: (typeof TYPE)[keyof typeof TYPE];
 };
 
 const AsyncSingleSelect: FC<AsyncSingleSelectProps> = ({

@@ -13,6 +13,7 @@ const AttributeTable: FC<AttributeTableProps> = ({ graphData, types }) => {
 
   const columns = graphData2Columns(graphData.metadata.fields[types]);
 
+  // @ts-ignore
   return <StatefulDataTable columns={columns} rows={rows} />;
 };
 

@@ -298,6 +298,8 @@ export const importSampleData =
       groupEdges,
     );
 
+    console.log(await newData);
+
     return newData
       .then((graphData: T.GraphList) => {
         dispatch(UISlices.fetchBegin());

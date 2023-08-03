@@ -142,9 +142,7 @@ const SimpleForm = ({ data }: { data: SimpleFormData }) => {
             if (kind === 'input') {
               component = (
                 <Input
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleChange(e.target.value, onChange)
-                  }
+                  onChange={(e) => handleChange(e.target.value, onChange)}
                   value={value}
                   size='compact'
                   {...rest}

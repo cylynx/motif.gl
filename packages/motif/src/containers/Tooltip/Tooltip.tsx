@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../redux/hooks';
 import { styled } from 'baseui';
 import { Block } from 'baseui/block';
 import { ParagraphSmall, LabelMedium } from 'baseui/typography';
