@@ -5,6 +5,7 @@ import {
   Accordion as BaseAccordion,
   AccordionOverrides,
   Panel,
+  StatefulPanel,
 } from 'baseui/accordion';
 import * as Icon from '../Icons';
 
@@ -94,25 +95,24 @@ const Accordion = ({
   };
 
   return (
-    <BaseAccordion overrides={overrides ?? BASE_ACCORDION_OVERRIDES}>
-      <Panel
-        title={
-          <Block display='flex' alignItems='center'>
-            {iconPosition === 'left' ? (
-              <>
-                <Icon.ChevronDown />
-                <Block marginLeft='8px'>{title}</Block>
-              </>
-            ) : (
-              title
-            )}
-          </Block>
-        }
-        initialState={{ expanded }}
-      >
-        {content}
-      </Panel>
-    </BaseAccordion>
+    <StatefulPanel
+      overrides={overrides ?? BASE_ACCORDION_OVERRIDES}
+      title={
+        <Block display='flex' alignItems='center'>
+          {iconPosition === 'left' ? (
+            <>
+              <Icon.ChevronDown />
+              <Block marginLeft='8px'>{title}</Block>
+            </>
+          ) : (
+            title
+          )}
+        </Block>
+      }
+      initialState={{ expanded }}
+    >
+      {content}
+    </StatefulPanel>
   );
 };
 

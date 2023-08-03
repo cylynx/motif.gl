@@ -27,9 +27,7 @@ const GroupEdges: FC<GroupEdgesProps> = ({ graphListIndex }) => {
   } = useGroupEdges(graphListIndex);
 
   const { resetSearchOptions } = useSearchOption();
-  const graphList: GraphList = useSelector((state: RootState) =>
-    getGraphList(state),
-  );
+  const graphList: GraphList = useSelector((state) => getGraphList(state));
   const { edges: allEdgeFields } = graphList[graphListIndex].metadata.fields;
 
   // this edge options are use by group by selections

@@ -21,7 +21,7 @@ const itemBlockOverrides: BlockOverrides = {
 };
 
 const ItemResults: FC = () => {
-  const { nodes, edges } = useSelector((state: RootState) =>
+  const { nodes, edges } = useSelector((state) =>
     GraphSelectors.getPaginateItems(state),
   );
 

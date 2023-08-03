@@ -55,6 +55,7 @@ const DateTimeAxis: FC<DateTimeAxisProps> = ({
         .tickFormat((d: Date) => format(d, dateTimeFormat));
 
       select(axis.current)
+        // @ts-ignore
         .call(xAxisGenerator)
         .style('stroke-width', 0)
         .style('font-size', 12)
